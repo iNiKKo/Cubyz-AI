@@ -1,4 +1,4 @@
 {
-  "mode": "rag",
-  "clean_shutdown": false
+  "mode": "idle",
+  "clean_shutdown": true
 }

@@ -1,0 +1,27 @@
+{
+  "locked": {
+    "codebase_src_gui_windows_main.zig_chunk_0": {
+      "user_id": "NickMac",
+      "timestamp": 1784319840.007468
+    },
+    "codebase_assets_cubyz_biomes_autumn_mixed_forest.zig.zon_chunk_0": {
+      "user_id": "NickMac",
+      "timestamp": 1784319943.2413008
+    },
+    "codebase_assets_cubyz_sbb_mushroom_small_toadstool.zig.zon_chunk_0": {
+      "user_id": "NickMac",
+      "timestamp": 1784320019.3103573
+    },
+    "codebase_src_server_storage.zig_chunk_1": {
+      "user_id": "Nick",
+      "timestamp": 1784320124.8882234
+    },
+    "codebase_src_server_storage.zig_chunk_2": {
+      "user_id": "Nick",
+      "timestamp": 1784320138.8028316
+    }
+  },
+  "completed": [
+    "codebase_src_server_storage.zig_chunk_0"
+  ]
+}

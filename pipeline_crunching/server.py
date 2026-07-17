@@ -478,6 +478,15 @@ def finetune_initialize_chunks():
     print(f" Active task targets:   {len(finetune_chunk_queue)}")
     print("─"*55 + "\n")
 
+def _rag_campaign_complete() -> bool:
+    # An empty queue (RAG source not configured/scanned) counts as "complete" -- nothing to
+    # block on. Real incompleteness is completed < total with a nonzero total.
+    total = len(rag_chunk_queue)
+    if total == 0:
+        return True
+    state = load_lock_state(RAG_LOCK_FILE)
+    return len(state["completed"]) >= total
+
 # ============================================================
 # STARTUP GATE -- picks the initial CURRENT_MODE. Both campaigns' chunk queues are always built
 # regardless of which mode is chosen, so /admin/mode can switch live without a restart.
@@ -495,11 +504,16 @@ def server_startup_gate():
     rag_flag = "  ⚠ was still running when the server last stopped -- resume?" if unfinished_mode == "rag" else ""
     finetune_flag = "  ⚠ was still running when the server last stopped -- resume?" if unfinished_mode == "finetune" else ""
 
+    rag_total = len(rag_chunk_queue)
+    rag_done = len(load_lock_state(RAG_LOCK_FILE)["completed"])
+    rag_progress = f"  [{rag_done}/{rag_total} chunks]" if rag_total else ""
+    finetune_not_ready = "  ⚠ RAG campaign not finished yet -- see note below" if not _rag_campaign_complete() else ""
+
     print("\n" + "═"*55)
     print("        CUBYZ DISTRIBUTED DATASET ENGINE COORDINATOR      ")
     print("═"*55)
-    print(f"  [1] 🟢 LAUNCH IN RAG MODE           (knowledge extraction){rag_flag}")
-    print(f"  [2] 🟢 LAUNCH IN FINETUNE MODE      (training-pair generation){finetune_flag}")
+    print(f"  [1] 🟢 LAUNCH IN RAG MODE           (knowledge extraction){rag_flag}{rag_progress}")
+    print(f"  [2] 🟢 LAUNCH IN FINETUNE MODE      (training-pair generation){finetune_flag}{finetune_not_ready}")
     print("  [3] 🟢 LAUNCH IN IDLE MODE          (server up, no tasks handed out)")
     print("  [4] ⚠️ HARD RESET RAG CAMPAIGN       (wipe queue & database to 0 -- contribution stats kept)")
     print("  [5] ⚠️ HARD RESET FINETUNE CAMPAIGN  (wipe queue & pairs to 0 -- contribution stats kept)")
@@ -517,6 +531,16 @@ def server_startup_gate():
                 print("\n[➔] Access Authorized. Launching in RAG mode...")
                 break
             elif choice == "2":
+                if not _rag_campaign_complete():
+                    confirm = input(
+                        f"\n⚠️ RAG campaign is not finished yet ({rag_done}/{rag_total} chunks). "
+                        f"Fine-tune pair generation is meant to run after RAG extraction is done -- "
+                        f"pair quality depends on the RAG knowledge base being complete. Launch in "
+                        f"FINETUNE mode anyway? (y/n): "
+                    ).strip().lower()
+                    if confirm != 'y':
+                        print("[~] Staying at menu -- finish the RAG campaign first, or confirm to override.")
+                        continue
                 CURRENT_MODE = "finetune"
                 print("\n[➔] Access Authorized. Launching in FINETUNE mode...")
                 break
@@ -842,10 +866,19 @@ def get_mode():
     return {"mode": CURRENT_MODE}
 
 @app.post("/admin/mode")
-def set_mode(mode: str):
+def set_mode(mode: str, force: bool = False):
     global CURRENT_MODE
     if mode not in ("idle", "rag", "finetune"):
         raise HTTPException(status_code=400, detail="mode must be one of: idle, rag, finetune")
+    if mode == "finetune" and not force and not _rag_campaign_complete():
+        total = len(rag_chunk_queue)
+        completed = len(load_lock_state(RAG_LOCK_FILE)["completed"])
+        raise HTTPException(
+            status_code=409,
+            detail=f"RAG campaign is not finished ({completed}/{total} chunks) -- fine-tune pair "
+                   f"generation is meant to run after RAG extraction completes. Retry with "
+                   f"force=true to override."
+        )
     CURRENT_MODE = mode
     # Marked dirty (clean_shutdown=False) immediately -- if the process dies before a clean
     # shutdown writes True, the next startup's "unfinished campaign" flag reflects THIS mode,
@@ -864,9 +897,12 @@ def get_version():
 
 if __name__ == "__main__":
     import uvicorn
-    server_startup_gate()
+    # Scanned before the gate (not after, as before) so the menu can show real RAG/finetune
+    # progress and server_startup_gate()'s "finetune after RAG" safeguard has real numbers to
+    # check against instead of an empty, not-yet-scanned queue.
     rag_initialize_chunks()
     finetune_initialize_chunks()
+    server_startup_gate()
     # Dirty the persisted state the moment we're about to actually start serving -- only the
     # finally block below (a real clean stop) clears it back to True.
     save_server_mode_state(CURRENT_MODE, clean_shutdown=False)

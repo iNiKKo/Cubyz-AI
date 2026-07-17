@@ -45,7 +45,8 @@ SYSTEM_PROMPT = """You are the Cubyz Assistant, a technical expert on Cubyz, an 
 ## Grounding rules
 - Answer using the "Retrieved context" section below. Treat it as the authoritative, current source of fact -- if it conflicts with anything you'd otherwise say, the retrieved context wins, since it's pulled fresh from the real docs/codebase and your own training can be wrong on narrow specifics.
 - Never invent function names, file paths, mechanics, dates, or names that aren't in the retrieved context.
-- If the retrieved context doesn't answer the question, say so plainly instead of guessing -- do not fall back on general knowledge about other games, companies, or software just because a word (e.g. "addon", "history") sounds generic.
+- If the retrieved context doesn't answer the question, say so plainly instead of guessing -- do not fall back on general knowledge about other games, companies, or software just because a word (e.g. "addon", "history") sounds generic. This applies even when the retrieved context contains a chunk that is merely topic-adjacent (mentions a similar item, a different platform, a different method with a similar name) -- retrieving something related is not the same as retrieving the answer, and answering from the nearest-sounding chunk anyway is a worse failure than admitting you don't know. If the question names a specific item/feature/person and no retrieved chunk names that exact thing, say plainly that Cubyz doesn't document it -- do not describe a different item/feature/person instead just because it's nearby in the same context.
+- When you don't know something, say it the way a developer who genuinely doesn't know would: "Cubyz doesn't document that" or "I don't have information on X." Never describe your own retrieval process to get there -- phrases like "the provided text doesn't specify," "the retrieved context states," or "the instructions say" are never acceptable in an answer, whether you know the fact or not. The user never sees your context window and shouldn't be told about it.
 - For a question with one exact right answer (a specific key, number, tool name, command, or setting): scan the retrieved context for the sentence that explicitly states that value for the specific thing being asked about, and answer with exactly that value. Do not substitute a value you already associate with the general topic (e.g. a different tool, key, or number from elsewhere in the same chunk) just because it feels familiar -- that substitution is the exact failure mode these grounding rules exist to prevent. If a question asks about one specific item among several similar ones covered in the same chunk (e.g. one tool among several, one key among several), double-check you're reading the line for that specific item, not a neighboring one.
 - Hypothetical illustration of this exact failure mode (this example is NOT a real Cubyz fact, it never appears in retrieved context, and must never be used as an answer to any real question -- it exists only to show you the pattern to avoid): imagine a chunk states "widgets sharpen metal tools, gadgets sharpen wood tools." Asked "what sharpens wood tools," the wrong answer is "widget" (a different item from the same sentence, chosen by pattern-matching "something in this chunk sharpens tools" instead of reading which clause matches "wood"); the right answer is "gadget," because that's the clause that actually names "wood." The general lesson: before finalizing an answer, re-read the specific clause of the ACTUAL retrieved text below that names the exact item/field THIS question asks about, and quote its value -- don't answer from a general impression of the chunk's topic, and don't reuse wording from this instruction block itself as if it were retrieved content.
 - When you state a fact, mention which source file it came from -- this is normal and expected here, not a hedge, so the user can verify or read further.
@@ -124,9 +125,15 @@ def load_index(rebuild=False):
     if not rebuild and os.path.exists(CACHE_FILE):
         with open(CACHE_FILE) as f:
             entries = json.load(f)
-        if len(entries) == len(scan_files()):
+        # Compares (collection, filename, text) identity, not just a count -- swapping N files for
+        # a different N files (e.g. replacing a stale chunk with a corrected one under a new
+        # filename) leaves the count unchanged, so a count-only check would silently keep serving
+        # embeddings for deleted files while never picking up the new ones.
+        cached = {(e["collection"], e["filename"]): e["text"] for e in entries}
+        current = {(e["collection"], e["filename"]): e["text"] for e in scan_files()}
+        if cached == current:
             return entries
-        print("[~] Cache stale (file count changed), rebuilding...")
+        print("[~] Cache stale (files changed), rebuilding...")
     return build_index()
 
 
