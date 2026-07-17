@@ -1,0 +1,18 @@
+# QLoRA fine-tuning stack for the Cubyz assistant model.
+#
+# ROCm note (RX9070): install the ROCm build of PyTorch FIRST, from
+# https://pytorch.org/get-started/locally/ (select ROCm as the compute platform), before
+# installing the packages below -- pip's default torch wheel is CUDA-only and will silently
+# fail to see the GPU. bitsandbytes added a multi-backend refactor with ROCm support; if
+# `import bitsandbytes` errors on load or 4-bit quantization silently falls back to CPU, that's
+# the first thing to check (`bitsandbytes-rocm` or a from-source build may be needed depending
+# on your exact ROCm version).
+
+transformers>=4.46.0
+peft>=0.13.0
+bitsandbytes>=0.45.0
+trl>=0.12.0
+accelerate>=1.0.0
+datasets>=3.0.0
+sentencepiece
+protobuf

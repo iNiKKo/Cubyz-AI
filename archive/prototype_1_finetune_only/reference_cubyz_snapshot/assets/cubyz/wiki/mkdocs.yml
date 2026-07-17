@@ -1,0 +1,66 @@
+site_name: Cubyz Wiki
+use_directory_urls: false
+repo_url: https://github.com/PixelGuys/Cubyz-Wiki
+repo_name: PixelGuys/Cubyz-Wiki
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  logo: images/logo.png
+  favicon: images/logo.png
+  features:
+    - navigation.path
+    - toc.integrate
+    - navigation.tracking
+    - navigation.indexes
+    - content.action.edit
+    - content.tabs.link
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      primary: green
+      accent: green
+      scheme: default
+      toggle:
+        icon: lucide/sun
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      primary: green
+      accent: green
+      scheme: slate
+      toggle:
+        icon: lucide/moon
+        name: Switch to light mode
+
+plugins:
+  - search
+  - offline
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.blocks.caption
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+       alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - toc:
+      permalink: true
+      toc_depth: 2
+
+extra_css:
+  - css/infobox.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/youtube
+      link: https://www.youtube.com/@quantumdeveloper2733
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/stBh54hF7U
+    - icon: fontawesome/brands/reddit
+      link: https://www.reddit.com/r/CubyzGame/
+    - icon: fontawesome/brands/github
+      link: https://github.com/PixelGuys/Cubyz

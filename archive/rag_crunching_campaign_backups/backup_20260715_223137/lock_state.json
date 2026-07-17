@@ -1,0 +1,15 @@
+{
+  "locked": {
+    "codebase_src_physics.zig_chunk_1": {
+      "user_id": "Nick",
+      "timestamp": 1784150236.325845
+    }
+  },
+  "completed": [
+    "codebase_src_server_storage.zig_chunk_0",
+    "codebase_src_server_storage.zig_chunk_1",
+    "codebase_src_server_storage.zig_chunk_2",
+    "codebase_src_server_storage.zig_chunk_3",
+    "codebase_src_physics.zig_chunk_0"
+  ]
+}

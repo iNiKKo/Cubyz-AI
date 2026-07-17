@@ -1,0 +1,22 @@
+{
+  "locked": {
+    "codebase_src_server_storage.zig_chunk_1": {
+      "user_id": "Nick",
+      "timestamp": 1784153895.8783505
+    },
+    "codebase_assets_cubyz_blocks_tussock.zig.zon_chunk_0": {
+      "user_id": "NickMac",
+      "timestamp": 1784154088.3875105
+    }
+  },
+  "completed": [
+    "codebase_src_server_storage.zig_chunk_0",
+    "codebase_src_gui_windows_main.zig_chunk_0",
+    "codebase_assets_cubyz_biomes_autumn_mixed_forest.zig.zon_chunk_0",
+    "codebase_assets_cubyz_sbb_mushroom_small_toadstool.zig.zon_chunk_0",
+    "codebase_assets_cubyz_biomes_tundra_snowy_pit.zig.zon_chunk_0",
+    "codebase_assets_cubyz_biomes_bog_pond.zig.zon_chunk_0",
+    "codebase_src_server_terrain_chunkgen_StructureGenerator.zig_chunk_0",
+    "codebase_assets_cubyz_biomes_hills__defaults.zig.zon_chunk_0"
+  ]
+}

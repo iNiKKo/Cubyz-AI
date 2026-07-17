@@ -1,0 +1,24 @@
+# Model weights and training checkpoints -- multi-GB binaries, not git material.
+# Re-derivable from finetune/training/train_qlora.py + finetune/training/merge_adapter.py.
+finetune/training/output/
+archive/prototype_1_finetune_only/cubyz_ai_3b_merged/
+archive/prototype_1_finetune_only/cubyz_ai_3b_v0.1/
+
+# Third-party tool, its own git repo -- clone separately (https://github.com/ggml-org/llama.cpp)
+# rather than vendoring it in this repo's history.
+llama.cpp/
+
+# Regenerable caches
+webapp/rag_index_cache.json
+__pycache__/
+*.pyc
+
+# Live chat data -- real visitor questions/answers/feedback notes, not for a public repo.
+webapp/chat_history.db
+
+# Local-only Claude Code settings (machine-specific, not shared project config).
+.claude/settings.local.json
+
+# OS cruft
+.DS_Store
+Thumbs.db

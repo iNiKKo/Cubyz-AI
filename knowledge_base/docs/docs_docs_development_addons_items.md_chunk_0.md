@@ -1,0 +1,27 @@
+# [easy/docs_docs_development_addons_items.md] - Chunk 0
+
+**Type:** documentation
+**Keywords:** items, zig.zon, texture, tags, stack size, material, durability, mass damage, hardness damage, swing speed, texture roughness, colors
+**Symbols:** texture, tags, stackSize, material
+**Concepts:** Items, Zig.Zon Files, Material Properties
+
+## Summary
+Items in Cubyz are defined by a `zig.zon` file, which includes properties like texture, tags, stack size, material, and more.
+
+## Explanation
+Each item in Cubyz has a `zig.zon` file that specifies its properties. The `texture` property defines the visual appearance of the item. The `tags` array can be used to categorize items. The `stackSize` determines how many of the same item can be held in one inventory slot, defaulting to 120. The `material` property includes various attributes like durability, mass damage, hardness damage, swing speed, texture roughness, and color palette, which are crucial for procedural tool crafting.
+
+## Related Questions
+- What file format is used to define items in Cubyz?
+- How many of the same item can be held in one inventory slot by default?
+- What properties are included in the material attribute of an item?
+- What is the purpose of the `tags` array in an item's zig.zon file?
+- How does the texture property affect an item's visual appearance?
+- What is the maximum stack size for items in Cubyz?
+- How can procedural tool crafting be customized using material properties?
+- What is the role of the `modifiers` field within a material attribute?
+- What are some key attributes that define a material in Cubyz?
+- How does the `swingSpeed` property affect an item's usability in combat?
+- What is the significance of the `textureRoughness` property in an item's visual representation?
+
+*Source: unknown | chunk_id: docs_docs_development_addons_items.md_chunk_0*

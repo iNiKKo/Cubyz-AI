@@ -1,0 +1,26 @@
+# [hard/codebase_src_blocks.zig] - Chunk 4
+
+**Type:** implementation
+**Keywords:** inline fn, extern struct, std.mem.containsAtLeastScalar, atomic.Value, List, ModelIndex, RotationMode, Neighbor.dirDown.toInt, textureOcclusionData
+**Symbols:** viewThrough, alwaysViewThrough, hasBackFace, tags, hasTag, light, absorption, onInteract, onBreak, onUpdate, mode, modeData, rotateZ, lodReplacement, opaqueVariant, friction, bounciness, density, terminalVelocity, mobility, allowOres, onTick, onTouch, blockEntity, canBeChangedInto, isSelectableByItem
+**Concepts:** block property accessors, block callbacks, texture management, animation data, fog configuration, side texture mapping
+
+## Summary
+Defines the Block struct with inline accessor methods for block properties and callbacks, plus a meshes configuration struct holding texture lists, animation/fog data, and SSBO handles.
+
+## Explanation
+The chunk declares pub inline fn viewThrough(self: Block) bool returning _viewThrough[self.typ]; pub inline fn alwaysViewThrough(self: Block) bool returning _alwaysViewThrough[self.typ]; pub inline fn hasBackFace(self: Block) bool returning _hasBackFace[self.typ]; pub inline fn tags(self: Block) []const Tag returning _tags[self.typ]; pub inline fn hasTag(self: Block, tag: Tag) bool using std.mem.containsAtLeastScalar(Tag, self.tags(), 1, tag); pub inline fn light(self: Block) u32 returning _light[self.typ]; pub inline fn absorption(self: Block) u32 returning _absorption[self.typ]; pub inline fn onInteract(self: Block) ClientBlockCallback returning _onInteract[self.typ]; pub inline fn onBreak(self: Block) ServerBlockCallback returning _onBreak[self.typ]; pub inline fn onUpdate(self: Block) ServerBlockCallback returning _onUpdate[self.typ]; pub inline fn mode(self: Block) *const RotationMode returning _mode[self.typ]; pub inline fn modeData(self: Block) u16 returning _modeData[self.typ]; pub inline fn rotateZ(self: Block, angle: Degrees) Block constructing a new Block with .{.typ = self.typ, .data = self.mode().rotateZ(self.data, angle)}; pub inline fn lodReplacement(self: Block) u16 returning _lodReplacement[self.typ]; pub inline fn opaqueVariant(self: Block) u16 returning _opaqueVariant[self.typ]; pub inline fn friction(self: Block) f32 returning _friction[self.typ]; pub inline fn bounciness(self: Block) f32 returning _bounciness[self.typ]; pub inline fn density(self: Block) f32 returning _density[self.typ]; pub inline fn terminalVelocity(self: Block) f32 returning _terminalVelocity[self.typ]; pub inline fn mobility(self: Block) f32 returning _mobility[self.typ]; pub inline fn allowOres(self: Block) bool returning _allowOres[self.typ]; pub inline fn onTick(self: Block) ServerBlockCallback returning _onTick[self.typ]; pub inline fn onTouch(self: Block) BlockTouchCallback returning _onTouch[self.typ]; pub fn blockEntity(self: Block) ?*const BlockEntityType returning _blockEntity[self.typ]; pub fn canBeChangedInto(self: Block, newBlock: Block, item: main.items.ItemStack, shouldDropSourceBlockOnSuccess: *bool) main.rotation.RotationMode.CanBeChangedInto delegating to newBlock.mode().canBeChangedInto(self, newBlock, item, shouldDropSourceBlockOnSuccess); pub inline fn isSelectableByItem(self: Block, item: Item) bool using self.selectionCapabilities().allowsSelectionByItem(self, item). The meshes struct defines const AnimationData = extern struct { startFrame: u32, frames: u32, time: u32 }; const FogData = extern struct { fogDensity: f32, fogColor: u32 }; var size: u32 = 0; var _modelIndex: [maxBlockCount]ModelIndex = undefined; var textureIndices: [maxBlockCount][16]u16 = undefined; var maxTextureCount: [maxBlockCount]u32 = undefined with comment storing number of textures after each block was added for cleanup when world switches; var loadedMeshes: u32 = 0 with comment determining if an update is needed; var textureIds: main.List([]const u8) = .empty; var texturePaths: main.List([]const u8) = .empty; var animationData: []AnimationData = &.{}; var blockTextures: main.List(Image) = .empty; var emissionTextures: main.List(Image) = .empty; var reflectivityTextures: main.List(Image) = .empty; var absorptionTextures: main.List(Image) = .empty; var textureFogData: main.List(FogData) = .empty; pub var textureOcclusionData: []std.atomic.Value(bool) = &.{}; var blockBreakingTextures: main.List(u16) = .empty; const sideNames declares names[6][]const u8 mapping Neighbor.dirDown.toInt() to 
+
+## Related Questions
+- What does the viewThrough method return for a given block type?
+- How is the hasTag function implemented using std.mem.containsAtLeastScalar?
+- Which callback types are exposed by Block (ClientBlockCallback vs ServerBlockCallback)?
+- What fields are stored in the meshes struct for texture management?
+- How does rotateZ construct a new Block with transformed data?
+- What is the purpose of maxTextureCount and how is it used during world switching?
+- Which side names are mapped in the sideNames block literal?
+- Does the meshes struct contain any atomic values and what do they represent?
+- How does canBeChangedInto delegate to RotationMode.CanBeChangedInto?
+- What extern structs define animation data and fog configuration?
+
+*Source: unknown | chunk_id: codebase_src_blocks.zig_chunk_4*
