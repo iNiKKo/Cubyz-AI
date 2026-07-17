@@ -70,7 +70,7 @@ until real testing in Prototype 4.
 
 ---
 
-## Prototype 4 — Hybrid: Fine-Tune + RAG (current)
+## Prototype 4 — Hybrid: Fine-Tune + RAG (current production model)
 
 **What it was:** Fine-tuning for voice and judgment (how a Cubyz dev reasons, reviews code,
 debugs), RAG for hard facts (keybindings, defaults, protocol details) — combining what Prototype
@@ -121,6 +121,34 @@ into fixing the knowledge base.
 
 ---
 
+## Prototype 5 — Consolidation & Cleanup (in progress)
+
+**What it was:** Before extending Prototype 4's system further, a pass to pay down accumulated
+maintenance debt in the project's infrastructure. This section will keep growing as Prototype 5
+work continues -- entries get added here as they happen, not written up after the fact.
+
+**Client script consolidation:** Both distributed campaigns shipped three near-identical per-OS
+scripts each -- `pipeline_crunching/client_{linux,mac,windows}.py` for RAG data and
+`finetune/scripts/client_finetune_{linux,mac,windows}.py` for SFT pair generation -- roughly
+85-90% identical, diverging only in hardware detection, Ollama install/startup, and a few
+cosmetic strings. Merged each trio into a single cross-platform script (`RAG_FOLDING.py`,
+`FINETUNE_FOLDING.py`) that detects the OS at runtime and branches internally instead of
+maintaining three copies of shared logic. This also simplifies joining either campaign as a
+volunteer: one script to download and run per pipeline, not three to pick between.
+
+The merge also closed real feature gaps the per-OS split had let drift apart rather than just
+papering over them: the RAG client's local `leaderboard.html` generation was Windows-only for no
+OS-specific reason (ported to all three); the finetune client's Linux build never checked for
+Intel GPUs at all (Windows did), and used a cruder flat 16GB guess for any AMD GPU instead of
+distinguishing discrete from integrated the way the Windows/RAG clients already did. All three
+platforms now get identical feature coverage and hardware-tier accuracy.
+
+Old per-OS scripts preserved in `archive/pipeline_crunching_per_os_clients/` and
+`archive/finetune_per_os_clients/`, consistent with the project's practice of never deleting a
+superseded approach outright.
+
+---
+
 ## Summary
 
 | Prototype | Approach | Outcome |
@@ -129,6 +157,7 @@ into fixing the knowledge base.
 | 2 | RAG only, single-file KB | Facts good, code examples wrong |
 | 3 | Distributed crunching | 1,134/1,134 chunks, bigger KB (introduced a fact-loss bug found later) |
 | 4 | Fine-tune + RAG hybrid | 89% on 96-question benchmark, general capability fully intact |
+| 5 | Consolidation & cleanup | In progress -- unified per-OS client scripts into single cross-platform clients |
 
 Everything upstream of the current system is kept in `archive/`, organized by prototype, because
 each dead end is the reason the current one works.
