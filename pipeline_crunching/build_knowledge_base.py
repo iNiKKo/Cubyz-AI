@@ -70,7 +70,12 @@ def format_chunk_as_kb_md(chunk: dict) -> str:
         lines.extend(f"- {q}" for q in chunk["synthetic_queries"])
         lines.append("")
     lines.append(f"*Source: unknown | chunk_id: {chunk['chunk_id']}*")
-    return "\n".join(lines) + "\n"
+    text = "\n".join(lines) + "\n"
+    # Some source content (e.g. a code_example pulled from a GitHub diff) carries embedded \r\n.
+    # Writing that raw would leave literal \r\n on disk, but reading it back applies universal
+    # newline translation (\r\n -> \n) -- the two would never compare equal, so the file would
+    # look "updated" and get rewritten on every single run forever. Normalize once here instead.
+    return text.replace("\r\n", "\n").replace("\r", "\n")
 
 
 def build_knowledge_base():
