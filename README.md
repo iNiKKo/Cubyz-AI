@@ -147,6 +147,42 @@ Old per-OS scripts preserved in `archive/pipeline_crunching_per_os_clients/` and
 `archive/finetune_per_os_clients/`, consistent with the project's practice of never deleting a
 superseded approach outright.
 
+**Client and server unification:** Merged `RAG_FOLDING.py` and `FINETUNE_FOLDING.py` into one
+client, `CUBYZ_FOLDING.py` (repo root). The server now decides which campaign is active -- a
+`"mode"` field on `/get_work` tells the client to do RAG extraction, fine-tune pair generation, or
+sit idle -- rather than the volunteer choosing at startup. To back that, `pipeline_crunching/
+server.py` absorbed `finetune/server_finetune.py`'s campaign too: one process, one `CURRENT_MODE`
+switchable live via `POST /admin/mode` or at startup, with RAG and fine-tune campaign state
+(locks/stats/hashes/output) kept fully separate since a chunk ID can collide as a string across
+the two campaigns without meaning the same thing. Old standalone clients/server archived to
+`archive/superseded_unified_clients/` and `archive/server_finetune.py`.
+
+Caught and fixed a real pre-existing bug along the way: the RAG server's hard-reset backup logic
+passed an absolute path into `os.path.join()`, which silently discards every prior path
+component -- every "backup" was actually the file copied onto itself, never landing in the
+timestamped backup folder. `server_finetune.py`'s equivalent code already used the correct
+pattern; adopted it for both campaigns in the merge.
+
+**Client/server versioning, auto-update, and unfinished-campaign recovery:** Added a
+`client_version` gate (`HTTP 426` + an update-now message) so old, pre-unification clients get a
+clear rejection instead of being silently fed a protocol they don't understand. Built on top of
+that: an update check every crunching cycle (not just at startup, so a release lands mid-campaign
+instead of waiting for a restart), a first-boot toggle (persisted, changeable later from the pause
+menu) that decides whether updates apply silently via a real `os.execv` self-restart or interrupt
+crunching with a y/n prompt, and `CURRENT_MODE` persistence across server restarts with an
+"unfinished campaign" flag in the startup menu when the last run didn't shut down cleanly.
+
+**Terminal color:** `CUBYZ_FOLDING.py`'s live status display is now color-coded by campaign --
+RAG's box/banner/progress bar render cyan, fine-tune's render magenta -- plus severity coloring
+(green/yellow/red) on generation status lines, auto-disabled when stdout isn't a real terminal.
+
+**Discovered along the way (not yet acted on):** `webapp/chat_server.py` and `pipeline_crunching/
+server.py` both hardcode port 7000 -- confirmed intentional, the AI chat website and the
+distributed campaign server are meant to run one at a time on this port, not concurrently. Also
+flagged: none of `/admin/mode`, `/submit_work`, or the volunteer `user_id` scheme have any
+authentication -- reading the public source is enough to disrupt the live campaign or inject
+garbage submissions. Not fixed yet; needs a real auth design decision.
+
 ---
 
 ## Summary
@@ -157,7 +193,7 @@ superseded approach outright.
 | 2 | RAG only, single-file KB | Facts good, code examples wrong |
 | 3 | Distributed crunching | 1,134/1,134 chunks, bigger KB (introduced a fact-loss bug found later) |
 | 4 | Fine-tune + RAG hybrid | 89% on 96-question benchmark, general capability fully intact |
-| 5 | Consolidation & cleanup | In progress -- unified per-OS client scripts into single cross-platform clients |
+| 5 | Consolidation & cleanup | In progress -- one client (`CUBYZ_FOLDING.py`), one mode-switching server, versioned + auto-updating, colorized |
 
 Everything upstream of the current system is kept in `archive/`, organized by prototype, because
 each dead end is the reason the current one works.
