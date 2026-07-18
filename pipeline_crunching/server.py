@@ -936,10 +936,17 @@ def _rag_leaderboard() -> dict:
     # show up as an active user.
     known_users = set(user_stats.keys()) | set(online_clients.keys())
 
+    # Denominator must be the same lifetime total the numerator is drawn from (sum of every
+    # user's own chunks_completed), not completed_chunks -- that's the CURRENT campaign's
+    # completed count, which resets to 0 on every hard reset while user_stats.chunks_completed
+    # (deliberately) does not. Dividing a never-reset numerator by a just-reset denominator let
+    # shares exceed 100% and stop summing to 100 across users.
+    lifetime_total = sum(data.get("chunks_completed", 0) for data in user_stats.values())
+
     rankings = []
     for u_id in known_users:
         data = user_stats.get(u_id, {"chunks_completed": 0, "lines_crunched": 0})
-        contribution = (data["chunks_completed"] / completed_chunks * 100) if completed_chunks > 0 else 0.0
+        contribution = (data["chunks_completed"] / lifetime_total * 100) if lifetime_total > 0 else 0.0
         is_online = u_id in online_clients and (time.time() - online_clients[u_id]["timestamp"] < 60)
 
         rankings.append({
