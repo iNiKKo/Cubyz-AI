@@ -103,7 +103,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.3"
+VERSION = "1.1.4"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -1134,8 +1134,18 @@ def validate_extraction(data: dict, raw_content: str, p_key: str) -> tuple:
         symbol_set = set(symbols)
         # "." shows up in plenty of non-qualification text too (version numbers like "OpenGL
         # 4.3", decimals, etc.) -- a real Zig Parent.child reference is always a single
-        # contiguous identifier with no spaces, so require that to avoid false positives.
-        qualified = [s for s in symbols if "." in s and " " not in s]
+        # contiguous identifier with no spaces, so require that to avoid false positives. Also
+        # require every dot-separated segment to actually look like a Zig identifier (starts with
+        # a letter/underscore, no leading digit or "@" -- "@" is reserved for real builtins like
+        # @import, never a user identifier). Without this, something like "@lod0.5Distance" --
+        # the model mashing together a value ("lod0"), a number ("0.5"), and a field name
+        # ("Distance") into one garbled string -- gets treated as a genuine qualified reference
+        # and then rejected as an unfounded "call-chain," when it was never a real symbol at all.
+        qualified = [
+            s for s in symbols
+            if "." in s and " " not in s
+            and all(re.match(r'^[A-Za-z_]\w*$', part) for part in s.split("."))
+        ]
         if qualified:
             # A qualified symbol's root being absent from the model's own reported symbol list
             # doesn't mean it's fabricated -- orchestration/entry-point code (main.zig's entry
