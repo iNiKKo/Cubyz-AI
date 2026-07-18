@@ -1,26 +1,22 @@
 # [hard/codebase_src_renderer_chunk_meshing.zig] - Chunk 7
 
 **Type:** implementation
-**Keywords:** appendNeighborFacingQuads, depthFilteredViewThroughMask, initialAlwaysViewThroughMask, hasFaces, canSeeNeighbor, canSeeAllNeighbors, viewThrough, alwaysViewThrough, opaqueVariant, transparentCore, opaqueOptional, opaqueCore, mutex locking
-**Symbols:** finishNeighbors
-**Concepts:** neighbor traversal, transparent quads, opaque quads, view-through masks, deadlock-free locking, mesh replacement ranges
+**Keywords:** block iteration, neighbor checking, transparency handling, quad appending, mutex unlocking
+**Symbols:** chunk, self, block, neighborBlock, pos, neighborPos, setBit, bitMask, z, transparentCore, opaqueCore, opaqueOptional, transparentOptional, lightRefreshList, mesh_storage, sameLodBlock
+**Concepts:** chunk meshing, block transparency, view-through properties, quads generation, mutex locking
 
 ## Summary
-This chunk implements the neighbor-face traversal logic for ChunkMesh, iterating over each of the six neighboring chunks (negY, posY, dirDown, dirUp, etc.) and emitting transparent or opaque quads via appendNeighborFacingQuads based on view-through masks and block transparency.
+Handles chunk meshing by iterating over block positions and neighbors, checking transparency and view-through properties, and appending quads to opaque or transparent cores.
 
 ## Explanation
-The chunk contains four nested blocks that each handle a specific neighbor direction: negY, posY, dirDown, and dirUp. For each neighbor, it iterates over the relevant x/y ranges of self.chunk.data, builds a bitMask from hasFaces combined with canSeeNeighbor or canSeeAllNeighbors (with appropriate shifts for down/up), then loops while bitMask != 0 to extract set bits via @ctz. It retrieves the block at pos and its neighborBlock at neighborPos; if both are equal it continues. When depthFilteredViewThroughMask[x][y] has the bit, it sets block.typ = block.opaqueVariant(). If block.viewThrough() && !block.alwaysViewThrough(), it fetches neighborBlock again to compare equality. For transparent blocks it checks block.hasBackFace(); if true it calls appendNeighborFacingQuads(block, neighbor.reverse(), pos, true, &transparentCore), then always calls appendNeighborFacingQuads(block, neighbor, neighborPos, false, &transparentCore). For non-transparent blocks it calls appendNeighborFacingQuads with either &opaqueOptional or &opaqueCore depending on initialAlwaysViewThroughMask and the shifted bit test. After all neighbors are processed, self.mutex.unlock() is called, then self.replaceRanges(.core, opaqueCore.items, transparentCore.items) and self.replaceRanges(.optional, opaqueOptional.items, transparentOptional.items) are invoked to swap out the mesh data, followed by self.finishNeighbors(lightRefreshList). The finishNeighbors function iterates over chunk.Neighbor.iterable, retrieves a nullNeighborMesh via mesh_storage.getNeighbor(self.pos, self.pos.voxelSize, neighbor), asserts it is not self (deadlockFreeDoubleLock comment), and then performs deadlock-free double locking on the mutexes. No other functions or public symbols are declared in this chunk; all referenced types (ChunkMesh, ChunkPosition, Neighbor, etc.) come from elsewhere.
+The code iterates over each block position in the chunk and its neighboring chunks. For each block, it checks if the block is transparent or needs to check through a neighbor block. It then appends facing quads to either opaque or transparent cores based on these conditions. After processing all blocks, it unlocks the mutex, replaces ranges in the mesh, and finishes neighbor handling by updating last neighbors' LOD information.
 
 ## Related Questions
-- What neighbor directions are handled in this chunk and how is each direction distinguished?
-- How does the code decide whether to emit a transparent quad versus an opaque quad for a given block face?
-- Under what condition does the code set block.typ = block.opaqueVariant() before emitting quads?
-- What role do hasFaces, canSeeNeighbor, and canSeeAllNeighbors play in building the bitMask for each neighbor iteration?
-- How is deadlock-free double locking achieved when accessing a neighbor's mesh storage in finishNeighbors?
-- Why does the code compare block == neighborBlock after fetching both blocks from self.chunk.data?
-- What are transparentCore, opaqueOptional, and opaqueCore used for in appendNeighborFacingQuads calls?
-- How does initialAlwaysViewThroughMask influence which core (optional vs core) is passed to appendNeighborFacingQuads?
-- What happens after all neighbor loops complete before finishNeighbors is called?
-- Does this chunk declare any public types or constants that other modules can import directly?
+- What is the purpose of the `sameLodBlock` label in the code?
+- How does the code handle blocks that are transparent?
+- What role does the `bitMask` variable play in the meshing process?
+- How are quads appended to the opaque or transparent cores?
+- What is the function of the `deadlockFreeDoubleLock` call?
+- How does the code ensure thread safety during mesh generation?
 
 *Source: unknown | chunk_id: codebase_src_renderer_chunk_meshing.zig_chunk_7*

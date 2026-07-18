@@ -1,26 +1,28 @@
 # [easy/docs_docs_development_how_to_contribute.md] - Chunk 0
 
-**Type:** configuration
-**Keywords:** contribute, volunteer, YouTube, Discord, Wiki, GitHub, Reddit, moderation, documentation, Patreon, donation
-**Symbols:** CONTRIBUTING.md, Cubyz Contributions Guide, Official Cubyz Youtube Channel, YouTube Team Form, Discord Team Form, Cubyz Wiki Repository, Wiki Team Form, Cubyz GitHub, Github Team Form, Cubyz Reddit, Reddit Team Form, Quantum Developer, Carrie
-**Concepts:** community contributions, volunteer teams, content creation, moderation, documentation maintenance, code review, financial support, Patreon, Ko-Fi
+**Type:** documentation
+**Keywords:** Cubyz, Contributions Guide, GitHub Issues, YouTube Team, Discord Team, Wiki Team, Github Team, Reddit Team, Patreon
+**Symbols:** Cubyz, CONTRIBUTING.md, GitHub Issues, YouTube Team Form, Discord Team Form, Wiki Team Form, Github Team Form, Reddit Team Form, Patreon
+**Concepts:** Community Contributions, Code & Development, Volunteer Roles, Supporting the Project
 
 ## Summary
-The page outlines non-code contribution channels including the YouTube, Discord, Wiki, GitHub, and Reddit teams with their respective forms, plus a Patreon option to support the project lead.
+Cubyz relies on community contributions for code and development. Volunteers are needed to maintain the community, create content, and support the project.
 
 ## Explanation
-Cubyz relies on community contributions beyond code. The document lists five volunteer teams: YouTube (update videos/blogs via a form), Discord (moderation/events via a form), Wiki (documentation updates via pull requests or a dedicated role form), GitHub (reviewing PRs/issues via a form), and Reddit (subreddit moderation via a form). It also offers financial support through a Patreon for the project lead (Quantum Developer) and Ko-Fi for the artist (Carrie).
+Cubyz encourages open-source community contributions through a guide, issue tracking, and various volunteer roles. Volunteers can help with coding, addon development, managing YouTube content, Discord moderation, maintaining the wiki, reviewing pull requests on GitHub, moderating Reddit, or supporting the project financially via Patreon.
 
 ## Related Questions
-- How do I apply to join the YouTube team?
-- What is the process for contributing to the Cubyz Wiki?
-- Which form should I use to become a Discord moderator?
-- Can anyone submit code directly without applying to the GitHub team?
-- Where can I find the official Cubyz Reddit community?
-- How do I support the project lead financially?
-- What is the difference between donating via Patreon and Ko-Fi?
-- Is there a way to help with events on the Discord server?
-- Do I need coding skills to contribute to the Wiki team?
-- Where are the links to all the contribution forms listed in this document?
+- What is the link to the Cubyz Contributions Guide?
+- Where can I find open bugs, feature requests, or tasks labeled contributor friendly on GitHub?
+- How can I contribute addons that the community will love playing with and enjoy?
+- What are the responsibilities of the YouTube Team for managing and producing content for the Official Cubyz Youtube Channel?
+- What is the link to the official Cubyz Reddit?
+- How can I apply for a moderation role on the subreddit?
+- What is the link to the Ko-Fi page for Carrie, the artist who works on Cubyz's art direction and custom textures?
+- What are the options for supporting the project financially via Patreon?
+- Who is the project lead and how can I support them?
+- How can I apply for a more dedicated role in reviewing pull requests on GitHub?
+- What is the link to the Cubyz Wiki Repository?
+- What are the responsibilities of the Wiki Team for maintaining and organizing the wiki pages?
 
 *Source: unknown | chunk_id: docs_docs_development_how_to_contribute.md_chunk_0*

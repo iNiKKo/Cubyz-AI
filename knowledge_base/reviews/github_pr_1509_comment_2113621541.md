@@ -1,26 +1,22 @@
-# [src/rotation.zig] - Chunk 2113621541
+# [src/rotation.zig] - PR #1509 review diff
 
 **Type:** review
-**Keywords:** rotation mode, namespace, cubyz:, getByID, containsAtLeastScalar, allocPrint, stackAllocator, asset copying, addon creation
-**Symbols:** deinit, getByID, RotationMode, rotationModes, std.log.err, std.mem.containsAtLeastScalar, std.fmt.allocPrint, main.stackAllocator.allocator
-**Concepts:** namespace resolution, ID prefixing, memory allocation, backwards compatibility, asset loading, reviewer feedback integration
+**Keywords:** namespace, ID, compatibility, addons, workflow, flexibility
+**Symbols:** rotationModes, getByID, main.stackAllocator.allocator
+**Concepts:** backwards compatibility, asset management
 
 ## Summary
-The change introduces a check for colons in rotation mode IDs and prepends the 'cubyz:' namespace prefix when none is present, addressing a reviewer's concern about allowing assets from the same namespace to skip the ID namespace part.
+The change introduces a conditional check for namespaces in asset IDs, which could break compatibility by preventing assets from being easily copied between addons.
 
 ## Explanation
-The original code logged an error if a requested rotation mode was not found and defaulted to 'no_rotation'. The reviewer pointed out that this behavior is problematic because it prevents copying files between addons when they share the same namespace, which is a common practice for new addon creators. To resolve this, the implementation now checks whether the provided ID contains a colon (indicating an explicit namespace). If no colon is present, it constructs a namespaced ID by prepending 'cubyz:' to the original ID using the main stack allocator. This ensures that lookups are performed against the fully qualified namespace path, allowing assets within the same namespace to be correctly resolved without requiring manual namespace specification in the ID.
+The reviewer points out that the proposed change would require assets to include their namespace in the ID, even if they share the same namespace as the rotation. This architectural decision could lead to issues for addon creators who might want to copy files between different addons without modifying their IDs. The reviewer emphasizes that this change could disrupt the expected workflow and flexibility of asset management.
 
 ## Related Questions
-- What happens if a rotation mode ID contains multiple colons?
-- Does the new namespacedId allocation handle out-of-memory gracefully or is unreachable assumed?
-- Is there any validation that the original id does not already start with 'cubyz:' before prepending?
-- How does this change affect existing code that passes unqualified IDs like 'no_rotation'?
-- What is the expected behavior when getByID is called with an empty string after this modification?
-- Does rotationModes.getPtr return a pointer to a static or dynamically allocated RotationMode struct?
-- Is there any documentation update required for the new namespace prefix convention?
-- Could this change introduce a regression in addons that rely on exact ID matching without namespaces?
-- What is the lifetime of the returned RotationMode pointer from getByID after this modification?
-- Are there any other places in rotation.zig where similar namespace handling should be applied?
+- What is the impact of requiring namespaces in asset IDs?
+- How does this change affect addon creators' workflows?
+- Can assets be easily copied between different addons with this new requirement?
+- What are the potential backward compatibility issues introduced by this change?
+- Is there a way to maintain flexibility while implementing namespace checks?
+- How can we ensure that asset IDs remain consistent across different namespaces?
 
 *Source: unknown | chunk_id: github_pr_1509_comment_2113621541*

@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_fence_cirrus.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, ZON format, block properties, textures, item representation
+**Keywords:** configuration, texturing, block properties, inventory item, fence block
 **Concepts:** block configuration, texture mapping
 
 ## Summary
 Defines configuration for the Cirrus Fence block, including textures and item properties.
 
 ## Explanation
-This chunk is a configuration file in ZON format that specifies the visual assets and properties of the Cirrus Fence block within the Cubyz voxel engine. It sets the main texture for the fence sides to 'cubyz:fence/cirrus' and uses 'cubyz:fence/top/cirrus' for both the top and bottom textures, ensuring consistency in appearance. Additionally, it defines an item representation with its own texture 'fence/cirrus.png', which is likely used when the fence block is placed in the player's inventory or dropped as an item.
+This chunk is a configuration file defining the visual and item properties of the Cirrus Fence block in the Cubyz voxel engine. It specifies the texture paths for different sides of the fence, ensuring consistent rendering. The `item` field further defines how the fence appears when held or placed in the inventory.
 
 ## Related Questions
-- What is the main texture for the Cirrus Fence block?
-- Which textures are used for the top and bottom of the Cirrus Fence block?
-- What is the item texture associated with the Cirrus Fence block?
-- How many different textures are defined for the Cirrus Fence block in this configuration?
-- Is there a difference between the top and bottom textures of the Cirrus Fence block?
-- What format is used to define the Cirrus Fence block's configuration?
+- What is the texture path for the top of the Cirrus Fence?
+- How does the Cirrus Fence appear in the inventory?
+- Where are the textures for the Cirrus Fence defined?
+- Does the Cirrus Fence have a unique bottom texture?
+- What is the item texture for the Cirrus Fence?
+- Are there any special properties for the Cirrus Fence block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_fence_cirrus.zig.zon_chunk_0*

@@ -1,31 +1,34 @@
 # [medium/codebase_src_utils_file_monitor.zig] - Chunk 1
 
 **Type:** implementation
-**Keywords:** inotify, Windows API, mutex locking, directory watching, callback handling
-**Symbols:** events, readBytes, triggeredCallbacks, offset, eventPtr, callback, watchDescriptor, callbacks, info, path, mutex, DirectoryInfo, addWatchDescriptor, removeWatchDescriptor, listenToPath, removePath, WindowsImpl, HANDLE, notificationHandlers, justTheHandles, init, deinit, handleEvents, waitResult, callbackInfo, result
-**Concepts:** file monitoring, inotify, FindFirstChangeNotification, thread safety
+**Keywords:** inotify, mutex locking, recursive directory traversal, event handling, callback invocation
+**Symbols:** LinuxImpl, LinuxImpl.DirectoryInfo, LinuxImpl.DirectoryInfo.callback, LinuxImpl.DirectoryInfo.userData, LinuxImpl.DirectoryInfo.watchDescriptors, LinuxImpl.DirectoryInfo.needsUpdate, LinuxImpl.DirectoryInfo.path, LinuxImpl.fd, LinuxImpl.watchDescriptors, LinuxImpl.callbacks, LinuxImpl.mutex, LinuxImpl.init, LinuxImpl.deinit, LinuxImpl.addWatchDescriptorsRecursive, LinuxImpl.updateRecursiveCallback, LinuxImpl.handleEvents, LinuxImpl.addWatchDescriptor, LinuxImpl.removeWatchDescriptor, LinuxImpl.listenToPath, LinuxImpl.removePath
+**Concepts:** file monitoring, inotify API, directory watching, callback management, thread safety
 
 ## Summary
-This chunk implements file monitoring functionality using inotify on Linux and a custom Windows implementation.
+The LinuxImpl struct provides functionality for monitoring file system changes using inotify on Linux systems.
 
 ## Explanation
-The chunk contains two main implementations: one for Linux using inotify and another for Windows. The Linux part includes functions to read events, add and remove watch descriptors, and handle callbacks. The Windows part uses FindFirstChangeNotification and WaitForMultipleObjects to monitor directory changes. Both parts use a mutex to ensure thread safety.
+This chunk defines a Linux-specific implementation of a file monitor using the inotify API. It includes functions to initialize and deinitialize the inotify instance, add and remove watch descriptors recursively, handle events, and manage callbacks. The `DirectoryInfo` struct holds information about directories being watched, including their paths, associated callback functions, user data, and watch descriptors. The implementation uses a mutex for thread safety, manages memory allocation with global and stack allocators, and logs errors using the standard logging library.
 
 ## Code Example
 ```zig
 fn init() void {
-		notificationHandlers = .init(main.globalAllocator.allocator);
-		callbacks = .init(main.globalAllocator);
-		justTheHandles = .init(main.globalAllocator);
+	fd = c.inotify_init();
+	if (fd == -1) {
+		std.log.err("Error while initializing inotifiy: {}", .{std.posix.errno(fd)});
 	}
+	watchDescriptors = .init(main.globalAllocator.allocator);
+	callbacks = .init(main.globalAllocator.allocator);
+}
 ```
 
 ## Related Questions
-- What is the purpose of the `addWatchDescriptor` function?
-- How does the chunk handle errors when adding a watch descriptor?
-- What mechanism ensures thread safety in this implementation?
-- Describe the role of the `triggeredCallbacks` map.
-- How are duplicate watch descriptors prevented?
-- What Windows API functions are used for file monitoring?
+- How does the `LinuxImpl` struct initialize inotify?
+- What is the purpose of the `DirectoryInfo` struct within `LinuxImpl`?
+- How are watch descriptors added recursively in the `LinuxImpl` implementation?
+- What error handling is implemented for adding and removing watch descriptors?
+- How does the `handleEvents` function process inotify events?
+- What role does the mutex play in ensuring thread safety?
 
 *Source: unknown | chunk_id: codebase_src_utils_file_monitor.zig_chunk_1*

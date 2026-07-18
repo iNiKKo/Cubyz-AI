@@ -1,23 +1,62 @@
 # [medium/codebase_src_server_terrain_chunkgen_CrystalGenerator.zig] - Chunk 1
 
-**Type:** algorithm
-**Keywords:** crystalSpawns, differendColors, useNeedles, isSolid, surfaceDist, glowCrystals, nextIntBounded, scrambleSeed
-**Symbols:** considerCoordinates, random.scrambleSeed, biomeMap.getBiomeAndSeed, caveMap.isSolid, considerCrystal
-**Concepts:** crystal spawning, surface adjacency check, seed preservation, random color selection, chunk coordinate mapping
+**Type:** implementation
+**Keywords:** random number generation, seed scrambling, world coordinates, surface proximity check, crystal placement
+**Symbols:** considerCoordinates, seed, crystalSpawns, differendColors, _colors, colors, useNeedles, worldX, worldY, worldZ, relX, relY, relZ
+**Concepts:** crystal generation, random seed, cave environment, biome influence
 
 ## Summary
-Implements the core logic for determining where crystals spawn within a terrain chunk by evaluating biome data and cave maps to find valid surface-adjacent solid blocks.
+Generates crystals within a cave based on biome and random seed.
 
 ## Explanation
-The function considerCoordinates takes world coordinates (x, y, z) relative to a chunk's super position, along with a ServerChunk pointer, CaveMap view, CaveBiomeMap view, and a mutable seed. It first saves the current seed value as oldSeed, then queries biomeMap.getBiomeAndSeed for the crystal spawn count at those coordinates (offset by half the chunk size), retrieving only the crystals field. After scrambling the seed with random.scrambleSeed(seed), it determines how many different crystal colors to use: starting with one color, if a random check passes it enters a loop that increments differendColors up to 32, where each iteration adds another color; the probability of adding more colors diminishes exponentially because the loop condition checks random.nextInt(u1, seed) != 0 and also enforces differendColors < 32. An array _colors is allocated with size 32 but only the first differendColors entries are used. Each entry is filled by picking a glow crystal type from glowCrystals using random.nextIntBounded(u16, seed, glowCrystals.len). A boolean useNeedles is randomly decided to indicate whether needle-type crystals should be considered. The seed is then restored to oldSeed before spawning. For each of the retrieved crystalSpawns count, it computes world coordinates by adding a bounded random offset (0..chunkSize) to the input x/y/z using random.nextIntBounded(u31, seed, main.chunk.chunkSize). It converts these to relative chunk coordinates (relX, relY, relZ) by subtracting the super position. If caveMap.isSolid(relX, relY, relZ) returns true, it then checks whether the block is close enough to a surface: specifically, if the offset from x/y/z is at least surfaceDist and the adjacent block in that direction is not solid (or vice versa for being less than chunkSize - surfaceDist), or similarly for y and z axes. If any of these six conditions hold, it calls considerCrystal(worldX, worldY, worldZ, chunk, seed, useNeedles, colors) to actually spawn the crystal at that location.
+The function `considerCoordinates` is responsible for generating crystals within a cave. It takes the coordinates of the chunk, a pointer to the server chunk, views of the cave map and biome map, and a pointer to a seed. The function first determines the number of different crystal colors based on random chance. It then selects random colors from a predefined list of glow crystals. A decision is made whether to use needles for crystal generation. Using the old position-specific seed, it randomly selects world coordinates within the chunk size to start generating crystals. Crystals are only placed in solid blocks that are close to the surface. The `considerCrystal` function is called to generate each crystal at the selected coordinates.
+
+## Code Example
+```zig
+fn considerCoordinates(x: i32, y: i32, z: i32, chunk: *main.chunk.ServerChunk, caveMap: CaveMap.CaveMapView, biomeMap: CaveBiomeMap.CaveBiomeMapView, seed: *u64) void {
+	const oldSeed = seed.*;
+	const crystalSpawns = biomeMap.getBiomeAndSeed(x +% main.chunk.chunkSize/2 -% chunk.super.pos.wx, y +% main.chunk.chunkSize/2 -% chunk.super.pos.wy, z +% main.chunk.chunkSize/2 -% chunk.super.pos.wz, true, seed).crystals;
+	random.scrambleSeed(seed);
+	var differendColors: u32 = 1;
+	if (random.nextInt(u1, seed) != 0) {
+		// ¹⁄₄ Chance that a cave has multiple crystals.
+		while (random.nextInt(u1, seed) != 0 and differendColors < 32) {
+			differendColors += 1; // Exponentially diminishing chance to have more differend crystals per cavern.
+		}
+	}
+	var _colors: [32]u16 = undefined;
+	const colors = _colors[0..differendColors];
+	for (colors) |*color| {
+		color.* = glowCrystals[random.nextIntBounded(u16, seed, glowCrystals.len)];
+	}
+	const useNeedles = random.nextInt(u1, seed) != 0; // Different crystal type.
+	// Spawn the crystals using the old position specific seed:
+	seed.* = oldSeed;
+	for (0..crystalSpawns) |_| {
+		// Choose some in world coordinates to start generating:
+		const worldX = x + random.nextIntBounded(u31, seed, main.chunk.chunkSize);
+		const worldY = y + random.nextIntBounded(u31, seed, main.chunk.chunkSize);
+		const worldZ = z + random.nextIntBounded(u31, seed, main.chunk.chunkSize);
+		const relX = worldX -% chunk.super.pos.wx;
+		const relY = worldY -% chunk.super.pos.wy;
+		const relZ = worldZ -% chunk.super.pos.wz;
+		if (caveMap.isSolid(relX, relY, relZ)) { // Only start crystal in solid blocks
+			// Only start crystal when they are close to the surface (±SURFACE_DIST blocks)
+			if ((worldX - x >= surfaceDist and !caveMap.isSolid(relX - surfaceDist, relY, relZ)) or (worldX - x < main.chunk.chunkSize - surfaceDist and !caveMap.isSolid(relX + surfaceDist, relY, relZ)) or (worldY - y >= surfaceDist and !caveMap.isSolid(relX, relY - surfaceDist, relZ)) or (worldY - y < main.chunk.chunkSize - surfaceDist and !caveMap.isSolid(relX, relY + surfaceDist, relZ)) or (worldZ - z >= surfaceDist and !caveMap.isSolid(relX, relY, relZ - surfaceDist)) or (worldZ - z < main.chunk.chunkSize - surfaceDist and !caveMap.isSolid(relX, relY, relZ + surfaceDist))) {
+				// Generate the crystal:
+				considerCrystal(worldX, worldY, worldZ, chunk, seed, useNeedles, colors);
+			}
+		}
+	}
+}
+```
 
 ## Related Questions
-- What is the maximum number of different crystal colors that can be generated in a single spawn?
-- How does considerCoordinates preserve the seed before spawning crystals and why is this necessary?
-- Under what conditions will considerCrystal be invoked for a given candidate world coordinate?
-- Where are the glowCrystals array values sampled from when assigning color types to crystals?
-- What role does differendColors play in controlling crystal variety within a cavern?
-- How are world coordinates converted into relative chunk coordinates inside this function?
-- Does considerCoordinates ever modify the seed passed in, and if so how is it restored?
+- What is the purpose of the `considerCoordinates` function?
+- How does the function determine the number of different crystal colors?
+- What role does the biome map play in crystal generation?
+- How are world coordinates selected for crystal placement?
+- What conditions must be met for a crystal to be placed?
+- What is the process for generating each crystal after selection?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_chunkgen_CrystalGenerator.zig_chunk_1*

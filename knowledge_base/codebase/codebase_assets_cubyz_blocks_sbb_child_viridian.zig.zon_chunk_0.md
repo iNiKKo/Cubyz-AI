@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_sbb_child_viridian.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** texture paths, asset management, configuration file, block variant, side texture, top texture, bottom texture
-**Concepts:** block rendering, texture mapping
+**Keywords:** texture paths, block variant, side texture, top texture, bottom texture
+**Concepts:** block texture mapping
 
 ## Summary
-Defines texture paths for the Viridian block variant in the Cubyz game.
+Defines texture paths for the Viridian block variant.
 
 ## Explanation
-This chunk is a configuration file that specifies the texture paths for different sides of the Viridian block variant. It includes the main texture for the sides, as well as separate textures for the top and bottom faces. The textures are referenced using their respective paths within the asset system of the Cubyz game engine.
+This chunk specifies the file paths for the textures used by the Viridian block variant. It includes three fields: `texture`, `texture_top`, and `texture_bottom`, each pointing to a different image file that represents the side, top, and bottom of the block respectively.
 
 ## Related Questions
-- What is the main texture path for the Viridian block?
-- Which texture is used for the top face of the Viridian block?
-- How is the bottom face of the Viridian block textured?
-- Where are the textures for the Viridian block stored in the asset system?
-- Does this configuration file define any additional properties for the Viridian block?
-- How does Cubyz use these texture paths to render the Viridian block?
+- What is the file path for the side texture of the Viridian block?
+- Which field specifies the top texture for the Viridian block?
+- How many different textures are defined for the Viridian block in this configuration?
+- What is the base directory used for all texture paths in this chunk?
+- Are there any other fields besides `texture`, `texture_top`, and `texture_bottom` in this configuration?
+- Does this chunk define any functions or methods?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_sbb_child_viridian.zig.zon_chunk_0*

@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_cave_lava_spout.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprints, lava spouts, terrain generation, voxel engine, asset definition
-**Concepts:** world_generation
+**Keywords:** blueprint, cave, lava spout, ID, variant
+**Concepts:** world generation
 
 ## Summary
 Defines blueprints for cave lava spouts.
 
 ## Explanation
-This chunk defines a list of blueprints, each with an unique identifier, used to represent different variations of cave lava spouts in the Cubyz voxel engine. The identifiers follow a consistent naming pattern: 'cubyz:cave/lava_spout/0', 'cubyz:cave/lava_spout/1', etc., indicating five distinct types of lava spouts.
+This chunk defines a list of blueprints, each with an ID corresponding to different variants of a cave lava spout. These IDs are used to identify and generate specific types of lava spouts within the game world.
 
 ## Related Questions
-- What are the identifiers for the cave lava spout blueprints?
-- How many different types of cave lava spouts are defined in this chunk?
-- What is the naming pattern for the lava spout blueprints?
-- Is there any executable logic in this chunk?
-- Where are these blueprints used within the Cubyz engine?
-- Can you list all the blueprint IDs defined in this chunk?
+- What are the IDs defined for cave lava spouts?
+- How many different variants of cave lava spouts are there?
+- Where are these blueprints used in the game?
+- Are there any other similar blueprint definitions in the codebase?
+- What is the purpose of defining these specific IDs for lava spouts?
+- How might these blueprints be loaded or referenced during world generation?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_cave_lava_spout.zig.zon_chunk_0*

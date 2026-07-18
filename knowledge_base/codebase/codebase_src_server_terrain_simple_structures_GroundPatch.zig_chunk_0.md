@@ -1,41 +1,95 @@
 # [easy/codebase_src_server_terrain_simple_structures_GroundPatch.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** ZonElement, GenerationMode, caveMap.isSolid, findTerrainChangeAbove, findTerrainChangeBelow, updateBlockInGeneration, liesInChunk, voxelSizeMask
+**Keywords:** ground patch, block placement, elliptical distribution, terrain generation logic, randomization
 **Symbols:** GroundPatch, loadModel, generate
-**Concepts:** terrain generation, elliptical patch placement, cave map interaction, water surface mode, chunk bounds clamping, randomized smoothing, voxel size masking, parameter defaults
+**Concepts:** terrain generation, block placement, elliptical distribution
 
 ## Summary
-GroundPatch defines a terrain generation component that loads parameters from ZonElement and generates elliptical ground patches within server chunks, handling cave map interactions and water surface modes.
+GroundPatch generation logic for Cubyz terrain
 
 ## Explanation
-The GroundPatch struct is declared with fields block (main.blocks.Block), width (f32), variation (f32), depth (i32), and smoothness (f32). The loadModel function parses a ZonElement, allocating a new GroundPatch via main.worldArena.create, defaulting missing parameters: block to empty string if absent, width defaults 5, variation defaults 1, depth defaults 2, smoothness defaults 0. The generate method takes a GenerationMode (from SimpleStructureModel), coordinates x/y/z, a server chunk pointer, cave map view, cave biome map view, and seed. It computes an ellipse orientation using random.nextFloat(seed) to produce major/minor axes scaled by width and variation; ellipseParam is sampled from 1 to 2. The bounding box of the ellipse is clamped within chunk.super.width via xMin/xMax/yMin/yMax. baseHeight starts at z, then adjusts: if mode != .water_surface it queries caveMap.isSolid; if solid it finds terrain change above and subtracts 1, else finds terrain change below. For each pixel in the bounding box, mainDist/secnDist are computed using sin/cos of orientation scaled by width, then squared to get dist. If dist <= 1 (inside ellipse), startHeight is set to z; for water_surface mode it decrements by 1 and clears voxelSizeMask bits, otherwise it again queries caveMap.isSolid at the pixel coordinates and adjusts baseHeight accordingly. pz starts from chunk.startIndex(startHeight - depth + 1); in water_surface mode surfaceHeight is fetched from caveBiomeMap.getSurfaceHeight with wx/wy offsets and masked, then pz is raised to max(pz, surfaceHeight -% pos.wz). If the absolute difference between startHeight and baseHeight exceeds 5, the loop continues. Then a while loop increments pz by chunk.super.pos.voxelSize; inside, if dist <= smoothness or (dist - smoothness)/(1 - smoothness) < random.nextFloat(seed), it checks liesInChunk(px,py,pz) before calling chunk.updateBlockInGeneration with self.block.
+This chunk defines the GroundPatch structure and its generation logic. It loads parameters from a ZonElement, calculates the patch's dimensions and orientation, and then iterates over a specified area in the chunk to apply the block at different heights based on an elliptical distribution.
 
 ## Code Example
 ```zig
-pub fn loadModel(parameters: ZonElement) ?*GroundPatch {
-	const self = main.worldArena.create(GroundPatch);
-	self.* = .{
-		.block = main.blocks.parseBlock(parameters.get([]const u8, "block") orelse ""),
-		.width = parameters.get(f32, "width") orelse 5,
-		.variation = parameters.get(f32, "variation") orelse 1,
-		.depth = parameters.get(i32, "depth") orelse 2,
-		.smoothness = parameters.get(f32, "smoothness") orelse 0,
-	};
-	return self;
+pub fn generate(self: *GroundPatch, mode: GenerationMode, x: i32, y: i32, z: i32, chunk: *main.chunk.ServerChunk, caveMap: CaveMapView, caveBiomeMap: CaveBiomeMapView, seed: *u64, _: bool) void {
+	const width = self.width + (random.nextFloat(seed) - 0.5)*self.variation;
+	const orientation = 2*std.math.pi*random.nextFloat(seed);
+	const ellipseParam = 1 + random.nextFloat(seed);
+
+	// Orientation of the major and minor half axis of the ellipse.
+	// For now simply use a minor axis 1/ellipseParam as big as the major.
+	const xMain = @sin(orientation)/width;
+	const yMain = @cos(orientation)/width;
+	const xSecn = ellipseParam*@cos(orientation)/width;
+	const ySecn = -ellipseParam*@sin(orientation)/width;
+
+	const xMin = @max(0, x - @as(i32, @ceil(width)));
+	const xMax = @min(chunk.super.width, x + @as(i32, @ceil(width)));
+	const yMin = @max(0, y - @as(i32, @ceil(width)));
+	const yMax = @min(chunk.super.width, y + @as(i32, @ceil(width)));
+
+	var baseHeight = z;
+	if (mode != .water_surface) {
+		if (caveMap.isSolid(x, y, baseHeight)) {
+			baseHeight = caveMap.findTerrainChangeAbove(x, y, baseHeight) - 1;
+		} else {
+			baseHeight = caveMap.findTerrainChangeBelow(x, y, baseHeight);
+		}
+	}
+
+	var px = chunk.startIndex(xMin);
+	while (px < xMax) : (px += 1) {
+		var py = chunk.startIndex(yMin);
+		while (py < yMax) : (py += 1) {
+			const mainDist = xMain*@as(f32, @floatFromInt(x - px)) + yMain*@as(f32, @floatFromInt(y - py));
+			const secnDist = xSecn*@as(f32, @floatFromInt(x - px)) + ySecn*@as(f32, @floatFromInt(y - py));
+			const dist = mainDist*mainDist + secnDist*secnDist;
+			if (dist <= 1) {
+				var startHeight = z;
+
+				if (mode == .water_surface) {
+					startHeight -%= 1;
+					startHeight &= ~chunk.super.voxelSizeMask;
+				} else {
+					if (caveMap.isSolid(px, py, startHeight)) {
+						startHeight = caveMap.findTerrainChangeAbove(px, py, startHeight) -% 1;
+					} else {
+						startHeight = caveMap.findTerrainChangeBelow(px, py, startHeight);
+					}
+				}
+				var pz = chunk.startIndex(startHeight - self.depth + 1);
+				if (mode == .water_surface) {
+					const surfaceHeight = caveBiomeMap.getSurfaceHeight(chunk.super.pos.wx + px, chunk.super.pos.wy + py) & ~chunk.super.voxelSizeMask;
+					pz = @max(pz, surfaceHeight -% chunk.super.pos.wz);
+				}
+				if (@abs(startHeight -% baseHeight) > 5) continue;
+				while (pz <= startHeight) : (pz += chunk.super.pos.voxelSize) {
+					if (dist <= self.smoothness or (dist - self.smoothness)/(1 - self.smoothness) < random.nextFloat(seed)) {
+						if (chunk.liesInChunk(px, py, pz)) {
+							chunk.updateBlockInGeneration(px, py, pz, self.block);
+						}
+					}
+				}
+			}
+		}
+	}
 }
 ```
 
 ## Related Questions
-- What default values are assigned to GroundPatch fields when ZonElement parameters are missing?
-- How does generate handle the case where mode equals .water_surface versus other modes?
-- In what order does generate query caveMap.isSolid and adjust baseHeight for each pixel?
-- Why is there a check abs(startHeight -% baseHeight) > 5 before entering the inner while loop?
-- How are the ellipse major/minor axes computed from width, variation, and random.nextFloat(seed)?
-- What does chunk.updateBlockInGeneration expect as its arguments when called inside generate?
-- Does generate ever call liesInChunk for water_surface mode or only for solid ground mode?
-- Where is the bounding box of the ellipse clamped relative to chunk.super.width?
-- How are voxelSizeMask bits cleared in water_surface mode and why?
-- What role does smoothness play in deciding whether a block gets placed inside the ellipse?
+- What is the purpose of the GroundPatch structure?
+- How does the generate function determine the start height for block placement?
+- What is the logic for applying the block based on the distance from the center of the ellipse?
+- How does the smoothness parameter affect the block placement?
+- What is the minimum and maximum height range for the block placement within the chunk?
+- How does the function handle water surface generation mode?
+- What is the purpose of the caveMap.findTerrainChangeAbove and findTerrainChangeBelow functions?
+- What is the logic for updating the block in the chunk during generation?
+- How does the function determine if a block should be placed based on the distance from the center of the ellipse and smoothness parameter?
+- What is the purpose of the random.nextFloat(seed) function used in the generate function?
+- What is the logic for calculating the major and minor axes of the ellipse based on the orientation?
+- How does the function handle cases where the block placement exceeds the chunk boundaries?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_simple_structures_GroundPatch.zig_chunk_0*

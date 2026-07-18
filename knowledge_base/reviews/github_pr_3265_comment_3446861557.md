@@ -1,22 +1,22 @@
-# [src/vec.zig] - PR #3265 review comment
+# [src/vec.zig] - PR #3265 review diff
 
 **Type:** review
-**Keywords:** coordinate system, vector, conversion, rotation, accuracy, architectural review, enum, function, suggestion, center of rotation
-**Symbols:** CoordinateSystem, convertCoordinateSystemVec0to1, Vec3f
-**Concepts:** coordinate system conversion, vector transformation, architectural improvement
+**Keywords:** rotate2d, CoordinateSystem, convertCoordinateSystemVec0to1, convertCoordinateSystemVec, Vec3f, center of rotation, vector transformations, coordinate system conversion, geometric integrity, flexibility
+**Symbols:** rotate2d, CoordinateSystem, convertCoordinateSystemVec0to1, convertCoordinateSystemVec, Vec3f
+**Concepts:** coordinate system conversion, vector transformations, geometric integrity
 
 ## Summary
-Added a function to convert vectors between different coordinate systems and received a suggestion to include an explicit center of rotation for improved accuracy.
+Added a new function `convertCoordinateSystemVec` to handle coordinate system conversion with an explicit center of rotation.
 
 ## Explanation
-The change introduces a new enum `CoordinateSystem` defining various coordinate system types. A function `convertCoordinateSystemVec0to1` is added to convert a vector from one coordinate system to another based on the specified system type. The reviewer suggests modifying this function to include an explicit center of rotation, which would allow for more precise transformations by accounting for the position relative to the origin or any other reference point. This suggestion aims to enhance the functionality and accuracy of the coordinate conversion process.
+The reviewer suggests modifying the existing `convertCoordinateSystemVec0to1` function to include an explicit center of rotation. This change is aimed at improving the flexibility and accuracy of vector transformations in different coordinate systems. The reviewer provides a revised implementation that subtracts the center of rotation from the input position, performs the coordinate system conversion, and then adds the center back. This approach ensures that the transformation respects the specified origin point, which is crucial for maintaining geometric integrity during operations like rotations or translations.
 
 ## Related Questions
-- What is the purpose of the `CoordinateSystem` enum in the code?
-- How does the `convertCoordinateSystemVec0to1` function work?
-- Why was it suggested to include an explicit center of rotation in the coordinate conversion function?
-- What are the potential benefits of adding a center of rotation parameter?
-- Can you explain the different cases in the switch statement for converting coordinate systems?
-- How might the inclusion of a center of rotation affect the performance of vector transformations?
+- What is the purpose of adding an explicit center of rotation in vector transformations?
+- How does the revised `convertCoordinateSystemVec` function differ from the original implementation?
+- Why is it important to maintain geometric integrity during coordinate system conversions?
+- Can you explain the role of each case in the switch statement within the revised function?
+- What are the potential benefits of using an explicit center of rotation in vector operations?
+- How might this change affect existing code that relies on the original `convertCoordinateSystemVec0to1` function?
 
 *Source: unknown | chunk_id: github_pr_3265_comment_3446861557*

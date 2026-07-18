@@ -1,15 +1,15 @@
 # [medium/codebase_src_server_terrain_simple_structures_SimpleTreeModel.zig] - Chunk 0
 
 **Type:** world_generation
-**Keywords:** reference counting, binary serialization, mutex locking, tree generation, block placement, randomization
-**Symbols:** SimpleTreeModel, SimpleTreeModel.typ, SimpleTreeModel.leavesBlock, SimpleTreeModel.woodBlock, SimpleTreeModel.woodRotationModeType, SimpleTreeModel.topWoodBlock, SimpleTreeModel.topRotationModeType, SimpleTreeModel.height0, SimpleTreeModel.deltaHeight, SimpleTreeModel.leafRadius, SimpleTreeModel.deltaLeafRadius, SimpleTreeModel.leafElongation, SimpleTreeModel.deltaLeafElongation, SimpleTreeModel.branched, loadModel, initalOrientation, addNeighbor, generateStem, generateBranch, generate
+**Keywords:** block generation, tree structure, voxel world, randomization, chunk update
+**Symbols:** SimpleTreeModel, SimpleTreeModel.typ, SimpleTreeModel.leavesBlock, SimpleTreeModel.woodBlock, SimpleTreeModel.woodRotationModeType, SimpleTreeModel.topWoodBlock, SimpleTreeModel.topRotationModeType, SimpleTreeModel.height0, SimpleTreeModel.deltaHeight, SimpleTreeModel.leafRadius, SimpleTreeModel.deltaLeafRadius, SimpleTreeModel.leafElongation, SimpleTreeModel.deltaLeafElongation, SimpleTreeModel.branched, loadModel, initalOrientation, addNeighbor, generateStem, generateBranch
 **Concepts:** chunk meshing, entity ECS, world generation, networking protocol
 
 ## Summary
-The SimpleTreeModel struct defines a simple tree generation model for the Cubyz voxel engine, handling tree parameters, orientation, and generation logic.
+Defines the SimpleTreeModel for generating simple tree structures in the Cubyz voxel engine.
 
 ## Explanation
-The SimpleTreeModel struct encapsulates the logic for generating simple trees in the Cubyz voxel engine. It includes fields for defining the type of tree (pyramid or round), block types for leaves and wood, rotation modes, and various dimensions like height and leaf radius. The `loadModel` function initializes a SimpleTreeModel instance from configuration parameters. Methods like `initalOrientation`, `addNeighbor`, `generateStem`, and `generateBranch` handle the orientation and placement of tree blocks within chunks. The `generate` method orchestrates the overall tree generation process, considering factors such as height variation, leaf elongation, and branching probabilities.
+The SimpleTreeModel struct is responsible for defining and generating simple tree structures within the game world. It includes various parameters such as type, block types for leaves and wood, height, leaf radius, and elongation. The loadModel function initializes a SimpleTreeModel from configuration parameters. The initalOrientation and addNeighbor functions adjust block orientations based on rotation modes. The generateStem function generates the main trunk of the tree, optionally adding branches with a certain probability. The generateBranch function adds side branches to the tree.
 
 ## Code Example
 ```zig
@@ -51,11 +51,11 @@ pub fn loadModel(parameters: ZonElement) ?*SimpleTreeModel {
 ```
 
 ## Related Questions
-- How does the SimpleTreeModel handle tree orientation?
-- What parameters are used to generate a simple tree in Cubyz?
-- Can you explain the branching logic in the SimpleTreeModel?
-- How is the height of the tree determined during generation?
-- What role do randomization play in the tree generation process?
-- How does the SimpleTreeModel ensure that trees fit within the available space?
+- How does the SimpleTreeModel generate branches?
+- What parameters are used to define a tree in the SimpleTreeModel?
+- How is the orientation of blocks determined in the SimpleTreeModel?
+- Can you explain the role of randomization in generating trees with the SimpleTreeModel?
+- How does the SimpleTreeModel ensure that generated trees fit within the game's voxel chunks?  
+- What are the different types of tree structures that can be generated using the SimpleTreeModel?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_simple_structures_SimpleTreeModel.zig_chunk_0*

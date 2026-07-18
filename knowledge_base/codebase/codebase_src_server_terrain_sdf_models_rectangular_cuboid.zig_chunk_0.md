@@ -1,26 +1,41 @@
 # [easy/codebase_src_server_terrain_sdf_models_rectangular_cuboid.zig] - Chunk 0
 
-**Type:** serialization
-**Keywords:** rectangular cuboid, min radii, max radii, SDF model, instance generation, bounding box, ZonElement parsing, memory arena allocation
-**Symbols:** id, Instance
-**Concepts:** SDF model definition, instance generation with randomization, bounding box computation, ZonElement parsing, memory arena allocation
+**Type:** implementation
+**Keywords:** SDF, cuboid, distance field, randomization, vector operations
+**Symbols:** Array3D, NeverFailingAllocator, sdf, SdfInstance, vec, Vec3f, Vec3i, ZonElement, id, minRadii, maxRadii, Instance, initAndGetExtend, instantiate, generate
+**Concepts:** SDF model, rectangular cuboid, Signed Distance Field
 
 ## Summary
-Defines a rectangular cuboid SDF model with configurable min/max radii and generates random instances within those bounds.
+Rectangular cuboid SDF model initialization and instantiation
 
 ## Explanation
-The chunk declares a public identifier 'id' for the rectangular cuboid model. It imports Array3D, NeverFailingAllocator, sdf (SdfInstance), vec (Vec3f, Vec3i), and ZonElement from other modules. The Instance struct holds radii as Vec3f. initAndGetExtend reads minSideLengths and maxSideLengths from a ZonElement; if missing it defaults to 32 for min and doubles that for max, then returns an SdfModel.InitResult with the model pointer and computed extend bounds (floor of negative maxRadii to ceil of positive maxRadii). instantiate allocates an Instance on the given arena, seeds its radii by linearly interpolating between minRadii and maxRadii using a random float vector, and returns an SdfInstance containing the data pointer, a generateFn that points to the generate function (cast via meta.castFunctionSelfToAnyopaque), and precomputed minBounds, maxBounds, and centerPosOffset. generate computes an absolute distance from samplePos to each axis minus the instance radii, takes the maximum of those distances and zero, adds its length, then subtracts the minimum of zero and the maximum of the three per-axis distances (effectively returning a signed SDF value).
+This chunk defines a rectangular cuboid SDF (Signed Distance Field) model. It initializes the model with minimum and maximum radii based on ZonElement data, calculates the extend, and instantiates the model with random radii. The generate function computes the distance from the sample position to the surface of the cuboid.
+
+## Code Example
+```zig
+pub fn initAndGetExtend(zon: ZonElement) sdf.SdfModel.InitResult {
+	const self = main.worldArena.create(@This());
+	self.minRadii = (zon.get(Vec3f, "minSideLengths") orelse @as(Vec3f, @splat(32)))/@as(Vec3f, @splat(2));
+	self.maxRadii = (zon.get(Vec3f, "maxSideLengths") orelse self.minRadii*@as(Vec3f, @splat(2)))/@as(Vec3f, @splat(2));
+
+	return .{.model = self, .maxExtend = .{
+		.min = @floor(-self.maxRadii),
+		.max = @ceil(self.maxRadii),
+	}};
+}
+```
 
 ## Related Questions
-- What is the default value used for minSideLengths when not provided in the ZonElement?
-- How are maxSideLengths computed if they are missing from the configuration data?
-- What does initAndGetExtend return and what fields are included in its result struct?
-- Which function is assigned to generateFn in the returned SdfInstance and how is it cast?
-- How is the radii of an instantiated cuboid derived from minRadii and maxRadii using a seed?
-- What bounds (minBounds, maxBounds) are calculated for the generated instance and why?
-- Describe the mathematical operation performed by generate to compute the SDF value.
-- Does this chunk allocate memory directly or does it rely on an arena allocator provided by the caller?
-- How is centerPosOffset computed relative to the instance radii?
-- What type does Instance.radii hold and how many components does that vector have?
+- What is the purpose of the `id` constant in this chunk?
+- How are the minimum and maximum radii calculated from the ZonElement data?
+- What is the extend of the model based on the calculated min and max radii?
+- What is the generate function used for in this SDF model implementation?
+- How does the `instantiate` function initialize an instance of the rectangular cuboid SDF model?
+- What are the parameters passed to the `generate` function?
+- What operations are performed on the dimensionalSdf vector within the `generate` function?
+- What is the purpose of the `@max(dimensionalSdf, @as(Vec3f, @splat(0)))` operation in the `generate` function?
+- How does the `@min(0, @max(dimensionalSdf[0], dimensionalSdf[1], dimensionalSdf[2]))` operation affect the result of the `generate` function?
+- What is the purpose of the `@floor(-self.maxRadii)` and `@ceil(self.maxRadii)` operations in the `initAndGetExtend` function?
+- How does the `main.random.nextFloatVector(3, seed)` function contribute to the randomization of the radii in the `instantiate` function?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_sdf_models_rectangular_cuboid.zig_chunk_0*

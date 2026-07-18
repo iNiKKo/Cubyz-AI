@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_cloth_cyan.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** texture mapping, block definition, item definition, configuration file, asset management
-**Concepts:** block configuration, item configuration
+**Keywords:** texture mapping, configuration file, block properties, inventory item, rendering
+**Concepts:** block definition, item representation
 
 ## Summary
-Defines configuration for a cyan cloth block in Cubyz.
+Defines configuration for a cyan cloth block, including its texture and item representation.
 
 ## Explanation
-This chunk is a configuration file defining the properties of a cyan cloth block. It specifies the texture used for rendering the block and the item associated with it, including its texture.
+This chunk is a configuration file defining the properties of a cyan cloth block in the Cubyz voxel engine. It specifies the texture used for rendering the block within the world and the texture for the corresponding item when it appears in the player's inventory or crafting interface.
 
 ## Related Questions
-- What is the texture used for rendering the cyan cloth block?
-- Which texture is associated with the item form of the cyan cloth block?
-- How is the configuration for the cyan cloth block structured in this file?
-- Does this chunk define any functions or methods?
-- What concepts are implemented by this chunk?
-- What keywords are relevant to understanding this chunk?
+- What is the texture used for rendering the cyan cloth block in the world?
+- What is the texture used for representing the cyan cloth block as an item?
+- Where is the configuration file located within the Cubyz codebase?
+- How does this chunk define the properties of a block and its corresponding item?
+- Can you provide the exact structure of the configuration data for the cyan cloth block?
+- What are the key fields defined in this configuration file?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_cloth_cyan.zig.zon_chunk_0*

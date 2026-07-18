@@ -1,26 +1,30 @@
-# [src/particles.zig] - Chunk 2068718495
+# [src/particles.zig] - PR #1367 review diff
 
 **Type:** review
-**Keywords:** ParticleSystem, Emitter, refactor, separate struct, shape implementation, architectural review, modularity, coupling, maintainability, clean code
-**Symbols:** ParticleSystem, ParticleType, EmmiterProperties, EmmiterShape
-**Concepts:** architectural separation of concerns, modularity, refactoring, code coupling reduction, maintainability
+**Keywords:** particle system, texture management, SSBO, shader initialization, collision detection, lighting calculations, emitter parameters, resource deinitialization, memory allocation, performance optimization
+**Symbols:** ParticleManager, ParticleSystem, ParticleType, SSBO, TextureArray, Shader, Image, ZonElement, Mat4f, Vec3d, Vec3f, Vec3i
+**Concepts:** Memory Management, Resource Loading, Graphics Rendering, Particle Simulation, Collision Detection
 
 ## Summary
-Reviewers suggest refactoring particle emission logic by extracting Emitter-related parameters and shape-specific implementations from the ParticleSystem struct into a dedicated emitter struct to improve architectural separation of concerns.
+A new `particles.zig` file is introduced to manage particle systems and textures. It includes structs like `ParticleManager`, `ParticleSystem`, and `ParticleType`, handling initialization, registration, texture loading, and rendering.
 
 ## Explanation
-The current codebase mixes high-level particle system management (particle arrays, shader uniforms, collision handling) with low-level emitter behavior (shape definitions, spawn logic). Reviewers argue that this violates clean architecture principles: the ParticleSystem should only manage state and rendering, while emission details belong in a separate Emitter struct. This separation will make the codebase more modular, easier to test, and allow future extensions (e.g., new particle types) without bloating the core system. Additionally, moving shape implementations out of ParticleSystem reduces coupling and potential regression risks when modifying collision or update logic.
+The `particles.zig` file introduces a comprehensive system for managing particles in the Cubyz game engine. The `ParticleManager` struct is responsible for initializing particle types, textures, and SSBOs, while also handling deinitialization. It includes methods to register particle types from Zon elements, read texture data, generate texture arrays, and update/render particles.
+
+The `ParticleSystem` struct manages individual particles, including their properties like velocity, life span, and collision detection. It handles initialization of shaders, SSBOs, and emitter properties. The `update` method processes each particle's movement, collision checks, and light calculations, while the `spawn` method creates new particles based on given parameters.
+
+The review suggests optimizing emitter-related parameters into a separate struct to improve code organization and maintainability.
 
 ## Related Questions
-- What are the current fields in ParticleSystem that relate to emitter behavior?
-- Which functions in particles.zig handle particle spawning logic?
-- Are there any existing Emitter structs defined elsewhere in the codebase?
-- How is EmmiterProperties currently used within ParticleSystem?
-- What shape-related data structures are embedded in ParticleSystem?
-- Does ParticleSystem contain any collision handling specific to emitters?
-- Where are particle type definitions stored relative to emission logic?
-- Is there a separation between update and spawn responsibilities in the current design?
-- How does the reviewer define 'bulk of this function' in context of Emitter parameters?
-- What would be the minimal interface for an extracted Emitter struct?
+- What is the purpose of the `ParticleManager` struct in the `particles.zig` file?
+- How does the `ParticleSystem` handle particle collisions and movement updates?
+- What changes would be made to optimize emitter-related parameters into a separate struct?
+- How are textures loaded and managed within the `ParticleManager`?
+- What is the role of the `SSBO` in the particle system implementation?
+- How does the `ParticleSystem` handle lighting calculations for particles?
+- What steps are taken to ensure proper resource deinitialization in the particle system?
+- How does the `spawn` method work in the `ParticleSystem` struct?
+- What is the significance of the `UniformStruct` in the `ParticleSystem` implementation?
+- How does the `ParticleManager` generate texture arrays for particles?
 
 *Source: unknown | chunk_id: github_pr_1367_comment_2068718495*

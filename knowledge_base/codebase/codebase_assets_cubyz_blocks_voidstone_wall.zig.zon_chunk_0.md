@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_voidstone_wall.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, block properties, texture paths, item representation, model assignment
+**Keywords:** configuration, texturing, block properties, model reference, item texture
 **Concepts:** block configuration, texture mapping
 
 ## Summary
-Defines configuration for the Voidstone Wall block, including its model, textures, and item representation.
+Defines configuration for the Voidstone Wall block, including textures and model references.
 
 ## Explanation
-This chunk is a configuration file defining properties of the Voidstone Wall block in the Cubyz game engine. It specifies the rotation behavior using 'cubyz:fence', sets the model to 'cubyz:wall', and assigns textures for different sides ('cubyz:voidstone/wall' for all sides except top and bottom, which use 'cubyz:voidstone/wall_top'). The item representation is also configured with a texture pointing to 'wall/voidstone.png'. This configuration ensures that the Voidstone Wall block behaves and appears correctly within the game environment.
+This chunk contains a JSON-like configuration object defining properties of the Voidstone Wall block in the Cubyz game engine. It specifies the rotation behavior using 'cubyz:fence', the model as 'cubyz:wall', and various texture paths for different sides of the block, including top and bottom textures which are identical. Additionally, it includes an item configuration with a specific texture file 'wall/voidstone.png'. This configuration is used by the engine to render and handle the Voidstone Wall block within the game world.
 
 ## Related Questions
 - What is the rotation behavior of the Voidstone Wall block?
-- Which model is assigned to the Voidstone Wall block?
-- What texture is used for all sides of the Voidstone Wall block except top and bottom?
-- What texture is used for the top and bottom of the Voidstone Wall block?
-- What texture is specified for the item representation of the Voidstone Wall block?
-- How many different textures are defined for the Voidstone Wall block in this configuration?
+- Which model is used for rendering the Voidstone Wall block?
+- What are the texture paths specified for the Voidstone Wall block?
+- How is the top and bottom texture of the Voidstone Wall block defined?
+- What item texture is associated with the Voidstone Wall block?
+- Where is the configuration for the Voidstone Wall block stored in the codebase?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_voidstone_wall.zig.zon_chunk_0*

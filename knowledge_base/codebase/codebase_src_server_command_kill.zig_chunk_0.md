@@ -1,15 +1,15 @@
 # [easy/codebase_src_server_command_kill.zig] - Chunk 0
 
-**Type:** implementation
-**Keywords:** command parsing, user targeting, health modification, error handling, networking
+**Type:** api
+**Keywords:** command parsing, error handling, resource management, health manipulation, user interaction
 **Symbols:** description, usage, Args, ArgParser, execute
-**Concepts:** command handling, player management, damage application
+**Concepts:** command processing, player targeting, health modification
 
 ## Summary
-Handles the /kill command to kill a player
+Handles the server command to kill a player.
 
 ## Explanation
-This chunk defines the logic for the '/kill' command in the Cubyz server. It parses the command arguments, retrieves the target user, and then applies damage to them.
+This chunk defines the logic for executing the '/kill' command on the server. It includes parsing the command arguments, identifying the target player, and applying damage to that player's health. The `execute` function is responsible for handling the command execution, including error messages and resource management.
 
 ## Code Example
 ```zig
@@ -30,17 +30,11 @@ pub fn execute(args: []const u8, source: *User) void {
 ```
 
 ## Related Questions
-- What is the purpose of the 'Args' union in this chunk?
-- How does the 'ArgParser' work in relation to the '/kill' command?
-- What error handling mechanism is used if parsing fails?
-- Where is the target user retrieved from?
-- What function is called to apply damage to the target user?
-- What type of synchronization is used for health modification?
-- How is the target user's ID accessed in the damage application process?
-- What is the default damage value applied when a player is killed?
-- What is the reason code used for the health modification?
-- In what context is the 'sync' object used?
-- What type of error message is sent to the source if parsing fails?
-- How does the target user's health get modified?
+- What is the description of the '/kill' command?
+- How does the chunk parse the arguments for the '/kill' command?
+- What happens if the argument parsing fails in the '/kill' command?
+- How is the target player identified in the '/kill' command?
+- What action is taken to kill the target player?
+- How is error management handled in the execution of the '/kill' command?
 
 *Source: unknown | chunk_id: codebase_src_server_command_kill.zig_chunk_0*

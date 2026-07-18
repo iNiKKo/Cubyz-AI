@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_log_cirrus.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** texture mapping, block configuration, rendering engine, game assets, Cirrus log
-**Concepts:** block textures, Cirrus log
+**Keywords:** texture mapping, block assets, configuration data, Cirrus log, asset paths
+**Concepts:** block textures
 
 ## Summary
 Defines texture paths for the Cirrus log block.
 
 ## Explanation
-This chunk contains a configuration object with six fields, each representing a different texture used by the Cirrus log block. The textures are named according to their visual characteristics: dot, line, bend, intersection, cross, and top. These paths are likely used by the rendering engine to apply the correct texture to each face or part of the log block in the game world.
+This chunk contains a configuration object with six fields, each representing a different texture used by the Cirrus log block. The textures are named according to their visual characteristics: dot, line, bend, intersection, cross, and top. Each field maps to a specific texture file path within the Cubyz asset structure.
 
 ## Related Questions
-- What are the texture paths for the Cirrus log block?
-- How many textures are defined for the Cirrus log block?
-- What is the purpose of each texture in the Cirrus log block configuration?
-- Where are the texture files for the Cirrus log block located?
-- Can the texture paths be changed without affecting other blocks?
-- Is there a specific naming convention for these textures?
+- What are the texture paths defined for the Cirrus log block?
+- How many different textures does the Cirrus log block have?
+- What is the file path for the 'dot' texture of the Cirrus log block?
+- Which texture is used for the top part of the Cirrus log block?
+- List all the texture names associated with the Cirrus log block.
+- Is there a texture named 'intersection' for the Cirrus log block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_log_cirrus.zig.zon_chunk_0*

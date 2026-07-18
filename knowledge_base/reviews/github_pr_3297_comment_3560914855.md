@@ -1,22 +1,22 @@
-# [src/particles.zig] - Chunk 3560914855
+# [src/particles.zig] - PR #3297 review diff
 
 **Type:** review
-**Keywords:** lifeRatio, currentFrame, frameRate, particle lifecycle, architectural review, refactoring, loopTime, density, rot, dragCoeff
-**Symbols:** ParticleSystem, addParticle, lifeTime, density, rot, rotVel, dragCoeff, loopTime, particles, particleCount, pos, typ, lifeRatio
-**Concepts:** architectural review, particle system lifecycle management
+**Keywords:** lifeRatio, loopTime, frameCount, currentFrame, frameRate, particle lifecycle, animation tracking
+**Symbols:** ParticleSystem, addParticle, lifeTime, density, rot, rotVel, dragCoeff, loopTime, particles, particleCount, pos, typ, currentFrame, frameRate
+**Concepts:** Particle System, Lifecycle Management, Animation Tracking
 
 ## Summary
 Refactored particle system to introduce `currentFrame` and `frameRate` for better tracking of particle lifecycle.
 
 ## Explanation
-The reviewer suggests renaming `lifeRatio` to `currentFrame` and introducing a new field `frameRate` to more accurately represent the current frame in the particle's lifecycle. This change aims to improve clarity and precision in managing particle lifetimes, especially when considering looping effects. The reviewer also proposes calculating `frameRate` as `1/lifeTime*loopTime*frameCount`, which aligns with the architectural goal of maintaining a clear and efficient tracking mechanism for particle states.
+The change renames the `lifeRatio` field to `currentFrame`, which now represents the loop time multiplied by the frame count. Additionally, a new field `frameRate` is introduced, calculated as the reciprocal of lifeTime multiplied by loopTime and frameCount. This refactoring aims to improve the clarity and precision in tracking particle lifecycles, potentially enhancing performance and correctness in particle animations.
 
 ## Related Questions
 - What is the purpose of renaming `lifeRatio` to `currentFrame`?
-- How does the introduction of `frameRate` improve particle lifecycle management?
-- Why was it necessary to calculate `frameRate` as `1/lifeTime*loopTime*frameCount`?
-- What architectural considerations led to this refactoring?
-- Does this change affect the performance of the particle system?
-- How does this refactoring impact backwards compatibility with existing code?
+- How does the introduction of `frameRate` enhance particle system performance?
+- Can you explain the calculation for `loopTime` in the refactored code?
+- Why was it necessary to update the field names and calculations in the particle system?
+- What are the potential benefits of using `currentFrame` and `frameRate` in particle animations?
+- How does this change affect the overall architecture of the particle system?
 
 *Source: unknown | chunk_id: github_pr_3297_comment_3560914855*

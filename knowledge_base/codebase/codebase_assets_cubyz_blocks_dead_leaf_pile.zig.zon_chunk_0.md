@@ -1,28 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_dead_leaf_pile.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** block properties, texture files, model states, update function, LOD replacement
-**Symbols:** dead_leaf_pile
-**Concepts:** block configuration, texture mapping, model definition, update logic
+**Keywords:** block properties, tags, drops, textures, model
+**Concepts:** block configuration, dead leaf pile
 
 ## Summary
-Block configuration for dead leaf pile
+Defines properties for a dead leaf pile block in Cubyz, including tags, health, drops, selection capabilities, and textures.
 
 ## Explanation
-This chunk defines the properties and behavior of a block named 'dead_leaf_pile'. It includes details such as tags, health, drop items, selection capabilities, replaceability, degradation, collision settings, visibility through blocks, light absorption, model definition, rotation, update logic, texture mappings, item representation, and LOD replacement.
+This chunk defines the configuration for a specific block type in the Cubyz game engine. It specifies various attributes such as tags (cuttable, sliceable, leaf), block health, items that can be dropped when the block is cut, tool effectiveness, replaceability, degradability, collision properties, light absorption, model details, rotation behavior, update logic, and textures for different states of the block. The configuration also includes an item representation with its own texture.
 
 ## Related Questions
-- What are the tags associated with the dead_leaf_pile block?
-- How many drop items does the dead_leaf_pile block have, and what tools can be used to obtain them?
-- What selection capabilities does the dead_leaf_pile block have?
-- Is the dead_leaf_pile block replaceable?
-- Does the dead_leaf_pile block degrade over time?
-- Can the dead_leaf_pile block collide with other blocks?
-- Is the dead_leaf_pile block always view-through?
-- What is the light absorption value of the dead_leaf_pile block?
-- What model does the dead_leaf_pile block use, and how many states does it have?
-- How is the rotation of the dead_leaf_pile block defined?
-- What update logic is applied to the dead_leaf_pile block?
-- What are the texture files used for the dead_leaf_pile block?
+- What are the tags associated with the dead leaf pile block?
+- How much health does the dead leaf pile block have?
+- What items can be dropped from the dead leaf pile block?
+- Is the dead leaf pile block replaceable?
+- Does the dead leaf pile block degrade over time?
+- What model is used for the dead leaf pile block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_dead_leaf_pile.zig.zon_chunk_0*

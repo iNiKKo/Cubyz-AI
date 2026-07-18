@@ -1,15 +1,15 @@
 # [easy/codebase_src_tag.zig] - Chunk 0
 
 **Type:** api
-**Keywords:** enum, string hashmap, memory arena, error logging, configuration parsing
-**Symbols:** Tag, tagList, tagIds
-**Concepts:** tagging system, enum management, memory allocation, configuration loading
+**Keywords:** enum, hashmap, allocator, string manipulation, error handling
+**Symbols:** Tag, Tag.air, Tag.fluid, Tag.sbbChild, Tag.fluidPlaceable, Tag.chiselable, Tag.playerModel, tagList, tagIds
+**Concepts:** tag management, Zon file parsing, memory allocation
 
 ## Summary
-Defines a tagging system for Cubyz, managing tag enumeration, initialization, reset, retrieval, and loading from configuration files.
+Manages tags for Cubyz engine, including initialization, resetting, retrieval, and loading from Zon files.
 
 ## Explanation
-The chunk defines a `Tag` enum with various tags like 'air', 'fluid', etc. It includes methods to initialize (`initTags`), reset (`resetTags`), retrieve by name (`get`), find or create new tags (`find`), load from configuration files (`loadTagsFromZon`), and get the name of a tag (`getName`). The `tagList` variable holds an array of tag names, while `tagIds` maps tag names to their corresponding enum values. The `main.worldArena` is used for memory allocation, and errors are logged using `std.log.err`. The chunk also imports necessary modules like `std`, `main`, and uses types from them such as `List`, `StringHashMapUnmanaged`, `ZonElement`, and `heap.NeverFailingAllocator`.
+This chunk defines the `Tag` enum and associated functions to manage tags in the Cubyz engine. It includes methods for initializing (`initTags`), resetting (`resetTags`), retrieving by name (`get`), finding or creating new tags (`find`), loading from Zon files (`loadTagsFromZon`), and getting the name of a tag (`getName`). The `tagList` variable holds an array of tag names, while `tagIds` is a hashmap for quick lookup of tags by their string representation. The `main.worldArena` allocator is used for memory management, ensuring that all allocations are tracked within the engine's world arena.
 
 ## Code Example
 ```zig
@@ -21,11 +21,11 @@ pub fn initTags() void {
 ```
 
 ## Related Questions
-- How do you initialize the tags in Cubyz?
+- How do you initialize the tags in the Cubyz engine?
 - What is the purpose of the `resetTags` function?
-- How does the `find` method work in the Tag enum?
-- What happens if a tag is not found during loading from a Zon file?
-- How are tags stored and retrieved in this system?
-- What is the role of `main.worldArena` in memory management for tags?
+- How does the `find` function work if a tag is not found?
+- What type of allocator is used for memory management in this chunk?
+- How are tags loaded from Zon files?
+- What is the role of the `tagList` variable in this code?
 
 *Source: unknown | chunk_id: codebase_src_tag.zig_chunk_0*

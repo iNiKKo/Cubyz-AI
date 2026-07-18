@@ -1,22 +1,27 @@
 # [easy/codebase_assets_cubyz_items__migrations.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** migrations, renaming, legacy identifiers, string literals, comptime arrays
-**Symbols:** .old, .new
-**Concepts:** item name migrations, configuration data, static mappings
+**Keywords:** item mapping, name change, data update, migration list, old names, new names
+**Symbols:** migrations
+**Concepts:** data migration, item renaming
 
 ## Summary
-This chunk defines a static list of item name migrations, mapping legacy identifiers to new ones for the Cubyz items system.
+Data migration for item names
 
 ## Explanation
-The chunk contains only a single top-level array literal with multiple struct entries. Each entry is an anonymous struct containing two fields: .old and .new, both of type comptime []const u8 (implied by the string literals). The entire collection represents a configuration data set used to rename items during migration or version upgrades; no executable logic, functions, or algorithms are present.
+This chunk contains a list of old and new item names used in the Cubyz voxel engine. It maps each old item name to its corresponding new name, facilitating data migration from older versions to newer ones.
 
 ## Related Questions
-- What is the new name for the item with old identifier 'stone'?
-- How many items are listed in this migration table?
-- Which legacy identifiers map to names under the 'leaves/' namespace?
-- Are any of these migrations reversible by swapping .old and .new values?
-- What type is used for the string fields in each migration entry?
-- Does this chunk contain any executable logic or functions?
+- What is the purpose of this chunk in the Cubyz voxel engine?
+- How many item name mappings are listed in this chunk?
+- Which old item name maps to 'slate'?
+- What is the new name for 'stone_bricks'?
+- Can you list all the items that have been renamed from 'stone' to 'slate'?
+- How many different types of stone-related items are listed in this chunk?
+- Which old item names map to 'cobblestone'?
+- What is the new name for 'basalt_bricks'?
+- Can you find any mappings where the old and new names are the same?
+- How many items have been renamed from 'coal' to 'coal_ore'?
+- Which old item names map to 'marble'?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_items__migrations.zig.zon_chunk_0*

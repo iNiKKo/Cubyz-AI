@@ -1,26 +1,22 @@
 # [src/zon.zig] - PR #923 review diff
 
 **Type:** review
-**Keywords:** clone, ZonElement, NeverFailingAllocator, deep copy, array, object, join, overlapMode, iterator, contains
-**Symbols:** ZonElement, clone, NeverFailingAllocator, initArray, append, initObject, put, iterator, contains
-**Concepts:** Deep Copying, Memory Management, Data Structures, Configuration Merging
+**Keywords:** clone, join, ZonElement, allocator, deep copy, merge, overlap, replace
+**Symbols:** ZonElement, clone, join, NeverFailingAllocator
+**Concepts:** deep copy, object merging, overlap handling
 
 ## Summary
-Added `clone` method to `ZonElement` for deep copying elements, including handling of nested arrays and objects. Also started implementing a `join` method to merge objects with specified overlap modes.
+Added `clone` method to `ZonElement` for deep copying elements and a `join` method for merging objects with overlap handling.
 
 ## Explanation
-The reviewer added a `clone` method to the `ZonElement` union in the `zon.zig` file. This method is designed to perform a deep copy of `ZonElement` instances, handling various types such as integers, floats, strings, booleans, nulls, owned strings, arrays, and objects. The `clone` method uses an allocator to duplicate string data and recursively clone nested arrays and objects. Additionally, the reviewer began implementing a `join` method to merge two `ZonElement` objects, with options to either keep existing values or replace them in case of overlap. This functionality is intended to facilitate merging configurations or settings, such as defining default biome structures for subbiomes.
+The `clone` method is implemented to recursively copy all fields of a `ZonElement`, including nested arrays and objects, using an allocator. This ensures that the cloned element is a deep copy, preserving the structure and data integrity. The `join` method merges two `ZonElement` objects, with options to either keep existing entries or replace them in case of overlap. This functionality is particularly useful for combining configurations or settings where defaults need to be overridden selectively.
 
 ## Related Questions
-- How does the `clone` method handle memory allocation for nested arrays and objects?
-- What is the purpose of the `join` method in the context of merging `ZonElement` objects?
-- How does the `clone` method ensure that all types of `ZonElement` are correctly handled during duplication?
-- Can you explain the role of the `NeverFailingAllocator` in the `clone` method?
-- What is the intended use case for the `overlapMode` parameter in the `join` method?
-- How does the `clone` method manage memory for owned strings?
-- What are the potential performance implications of deep copying large nested structures using the `clone` method?
-- How does the `join` method handle cases where one object is null?
-- Can you provide an example of how to use the `clone` and `join` methods together?
-- What changes would be necessary to fully implement the merging of lists in the `join` method?
+- How does the `clone` method handle memory allocation failures?
+- What is the purpose of the `overlapMode` parameter in the `join` method?
+- Can you explain how the `join` method handles nested objects during merging?
+- What are the potential performance implications of deep copying large structures with the `clone` method?
+- How does the `clone` method ensure that all types of `ZonElement` are handled correctly?
+- What changes would be needed to extend the `join` method to support list merging as suggested in the review?
 
 *Source: unknown | chunk_id: github_pr_923_comment_1915446040*

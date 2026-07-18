@@ -1,26 +1,22 @@
-# [src/server/terrain/structure_building_blocks.zig] - Chunk 2106165295
+# [src/server/terrain/structure_building_blocks.zig] - PR #1500 review diff
 
 **Type:** review
-**Keywords:** StructureBuildingBlock, initInline, blueprintCache, MissingBlueprint, inline structures, child blocks, validation, error logging, addon creators, .zig.zon
-**Symbols:** StructureBuildingBlock, initInline, blueprintCache, error.MissingBlueprint
-**Concepts:** inline structures, child blocks validation, blueprint caching, error handling, addon creator guidance
+**Keywords:** initInline, inline structures, child blocks, blueprintCache, error.MissingBlueprint, addon creators, .zig.zon file
+**Symbols:** StructureBuildingBlock, initInline, blueprintCache, std.log.err
+**Concepts:** API design, Error handling, User guidance
 
 ## Summary
-The diff introduces an `initInline` constructor for `StructureBuildingBlock` that validates the blueprint cache and enforces a constraint preventing inline structures from containing child blocks, logging appropriate errors when these conditions are violated.
+Added an `initInline` function to the `StructureBuildingBlock` struct for initializing inline structures. The function checks if the blueprint has child blocks and logs an error if it does, suggesting that addon creators should create a `.zig.zon` file instead.
 
 ## Explanation
-The change adds defensive validation logic to ensure that structures marked as 'inline' do not attempt to use child blocks, which would likely cause undefined behavior or logical inconsistencies in the terrain generation system. The reviewer's concern highlights a UX issue: the current error message ('Inline structures cannot contain child blocks.') is cryptic and doesn't guide addon creators toward the correct solution (creating a `.zig.zon` file). Architecturally, this reinforces the separation between inline and non-inline structure types by enforcing it at initialization time. The use of `blueprintCache.get` ensures that missing blueprints are caught early with a clear error (`MissingBlueprint`). This refactor improves robustness against malformed addon definitions.
+The change introduces a new method `initInline` in the `StructureBuildingBlock` struct to handle the initialization of inline structures. The primary concern is ensuring that inline structures do not contain child blocks, as this could lead to unexpected behavior or errors. The reviewer points out that addon creators might be unclear about what an 'inline structure' means and suggests providing clearer guidance on how to properly define such structures by creating a `.zig.zon` file when child blocks are required. This change aims to improve the clarity of the API and prevent potential misuse.
 
 ## Related Questions
-- What is the purpose of the `initInline` function in `StructureBuildingBlock`?
-- How does the code handle a missing blueprint when calling `initInline`?
-- Why are inline structures prohibited from containing child blocks?
-- What error type is returned if a blueprint cannot be found for an inline structure?
-- Where is the `blueprintCache` defined and how is it accessed here?
-- How does this change affect addon creators who define inline structures?
-- Is there any logging performed when child blocks are detected in an inline structure?
-- What would happen if a user tries to load an inline structure with child blocks after this change?
-- Does the diff modify any existing initialization logic for `StructureBuildingBlock`?
-- How does this validation prevent potential runtime errors in terrain generation?
+- What is the purpose of the `initInline` function in the `StructureBuildingBlock` struct?
+- How does the `initInline` function handle missing blueprints?
+- Why is there a check for child blocks in the `initInline` function?
+- What error message is logged if an inline structure contains child blocks?
+- What alternative file should addon creators use to define structures with child blocks?
+- How does this change improve the clarity of the API?
 
 *Source: unknown | chunk_id: github_pr_1500_comment_2106165295*

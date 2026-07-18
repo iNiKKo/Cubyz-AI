@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_candy_cane_thin_small.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprint, children, configuration, candy cane, stem
+**Keywords:** blueprint, child asset, configuration, candy cane, ID
 **Concepts:** asset configuration
 
 ## Summary
-Defines blueprints and children for a candy cane asset.
+Defines blueprints and children for a thin candy cane asset.
 
 ## Explanation
-This chunk defines the configuration for a specific candy cane asset, detailing its blueprints and child components. The blueprints include different stem variations identified by unique IDs. The children section specifies a red component that is part of the candy cane's top.
+This chunk defines the configuration for a specific type of candy cane asset in Cubyz. It includes an array of blueprints, each with a unique ID, and specifies a child asset that represents the top part of the candy cane.
 
 ## Related Questions
-- What are the IDs of the blueprints for the candy cane stem?
-- Which component is specified as a child in the candy cane configuration?
-- How many different stem variations are defined for the candy cane?
-- What is the purpose of the 'children' field in this asset configuration?
-- Can you list all the unique IDs mentioned in the blueprints section?
-- Is there any mention of a specific color (other than red) in the children section?
+- What are the IDs of the blueprints defined for this candy cane asset?
+- Which child asset is associated with this candy cane configuration?
+- How many different stem variants are defined for this thin candy cane?
+- Is there a specific top part defined for this candy cane asset?
+- What is the structure of the configuration data for this candy cane?
+- Are there any other assets referenced in this configuration?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_candy_cane_thin_small.zig.zon_chunk_0*

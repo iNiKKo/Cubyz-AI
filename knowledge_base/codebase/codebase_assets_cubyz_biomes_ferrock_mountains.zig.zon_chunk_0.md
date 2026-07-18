@@ -1,22 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_ferrock_mountains.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, terrain, fog, cacti, boulders
-**Symbols:** properties, tags, music, minHeightLimit, minHeight, maxHeight, minRadius, maxRadius, fogDensity, fogColor, roughness, mountains, smoothBeaches, hills, validPlayerSpawn, rivers, stripes, stoneBlock, structures
-**Concepts:** biome configuration, terrain generation, visual effects, decorative features
+**Keywords:** biome, properties, terrain features, structures, music
+**Concepts:** biome generation
 
 ## Summary
-Describes the Ferrock Mountains biome properties, including terrain features and visual effects.
+Defines properties and characteristics of the Ferrock Mountains biome in Cubyz.
 
 ## Explanation
-This chunk defines a configuration for the Ferrock Mountains biome in the Cubyz game. It specifies various properties such as temperature, humidity, and terrain characteristics like mountains, beaches, hills, and rivers. The biome also includes visual elements like fog density and color, as well as decorative features like cacti and boulders.
+This chunk configures the Ferrock Mountains biome, specifying its properties like temperature, humidity, and terrain features. It includes settings for music, height limits, fog density, and color, as well as details about mountains, beaches, hills, and rivers. The configuration also lists specific blocks and structures that can be found within this biome, such as cacti and boulders.
 
 ## Related Questions
-- What are the properties of the Ferrock Mountains biome?
-- How is the terrain generated in the Ferrock Mountains biome?
-- What visual effects are associated with the Ferrock Mountains biome?
-- What decorative features are included in the Ferrock Mountains biome?
-- What is the music played in the Ferrock Mountains biome?
-- How does the fog density and color affect the Ferrock Mountains biome?
+- What is the music associated with the Ferrock Mountains biome?
+- What are the minimum and maximum height limits for the Ferrock Mountains biome?
+- Which blocks can be found in the stripes of the Ferrock Mountains biome?
+- What is the chance of finding a boulder in the Ferrock Mountains biome?
+- How many mountains are generated in the Ferrock Mountains biome?
+- Is it valid to spawn a player in the Ferrock Mountains biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_ferrock_mountains.zig.zon_chunk_0*

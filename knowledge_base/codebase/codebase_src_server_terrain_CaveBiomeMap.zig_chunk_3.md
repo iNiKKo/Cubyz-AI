@@ -1,15 +1,15 @@
 # [hard/codebase_src_server_terrain_CaveBiomeMap.zig] - Chunk 3
 
-**Type:** implementation
-**Keywords:** CaveBiomeMapView, _getBiome, getGridPointFromPrerotated, getGridPoint, getGridPointAndHeight, getRoughBiome, getRoughBiomeAndHeight, getSurfaceHeight, getCaveBiomeOffset
-**Symbols:** CaveBiomeMapView, _getBiome, getGridPointFromPrerotated, getGridPoint, getGridPointAndHeight, getRoughBiome, getRoughBiomeAndHeight, getSurfaceHeight, getCaveBiomeOffset
-**Concepts:** biome determination, cave environment, grid point calculation, fragment handling, seed generation
+**Type:** api
+**Keywords:** world coordinates, grid points, bitwise operations, seed generation, coordinate bounds checking
+**Symbols:** getCaveBiomeOffset, _getBiome, getGridPointFromPrerotated, getGridPoint, getGridPointAndHeight, getRoughBiome, getRoughBiomeAndHeight, getBiome, getBiomeAndSeed, getBiomeColumnAndSeed
+**Concepts:** cave biome mapping, terrain generation, biome retrieval
 
 ## Summary
-This chunk provides functions for retrieving biome information in a cave environment, including surface height and rough biome location.
+Handles cave biome mapping and retrieval for the server terrain.
 
 ## Explanation
-The chunk defines several methods within the `CaveBiomeMapView` struct to determine biomes based on world coordinates. It includes methods like `getSurfaceHeight`, `getCaveBiomeOffset`, `_getBiome`, `getGridPointFromPrerotated`, `getGridPoint`, and `getGridPointAndHeight`. These functions handle calculations for determining the correct fragment, grid point, and biome map index. The chunk also provides two versions of a method to get the rough biome: one without height estimation (`getRoughBiome`) and another with height estimation (`getRoughBiomeAndHeight`). Both methods can optionally return a unique seed based on the biome position.
+This chunk defines methods for retrieving cave biomes based on world coordinates. It includes functions to calculate grid points, get rough biomes, and determine exact biomes with optional seed generation. The code uses assertions for coordinate bounds checking and performs bitwise operations for efficient calculations. It also interacts with other components like `MapFragment` and `Biome`.
 
 ## Code Example
 ```zig
@@ -19,11 +19,13 @@ pub fn getBiome(self: CaveBiomeMapView, relX: i32, relY: i32, relZ: i32) *const 
 ```
 
 ## Related Questions
-- How does the `getGridPoint` function work in this chunk?
-- What is the purpose of the `_getBiome` method?
-- Can you explain how the seed generation works in the `getRoughBiomeAndHeight` method?
+- How does the code handle coordinate out of bounds?
+- What is the purpose of the `getSeed` parameter in the functions?
+- Can you explain the rotation matrix used in the code?
+- How does the code ensure unique seed generation for each biome position?
 - What are the differences between `getRoughBiome` and `getRoughBiomeAndHeight` methods?
-- How does the chunk handle surface biome checks before determining cave biomes?
-- What is the role of the `CaveBiomeMapView` struct in this implementation?
+- chunk_type_description: This chunk is part of the server terrain module, specifically dealing with cave biomes. It provides a set of functions to map and retrieve biomes based on world coordinates, including handling surface biomes and generating unique seeds for each biome position.
+- related_chunks: ["MapFragment", "Biome", "TerrainGeneration"]
+- chunk_dependencies: ["std.debug.assert", "vec.dot", "main.server.world.settings.seed"]
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_CaveBiomeMap.zig_chunk_3*

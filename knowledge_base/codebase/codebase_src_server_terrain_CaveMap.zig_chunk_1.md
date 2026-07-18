@@ -1,29 +1,29 @@
 # [medium/codebase_src_server_terrain_CaveMap.zig] - Chunk 1
 
 **Type:** implementation
-**Keywords:** 3D array, coordinate conversion, fragment population, terrain queries, resource management
+**Keywords:** terrain data, fragment initialization, memory allocation, voxel queries, cache size, associativity
 **Symbols:** CaveMapView, CaveMapView.pos, CaveMapView.lowerCorner, CaveMapView.widthShift, CaveMapView.heightShift, CaveMapView.fragments, CaveMapView.init, CaveMapView.deinit, CaveMapView.isSolid, CaveMapView.getHeightData, CaveMapView.findTerrainChangeAbove, CaveMapView.findTerrainChangeBelow
-**Concepts:** terrain management, voxel data access, fragmented terrain representation
+**Concepts:** terrain management, fragmented terrain representation, cache mechanism
 
 ## Summary
-The `CaveMapView` struct manages and provides access to cave terrain data, including initialization, deinitialization, and queries for solid status, height data, and terrain changes.
+The `CaveMapView` struct manages cave terrain data, initializing and deinitializing cave map fragments, checking if a voxel is solid, retrieving height data, and finding terrain changes above or below a given position.
 
 ## Explanation
-The `CaveMapView` struct is responsible for managing a view of the cave terrain. It initializes by calculating the necessary shifts and masks based on the chunk position and size, then populates its fragments with cave map data. The `init` function sets up the lower and higher corners, calculates the width and height shifts, and initializes the 3D array of fragments. Each fragment is populated by calling `getOrGenerateFragment`. The `deinit` function releases resources associated with the fragments. The struct provides methods to check if a voxel is solid (`isSolid`), get height data (`getHeightData`), find terrain changes above (`findTerrainChangeAbove`), and find terrain changes below (`findTerrainChangeBelow`). These methods convert relative coordinates to absolute world coordinates, determine the correct fragment, and query the fragment for the required information.
+The `CaveMapView` struct encapsulates the logic for managing cave terrain data. It initializes by calculating fragment positions based on chunk size and margin, allocating memory for fragments, and populating them with either existing or newly generated data. The `deinit` method releases allocated resources. Methods like `isSolid`, `getHeightData`, `findTerrainChangeAbove`, and `findTerrainChangeBelow` provide functionality to query the terrain state at specific relative positions. The code also includes a cache mechanism for managing fragment access efficiently, with constants defining cache size and associativity.
 
 ## Code Example
 ```zig
-fn lessThan(_: void, lhs: CaveGenerator, rhs: CaveGenerator) bool {
-				return lhs.priority < rhs.priority;
-			}
+pub fn deinit(self: CaveMapView, allocator: NeverFailingAllocator) void {
+	self.fragments.deinit(allocator);
+}
 ```
 
 ## Related Questions
-- What is the purpose of the `init` method in `CaveMapView`?
-- How does `CaveMapView` manage memory for its fragments?
-- What data structure is used to store cave map fragments?
-- How does `CaveMapView` determine if a voxel is solid?
-- What is the role of `widthShift` and `heightShift` in `CaveMapView`?
-- How does `CaveMapView` handle terrain changes above and below a given point?
+- How does the `CaveMapView` initialize its fragments?
+- What is the purpose of the `deinit` method in `CaveMapView`?
+- How does the `isSolid` method determine if a voxel is solid?
+- What data does the `getHeightData` method return?
+- How does the cache mechanism work in this code?
+- What is the role of the `memoryPool` variable?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_CaveMap.zig_chunk_1*

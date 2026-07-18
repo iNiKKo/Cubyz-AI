@@ -1,32 +1,32 @@
 # [hard/codebase_src_utils_list.zig] - Chunk 3
 
 **Type:** implementation
-**Keywords:** dynamic resizing, memory allocation, element manipulation, string printing, enum handling
-**Symbols:** List, List.append, List.swapRemove, List.orderedRemove, List.popOrNull, List.pop, List.replaceRange, List.print, MultiArray
-**Concepts:** dynamic array, multi-array management, string formatting
+**Keywords:** allocator, offsets, subarrays, capacity management, element replacement
+**Symbols:** MultiArray, MultiArray.initCapacity, MultiArray.deinit, MultiArray.clearAndFree, MultiArray.clearRetainingCapacity, MultiArray.ensureCapacity, MultiArray.addMany, MultiArray.replaceRange, MultiArray.getRange, MultiArray.getEverything
+**Concepts:** multi-array management, memory allocation, offset tracking, array manipulation
 
 ## Summary
-The chunk defines a generic list data structure with various operations like appending, removing, and printing elements. It also includes a MultiArray type for holding multiple arrays sequentially.
+The chunk defines a `MultiArray` type and provides methods for managing multiple arrays sequentially in memory.
 
 ## Explanation
-This chunk implements a generic list data structure with methods for appending, swapping, ordered removal, popping, replacing ranges, and printing elements. The `print` method uses an allocator to format strings into the list's buffer. Additionally, it defines a `MultiArray` type that holds multiple arrays sequentially in memory, allowing addressing and removing each subarray individually.
+The chunk includes a `MultiArray` struct that holds multiple arrays sequentially. It provides various methods to manage the arrays, such as initialization (`initCapacity`), deallocation (`deinit`), clearing (`clearAndFree`, `clearRetainingCapacity`), ensuring capacity (`ensureCapacity`), adding elements (`addMany`), replacing ranges (`replaceRange`), and accessing specific ranges or all elements (`getRange`, `getEverything`). The struct uses an allocator for memory management and maintains offsets to track the start of each subarray. The chunk also includes tests for the `List.print` method, which demonstrates how the list can be used as a print destination.
 
 ## Code Example
 ```zig
-pub fn popOrNull(self: *@This()) ?T {
-    if (self.items.len == 0) return null;
-    const val = self.items[self.items.len - 1];
-    self.items.len -= 1;
-    return val;
+pub fn initCapacity(allocator: NeverFailingAllocator, capacity: usize) @This() {
+	return .{
+		.items = allocator.alloc(T, capacity)[0..0],
+		.capacity = capacity,
+	};
 }
 ```
 
 ## Related Questions
-- How does the List.append method work?
-- What is the purpose of the swapRemove method in the List type?
-- Can you explain how the replaceRange method handles different lengths of new_items compared to the existing range?
-- What happens if the buffer address changes after calling List.print?
-- How does MultiArray ensure that each subarray can be addressed individually?
-- What assertion checks are performed on the Range enum in MultiArray?
+- How does `MultiArray` initialize its memory?
+- What is the purpose of the `offsets` field in `MultiArray`?
+- How does `MultiArray` ensure it has enough capacity for new elements?
+- Can you explain how `replaceRange` works in `MultiArray`?
+- What methods are available to clear a `MultiArray` instance?
+- How does `MultiArray` handle memory deallocation?
 
 *Source: unknown | chunk_id: codebase_src_utils_list.zig_chunk_3*

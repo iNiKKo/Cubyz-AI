@@ -1,26 +1,25 @@
 # [easy/codebase_assets_cubyz_biomes_prairie__defaults.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** dry biome, height limits, smooth beaches, ground layers, structure chance, player spawn, oak tags, roughness value, vegetation density, block types
-**Symbols:** dry, oak
-**Concepts:** biome configuration, terrain generation rules, procedural structure placement, ground layer composition, vegetation density settings
+**Keywords:** biome properties, terrain structures, configuration file, Prairie biome, Cubyz game engine
+**Concepts:** biome configuration, terrain generation
 
 ## Summary
-Defines the default biome configuration for a dry prairie environment, specifying terrain height limits, ground layer composition, and procedural structure generation rules.
+Defines default properties and structures for the Prairie biome in Cubyz.
 
 ## Explanation
-This chunk is a static data definition file (`.zon`) containing only configuration values with no executable logic. It declares a single top-level object exposing properties such as `dry`, tags like `oak`, numeric bounds for terrain height (`minHeightLimit = 7`, `maxHeightLimit = 60`), boolean flags (`smoothBeaches = true`, `validPlayerSpawn = true`), and a roughness value. The ground structure is defined via an array of string entries specifying layer types and thickness ranges (e.g., `
+This chunk is a configuration file that specifies various properties and structures for the Prairie biome in the Cubyz game engine. It includes settings such as minHeightLimit, maxHeightLimit, smoothBeaches, roughness, hills, music, validPlayerSpawn, ground_structure, and structures. The structures array contains multiple entries, each defining different types of terrain features like ground patches, trees, boulders, and flower patches with specific probabilities and sizes.
 
 ## Related Questions
-- What is the minimum height limit for this biome?
-- Which tags are associated with this biome configuration?
-- Is player spawning enabled in this biome?
-- What ground layers are defined and what are their thickness ranges?
-- How does the smooth beaches setting affect terrain generation?
-- What is the roughness value used for this biome?
-- Which structures are procedurally generated and with what probabilities?
-- Are there any flower patches defined in this configuration?
-- What block types are used for ground layer 1 through 4?
-- Is the dry property set to true or false?
+- What is the minimum height limit for the Prairie biome?
+- Which music track is associated with the Prairie biome?
+- How many different types of structures are defined in the Prairie biome configuration?
+- What is the chance of generating a ground patch with 'cubyz:dirt' blocks?
+- Which block type is used for young oak trees in the Prairie biome?
+- What is the maximum size variance for limestone boulders in the Prairie biome?
+- How many different flower types are defined to spawn in the Prairie biome?
+- What is the priority level for generating 'cubyz:grass/vegetation/dry' patches in the Prairie biome?
+- Is player spawning valid in the Prairie biome?
+- What is the roughness setting for the Prairie biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_prairie__defaults.zig.zon_chunk_0*

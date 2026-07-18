@@ -1,28 +1,29 @@
 # [medium/codebase_src_server_terrain_sbb.zig] - Chunk 1
 
-**Type:** api
-**Keywords:** enum, union, FixedRotation, RotationMode, fromZon, sampleRandom, Neighbor, BlueprintIndex
-**Symbols:** 0, 90, 180, 270
-**Concepts:** rotation system, blueprint parsing, ZON file handling
+**Type:** implementation
+**Keywords:** enum, union, switch, rotation logic, fixed rotation, random rotation, inherit rotation
+**Symbols:** isChildBlock, isOriginBlock, RotationMode, Rotation, Rotation.FixedRotation, Rotation.apply, Rotation.getInitialRotation, Rotation.sampleRandom, Rotation.getChildRotation, Rotation.fromZon
+**Concepts:** block rotation, child block check, origin block check
 
 ## Summary
-This chunk defines the Rotation system (RotationMode enum, FixedRotation union with string/int/float parsing) and StructureBuildingBlock struct for blueprint initialization from ZON files.
+Defines block rotation logic and checks for child and origin blocks.
 
 ## Explanation
-The chunk declares pub const RotationMode as an enum with fixed/random/inherit variants. It then defines a union named Rotation that holds either a FixedRotation (enum u2 with @
+This chunk defines functions to check if a block is a child or origin block. It also defines an enum `RotationMode` and a union `Rotation` with associated methods for applying, getting initial, sampling random, and getting child rotations. The `Rotation` union includes a nested enum `FixedRotation` representing fixed rotation angles. Methods like `apply`, `getInitialRotation`, `getChildRotation`, and `fromZon` handle different aspects of block rotation logic based on the mode (fixed, random, inherit). The `fromZon` method parses rotations from Zon elements.
+
+## Code Example
+```zig
+pub fn isChildBlock(block: Block) bool {
+	return childBlockNumericIdMap.contains(block.typ);
+}
+```
 
 ## Related Questions
-- What are the valid values of RotationMode?
-- How does FixedRotation represent rotation angles?
-- Which function parses a ZON element into a Rotation value?
-- What happens when fromZon receives an int or float input?
-- How is random rotation sampled using sampleRandom?
-- What error is returned if a blueprint entry lacks an id field?
-- Does StructureBuildingBlock store children as pointers?
-- Where are blueprints stored inside StructureBuildingBlock?
-- Is the Rotation union tagged or untagged?
-- Can fromZon handle null ZON elements?
-- How does fromZon convert a string to FixedRotation?
-- What error is returned if the blueprints field in a ZON element is not an array?
+- How do you check if a block is a child block?
+- What are the different rotation modes defined in this chunk?
+- How does the `apply` method work for rotations?
+- What is the purpose of the `sampleRandom` function?
+- How is a rotation parsed from a Zon element?
+- What fixed rotation angles are supported?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_sbb.zig_chunk_1*

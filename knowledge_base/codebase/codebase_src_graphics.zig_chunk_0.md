@@ -1,22 +1,22 @@
 # [hard/codebase_src_graphics.zig] - Chunk 0
 
 **Type:** api
-**Keywords:** Vec4f, bitCast, glGetIntegerv, VK_FORMAT_R32G32_SFLOAT, lossyCast, attributeDescriptions, VkRect2D
-**Symbols:** draw, Mat4f, Vec4i, Vec4f, Vec2f, Vec2i, Vec3f, ComputePipeline, Pipeline, Window, NeverFailingAllocator, SimpleVertex2D, vulkan
-**Concepts:** draw API surface, color state management, translation scaling, clip rect bounds adjustment, viewport scissor conversion
+**Keywords:** vector types, window handling, allocator utilities, C bindings, graphics pipelines, Vulkan
+**Symbols:** Mat4f, Vec4i, Vec4f, Vec2f, Vec2i, Vec3f, Window, NeverFailingAllocator, ComputePipeline, Pipeline, vulkan
+**Concepts:** OpenGL utilities, vector math, window management, Vulkan integration
 
 ## Summary
-This chunk defines a public draw API surface (color/translation/scale/clip state and their setters/restorers) plus a minimal SimpleVertex2D struct for 2D rendering, along with internal uniforms and pipeline variables.
+This chunk imports necessary modules and types for graphics handling, including OpenGL utilities, vector math, window management, and Vulkan integration.
 
 ## Explanation
-The chunk imports std and builtin, then re-exports types from vec.zig (Mat4f, Vec4i, Vec4f, Vec2f, Vec2i, Vec3f) as public constants. It pulls main.Window and NeverFailingAllocator from the main module, and imports c for OpenGL bindings. From graphics/pipelines.zig it publicly re-exports ComputePipeline and Pipeline. The draw struct holds mutable state: color (Vec4f), clip (?Vec4i), translation (Vec2f), scale (f32). It provides setColor(newColorRgba) which bit-casts a u32 RGBA into Color, multiplies each channel by the normalized integer value divided by 255.0, returns the old color; restoreColor(oldColor) simply assigns back to color. getColor() rounds each component of color scaled up by 255.0 and returns a Color struct with r,g,b,a fields. setTranslation(newTranslation) adds newTranslation scaled by current scale to translation, returning the previous translation; restoreTranslation(previousTranslation) restores translation directly. setScale(newScale) asserts non-negative, multiplies scale by newScale, returns old scale; restoreScale(previousScale) assigns back. setClip(clipRect) asserts clipRect is non-negative, reads the OpenGL viewport via c.glGetIntegerv(c.GL_VIEWPORT), computes a new Vec4i from translation and scaled clipRect, then adjusts the new clip to stay within any existing clip bounds (swaps/shifts when newClip[0] < oldClip[0], etc.), clamps width/height to non-negative, stores in clip, returns old clip. getScissor() converts clip or null into a c.VkRect2D with offset.x/y from clipRect[0]/[1] and extent.width/height as lossy casts of clipRect[2]/[3]. restoreClip(previousClip) assigns back to clip. SimpleVertex2D is defined inside draw with pos: [2]f32; its attributeDescriptions static array contains a single VkVertexInputAttributeDescription at location 0, format VK_FORMAT_R32G32_SFLOAT, offset computed via @offsetOf(@This(), 
+The chunk begins by importing standard library (`std`) and built-in Zig features. It then imports various vector types from `vec.zig` such as matrices (`Mat4f`), integer vectors (`Vec4i`, `Vec2i`), and floating-point vectors (`Vec4f`, `Vec2f`, `Vec3f`). The `main` module is imported for window management (`Window`) and allocator utilities (`NeverFailingAllocator`). External C bindings are also imported. Additionally, it imports graphics pipelines from `graphics/pipelines.zig` and re-exports `ComputePipeline` and `Pipeline`. Finally, it imports Vulkan-specific graphics handling from `graphics/vulkan.zig`.
 
 ## Related Questions
-- What does setColor do with the RGBA input?
-- How is translation combined with scale in setTranslation?
-- Why does setClip read GL_VIEWPORT before computing newClip?
-- What happens to clip bounds when they overlap existing clip?
-- How does getScissor map Vec4i to VkRect2D fields?
-- Where are the vertex attribute descriptions defined for SimpleVertex2D?
+- What vector types are imported from vec.zig?
+- Which modules are imported for window management and allocation?
+- How is Vulkan integration handled in this chunk?
+- What external C bindings are used?
+- Which graphics pipelines are re-exported?
+- What standard library features are utilized?
 
 *Source: unknown | chunk_id: codebase_src_graphics.zig_chunk_0*

@@ -1,26 +1,46 @@
 # [medium/codebase_src_entityModel.zig] - Chunk 2
 
 **Type:** implementation
-**Keywords:** GLTF, hierarchy depth, primitive type filtering, coordinate system conversion, vertex attributes, VAO binding, entity model registration, default fallback, StringHashMapUnmanaged, List
-**Symbols:** EntityModel, EntityModelIndex, playerEntityModels, reverseIndices, entityModels, getHierarchyDepth, bind
-**Concepts:** GLTF asset loading, hierarchy depth calculation, primitive type filtering, coordinate system conversion, vertex attribute extraction, VAO binding, entity model registration, default fallback handling
+**Keywords:** memory allocation, GLTF file handling, node processing, coordinate transformation, vertex extraction
+**Symbols:** cloneMetaData, loadModelAndTexture
+**Concepts:** entity ECS, model loading, GLTF parsing
 
 ## Summary
-This chunk defines the EntityModel struct and its associated entity management API, including initialization from GLTF assets, hierarchy depth calculation, primitive processing with coordinate system conversion, vertex attribute extraction (position/normal/texcoord), VAO binding, model registration via an index map, default fallback handling, and bulk reset logic.
+Handles cloning and loading of entity models, including texture and GLTF file parsing.
 
 ## Explanation
-The chunk declares EntityModel as a struct containing fields for node pivots, parents, VAO, index count, node count, coordinate system, vertices, indices, default texture, and metadata. It implements init() which processes GLTF nodes: it maps parent relationships via nodeIndexMap (returning error.EntityModelPrimitiveHasNoParent if missing), computes final transformation matrices by applying translation, rotationQuat, and scale conversions through self.coordinateSystem.convertVec/convertQuat/convertScale, filters primitives to only c.cgltf_primitive_type_triangles (warning on others), reads indicesAccessor and attributes (position, normal, texcoord) via cgltf_accessor.read_float into local buffers, then constructs Vertex entries with converted positions, normals, UVs (flipped Y), and nodeId set to the parent index. After processing all nodes it initializes self.vao from vertices/indices arrays and sets counts. getHierarchyDepth recursively walks node.parent until null, incrementing depth each step. bind() calls vao.bind() and defaultTexture.bindTo(0). EntityModelIndex is a struct holding an index with a getter that asserts bounds before returning &entityModels.items[self.index]. Global vars playerEntityModels (List of EntityModelIndex), reverseIndices (StringHashMapUnmanaged mapping entityModelId to EntityModelIndex), and entityModels (List of EntityModel) are declared. register() creates an EntityModelIndex, appends a new EntityModel.init(...) to entityModels using main.worldArena, then inserts the index into reverseIndices (panic on OOM). reset() iterates all models calling model.deinit(), clears lists, and resets playerEntityModels. getById() looks up id in reverseIndices returning ?EntityModelIndex or null. default() checks for 
+This chunk contains two main functions: `cloneMetaData` and `loadModelAndTexture`. The `cloneMetaData` function duplicates the metadata of an `EntityModel`, allocating new memory for arrays like nodes, parents, pivots, and strings using `main.worldArena.dupe`. It also clones a map (`nodeIndexMap`) that tracks node names to indices. The `loadModelAndTexture` function loads a model from a GLTF file, including its textures and geometry. It uses the CGLTF library to parse the file, load buffers, and validate the data. It then processes each node, calculating transformation matrices and mapping them into the engine's coordinate system. Finally, it extracts vertex and index data for rendering.
+
+## Code Example
+```zig
+fn cloneMetaData(self: *EntityModel) EntityModel {
+	const newNodes = main.worldArena.dupe(Node, self.nodes);
+	const newNodeParents = main.worldArena.dupe(?u16, self.nodeParents);
+	const newNodePivots = main.worldArena.dupe(Mat4f, self.nodePivots);
+	return .{
+		.height = self.height,
+		.texturePath = main.worldArena.dupe(u8, self.texturePath),
+		.modelId = if (self.modelId) |modelId| main.worldArena.dupe(u8, modelId) else null,
+		.entityModelId = main.worldArena.dupe(u8, self.entityModelId),
+		.vao = null,
+		.indexCount = 0,
+		.defaultTexture = null,
+		.coordinateSystem = self.coordinateSystem,
+		.nodeIndexMap = self.nodeIndexMap.clone() catch unreachable,
+		.nodes = newNodes,
+		.nodeParents = newNodeParents,
+		.nodePivots = newNodePivots,
+		.nodeCount = self.nodeCount,
+	};
+}
+```
 
 ## Related Questions
-- What error is returned when a primitive lacks a parent node in EntityModel.init?
-- How does getHierarchyDepth compute the depth of a GLTF node hierarchy?
-- Which primitive type is accepted by default and what happens to others during init?
-- Describe how coordinate system conversion is applied to position, rotation, and scale attributes.
-- What fields are populated in each Vertex entry after processing a triangle primitive?
-- How does the bind method prepare EntityModel for rendering?
-- Explain the purpose of reverseIndices and how it relates to entityModels.
-- What happens inside reset() when clearing all registered models?
-- How does getById handle missing identifiers versus the special default fallback?
-- Is there any concurrency protection around entityModels or reverseIndices in this chunk?
+- How does the `cloneMetaData` function handle memory allocation for duplicated arrays?
+- What steps are involved in loading a model and texture using the `loadModelAndTexture` function?
+- How is the GLTF file parsed and validated within this chunk?
+- What transformation is applied to each node's position, rotation, and scale?
+- How are vertices and indices extracted from the GLTF data for rendering?
+- What error handling is implemented when loading a GLTF model?
 
 *Source: unknown | chunk_id: codebase_src_entityModel.zig_chunk_2*

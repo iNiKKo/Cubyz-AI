@@ -1,28 +1,27 @@
 # [easy/codebase_assets_cubyz_blocks_lily_pad.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** block config, lily pad, health, drops, degradable, visibility, light absorption, model, texture, item, LOD replacement
-**Symbols:** LilyPadBlockConfig
-**Concepts:** block, degradation, visibility, light absorption, model, texture, item, LOD replacement
+**Keywords:** block properties, configuration data, tags, drops, degradability, visual attributes
+**Concepts:** block configuration, lily pad block
 
 ## Summary
-Lily Pad Block Configuration
+Defines properties for the lily pad block in Cubyz, including tags, health, drops, degradability, and visual attributes.
 
 ## Explanation
-This chunk defines the configuration for a Lily Pad block in Cubyz, including its tags, health, drops, degradation properties, visibility through blocks, absorbed light level, model, rotation, texture, item appearance, and LOD replacement.
+This chunk defines a configuration object for the lily pad block in the Cubyz game engine. It specifies various properties such as tags (cuttable and sliceable), block health, drop behavior when broken, degradability, always view-through property, absorbed light value, model type, rotation type, texture, item texture, and LOD replacement. These properties determine how the lily pad interacts with other blocks, its visual appearance, and its behavior in the game world.
 
 ## Related Questions
-- What are the tags associated with the Lily Pad block?
-- How is the health of the Lily Pad block defined?
-- What items can be dropped when the Lily Pad block is broken?
-- Is the Lily Pad block always viewable through blocks?
-- What light absorption level does the Lily Pad block have?
-- Which model is used for rendering the Lily Pad block?
-- How is the rotation of the Lily Pad block defined?
-- What texture is assigned to the Lily Pad block?
-- What item appears when the Lily Pad block is picked up?
-- What is the LOD replacement block for the Lily Pad block?
-- Are there any tags associated with the drops of the Lily Pad block?
-- Which tool tags are allowed to break the Lily Pad block?
+- What are the tags associated with the lily pad block?
+- How much health does the lily pad block have?
+- What items can be dropped when the lily pad block is broken?
+- Is the lily pad block degradable?
+- Does the lily pad block always allow view-through?
+- What is the absorbed light value of the lily pad block?
+- What model type does the lily pad block use?
+- What rotation type does the lily pad block have?
+- What texture is used for the lily pad block?
+- What texture is used for the item representation of the lily pad block?
+- What block replaces the lily pad block in lower detail levels (LOD)?
+- Does the lily pad block have any special fluid placement properties?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_lily_pad.zig.zon_chunk_0*

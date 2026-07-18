@@ -1,33 +1,42 @@
 # [hard/codebase_src_sync.zig] - Chunk 10
 
 **Type:** api
-**Keywords:** inventory operations, serialization, deserialization, item movement, player bag
-**Symbols:** DepositOrDrop, DepositOrDrop.destinations, DepositOrDrop.source, DepositOrDrop.dropLocation, DepositOrDrop.init, DepositOrDrop.initWithInventories, DepositOrDrop.finalize, DepositOrDrop.run, DepositOrDrop.serialize, DepositOrDrop.deserialize, DepositToAny, DepositToAny.destinations, DepositToAny.source, DepositToAny.amount, DepositToAny.init, DepositToAny.finalize, DepositToAny.run, DepositToAny.serialize, DepositToAny.deserialize, MoveToPlayerBag, MoveToPlayerBag.source, MoveToPlayerBag.amount, MoveToPlayerBag.run, MoveToPlayerBag.serialize, MoveToPlayerBag.deserialize, TakeFromPlayerBag, TakeFromPlayerBag.destinations, TakeFromPlayerBag.amount, TakeFromPlayerBag.init, TakeFromPlayerBag.finalize, TakeFromPlayerBag.run
-**Concepts:** inventory management, item transfer, player inventory
+**Keywords:** inventory operations, serialization, deserialization, memory allocation, error handling
+**Symbols:** FillAnyFromCreative, DepositOrDrop, DepositToAny, MoveToPlayerBag, TakeFromPlayerBag
+**Concepts:** inventory management, item transfer, world interaction, player inventory
 
 ## Summary
-This chunk defines several inventory-related operations including depositing items, moving items to a player's bag, and taking items from a player's bag.
+Defines inventory-related actions such as depositing items, dropping them, and moving between inventories.
 
 ## Explanation
-The chunk contains four main structs: DepositOrDrop, DepositToAny, MoveToPlayerBag, and TakeFromPlayerBag. Each struct represents a different operation related to inventory management. The DepositOrDrop struct handles depositing items into multiple destinations or dropping them if no destination is available. The DepositToAny struct allows depositing a specified amount of an item into any available destination. The MoveToPlayerBag struct moves a specified amount of an item from its current location to the player's bag. The TakeFromPlayerBag struct takes a specified amount of an item from the player's bag and places it into one or more destinations. Each struct has methods for initialization, finalization, running the operation, serialization, and deserialization.
+This chunk defines several structs representing different inventory operations: FillAnyFromCreative, DepositOrDrop, DepositToAny, MoveToPlayerBag, and TakeFromPlayerBag. Each struct includes methods for initialization, finalization, running the operation, serialization, and deserialization. The operations involve moving items between inventories, dropping items in the world, and handling player bags. Memory allocation and deallocation are managed using allocators like main.globalAllocator and main.stackAllocator. Error handling is implemented using Zig's error types, with specific errors like serverFailure and InventoryNotFound being returned where applicable.
 
 ## Code Example
 ```zig
-pub fn init(destinations: []const Inventory.ClientInventory, source: Inventory, dropLocation: Vec3d) DepositOrDrop {
+fn deserialize(reader: *BinaryReader, side: Side, user: ?*main.server.User) !FillAnyFromCreative {
+	const destinations = try Inventory.Inventories.fromBytes(main.globalAllocator, reader, side, user);
+	errdefer destinations.deinit(main.globalAllocator);
+	const amount = try reader.readInt(u16);
+	var item: Item = .null;
+	if (reader.remaining.len != 0) {
+		const zon = ZonElement.parseFromString(main.stackAllocator, null, reader.remaining);
+		defer zon.deinit(main.stackAllocator);
+		item = try Item.init(zon);
+	}
 	return .{
-		.destinations = .initFromClientInventories(main.globalAllocator, destinations),
-		.source = source,
-		.dropLocation = dropLocation,
+		.destinations = destinations,
+		.item = item,
+		.amount = amount,
 	};
 }
 ```
 
 ## Related Questions
-- How does the DepositOrDrop struct initialize its destinations?
-- What is the purpose of the finalize method in the DepositToAny struct?
-- How does the MoveToPlayerBag struct determine which bag to move items to?
-- What error handling is implemented in the TakeFromPlayerBag struct's run method?
-- Can you explain the serialization process for the DepositOrDrop struct?
-- How does the deserialize method handle errors when reading from a BinaryReader?
+- What are the different inventory operations defined in this chunk?
+- How does the FillAnyFromCreative struct handle deserialization?
+- What is the purpose of the DepositOrDrop struct's run method?
+- How does the MoveToPlayerBag struct serialize its data?
+- What error handling mechanisms are implemented in these inventory operations?
+- How do these structs manage memory allocation and deallocation?
 
 *Source: unknown | chunk_id: codebase_src_sync.zig_chunk_10*

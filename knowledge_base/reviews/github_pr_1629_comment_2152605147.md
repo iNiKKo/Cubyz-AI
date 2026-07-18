@@ -1,22 +1,22 @@
 # [src/graphics.zig] - PR #1629 review diff
 
 **Type:** review
-**Keywords:** TextRendering, FT_Set_Pixel_Sizes, freetypeFace, units_per_EM, textureHeight, fontUnitPerPixel, dereference, suggestion
+**Keywords:** TextRendering, freetypeFace, units_per_EM, textureHeight, fontUnitPerPixel, dereference, suggestion, improvement
 **Symbols:** TextRendering, ftError, hbft.FT_Set_Pixel_Sizes, freetypeFace, harfbuzzFace, hbft.hb_ft_face_create_referenced, harfbuzzFont, hbft.hb_font_create, fontUnitPerPixel
-**Concepts:** memory safety, code readability
+**Concepts:** pointer dereference, code readability, maintenance
 
 ## Summary
-A reviewer suggests removing the explicit dereference of `freetypeFace` in the calculation of `fontUnitPerPixel`. The reviewer believes it is unnecessary.
+The change adds a calculation for `fontUnitPerPixel` by dividing the units per EM of the FreeType face by the texture height. The reviewer suggests removing the dereference operator.
 
 ## Explanation
-The change involves modifying the line where `fontUnitPerPixel` is calculated. The original code explicitly dereferences `freetypeFace` using `.*`, which is not necessary according to the reviewer. The reviewer's suggestion simplifies the expression by directly accessing the field without the dereference, potentially improving readability and reducing potential errors.
+The addition of `fontUnitPerPixel` aims to compute a scaling factor between font units and pixels, which is crucial for accurate text rendering. However, the reviewer points out that the dereference operation on `freetypeFace` is unnecessary since `freetypeFace` is already a pointer type. This simplification could improve code readability and maintainability without altering functionality.
 
 ## Related Questions
-- What is the purpose of `ftError` in this code snippet?
-- How does `hbft.FT_Set_Pixel_Sizes` function relate to font rendering?
-- Why was the explicit dereference removed from `freetypeFace`?
-- Can you explain the role of `units_per_EM` in font metrics?
-- What is the impact of removing the dereference on performance?
-- How does this change affect memory safety in the code?
+- Why is the dereference operator unnecessary in this context?
+- What potential issues could arise from not dereferencing `freetypeFace`?
+- How does removing the dereference affect performance?
+- Is there any risk of introducing a bug by simplifying this line?
+- Can you explain the purpose of `fontUnitPerPixel` in text rendering?
+- How might this change impact backwards compatibility with existing code?
 
 *Source: unknown | chunk_id: github_pr_1629_comment_2152605147*

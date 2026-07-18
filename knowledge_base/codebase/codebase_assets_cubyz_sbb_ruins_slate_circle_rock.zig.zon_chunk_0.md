@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_ruins_slate_circle_rock.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprints, configuration, asset IDs, ruins, slate circle rocks
+**Keywords:** blueprints, asset IDs, configuration, slate rocks, ruins
 **Concepts:** asset management, blueprint definition
 
 ## Summary
 Defines blueprints for slate circle rocks in the ruins asset pack.
 
 ## Explanation
-This chunk contains a configuration structure defining two blueprints for slate circle rocks. Each blueprint is identified by a unique string ID within the Cubyz engine's namespace. The IDs are 'cubyz:ruins/slate/circle/rock/0' and 'cubyz:ruins/slate/circle/rock/1'. These identifiers are used to reference these specific rock types in the game world, allowing for detailed customization and asset management.
+This chunk contains a configuration structure defining two blueprints for slate circle rocks. Each blueprint is identified by a unique string ID within the Cubyz engine's asset system. The IDs specify the location and variant of the rock assets, allowing the game to load and render the appropriate models and textures.
 
 ## Related Questions
 - What are the IDs of the slate circle rock blueprints defined in this chunk?
-- How many different slate circle rock blueprints are specified in this configuration?
-- Where are these blueprint definitions used within the Cubyz engine?
-- Can you list all the asset IDs defined for slate circle rocks in this chunk?
-- What is the purpose of defining multiple blueprints for the same type of rock?
-- How might these blueprints be referenced or utilized in the game world?
+- How many different variants of slate circle rocks are specified in the configuration?
+- Where is this configuration file located within the Cubyz codebase?
+- What does the '.blueprints' field contain in this configuration structure?
+- Are there any other asset-related configurations similar to this one in the Cubyz codebase?
+- How might these blueprints be used by the game engine during runtime?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_ruins_slate_circle_rock.zig.zon_chunk_0*

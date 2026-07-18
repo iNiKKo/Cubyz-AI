@@ -1,30 +1,29 @@
 # [hard/codebase_src_server_world.zig] - Chunk 9
 
 **Type:** implementation
-**Keywords:** chunk updates, item drops, server world state, block retrieval, biome lookup, entity processing
-**Symbols:** savePlayer, saveItemdrops, isValidSpawnLocation, dropWithCooldown, drop, tick, update, queueChunkAndDecreaseRefCount, queueLightMapAndDecreaseRefCount, getSimulationChunkAndIncreaseRefCount, getOrGenerateChunkAndIncreaseRefCount, getChunkFromCacheAndIncreaseRefCount, getBiome, getBlock, getBlockAndBlockEntityData
-**Concepts:** chunk management, item drop system, world update loop, player data persistence, entity handling
+**Keywords:** reference counting, mutex locking, chunk storage, block update, entity data
+**Symbols:** ServerWorld, ServerWorld.tick, ServerWorld.itemDropManager.update, ServerWorld.chunkUpdateQueue.popFront, ServerWorld.regionUpdateQueue.popFront, ServerWorld.queueChunkAndDecreaseRefCount, ServerWorld.queueLightMapAndDecreaseRefCount, ServerWorld.getSimulationChunkAndIncreaseRefCount, ServerWorld.getOrGenerateChunkAndIncreaseRefCount, ServerWorld.getChunkFromCacheAndIncreaseRefCount, ServerWorld.getBiome, ServerWorld.getBlock, ServerWorld.getBlockAndBlockEntityData, ServerWorld.cmpxchgBlock
+**Concepts:** world management, chunk handling, block interactions, user list updates, item entity management
 
 ## Summary
-Handles server-side world updates, chunk management, and item drop logic.
+Handles server-side world updates, chunk management, and block interactions.
 
 ## Explanation
-This chunk contains functions for saving player data, managing item drops, validating spawn locations, dropping items with or without cooldowns, updating the world state, queuing chunks and light maps, retrieving simulation and server chunks, getting biome information, and fetching block data. It also includes logic for handling entity updates and storing chunks and regions.
+This chunk manages the server's world state, including updating user lists, handling item entities, storing chunks and regions, and managing blocks. It includes methods for queuing chunks and light maps, retrieving simulation and cached chunks, getting biome data, fetching blocks, comparing and exchanging block states, and handling block entity data. The code ensures proper reference counting and synchronization using mutexes to prevent race conditions.
 
 ## Code Example
 ```zig
-fn isValidSpawnLocation(_: *ServerWorld, wx: i32, wy: i32) bool {
-	const map = terrain.SurfaceMap.getOrGenerateFragment(wx, wy, 1);
-	return map.getBiome(wx, wy).isValidPlayerSpawn;
-}
+pub fn queueChunkAndDecreaseRefCount(self: *ServerWorld, pos: ChunkPosition, source: *User) void {
+		self.chunkManager.queueChunkAndDecreaseRefCount(pos, source);
+	}
 ```
 
 ## Related Questions
-- How does the server save player data?
-- What is the process for dropping items with a cooldown?
-- How are chunks and light maps queued in the server world?
-- How does the server validate spawn locations?
-- What functions are involved in retrieving block data from the world?
-- How is the biome information retrieved for a given position?
+- What method is called to handle item entities?
+- How does the server manage chunk updates and storage?
+- What function retrieves a simulation chunk with increased reference count?
+- How are blocks compared and exchanged in the world?
+- What role do mutexes play in this chunk's logic?
+- How is block entity data fetched and updated?
 
 *Source: unknown | chunk_id: codebase_src_server_world.zig_chunk_9*

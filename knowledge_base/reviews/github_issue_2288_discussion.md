@@ -1,0 +1,21 @@
+# [issues/issue_2288.md] - Issue #2288 discussion
+
+**Type:** review
+**Keywords:** curated world, testing environment, blocks, data values, Minecraft test system
+**Concepts:** testing, curated world, block inclusion
+
+## Summary
+Discussion about creating a curated world for testing, aiming to include all available blocks and data values.
+
+## Explanation
+The discussion revolves around the need for a curated test world in Cubyz. The goal is to have a comprehensive environment that includes every block and its possible data values. This would serve as a valuable resource for contributors to ensure thorough testing of new features or changes. The suggestion is inspired by Minecraft's test system, although implementing such a system is considered challenging.
+
+## Related Questions
+- What are the specific guidelines for updating the curated test world?
+- How can we ensure that all blocks and data values are included in the test world?
+- Are there any existing tools or systems that could be adapted for this purpose?
+- What challenges are associated with implementing a comprehensive test world?
+- How will contributors be informed about when to update the curated world?
+- Can the curated world be integrated into the development workflow to automate testing?
+
+*Source: unknown | chunk_id: github_issue_2288_discussion*

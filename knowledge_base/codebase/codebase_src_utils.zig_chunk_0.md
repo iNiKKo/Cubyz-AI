@@ -1,15 +1,15 @@
 # [hard/codebase_src_utils.zig] - Chunk 0
 
-**Type:** implementation
-**Keywords:** zlib, deflation, inflation, packing, unpacking, alias table, probability distribution
-**Symbols:** list, file_monitor, VirtualList, Condition, Futex, Semaphore, Compression, Compression.deflate, Compression.inflateTo, Compression.pack, Compression.unpack, AliasTable
-**Concepts:** compression, random sampling, alias method
+**Type:** serialization
+**Keywords:** zlib, deflation, inflation, directory traversal, binary data handling
+**Symbols:** Compression, Compression.deflate, Compression.inflateTo, Compression.pack, Compression.unpack, list, file_monitor, Condition, Futex, Semaphore
+**Concepts:** compression, file operations, directory packing, data serialization
 
 ## Summary
-This chunk provides utility functions for compression and an alias table implementation.
+This chunk provides utility functions for compression and file operations.
 
 ## Explanation
-The chunk defines a `Compression` struct with methods for deflating, inflating, packing, and unpacking data using the zlib algorithm. It also includes an `AliasTable` function that generates an alias table for efficient random sampling based on probabilities.
+The chunk defines a `Compression` struct with methods for deflating and inflating data using the zlib algorithm. It also includes functions to pack and unpack directories into compressed streams. The `deflate` method compresses data, while `inflateTo` decompresses it into a buffer. The `pack` function recursively compresses files in a directory and writes them to an output stream, handling path normalization for Windows. The `unpack` function reads a compressed stream and extracts files to a specified directory.
 
 ## Code Example
 ```zig
@@ -26,11 +26,11 @@ pub fn deflate(allocator: NeverFailingAllocator, data: []const u8, level: std.co
 ```
 
 ## Related Questions
-- How does the `deflate` function work?
-- What is the purpose of the `AliasTable` struct?
-- How is data packed and unpacked in this module?
-- What types of compression are supported by the `Compression` struct?
-- Can you explain the alias method used in the `AliasTable` implementation?
-- How does the `inflateTo` function handle decompression errors?
+- How does the `deflate` function compress data?
+- What is the purpose of the `inflateTo` method?
+- Can you explain how the `pack` function handles file paths on Windows?
+- What steps are involved in unpacking a compressed directory using the `unpack` function?
+- How does the chunk handle errors during compression and decompression operations?
+- What is the role of the buffer size in the compression methods?
 
 *Source: unknown | chunk_id: codebase_src_utils.zig_chunk_0*

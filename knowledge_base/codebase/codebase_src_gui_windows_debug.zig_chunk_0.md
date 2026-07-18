@@ -1,15 +1,15 @@
 # [easy/codebase_src_gui_windows_debug.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** FPS, frame time, window size, player position, game time, performance metrics, mesh memory usage, light memory usage, biome properties, particle count
+**Keywords:** FPS, frame time, window size, player position, game world, thread pool, mesh memory, light memory, biome properties, particle count
 **Symbols:** graphics, draw, Texture, Vec2f, TaskType, GuiWindow, GuiComponent, onOpen, window, render
-**Concepts:** debugging, performance metrics, mesh memory usage, light memory usage, biome properties, particle count
+**Concepts:** debugging, performance monitoring, world state display, thread pool metrics, mesh memory usage, light memory usage, biome properties, particle count
 
 ## Summary
 Debug window rendering function
 
 ## Explanation
-This function renders various debug information to the screen. It includes FPS, frame time, window size, player position and velocity, game time, world performance metrics, mesh memory usage, light memory usage, biome properties, and particle count.
+This function renders various debug information on the game window. It includes FPS, frame time, window size, player position and velocity, game world state, thread pool performance metrics, mesh memory usage, light memory usage, biome properties, and particle count.
 
 ## Code Example
 ```zig
@@ -110,14 +110,15 @@ pub fn render() void {
 
 ## Related Questions
 - What is the purpose of the `onOpen` function?
-- How many lines does the `render` function have?
-- What are the units for FPS and frame time in the debug window?
-- Where is the player's position stored in the game state?
-- What is the maximum number of particles that can be created at once?
-- How many items and entities are currently present in the world?
-- What does the `render` function do with the biome properties?
-- How is memory usage for mesh data calculated?
-- What is the purpose of the `performance` field in the thread pool?
-- What is the difference between opaque faces and transparent faces in the debug window?
+- How does the `render` function calculate FPS and frame time?
+- What information is displayed about the player's position and velocity in the debug window?
+- How is the game world state displayed in the debug window?
+- What metrics are collected by the thread pool performance monitoring in the debug window?
+- How is mesh memory usage displayed in the debug window?
+- How is light memory usage displayed in the debug window?
+- What information is displayed about the biome properties in the debug window?
+- How is particle count displayed in the debug window?
+- How many items and entities are displayed in the debug window?
+- What is the purpose of the `draw.print` function used in the `render` function?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_debug.zig_chunk_0*

@@ -1,26 +1,32 @@
 # [hard/codebase_src_sync.zig] - Chunk 11
 
-**Type:** implementation
-**Keywords:** Inventory.Inventories, BinaryReader, BinaryWriter, Side, Context, recipe validation, client-server serialization, item bag retrieval, procedural item generation
-**Symbols:** TakeFromPlayerBag, CraftFrom, CraftProceduralItem
-**Concepts:** inventory crafting, recipe validation, client-server serialization, item bag retrieval, procedural item generation
+**Type:** api
+**Keywords:** inventory operations, serialization, deserialization, crafting recipes, player inventory
+**Symbols:** MoveToPlayerBag, MoveToPlayerBag.source, MoveToPlayerBag.amount, MoveToPlayerBag.run, MoveToPlayerBag.serialize, MoveToPlayerBag.deserialize, TakeFromPlayerBag, TakeFromPlayerBag.destinations, TakeFromPlayerBag.amount, TakeFromPlayerBag.init, TakeFromPlayerBag.finalize, TakeFromPlayerBag.run, TakeFromPlayerBag.serialize, TakeFromPlayerBag.deserialize, CraftFrom, CraftFrom.destinations, CraftFrom.sources, CraftFrom.recipe, CraftFrom.init, CraftFrom.finalize, CraftFrom.run, CraftFrom.serialize, CraftFrom.deserialize, CraftProceduralItem, CraftProceduralItem.destinations, CraftProceduralItem.craftingGrid, CraftProceduralItem.init
+**Concepts:** inventory management, item transfer, crafting system
 
 ## Summary
-This chunk defines three public structs for inventory crafting operations: TakeFromPlayerBag (taking items from a player's bag), CraftFrom (crafting using recipe ingredients), and CraftProceduralItem (crafting procedurally generated items).
+Defines inventory operations for moving items to a player's bag, taking from the bag, crafting items, and procedural item crafting.
 
 ## Explanation
-The chunk declares TakeFromPlayerBag with fields destinations and amount, providing init, finalize, run, serialize, and deserialize methods. Its run method asserts ctx.side is client or user exists, retrieves the player bag via @
+This chunk defines several structs representing different inventory operations within the Cubyz engine. Each struct has methods for executing the operation (`run`), serializing the operation to a binary format (`serialize`), and deserializing it from a binary format (`deserialize`). The operations include moving items to a player's bag, taking items from the bag, crafting items based on recipes, and creating procedural items using a crafting grid. Each struct manages its own state and interacts with other components like inventories and recipes.
+
+## Code Example
+```zig
+fn init(destinations: []const Inventory.ClientInventory, amount: u16) TakeFromPlayerBag {
+	return .{
+		.destinations = .initFromClientInventories(main.globalAllocator, destinations),
+		.amount = amount,
+	};
+}
+```
 
 ## Related Questions
-- What are the public fields of TakeFromPlayerBag?
-- How does TakeFromPlayerBag.run handle client versus server contexts?
-- What error is returned if a player bag cannot be retrieved in TakeFromPlayerBag.run?
-- Which methods must be called to finalize TakeFromPlayerBag before dropping it?
-- What does CraftFrom.validate check regarding the recipe result item?
-- How are source ingredients consumed during CraftFrom.run?
-- What happens if CraftProceduralItem cannot hold the resulting procedural item?
-- Does CraftProceduralItem.run call ctx.cmd.removeProceduralItemCraftingIngredients?
-- Which types are used for serialization in all three structs?
-- How does deserialize handle allocation failures with errdefer?
+- What are the fields of the MoveToPlayerBag struct?
+- How does the CraftFrom operation check if it can craft an item?
+- What is the purpose of the serialize method in the TakeFromPlayerBag struct?
+- How does the CraftProceduralItem struct initialize its destinations and crafting grid?
+- What error handling is implemented in the run method of MoveToPlayerBag?
+- How does the deserialize method work for the CraftFrom struct?
 
 *Source: unknown | chunk_id: codebase_src_sync.zig_chunk_11*

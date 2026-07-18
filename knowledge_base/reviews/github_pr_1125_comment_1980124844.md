@@ -1,22 +1,22 @@
 # [src/migrations.zig] - PR #1125 review diff
 
 **Type:** review
-**Keywords:** stack allocator, blueprint block array, memory usage, fallback logic, fixed-size buffer
-**Symbols:** register, std.StringHashMap, ZonElement, main.stackAllocator
-**Concepts:** thread safety, memory management, stack allocator
+**Keywords:** stack allocator, blueprint block array, fallback logic, variable replacement, memory usage
+**Symbols:** registerBlockMigrations, register, collection, assetType, addonName, migrationZon, main.stackAllocator
+**Concepts:** thread safety, backwards compatibility, memory management
 
 ## Summary
-The review discusses the use of a stack allocator in the `register` function within `migrations.zig`, questioning its suitability for potentially large data structures like blueprint block arrays.
+The change renames the 'name' parameter to 'addonName' in the `register` function and introduces a local allocator.
 
 ## Explanation
-The reviewer raises concerns about using a stack allocator for handling potentially large blueprint block arrays, which could occupy up to 1<<50 bytes. The reviewer suggests that the stack allocator might not be appropriate if it lacks fallback logic or is just a fixed-size buffer with a top pointer. This concern highlights the need to ensure thread safety and memory management efficiency in scenarios where large data structures are involved.
+The reviewer expresses concern about using a stack allocator for potentially large data structures, such as blueprint block arrays that could occupy up to 1<<50 bytes. The reviewer suggests replacing the stack allocator with a variable to allow easy replacement if needed. They question the nature of the stack allocator used in the code, specifically whether it has fallback logic when full or is just a fixed-size buffer with a top pointer.
 
 ## Related Questions
-- What is the maximum size of the blueprint block array that could be handled by the current stack allocator?
-- Does the stack allocator have any built-in mechanisms to handle overflow or memory exhaustion scenarios?
-- How does the use of a stack allocator impact performance in comparison to other allocation strategies?
-- Is there a risk of stack overflow when dealing with large data structures like blueprint block arrays?
-- What are the potential implications of using a fixed-size buffer for the stack allocator in this context?
-- How can the code be modified to allow easy replacement of the stack allocator if needed?
+- What is the maximum size of a blueprint block array that could be handled by this code?
+- Does the current stack allocator have any fallback mechanism when it runs out of space?
+- How does replacing the stack allocator with a variable improve flexibility in memory management?
+- Is there a risk of stack overflow if large data structures are allocated on the stack?
+- What are the potential performance implications of using a different type of allocator for large data structures?
+- How can we ensure that the new allocator is suitable for handling very large data sizes?
 
 *Source: unknown | chunk_id: github_pr_1125_comment_1980124844*

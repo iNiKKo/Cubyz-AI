@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_planks_willow.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** durability, texture, color gradient, modifiers, hardness damage
-**Concepts:** block properties, material configuration
+**Keywords:** durability, texture, modifiers, color gradients, hardness damage
+**Concepts:** block configuration, material properties
 
 ## Summary
-Defines the properties and texture of willow planks in Cubyz.
+Defines properties for the willow planks block, including material attributes and texture.
 
 ## Explanation
-This chunk configures the material properties and visual appearance of willow planks. It sets attributes like durability, mass damage, hardness damage, swing speed, texture roughness, and color gradients. Additionally, it specifies a modifier for durability and assigns a texture path for rendering.
+This chunk defines a configuration for the willow planks block in the Cubyz voxel engine. It specifies various material properties such as durability, mass damage, hardness damage, swing speed, texture roughness, and color gradients. Additionally, it includes modifiers like 'durable' with a specified strength. The texture path is also set to point to the appropriate image file for rendering.
 
 ## Related Questions
-- What is the durability of willow planks?
-- Which texture is assigned to willow planks?
-- How many color values are defined for willow planks?
-- What modifiers are applied to willow planks?
-- What is the swing speed of willow planks?
-- What is the texture roughness of willow planks?
+- What is the durability of the willow planks block?
+- Which texture file is used for rendering the willow planks block?
+- How many color values are defined for the willow planks block?
+- What is the swing speed of the willow planks block?
+- Is there a modifier applied to the willow planks block, and if so, what is it?
+- What is the texture roughness value for the willow planks block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_planks_willow.zig.zon_chunk_0*

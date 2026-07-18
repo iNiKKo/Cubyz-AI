@@ -1,15 +1,15 @@
 # [easy/codebase_src_server_command_worldedit_redo.zig] - Chunk 0
 
-**Type:** implementation
-**Keywords:** undo, redo, world editing, blueprint, selection
-**Symbols:** description, usage, Args, ArgParser, execute, errorMessage, source, User, Block, Blueprint, worldEditData, redoHistory, pop, action, deinit, capture, paste, undo, success, failure, message
-**Concepts:** world editing, undo/redo history, block modification
+**Type:** api
+**Keywords:** argument parsing, history management, blueprint capture, state reapplication, user feedback
+**Symbols:** description, usage, Args, ArgParser, execute
+**Concepts:** world editing, command handling, redo/undo functionality
 
 ## Summary
-Redo last change done to world with world editing commands.
+Handles the execution of the '/redo' command for world editing, allowing users to reapply their last undone change.
 
 ## Explanation
-This function handles the '/redo' command, which re-applies the last block modification made by the user through world editing. It uses a stack-based redo history to store and apply the most recent action. The function captures the undo history of the previous action, pastes it back into the world at the same position, and then updates the undo history with the new action. If there is no redo history, it informs the user that there is nothing to redo.
+The chunk defines a command handler for the '/redo' world editing command. It uses an argument parser to validate input and checks if there is any action available in the redo history. If an action exists, it captures the current state as an undo blueprint, reapplies the last change, and updates the undo history accordingly. If no action is available, it informs the user that there is nothing to redo.
 
 ## Code Example
 ```zig
@@ -44,17 +44,11 @@ pub fn execute(args: []const u8, source: *User) void {
 ```
 
 ## Related Questions
-- What is the purpose of the 'execute' function in this chunk?
-- How does the 'redoHistory' stack work in this implementation?
-- What happens if there is no redo history available?
-- What is the role of the 'undo' variable in this code?
-- How is the undo history stored and retrieved in this function?
-- What is the purpose of the 'capture' function in this chunk?
-- What does the 'paste' function do in this implementation?
-- What is the difference between 'success' and 'failure' in the 'undo' result?
-- How is the undo history updated after a redo operation?
-- What is the format of the error message displayed to the user if an error occurs during the redo process?
-- What does the 'message' variable represent in this code?
-- How is the 'position' variable used in this function?
+- What is the description of the '/redo' command?
+- How does the chunk handle argument parsing for the '/redo' command?
+- What happens if there are no actions available in the redo history?
+- How is the current state captured before reapplying the last change?
+- What feedback is given to the user after successfully redone an action?
+- How is the undo history updated when a redo operation is successful?
 
 *Source: unknown | chunk_id: codebase_src_server_command_worldedit_redo.zig_chunk_0*

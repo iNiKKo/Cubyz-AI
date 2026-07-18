@@ -1,28 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_ferrock__defaults.zig.zon] - Chunk 0
 
-**Type:** implementation
-**Keywords:** block properties, item material, durability, mass damage, hardness damage, swing speed, texture roughness, colors, modifiers
-**Symbols:** Ferrock
-**Concepts:** block properties, item material, durability, mass damage, hardness damage, swing speed, texture roughness, colors, modifiers
+**Type:** configuration
+**Keywords:** block defaults, material properties, modifiers, tags, drops
+**Concepts:** block configuration, item properties
 
 ## Summary
-Defines the default properties for the Ferrock block.
+Defines default properties for the Ferrock block in Cubyz, including tags, health, resistance, drops, and item material details.
 
 ## Explanation
-This chunk defines the default properties for the Ferrock block, including its tags, health, resistance, drops, item material, durability, mass damage, hardness damage, swing speed, texture roughness, colors, and modifiers. The block is marked as mineable and has a specific tag.
+This chunk specifies the configuration for the Ferrock block. It includes tags like 'stone', 'mineable', and 'ferrock'. The block has a health of 32.5 and a resistance of 1. It drops an auto-generated item when mined. The item's material properties are defined, including durability, mass damage, hardness damage, swing speed, texture roughness, and a list of colors. Additionally, there is a modifier that specifies the block's strength against certain tags and restrictions.
 
 ## Related Questions
 - What are the tags associated with the Ferrock block?
-- How many drops does the Ferrock block drop when mined?
-- What is the durability of the item material for the Ferrock block?
-- What is the mass damage of the item material for the Ferrock block?
-- What is the hardness damage of the item material for the Ferrock block?
-- What is the swing speed of the item material for the Ferrock block?
-- What are the colors associated with the item material for the Ferrock block?
-- How many modifiers does the item material for the Ferrock block have?
-- What is the ID of the first modifier for the item material for the Ferrock block?
-- What is the strength of the first modifier for the item material for the Ferrock block?
-- What is the tag associated with the first modifier for the item material for the Ferrock block?
-- What is the restriction associated with the first modifier for the item material for the Ferrock block?
+- How much health does the Ferrock block have?
+- What is the resistance value of the Ferrock block?
+- What items does the Ferrock block drop when mined?
+- What are the material properties of the Ferrock item?
+- What modifiers affect the Ferrock block's strength?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_ferrock__defaults.zig.zon_chunk_0*

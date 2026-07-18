@@ -1,22 +1,50 @@
 # [easy/codebase_src_server_command_gamemode.zig] - Chunk 0
 
 **Type:** api
-**Keywords:** argument parsing, gamemode setting, error handling, user communication, command execution
+**Keywords:** argument parsing, user interaction, gamemode setting, error handling, server command
 **Symbols:** description, usage, Args, ArgParser, execute
-**Concepts:** command parsing, gamemode management, user messaging
+**Concepts:** command handling, player management, gamemode control
 
 ## Summary
-Handles the '/gamemode' command to get or set a player's gamemode.
+Handles the /gamemode command for setting or getting a player's gamemode.
 
 ## Explanation
-The function `execute` parses the command arguments using an argument parser. If parsing fails, it sends an error message to the source user. If successful, it determines the target player and either sets their gamemode if provided or retrieves and sends their current gamemode.
+The chunk defines the logic for the /gamemode server command, which allows users to set or retrieve the gamemode of a specified player. It uses an argument parser to interpret the command arguments and determine whether to set or get the gamemode. If setting, it updates the player's gamemode; if getting, it sends the current gamemode back to the user.
+
+## Code Example
+```zig
+pub fn execute(args: []const u8, source: *User) void {
+	var errorMessage: main.List(u8) = .empty;
+	defer errorMessage.deinit(main.stackAllocator);
+
+	const result = ArgParser.parse(main.stackAllocator, args, &errorMessage) catch {
+		source.sendMessage("#ff0000{s}", .{errorMessage.items});
+		return;
+	};
+
+	switch (result) {
+		.@"/gamemode <playerIndex> <mode>" => |params| {
+			const target = command.Target.fromPlayerIndex(params.playerIndex, source) catch return;
+			defer target.deinit();
+
+			if (params.mode) |mode| {
+				main.sync.setGamemode(target.user, mode);
+			} else {
+				source.sendMessage("#ffff00{s}", .{@tagName(target.user.gamemode.load(.monotonic))});
+			}
+		},
+	}
+}
+```
 
 ## Related Questions
-- What does the '/gamemode' command do?
-- How is the 'Args' union defined?
-- Where is the 'execute' function called?
-- What happens if parsing fails in 'execute'?
-- How is a target player determined?
-- What method is used to set a player's gamemode?
+- What is the description of the /gamemode command?
+- How does the chunk handle parsing arguments for the /gamemode command?
+- What are the possible usages of the /gamemode command?
+- How does the chunk determine whether to set or get a player's gamemode?
+- What happens if there is an error during argument parsing?
+- How does the chunk update a player's gamemode?
+- What message is sent back to the user when retrieving their current gamemode?
+- What type of allocator is used for error messages in this chunk?
 
 *Source: unknown | chunk_id: codebase_src_server_command_gamemode.zig_chunk_0*

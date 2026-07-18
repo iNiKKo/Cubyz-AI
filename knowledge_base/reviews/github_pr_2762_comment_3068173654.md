@@ -1,22 +1,22 @@
 # [src/entityModel.zig] - PR #2762 review diff
 
 **Type:** review
-**Keywords:** entityModel.zig, .obj, .glb, stackAllocator, globalAllocator, local allocations, model loading, 3D models, Vertex, u32, defer, alloc
-**Symbols:** EntityModel, main.assets.readAsset, main.stackAllocator, main.globalAllocator, quadInfos, vertices, indices
-**Concepts:** memory management, thread safety, performance optimization
+**Keywords:** GLB, OBJ, EntityModel, stackAllocator, globalAllocator, readAsset, loadRawModelDataFromObj, memory leak, thread safety, backwards compatibility
+**Symbols:** EntityModel, stackAllocator, globalAllocator, readAsset, loadRawModelDataFromObj
+**Concepts:** memory management, allocator usage, file formats
 
 ## Summary
-The code was updated to read entity models from a '.glb' file instead of '.obj'. The reviewer emphasized the importance of using `stackAllocator` for local allocations.
+The code was updated to read entity models in GLB format instead of OBJ and corrected the use of allocators.
 
 ## Explanation
-The change involves modifying the file extension from '.obj' to '.glb', which is likely a more efficient binary format for 3D models. The reviewer's comment highlights a critical architectural decision regarding memory management, specifically the use of `stackAllocator` for local allocations to ensure better performance and avoid potential memory leaks. This update also implies a shift in the model loading process, potentially affecting how models are parsed and stored in memory.
+The change involved modifying the `EntityModel` struct to load model data from a GLB file instead of an OBJ file. The reviewer emphasized the importance of using the stack allocator for local allocations, which was previously not adhered to. This update ensures better memory management and aligns with architectural guidelines.
 
 ## Related Questions
-- Why was the file extension changed from '.obj' to '.glb'?
-- What are the benefits of using 'stackAllocator' for local allocations in this context?
-- How does changing the model format affect the parsing and storage of models?
-- Is there a performance impact associated with switching from '.obj' to '.glb'?
-- Are there any potential memory leak risks if 'globalAllocator' is used instead of 'stackAllocator'?
-- What other architectural considerations should be taken into account when modifying model loading processes?
+- What is the purpose of changing the file format from OBJ to GLB?
+- Why was the stack allocator emphasized in this review?
+- How does this change affect memory management in Cubyz?
+- Is there any potential for regression due to this update?
+- What are the benefits of using the stack allocator over the global allocator?
+- How does this change impact backwards compatibility with existing models?
 
 *Source: unknown | chunk_id: github_pr_2762_comment_3068173654*

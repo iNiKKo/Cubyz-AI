@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_glow_crystal_yellow.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, static data, block definition, light emission, texture path
-**Concepts:** block properties, texture mapping
+**Keywords:** emitted light, texture mapping, block definition, color representation, hexadecimal color
+**Concepts:** block properties, lighting
 
 ## Summary
 Defines properties for a yellow glow crystal block.
 
 ## Explanation
-This chunk is a configuration file defining the properties of a specific block in the Cubyz voxel engine. It sets the emitted light color to yellow (0xffff00) and specifies the texture path for the block as 'cubyz:glow_crystal/yellow'. There are no executable functions or complex logic; it purely contains static data.
+This chunk specifies the emitted light color and texture path for a yellow glow crystal block. The `emittedLight` field is set to `0xffff00`, representing a bright yellow color in hexadecimal format. The `texture` field points to the texture file located at `cubyz:glow_crystal/yellow`. This configuration data is used by the Cubyz engine to render and light the block appropriately.
 
 ## Related Questions
 - What is the emitted light color of the yellow glow crystal block?
-- Where is the texture for the yellow glow crystal block located?
-- Does this chunk contain any executable code?
-- How many properties are defined for the yellow glow crystal block in this configuration?
-- Can this chunk be modified to change the block's appearance or behavior?
-- Is there a function in this chunk that handles block interactions?
+- Where is the texture file for the yellow glow crystal block located?
+- How is the color represented in hexadecimal format for the yellow glow crystal block?
+- What properties are defined for the yellow glow crystal block in this chunk?
+- Is there any executable logic in this configuration chunk?
+- Does this chunk define any new functions or methods?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_glow_crystal_yellow.zig.zon_chunk_0*

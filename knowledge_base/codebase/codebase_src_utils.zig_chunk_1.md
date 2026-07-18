@@ -1,15 +1,15 @@
 # [hard/codebase_src_utils.zig] - Chunk 1
 
 **Type:** implementation
-**Keywords:** alias table, random sampling, binary search, dynamic array resizing, memory allocation
-**Symbols:** AliasSampler, AliasSampler.items, AliasSampler.aliasData, AliasSampler.init, AliasSampler.initFromContext, AliasSampler.deinit, AliasSampler.sample, SortedList, SortedList.ptr, SortedList.len, SortedList.capacity, SortedList.deinit, SortedList.items, SortedList.increaseCapacity, SortedList.insertSorted, SortedList.toOwnedSlice, Array2D, Array2D.mem, Array2D.width, Array2D.height, Array2D.init, Array2D.deinit, Array2D.get
-**Concepts:** weighted random sampling, sorted list management, 2D array handling
+**Keywords:** Alias Method, dynamic array, random sampling, sorting, memory management
+**Symbols:** AliasTable, AliasTable.AliasData, AliasTable.items, AliasTable.aliasData, AliasTable.ownsSlice, AliasTable.initAliasData, AliasTable.init, AliasTable.initFromContext, AliasTable.deinit, AliasTable.sample, SortedList, SortedList.ptr, SortedList.len, SortedList.capacity, SortedList.deinit, SortedList.items, SortedList.increaseCapacity, SortedList.insertSorted, SortedList.toOwnedSlice
+**Concepts:** weighted random sampling, sorted list
 
 ## Summary
-This chunk defines utility data structures and functions for managing sorted lists, alias sampling, and 2D arrays.
+This chunk implements the Alias Method for weighted random sampling and a sorted list data structure.
 
 ## Explanation
-The chunk includes three main components: AliasSampler, SortedList, and Array2D. The AliasSampler is used for weighted random sampling with an efficient initialization and sampling process. It uses alias tables to handle overfull and underfull bins during the setup. The SortedList maintains a list of items sorted in ascending order, providing functions for insertion, deinitialization, and converting to an owned slice. The Array2D provides a 2D array structure with initialization, deinitialization, and element access methods.
+The chunk defines two main types: `AliasTable` and `SortedList`. The `AliasTable` type is an implementation of the Alias Method, which allows for efficient weighted random sampling. It includes methods to initialize the alias table from a list of items with associated chances, deinitialize it, and sample an item based on its chance. The `SortedList` type is a dynamic array that maintains elements in ascending order, providing methods to insert elements while keeping them sorted, convert the list to an owned slice, and deinitialize it.
 
 ## Code Example
 ```zig
@@ -35,11 +35,11 @@ pub fn init(allocator: NeverFailingAllocator, items: []T) @This() {
 ```
 
 ## Related Questions
-- How does the AliasSampler initialize its alias data?
-- What is the purpose of the SortedList's increaseCapacity function?
-- How does the Array2D structure handle memory allocation and deallocation?
-- Can you explain the algorithm used in AliasSampler.sample?
-- What ensures that the items in a SortedList remain sorted?
-- How does the AliasSampler handle cases where an item's chance is overfull or underfull?
+- How does the AliasTable initialize its alias data?
+- What is the purpose of the SortedList type in this chunk?
+- How does the SortedList handle capacity increases when inserting elements?
+- Can you explain how the sample method works in the AliasTable?
+- What is the role of the ownsSlice field in the AliasTable struct?
+- How does the SortedList maintain its sorted order during insertions?
 
 *Source: unknown | chunk_id: codebase_src_utils.zig_chunk_1*

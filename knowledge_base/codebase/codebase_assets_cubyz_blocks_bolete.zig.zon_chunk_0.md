@@ -1,28 +1,28 @@
 # [easy/codebase_assets_cubyz_blocks_bolete.zig.zon] - Chunk 0
 
 **Type:** implementation
-**Keywords:** block tags, health, drops, selection capabilities, replaceability, view-through, degradability, absorbed light, collision settings, rotation, update function, model base, side, top, bottom
-**Symbols:** bolete
-**Concepts:** block properties, update function, model definition, texture mapping, item representation
+**Keywords:** block definition, health, drop items, selection capabilities, replaceability
+**Symbols:** Bolete
+**Concepts:** block properties, update function, texture settings
 
 ## Summary
-Defines the properties and behavior of a bolete mushroom block.
+Block definition for Bolete mushroom in Cubyz game.
 
 ## Explanation
-This chunk defines the properties and behavior of a bolete mushroom block in the Cubyz voxel engine. It includes details such as tags, health, drops, selection capabilities, replaceability, view-through status, degradability, absorbed light, collision settings, rotation, update function, model, textures, item texture, and LOD replacement.
+Defines properties of the Bolete mushroom block, including its health, drop items, selection capabilities, replaceability, visibility through blocks, degradation status, light absorption, collision behavior, rotation model, update function, and texture settings. The block is cuttable, sliceable, and can be used to check support blocks.
 
 ## Related Questions
-- What are the tags associated with the bolete mushroom block?
-- How is the health of the bolete mushroom block defined?
-- What items can be dropped when the bolete mushroom block is broken?
-- What selection capabilities does the bolete mushroom block have?
-- Is the bolete mushroom block replaceable?
-- Does the bolete mushroom block allow view-through?
-- Can the bolete mushroom block degrade over time?
-- What color of light is absorbed by the bolete mushroom block?
-- Is the bolete mushroom block collidable?
-- What rotation animation does the bolete mushroom block use?
-- What function is called when the bolete mushroom block updates?
-- What base model is used for the bolete mushroom block's floor texture?
+- What are the block's health and drop items?
+- How is the block selected in the game?
+- Can the block be replaced by another block?
+- Is the block visible through other blocks?
+- Does the block degrade over time?
+- What light absorption does the block have?
+- Does the block collide with other objects?
+- What rotation model is used for the block?
+- What function is called when the block updates?
+- What are the base and side textures of the block?
+- What is the top texture of the block?
+- What is the bottom texture of the block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_bolete.zig.zon_chunk_0*

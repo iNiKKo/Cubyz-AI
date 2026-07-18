@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_tree_coniferous_pine_eastern_white.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprints, children, tree components, configuration, Eastern White Pine
-**Concepts:** world generation, tree structure
+**Keywords:** blueprint, tree structure, modular components, configuration data, Cubyz engine
+**Concepts:** world generation, asset configuration
 
 ## Summary
-Defines the structure and blueprints for an Eastern White Pine tree in Cubyz.
+Defines the structure and blueprints for an Eastern White Pine tree in Cubyz, including its core blueprint and child components.
 
 ## Explanation
-This chunk defines a configuration for an Eastern White Pine tree, specifying its core blueprint and child components. The `.blueprints` field lists the IDs of the blueprints used to construct the tree's core. The `.children` field maps color identifiers ('white' and 'black') to specific component IDs representing different parts of the tree, such as a branchless trunk and roots.
+This chunk defines a configuration for an Eastern White Pine tree within the Cubyz game engine. It specifies the blueprints that make up the tree, including a core blueprint with the ID 'cubyz:tree/coniferous/core'. Additionally, it lists the children components of the tree, which include a branchless trunk and roots. The structure is organized in a way that allows for modular assembly of the tree's different parts.
 
 ## Related Questions
-- What are the blueprints used for the Eastern White Pine tree?
-- Which components make up the Eastern White Pine tree?
-- How is the structure of the Eastern White Pine defined in this configuration?
-- What are the different color identifiers used for the tree's components?
-- Where does the configuration specify the branchless trunk component?
-- Which part of the tree is represented by the 'black' identifier?
+- What is the ID of the core blueprint for the Eastern White Pine tree?
+- Which components are listed as children of the Eastern White Pine tree?
+- How is the structure of the Eastern White Pine tree defined in this configuration?
+- What does the 'blueprints' field represent in this chunk?
+- Are there any specific blueprints mentioned for the Eastern White Pine tree?
+- How many child components are associated with the Eastern White Pine tree?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_tree_coniferous_pine_eastern_white.zig.zon_chunk_0*

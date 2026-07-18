@@ -1,29 +1,32 @@
 # [hard/codebase_src_graphics_vulkan.zig] - Chunk 1
 
 **Type:** implementation
-**Keywords:** Vulkan, instance creation, physical device, logical device, extension enumeration, queue family properties, surface formats, present modes
-**Symbols:** enumerateDeviceExtensionProperties, getPhysicalDeviceQueueFamilyProperties, getPhysicalDeviceSurfaceFormatsKHR, getPhysicalDeviceSurfacePresentModesKHR, instance, surface, physicalDevice, device, graphicsQueue, presentQueue, version, interestingExtensions, init, deinit, validationLayers, checkValidationLayerSupport, createInstance, appInfo, glfwExtensionCount, glfwExtensions, availableExtensions, createFlags, extensions, createInfo
-**Concepts:** Vulkan initialization, device enumeration, physical device selection, logical device creation
+**Keywords:** Vulkan, GLFW, validation layers, extensions, physical devices, queue families
+**Symbols:** version, interestingExtensions, init, deinit, validationLayers, checkValidationLayerSupport, createInstance, deviceExtensions, deviceFeatures, QueueFamilyIndidices
+**Concepts:** Vulkan initialization, instance creation, physical device selection, queue family indices
 
 ## Summary
-This chunk handles Vulkan initialization and device enumeration in the Cubyz engine, including creating a Vulkan instance, physical device selection, and logical device creation.
+Handles Vulkan initialization, instance creation, physical device selection, and queue family indices.
 
 ## Explanation
-The chunk defines several functions for enumerating Vulkan device properties such as extensions, queue families, surface formats, and present modes. It also manages global Vulkan objects like the instance, surface, physical device, and logical device. The `init` function initializes these Vulkan components, while `deinit` cleans them up. Key functions include `enumerateDeviceExtensionProperties`, `getPhysicalDeviceQueueFamilyProperties`, and `createInstance`. The chunk uses a stack allocator for temporary storage during initialization and checks for validation layers to ensure debugging support.
+This chunk manages the setup of Vulkan components essential for rendering. It initializes Vulkan by loading necessary functions, creating an instance with required extensions and validation layers, selecting a suitable physical device based on supported features and extensions, and determining queue families for graphics and presentation operations. The code also defines structures for versioning, extension support, and device capabilities.
 
 ## Code Example
 ```zig
-pub fn enumerateDeviceExtensionProperties(allocator: NeverFailingAllocator, dev: c.VkPhysicalDevice, layerName: ?[*:0]const u8) []c.VkExtensionProperties {
-	return allocEnumerationGeneric(c.vkEnumerateDeviceExtensionProperties, allocator, .{dev, layerName});
+pub fn deinit() void {
+	SwapChain.deinit();
+	c.vkDestroyDevice(device, null);
+	c.vkDestroySurfaceKHR(instance, surface, null);
+	c.vkDestroyInstance(instance, null);
 }
 ```
 
 ## Related Questions
-- How does the chunk enumerate Vulkan device extensions?
-- What is the purpose of the `createInstance` function in this chunk?
-- Which global Vulkan objects are managed by this chunk?
-- How does the chunk handle validation layers during initialization?
-- What is the role of the `deinit` function in this chunk?
-- How does the chunk manage temporary storage during initialization?
+- What is the purpose of the `version` variable in this chunk?
+- How does the code check for validation layer support?
+- What extensions are required for Vulkan instance creation on macOS?
+- Which device features are enabled by default?
+- How are queue family indices determined in this chunk?
+- What happens if GLAD fails to load Vulkan functions during initialization?
 
 *Source: unknown | chunk_id: codebase_src_graphics_vulkan.zig_chunk_1*

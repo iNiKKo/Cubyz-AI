@@ -1,30 +1,26 @@
 # [easy/docs_docs_faq.md] - Chunk 0
 
 **Type:** documentation
-**Keywords:** Frequently Asked Questions, Cubyz Game, Installation Guide, Addon Creation, Game Design Principles, Contribution Guidelines, Discord Server, Lagging Issues, Healing Mechanism, Gameplay Mechanics
-**Symbols:** Cubyz Releases, Installation Guide, Help Section, Addon Installation Guide, Addon Creation Guide, Game Design and Principles, How to Contribute, Contribution Guidelines, Discord
-**Concepts:** FAQ, Gameplay Questions, Development Questions, Installation, Healing Mechanics, Lag Issues, Addons, Community Contribution
+**Keywords:** FAQ, Cubyz, installation, healing, food, lagging, addons, contributing, community roles
+**Symbols:** Cubyz Releases, Help Section, Addon Installation Guide, Addon Creation Guide, Game Design and Principles, Contribution Guidelines
+**Concepts:** Gameplay Questions, Development Questions
 
 ## Summary
-This FAQ covers common gameplay and development questions for the Cubyz voxel engine.
+The FAQ provides answers to common gameplay and development questions about Cubyz.
 
 ## Explanation
-The document provides answers to frequently asked questions about playing, developing, and contributing to the Cubyz game. It includes information on installation, healing mechanics, lag issues, addon creation, and community involvement.
-
-Direct Q&A from the FAQ source:
-- **How do I heal?** Die. No, seriously -- there is currently no means to heal in Cubyz other than dying.
-- **How do I eat food?** Currently you don't. The stomach/energy bar is purely cosmetic -- there is no way to gain or lose energy right now.
-- **Why is my game lagging?** Try turning your "LOD Distance" down; you will only see a difference in the detail of distant chunks.
-- **How deep/wide is Cubyz?** 2 billion blocks on each axis. For all regular gameplay purposes, it's practically infinite.
+This document addresses frequently asked questions (FAQ) regarding the Cubyz game. Gameplay: to play, download the release build for your OS from Cubyz Releases and follow the Installation Guide; if the game doesn't start, join the Cubyz Discord server and check the Help Section; there is currently no way to heal -- dying is the only way health resets, there is no other means to regain it; food currently cannot be eaten -- the stomach bar is purely cosmetic; if the game is lagging, lower the "LOD Distance" setting (this only affects the detail of distant chunks); the world is 2 billion blocks wide/deep on each axis, effectively infinite for regular gameplay. Development: to install an addon, see the Addon Installation Guide; to make an addon, see the Addon Creation Guide; a suggested new feature should be checked against the Game Design and Principles doc before being implemented; to contribute, read the Contribution Guidelines and look for open GitHub issues (code/addons) or apply to join the YouTube, Discord, Wiki, GitHub, or Reddit teams (community roles), or ask in the Discord.
 
 ## Related Questions
-- How can I install Cubyz?
-- Can the player heal in Cubyz right now?
-- What does the energy/stomach bar do in Cubyz right now?
-- How far can the Cubyz world extend on each axis?
-- Why is my game lagging?
+- How do I install Cubyz?
+- What should I do if Cubyz doesn't start?
+- Is there a way to heal in Cubyz?
+- Can I eat food in Cubyz?
+- How can I reduce lag in Cubyz?
+- Where can I find the Addon Installation Guide?
 - How do I create an addon for Cubyz?
-- Where can I contribute to Cubyz development?
-- What are the community roles available in Cubyz?
+- Can I add new features to Cubyz?
+- Where can I start contributing to Cubyz?
+- How do I join the YouTube team for Cubyz?
 
 *Source: unknown | chunk_id: docs_docs_faq.md_chunk_0*

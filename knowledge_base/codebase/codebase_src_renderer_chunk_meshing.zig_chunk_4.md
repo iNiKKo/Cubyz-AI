@@ -1,15 +1,15 @@
 # [hard/codebase_src_renderer_chunk_meshing.zig] - Chunk 4
 
 **Type:** implementation
-**Keywords:** mesh initialization, lighting data, resource cleanup, deferred destruction, light propagation
+**Keywords:** mesh initialization, lighting calculation, cleanup procedures, state tracking, neighbor interactions
 **Symbols:** ChunkMesh, ChunkMesh.pos, ChunkMesh.size, ChunkMesh.chunk, ChunkMesh.lightingData, ChunkMesh.opaqueMesh, ChunkMesh.transparentMesh, ChunkMesh.meshUploadMutex, ChunkMesh.finishedLightingMeshData, ChunkMesh.chunkAllocation, ChunkMesh.lightList, ChunkMesh.lightAllocation, ChunkMesh.blockUpdateQueue, ChunkMesh.lastNeighborsSameLod, ChunkMesh.lastNeighborsHigherLod, ChunkMesh.isNeighborLod, ChunkMesh.currentSorting, ChunkMesh.sortingOutputBuffer, ChunkMesh.culledSortingCount, ChunkMesh.lastTransparentUpdatePos, ChunkMesh.needsLightRefresh, ChunkMesh.needsMeshUpdate, ChunkMesh.finishedMeshing, ChunkMesh.finishedLighting, ChunkMesh.litNeighbors, ChunkMesh.mutex, ChunkMesh.min, ChunkMesh.max, ChunkMesh.blockBreakingFaces, ChunkMesh.blockBreakingFacesSortingData, ChunkMesh.blockBreakingFacesChanged, ChunkMesh.init, ChunkMesh.privateDeinit, ChunkMesh.deferredDeinit, ChunkMesh.isEmpty, ChunkMesh.initLight, ChunkMesh.generateLightingData
-**Concepts:** chunk meshing, lighting propagation, resource management, garbage collection
+**Concepts:** chunk meshing, lighting propagation, resource management
 
 ## Summary
-The ChunkMesh struct and its associated methods handle the creation, initialization, and management of chunk meshes in the renderer.
+The ChunkMesh struct manages the rendering and lighting of a chunk in the game world, including initialization, deinitialization, and light propagation.
 
 ## Explanation
-This chunk defines the `ChunkMesh` struct, which represents a mesh for a chunk in the game world. It includes fields for position, size, chunk data, lighting information, and various buffers for opaque and transparent meshes. The `init` function initializes a new `ChunkMesh`, setting up its internal structures and loading chunk data from compressed storage. The `privateDeinit` method handles the cleanup of resources when a `ChunkMesh` is destroyed. The `deferredDeinit` function schedules the destruction of a `ChunkMesh` for later, using garbage collection. The `isEmpty` method checks if the mesh contains any vertices. The `initLight` function initializes lighting data by identifying light-emitting blocks and propagating their effects. The `generateLightingData` method adds the mesh to storage, initializes lighting, and ensures that surrounding chunks have finished their light generation steps before proceeding.
+The ChunkMesh struct is responsible for handling the rendering and lighting of chunks within the game world. It includes fields for position, size, chunk data, mesh information, lighting data, and various flags to track the state of meshing and lighting processes. The `init` function initializes a new ChunkMesh instance by loading chunk data and setting up necessary structures. The `privateDeinit` and `deferredDeinit` functions handle cleanup, freeing allocated resources. The `isEmpty` method checks if the chunk has no vertices to render. The `initLight` function calculates light-emitting blocks and propagates lighting within the chunk. The `generateLightingData` function adds the mesh to storage, initializes lighting data, and ensures that surrounding chunks have completed their lighting generation before proceeding.
 
 ## Code Example
 ```zig
@@ -19,11 +19,11 @@ pub fn isEmpty(self: *const ChunkMesh) bool {
 ```
 
 ## Related Questions
-- What is the purpose of the `ChunkMesh` struct?
-- How does the `init` function initialize a new `ChunkMesh`?
-- What resources are cleaned up in the `privateDeinit` method?
-- How is the destruction of a `ChunkMesh` scheduled for later?
-- What conditions must be met before generating lighting data for a chunk mesh?
-- How does the `isEmpty` method determine if a chunk mesh contains any vertices?
+- What is the purpose of the `init` function in the ChunkMesh struct?
+- How does the `privateDeinit` function handle resource cleanup?
+- What conditions must be met for a chunk to be considered empty?
+- Describe the process of initializing lighting data within a ChunkMesh.
+- How does the `generateLightingData` function ensure surrounding chunks have finished their lighting generation?
+- What role do mutexes play in managing access to shared resources in the ChunkMesh struct?
 
 *Source: unknown | chunk_id: codebase_src_renderer_chunk_meshing.zig_chunk_4*

@@ -1,22 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_cave_mantle_ash.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** chance, soilCreep, structures, caves, ground_patch, caveModels
-**Symbols:** cave_mantle_ash, chance, caves, soilCreep, ground_structure, structures, id, block, size, size_variation, baseSlope, topSlope, cubyz:stalagmite, cubyz:pyrolite/rough, cubyz:sbb, structure, placeMode, cubyz:cave/mantle/ruins, cubyz:ground_patch, width, variation, depth, smoothness, cubyz:magma, caveModels, minAmount, maxAmount, minRadius, maxRadius, minHeight, maxHeight, mode
-**Concepts:** biome configuration, structure placement, ground patch generation, cave model creation
+**Keywords:** cave generation, structure placement, biome settings, stalagmites, magma patches
+**Concepts:** world_generation, biome configuration
 
 ## Summary
-Cave Mantle Ash Biome Configuration
+Defines configuration for the 'cave_mantle_ash' biome in Cubyz, including cave generation parameters and structures.
 
 ## Explanation
-This chunk defines the configuration for a cave mantle ash biome, specifying various parameters such as chance of occurrence, soil creep rate, ground structure, structures to place, and cave models. It includes details on the types of structures like stalagmites and sbb ruins, their placement modes, and the characteristics of ground patches and caves.
+This chunk is a configuration file for the 'cave_mantle_ash' biome. It specifies various properties such as the chance of occurrence, soil creep, ground structure, and different types of structures that can appear within caves. The configurations include stalagmites, ruins, and magma patches. Additionally, it defines cave models with cylindrical shapes, specifying their dimensions and generation modes.
 
 ## Related Questions
-- What is the chance of occurrence for this cave mantle ash biome?
-- How many stalagmite structures are defined in the configuration?
-- What block is used for the stalagmite structure with id 'cubyz:stalagmite'?
-- What is the maximum height of a cylinder cave model?
-- What is the minimum amount of cylinders to generate?
-- What is the maximum amount of cylinders to generate?
+- What is the chance of occurrence for the 'cave_mantle_ash' biome?
+- How many different types of structures are defined in this biome configuration?
+- What is the minimum and maximum radius of the cylindrical cave models?
+- Which block type is used for the stalagmites in this biome?
+- What is the chance of placing a ground patch with magma blocks?
+- How does the soil creep parameter affect the biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_cave_mantle_ash.zig.zon_chunk_0*

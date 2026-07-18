@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_glass_green.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** light absorption, texture mapping, block definition, green glass, Cubyz assets
-**Concepts:** block properties
+**Keywords:** absorbedLight, texture, color code, block definition, visual properties
+**Concepts:** block properties, light absorption, texturing
 
 ## Summary
-Defines properties for a green glass block.
+Defines properties for a green glass block in the Cubyz voxel engine.
 
 ## Explanation
-This chunk defines the properties of a green glass block in Cubyz. It specifies the absorbed light color and the texture file path.
+This chunk specifies the visual and light absorption properties of a green glass block. The `absorbedLight` field is set to `0xd966d9`, which likely represents a hexadecimal color code indicating how much light the block absorbs. The `texture` field points to the texture file `cubyz:glass/green`, specifying the visual appearance of the block.
 
 ## Related Questions
-- What is the absorbed light color of the green glass block?
-- Which texture file is used for the green glass block?
-- How is the green glass block defined in the Cubyz assets?
-- What properties are specified for the green glass block in this configuration?
-- Is there any code execution or logic involved in defining the green glass block?
-- Can the absorbed light color of the green glass block be changed?
+- What is the absorbed light value for the green glass block?
+- Which texture file is associated with the green glass block?
+- How does the absorbedLight value affect the block's appearance in the game?
+- Where is the texture file for the green glass block located?
+- Can the absorbedLight value be changed to modify the block's behavior?
+- What other properties can be defined for a block in this configuration format?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_glass_green.zig.zon_chunk_0*

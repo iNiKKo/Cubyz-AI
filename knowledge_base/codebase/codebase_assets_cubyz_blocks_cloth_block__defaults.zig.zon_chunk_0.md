@@ -5,17 +5,17 @@
 **Concepts:** block properties, default configuration
 
 ## Summary
-Defines default properties for a cloth block in Cubyz, including tags, health, drops, and rotation.
+Defines default properties for a cloth block in Cubyz.
 
 ## Explanation
-This chunk defines the default configuration for a cloth block in the Cubyz game engine. It specifies that the block has two tags: 'cloth' and 'cuttable'. The block's health is set to 4, indicating how much damage it can take before breaking. The drops section indicates that when the block is destroyed, it will drop items automatically determined by the game's default rules. The rotation property is set to 'cubyz:stairs', suggesting that the block can be rotated like stairs.
+This chunk specifies the configuration defaults for a cloth block, including its tags, health, drop behavior, and rotation type. The tags indicate that the block is both 'cloth' and 'cuttable'. The block has a health value of 4, meaning it can take four hits before breaking. The drops array indicates that when the block is broken, it will drop items automatically determined by the game's default rules. The rotation property specifies that the block should use the 'stairs' rotation type, which likely affects how the block appears and interacts with adjacent blocks.
 
 ## Related Questions
-- What are the tags associated with the cloth block?
+- What are the tags assigned to the cloth block?
 - How much health does the cloth block have?
-- What items will drop when the cloth block is destroyed?
-- How can the cloth block be rotated?
-- Where is the configuration for the cloth block defined?
-- What is the default behavior of item drops for the cloth block?
+- What determines the items dropped when the cloth block is broken?
+- Which rotation type is used for the cloth block?
+- Where is this configuration data typically stored in Cubyz?
+- Can the default drop behavior of the cloth block be modified?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_cloth_block__defaults.zig.zon_chunk_0*

@@ -1,15 +1,15 @@
 # [easy/codebase_src_gui_windows_sign_editor.zig] - Chunk 0
 
 **Type:** api
-**Keywords:** GuiWindow, TextInput, VerticalList, deinit, openFromSignData, apply, onOpen, onClose, mouse grab, text buffer parser
+**Keywords:** GUI components, text input, button click, window open/close, data update
 **Symbols:** window, textComponent, padding, pos, oldText, deinit, openFromSignData, apply, onOpen, onClose
-**Concepts:** GUI window management, sign editing interface, vertical list layout, input validation, block entity text update
+**Concepts:** GUI window management, sign text editing, user input handling, window lifecycle
 
 ## Summary
-This chunk defines the GUI window for editing signs, including its initialization, deinitialization, and event handlers for opening from sign data and applying changes.
+Handles the logic for a GUI window used to edit sign text in the Cubyz voxel engine.
 
 ## Explanation
-The chunk declares a public GuiWindow instance named 'window' with specific content size and mouse grab settings. It imports several components: Button, Label, TextInput, VerticalList, and the main module's Vec2f type. The window is initialized in the 'onOpen' function where it creates a VerticalList containing a TextInput (initialized with oldText) and an Apply button; both TextInput and the button share the same apply closure that validates text length limits before updating the block entity via main.block_entity.BlockEntityTypes.@
+This chunk defines the behavior and structure of a GUI window specifically designed for editing sign text. It includes functions for opening and closing the window, applying changes to the sign's text, and handling user input through components like TextInput and Button. The window manages its own content size and position, and it interacts with other parts of the engine to update sign data when changes are applied.
 
 ## Code Example
 ```zig
@@ -20,12 +20,11 @@ pub fn deinit() void {
 ```
 
 ## Related Questions
-- What is the content size of the sign editor window?
-- How does the apply function validate text length limits?
-- Which components are added to the VerticalList in onOpen?
-- What happens when a sign is opened from existing data via openFromSignData?
-- Where is oldText allocated and freed during the window lifecycle?
-- Does the Apply button share its action with the TextInput's newline handler?
-- How does deinit ensure no memory leaks occur after closing the window?
+- How does the `openFromSignData` function initialize the sign editor window?
+- What is the purpose of the `apply` function in this chunk?
+- How does the `onOpen` function set up the GUI components for the sign editor?
+- What happens when the user clicks the 'Apply' button in the sign editor?
+- How is memory managed in this chunk, particularly with the `deinit` function?
+- What are the constraints on the text length that can be entered into the sign editor?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_sign_editor.zig_chunk_0*

@@ -1,28 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_rare_winter_wonderland_base.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome config, rare winter wonderland, structures, placement mode, chance value
-**Symbols:** RareWinterWonderlandBase
-**Concepts:** biome, structure, chance, placeMode
+**Keywords:** biome settings, structure placement, generation probability, radius range, degradable structures
+**Concepts:** world generation, biome configuration
 
 ## Summary
-Biome configuration for Rare Winter Wonderland base.
+Defines configuration for the Winter Wonderland biome, including tags, generation chance, radius range, and structures with their placement modes and probabilities.
 
 ## Explanation
-Defines a rare winter wonderland biome with specific structures and placement modes, including chance values for each structure.
+This chunk is a configuration file in Zig's ZON format that specifies details for the Winter Wonderland biome. It includes tags like 'snowy' to categorize the biome, a generation chance of 0.01, and defines a range for the biome's radius from 256 to 320 units. The chunk also lists several structures that can appear within this biome, each with an ID, structure type, placement mode (degradable), and individual chances of appearing. These configurations are used by the game engine to generate the biome and place its features accordingly.
 
 ## Related Questions
-- What is the name of the biome?
-- How many structures are defined for this biome?
-- What is the minimum radius for this biome?
-- What is the maximum radius for this biome?
-- Which structure has the highest chance value?
-- What is the place mode for the 'cubyz:candy_cane/large' structure?
-- How many structures are degradable in this biome?
-- What is the chance value for the 'cubyz:tree/coniferous/pine/loblolly' structure?
-- Which structure has the lowest chance value?
-- What is the place mode for the 'cubyz:candy_cane/thin/big' structure?
-- How many structures have a chance value greater than 0.01?
-- What is the minimum radius and maximum radius of this biome?
+- What is the generation chance for the Winter Wonderland biome?
+- How many different structures are defined for the Winter Wonderland biome?
+- What is the radius range for the Winter Wonderland biome?
+- Which structures in the Winter Wonderland biome have a degradable placement mode?
+- What is the chance of placing a 'cubyz:candy_cane/large' structure in the Winter Wonderland biome?
+- How does the configuration file specify the appearance of trees in the Winter Wonderland biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_rare_winter_wonderland_base.zig.zon_chunk_0*

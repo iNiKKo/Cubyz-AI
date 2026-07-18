@@ -1,23 +1,35 @@
 # [easy/codebase_src_gui_windows_debug_vulkan_info.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** GuiWindow, vulkan.version, interestingExtensions, std.meta.fieldNames, draw.print, @field, relativePosition, contentSize, isHud, showTitleBar
-**Symbols:** onOpen, window, render
-**Concepts:** debug GUI window, Vulkan version display, extension enumeration, draw API usage
+**Keywords:** Vulkan, Info Window, Extensions, Render Function, Initialization
+**Symbols:** graphics, draw, Texture, Vec2f, TaskType, vulkan, GuiWindow, GuiComponent
+**Concepts:** Vulkan Info Window, Vulkan Version, Interesting Extensions
 
 ## Summary
-This chunk defines a debug GUI window that renders Vulkan version and enabled extension information.
+Vulkan Info Window
 
 ## Explanation
-The chunk imports the main module to access graphics, draw, vec, utils, and vulkan submodules; it also imports the gui module for GuiWindow and GuiComponent. It declares pub fn onOpen() which clears the threadPool.performance data. It defines a global pub var window of type GuiWindow with relativePosition set to two identical self-attached upper points, contentSize computed from Vec2f{160, 8 + 8*std.meta.fieldNames(@TypeOf(vulkan.interestingExtensions)).len}, and several boolean flags (isHud=false, showTitleBar=false, hasBackground=false, hideIfMouseIsGrabbed=false). The pub fn render() function iterates over vulkan.version.major/minor using draw.print, then comptime loops over std.meta.fieldNames(@TypeOf(vulkan.interestingExtensions)) to check each extension via @field and prints present extensions with draw.print.
+This chunk defines a Vulkan info window that displays the Vulkan version and list of interesting extensions present in the engine. It initializes the window's position, size, and properties, and provides a render function to display the information.
+
+## Code Example
+```zig
+pub fn onOpen() void {
+	main.threadPool.performance.clear();
+}
+```
 
 ## Related Questions
-- What does onOpen() do in this chunk?
-- How is the window contentSize calculated?
-- Which fields of vulkan.interestingExtensions are checked at runtime?
-- Does render() print all extensions or only enabled ones?
-- Are any boolean flags set to true by default in window?
-- What imports does this chunk depend on from main.graphics?
-- How is the relativePosition configured for the GuiWindow?
+- What is the purpose of the `onOpen` function in this chunk?
+- How does the `window` variable get initialized in this chunk?
+- What are the properties of the `window` variable?
+- What is the render function responsible for in this chunk?
+- What data structures are used to store Vulkan extensions in this chunk?
+- What is the logic behind checking and displaying Vulkan extensions in the render function?
+- How does the `main.threadPool.performance.clear()` call relate to the Vulkan info window functionality?
+- What is the relationship between the Vulkan info window and the engine's performance tracking?
+- What are the conditions under which the Vulkan info window might be displayed?
+- What is the purpose of the `GuiWindow` struct in this chunk?
+- How does the `GuiComponent` struct relate to the Vulkan info window?
+- What is the role of the `draw.print` function in displaying information in the Vulkan info window?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_debug_vulkan_info.zig_chunk_0*

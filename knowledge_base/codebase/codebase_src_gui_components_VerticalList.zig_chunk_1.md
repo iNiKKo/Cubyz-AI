@@ -1,53 +1,44 @@
 # [medium/codebase_src_gui_components_VerticalList.zig] - Chunk 1
 
-**Type:** implementation
-**Keywords:** rendering, scrollbar, visibility, hit testing, translation, viewport, children iteration, mouse position, deferred restore, reverse iterator
-**Symbols:** render, mainButtonPressed, mainButtonReleased
-**Concepts:** UI rendering, scrollbar handling, viewport culling, reverse-order hit testing, mouse interaction, translation management, clip region restoration
+**Type:** api
+**Keywords:** mouse events, GUI components, scrolling, event handling, position adjustment
+**Symbols:** VerticalList, VerticalList.mainButtonPressed, VerticalList.mainButtonReleased
+**Concepts:** GUI component interaction, scrollbar handling, event propagation
 
 ## Summary
-Implements rendering and mouse interaction for a scrollable vertical list UI component, including translation/clip management, scrollbar handling, child visibility culling, and reverse-order hit testing.
+Handles mouse button press and release events for a vertical list GUI component, including interaction with child components and optional scrollbar.
 
 ## Explanation
-The render method saves the current draw translation and clip region, computes an adjusted position by subtracting the visible offset from the scrollbar state, then iterates over children in forward order, skipping any whose bounding box lies outside the viewport. The mainButtonPressed method first processes the scrollbar if enabled (returning handled immediately on hit), then reverses the iteration order of children to prioritize topmost elements and calls each child's mainButtonPressed, returning handled on the first match; otherwise returns ignored. The mainButtonReleased method similarly applies the same offset computation, forwards the release event to the scrollbar, then iterates all children in forward order to propagate releases.
+The chunk defines two methods for the `VerticalList` struct: `mainButtonPressed` and `mainButtonReleased`. The `mainButtonPressed` method checks if the mouse position is within the bounds of any child component or the scrollbar, adjusting positions based on scrolling state. It returns `.handled` if an interaction is detected, otherwise `.ignored`. The `mainButtonReleased` method similarly processes release events, ensuring that all child components receive the event regardless of whether they were interacted with.
 
 ## Code Example
 ```zig
-pub fn render(self: *VerticalList, mousePosition: Vec2f) void {
-	const oldTranslation = draw.setTranslation(self.pos);
-	defer draw.restoreTranslation(oldTranslation);
-	const oldClip = draw.setClip(self.size);
-	defer draw.restoreClip(oldClip);
+pub fn mainButtonPressed(self: *VerticalList, mousePosition: Vec2f) main.callbacks.Result {
 	var shiftedPos = self.pos;
 	if (self.scrollBarEnabled) {
 		const diff = self.childrenHeight - self.maxHeight;
 		shiftedPos[1] -= diff*self.scrollBar.currentState;
-		self.scrollBar.render(mousePosition - self.pos);
-	}
-	_ = draw.setTranslation(shiftedPos - self.pos);
-
-	for (self.children.items) |*child| {
-		const itemYPos = child.pos()[1];
-		const adjustedYPos = itemYPos + shiftedPos[1] - self.pos[1];
-
-		if (adjustedYPos + 2*child.size()[1] < 0 or adjustedYPos - child.size()[1] > self.maxHeight) {
-			continue;
+		if (GuiComponent.contains(self.scrollBar.pos, self.scrollBar.size, mousePosition - self.pos)) {
+			if (self.scrollBar.mainButtonPressed(mousePosition - self.pos) == .handled) return .handled;
 		}
-		child.render(mousePosition - shiftedPos);
 	}
+	// reverse order of rendering, the last-rendered element is the first one that we should try to interact with
+	var iterator = std.mem.reverseIterator(self.children.items);
+	while (iterator.next()) |child| {
+		if (GuiComponent.contains(child.pos() + shiftedPos, child.size(), mousePosition)) {
+			if (child.mainButtonPressed(mousePosition - shiftedPos) == .handled) return .handled;
+		}
+	}
+	return .ignored;
 }
 ```
 
 ## Related Questions
-- How does the render method handle translation and clip restoration?
-- What condition determines whether a child is culled during rendering?
-- Why are children iterated in reverse order for mainButtonPressed?
-- Does the scrollbar receive mouse events before or after children in mainButtonPressed?
-- How is the shifted position computed when the scrollbar is enabled?
-- What does returning .handled signify in mainButtonPressed?
-- Is mainButtonReleased forwarded to all children regardless of visibility?
-- Are any draw API calls exposed outside this file for translation/clip management?
-- Does the render method use mousePosition directly or relative coordinates?
-- How is the scrollbar's currentState used to offset child positions?
+- How does the `mainButtonPressed` method handle interactions with child components?
+- What is the purpose of adjusting positions based on scrolling state in the `mainButtonPressed` method?
+- How does the `mainButtonReleased` method ensure that all child components receive release events?
+- What conditions determine whether an interaction is `.handled` or `.ignored` in the `mainButtonPressed` method?
+- How does the chunk handle mouse button press and release events for a vertical list GUI component?
+- What role does the scrollbar play in handling mouse interactions within the vertical list?
 
 *Source: unknown | chunk_id: codebase_src_gui_components_VerticalList.zig_chunk_1*

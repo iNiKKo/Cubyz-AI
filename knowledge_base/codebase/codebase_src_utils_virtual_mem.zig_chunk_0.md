@@ -1,33 +1,40 @@
 # [medium/codebase_src_utils_virtual_mem.zig] - Chunk 0
 
-**Type:** implementation
-**Keywords:** virtual memory, memory reservation, dynamic resizing, pointer stability, platform-specific code
-**Symbols:** reserveMemory, commitMemory, releaseMemory, VirtualList
-**Concepts:** virtual memory management, dynamic memory allocation, memory reservation
+**Type:** api
+**Keywords:** memory reservation, memory commitment, memory release, Windows API, POSIX systems, error handling
+**Symbols:** reserveMemory, commitMemory, releaseMemory
+**Concepts:** virtual memory management
 
 ## Summary
-The chunk implements a virtual memory list that reserves continuous memory without committing it, allowing for dynamic resizing without pointer invalidation.
+Provides functions to reserve, commit, and release virtual memory on both Windows and POSIX systems.
 
 ## Explanation
-This chunk defines a `VirtualList` type that manages a continuous region of virtual memory. It provides methods to reserve, commit, and release memory, ensuring that the list can grow dynamically without invalidating existing pointers. The `reserveMemory` function allocates a block of virtual memory, while `commitMemory` makes specific pages within this block accessible. The `releaseMemory` function frees the allocated memory. The `VirtualList` struct includes methods for initialization, deinitialization, and managing the list's capacity and length, ensuring that operations like adding elements or resizing are handled efficiently without unnecessary memory allocation.
+This chunk defines three main functions for managing virtual memory: `reserveMemory`, `commitMemory`, and `releaseMemory`. Each function handles the respective operation differently based on the operating system. On Windows, it uses the `VirtualAlloc` and `VirtualFree` functions from the Windows API to manage memory. On POSIX systems, it uses `mmap` and `munmap` for reservation and release, and `mprotect` for committing memory. Error handling is consistent across both platforms, logging errors and panicking with 'Out of Memory' if any operation fails.
 
 ## Code Example
 ```zig
-fn init() @This() {
-	return .{
-		.mem = @ptrCast(reserveMemory(maxSizeBytes())),
-		.len = 0,
-		.committedCapacity = 0,
-	};
+fn reserveMemory(len: usize) [*]align(page_size_min) u8 {
+	if (builtin.os.tag == .windows) {
+		return @ptrCast(@alignCast(c.VirtualAlloc(null, len, c.MEM_RESERVE, c.PAGE_READWRITE) orelse {
+			const err = std.os.windows.GetLastError();
+			std.log.err("Got error while reserving virtual memory of size {}: {s}", .{len, @tagName(err)});
+			@panic("Out of Memory");
+		}));
+	} else {
+		return (std.posix.mmap(null, len, .{}, .{.TYPE = .PRIVATE, .ANONYMOUS = true, .NORESERVE = true}, -1, 0) catch |err| {
+			std.log.err("Got error while reserving virtual memory of size {}: {s}", .{len, @errorName(err)});
+			@panic("Out of Memory");
+		}).ptr;
+	}
 }
 ```
 
 ## Related Questions
-- How does the `reserveMemory` function allocate memory on different operating systems?
-- What is the purpose of the `commitMemory` function in the `VirtualList` implementation?
-- How does the `deinit` method handle memory release in the `VirtualList`?
-- What ensures that pointers remain valid when adding elements to the `VirtualList`?
-- How does the `ensureCapacity` method manage memory commitment in the list?
-- What is the role of `std.mem.alignForward` in the `VirtualList` implementation?
+- How does the `reserveMemory` function work on Windows?
+- What is the difference between reserving and committing memory?
+- How is error handling implemented in this chunk?
+- Which functions are used for memory management on POSIX systems?
+- Can you explain the purpose of `@ptrCast` and `@alignCast` in the code?
+- What happens if an error occurs during memory reservation?
 
 *Source: unknown | chunk_id: codebase_src_utils_virtual_mem.zig_chunk_0*

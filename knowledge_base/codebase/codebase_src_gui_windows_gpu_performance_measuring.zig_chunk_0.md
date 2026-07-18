@@ -1,37 +1,35 @@
 # [easy/codebase_src_gui_windows_gpu_performance_measuring.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** OpenGL, queries, performance, Cubyz, GUI
-**Symbols:** Samples, names, buffers, curBuffer, queryObjects, activeSample, window, render
-**Concepts:** performance measurement, OpenGL queries, GUI rendering performance
+**Keywords:** OpenGL, query objects, performance measurement, GUI window, rendering stages
+**Symbols:** Samples, names, buffers, curBuffer, queryObjects, activeSample, init, deinit, startQuery, stopQuery, window
+**Concepts:** GPU performance measurement, OpenGL query objects, GUI rendering
 
 ## Summary
-Performance measurement for Cubyz GUI windows on Windows GPU
+This chunk manages GPU performance measurement for various rendering stages in the Cubyz engine.
 
 ## Explanation
-This chunk initializes and manages performance queries for rendering samples in the Cubyz GUI. It uses OpenGL to measure time elapsed during various rendering stages and displays the results.
+The chunk defines an enumeration `Samples` listing different rendering samples to measure. It initializes OpenGL query objects to track time elapsed for each sample. Functions `startQuery` and `stopQuery` manage starting and stopping these measurements. The `render` function updates a GUI window displaying the measured times for each sample, cycling through multiple buffers to average results over time.
 
 ## Code Example
 ```zig
-pub fn startQuery(sample: Samples) void {
-	std.debug.assert(activeSample == null); // There can be at most one active measurement at a time.
-	activeSample = sample;
-	c.glBeginQuery(c.GL_TIME_ELAPSED, queryObjects[curBuffer][@intFromEnum(sample)]);
+pub fn init() void {
+	for (&queryObjects) |*buf| {
+		c.glGenQueries(buf.len, buf);
+		for (buf) |queryObject| { // Start them to get an initial value.
+			c.glBeginQuery(c.GL_TIME_ELAPSED, queryObject);
+			c.glEndQuery(c.GL_TIME_ELAPSED);
+		}
+	}
 }
 ```
 
 ## Related Questions
-- How does the performance measurement system work in Cubyz?
-- What are the different rendering samples measured by this system?
-- Where is the GUI window defined in this codebase?
-- How many buffers are used for performance queries?
-- What is the purpose of the `activeSample` variable?
-- How are OpenGL queries started and stopped?
-- What is the format of the time results retrieved from OpenGL queries?
-- Where is the total rendering time displayed on the GUI?
-- How does the code handle multiple active measurements simultaneously?
-- What is the purpose of the `window` struct in this codebase?
-- How are the performance query objects created and deleted?
-- What is the default size of the GUI window?
+- What are the different rendering samples measured by this chunk?
+- How many buffers are used for averaging results?
+- What function initializes OpenGL query objects?
+- How does the chunk manage starting and stopping performance measurements?
+- What GUI window is updated with the measured times?
+- How are the measured times displayed in the GUI window?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_gpu_performance_measuring.zig_chunk_0*

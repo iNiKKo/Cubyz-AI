@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_glass_black.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** absorbedLight, texture, black glass, Cubyz voxel engine, block definition
-**Concepts:** block properties, lighting, texturing
+**Keywords:** absorbedLight, texture, black glass, Cubyz blocks, properties definition
+**Concepts:** block properties, light absorption, texture mapping
 
 ## Summary
-Defines properties for a black glass block in the Cubyz voxel engine.
+Defines properties for a black glass block in Cubyz.
 
 ## Explanation
-This chunk specifies the visual and lighting properties of a black glass block. The `absorbedLight` field is set to `0xe6e6e6`, which represents the color value that the block absorbs light as. The `texture` field points to the texture file used for rendering the black glass block, located at `cubyz:glass/black`. This configuration ensures that the block appears as black glass with the specified lighting behavior.
+This chunk defines the properties of a black glass block, including its light absorption and texture path. The `absorbedLight` field specifies the color value that represents how much light the block absorbs, while the `texture` field provides the path to the texture file used for rendering the block.
 
 ## Related Questions
-- What is the color value for absorbed light in the black glass block?
+- What is the light absorption value for the black glass block?
 - Which texture file is used for rendering the black glass block?
-- How does the `absorbedLight` property affect the appearance of the block?
-- Where is the texture file for the black glass block located?
-- What are the properties defined for the black glass block in this configuration?
-- How does this chunk contribute to the visual representation of blocks in Cubyz?
+- How is the absorbedLight property defined in this chunk?
+- Where is the texture path specified for the black glass block?
+- What does the 'absorbedLight' field represent in this configuration?
+- Can you provide the texture path for the black glass block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_glass_black.zig.zon_chunk_0*

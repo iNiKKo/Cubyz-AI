@@ -1,22 +1,22 @@
 # [src/blocks.zig] - PR #2987 review diff
 
 **Type:** review
-**Keywords:** nullable, non-nullable, default value, allocation, memory efficiency
-**Symbols:** register, zon, _light, _absorption, _degradable, _selectionRule, SelectionRule, SelectionCapability
-**Concepts:** memory management, performance optimization
+**Keywords:** nullable, non-nullable, default capability, allocation, architectural review
+**Symbols:** register, zon, SelectionRule, selectionCapabilities
+**Concepts:** nullability, default values, code simplicity
 
 ## Summary
-The code introduces a new variable `selectionCapabilities` and suggests using a non-nullable default value instead of a nullable one.
+The change introduces a new variable `selectionCapabilities` and suggests using a default `.all` capability instead of a nullable value.
 
 ## Explanation
-The reviewer recommends changing the `selectionRule` from being nullable to using a default `.all` capability. This avoids unnecessary allocation by directly assigning a reference to an array containing `.all`. The architectural reasoning behind this change is to simplify memory management and improve performance by eliminating potential null checks and allocations.
+The reviewer recommends replacing the nullable `SelectionRule` with a non-nullable default capability, specifically `.all`. This change aims to simplify the code by avoiding null checks and potential allocation issues. The reviewer believes that using a default capability is more architecturally sound and easier to manage.
 
 ## Related Questions
-- Why is the reviewer suggesting a non-nullable default value?
-- What are the potential benefits of using `.all` as the default selection capability?
+- What is the purpose of the `selectionCapabilities` variable?
+- Why does the reviewer prefer a `.all` capability over a nullable value?
 - How does this change impact memory allocation in the code?
-- Can you explain the architectural implications of avoiding null checks?
-- What is the purpose of the `SelectionCapability` array in this context?
-- How might this change affect existing code that relies on nullable selection rules?
+- Can you explain the benefits of using a default capability instead of nullability?
+- What potential issues might arise from changing to a non-nullable default capability?
+- How does this modification affect the overall architecture of the `blocks.zig` file?
 
 *Source: unknown | chunk_id: github_pr_2987_comment_3196678031*

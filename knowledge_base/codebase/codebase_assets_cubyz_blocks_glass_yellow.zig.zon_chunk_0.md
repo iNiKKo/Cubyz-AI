@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_glass_yellow.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** light absorption, texture path, block definition, color representation, hexadecimal values
-**Concepts:** block properties, texture mapping
+**Keywords:** light absorption, texture mapping, block definition, yellow glass, Cubyz assets
+**Concepts:** block properties
 
 ## Summary
 Defines properties for a yellow glass block.
 
 ## Explanation
-This chunk defines the properties of a yellow glass block in Cubyz. It specifies the absorbed light color and the texture file path. The `absorbedLight` field is set to a hexadecimal value representing the color, and the `texture` field points to the image file used for rendering the block.
+This chunk defines the properties of a yellow glass block in Cubyz. It specifies the absorbed light color and the texture file path.
 
 ## Related Questions
 - What is the absorbed light color of the yellow glass block?
-- Which texture file is used for the yellow glass block?
-- How is the color represented in the configuration?
-- Where is the texture file located relative to the configuration?
-- Is there any other property defined for the yellow glass block besides its color and texture?
-- Can this configuration be modified to change the appearance of the yellow glass block?
+- Which texture file is associated with the yellow glass block?
+- How is the light absorption property defined for this block?
+- Where is the texture file for the yellow glass block located?
+- What does the .zon file format represent in Cubyz?
+- How are block properties typically defined in Cubyz?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_glass_yellow.zig.zon_chunk_0*

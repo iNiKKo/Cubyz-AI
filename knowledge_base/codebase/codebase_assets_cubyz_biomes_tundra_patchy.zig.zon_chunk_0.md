@@ -1,26 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_tundra_patchy.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** cold, barren, dry, ground_patch, boulder, flower_patch, tundra, music reference, chance weighting, block types
-**Symbols:** properties, minRadius, maxRadius, minHeight, chance, maxHeight, hills, roughness, mountains, music, structures, parentBiomes
-**Concepts:** biome configuration, structure generation, environmental properties, patch definition, block placement rules
+**Keywords:** biome properties, structure definitions, parent biomes, music association, ground patches, boulders, flower patches
+**Concepts:** world generation, biome configuration
 
 ## Summary
-This chunk defines the configuration data for a tundra biome patch in Cubyz, specifying environmental properties, generation parameters, and structure definitions.
+Defines properties and structures for a Tundra Patchy biome in Cubyz.
 
 ## Explanation
-The chunk is a .zon file containing static configuration data with no executable logic. It declares a single root object with a .properties field listing cold, barren, and dry attributes; numeric fields for minRadius (60), maxRadius (100), minHeight (20), maxHeight (40), hills (15), roughness (15), mountains (15); a chance field set to 0; and a music string pointing to cubyz:sinanimea/sunrise. The .structures array defines multiple structure entries: two ground_patch entries with id cubyz:ground_patch, different block types (cubyz:gravel and cubyz:grass/dry), each having chance 0.25/0.33, width 5, variation 4, depth 1, smoothness 0.5; three boulder entries all using block cubyz:slate/smooth with varying chances (0.008, 0.016, 0.032) and size parameters (size 5/2/1 with corresponding size_variance values); one flower_patch entry referencing blocks array containing cubyz:grass/vegetation/dry, chance 0.025, width 5, variation 8, density 0.2, priority 0.1. The .parentBiomes field contains a single parent biome entry with id cubyz:tundra/base and chance value 5.
+This chunk defines the configuration for a specific biome type called 'Tundra Patchy' within the Cubyz voxel engine. It specifies various properties such as temperature, humidity, radius, height, and roughness characteristics of the biome. Additionally, it lists several structures that can appear within this biome, including ground patches with different blocks, boulders of varying sizes, and flower patches. The chunk also references a parent biome and associated music.
 
 ## Related Questions
-- What environmental properties are assigned to the tundra biome patch defined in this configuration?
-- Which block type is used for ground patches when the chance is 0.25 versus 0.33 in this tundra definition?
-- How many distinct boulder structure entries are configured with different size parameters and chances?
-- What music track is referenced by the tundra biome patch configuration string?
-- Which parent biome ID is listed under the parentBiomes field for this tundra patch?
-- What is the maximum radius value specified for generating the tundra biome patch area?
-- How does the flower_patch structure entry differ from ground_patch entries in terms of block specification and density?
-- What roughness and hills values are set for terrain generation in this tundra configuration?
-- Which block ID appears in the structures array with a chance of 0.032 and size parameter of 1?
-- Are any structure definitions in this chunk using an array of blocks instead of a single block field?
+- What are the temperature characteristics of the Tundra Patchy biome?
+- Which structures can appear in the Tundra Patchy biome?
+- What is the music associated with the Tundra Patchy biome?
+- How many different types of ground patches are defined for this biome?
+- What is the chance of a boulder appearing in the Tundra Patchy biome?
+- What is the size and variance of the boulders in this biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_tundra_patchy.zig.zon_chunk_0*

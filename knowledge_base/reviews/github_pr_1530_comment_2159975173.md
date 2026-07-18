@@ -1,22 +1,26 @@
 # [src/server/terrain/simple_structures/SbbGen.zig] - PR #1530 review diff
 
 **Type:** review
-**Keywords:** rotation, SbbGen, structureRef, loadModel, error handling, unknown rotation, structure ID, ZonElement, NeverFailingAllocator
-**Symbols:** SbbGen, structureRef, placeMode, rotation, getHash, loadModel, NeverFailingAllocator, ZonElement, sbb.StructureBuildingBlock, Blueprint.PasteMode, sbb.Rotation
-**Concepts:** error handling, data validation, parameter parsing
+**Keywords:** SbbGen, rotation, loadModel, parameters, ZonElement, sbb.Rotation, panicWithMessage, UnknownString, error handling, validation
+**Symbols:** SbbGen, structureRef, placeMode, rotation, getHash, loadModel, NeverFailingAllocator, ZonElement, sbb.StructureBuildingBlock, Blueprint.PasteMode, sbb.Rotation, main.utils.panicWithMessage
+**Concepts:** error handling, parameter validation, structure generation, rotation management
 
 ## Summary
-Added rotation parameter handling to SbbGen and improved error messages for missing or invalid structure IDs.
+The `SbbGen` struct now includes a `rotation` field to handle rotations for structure building blocks. The `loadModel` function has been updated to parse and validate the rotation parameter from the input parameters.
 
 ## Explanation
-The change introduces a new `rotation` field in the `SbbGen` struct to handle rotations of structure building blocks. The `loadModel` function now retrieves this rotation from parameters, converting it using `sbb.Rotation.fromZon`. If an unknown string is encountered during rotation parsing, an error message is logged with the specific structure ID and rotation value. This update enhances error handling by providing more informative messages when loading fails due to missing or invalid data.
+This change introduces a new `rotation` field in the `SbbGen` struct, which is used to manage the orientation of structure building blocks during generation. The `loadModel` function has been modified to extract this rotation information from the provided parameters. If the rotation parameter is missing or invalid, the function now logs an error message and panics with a descriptive error message. This ensures that any issues related to rotation are clearly identified and handled, improving the robustness of the structure generation process.
 
 ## Related Questions
 - What is the purpose of the `rotation` field in the `SbbGen` struct?
-- How does the function handle errors when parsing the rotation parameter?
-- What happens if an unknown string is provided for the rotation?
-- Why was it necessary to improve error messages for missing or invalid structure IDs?
-- Can you explain how the `loadModel` function retrieves and processes the rotation parameter?
-- What changes were made to the error logging in the `loadModel` function?
+- How does the `loadModel` function handle missing or invalid rotation parameters?
+- What error message is logged if an unknown rotation is specified?
+- How does this change improve the robustness of structure generation?
+- Can you explain the use of `NeverFailingAllocator` in the `loadModel` function?
+- What is the role of `Blueprint.PasteMode` in the `SbbGen` struct?
+- How does the `getHash` function utilize the new `rotation` field?
+- What are the potential implications of adding a rotation parameter to structure generation?
+- Can you provide an example of how to specify a valid rotation in the input parameters?
+- How does this change affect backwards compatibility with existing structures?
 
 *Source: unknown | chunk_id: github_pr_1530_comment_2159975173*

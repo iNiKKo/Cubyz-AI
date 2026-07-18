@@ -1,33 +1,30 @@
 # [hard/codebase_src_gui_components_TextInput.zig] - Chunk 1
 
 **Type:** implementation
-**Keywords:** mouse interaction, keyboard handling, word-based navigation, text buffer, cursor visibility
-**Symbols:** textPos, TextInput, mainButtonReleased, select, deselect, reloadText, characterType, moveCursorLeft, left, moveCursorRight, right
-**Concepts:** GUI component, text input, cursor movement, text selection, scrolling
+**Keywords:** cursor, selection, keyboard modifiers, text buffer, vertical scrolling
+**Symbols:** mainButtonReleased, select, deselect, reloadText, characterType, moveCursorLeft, left, moveCursorRight, right, moveCursorVertically
+**Concepts:** text input, cursor movement, selection handling, scrolling
 
 ## Summary
-This chunk implements the logic for a text input component in a GUI system, handling mouse and keyboard interactions to manage text selection, cursor movement, and scrolling.
+The TextInput component handles text input interactions including cursor movement, selection, and scrolling.
 
 ## Explanation
-The TextInput struct manages text input functionality within a graphical user interface. It includes methods for handling button presses and releases, selecting and deselecting text, moving the cursor left or right with modifiers (like shift or control), reloading text, and ensuring the cursor remains visible. The `characterType` function categorizes characters into literals, symbols, or whitespace to assist in word-based cursor movement. The chunk also contains methods for scrolling text within a constrained area if the content exceeds the available height.
+This chunk defines the TextInput component's behavior in handling user interactions such as button releases, cursor movements (left and right), and vertical scrolling. It includes methods for selecting and deselecting text, reloading text content, and determining character types. The component manages cursor visibility and handles keyboard modifiers like Shift and Control for extended selection behaviors.
 
 ## Code Example
 ```zig
-fn characterType(char: u8) enum { literal, symbol, whitespace } {
-	if (std.ascii.isAlphanumeric(char)) return .literal;
-	if (!std.ascii.isAscii(char)) return .literal;
-	if (char == '_') return .literal;
-	if (std.ascii.isWhitespace(char)) return .whitespace;
-	return .symbol;
+pub fn deselect(self: *TextInput) void {
+	self.cursor = null;
+	self.selectionStart = null;
 }
 ```
 
 ## Related Questions
-- How does the TextInput handle mouse button releases?
-- What is the purpose of the `reloadText` function in TextInput?
-- How does the cursor move when control modifier is pressed?
-- What does the `characterType` function determine?
-- How is text selection managed in TextInput?
-- What ensures the cursor remains visible during operations?
+- How does the TextInput component handle cursor movement?
+- What is the role of the `characterType` function in the TextInput component?
+- How does the TextInput component manage text selection with Shift and Control modifiers?
+- What steps are involved in reloading text content in the TextInput component?
+- How does the TextInput component ensure cursor visibility after movements?
+- What is the behavior of the `mainButtonReleased` method when the scroll bar is active?
 
 *Source: unknown | chunk_id: codebase_src_gui_components_TextInput.zig_chunk_1*

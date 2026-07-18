@@ -1,26 +1,22 @@
-# [src/server/command/worldedit/copy.zig] - Chunk 3354626129
+# [src/server/command/worldedit/copy.zig] - PR #3145 review diff
 
 **Type:** review
-**Keywords:** ArgParser, commandName, /copy, /kill, union, enum, struct, refactor, bug, parser, worldedit
-**Symbols:** Blueprint, Args, ArgParser, /copy, /kill
-**Concepts:** argument parsing, command registration, copy-paste bug, regression prevention, API consistency
+**Keywords:** copy, command, clipboard, argparse, union, enum, parser, initialization, commandName, kill
+**Symbols:** Blueprint, description, usage, Args, ArgParser
+**Concepts:** Code Copying, Command Parsing, Initialization Errors
 
 ## Summary
-The reviewer identified a copy-paste error where the command name in the ArgParser was left as '/kill' instead of being updated to '/copy', which would cause the parser to fail or behave incorrectly for the /copy command.
+The code introduces a new `ArgParser` for the `/copy` command with an incorrect command name specified as `/kill`. The reviewer points out that this is likely due to copying and forgetting to update the command name.
 
 ## Explanation
-During the refactoring of the worldedit commands, the code block defining the ArgParser was duplicated from another file (likely where '/kill' is used). The reviewer pointed out that while the surrounding logic and description were updated correctly to reflect '/copy', the actual parser instantiation still referenced '/kill'. This is a classic copy-paste bug: the developer copied the entire struct definition but forgot to adjust the command name field. If left uncorrected, any attempt to invoke '/copy' would either be rejected by the argument parser (since it expects '/kill') or might silently fall back to default behavior depending on how the parser handles unknown commands. The fix is straightforward: change the commandName from '/kill' to '/copy'. This ensures that the /copy command is properly registered and parsed, maintaining consistency with the rest of the file's intent.
+The change involves adding a union enum `Args` and an `ArgParser` for the `/copy` command. However, the reviewer notes that the command name in the `ArgParser` initialization is incorrectly set to `/kill`. This suggests that the code was copied from another command implementation where the command name was `/kill`, but the necessary update was overlooked. The reviewer highlights this as a common oversight when copying and modifying code snippets.
 
 ## Related Questions
-- What is the purpose of the Args union in copy.zig?
-- How does main.argparse.Parser work with a command name argument?
-- Why was '/kill' used as the commandName before this change?
-- Are there other files where similar copy-paste errors might exist?
-- What happens if a user types /copy before this fix is applied?
-- Is the description string updated alongside the parser in this file?
-- Does the Args union need to be re-exported after changing the command name?
-- Could this bug affect other commands that share the same parser module?
-- What testing coverage exists for the /copy command argument parsing?
-- Is there a lint rule or static analysis tool that could catch such mismatches automatically?
+- Why was the command name set to '/kill' instead of '/copy'?
+- How can we prevent similar initialization errors in the future?
+- Is there a way to automate checks for correct command names in ArgParser initializations?
+- What are the implications of this error on the `/copy` command functionality?
+- Can we add unit tests to catch such command name mismatches?
+- How should we handle cases where command names are accidentally copied over from other commands?
 
 *Source: unknown | chunk_id: github_pr_3145_comment_3354626129*

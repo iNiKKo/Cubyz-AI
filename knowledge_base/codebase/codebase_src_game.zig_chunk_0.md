@@ -1,35 +1,34 @@
 # [hard/codebase_src_game.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** thread safety, position management, velocity tracking, bounding box, friction state, volume properties, mutex locking
-**Symbols:** camera, camera.rotation, camera.direction, camera.viewMatrix, camera.moveRotation, camera.updateViewMatrix, Gamemode, DamageType, Player, Player.EyeData, Player.EyeData.pos, Player.EyeData.vel, Player.EyeData.coyote, Player.EyeData.step, Player.EyeData.box, Player.EyeData.desiredPos, Player.super, Player.eye, Player.crouching, Player.id, Player.gamemode, Player.isFlying, Player.isGhost, Player.hyperSpeed, Player.mutex, Player.inventorySize, Player.inventory, Player.selectedSlot, Player.defaultBlockDamage, Player.selectionPosition1, Player.selectionPosition2, Player.friction, Player.volumeProperties, Player.onGround, Player.jumpCooldown, Player.jumpCoyote, Player.jumpCooldownConstant, Player.jumpCoyoteTimeConstant, Player.standingBoundingBoxExtent, Player.crouchingBoundingBoxExtent, Player.crouchPerc, Player.outerBoundingBoxExtent, Player.outerBoundingBox, Player.jumpHeight, Player.loadFrom, Player.setPosBlocking, Player.getPosBlocking, Player.getVelBlocking, Player.getEyePosBlocking, Player.getEyeVelBlocking
-**Concepts:** player management, camera control, gamemodes, damage types, inventory management
+**Keywords:** camera rotation, view matrix update, game modes, damage messages, enum handling
+**Symbols:** camera, camera.rotation, camera.direction, camera.viewMatrix, camera.moveRotation, camera.updateViewMatrix, Gamemode, DamageType, DamageType.heal, DamageType.kill, DamageType.fall, DamageType.heat, DamageType.spiky, DamageType.sendMessage
+**Concepts:** camera controls, gamemodes, damage types
 
 ## Summary
-Defines player structure and related functionalities including camera control, gamemodes, damage types, and inventory management.
+Defines camera controls, gamemodes, and damage types with message handling.
 
 ## Explanation
-This chunk defines the `Player` struct which encapsulates all properties and methods related to a player in the game. It includes nested structures like `EyeData` for eye-specific data. The chunk also defines enums for `Gamemode` and `DamageType`, each with associated methods. Functions such as `moveRotation` and `updateViewMatrix` manage camera rotation and view matrix updates. Player position, velocity, and other properties are managed with thread-safe functions like `setPosBlocking` and `getPosBlocking`. The chunk imports various modules for functionalities like assets, network, particles, graphics, renderer, settings, blocks, physics, and keyboard.
+This chunk defines the camera control logic, including rotation based on mouse input and updating the view matrix. It also declares an enum for game modes (survival and creative) and another enum for damage types with a method to send messages corresponding to each type of damage.
 
 ## Code Example
 ```zig
-pub fn getPosBlocking() Vec3d {
-	mutex.lock();
-	defer mutex.unlock();
-	return super.pos;
-}
+pub fn moveRotation(mouseX: f32, mouseY: f32) void {
+		// Mouse movement along the y-axis rotates the image along the x-axis.
+		rotation[0] += mouseY;
+		const bound = std.math.pi/2.0 - 0.001;
+		rotation[0] = std.math.clamp(rotation[0], -bound, bound);
+		// Mouse movement along the x-axis rotates the image along the z-axis.
+		rotation[2] += mouseX;
+	}
 ```
 
 ## Related Questions
-- How does the camera rotation work in the game?
-- What are the different gamemodes available in the game?
-- How is player position managed with thread safety?
-- What methods are available for managing player inventory?
-- How does the damage type enum handle sending messages?
-- What is the purpose of the `EyeData` struct within the Player struct?
-- How is the jump cooldown and coyote time calculated for the player?
-- What role does the mutex play in the Player struct methods?
-- How are bounding boxes defined for standing and crouching players?
-- What functions are used to load player data from a ZonElement?
+- How does the camera rotation work in this chunk?
+- What are the defined game modes in this code?
+- How is damage type handled and what messages are sent?
+- What is the purpose of the `updateViewMatrix` function?
+- Which libraries or modules are imported at the beginning of this file?
+- Can you explain the bounds set for camera rotation in the `moveRotation` function?
 
 *Source: unknown | chunk_id: codebase_src_game.zig_chunk_0*

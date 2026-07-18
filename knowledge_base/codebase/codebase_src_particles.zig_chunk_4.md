@@ -1,33 +1,37 @@
 # [hard/codebase_src_particles.zig] - Chunk 4
 
-**Type:** api
-**Keywords:** spawn, parse, direction mode, seed RNG, ZonElement, collision flag, ParticleTypeLocal, extern struct, capacity cap, RandomRange
-**Symbols:** SpawnCube, SpawnCube.spawn, SpawnCube.parse, Emitter, Emitter.init, Emitter.initFromZon, Emitter.spawnParticles, ParticleType, ParticleTypeLocal, Particle, ParticleLocal
-**Concepts:** particle emitter, direction mode selection, seeded RNG offset, ZonElement parsing, collision flag, particle lifecycle fields, extern particle struct, capacity capping
+**Type:** implementation
+**Keywords:** struct, union, enum, method, initialization, spawning, configuration parsing
+**Symbols:** Emitter, Emitter.typ, Emitter.collides, Emitter.spawnShape, Emitter.properties, Emitter.mode, Emitter.SpawnShape, Emitter.SpawnShape.point, Emitter.SpawnShape.sphere, Emitter.SpawnShape.cube, Emitter.SpawnShape.spawn, Emitter.SpawnShape.parse, Emitter.SpawnPoint, Emitter.SpawnPoint.spawn, Emitter.SpawnPoint.parse, Emitter.SpawnSphere, Emitter.SpawnSphere.radius, Emitter.SpawnSphere.spawn, Emitter.SpawnSphere.parse, Emitter.SpawnCube, Emitter.SpawnCube.size, Emitter.SpawnCube.spawn, Emitter.SpawnCube.parse, Emitter.init, Emitter.initFromZon, Emitter.spawnParticles, ParticleType, ParticleType.frameCount, ParticleType.startFrame, ParticleType.size
+**Concepts:** particle system, emitter configuration, spawn shapes, direction modes, collision handling
 
 ## Summary
-This chunk defines the core particle emitter API and data structures for spawning particles with configurable size, direction mode (direction/scatter/spread), collision behavior, and per-particle properties including lifetime, rotation velocity, drag coefficient, light index, and type.
+Defines the Emitter and related structures for particle system management.
 
 ## Explanation
-The chunk declares SpawnCube as a struct containing pub fn spawn(pos: Vec3d, properties: EmitterProperties, mode: DirectionMode) which computes an offset position using the main seed RNG (random.nextFloatVectorSigned), scales it by self.size, normalizes or samples direction based on mode, and returns particlePos/vel. SpawnCube also has pub fn parse(zon: ZonElement) !SpawnCube that reads a 'size' field from a ZonElement, falling back to f32 parsing then default 1 if missing. Emitter is defined with fields typ (from ParticleManager.particleTypeHashmap lookup), collides, spawnShape, properties, mode; pub fn init(...) initializes these fields directly, while pub fn initFromZon(...) parses directionMode and SpawnShape from zon, handling errors by logging via std.log.err and falling back to .spread or a point-only shape. Emitter has pub fn spawnParticles(self: Emitter, pos: Vec3d, spawnCount: u32) which caps the count against ParticleSystem.maxCapacity - ParticleSystem.particleCount, then iterates calling self.spawnShape.spawn(pos, self.properties, self.mode), retrieves particleTypeLocal and particleType from ParticleManager.typesLocal.items[self.typ] and ParticleManager.types.items[self.typ], and adds each via ParticleSystem.addParticle with collides flag and properties. The chunk also defines ParticleType (frameCount, startFrame, size) and ParticleTypeLocal (density: RandomRange(f32), rotVel: RandomRange(f32), dragCoefficient: RandomRange(f32), loopTime: ?RandomRange(f32)). Particle is an extern struct with pos array aligned 16 bytes, rot default 0, currentFrame default 1, light default 0, typ u32. ParticleLocal contains velAndRotationVel Vec4f, frameRate f32, density f32, dragCoefficient f32, collides bool.
+The code defines an `Emitter` struct that manages particle spawning properties, including shape, speed, direction mode, and collision settings. It includes nested structs like `SpawnPoint`, `SpawnSphere`, and `SpawnCube` to handle different spawn shapes. Each spawn type has a `spawn` method to calculate particle position and velocity based on the emitter's properties and mode. The `Emitter` struct also provides methods for initialization from configuration (`initFromZon`) and for spawning particles (`spawnParticles`). Additionally, it defines a `ParticleType` struct to manage particle visual and behavior properties.
 
 ## Code Example
 ```zig
-pub fn parse(zon: ZonElement) !SpawnCube {
-	return SpawnCube{
-		.size = zon.get(Vec3f, "size") orelse @splat(zon.get(f32, "size") orelse 1),
+pub fn spawn(_: SpawnPoint, pos: Vec3d, properties: EmitterProperties, mode: DirectionMode) struct { Vec3d, Vec3f } {
+	const particlePos = pos;
+	const speed: Vec3f = @splat(properties.speed.get(&main.seed));
+	const dir: Vec3f = switch (mode) {
+		.direction => |dir| vec.normalize(dir),
+		.scatter, .spread => vec.normalize(random.nextFloatVectorSigned(3, &main.seed)),
 	};
+	const particleVel = dir*speed;
+
+	return .{particlePos, particleVel};
 }
 ```
 
 ## Related Questions
-- How does SpawnCube.spawn compute the particle position offset?
-- What fallback direction is used when DirectionMode parsing fails in Emitter.initFromZon?
-- Which fields are read from ZonElement in SpawnCube.parse and what defaults apply if missing?
-- How is the maximum number of particles capped before spawning in Emitter.spawnParticles?
-- Where does ParticleSystem.addParticle get its particle type data from for local vs global variants?
-- What extern struct layout does Particle use and which fields have default initial values?
-- How are RandomRange types represented in ParticleTypeLocal fields?
-- What is the purpose of the typ field stored in Emitter when initFromZon runs?
+- What is the purpose of the `Emitter` struct?
+- How does the `spawnParticles` method work?
+- What are the different spawn shapes defined in the code?
+- How is an `Emitter` initialized from a ZonElement?
+- What properties does the `ParticleType` struct manage?
+- How do errors during parsing of direction mode and spawn data get handled?
 
 *Source: unknown | chunk_id: codebase_src_particles.zig_chunk_4*

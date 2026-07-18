@@ -1,26 +1,62 @@
 # [easy/codebase_src_server_command_time.zig] - Chunk 0
 
 **Type:** api
-**Keywords:** ArgParser, union enum, gameTime, doGameTimeCycle, dayStart, nightStart, parse error handling, defer cleanup, stackAllocator
-**Symbols:** Args, ArgParser, execute
-**Concepts:** command parsing, union enum cases, server time state, day-night cycle toggle, message formatting, stack allocator usage
+**Keywords:** argument parsing, user input handling, game time control, error messaging, state updating
+**Symbols:** description, usage, Args, ArgParser, execute
+**Concepts:** command processing, server management, time manipulation
 
 ## Summary
-Implements the /time server command parser and execution logic, handling queries for current game time, setting specific times or phases (day/night), and toggling the day-night cycle.
+Handles server time-related commands, including getting and setting the game time.
 
 ## Explanation
-The chunk defines a union enum Args with four cases: @/time <phase> mapping to an enum {day, night}, @/time <subcommand> mapping to an enum {start, stop}, @/time <number> mapping to i64, and @/time mapping to an empty struct. It instantiates ArgParser via main.argparse.Parser(Args, .{.commandName = "/time"}). The execute function receives raw args bytes and a source User pointer; it allocates a mutable errorMessage List(u8) on the stack allocator with defer cleanup. Parsing is performed by calling ArgParser.parse(main.stackAllocator, args, &errorMessage), which returns Result(Args, error.ArgparseError). On parse failure, the function sends an error message to source using #ff0000{s} format and returns early without modifying server state. On success, result contains one of the Args cases. For @/time (empty case), it reads main.server.world.?.gameTime, formats it with #ffff00{}, then assigns that value back to gameTime. For @/time <number>, it extracts params.number directly. For @/time <phase>, it switches on params.phase: day maps to main.game.World.DayTime.dayStart, night maps to main.game.World.DayTime.nightStart; both are formatted and assigned. For @/time <subcommand>, it switches on params.subcommand: start sets main.server.world.?.doGameTimeCycle = true and sends #ffff00Time started., stop sets doGameTimeCycle = false and sends #ffff00Time stopped.; each branch returns early after sending the message, so no further assignment occurs for those cases. Finally, gameTime is assigned to main.server.world.?.gameTime unconditionally (overwriting any previous value).
+The chunk defines a command handler for server time management. It uses an argument parser to interpret different forms of input related to time settings. The `execute` function processes these inputs, updating the game time or toggling time cycling based on the user's command. Error handling is implemented to send feedback if the input is invalid.
+
+## Code Example
+```zig
+pub fn execute(args: []const u8, source: *User) void {
+	var errorMessage: main.List(u8) = .empty;
+	defer errorMessage.deinit(main.stackAllocator);
+
+	const result = ArgParser.parse(main.stackAllocator, args, &errorMessage) catch {
+		source.sendMessage("#ff0000{s}", .{errorMessage.items});
+		return;
+	};
+
+	const gameTime: i64 = switch (result) {
+		.@"/time" => time: {
+			source.sendMessage("#ffff00{}", .{main.server.world.?.gameTime});
+			break :time main.server.world.?.gameTime;
+		},
+		.@"/time <number>" => |params| params.number,
+		.@"/time <phase>" => |params| switch (params.phase) {
+			.day => main.game.World.DayTime.dayStart,
+			.night => main.game.World.DayTime.nightStart,
+		},
+		.@"/time <subcommand>" => |params| {
+			switch (params.subcommand) {
+				.start => {
+					main.server.world.?.doGameTimeCycle = true;
+					source.sendMessage("#ffff00Time started.", .{});
+					return;
+				},
+				.stop => {
+					main.server.world.?.doGameTimeCycle = false;
+					source.sendMessage("#ffff00Time stopped.", .{});
+					return;
+				},
+			}
+		},
+	};
+	main.server.world.?.gameTime = gameTime;
+}
+```
 
 ## Related Questions
-- What are the four possible cases of the Args union enum and their corresponding data structures?
-- How does the execute function handle a parse error returned by ArgParser.parse?
-- Which server world fields are read or written when processing @/time <phase> versus @/time <subcommand>? 
-- What is the exact format string used to send the current game time to the user, and what color code does it use?
-- How does the chunk ensure that errorMessage is freed after execute returns, regardless of early exits?
-- Does the execute function modify main.server.world.?.gameTime when processing @/time <subcommand> cases, or only for other cases?
-- What enum values are allowed for the phase field inside Args.@/time <phase>, and what does each value map to in terms of game time constants?
-- What enum values are allowed for the subcommand field inside Args.@/time <subcommand>, and how does each affect doGameTimeCycle?
-- Is ArgParser instantiated with a custom commandName, and if so, what is that name set to?
-- Does the execute function ever return early without assigning a new value to gameTime, and under which conditions?
+- What is the description of the server time command?
+- How does the chunk handle invalid user input?
+- What are the possible subcommands for setting the game time?
+- Which function processes the user's time-related commands?
+- How is the game time updated based on user input?
+- What message is sent to the user if an error occurs in parsing arguments?
 
 *Source: unknown | chunk_id: codebase_src_server_command_time.zig_chunk_0*

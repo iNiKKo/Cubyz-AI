@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_entity_models_cubert.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, ZON format, entity model, tags, coordinate system
-**Concepts:** entity ECS, model configuration
+**Keywords:** configuration, resource path, coordinate system, model definition, player model
+**Concepts:** entity ECS, player model
 
 ## Summary
-Defines configuration for the Cubert entity model, including tags, model path, default texture, height, and coordinate system.
+Defines a player model configuration for Cubyz.
 
 ## Explanation
-This chunk is a configuration file in ZON format that specifies details about the Cubert entity model. It includes tags to categorize the model as a player model, the path to the model file, the default texture used for rendering, the height of the model, and the coordinate system it uses (left-handed Y-up). This information is likely used by the engine to load and render the Cubert model correctly in the game.
+This chunk defines a configuration for a player model in the Cubyz game engine. It specifies tags, model name, default texture, height, and coordinate system. The tags indicate that this model is associated with a player. The model and texture are identified by their respective resource paths. The height is set to 2 units, and the coordinate system used is left-handed with Y-axis pointing up.
 
 ## Related Questions
-- What tags are associated with the Cubert entity model?
-- Which file path is specified for the Cubert model?
-- What is the default texture used for the Cubert model?
-- How tall is the Cubert model in game units?
-- What coordinate system does the Cubert model use?
-- Is there any function or method defined in this chunk?
+- What are the tags associated with this player model?
+- Which resource path is used for the model?
+- Which texture is set as the default for this model?
+- What is the height of the player model?
+- Which coordinate system is used for this model?
+- How is the player model identified in the Cubyz engine?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_entity_models_cubert.zig.zon_chunk_0*

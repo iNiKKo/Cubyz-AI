@@ -1,39 +1,29 @@
 # [hard/codebase_src_utils.zig] - Chunk 13
 
 **Type:** serialization
-**Keywords:** atomic operations, mutex locking, endianness handling, vector types, error handling
-**Symbols:** TimeDifference, TimeDifference.difference, TimeDifference.firstValue, TimeDifference.addDataPoint, Mutex, Mutex.super, Mutex.tryLock, Mutex.lock, Mutex.unlock, Mutex.assertLocked, BinaryReader, BinaryReader.remaining, BinaryReader.AllErrors, BinaryReader.init, BinaryReader.readVec, BinaryReader.readInt
-**Concepts:** time synchronization, thread safety, binary data parsing
+**Keywords:** binary writer, serialization, endianness, variable-length encoding, dynamic list
+**Symbols:** BinaryWriter, BinaryWriter.data, BinaryWriter.init, BinaryWriter.initCapacity, BinaryWriter.deinit, BinaryWriter.writeVec, BinaryWriter.writeInt, BinaryWriter.writeVarInt, BinaryWriter.writeFloat, BinaryWriter.writeEnum, BinaryWriter.writeBool, BinaryWriter.writeSlice, BinaryWriter.writeSliceWithSize, BinaryWriter.writeWithDelimiter
+**Concepts:** binary serialization, data encoding, variable-length integers
 
 ## Summary
-This chunk defines utility functions and structures for handling time differences, synchronization, and binary data reading.
+Provides a binary writer utility for serializing various data types into a byte buffer.
 
 ## Explanation
-The chunk includes a `TimeDifference` struct that tracks the difference between current and past timestamps. It has methods to add data points and adjust the time difference accordingly. The `Mutex` struct wraps Zig's mutex functionality with platform-specific implementations for Windows and other OSes, providing tryLock, lock, unlock, and assertLocked methods. The `BinaryReader` struct is designed for reading binary data from a byte slice, supporting vector types and integer/float values. It handles errors like out-of-bounds access and invalid data types.
+The BinaryWriter struct manages a dynamic list of bytes and offers methods to serialize different data types, including integers, floats, enums, booleans, slices, and strings with delimiters. It ensures proper alignment and endianness handling for integer writes and uses variable-length encoding for large integers. The writer also supports appending raw byte slices and writing slices prefixed by their length.
 
 ## Code Example
 ```zig
-pub fn addDataPoint(self: *TimeDifference, time: i16) void {
-	const currentTime: i16 = @truncate(main.timestamp().toMilliseconds());
-	const timeDifference = currentTime -% time;
-	if (self.firstValue) {
-		self.difference.store(timeDifference, .monotonic);
-		self.firstValue = false;
-	}
-	if (timeDifference -% self.difference.load(.monotonic) > 0) {
-		_ = @atomicRmw(i16, &self.difference.raw, .Add, 1, .monotonic);
-	} else if (timeDifference -% self.difference.load(.monotonic) < 0) {
-		_ = @atomicRmw(i16, &self.difference.raw, .Add, -1, .monotonic);
-	}
+pub fn writeBool(self: *BinaryWriter, value: bool) void {
+	self.writeInt(u1, @intFromBool(value));
 }
 ```
 
 ## Related Questions
-- How does the `TimeDifference` struct handle time travel scenarios?
-- What methods are available in the `Mutex` struct for locking and unlocking?
-- How does the `BinaryReader` read vector types from binary data?
-- What error handling is implemented in the `readInt` method of `BinaryReader`?
-- How does the `Mutex` handle different operating systems?
-- What atomic operations are used in the `TimeDifference` struct?
+- How does BinaryWriter handle writing integers with non-standard bit sizes?
+- What method is used to serialize a variable-length integer in BinaryWriter?
+- Can BinaryWriter write slices of bytes directly?
+- How does BinaryWriter ensure that the data written is aligned properly?
+- What is the purpose of the `writeWithDelimiter` method in BinaryWriter?
+- How does BinaryWriter manage memory allocation for its internal buffer?
 
 *Source: unknown | chunk_id: codebase_src_utils.zig_chunk_13*

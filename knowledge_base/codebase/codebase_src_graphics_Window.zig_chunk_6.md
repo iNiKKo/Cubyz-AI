@@ -1,35 +1,30 @@
 # [hard/codebase_src_graphics_Window.zig] - Chunk 6
 
 **Type:** implementation
-**Keywords:** GLFW, OpenGL, Vulkan, window creation, event loop
-**Symbols:** vulkanWindow, window, cursorVisible, scrollOffset, scrollOffsetInteger, oldX, oldY, oldWidth, oldHeight, isFullscreen
-**Concepts:** window management, input handling, OpenGL context, Vulkan support, fullscreen toggle
+**Keywords:** GLFW, OpenGL, Vulkan, cursor control, event callbacks, window initialization, resource loading
+**Symbols:** resetNextInputListenters, updateCursor, releaseButtonsOnGrabChange, setMouseGrabbed, getMousePosition, getWindowSize, reloadSettings, getClipboardString, setClipboardString, init
+**Concepts:** window management, input handling, settings configuration, clipboard operations
 
 ## Summary
-Handles window creation, initialization, and event processing for Cubyz's graphics module.
+Handles window initialization, input management, and settings reloading for the Cubyz graphics engine.
 
 ## Explanation
-This chunk manages the lifecycle of the application window using GLFW. It initializes GLFW, checks Vulkan support, creates a Vulkan-compatible window if enabled, sets up OpenGL context, loads OpenGL functions with GLAD, and configures various callbacks for handling user input and window events. The `deinit` function cleans up resources by destroying windows and terminating GLFW. Additional functionality includes toggling fullscreen mode and updating cursor visibility.
+This chunk manages the lifecycle of a GLFW window in the Cubyz graphics engine. It initializes the window with OpenGL context, sets up various callbacks for handling keyboard, mouse, and framebuffer events, and manages input modes such as cursor visibility and raw mouse motion. The `init` function is responsible for setting up GLFW, creating windows, loading resources like icons, and initializing Vulkan if enabled. Other functions handle resetting input listeners, updating the cursor state based on window grab status, releasing buttons when the grab state changes, getting mouse position and window size, reloading settings like vsync, and managing clipboard operations.
 
 ## Code Example
 ```zig
-pub fn deinit() void {
-	Gamepad.deinit();
-	c.glfwDestroyWindow(window);
-	if (settings.launchConfig.vulkanTestingMode) {
-		c.glfwDestroyWindow(vulkanWindow);
-		vulkan.deinit();
-	}
-	c.glfwTerminate();
+pub fn resetNextInputListenters() void {
+	nextGamepadListener = null;
+	nextKeypressListener = null;
 }
 ```
 
 ## Related Questions
-- How does the chunk initialize GLFW?
-- What checks are performed for Vulkan support?
-- How is the OpenGL context created and configured?
-- What callbacks are set up for handling user input?
-- How does the chunk handle window destruction during deinitialization?
-- How is fullscreen mode toggled in this chunk?
+- What function initializes the GLFW window and sets up OpenGL context?
+- How does the chunk handle cursor visibility based on the grab status?
+- Which functions manage clipboard operations in this chunk?
+- What is the purpose of the `releaseButtonsOnGrabChange` function?
+- How does the chunk reload settings like vsync?
+- What callbacks are set up for handling input events in the GLFW window?
 
 *Source: unknown | chunk_id: codebase_src_graphics_Window.zig_chunk_6*

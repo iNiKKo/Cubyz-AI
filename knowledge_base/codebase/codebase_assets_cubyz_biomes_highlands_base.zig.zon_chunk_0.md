@@ -1,28 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_highlands_base.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome config, highlands biome, structure placement, chance distribution, ground structure
-**Symbols:** HighlandsBiomeConfig
-**Concepts:** biome, configuration, structure, placement mode, chance
+**Keywords:** height limits, ground structures, structures, trees, flower patches, boulders, stalagmites, ruins
+**Concepts:** world generation, biome configuration
 
 ## Summary
-Highlands biome configuration
+Defines configuration for the Highlands biome, including height limits, ground structures, and various structures like trees, patches, and boulders.
 
 ## Explanation
-This chunk defines the configuration for the Highlands biome in Cubyz, including tags, height limits, ground structure, and various structures with their placement modes and chances.
+This chunk is a configuration file defining properties of the Highlands biome in Cubyz. It specifies tags, height limits, beach smoothness, radius range, roughness, hill count, player spawn validity, ground structure types, and a list of structures with their placement chances, types, sizes, and variations. The structures include trees, flower patches, boulders, stalagmites, and ruins.
 
 ## Related Questions
 - What are the tags associated with the Highlands biome?
-- What is the minimum height limit for the Highlands biome?
-- What is the maximum height limit for the Highlands biome?
-- What structures can be placed in the Highlands biome and what are their placement modes and chances?
-- How many ground structures are defined for the Highlands biome?
-- What are the blocks used to create ground patches in the Highlands biome?
-- What are the blocks used to create flower patches in the Highlands biome?
-- What is the block used to create boulders in the Highlands biome?
-- What is the block used to create stalagmites in the Highlands biome?
-- What is the block used to create daffodils in the Highlands biome?
-- What is the block used to create vetches in the Highlands biome?
-- What is the block used to create ruins in the Highlands biome?
+- What is the minimum and maximum height for the Highlands biome?
+- Are smooth beaches enabled in the Highlands biome?
+- What types of ground structures are present in the Highlands biome?
+- How many different tree structures are defined for the Highlands biome?
+- What is the chance of a boulder appearing in the Highlands biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_highlands_base.zig.zon_chunk_0*

@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_pebbles.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** tags, health, drops, rotation, model, texture, item
-**Concepts:** block properties, asset configuration
+**Keywords:** configuration, block properties, tags, health, drops, rotation, model, texture
+**Concepts:** block configuration, item properties
 
 ## Summary
-Defines properties for the pebbles block in Cubyz, including tags, health, drops, rotation model, texture, and item details.
+Defines configuration for the pebbles block in Cubyz, including tags, health, drops, rotation model, texture, and item properties.
 
 ## Explanation
-This chunk defines a configuration for the pebbles block within the Cubyz game engine. It specifies that the block has tags 'stone' and 'mineable', with a health value of 1. The block drops items automatically when mined. Its rotation model is set to 'cubyz:ore', and it uses the 'cubyz:cube' model. The texture for the block is 'cubyz:pebbles', and the item associated with this block has its own texture, 'pebbles.png'. This configuration is part of the asset data for blocks in Cubyz.
+This chunk is a configuration file for defining the properties of the pebbles block in the Cubyz game engine. It specifies various attributes such as tags (stone and mineable), block health, drop behavior, rotation model, visual model, and textures. The configuration uses a structured format to define these properties, ensuring that the pebbles block behaves and appears correctly within the game environment.
 
 ## Related Questions
 - What are the tags associated with the pebbles block?
 - How much health does the pebbles block have?
-- What happens when the pebbles block is mined?
-- Which model and rotation settings are used for the pebbles block?
-- What texture is applied to the pebbles block in-game?
-- Which texture is used for the item representation of the pebbles block?
+- What items can be dropped from the pebbles block?
+- Which rotation model is used for the pebbles block?
+- What visual model is assigned to the pebbles block?
+- Which texture is applied to the pebbles block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_pebbles.zig.zon_chunk_0*

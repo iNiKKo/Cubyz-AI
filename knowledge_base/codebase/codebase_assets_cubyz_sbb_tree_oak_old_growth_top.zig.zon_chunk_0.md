@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_tree_oak_old_growth_top.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprints, configuration, assets, IDs, oak tree
-**Concepts:** asset management, blueprint definition
+**Keywords:** blueprints, id, variants, oak tree top, Cubyz engine
+**Concepts:** world_generation
 
 ## Summary
-Defines blueprints for oak old growth tree top assets.
+This chunk defines a list of blueprints for different variants of an old growth oak tree top in the Cubyz voxel engine.
 
 ## Explanation
-This chunk contains a configuration structure defining four different blueprints for the top of an old growth oak tree in the Cubyz voxel engine. Each blueprint is identified by a unique string ID, which likely corresponds to asset paths or identifiers used within the game's asset management system.
+The chunk contains a single anonymous struct with a field `.blueprints` that holds an array of anonymous structs. Each inner struct represents a blueprint with an `id` field, which is a string identifier for a specific variant of the old growth oak tree top. The identifiers are unique and follow a consistent naming pattern: 'cubyz:tree/oak/old_growth/top/' followed by a number from 0 to 3.
 
 ## Related Questions
-- What are the IDs of the blueprints defined for the oak old growth tree top?
-- How many different blueprints are there for the oak old growth tree top?
-- Where might these blueprint IDs be used within the Cubyz engine?
-- Is there any executable logic in this chunk to process or modify the blueprints?
-- Are there any other asset-related configurations similar to this one in the codebase?
-- How does the Cubyz engine utilize these blueprints for rendering or gameplay?
+- What are the identifiers for the old growth oak tree top variants?
+- How many different variants of the old growth oak tree top are defined in this chunk?
+- What is the naming pattern for the identifiers of these blueprints?
+- Is there any executable logic in this chunk?
+- What does the `.blueprints` field contain?
+- Are there any other fields or structures defined in this chunk besides `.blueprints`?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_tree_oak_old_growth_top.zig.zon_chunk_0*

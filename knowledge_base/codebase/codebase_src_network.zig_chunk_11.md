@@ -1,28 +1,29 @@
 # [hard/codebase_src_network.zig] - Chunk 11
 
-**Type:** implementation
-**Keywords:** mbedtls_ssl_handshake, mbedTlsSend, mbedTlsReceive, receiveThroughTls, sendThroughTls, WANT_READ, verification data, ChannelId, ConnectionState, HandShakeState, secure channel, TLS read loop, mutex lock, checkResult, insertMessageSecure
-**Symbols:** mbedTlsSend, mbedTlsReceive, receiveThroughTls, sendThroughTls, ChannelId, ConnectionState, HandShakeState, ConfirmationData, manager, user, remoteAddress, bruteforcingPort, lossyChannel, secureChannel, slowChannel, restartChannelCounter, restartCounter
-**Concepts:** TLS handshake, mbedTLS callbacks, verification data collection, encrypted I/O, WANT_READ handling, mutex locking, error checking, channel types, handshake states, secure channel extension
+**Type:** networking
+**Keywords:** mbedtls_ssl_read, mbedtls_ssl_write, mutex locking, thread safety, handshaking, reconnection logic
+**Symbols:** Connection, Connection.manager, Connection.user, Connection.remoteAddress, Connection.bruteforcingPort, Connection.bruteForcedPortRange, Connection.lossyChannel, Connection.secureChannel, Connection.slowChannel, Connection.restartChannelCounter, Connection.restartCounter, Connection.hasRttEstimate, Connection.rttEstimate, Connection.rttUncertainty, Connection.lastRttSampleTime, Connection.nextPacketTimestamp, Connection.nextConfirmationTimestamp, Connection.queuedConfirmations, Connection.mtuEstimate, Connection.bandwidthEstimateInBytesPerRtt, Connection.slowStart, Connection.relativeSendTime, Connection.relativeIdleTime, Connection.connectionState, Connection.handShakeState, Connection.handShakeWaiting, Connection.lastConnectionTime, Connection.connectionIdentifier, Connection.remoteConnectionIdentifier, Connection.mutex, SecureChannel, SecureChannel.sslContext, SecureChannel.super, SecureChannel.mutex, SecureChannel.receiveThroughTls, SecureChannel.sendThroughTls, SecureChannel.receive, SecureChannel.send, SecureChannel.receiveConfirmationAndGetTimestamp, SecureChannel.checkForLosses, SecureChannel.sendNextPacketAndGetSize, SecureChannel.getStatistics, ChannelId, ChannelId.lossy, ChannelId.secure, ChannelId.slow, ChannelId.confirmation, ChannelId.init, ChannelId.keepalive, ChannelId.disconnect, ConfirmationData, ConfirmationData.channel, ConfirmationData.start, ConfirmationData.receiveTimeStamp, ConnectionState, ConnectionState.awaitingClientConnection, ConnectionState.awaitingServerResponse, ConnectionState.awaitingClientAcknowledgement, ConnectionState.connected, ConnectionState.disconnected, ConnectionState.paused, HandShakeState, HandShakeState.start, HandShakeState.userData, HandShakeState.signatureRequest, HandShakeState.signatureResponse, HandShakeState.reload, HandShakeState.assets, HandShakeState.serverData, HandShakeState.complete
+**Concepts:** networking, TLS encryption, connection management, data transmission channels
 
 ## Summary
-Implements secure TLS channel logic with mbedTLS callbacks and handshake state management for encrypted network communication.
+The `Connection` struct manages secure and lossy data transmission channels for a network connection, handling TLS encryption, packet sending/receiving, and state management.
 
 ## Explanation
-This chunk defines the SecureChannel struct extending Channel with mbedTLS integration. It provides C-callable send/receive callbacks (mbedTlsSend, mbedTlsReceive) that handle verification data collection during client signature phases. The receiveThroughTls and sendThroughTls methods implement TLS read/write loops using mbedtls_ssl_read/ssl_write, handling WANT_READ via mutex-protected sleep, closed connections, and error checking through checkResult. Public wrapper methods delegate to super.receiveBuffer.receiveSecure and super.sendBuffer.insertMessageSecure for encrypted I/O. The chunk declares ChannelId enum with secure=1 variant, ConnectionState enum (awaitingClientConnection, awaitingServerResponse, etc.), and HandShakeState enum enumerating handshake phases from start through complete. Fields include manager pointer, user reference, remoteAddress, bruteforcingPort flag, lossyChannel, secureChannel, slowChannel, restartChannelCounter array, and restartCounter.
+The `Connection` struct is central to managing network connections in the Cubyz engine. It includes fields for various channels (lossy, secure, slow) and their respective states. The struct provides methods for initializing a connection, sending and receiving data through these channels, and managing TLS encryption using the `SecureChannel`. It also handles connection state transitions, such as handshaking and reconnection logic. The `Connection` struct uses mutexes for thread safety during concurrent operations on shared resources like buffers and states.
+
+## Code Example
+```zig
+pub fn receive(self: *SecureChannel, conn: *Connection, start: SequenceIndex, data: []const u8) !ReceiveBuffer.ReceiveStatus {
+			return self.super.receiveBuffer.receiveSecure(self, conn, start, data);
+		}
+```
 
 ## Related Questions
-- What happens when mbedTlsSend is called during the client signature phase?
-- How does receiveThroughTls handle a WANT_READ return from mbedtls_ssl_read?
-- What error is returned if mbedtls_ssl_read returns 0 in receiveThroughTls?
-- Which enum value corresponds to the secure channel type in ChannelId?
-- What fields are added by SecureChannel that are not present in base Channel?
-- How does sendThroughTls manage partial writes and remaining data?
-- What state transitions occur through HandShakeState during a TLS handshake?
-- Is there any public method for sending encrypted messages directly on SecureChannel?
-- Does the chunk declare any confirmation data structures for secure channels?
-- Are there any restart-related fields exposed in this chunk?
-- How does the chunk ensure thread safety when calling mbedTLS functions?
-- What happens if checkResult encounters an error during TLS operations?
+- What is the purpose of the `SecureChannel` struct in the `Connection` module?
+- How does the `Connection` struct handle TLS encryption for data transmission?
+- What are the different states a connection can be in according to the `ConnectionState` enum?
+- How does the `Connection` struct manage concurrent operations on shared resources?
+- What is the role of the `HandShakeState` enum in the connection process?
+- How does the `Connection` struct initialize its various channels and states?
 
 *Source: unknown | chunk_id: codebase_src_network.zig_chunk_11*

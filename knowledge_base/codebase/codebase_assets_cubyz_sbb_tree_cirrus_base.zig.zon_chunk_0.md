@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_tree_cirrus_base.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprints, children, asset IDs, color keys, trunk association
-**Concepts:** asset configuration, blueprint management
+**Keywords:** blueprints, children, asset configuration, Cirrus tree, base asset
+**Concepts:** asset configuration, blueprint system
 
 ## Summary
 Defines blueprints and children for the Cirrus tree base asset.
 
 ## Explanation
-This chunk defines a configuration structure for the Cirrus tree base asset in Cubyz. It specifies an array of blueprints, each with a unique ID, and a mapping of child assets under different color keys. The blueprints represent different variations or stages of the tree base, while the children define which trunk asset is associated with the white color key.
+This chunk defines a configuration structure for the Cirrus tree base asset in Cubyz. It specifies an array of blueprints, each with a unique ID, and a child asset reference for the trunk. The blueprints are used to identify different variations of the tree base, while the children field links to the trunk asset.
 
 ## Related Questions
-- What are the IDs of the blueprints defined for the Cirrus tree base asset?
-- Which trunk asset is associated with the white color key in the Cirrus tree base configuration?
-- How many different blueprints are specified for the Cirrus tree base asset?
-- Is there a specific blueprint ID 'cubyz:tree/cirrus/base/1' defined in this chunk?
-- What is the structure of the children mapping in the Cirrus tree base configuration?
-- Are there any other color keys besides white defined in the children mapping?
+- What are the IDs of the blueprints defined for the Cirrus tree base?
+- Which asset is referenced as the child of the Cirrus tree base?
+- How many different variations of the Cirrus tree base are defined in this configuration?
+- What does the 'children' field represent in this asset configuration?
+- Is there any function or method defined in this chunk?
+- What is the purpose of the blueprints array in this configuration?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_tree_cirrus_base.zig.zon_chunk_0*

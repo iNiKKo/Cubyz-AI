@@ -1,26 +1,40 @@
 # [easy/codebase_src_server_command_clear.zig] - Chunk 0
 
 **Type:** api
-**Keywords:** union enum, parser catch, switch target, defer deinit, sendMessage red
-**Symbols:** Args, ArgParser, execute
-**Concepts:** command parsing, inventory clearing, chat protocol update, error handling via message, stack allocation
+**Keywords:** server command, argument parser, error handling, inventory clear, chat clear
+**Symbols:** description, usage, Args, ArgParser, execute
+**Concepts:** command handling, argument parsing, inventory management, chat management
 
 ## Summary
-Implements the /clear server command that parses arguments to either clear a player's inventory or send a generic chat update.
+Handles the '/clear' command to clear player inventory or chat.
 
 ## Explanation
-The chunk defines an Args union with a single variant for the /clear command, containing a target enum (inventory|chat). It uses main.argparse.Parser to parse raw args into this struct, catching errors and sending a red message via source.sendMessage if parsing fails. On success it switches on result.target: inventory invokes main.items.Inventory.server.clearPlayerInventory(source) while chat calls main.network.protocols.genericUpdate.sendClear(source.conn, .chat). The function allocates an error list with main.stackAllocator, defers its deinit, and never returns a value.
+This chunk defines a server-side command handler for the '/clear' command. It uses an argument parser to determine whether to clear the player's inventory or chat based on the provided target. The `execute` function parses the arguments, handles errors by sending error messages, and then performs the appropriate action using functions from other modules.
+
+## Code Example
+```zig
+pub fn execute(args: []const u8, source: *User) void {
+	var errorMessage: main.List(u8) = .empty;
+	defer errorMessage.deinit(main.stackAllocator);
+
+	const result = ArgParser.parse(main.stackAllocator, args, &errorMessage) catch {
+		source.sendMessage("#ff0000{s}", .{errorMessage.items});
+		return;
+	};
+
+	switch (result.@"/clear <target>".target) {
+		.inventory => main.items.Inventory.server.clearPlayerInventory(source),
+		.chat => main.network.protocols.genericUpdate.sendClear(source.conn, .chat),
+	}
+}
+```
 
 ## Related Questions
-- What does the execute function return on successful parsing?
-- Which enum values are valid for the target field in Args?
-- How is a parse error communicated to the user?
-- Where is the allocated error list freed?
-- What function clears player inventory when target equals inventory?
-- What network protocol handles chat clearing when target equals chat?
-- Does execute perform any memory allocation itself?
-- Is ArgParser constructed with a specific command name constant?
-- What type does main.argparse.Parser expect as its first argument?
-- Can the result of parsing be used directly without a switch statement?
+- What is the description of the '/clear' command?
+- How does the '/clear' command handle errors?
+- Which modules are used to clear the player's inventory and chat?
+- What is the structure of the Args union enum?
+- How is the ArgParser initialized in this chunk?
+- What is the purpose of the errorMessage variable in the execute function?
 
 *Source: unknown | chunk_id: codebase_src_server_command_clear.zig_chunk_0*

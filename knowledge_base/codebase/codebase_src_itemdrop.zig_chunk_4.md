@@ -1,44 +1,39 @@
 # [hard/codebase_src_itemdrop.zig] - Chunk 4
 
 **Type:** implementation
-**Keywords:** animation, rendering, shaders, SSBOs, uniforms, model data, player velocity
-**Symbols:** ItemDisplayManager, ItemDisplayManager.showItem, ItemDisplayManager.cameraFollow, ItemDisplayManager.cameraFollowVel, ItemDisplayManager.damping, ItemDisplayManager.update, ItemDropRenderer, ItemDropRenderer.itemPipeline, ItemDropRenderer.itemUniforms, ItemDropRenderer.itemModelSSBO, ItemDropRenderer.modelData, ItemDropRenderer.freeSlots, ItemDropRenderer.ItemVoxelModel, ItemDropRenderer.ItemVoxelModel.index, ItemDropRenderer.ItemVoxelModel.len, ItemDropRenderer.ItemVoxelModel.item, ItemDropRenderer.ItemVoxelModel.getSlot, ItemDropRenderer.ItemVoxelModel.init, ItemDropRenderer.ItemVoxelModel.deinit, ItemDropRenderer.ItemVoxelModel.equals, ItemDropRenderer.ItemVoxelModel.hashCode, ItemDropRenderer.init
-**Concepts:** item animations, bobbing, interpolation, item rendering, shader management, SSBOs
+**Keywords:** interpolation, mutex locking, network data processing, animation smoothing, player velocity tracking
+**Symbols:** ClientItemDropManager, ClientItemDropManager.maxf64Capacity, ClientItemDropManager.super, ClientItemDropManager.lastTime, ClientItemDropManager.timeDifference, ClientItemDropManager.interpolation, ClientItemDropManager.instance, ClientItemDropManager.mutex, ClientItemDropManager.init, ClientItemDropManager.deinit, ClientItemDropManager.readPosition, ClientItemDropManager.updateInterpolationData, ClientItemDropManager.clientSideInternalAdd, ClientItemDropManager.remove, ClientItemDropManager.loadFrom, ClientItemDropManager.addFromZon, ItemDisplayManager, ItemDisplayManager.showItem, ItemDisplayManager.cameraFollow, ItemDisplayManager.cameraFollowVel, ItemDisplayManager.damping, ItemDisplayManager.update
+**Concepts:** client-side interpolation, item drop management, item display animations
 
 ## Summary
-Handles item display animations and rendering.
+The `ClientItemDropManager` handles client-side interpolation and management of item drops, while the `ItemDisplayManager` manages item display animations.
 
 ## Explanation
-The chunk defines two main structs: `ItemDisplayManager` and `ItemDropRenderer`. `ItemDisplayManager` manages the visibility and movement of items, including bobbing and interpolation effects. It updates the camera follow position based on player velocity and a damping factor. `ItemDropRenderer` is responsible for rendering item drops using a graphics pipeline. It initializes shaders, sets up uniform variables, and manages model data through SSBOs (Shader Storage Buffers). The `ItemVoxelModel` struct within `ItemDropRenderer` handles the creation, initialization, and deinitialization of item models, including voxel-based and image-based items.
+The `ClientItemDropManager` struct is responsible for managing item drops on the client side. It includes methods for initialization (`init`), deinitialization (`deinit`), reading position data from network packets (`readPosition`), updating interpolation data (`updateInterpolationData`), adding items internally (`clientSideInternalAdd`), removing items (`remove`), loading from a configuration file (`loadFrom`), and adding from a configuration file (`addFromZon`). The `ItemDisplayManager` struct manages the display of items, including bobbing and interpolation effects. It updates the camera follow position based on player velocity and applies damping to smooth the movement.
 
 ## Code Example
 ```zig
-pub fn update(deltaTime: f64) void {
-	if (deltaTime == 0) return;
-	const dt: f32 = @floatCast(deltaTime);
-
-	var playerVel: Vec3f = .{@floatCast((game.Player.super.vel[2]*0.009 + game.Player.eye.vel[2]*0.0075)), 0, 0};
-	playerVel = vec.clampMag(playerVel, 0.32);
-
-	// TODO: add *smooth* item sway
-	const n1: Vec3f = cameraFollowVel - (cameraFollow - playerVel)*damping*damping*@as(Vec3f, @splat(dt));
-	const n2: Vec3f = @as(Vec3f, @splat(1)) + damping*@as(Vec3f, @splat(dt));
-	cameraFollowVel = n1/(n2*n2);
-
-	cameraFollow += cameraFollowVel*@as(Vec3f, @splat(dt));
+pub fn init(self: *ClientItemDropManager, allocator: NeverFailingAllocator) void {
+	std.debug.assert(instance == null); // Only one instance allowed.
+	instance = self;
+	self.* = .{
+		.super = undefined,
+		.lastTime = @as(i16, @truncate(main.timestamp().toMilliseconds())) -% settings.entityLookback,
+	};
+	self.super.init(allocator, null);
+	self.interpolation.init(
+		@ptrCast(self.super.list.items(.pos).ptr),
+		@ptrCast(self.super.list.items(.vel).ptr),
+	);
 }
 ```
 
 ## Related Questions
-- What is the purpose of the `ItemDisplayManager` struct?
-- How does the `update` method in `ItemDisplayManager` handle player velocity?
-- What are the key components of the `ItemDropRenderer` struct?
-- How does the `init` method in `ItemDropRenderer` set up the graphics pipeline?
-- What is the role of the `ItemVoxelModel` struct within `ItemDropRenderer`?
-- How does the `getSlot` function in `ItemVoxelModel` manage free slots?
-- What is the purpose of the `bufferData` method on `itemModelSSBO`?
-- How does the `equals` method in `ItemVoxelModel` compare two item models?
-- What are the uniform variables defined in `ItemDropRenderer.itemUniforms`?
-- How does the shader initialization in `ItemDropRenderer.init` work?
+- What is the purpose of the `ClientItemDropManager` struct?
+- How does the `ClientItemDropManager` handle network data for item positions?
+- What role does the `mutex` play in the `ClientItemDropManager`?
+- How is the `cameraFollow` position updated in the `ItemDisplayManager`?
+- What is the function of the `clientSideInternalAdd` method in the `ClientItemDropManager`?
+- How does the `ItemDisplayManager` handle item bobbing and interpolation?
 
 *Source: unknown | chunk_id: codebase_src_itemdrop.zig_chunk_4*

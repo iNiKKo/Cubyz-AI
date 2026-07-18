@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_rock_hoodoo_large.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprints, asset IDs, configuration data, large hoodoo rocks, Cubyz asset system
-**Concepts:** asset management, blueprint definition
+**Keywords:** configuration, blueprint, ID, rock, hoodoo
+**Concepts:** world generation, asset configuration
 
 ## Summary
-Defines blueprints for large hoodoo rock assets.
+This chunk defines a configuration for rock blueprints with specific IDs.
 
 ## Explanation
-This chunk contains a configuration structure defining three different blueprints for large hoodoo rocks. Each blueprint is identified by a unique string ID within the Cubyz asset system. The IDs are used to reference these specific rock types in other parts of the engine or game logic, ensuring that each variant can be uniquely addressed and utilized.
+The chunk contains a single anonymous struct with a field `.blueprints` that holds an array of three anonymous structs, each with an `id` field. These IDs represent different variations of large hoodoo rocks in the Cubyz game world.
 
 ## Related Questions
-- What are the unique identifiers for the large hoodoo rock blueprints?
-- How many different large hoodoo rock blueprints are defined in this chunk?
-- Where are these blueprint IDs used within the Cubyz engine?
-- Can you list all the asset IDs defined in this configuration file?
-- What is the purpose of defining multiple blueprints for a single type of rock?
-- How does this configuration data fit into the larger Cubyz asset management system?
+- What are the IDs defined for large hoodoo rocks in this chunk?
+- How many different variations of large hoodoo rocks are specified in this configuration?
+- Is there any executable logic in this chunk?
+- What is the purpose of the `.blueprints` field in this configuration?
+- Are there any other fields or methods defined in this chunk besides `.blueprints`?
+- How might these rock blueprints be used within the Cubyz engine?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_rock_hoodoo_large.zig.zon_chunk_0*

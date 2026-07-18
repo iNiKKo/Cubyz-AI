@@ -1,26 +1,54 @@
 # [medium/codebase_src_server_terrain_ClimateMap.zig] - Chunk 1
 
-**Type:** api
-**Keywords:** cache.findOrCreate, mapMask, biomeShift, Array2D, NeverFailingAllocator, pointer return, bounds checking, coordinate offset, fragment iteration
-**Symbols:** getOrGenerateFragment, getBiomeMap
-**Concepts:** lazy fragment caching, coordinate alignment, 2D array composition, biome map generation
+**Type:** world_generation
+**Keywords:** array manipulation, map stitching, fragment reuse, coordinate calculation, offset handling
+**Symbols:** getBiomeMap, NeverFailingAllocator, Array2D, BiomeSample, ClimateMapFragment, MapFragment
+**Concepts:** world_generation, biome generation
 
 ## Summary
-This chunk defines the public API for ClimateMapFragment retrieval and biome map generation, using a cache to lazily create fragments on demand.
+Generates a biome map by stitching together smaller climate fragments.
 
 ## Explanation
-The chunk declares two pub functions. getOrGenerateFragment takes wx, wy coordinates and returns a pointer to a ClimateMapFragment; it builds a compare key of type ClimateMapFragmentPosition with those coordinates, then calls cache.findOrCreate(compare, cacheInit, null) and returns the result. The second function, getBiomeMap, accepts an allocator (NeverFailingAllocator), wx, wy, width, height, and produces an Array2D(BiomeSample). It initializes a map sized by shifting width/height right by MapFragment.biomeShift. It computes start/end indices for x and y using bitwise AND with the complement of ClimateMapFragment.mapMask to align to fragment boundaries, then iterates over those ranges in steps of ClimateMapFragment.mapSize. Inside the loops it calls getOrGenerateFragment(x, y) to obtain a mapPiece, calculates xOffset and yOffset by subtracting wx/wy and shifting right by MapFragment.biomeShift, then walks the mapPiece's two‑dimensional array (col, lx) and inner spots (spot, ly). For each spot it casts lx/ly to i32, adds the offsets, checks bounds against width/height shifted by biomeShift, and if in bounds writes the spot value into the result map via map.set. The chunk does not define any new types; ClimateMapFragmentPosition, Array2D, BiomeSample, NeverFailingAllocator, MapFragment.biomeShift, and ClimateMapFragment.mapMask are assumed to be defined elsewhere.
+The `getBiomeMap` function creates a large 2D array of biome samples based on smaller, pre-generated climate fragments. It calculates the starting and ending coordinates for these fragments relative to the requested area. The function iterates over each fragment, copying relevant biome data into the final map while adjusting for offsets. This approach allows efficient generation of large maps by reusing existing climate data.
+
+## Code Example
+```zig
+pub fn getBiomeMap(allocator: NeverFailingAllocator, wx: i32, wy: i32, width: u31, height: u31) Array2D(BiomeSample) {
+	const map = Array2D(BiomeSample).init(allocator, width >> MapFragment.biomeShift, height >> MapFragment.biomeShift);
+	const wxStart = wx & ~ClimateMapFragment.mapMask;
+	const wzStart = wy & ~ClimateMapFragment.mapMask;
+	const wxEnd = wx +% width & ~ClimateMapFragment.mapMask;
+	const wzEnd = wy +% height & ~ClimateMapFragment.mapMask;
+	var x = wxStart;
+	while (wxEnd -% x >= 0) : (x +%= ClimateMapFragment.mapSize) {
+		var y = wzStart;
+		while (wzEnd -% y >= 0) : (y +%= ClimateMapFragment.mapSize) {
+			const mapPiece = getOrGenerateFragment(x, y);
+			// Offset of the indices in the result map:
+			const xOffset = (x -% wx) >> MapFragment.biomeShift;
+			const yOffset = (y -% wy) >> MapFragment.biomeShift;
+			// Go through all indices in the mapPiece:
+			for (&mapPiece.map, 0..) |*col, lx| {
+				const resultX = @as(i32, @intCast(lx)) + xOffset;
+				if (resultX < 0 or resultX >= width >> MapFragment.biomeShift) continue;
+				for (col, 0..) |*spot, ly| {
+					const resultY = @as(i32, @intCast(ly)) + yOffset;
+					if (resultY < 0 or resultY >= height >> MapFragment.biomeShift) continue;
+					map.set(@intCast(resultX), @intCast(resultY), spot.*);
+				}
+			}
+		}
+	}
+	return map;
+}
+```
 
 ## Related Questions
-- What does getOrGenerateFragment return and how is the compare key constructed?
-- How are wxStart and wzStart computed to align with fragment boundaries?
-- Why is MapFragment.biomeShift used when initializing the Array2D size in getBiomeMap?
-- In what order are fragments retrieved while building the biome map, and why use steps of ClimateMapFragment.mapSize?
-- How does the chunk ensure that only valid spots from a fragment are copied into the result map?
-- What is the purpose of casting lx and ly to i32 before adding xOffset/yOffset?
-- Where do the types ClimateMapFragmentPosition, Array2D, BiomeSample, NeverFailingAllocator, MapFragment.biomeShift, and ClimateMapFragment.mapMask originate?
-- How does getOrGenerateFragment interact with the cache via findOrCreate and cacheInit?
-- What happens if a fragment at (x, y) is not yet generated when getBiomeMap calls it?
-- Is there any error handling for allocation failures in this chunk's public functions?
+- What is the purpose of the `getBiomeMap` function?
+- How does the function determine the starting and ending coordinates for climate fragments?
+- What role do offsets play in copying biome data from fragments to the final map?
+- How does the function handle cases where the resultX or resultY indices are out of bounds?
+- What is the significance of `MapFragment.biomeShift` in this code?
+- How does the function ensure efficient generation of large maps?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_ClimateMap.zig_chunk_1*

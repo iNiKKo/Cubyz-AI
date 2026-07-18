@@ -1,26 +1,27 @@
 # [src/block_entity.zig] - PR #1475 review diff
 
 **Type:** review
-**Keywords:** block entity, position, chunk, hashmap, rendering, particles, function signature, loading, unloading
-**Symbols:** BlockEntityTypes, onLoadClient, onUnloadClient, Vec3i, Chunk, BlockEntityIndex
+**Keywords:** block entity, position, chunk, hashmap, rendering, particles, index management, architectural review, loading functions, unloading functions, parameter modification
+**Symbols:** onLoadClient, onUnloadClient, Vec3i, Chunk, BlockEntityIndex
 **Concepts:** thread safety, backwards compatibility, memory leak
 
 ## Summary
-The `onUnloadClient` function's parameter was changed from `Vec3i` and `*Chunk` to just `BlockEntityIndex`. The review highlights that loading needs positional information for rendering or other purposes, and the chunk is necessary for adding the index to the chunk hashmap.
+The `onUnloadClient` function's parameter was changed from `Vec3i` and `*Chunk` to just `BlockEntityIndex`. The reviewer emphasizes that loading functions need positional information for rendering or other purposes, and the chunk is necessary for managing block entity indices in a hashmap.
 
 ## Explanation
-The change in the `onUnloadClient` function's parameters from `(Vec3i, *Chunk)` to `BlockEntityIndex` was made to streamline the function signature. The reviewer emphasizes that during loading, knowing the block entity's position is crucial for tasks like rendering or spawning particles. Additionally, the chunk parameter is essential for managing the block entity index within the chunk's hashmap. This modification ensures that the necessary information is retained and utilized effectively.
+The change modifies the `onUnloadClient` function's signature by removing the position (`Vec3i`) and chunk (`*Chunk`) parameters, replacing them with just `BlockEntityIndex`. The reviewer highlights that loading functions should retain positional information because it is crucial for tasks like rendering or spawning particles. Additionally, the chunk parameter is essential for adding block entity indices to a hashmap, ensuring proper management of block entities within chunks.
 
 ## Related Questions
-- What is the purpose of changing the `onUnloadClient` function's parameters?
-- Why is positional information important during loading?
-- How does the chunk parameter contribute to managing block entity indices?
-- What are the potential implications of removing the chunk parameter from `onUnloadClient`?
-- Can you explain the architectural reasoning behind this change?
-- How might this modification affect other parts of the codebase?
-- Is there a risk of introducing bugs with this change?
-- What steps should be taken to ensure backwards compatibility after this change?
-- How can we verify that the new function signature meets all necessary requirements?
-- Are there any performance considerations associated with this change?
+- What is the purpose of retaining positional information in loading functions?
+- Why was the chunk parameter necessary for managing block entity indices?
+- How does this change affect the overall architecture of block entities?
+- Can you explain the implications of removing the position and chunk parameters from `onUnloadClient`?
+- What are the potential performance impacts of this architectural decision?
+- How does this modification ensure backwards compatibility with existing code?
+- Is there a risk of memory leaks associated with this change?
+- What are the thread safety considerations for this architectural review?
+- How does this change impact the rendering or particle spawning processes?
+- Can you provide examples of how block entities might use positional information during loading?
+- What is the role of the chunk hashmap in managing block entity indices?
 
 *Source: unknown | chunk_id: github_pr_1475_comment_2100935298*

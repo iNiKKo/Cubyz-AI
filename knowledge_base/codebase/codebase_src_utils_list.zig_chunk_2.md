@@ -1,26 +1,34 @@
 # [hard/codebase_src_utils_list.zig] - Chunk 2
 
 **Type:** implementation
-**Keywords:** append-only, capacity, realloc, insertion, removal, NeverFailingAllocator, assert, swapRemove, orderedRemove, popOrNull
-**Symbols:** clearAndFree, clearRetainingCapacity, shrinkAndFree, toOwnedSlice, ensureCapacity, ensureFreeCapacity, resizeAssumeCapacity, resize, addOneAssumeCapacity, addOne, addManyAssumeCapacity, addMany, appendAssumeCapacity, append, appendNTimesAssumeCapacity, appendNTimes, appendSliceAssumeCapacity, appendSlice, insertAssumeCapacity, insert, insertSliceAssumeCapacity, insertSlice, swapRemove, orderedRemove, popOrNull, pop
-**Concepts:** append-only list, capacity management, memory reallocation, NeverFailingAllocator, element insertion, swap removal, ordered removal, slice detachment
+**Keywords:** dynamic arrays, memory management, list operations, allocator usage, element insertion, element removal
+**Symbols:** List, List.items, List.capacity, List.empty, List.initCapacity, List.deinit, List.clearAndFree, List.clearRetainingCapacity, List.shrinkAndFree, List.toOwnedSlice, List.ensureCapacity, List.ensureFreeCapacity, List.resizeAssumeCapacity, List.resize, List.addOneAssumeCapacity, List.addOne, List.addManyAssumeCapacity, List.addMany, List.appendAssumeCapacity, List.append, List.appendNTimesAssumeCapacity, List.appendNTimes, List.appendSliceAssumeCapacity, List.appendSlice, List.insertAssumeCapacity, List.insert, List.insertSliceAssumeCapacity, List.insertSlice, List.swapRemove, List.orderedRemove, List.popOrNull, List.pop, List.replaceRange, List.print
+**Concepts:** dynamic array management, memory allocation, list operations
 
 ## Summary
-Implements a generic append-only list with capacity management and element insertion/removal operations.
+Defines a generic list type with various operations for managing dynamic arrays.
 
 ## Explanation
-The chunk defines methods on a list type (self: *@This()) that manage an internal items array. Capacity is handled via ensureCapacity, which asserts newCapacity >= current length before reallocating; shrinkAndFree reallocates to a smaller size; clearRetainingCapacity zeroes length without freeing memory. Memory ownership uses NeverFailingAllocator for all reallocations and frees. The list supports append (addOne, addMany), insert at arbitrary index with backward copy of remaining elements, swapRemove which replaces an element with the last one, orderedRemove which shifts subsequent elements forward, pop/popOrNull for LIFO removal, resizeAssumeCapacity to set length without allocation, and toOwnedSlice to detach a slice. All mutating operations that may reallocate or modify capacity take NeverFailingAllocator; those that assume sufficient space use *_AssumeCapacity variants with std.debug.assert checks.
+This chunk defines a generic `List` type in Zig, which is a struct containing an array of items and its capacity. The `List` provides methods for initialization, deinitialization, clearing, resizing, adding elements, inserting elements, removing elements, and printing the list. It handles memory allocation and deallocation using a provided allocator, ensuring that operations like adding or removing elements manage the underlying storage efficiently. The chunk also includes utility functions for appending slices, swapping elements, and replacing ranges within the list.
+
+## Code Example
+```zig
+pub fn clearAndFree(self: *@This(), allocator: NeverFailingAllocator) void {
+	self.deinit(allocator);
+	self.* = .empty;
+}
+```
 
 ## Related Questions
-- What is the purpose of clearAndFree and how does it differ from clearRetainingCapacity?
-- How does ensureCapacity guarantee sufficient space before reallocating memory?
-- Describe the behavior of shrinkAndFree when given a newLen smaller than current capacity.
-- Which methods use NeverFailingAllocator versus those that assume existing capacity is enough?
-- Explain how insertAssumeCapacity handles insertion at the end versus an interior index.
-- What does swapRemove do to the list length and which element value is returned?
-- How does orderedRemove preserve order when removing an element from the middle of the list?
-- When would you call popOrNull instead of pop in this API surface?
-- What is the role of resizeAssumeCapacity compared to resize with respect to allocation?
-- Does toOwnedSlice free the original backing array or just return a new slice?
+- How does the List type initialize its capacity?
+- What method is used to ensure there is enough capacity for new elements?
+- How does the List handle memory deallocation when it's no longer needed?
+- What is the difference between clearAndFree and clearRetainingCapacity methods?
+- How does the List append a slice of elements to itself?
+- What method is responsible for resizing the list without changing its contents?
+- How does the List manage to insert an element at a specific position?
+- What is the purpose of the swapRemove method in the List type?
+- How does the List replace a range of elements with new ones?
+- What is the role of the print method in the List type?
 
 *Source: unknown | chunk_id: codebase_src_utils_list.zig_chunk_2*

@@ -1,26 +1,28 @@
 # [easy/codebase_assets_cubyz_biomes_glacier.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** properties, tags, music, height limits, smooth beaches, fog density, radius bounds, roughness, mountains, hills, ground structure, stone block
+**Keywords:** biome config, height limit, fog density, terrain structure, music track
 **Symbols:** properties, tags, music, minHeightLimit, minHeight, maxHeight, smoothBeaches, fogDensity, fogColor, minRadius, maxRadius, roughness, mountains, hills, ground_structure, stoneBlock
-**Concepts:** biome configuration, terrain generation parameters, fog settings, ground structure composition
+**Concepts:** biome configuration, height limits, fog settings, terrain structures
 
 ## Summary
-This chunk defines a Glacier biome configuration with terrain generation parameters, fog settings, and ground structure composition.
+Configuration for the Glacier biome in Cubyz.
 
 ## Explanation
-The chunk declares a static struct containing properties (cold, wet, barren), tags (.snowy), music reference, height limits (minHeightLimit=7, minHeight=80, maxHeight=256), smoothBeaches flag, fogDensity (1.5) and fogColor (0xe2f2ff), radius bounds (minRadius=150, maxRadius=300), roughness (50), mountain/hill counts (all 50), ground_structure array specifying snow and frost blocks with quantities, and stoneBlock reference to frost.
+This chunk defines the configuration settings for the Glacier biome, including properties like cold, wet, and barren, tags such as snowy, music tracks, height limits, fog density and color, radiuses, roughness, mountains, hills, ground structures, and stone block. It also specifies the minimum and maximum heights for the biome.
 
 ## Related Questions
-- What properties are defined for the Glacier biome?
-- Which tags are associated with this biome configuration?
-- What music track is assigned to this biome?
-- What are the minimum and maximum height limits for terrain generation?
-- Is smooth beach generation enabled in this configuration?
-- What fog density and color values are set for this biome?
-- What radius bounds constrain the biome size?
-- How many mountains, hills, and roughness units are configured?
-- Which ground structure blocks compose the terrain surface?
-- What stone block is designated as the primary material?
+- What are the properties of the Glacier biome?
+- Which tags does the Glacier biome have?
+- What is the music track for the Glacier biome?
+- What are the minimum and maximum heights for the Glacier biome?
+- How is the fog density set for the Glacier biome?
+- What color is the fog in the Glacier biome?
+- What is the minimum radius for the Glacier biome?
+- What is the maximum radius for the Glacier biome?
+- What is the roughness setting for the Glacier biome?
+- How many mountains are generated in the Glacier biome?
+- How many hills are generated in the Glacier biome?
+- What ground structures are used in the Glacier biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_glacier.zig.zon_chunk_0*

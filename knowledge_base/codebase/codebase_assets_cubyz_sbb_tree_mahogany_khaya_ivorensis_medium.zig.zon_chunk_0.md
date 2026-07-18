@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_tree_mahogany_khaya_ivorensis_medium.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprint, configuration, tree generation, identifier, variant
-**Concepts:** world generation
+**Keywords:** blueprint, tree generation, configuration, asset identifiers, medium size
+**Concepts:** world generation, asset management
 
 ## Summary
 Defines blueprints for medium-sized mahogany trees.
 
 ## Explanation
-This chunk contains a configuration structure defining two blueprints for medium-sized mahogany trees. Each blueprint has an unique identifier string that specifies the tree variant and size.
+This chunk contains a configuration structure defining two blueprints for medium-sized mahogany trees. Each blueprint has an unique identifier used to reference the specific tree variant within the game's asset system.
 
 ## Related Questions
-- What are the identifiers for the medium-sized mahogany tree blueprints?
+- What are the IDs of the medium-sized mahogany tree blueprints?
 - How many different medium-sized mahogany tree blueprints are defined in this chunk?
-- Is there any executable logic in this configuration file?
-- What is the purpose of the 'id' field in each blueprint definition?
-- Are there any other fields or properties defined for these tree blueprints besides the identifier?
-- How might these blueprints be used within the Cubyz engine?
+- Where are these tree blueprints used within the Cubyz engine?
+- Can you list all the asset identifiers for mahogany trees in this configuration?
+- What is the purpose of defining multiple blueprints for the same type of tree?
+- How might these blueprints be referenced or instantiated in the game?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_tree_mahogany_khaya_ivorensis_medium.zig.zon_chunk_0*

@@ -1,22 +1,28 @@
 # [easy/codebase_assets_cubyz_sbb_tree_tuften_young_tuft_canopy.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprint, identifier, string array, static data, tuft tree
+**Keywords:** blueprint IDs, tree types, size variations, game assets, model loading
 **Symbols:** blueprints
-**Concepts:** configuration, asset registry, tree generation
+**Concepts:** tree blueprint, configuration data
 
 ## Summary
-This chunk defines a static configuration of blueprint identifiers for young tuft trees, organized into small and big size categories across five color variants.
+Configuration data for tree blueprint IDs
 
 ## Explanation
-The chunk contains only a single top-level struct with a public field named blueprints that holds an array of anonymous structs. Each element in the array is a struct literal containing exactly one field id of type string. The values are hardcoded identifiers prefixed with cubyz:tree/tuften/young/tufts/, followed by either small or big, then one of violet, pink, red, orange, or yellow.
+This chunk contains a list of tree blueprint IDs, each representing a different type and size of tufted tree in the game. The IDs are used to identify and load specific tree models and configurations.
 
 ## Related Questions
-- What blueprint IDs are defined for young tuft trees in this configuration?
-- How many distinct color variants exist across the small and big size categories?
-- Is there any executable logic associated with these blueprint identifiers?
-- Which file format is used to store this static data structure?
-- Are the identifiers scoped globally or module-local within the Cubyz engine?
-- Can additional blueprints be appended at runtime without modifying this chunk?
+- What are the total number of tree blueprint IDs in this configuration?
+- Which blueprint ID represents a small violet tufted tree?
+- How many different sizes and colors of tufted trees are listed?
+- What is the structure of the 'blueprints' list?
+- Can you provide an example of a blueprint ID from the list?
+- Are there any duplicate IDs in the list?
+- What is the purpose of each element in the 'blueprints' list?
+- How many different tree types are represented by these blueprint IDs?
+- Is there a specific order or pattern to the IDs in the list?
+- Can you describe how these IDs might be used in the game engine?
+- Are there any additional fields or properties associated with each blueprint ID?
+- What is the maximum number of different tree types that can be represented by these IDs?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_tree_tuften_young_tuft_canopy.zig.zon_chunk_0*

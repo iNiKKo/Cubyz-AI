@@ -2,20 +2,20 @@
 
 **Type:** configuration
 **Keywords:** tags, health, drops, model, rotation
-**Concepts:** block properties, default configuration
+**Concepts:** block properties, default settings
 
 ## Summary
-Defines default properties for planks blocks, including tags, health, drops, model, and rotation.
+Defines default properties for planks blocks in Cubyz.
 
 ## Explanation
-This chunk defines the default configuration for planks blocks in the Cubyz engine. It specifies that these blocks are tagged as 'choppable' and 'wood', have a block health of 6, drop items automatically when broken, use a cube model, and can be rotated like stairs.
+This chunk defines the default properties for planks blocks, including tags, health, drops, model, and rotation. The tags indicate that the block is choppable and made of wood. The block has a health value of 6, and it drops itself when broken. The model is set to 'cubyz:cube', and the rotation is set to 'cubyz:stairs'.
 
 ## Related Questions
-- What are the tags assigned to planks blocks?
+- What are the tags associated with planks blocks?
 - How much health does a plank block have by default?
-- What happens when a plank block is broken?
+- What items does a plank block drop when broken?
 - Which model is used for plank blocks?
-- Can plank blocks be rotated, and if so, how?
-- Where is the configuration for plank blocks defined in the Cubyz engine?
+- How is the rotation of plank blocks defined?
+- Are there any special properties or behaviors defined for plank blocks in this configuration?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_planks__defaults.zig.zon_chunk_0*

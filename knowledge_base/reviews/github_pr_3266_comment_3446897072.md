@@ -1,26 +1,22 @@
-# [mods/cubyz/rotations.zig] - Chunk 3446897072
+# [mods/cubyz/rotations.zig] - PR #3266 review diff
 
 **Type:** review
-**Keywords:** consolidate, struct, import, pollution, cubyz, stairs, no_rotation, texture_pile, ore, hanging, torch, decayable, direction, planar, log
-**Symbols:** pub const stairs, pub const no_rotation, pub const texture_pile, pub const ore, pub const hanging, pub const torch, pub const decayable, pub const direction, pub const planar, pub const log, pub const carpet, pub const branch, pub const fence, pub const sign, pub const cubyz, stairs
-**Concepts:** modularization, namespace consolidation, API surface clarity, generated file pollution, block enumeration, addon discoverability, missing entry bug prevention
+**Keywords:** rotations.zig, import, modules, nested structs, addon creators, generated files, bug report, architectural review, consolidation
+**Symbols:** stairs, no_rotation, texture_pile, ore, hanging, torch, decayable, direction, planar, log, carpet, branch, fence, sign
+**Concepts:** modular design, code organization, discoverability, bug prevention
 
 ## Summary
-The reviewer proposes consolidating all rotation-related block definitions into a single `cubyz` struct to simplify addon discovery and reduce generated file pollution, while also noting that the current list is incomplete.
+A new file `rotations.zig` is introduced to import various rotation modules, with a suggestion for a more structured and consolidated approach.
 
 ## Explanation
-Architecturally, scattering imports across many small files makes it harder for addon authors to quickly enumerate available blocks. By gathering them under one namespace (`pub const cubyz = struct { ... }`), we provide a clear API surface and avoid the need for generated stubs that can become stale or cause import pollution in the mods directory. The reviewer also points out an omission: some block types (likely those handled by `anti_cubyz` or other categories) are missing from this list, which would otherwise lead to common bug reports where addons fail because they cannot find a definition for a specific block.
+The change introduces a central file `rotations.zig` that imports multiple sub-modules related to different types of rotations. The reviewer suggests organizing these into nested structs within a single root struct (`cubyz`) to improve discoverability for addon creators and reduce clutter from generated files. This approach aims to prevent bugs caused by forgetting entries and simplifies the inspection process.
 
 ## Related Questions
-- What block types are currently missing from the `cubyz` struct that would cause addon failures?
-- How does consolidating imports into a single struct affect the mod's import graph and build time?
-- Are there any blocks that should be placed under a sub-struct (e.g., `anti_cubyz`) instead of the main `cubyz` namespace?
-- What is the recommended pattern for exposing rotation-related blocks to addon authors without generating files?
-- Does the reviewer suggest moving generated stubs into the same file as their definitions, or keeping them separate?
-- How would this change impact backward compatibility with existing addons that import individual block modules?
-- Is there a preferred ordering of entries in the `cubyz` struct (e.g., by category or alphabetical)?
-- What steps should be taken to ensure no rotation-related blocks are omitted when updating the list?
-- Should the `anti_cubyz` struct also be consolidated, and if so, how does it relate to `cubyz`?
-- How can we verify that all imported modules (`rotations/*.zig`) are correctly referenced after consolidation?
+- What is the purpose of the `rotations.zig` file?
+- How does the reviewer suggest organizing the rotation modules?
+- Why is it important to prevent forgetting entries in the rotation modules?
+- What benefits does consolidating modules into a single root struct provide?
+- How might this change impact addon creators' experience?
+- Are there any potential drawbacks to consolidating all modules into one file?
 
 *Source: unknown | chunk_id: github_pr_3266_comment_3446897072*

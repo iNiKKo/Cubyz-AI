@@ -1,30 +1,53 @@
 # [medium/codebase_src_gui_components_Button.zig] - Chunk 1
 
-**Type:** implementation
-**Keywords:** deinitialization, component conversion, mouse events, texture rendering, state transitions
-**Symbols:** deinit, toComponent, updateHovered, mainButtonPressed, mainButtonReleased, render
-**Concepts:** GUI components, button interactions, state management, rendering
+**Type:** api
+**Keywords:** texture binding, shaded rectangle, 9-slice image, color manipulation, child component rendering
+**Symbols:** Button, Button.render, Vec2f, disabledTextures, pressedTextures, hoveredTextures, normalTextures
+**Concepts:** GUI rendering, button states, mouse interaction
 
 ## Summary
-The Button component handles button interactions and rendering.
+The `Button` component handles rendering based on its state and mouse interactions.
 
 ## Explanation
-This chunk defines the Button struct and its methods, which manage button state transitions (hovered, pressed), handle mouse events (updateHovered, mainButtonPressed, mainButtonReleased), and render the button with appropriate textures based on its current state. The deinit method ensures proper cleanup of resources.
+The `render` function of the `Button` struct determines which textures to use based on whether the button is disabled, pressed, or hovered. It binds the appropriate texture and draws a shaded rectangle with rounded corners using custom shaders. The function also updates the position of any child component (like text) relative to the button's position and renders it. The color for drawing is set conditionally based on the button's disabled state, and the original color is restored afterward.
 
 ## Code Example
 ```zig
-pub fn deinit(self: *const Button) void {
-	self.child.deinit();
-	main.globalAllocator.destroy(self);
+pub fn render(self: *Button, mousePosition: Vec2f) void {
+	const textures = blk: {
+		if (self.disabled) break :blk disabledTextures;
+		if (self.pressed) break :blk pressedTextures;
+		if (GuiComponent.contains(self.pos, self.size, mousePosition) and self.hovered) {
+			break :blk hoveredTextures;
+		}
+		break :blk normalTextures;
+	};
+	{
+		textures.texture.bindTo(0);
+		pipeline.bind(draw.getScissor());
+		self.hovered = false;
+		draw.customShadedRect(buttonUniforms, self.pos + Vec2f{2, 2}, self.size - Vec2f{4, 4});
+	}
+
+	const cornerSize = (textures.outlineTextureSize - Vec2f{1, 1})/Vec2f{2, 2};
+
+	textures.outlineTexture.bindTo(0);
+	graphics.draw.bound9SliceImage(self.pos, self.size, textures.outlineTextureSize, cornerSize, 2);
+
+	const oldColor = draw.setColor(if (self.disabled) 0xff808080 else 0xffffffff);
+	defer draw.restoreColor(oldColor);
+	const textPos = self.pos + self.size/@as(Vec2f, @splat(2.0)) - self.child.size()/@as(Vec2f, @splat(2.0));
+	self.child.mutPos().* = textPos;
+	self.child.render(mousePosition - self.pos);
 }
 ```
 
 ## Related Questions
-- What is the purpose of the `deinit` method in the Button component?
-- How does the Button handle mouse hover events?
-- What textures are used for rendering the button based on its state?
-- How does the Button manage the pressed state?
-- What is the role of the `toComponent` method in the Button struct?
-- How does the Button render its child component?
+- What textures are used for different button states?
+- How is the button's hover state determined?
+- What shader is used to draw the shaded rectangle?
+- How is the position of child components updated?
+- What happens if the button is disabled?
+- How are colors manipulated during rendering?
 
 *Source: unknown | chunk_id: codebase_src_gui_components_Button.zig_chunk_1*

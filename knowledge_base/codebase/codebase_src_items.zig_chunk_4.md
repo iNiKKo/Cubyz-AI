@@ -1,61 +1,29 @@
 # [hard/codebase_src_items.zig] - Chunk 4
 
 **Type:** implementation
-**Keywords:** property setting, modifier combination, priority sorting, floodfill algorithm, binary serialization
-**Symbols:** ProceduralItem, SlotInfo, PropertyMatrix, PropertyMatrix.Method, ProceduralItemTypeIndex, ProceduralItemTypeIterator, BinaryWriter, BinaryReader
-**Concepts:** procedural item generation, property evaluation, material grid connectivity
+**Keywords:** property calculation, durability, speed, crafting grid, material modifiers, floodfill algorithm, slot info, property matrix, method enumeration
+**Symbols:** ProceduralItemPhysics, ProceduralItemPhysics.evaluateProceduralItem, ProceduralItemPhysics.checkConnectivity, SlotInfo, SlotInfo.disabled, SlotInfo.optional, PropertyMatrix, PropertyMatrix.source, PropertyMatrix.destination, PropertyMatrix.weights, PropertyMatrix.resultScale, PropertyMatrix.method, PropertyMatrix.Method, PropertyMatrix.Method.average, PropertyMatrix.Method.sum, PropertyMatrix.Method.fromString
+**Concepts:** procedural item physics, property evaluation, material properties, modifiers, connectivity check
 
 ## Summary
-Handles procedural item generation and property evaluation.
+The chunk defines the logic for evaluating procedural item physics and properties.
 
 ## Explanation
-This chunk contains logic for generating procedural items, evaluating their properties, and checking connectivity within the material grid. It includes functions to set properties based on crafting grid materials, combine modifiers, sort them by priority, and adjust durability. The `checkConnectivity` function uses a floodfill algorithm to ensure all connected components are reachable.
+This chunk contains the `ProceduralItemPhysics` struct, which includes a method to evaluate the physical properties of procedural items. The `evaluateProceduralItem` function calculates durability, speed, and other parameters based on the crafting grid and material properties. It also handles modifiers and checks for connectivity within the item's material grid. Additionally, it defines `SlotInfo` and `PropertyMatrix` structs with their respective fields and methods.
 
 ## Code Example
 ```zig
-fn checkConnectivity(proceduralItem: *ProceduralItem) bool {
-	var gridCellsReached: [16][16]bool = @splat(@splat(false));
-	var floodfillQueue = main.utils.CircularBufferQueue(Vec2i).init(main.stackAllocator, 16);
-	defer floodfillQueue.deinit();
-	outer: for (proceduralItem.materialGrid, 0..) |row, x| {
-		for (row, 0..) |entry, y| {
-			if (entry != null) {
-				floodfillQueue.pushBack(.{@intCast(x), @intCast(y)});
-				gridCellsReached[x][y] = true;
-				break :outer;
+fn lessThan(_: void, lhs: Modifier, rhs: Modifier) bool {
+				return lhs.vTable.priority < rhs.vTable.priority;
 			}
-		}
-	}
-	while (floodfillQueue.popFront()) |pos| {
-		for ([4]Vec2i{.{-1, 0}, .{1, 0}, .{0, -1}, .{0, 1}}) |delta| {
-			const newPos = pos + delta;
-			if (newPos[0] < 0 or newPos[0] >= gridCellsReached.len) continue;
-			if (newPos[1] < 0 or newPos[1] >= gridCellsReached.len) continue;
-			const x: usize = @intCast(newPos[0]);
-			const y: usize = @intCast(newPos[1]);
-			if (gridCellsReached[x][y]) continue;
-			if (proceduralItem.materialGrid[x][y] == null) continue;
-			gridCellsReached[x][y] = true;
-			floodfillQueue.pushBack(newPos);
-		}
-	}
-	for (proceduralItem.materialGrid, 0..) |row, x| {
-		for (row, 0..) |entry, y| {
-			if (entry != null and !gridCellsReached[x][y]) {
-				return false;
-			}
-		}
-	}
-	return true;
-}
 ```
 
 ## Related Questions
-- How does the procedural item generation handle property setting?
-- What method is used to combine modifiers in the procedural item generation process?
-- Can you explain how the floodfill algorithm works in the checkConnectivity function?
-- What are the steps involved in evaluating the properties of a procedural item?
-- How is durability adjusted during the procedural item generation?
-- What data structure is used to store grid cell reachability status in the connectivity check?
+- What is the purpose of the `evaluateProceduralItem` function?
+- How does the `checkConnectivity` function work?
+- What are the fields in the `SlotInfo` struct?
+- How are methods defined in the `PropertyMatrix.Method` enum?
+- What does the `fromString` method in `PropertyMatrix.Method` do?
+- How is the durability of a procedural item calculated?
 
 *Source: unknown | chunk_id: codebase_src_items.zig_chunk_4*

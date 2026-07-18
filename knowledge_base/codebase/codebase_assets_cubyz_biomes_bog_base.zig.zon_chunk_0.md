@@ -1,23 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_bog_base.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** wet, overgrown, pine, willow, minHeightLimit, maxHeightLimit, ground_structure, flower_patch, simple_vegetation, sbb, degradable, validPlayerSpawn
-**Symbols:** .properties, .tags, .minHeightLimit, .minHeight, .maxHeight, .maxHeightLimit, .minRadius, .maxRadius, .roughness, .hills, .chance, .music, .validPlayerSpawn, .ground_structure, .structures
-**Concepts:** biome configuration, structure generation rules, terrain height limits, vegetation tags, block layer composition, spawn chance weighting, degradable structures
+**Keywords:** biome properties, structure placement, height limits, radius, chance, music
+**Concepts:** biome configuration, world generation
 
 ## Summary
-This chunk defines the static biome configuration data for a bog environment, specifying terrain height limits, vegetation tags, ground block composition, and a detailed list of structure generation rules with their spawn chances.
+Defines properties and structures for a bog biome in Cubyz.
 
 ## Explanation
-The chunk is a pure data configuration file (zon) containing only struct literals under .properties and .structures. It declares biome metadata: wet/overgrown flags, pine/willow tags, minHeight 4, maxHeight 4, maxHeightLimit 10, minRadius 150, maxRadius 300, roughness 1, hills 2, spawn chance 0.8, music path cubyz:totaldemented/leaves, validPlayerSpawn true. The ground_structure field lists block layers with quantity ranges (1 lush grass, 4–5 mud). The structures array enumerates multiple generation rules: flower_patch entries each specify an id, a blocks array of single-item arrays, chance, width, variation, density, and priority; simple_vegetation entries provide id, block, chance, height, height_variation; sbb (structure base building) entries provide id, structure path string, placeMode .degradable, and chance. No executable logic is present; all values are literal constants used by the engine's world generation system to sample biomes and spawn structures.
+This chunk defines the configuration for a bog biome, including its properties, tags, height limits, radius, roughness, hills, spawn chance, music, ground structure, and various structures that can appear within it. The structures include flower patches, simple vegetation, trees, ground patches, and specific tree models with different chances of appearing.
 
 ## Related Questions
-- What are the wet and overgrown flags set for this bog biome configuration?
-- Which tags are assigned to this biome in the properties section?
-- What is the minimum height limit defined for terrain generation here?
-- How does the ground_structure field specify block layer composition?
-- List all structure entries under .structures and their spawn chances.
-- What placeMode is used for sbb structures in this configuration?
-- Which music track path is referenced for this biome's audio setting?
+- What are the properties of the bog biome?
+- Which structures can appear in the bog biome?
+- What is the minimum and maximum height for the bog biome?
+- What is the chance of player spawn in the bog biome?
+- What music is associated with the bog biome?
+- How many different types of trees are defined for the bog biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_bog_base.zig.zon_chunk_0*

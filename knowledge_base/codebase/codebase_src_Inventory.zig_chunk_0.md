@@ -1,15 +1,15 @@
 # [hard/codebase_src_Inventory.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** inventory ID, mutex locking, hash map, callback handling, user tracking
-**Symbols:** InventoryId, client, client.maxId, client.freeIdList, client.serverToClientMap, client.init, client.deinit, client.nextId, client.freeId, client.mapServerId, client.unmapServerId, client.unmapServerIdByClientId, client.getInventory, client.getInventoryByClientId, server, server.ServerInventory, server.ServerInventory.inv, server.ServerInventory.users, server.ServerInventory.source, server.ServerInventory.managed, server.ServerInventory.Managed, server.ServerInventory.init, server.ServerInventory.deinit, server.ServerInventory.addUser, server.ServerInventory.removeUser
-**Concepts:** inventory management, client-server synchronization, user management
+**Keywords:** mutex locking, ID management, map operations, resource cleanup, assertions
+**Symbols:** InventoryId, client, client.maxId, client.freeIdList, client.serverToClientMap, client.init, client.deinit, client.nextId, client.freeId, client.mapServerId, client.unmapServerId, client.unmapServerIdByClientId, client.getInventory, client.getInventoryByClientId
+**Concepts:** inventory management, ID allocation, thread safety, server-client mapping
 
 ## Summary
-The chunk defines inventory management logic for both client and server sides, including ID mapping, initialization, deinitialization, and user management.
+Manages client-side inventory mappings and ID allocation.
 
 ## Explanation
-This chunk contains the implementation of inventory management systems for both the client and server. It includes structures like `InventoryId`, `client`, and `server`. The `client` struct manages inventory IDs, maps server IDs to client inventories, and provides functions to initialize, deinitialize, and manage these mappings. The `server` struct defines a `ServerInventory` which holds an inventory, user information, and source details. It includes methods for initializing and deinitializing the server inventory, adding and removing users, and handling callbacks when the first or last user opens or closes the inventory.
+This chunk defines the client-side logic for managing inventories, including ID allocation, mapping between server and client IDs, and retrieving inventory instances. It uses a mutex to ensure thread safety during operations that modify shared state like `maxId`, `freeIdList`, and `serverToClientMap`. The `init` function initializes the map, while `deinit` ensures proper cleanup by asserting no leaks and freeing resources. The `nextId` function allocates new inventory IDs, either from a free list or by incrementing `maxId`. `freeId` returns an ID to the free list. `mapServerId` associates server IDs with client-side inventory instances, while `unmapServerId` removes this association. `getInventory` and `getInventoryByClientId` retrieve inventories based on server or client IDs, respectively.
 
 ## Code Example
 ```zig
@@ -19,11 +19,11 @@ pub fn init() void {
 ```
 
 ## Related Questions
-- How does the client manage inventory IDs?
-- What is the purpose of the `mapServerId` function in the client struct?
-- How are users added and removed from a server inventory?
-- What happens when the last user closes an inventory on the server side?
-- How is the `serverToClientMap` initialized and deinitialized?
-- What role does the `Managed` enum play in the `ServerInventory` struct?
+- How is the `InventoryId` enum defined?
+- What does the `client.init` function do?
+- How are inventory IDs allocated in this chunk?
+- What is the purpose of the `freeIdList` variable?
+- How does the `mapServerId` function work?
+- What assertion is made during the `deinit` process?
 
 *Source: unknown | chunk_id: codebase_src_Inventory.zig_chunk_0*

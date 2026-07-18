@@ -1,22 +1,33 @@
 # [hard/codebase_src_assets.zig] - Chunk 5
 
-**Type:** implementation
-**Keywords:** palette items, hasItem flag, block item linking, procedural items, recipe registration, blueprint loading, structure tables, particle manager, biome ID assignment, entity component IDs
-**Symbols:** registerBlock, registerItem, assignBlockItem, registerRecipesFromZon, sbb.registerBlueprints, sbb.registerSBB, main.server.terrain.structures.registerStructureTables, particles.ParticleManager.register, registerBiome, biomes.finishLoading, main.server.terrain.cave_layers.registerCaveLayers
-**Concepts:** asset registration, palette enforcement, block-item linking, procedural item loading, recipe registration, blueprint registration, structure table registration, particle system initialization, biome ID assignment, entity component ID mapping
+**Type:** serialization
+**Keywords:** allocator, error handling, ZonElement, palette management, memory allocation
+**Symbols:** Palette, Palette.allocator, Palette.palette, Palette.init, Palette.loadFromZon, Palette.loadFromZonLegacy, Palette.deinit, Palette.add, Palette.storeToZon, Palette.size, Palette.replaceEntry, worldAssetFolder, refCount
+**Concepts:** asset management, data serialization, memory management
 
 ## Summary
-Registers world assets (blocks, items, biomes, particles) into the engine's entity and palette systems.
+The Palette struct handles loading and storing color palettes from ZonElement data structures, managing memory allocation and deallocation for palette entries.
 
 ## Explanation
-This chunk iterates over blockPalette and itemPalette to enforce ID values by calling registerBlock/registerItem with zon data from worldAssets.blocks/worldAssets.items. It handles missing entries by falling back to defaults or logging errors. For items derived from blocks, it checks hasItem flag and registers the child 'item' node; standalone items are logged as warnings if both exist. Block-items are registered via assignBlockItem after verifying hasItem and that the item is already registered. Procedural items are loaded from worldAssets.proceduralItems with a separate iterator loop. Recipes are registered via registerRecipesFromZon, blueprints via sbb.registerBlueprints, structure building blocks via sbb.registerSBB, and structure tables via main.server.terrain.structures.registerStructureTables. Particles are registered through particles.ParticleManager.register. Biomes are loaded in two passes: first from biomePalette with numeric IDs assigned sequentially, then from worldAssets.biomes iterator skipping already-registered entries; finishLoading is called after all biomes. Cave layers are registered via main.server.terrain.cave_layers.registerCaveLayers. Entity components are given IDs using a temporary std.StringHashMap mapping component names to indices; existing palette items are inserted first, then each struct field of main.entity.components is checked against the map—if found, its entityComponentID is set from the stored index; otherwise the name is added to entityComponentPalette and assigned the next free index.
+The Palette struct provides methods to initialize a palette from ZonElement data, either in legacy object format or array format. It includes functions to add new entries, replace existing ones, and store the current state back into a ZonElement. The struct also manages memory for its internal list of palette items using an allocator. Error handling is implemented for invalid formats and mismatched first elements. The global variables `worldAssetFolder` and `refCount` are declared but not used within this chunk.
+
+## Code Example
+```zig
+pub fn deinit(self: *Palette) void {
+	for (self.palette.items) |item| {
+		self.allocator.free(item);
+	}
+	self.palette.deinit(self.allocator);
+	self.allocator.destroy(self);
+}
+```
 
 ## Related Questions
-- How does the chunk enforce block palette ID values?
-- What happens when an item appears both as a standalone and as a block item?
-- Where are procedural items loaded from in this chunk?
-- Which function registers recipes from ZON data?
-- How are biomes assigned numeric IDs during registration?
-- What is the purpose of assignBlockItem in this context?
+- How does the Palette struct initialize from a ZonElement?
+- What error can occur if the first element of the palette doesn't match?
+- How does the Palette handle memory allocation and deallocation?
+- What methods are available to modify the palette after initialization?
+- How is the palette stored back into a ZonElement?
+- What is the purpose of the refCount variable in this chunk?
 
 *Source: unknown | chunk_id: codebase_src_assets.zig_chunk_5*

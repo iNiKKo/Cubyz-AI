@@ -1,30 +1,29 @@
 # [easy/codebase_src_callbacks_block_server_vine_decay.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** block manipulation, conditional logic, error handling, world access, decaying blocks
+**Keywords:** server-side logic, block rotation, world interaction, conditional replacement, atomic block change
 **Symbols:** init, run, decay
-**Concepts:** block decay, server callbacks, world manipulation
+**Concepts:** block server callbacks, vine decay, world manipulation
 
 ## Summary
-Handles vine decay logic in the server block callback.
+Handles vine decay logic on the server side.
 
 ## Explanation
-The function `run` checks if a block is hanging and decays it if certain conditions are met. It also includes a helper function `decay` to actually perform the block replacement.
+This chunk implements the server-side logic for handling vine decay. It checks if a block is in the 'cubyz:hanging' rotation and then determines if it should decay based on the block above it. If the conditions are met, it decays the vine by replacing it with air.
 
 ## Code Example
 ```zig
-fn decay(x: i32, y: i32, z: i32, current: Block) main.callbacks.Result {
-	if (server.world.?.cmpxchgBlock(x, y, z, current, blocks.Block.air) == null) return .handled;
-	return .ignored;
+pub fn init(_: ZonElement, _: main.callbacks.Creator) ?*@This() {
+	return main.worldArena.create(@This());
 }
 ```
 
 ## Related Questions
-- What function initializes the vine decay callback?
-- How does the run function determine if a block should be decayed?
-- What happens when the block above is not replaceable?
-- Where is the world access performed in this code?
-- What is the purpose of the cmpxchgBlock method?
-- How is error handling done in the run function?
+- What is the purpose of the `init` function in this chunk?
+- How does the `run` function determine if a block should decay?
+- What happens if the block above the vine is not replaceable?
+- How is the vine decayed in this code?
+- What is the role of the `decay` function in the vine decay process?
+- How does the chunk handle errors or invalid states?
 
 *Source: unknown | chunk_id: codebase_src_callbacks_block_server_vine_decay.zig_chunk_0*

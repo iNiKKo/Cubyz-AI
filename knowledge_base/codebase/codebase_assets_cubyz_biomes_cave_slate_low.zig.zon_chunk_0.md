@@ -1,24 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_cave_slate_low.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** chance, structures, caveModels, ground_patch, stalagmite, cylinder, block, variation, smoothness, radius
-**Symbols:** .chance, .maxHeight, .structures, .id, .block, .width, .variation, .depth, .smoothness, .size, .size_variation, .caveModels, .minAmount, .maxAmount, .minRadius
-**Concepts:** biome configuration, structure generation, model definition, randomized placement
+**Keywords:** chance, maxHeight, structures, ground_patch, stalagmite, caveModels, cylinder
+**Concepts:** world generation, biome configuration
 
 ## Summary
-Configuration data defining cave biome generation parameters including ground patch structures and cylinder models.
+Defines configuration for the 'cave_slate_low' biome, including generation probabilities and structures.
 
 ## Explanation
-This chunk contains static configuration values for the cave biome generator. It defines a .chance of 0.8, a maxHeight of -100, and an array of .structures containing two entries: one with id cubyz:ground_patch using block cubyz:slate/rough (chance 0.064, width 5, variation 5, depth 3, smoothness 0.1) and another with id cubyz:stalagmite using block cubyz:slate/smooth (size 3, size_variation 6). It also defines an array of .caveModels containing one entry with id cubyz:cylinder specifying minAmount 6, maxAmount 16, minRadius 10, maxHeight 2.
+This chunk contains a JSON-like structure defining the configuration for the 'cave_slate_low' biome in Cubyz. It specifies the chance of this biome occurring, the maximum height it can generate at, and details about various structures that can appear within caves of this biome. The structures include ground patches made of rough slate and stalagmites made of smooth slate. Additionally, it defines cave models such as cylinders with specific size ranges.
 
 ## Related Questions
-- What is the chance value for cave generation in this configuration?
-- Which block type is used for the ground_patch structure?
-- How many structures are defined in the .structures array?
-- What is the width parameter of the ground_patch structure?
-- What is the size_variation for the stalagmite structure?
-- What is the minAmount for the cylinder cave model?
-- Which block type is used for the stalagmite structure?
-- What is the maxRadius value defined in this configuration?
+- What is the chance of the 'cave_slate_low' biome occurring?
+- Which blocks are used for ground patches in this biome?
+- How many stalagmites can appear in a cave of this biome?
+- What is the maximum height at which this biome can generate?
+- What type of cave models are defined for this biome?
+- What is the size range for the cylinders in this biome's cave models?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_cave_slate_low.zig.zon_chunk_0*

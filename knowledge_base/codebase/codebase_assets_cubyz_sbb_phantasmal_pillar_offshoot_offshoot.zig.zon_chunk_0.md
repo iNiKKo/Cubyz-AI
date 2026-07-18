@@ -1,22 +1,28 @@
 # [easy/codebase_assets_cubyz_sbb_phantasmal_pillar_offshoot_offshoot.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprint, chance, array, ID, frequency
+**Keywords:** blueprint, chance, pillar offshoot, configuration data, engine logic
 **Symbols:** blueprints
-**Concepts:** configuration, data structure
+**Concepts:** configuration, blueprint generation
 
 ## Summary
-Configuration data for offshoot pillar blueprints in the Phantasmal Pillar asset.
+Configuration data for pillar offshoot blueprint generation
 
 ## Explanation
-This chunk contains a configuration structure for offshoot pillar blueprints used in the game. It defines an array of blueprint entries, each with a unique ID and associated chance value. The IDs correspond to different offshoot pillar variants, while the chance values determine their relative frequency of occurrence.
+This chunk defines a configuration structure for generating pillar offshoots in the Cubyz voxel engine. It contains an array of blueprints, each with an ID and a chance value. The IDs correspond to specific types of pillar offshoots, and the chances determine their likelihood of being generated.
 
 ## Related Questions
-- What is the total number of offshoot pillar blueprints defined in this configuration?
-- Which blueprint has the highest chance value and what is its ID?
-- How does the chance distribution for offshoot pillar blueprints affect game balance?
-- What happens if a null entry is included in the blueprint array?
-- Can the chance values be adjusted to change the rarity of specific offshoot pillars?
-- Is there any validation or error handling for invalid or duplicate blueprint IDs?
+- What is the total number of blueprint entries in this configuration?
+- Which ID has the highest chance value?
+- How many blueprints have a chance greater than 0.5?
+- What is the sum of all chance values in the configuration?
+- Which blueprint entry has an ID of null?
+- How many blueprints have a chance value less than or equal to 0.8?
+- What is the average chance value across all blueprints?
+- Which blueprint entry has the lowest chance value?
+- How many blueprints have a chance value greater than 1.2?
+- What is the maximum chance value in the configuration?
+- How many blueprints have a chance value between 0.3 and 0.8?
+- What is the total chance value of all blueprints with an ID starting with 'cubyz:phantasmal/pillar/offshoot/'?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_phantasmal_pillar_offshoot_offshoot.zig.zon_chunk_0*

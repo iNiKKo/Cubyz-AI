@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_cloth_white.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** texture mapping, block definition, item properties, configuration file, asset management
-**Concepts:** block configuration, item representation
+**Keywords:** configuration, texture, item representation, block properties, Cubyz engine
+**Concepts:** block configuration, texture mapping
 
 ## Summary
 Defines configuration for a white cloth block, including its texture and item representation.
 
 ## Explanation
-This chunk is a configuration file in the Cubyz voxel engine that specifies properties for a white cloth block. It sets the block's texture to 'cubyz:cloth/white' and defines an associated item with its own texture 'cloth/white.png'. This configuration is used by the engine to render and manage the block within the game world.
+This chunk is a configuration file in the Cubyz voxel engine that specifies properties for a white cloth block. It defines the texture used for rendering the block in the world and the texture for the corresponding item in the player's inventory. The configuration uses a structured format to map these properties, ensuring consistency across different parts of the game where this block is used.
 
 ## Related Questions
-- What is the texture path for the white cloth block?
-- How is the item representation of the white cloth block defined?
-- Where is the texture for the white cloth item located?
-- Is there any additional configuration for the white cloth block in this chunk?
-- Does this chunk define any functions or methods?
-- What concepts are implemented by this chunk?
+- What is the texture used for rendering the white cloth block in the world?
+- Which file specifies the item texture for the white cloth block?
+- How does this configuration ensure consistency across different parts of the game?
+- What properties are defined for the white cloth block in this chunk?
+- Is there any function or method defined in this chunk?
+- How is the texture mapping specified for the white cloth block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_cloth_white.zig.zon_chunk_0*

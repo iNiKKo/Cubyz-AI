@@ -1,26 +1,47 @@
 # [hard/codebase_src_renderer_chunk_meshing.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** pipeline, uniforms, vertex array, face buffers, light buffers, chunk buffer, command buffer, occlusion test, transparent shaders, deinit, allocator, depth testing, blend factors, compute pipeline, shader assets
-**Symbols:** Atomic, main.blocks, main.chunk, main.game, main.models.QuadIndex, main.renderer, main.graphics.SSBO, main.settings.highestSupportedLod, vec.Vec2f, vec.Vec3i, vec.Vec3f, vec.Vec3d, vec.Mat4f, gpu_performance_measuring, UniformStruct, uniforms, transparentUniforms, commandPipeline, commandUniforms.chunkIDIndex, commandUniforms.commandIndexStart, commandUniforms.size, commandUniforms.isTransparent, commandUniforms.playerPositionInteger, commandUniforms.onlyDrawPreviouslyInvisible, commandUniforms.lodDistance, occlusionTestPipeline, occlusionTestUniforms.projectionMatrix, occlusionTestUniforms.viewMatrix, occlusionTestUniforms.playerPositionInteger, occlusionTestUniforms.playerPositionFraction, vao, faceBuffers, lightBuffers, chunkBuffer, commandBuffer, chunkIDBuffer, quadsDrawn, transparentQuadsDrawn, maxQuadsInIndexBuffer, init, deinit
-**Concepts:** pipeline initialization, uniform buffer setup, vertex array creation, face buffer allocation, light buffer allocation, chunk data buffering, command buffer preparation, occlusion test pipeline, transparent rendering path, resource deallocation
+**Keywords:** pipeline initialization, buffer allocation, shader configuration, uniform setup, vertex array object
+**Symbols:** pipeline, transparentPipeline, UniformStruct, uniforms, transparentUniforms, commandPipeline, commandUniforms, occlusionTestPipeline, occlusionTestUniforms, vao, faceBuffers, lightBuffers, chunkBuffer, commandBuffer, chunkIDBuffer, quadsDrawn, transparentQuadsDrawn, maxQuadsInIndexBuffer, init
+**Concepts:** chunk meshing, graphics pipeline, buffer management, shader loading
 
 ## Summary
-This chunk declares renderer pipeline objects, uniform structures, and buffer allocations for meshing chunks; it implements init() to build pipelines and face/light buffers, and deinit() to tear them down.
+The chunk meshing module initializes graphics pipelines and buffers for rendering chunks in the game world.
 
 ## Explanation
-The chunk imports std.atomic.Value as Atomic (unused here) and the builtin module. It re-exports main blocks, models, renderer, graphics, lighting, settings, vec types, gpu_performance_measuring, and c. It imports mesh_storage.zig. It defines a UniformStruct with fields: projectionMatrix, viewMatrix, playerPositionInteger, playerPositionFraction, screenSize, ambientLight, contrast, @
+This chunk defines the initialization logic for various graphics components used in rendering chunks. It sets up multiple graphics pipelines, including one for opaque chunks and another for transparent ones. Additionally, it initializes several large buffers to store face data, light data, chunk data, command data, and chunk IDs. The `init` function configures these components by loading shaders, setting up uniform structures, and allocating memory for the buffers.
+
+## Code Example
+```zig
+const UniformStruct = struct {
+	projectionMatrix: c_int,
+	viewMatrix: c_int,
+	playerPositionInteger: c_int,
+	playerPositionFraction: c_int,
+	screenSize: c_int,
+	ambientLight: c_int,
+	contrast: c_int,
+	@"fog.color": c_int,
+	@"fog.density": c_int,
+	@"fog.fogLower": c_int,
+	@"fog.fogHigher": c_int,
+	reflectionMapSize: c_int,
+	lodDistance: c_int,
+	zNear: c_int,
+	zFar: c_int,
+}
+```
 
 ## Related Questions
-- What UniformStruct fields are declared for the opaque chunk pipeline?
-- How is the transparentPipeline configured differently from the main pipeline in init()?
-- What shader file paths are used to initialize occlusionTestPipeline?
-- How are faceBuffers and lightBuffers sized relative to settings.highestSupportedLod?
-- Which graphics.LargeBuffer type is assigned to chunkBuffer and what is its element count?
-- What does maxQuadsInIndexBuffer compute and why is the literal 3 << (3*chunk.chunkShift) used?
-- In deinit(), which pipeline objects are explicitly called with .deinit()?
-- How is rawData constructed before initializing vao, and what role does lut play?
-- Are any of the imported types from main.blocks or main.models used directly in this chunk's declarations?
-- What is the purpose of importing mesh_storage.zig here?
+- What is the purpose of the `init` function in this chunk?
+- Which shaders are used for rendering opaque and transparent chunks?
+- How many different types of buffers are initialized in this module?
+- What are the key components of the `UniformStruct` defined in this chunk?
+- How does the code initialize the vertex array object (`vao`)?
+- What is the maximum number of quads that can be stored in the index buffer?
+- Which graphics pipeline is used for occlusion testing?
+- How are the face buffers and light buffers initialized?
+- What are the blending settings for the transparent pipeline?
+- Where are the shaders located on disk?
 
 *Source: unknown | chunk_id: codebase_src_renderer_chunk_meshing.zig_chunk_0*

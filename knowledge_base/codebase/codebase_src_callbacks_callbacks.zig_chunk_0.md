@@ -1,34 +1,27 @@
 # [easy/codebase_src_callbacks_callbacks.zig] - Chunk 0
 
 **Type:** api
-**Keywords:** callback structure, global initialization function, runtime safety, pointer casting, function pointer, data handling
-**Symbols:** ClientBlockCallback, ServerBlockCallback, BlockTouchCallback, Result, init, Creator, Callback, SimpleCallback
-**Concepts:** callback, global initialization, runtime safety, pointer casting, function pointers, data handling
+**Keywords:** callback, event handling, vtable, initialization, error handling
+**Symbols:** ClientBlockCallback, ServerBlockCallback, BlockTouchCallback, Result, Creator, Callback, SimpleCallback
+**Concepts:** callback mechanism, block interactions, vtable pattern
 
 ## Summary
-Defines callback structures for handling block interactions in the game.
+Defines callback mechanisms for block interactions in the Cubyz engine, including client and server block callbacks, touch callbacks, and simple callbacks.
 
 ## Explanation
-This chunk defines several callback types and utilities for handling different types of block interactions, such as client-side and server-side block callbacks, and a simple callback type. It includes global initialization functions to set up these callbacks based on configuration data, and utility functions to create and run callbacks.
+This chunk defines various callback structures and functions used to handle block interactions within the Cubyz engine. It includes `ClientBlockCallback`, `ServerBlockCallback`, and `BlockTouchCallback` for different types of block events. The `Callback` function template is used to create these callback types, managing initialization and execution through a vtable mechanism. Additionally, it provides a `SimpleCallback` struct for simpler callback scenarios with optional data. The chunk also includes an `init` function to initialize global callback maps and error handling for missing or unknown event types.
 
 ## Code Example
 ```zig
-fn noopCallback(_: *anyopaque, _: Params) Result {
-	return .ignored;
-}
+pub const Result = enum { handled, ignored };
 ```
 
 ## Related Questions
-- What is the purpose of the `ClientBlockCallback`, `ServerBlockCallback`, and `BlockTouchCallback` types?
-- How does the `init` function initialize these callback types?
-- What does the `noopCallback` function do?
-- How can a simple callback be initialized with a function pointer?
-- What is the role of the `SimpleCallback` struct in this codebase?
-- How does the `run` method execute a callback?
-- What happens if a required field is missing during callback initialization?
-- How is memory managed for callback data?
-- Can you explain how the `noop` constant is defined and used?
-- What is the significance of the `genericWrapper` function in the `SimpleCallback` struct?
-- How does the `initWithInt` method handle data casting?
+- What are the different types of block callbacks defined in this chunk?
+- How does the `Callback` function template work?
+- What is the purpose of the `globalInit` method in the `Callback` struct?
+- How are simple callbacks initialized and executed?
+- What error handling is implemented for missing or unknown event types?
+- What is the role of the `noop` callback in this chunk?
 
 *Source: unknown | chunk_id: codebase_src_callbacks_callbacks.zig_chunk_0*

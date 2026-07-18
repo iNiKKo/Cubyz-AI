@@ -1,22 +1,28 @@
 # [easy/codebase_assets_cubyz_sbb_phantasmal_pillar_top_top.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprint, chance, ID, pillar top, generation
+**Keywords:** blueprint config, pillar blueprint, chance distribution, world generation, configuration data
 **Symbols:** blueprints
-**Concepts:** configuration, world_generation
+**Concepts:** blueprint, pillar, generation
 
 ## Summary
-Stores blueprints for different top parts of phantasmal pillars.
+Pillar blueprint configuration
 
 ## Explanation
-This chunk contains a configuration data structure that defines various blueprints for the top parts of phantasmal pillars in the game. Each blueprint is identified by an ID and has a chance associated with it, indicating how likely it is to be selected during generation or placement.
+This chunk defines a list of pillar blueprint configurations with their respective IDs and chances for generation.
 
 ## Related Questions
-- What are the IDs of the blueprints defined in this configuration?
-- How many different blueprints are there for phantasmal pillar tops?
-- What is the chance associated with each blueprint?
-- Which blueprint has a chance of 8?
-- Where can I find more information about the phantasmal pillars in the game?
-- How does this configuration affect the world generation process?
+- What are the IDs of all pillar blueprints defined?
+- How many pillar blueprints are there in total?
+- What is the chance for generating a pillar with ID 'cubyz:phantasmal/pillar/top/0'?
+- Which blueprint has the highest chance for generation?
+- What is the chance distribution of all pillar blueprints?
+- Are there any null IDs defined in the pillar blueprint configuration?
+- How many null IDs are present?
+- What is the total chance of generating a pillar with a non-null ID?
+- Is there a default blueprint (null ID) defined?
+- If so, what is its chance?
+- Can you provide the list of all blueprint IDs in order of their chances from highest to lowest?
+- How many unique blueprint IDs are present?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_phantasmal_pillar_top_top.zig.zon_chunk_0*

@@ -1,28 +1,21 @@
 # [easy/docs_docs_index.md] - Chunk 0
 
-**Type:** documentation
-**Keywords:** Cubyz, sandbox game, level of detail, 3D chunks, procedural crafting, performance optimization
-**Symbols:** material-earth-box, material-package, material-hammer-screwdriver, material-lightning-bolt
-**Concepts:** voxel sandbox game, level of detail, 3D chunks, procedural crafting, optimized performance
+**Type:** gameplay
+**Keywords:** Cubyz, voxel game, infinite terrain, procedural crafting, performance optimization, high level of detail
+**Concepts:** Cubyz, 3D voxel sandbox game, Level of Detail, 3D Chunks, Procedural Crafting, Highly Optimized
 
 ## Summary
-Cubyz is a voxel sandbox game with unique features including level of detail, 3D chunks, procedural crafting, and optimized performance.
+Cubyz is a 3D voxel sandbox game with unique features like high level of detail, 3D chunks for infinite terrain, procedural crafting, and optimized performance.
 
 ## Explanation
-Cubyz is a sandbox game that allows players to build and explore an infinite world. It features high-level detail rendering, 3D chunking for unlimited terrain, procedural crafting to create custom tools, and optimized performance to run on low-end hardware.
+Cubyz is a 3D voxel sandbox game that offers several innovative mechanics. It supports high level of detail rendering up to 2400 blocks ahead, allowing players to explore vast distances without significant performance loss. The game uses 3D chunks for infinite terrain in all directions, enabling players to build and explore horizontally and vertically over a massive area of 1 million+ blocks in every direction. Cubyz features procedural crafting, where players can create unique tools by combining various materials, discovering new effects and interactions along the way. The game is highly optimized for performance, making it playable even on low-end hardware without compromising visual quality.
 
 ## Related Questions
-- What is Cubyz and what are its unique features?
-- How does Cubyz handle large terrain without performance issues?
+- What is Cubyz?
+- How far can players see in Cubyz?
+- What makes Cubyz's terrain unique?
 - Can players create custom tools in Cubyz?
-- What optimizations has Cubyz implemented to run on low-end hardware?
-- Where can I download the latest version of Cubyz?
-- What is the maximum number of blocks a player can explore horizontally and vertically in Cubyz?
-- How does Cubyz handle procedural crafting for creating custom tools?
-- What are some examples of unique materials that players can combine to create tools in Cubyz?
-- What are the effects and interactions of different tools in Cubyz?
-- What is the best tool for a specific job in Cubyz?
-- How does Cubyz optimize performance on low-end hardware?
-- What is the maximum render distance in Cubyz?
+- Is Cubyz optimized for low-end hardware?
+- What are the dimensions of Cubyz's world?
 
 *Source: unknown | chunk_id: docs_docs_index.md_chunk_0*

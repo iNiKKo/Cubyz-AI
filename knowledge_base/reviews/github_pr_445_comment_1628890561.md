@@ -1,22 +1,22 @@
 # [src/renderer/chunk_meshing.zig] - PR #445 review diff
 
 **Type:** review
-**Keywords:** ChunkMesh, taskType, .lighting, classification, performance problems
-**Symbols:** ChunkMesh, taskType
-**Concepts:** architectural design, performance optimization
+**Keywords:** chunk_meshing.zig, taskType, .lighting, performance problems, classification
+**Symbols:** ChunkMesh, isStillNeeded, run, clean, taskType
+**Concepts:** architectural review, task classification
 
 ## Summary
-Added 'taskType' field with value '.lighting' to ChunkMesh struct.
+Added a 'taskType' field to the ChunkMesh struct with the value '.lighting'.
 
 ## Explanation
-The reviewer added a 'taskType' field to the ChunkMesh struct, setting its value to '.lighting'. This change is intended to better classify tasks based on performance characteristics. The reviewer suggests that while this implementation is straightforward, there might be a more optimal classification method for task types.
+The reviewer suggests that the addition of a 'taskType' field to classify tasks as '.lighting' is straightforward. However, they raise a question about whether there might be a better classification method for task types, indicating potential future improvements in how tasks are categorized and managed within the chunk meshing process.
 
 ## Related Questions
-- What is the purpose of adding 'taskType' to ChunkMesh?
-- How does the '.lighting' task type impact performance?
-- Are there any potential regressions introduced by this change?
-- Is there a more efficient way to classify tasks in ChunkMesh?
-- What other task types could be added to improve classification?
-- How does this change affect backwards compatibility with existing code?
+- What other task types are currently being considered for classification?
+- How does the addition of 'taskType' impact the performance of chunk meshing tasks?
+- Are there any potential memory implications from adding this new field to ChunkMesh?
+- Can you provide more details on the performance issues that led to this change?
+- Is there a plan to refactor task classification in the future based on reviewer feedback?
+- How does this change affect backwards compatibility with existing chunk meshing logic?
 
 *Source: unknown | chunk_id: github_pr_445_comment_1628890561*

@@ -1,22 +1,27 @@
 # [easy/codebase_assets_cubyz_blocks_tussock.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, properties, drops, selection, replaceable, degradable
-**Symbols:** tags, blockHealth, drops, selectionCapabilities, replaceable, degradable, viewThrough, absorbedLight, collide, model, texture, item, lodReplacement, onUpdate
-**Concepts:** block properties, game configuration, drop behavior, selection capabilities, replaceability, degradability
+**Keywords:** block health, drop behavior, texture mapping, LOD replacement, update actions
+**Concepts:** block properties, item configuration
 
 ## Summary
-Defines properties and behavior for a tussock block in the game.
+Defines properties for the Tussock block in Cubyz, including its health, drops, and visual characteristics.
 
 ## Explanation
-This configuration defines various attributes of a tussock block, including its tags, health, drop behavior, selection capabilities, replaceability, degradability, view-through property, absorbed light, collision behavior, model, texture, item properties, LOD replacement, and update logic. The tussock block can be cut and sliced, has low health, drops itself when cut with a cutting tool, and is replaceable and degradable.
+This chunk defines a configuration object for the Tussock block in the Cubyz voxel engine. It specifies various properties such as tags (cuttable and sliceable), block health, drop behavior, selection capabilities, replaceability, degradability, view-through capability, light absorption, collision behavior, model type, texture, item texture, LOD replacement, and an update action that checks support blocks.
 
 ## Related Questions
-- What tags are associated with the tussock block?
-- How much health does a tussock block have?
-- What happens when a tussock block is cut?
-- Is the tussock block replaceable?
-- Can the tussock block be sliced?
-- What model is used for the tussock block?
+- What are the tags associated with the Tussock block?
+- How much health does the Tussock block have?
+- What items can be dropped from the Tussock block?
+- Is the Tussock block replaceable?
+- Does the Tussock block degrade over time?
+- Can the player view through the Tussock block?
+- What model is used for the Tussock block?
+- What texture is applied to the Tussock block?
+- What texture is used for the item representation of the Tussock block?
+- What happens when the LOD replacement occurs for the Tussock block?
+- What type of update action is associated with the Tussock block?
+- Does the Tussock block collide with other objects?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_tussock.zig.zon_chunk_0*

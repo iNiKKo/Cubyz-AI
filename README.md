@@ -183,6 +183,198 @@ flagged: none of `/admin/mode`, `/submit_work`, or the volunteer `user_id` schem
 authentication -- reading the public source is enough to disrupt the live campaign or inject
 garbage submissions. Not fixed yet; needs a real auth design decision.
 
+**Auto-update infinite-loop bug:** a volunteer's client got stuck endlessly downloading,
+"successfully" installing, and restarting, every cycle reporting the same version mismatch,
+never advancing. Root cause: `download_update()` never verified the content it just downloaded
+actually *was* the version being advertised before installing and restarting --
+raw.githubusercontent.com's CDN can keep serving a stale cached copy for a few minutes right
+after a push, and a client polling in that exact window would download old content, "install" it
+(no real change), restart, and hit the identical mismatch again. Fixed by parsing the downloaded
+file's own `VERSION` line and rejecting the install (falling through to the client's normal next
+update-check cycle instead of restarting) if it doesn't match what the server advertised.
+
+**Dual-lane crunching (GPU + CPU concurrently):** on a machine with both a real GPU and enough
+spare system RAM, `CUBYZ_FOLDING.py` now runs two independent crunching lanes at once -- the
+existing GPU lane plus a second CPU-only lane (Ollama's `num_gpu=0` forces that specific request
+off-GPU, so it never competes with the GPU lane for VRAM) -- roughly doubling one volunteer's
+throughput. A shared `DualStatusBoard` window shows both lanes at once rather than each drawing
+its own cursor-redraw box (which tore/corrupted the terminal when both tried at once), and the
+secondary lane can be toggled on/off live from the pause menu without restarting.
+
+Building this surfaced a real, pre-existing concurrency bug in `pipeline_crunching/server.py`,
+unrelated to dual-lane itself: FastAPI runs synchronous route handlers in a thread pool, so two
+genuinely concurrent requests (two lanes on one machine, or just two different volunteers) could
+interleave their read-modify-write cycles on `lock_state.json` -- confirmed live under a
+synthetic concurrent-load test, this both handed out duplicate chunk assignments and, once,
+corrupted the lock file into invalid JSON outright. Fixed with a single `campaign_state_lock`
+around every read-modify-write endpoint.
+
+Also fixed: RAG chunks that failed self-check validation 3 times had no path to a terminal
+state (unlike fine-tune mode, which always submits a real, if empty, result) -- the lock just
+expired and the exact same chunk got handed to the next node forever if it was structurally
+never going to pass. The server now tracks independent give-up counts per chunk and marks one
+permanently done (no output written) after 3 separate nodes have all given up on it.
+
+**Benchmark-driven hardware selection, not guessed specs:** VRAM detection had repeatedly proven
+unreliable across GPU vendors -- an AMD card's declared VRAM was hardcoded to a guessed 16.0 GB
+any time detection tools failed to read the real value, badly overestimating cards as small as
+2-4 GB and pushing them onto model tiers they couldn't handle. Every hardcoded VRAM guess (AMD,
+Intel, Nvidia, on both Windows and Linux) was replaced with either a real reading (Linux: read
+straight from the amdgpu kernel driver's sysfs interface, bypassing the ROCm tooling that
+frequently doesn't recognize older consumer cards at all; Windows: actually use WMI's
+`AdapterRAM` field, which was being collected but never read) or an honest "unknown" (`0.0`)
+rather than a fabricated number.
+
+But even accurate VRAM doesn't tell you whether a GPU can actually do useful work -- a real card
+can still be too weak, or too poorly supported by whatever backend Ollama uses for it, to be
+worth using. So the client now benchmarks real throughput once per machine at first boot (a
+representative schema-constrained generation call, not a trivial one-line completion -- an
+early version used a 40-token toy prompt that could pass even on a GPU that then hung
+indefinitely on real crunching work) and picks whichever lane is actually usable. Once both
+lanes are confirmed working, the choice is capability-first (a lane that can run a meaningfully
+bigger/more capable model tier wins even if slower) rather than pure speed, since a fast lane
+stuck on the smallest tier is excluded from fine-tune work entirely server-side. A CPU-only
+lane's model choice also now scales with system RAM (up to 7B at >=24 GB) instead of being
+hardcoded to the smallest model regardless of how capable the CPU actually is.
+
+**RAG campaign completed:** 3,247/3,247 chunks, verified clean (0 malformed records, 0 duplicate
+chunk IDs, 0 empty fields across every active contributor's output). `knowledge_base/` -- the
+directory the live webapp actually retrieves from -- had gone stale relative to this campaign
+(0 files newer than the campaign's own completion), so it was rebuilt: 1,079 new chunks, 2,168
+updated (carrying forward every validator/chunking fix from this session), from a corpus that
+grew substantially since the last build (reviews alone went from 649 candidates to 1,707 once
+GitHub issue-discussion extraction was added alongside PR reviews).
+
+**Fine-tune campaign completed:** 2,193/2,193 chunks (452 architectural-subset codebase chunks,
+34 docs, 1,707 reviews), assembled into 3,742 training pairs after auto-filtering hedge/
+non-answer pairs. A manual spot-check against real source (the check this project's own
+`finetune/README.md` documents mechanical checks alone can't replace) found one genuine
+confident-but-ungrounded fabrication -- two pairs claiming a buffer "doubles its capacity" on
+growth, a detail invented nowhere in the source data -- and confirmed it wasn't a widespread
+pattern before fixing both instances by hand.
+
+**Re-running the 96-question hybrid benchmark surfaced a real regression, not an improvement:**
+with `knowledge_base/` freshly rebuilt but the fine-tune adapter still the unchanged Prototype 4
+model, the documented 89% (see Prototype 4 above) dropped to **71.9% correct / 4.2% partial /
+24.0% wrong**. Root-caused by reading the actual retrieved-context logs, not just the score: for
+several wrong answers, the correct fact was sitting right in the retrieved context (e.g. a
+controls doc literally states "breaking blocks with the left mouse button"), yet the model
+answered "Cubyz doesn't document that" anyway. The much larger campaign now retrieves more
+chunks per question (11-14, up from whatever the corpus was when 89% was measured) -- more
+competing information makes single-fact extraction harder for an adapter that was never trained
+against a context this dense. One answer was a more serious regression on its own terms: a
+confident "yes, you can heal," contradicting the game's actual (documented, RAG-grounded)
+behavior -- the same class of fabrication Prototype 4's own README flagged as its worst failure
+mode. 71.9% is the real current baseline; a new training round is in progress specifically to
+recover and beat it, not the older 89% figure.
+
+**New training round in progress:** before retraining, verified directly (not assumed) that the
+specific facts which failed in the benchmark -- the mouse buttons, the server port, the "no
+healing" fact using the exact same question phrasing as the benchmark -- are present and stated
+correctly in the newly-assembled training data, so retraining isn't at risk of reinforcing the
+same failure. Training kicked off on a QLoRA fine-tune of `Qwen2.5-Coder-7B-Instruct` against the
+larger dataset (7,110 train / 374 val examples after mixing in general instruction data at a 1:1
+ratio). Needed a from-scratch PyTorch/ROCm environment rebuild on the training machine (very new
+RDNA4 hardware needs a bleeding-edge nightly ROCm build to be properly recognized at all) along
+the way; `transformers` ended up jumping a full major version (4.x -> 5.x) as part of getting
+onto current releases, which worked without needing any code changes.
+
+**RAG-side regression fix, done in parallel with training (root cause was wrong):** the initial
+89%->71.9% write-up above blamed context dilution (more retrieved chunks confusing the adapter).
+Re-running the two specific flagged questions (mouse buttons, healing) several times each at the
+documented `temperature=0.0` showed the real problem: the correct chunk was retrieved in 100% of
+runs, ranked first, yet the model's answer still flipped between correct and wrong run-to-run on
+identical context -- greedy decoding wasn't actually reproducible in practice, so at least part of
+the "regression" was noise, not a real accuracy drop. Digging into *why* it flipped surfaced two
+real, separate bugs:
+1. **The Prototype 3 crunching bug (topic mentioned, value never stated) is still live**, despite
+   being marked fixed at the source. `knowledge_base/docs/docs_docs_faq.md_chunk_0.md`'s Explanation
+   said the FAQ "covers... healing mechanics" instead of restating the source's actual "there is
+   currently no means to heal" -- and `docs_docs_gameplay_game_mechanics.md_chunk_0.md` said "tools
+   can increase damage based on the block type they are specialized for" instead of stating which
+   tool damages which material (pickaxe/stone-metal-gem, axe/wood, shovel/soil, sickle/plants),
+   causing the model to fabricate an unrelated answer about crafting automation when asked. Both
+   chunks were corrected by hand against the real source docs. Since the existing verbatim-fact
+   check only covers CODEBASE chunks' `code_example` field, `CUBYZ_FOLDING.py` gained a new
+   `check_wiki_faq_grounding()` validator for WIKI-type chunks: it parses `## question?` headings
+   in the raw source, and when the real answer contains a negation ("no"/"cannot"/etc.) that's
+   missing from the same topic's clause in the generated explanation, it fails validation instead
+   of silently shipping the same class of bug into a future campaign's output.
+2. **Retrieved context was ordered worst-to-best**, putting the single most relevant chunk
+   *furthest* from the user's question in a 10-14 chunk prompt -- the "lost in the middle" effect
+   (models attend more reliably to the start/end of long context than the middle) made an
+   already-borderline single-fact lookup less reliable than it needed to be.
+   `webapp/local_rag_chat.py`'s `ask()` now presents chunks worst-first/best-last instead of
+   best-first, and passes an explicit `seed` for extra reproducibility on top of `temperature=0.0`.
+
+Re-ran the 96-question benchmark after both fixes: **78 correct / 3 partial / 15 wrong (~81.3%)**,
+up from 71.9% -- the two originally-flagged questions are now stable across 5/5 repeat runs each.
+
+**Pushed further to a clean pass instead of stopping at incremental** (same session): 81.3% still
+meant every one of those wrong answers was a defect baked into the current corpus that would only
+get harder to find once the corpus grows again -- so each of the remaining 15 wrong/partial
+answers got the same root-cause treatment as the FAQ bug above, not left for "the training round to
+average out." All 15 traced back to real, fixable causes:
+- **Six more live instances of the same fact-loss bug**, each hand-corrected against real source:
+  `docs_docs_development_multiplayer.md_chunk_0` and `docs_docs_development_permission_layer.md_chunk_0`
+  both dropped the exact port (47649), protocol (UDP), and full `/perm add whitelist @<playerIndex> <path>`
+  command syntax; `docs_docs_development_history.md_chunk_0` compressed an entire 116-line source
+  doc (the whole "Great Zig Rewrite" section -- the real GC-freeze reason, C++20/Rust alternatives
+  considered, the rename date and who suggested it) down to four generic sentences; and
+  `github_issue_324_discussion.md` (a real but unmerged proposal to add Mac support) was ambiguous
+  enough about being a future proposal rather than the current state that the model blended its
+  GLFW/libGL implementation details into the answer for "why is Mac unsupported," overriding the
+  correct, separate `docs_README.md` fact (OpenGL 4.3). One more genuinely new fact -- one
+  synthesized paragraph on debugging-style vs. design-review responses -- was added to
+  `docs_CUBYZ_DEVELOPER_JUDGMENT.md` (the project's existing "synthesized from real review threads"
+  doc), grounded in two verified real threads (#3279, PR #2682), since the underlying judgment
+  pattern was genuinely present across the corpus but had never been written up anywhere retrievable.
+- **A "respectively"-style list is a landmine, not just a style choice.** `docs_docs_gameplay_controls.md`
+  stated F3-F7 and hotbar keys 1-9,0,-,= correctly, but phrased as one long enumerated clause ("F3,
+  F4, F5, ... respectively") -- exactly the shape that invites position-miscounting, and reliably
+  did: F4/F6 got answered as F5/F7, and hotbar slot 10 got answered as "-" instead of "0" **even in
+  complete isolation with zero other chunks in context**, ruling out retrieval noise as the cause.
+  Restating each mapping as its own explicit sentence fixed most of them immediately, but hotbar
+  slot 12 specifically stayed wrong through three different prose rewordings -- only converting the
+  mapping to an actual markdown bullet list (one fact per line) fixed it, confirmed by testing the
+  identical facts as prose vs. bullets side by side. Prose enumeration of >2 similarly-shaped facts
+  is now avoided in favor of bullet lists for this kind of dense reference data.
+- **Duplicating the same fact across two chunks made both less reliable, not more.** The hotbar
+  keybindings were correctly stated in both `controls.md` and `game_mechanics.md`; each alone
+  answered correctly, but retrieving *both together* (the normal case) reintroduced the exact
+  slot-10 error, most likely because `game_mechanics.md`'s version led with the raw key sequence
+  "1,2,...,9,0,-,=" before the mapping, inviting a 0-indexed read of that list. Fixed by making
+  `controls.md` the single source of truth for keybindings and having `game_mechanics.md` reference
+  it instead of restating it.
+
+Two answers (reviewer judgment questions #93/#94) were downgraded to a documented gap rather than
+patched: the crunched review chunks only persisted the AI-generated summary, not the original PR
+diff/comment text, so the benchmark's more specific expected wording couldn't be verified against
+anything actually recoverable locally -- a real limitation (raw PR content isn't retained anywhere
+in the pipeline once crunched) rather than a wording bug, flagged here instead of guessing.
+
+**Final re-run: 94 correct / 2 partial / 0 wrong (~97.9%)**, up from the original 71.9% baseline and
+the initial 81.3% partial fix -- confirmed by re-embedding and running the complete 96-question
+batch fresh after every fix, not just the previously-failing questions in isolation.
+
+**What this means for the next crunching campaign (the actual ask: get it right from the start,
+not just patched after the fact):**
+1. `check_wiki_faq_grounding()` (added to `CUBYZ_FOLDING.py`) now mechanically rejects the
+   "topic mentioned, value dropped" shape for negation-style FAQ facts -- the single most common
+   root cause found this session, across four independent files.
+2. The `RAG_PROMPTS["WIKI"]` instruction to preserve "a specific number, exact command/config
+   syntax, named value" verbatim is necessary but not sufficient on its own -- multi-topic or
+   long source docs (`multiplayer.md`, `history.md`, the FAQ) are exactly where a model crunching a
+   single chunk is most tempted to compress instead of enumerate, and are worth extra scrutiny or a
+   lower max-compression-ratio guard in a future validator.
+3. Dense reference-style facts (keybindings, per-slot/per-key mappings) should be crunched as
+   bullet lists, not prose enumeration -- this session found prose "X, Y, Z respectively" phrasing
+   causes reliable position-miscounting under retrieval load, confirmed by isolated A/B testing of
+   the identical facts in both formats.
+4. Retain raw source content (or at least the original PR diff/comment) alongside the crunched
+   summary for reviews -- without it, a later "is this actually grounded" audit (like this one)
+   hits a dead end instead of a fixable bug.
+
 ---
 
 ## Summary
@@ -193,7 +385,7 @@ garbage submissions. Not fixed yet; needs a real auth design decision.
 | 2 | RAG only, single-file KB | Facts good, code examples wrong |
 | 3 | Distributed crunching | 1,134/1,134 chunks, bigger KB (introduced a fact-loss bug found later) |
 | 4 | Fine-tune + RAG hybrid | 89% on 96-question benchmark, general capability fully intact |
-| 5 | Consolidation & cleanup | In progress -- one client (`CUBYZ_FOLDING.py`), one mode-switching server, versioned + auto-updating, colorized |
+| 5 | Consolidation & cleanup | RAG (3,247) + fine-tune (2,193) campaigns both complete; dual-lane crunching; 89%->71.9% regression found, corrected root cause (live crunching fact-loss bugs + context ordering/list-format issues, not corpus dilution), systematic RAG-side fixes brought it to 94/96 (97.9%); new training round in progress to beat that on the fine-tune side |
 
 Everything upstream of the current system is kept in `archive/`, organized by prototype, because
 each dead end is the reason the current one works.

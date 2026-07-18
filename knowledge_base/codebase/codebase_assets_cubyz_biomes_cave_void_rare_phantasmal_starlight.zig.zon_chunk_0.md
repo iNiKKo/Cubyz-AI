@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_cave_void_rare_phantasmal_starlight.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** structures, cave models, biome configuration, partial sphere, phantasmal starlight
+**Keywords:** structures, chance, cave models, radius, amount
 **Concepts:** world generation, biome configuration
 
 ## Summary
-Defines configuration for cave void rare phantasmal starlight biomes, including structures and cave models.
+Defines configuration for cave void biomes, including structures and cave models.
 
 ## Explanation
-This chunk defines the configuration for a specific biome in the Cubyz game engine. It specifies two main components: structures and cave models. The structures section includes an entry with an ID of 'cubyz:sbb', a structure type of 'cubyz:phantasmal/star/stars', and a chance of 0.05. The caveModels section defines a partial sphere model with an ID of 'cubyz:partial_sphere', specifying the minimum and maximum amounts (4 to 6), and the minimum and maximum radii (30 to 40). This configuration is used by the engine to generate biomes with these specific features.
+This chunk defines the configuration for a specific biome in Cubyz, focusing on cave voids. It specifies structures that can appear within these caves, such as 'cubyz:phantasmal/star/stars', with a chance of 0.05. Additionally, it outlines cave models like 'cubyz:partial_sphere' with defined parameters for the number and size of these models.
 
 ## Related Questions
-- What is the ID of the structure defined in this biome configuration?
-- What is the chance of the 'cubyz:phantasmal/star/stars' structure appearing in this biome?
-- How many different cave models are defined for this biome?
-- What is the minimum radius of the partial sphere cave model?
-- What is the maximum amount of partial spheres that can be generated in this biome?
-- Which ID is associated with the partial sphere cave model?
+- What is the chance of the 'cubyz:phantasmal/star/stars' structure appearing in cave void biomes?
+- Which structures are defined for cave void biomes in this configuration?
+- How many different cave models are specified for cave voids?
+- What is the range of radii for the 'partial_sphere' cave model?
+- Can you list all the IDs of structures and cave models defined in this chunk?
+- What is the minimum amount of 'partial_sphere' cave models that can appear?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_cave_void_rare_phantasmal_starlight.zig.zon_chunk_0*

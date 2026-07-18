@@ -1,26 +1,64 @@
 # [hard/codebase_src_graphics.zig] - Chunk 9
 
 **Type:** implementation
-**Keywords:** text atlas, FreeType, Harfbuzz, font rendering, GPU texture upload, line wrapping, underline drawing, shadow color blending, uniform binding, texture resizing, data buffer handling, defer cleanup
-**Symbols:** TextRendering, TextRendering.Glyph, TextRendering.pipeline, TextRendering.uniforms, TextRendering.freetypeLib, TextRendering.freetypeFace, TextRendering.harfbuzzFace, TextRendering.harfbuzzFont, TextRendering.glyphMapping, TextRendering.glyphData, TextRendering.glyphTexture, TextRendering.textureWidth, TextRendering.textureHeight, TextRendering.textureOffset, TextRendering.fontUnitsPerPixel, TextRendering.ftError, TextRendering.init, TextRendering.deinit, TextRendering.resizeTexture, TextRendering.uploadData
-**Concepts:** text atlas management, font rendering pipeline, FreeType integration, Harfbuzz shaping, GPU texture upload, line wrapping, underline drawing, shadow color blending, uniform binding, texture resizing, data buffer handling, defer cleanup
+**Keywords:** text rendering, line breaks, selection drawing, OpenGL commands, shadow effect
+**Symbols:** calculateLineBreaks, drawSelection, render, renderTextWithoutShadow, shadowColor, renderShadow
+**Concepts:** text rendering, line breaking, selection highlighting, OpenGL rendering
 
 ## Summary
-Text rendering pipeline: glyph atlas management with FreeType/Harfbuzz, font effect shadowing, line wrapping and underline drawing via GPU rects.
+This chunk handles text rendering, including calculating line breaks, drawing selections, and rendering text with or without shadows.
 
 ## Explanation
-The chunk defines TextRendering as a struct containing static state for the text system. It holds a Pipeline (initialized from shaders), uniforms for texture bounds/rects/font effects, FreeType library/face, Harfbuzz face/font pointers, glyphMapping and glyphData lists, and two GPU textures used as an atlas. The init function creates the pipeline with SimpleVertex2D, binds null, sets font size uniform, initializes FreeType (FT_Init_FreeType), loads a font file (unscii-16-full.ttf) via FT_New_Face, configures pixel sizes (0, textureHeight), creates Harfbuzz face from FreeType face, builds Harfbuzz font, computes fontUnitsPerPixel. It then allocates glyphMapping and glyphData lists, reserves entry 0 as undefined, generates two GL_TEXTURE_2D objects, binds the first for upload (GL_RED single-channel) with nearest filtering and repeat wrapping, sets up the second texture identically. resizeTexture swaps the atlas textures, rebinds to the new primary slot, reallocates the primary texture at double width while keeping height constant, copies remaining data from the old secondary texture into the new primary via glCopyImageSubData (offsetting by textureOffset), and updates the fontSize uniform. uploadData reads a FreeType bitmap, extracts width/height, uses the buffer if present; if the offset plus width exceeds current textureWidth it calls resizeTexture to grow the atlas. The chunk also contains drawing logic: after computing line wraps (x offsets) it iterates self.lines.items, sets shadow color via draw.setColor with alpha 0xff000000, defers restoreColor, then for each wrapped segment draws a rect at start/end positions using draw.rect. All operations are synchronous and use the global allocator for lists; no concurrency is present.
+The chunk defines several functions related to text rendering in a graphics engine. The `calculateLineBreaks` function computes the dimensions of text blocks by iterating through glyphs and determining where lines should break based on maximum line width. The `drawSelection` function highlights selected text by drawing rectangles around the selected characters. The `render` function orchestrates the rendering process, calling helper functions to render text without shadows and with shadows. The `renderTextWithoutShadow` function sets up the rendering environment, binds necessary resources, and draws each glyph using OpenGL commands. The `shadowColor` function calculates a shadow color based on the perceived brightness of the original text color. The `renderShadow` function is similar to `renderTextWithoutShadow` but adjusts positions and colors to create a shadow effect.
+
+## Code Example
+```zig
+pub fn calculateLineBreaks(self: *TextBuffer, fontSize: f32, maxLineWidth: f32) Vec2f {
+		self.lineBreaks.clearRetainingCapacity();
+		const spaceCharacterWidth = 8;
+		self.lineBreaks.append(.{.index = 0, .width = 0});
+		const scaledMaxWidth = maxLineWidth/fontSize*16.0;
+		var lineWidth: f32 = 0;
+		var lastSpaceWidth: f32 = 0;
+		var lastSpaceIndex: u32 = 0;
+		for (self.glyphs, 0..) |glyph, i| {
+			lineWidth += glyph.x_advance;
+			if (glyph.character == ' ') {
+				lastSpaceWidth = lineWidth;
+				lastSpaceIndex = @intCast(i + 1);
+			}
+			if (glyph.character == '\n') {
+				self.lineBreaks.append(.{.index = @intCast(i + 1), .width = lineWidth - spaceCharacterWidth});
+				lineWidth = 0;
+				lastSpaceIndex = 0;
+				lastSpaceWidth = 0;
+			}
+			if (lineWidth > scaledMaxWidth) {
+				if (lastSpaceIndex != 0) {
+					lineWidth -= lastSpaceWidth;
+					self.lineBreaks.append(.{.index = lastSpaceIndex, .width = lastSpaceWidth - spaceCharacterWidth});
+					lastSpaceIndex = 0;
+					lastSpaceWidth = 0;
+				} else {
+					self.lineBreaks.append(.{.index = @intCast(i), .width = lineWidth - glyph.x_advance});
+					lineWidth = glyph.x_advance;
+					lastSpaceIndex = 0;
+					lastSpaceWidth = 0;
+				}
+			}
+		}
+		self.width = maxLineWidth;
+		self.lineBreaks.append(.{.index = @intCast(self.glyphs.len), .width = lineWidth});
+		return Vec2f{maxLineWidth*fontSize/16.0, @as(f32, @floatFromInt(self.lineBreaks.items.len - 1))*fontSize};
+	}
+```
 
 ## Related Questions
-- How does TextRendering resize its glyph atlas when new characters exceed current texture width?
-- What happens to the secondary texture slot during a resizeTexture call and why is it swapped?
-- Why are both GL_TEXTURE_MIN_FILTER and GL_TEXTURE_MAG_FILTER set to GL_NEAREST in init?
-- How is the shadow color applied to glyphs before drawing them with TextRendering.drawGlyph?
-- Which FreeType error handling strategy does ftError use when FT_Init_FreeType fails?
-- What is the purpose of reserving glyphData entry 0 as undefined during initialization?
-- How does uploadData decide whether to resize or directly upload a bitmap buffer?
-- Does deinit call FT_Done_FreeType and how are Harfbuzz resources cleaned up?
-- Are any operations in this chunk performed asynchronously or using threads?
-- What is the role of draw.setColor with alpha 0xff000000 in the line drawing loop?
+- What function calculates the dimensions of a text block?
+- How does the `drawSelection` function highlight selected text?
+- What is the purpose of the `render` function in this chunk?
+- How does the `renderTextWithoutShadow` function set up the rendering environment?
+- What determines the shadow color in the `shadowColor` function?
+- How is the shadow effect created in the `renderShadow` function?
 
 *Source: unknown | chunk_id: codebase_src_graphics.zig_chunk_9*

@@ -1,22 +1,22 @@
 # [src/client/entity_manager.zig] - PR #2682 review diff
 
 **Type:** review
-**Keywords:** AutoHashMap, List, entity IDs, memory usage, performance, hashmap overhead
+**Keywords:** AutoHashMap, List, entity ID mapping, small IDs, memory overhead, access times
 **Symbols:** uniforms, pipeline, entities, idMapping
-**Concepts:** memory optimization, performance improvement
+**Concepts:** memory management, data structures, performance optimization
 
 ## Summary
-The change replaces an `AutoHashMap` with a `List` to map entity IDs to entities, citing that IDs are small numbers and a hashmap is unnecessary.
+The reviewer suggests replacing an `AutoHashMap` with a `List` for entity ID mapping due to the expectation that IDs are small numbers.
 
 ## Explanation
-The reviewer suggests replacing the `idMapping` from an `AutoHashMap` to a `main.List`. The rationale is that since entity IDs are generally small numbers, using a list for mapping would be more efficient than a hashmap. This change aims to optimize memory usage and potentially improve performance by reducing overhead associated with hashmaps.
+The original code used an `AutoHashMap` to map entity IDs to their corresponding entities. The reviewer argues that since IDs are generally small, using a list might be more efficient and appropriate. This change could potentially reduce memory overhead and improve access times for small ID ranges. However, the reviewer's concern about the necessity of this change should be addressed to ensure it aligns with the actual distribution of entity IDs in the application.
 
 ## Related Questions
-- What is the expected performance impact of replacing AutoHashMap with List in entity mapping?
-- How does the change affect memory usage in the entity manager?
-- Why are small entity IDs considered when choosing between hashmap and list for mapping?
-- Can you explain the potential benefits of using a List over an AutoHashMap in this context?
-- What are the trade-offs involved in switching from AutoHashMap to List for idMapping?
-- How does this change affect the overall architecture of the entity manager?
+- What are the potential memory savings from using a List instead of an AutoHashMap for entity ID mapping?
+- How does the performance of accessing entities change with this modification?
+- Are there any potential regressions in terms of lookup times or memory usage?
+- What is the current distribution of entity IDs in the application?
+- How would this change impact the scalability of the entity management system?
+- Is there a risk of increased complexity due to this change?
 
 *Source: unknown | chunk_id: github_pr_2682_comment_3158815342*

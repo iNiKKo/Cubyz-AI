@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_sign_pine.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** texture mapping, item definition, configuration data, block asset, pine sign
-**Concepts:** asset configuration, block representation
+**Keywords:** texture mapping, item representation, configuration file, pine sign block, asset loading
+**Concepts:** block configuration, asset management
 
 ## Summary
 Defines configuration for a pine sign block, including its texture and item representation.
 
 ## Explanation
-This chunk is a configuration file in the Cubyz voxel engine's asset system. It specifies the visual appearance of a pine sign block by defining its texture path. Additionally, it configures the item form of this block, which includes its own texture file. The structure follows a typical JSON-like format used for defining assets in the engine, where each field corresponds to a specific attribute of the block or item.
+This chunk is a configuration file in the Cubyz voxel engine. It specifies the visual assets for a pine sign block. The `.texture` field points to the main texture used for rendering the block in the world. The `.item` sub-structure defines how the block appears as an item, with its own texture specified by `sign/pine.png`. This configuration is likely used by the engine's asset loading and rendering systems to correctly display the pine sign both in-world and in inventory.
 
 ## Related Questions
-- What is the texture path for the pine sign block?
-- How is the item representation of the pine sign defined in this configuration?
-- Where is the texture file for the pine sign item located?
-- Does this chunk define any additional properties for the pine sign block or item?
-- Is there a specific naming convention for asset files in Cubyz as indicated by this example?
-- How does this configuration relate to other block configurations in the Cubyz engine?
+- What is the main texture used for rendering the pine sign block?
+- How does the pine sign block appear as an item in the inventory?
+- Where is the configuration file located within the Cubyz codebase?
+- What other fields might be included in a typical block configuration?
+- How does this configuration interact with the engine's asset loading system?
+- Can this configuration be modified to change the appearance of the pine sign?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_sign_pine.zig.zon_chunk_0*

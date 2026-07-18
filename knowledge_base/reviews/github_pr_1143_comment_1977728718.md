@@ -1,26 +1,22 @@
-# [src/blocks.zig] - Chunk 1977728718
+# [src/blocks.zig] - PR #1143 review diff
 
 **Type:** review
-**Keywords:** Block, checkEntityTouch, onEntityTouch, entity, callback, stub, placeholder, unused parameters, packed struct, inline, lookup table
-**Symbols:** Block, checkEntityTouch, onEntityTouch
-**Concepts:** callback hook, placeholder method, entity interaction, packed struct extension, inline lookup table
+**Keywords:** Block, entity touch, checkEntityTouch, onEntityTouch, interaction handling, architectural review
+**Symbols:** Block, _allowOres, _checkEntityTouch, canBeChangedInto, main.items.ItemStack, main.rotation.RotationMode.CanBeChangedInto, onEntityTouch, main.server.Entity
+**Concepts:** thread safety, backwards compatibility, memory leak
 
 ## Summary
-Added two new methods to the Block struct: checkEntityTouch (inline lookup) and onEntityTouch (placeholder callback with unused parameters).
+Added new methods `checkEntityTouch` and `onEntityTouch` to the Block struct in blocks.zig.
 
 ## Explanation
-The diff introduces a new inline getter checkEntityTouch that maps block types to entity-touch checks, likely for future collision or interaction logic. It also adds an empty method stub onEntityTouch that accepts an Entity pointer and coordinates but currently ignores all arguments (_ = self; _ = entity; ...). This suggests the author is scaffolding a hook system where other blocks can later implement custom behavior when touched by entities (e.g., mobs, players), while keeping the interface uniform. The reviewer’s comment indicates they only want to provide the needed logic now and are open to refactoring into an optional function pointer if desired, implying awareness that the current stub may be over‑provisioned or need a more flexible callback mechanism later.
+The reviewer added two new methods, `checkEntityTouch` and `onEntityTouch`, to the `Block` struct. The `checkEntityTouch` method checks if a block allows entities to touch it based on its type. The `onEntityTouch` method is intended to handle interactions when an entity touches the block, though the current implementation does nothing with the passed parameters. The reviewer expressed willingness to further develop these methods as needed.
 
 ## Related Questions
-- What is the purpose of checkEntityTouch and how does it differ from onEntityTouch?
-- Why are all parameters in onEntityTouch ignored with _ = param;?
-- Is there a planned interface for blocks to implement custom entity-touch behavior?
-- Could checkEntityTouch be replaced by an optional function pointer as the reviewer suggested?
-- What types of entities might trigger onEntityTouch in future code?
-- How does adding these methods affect memory layout of the packed Block struct?
-- Are there any existing callers that need to handle the new onEntityTouch signature?
-- Does checkEntityTouch rely on a global lookup table _checkEntityTouch defined elsewhere?
-- What is the expected return type or side effect of onEntityTouch when implemented?
-- Could this change introduce ABI incompatibilities for downstream consumers of Block?
+- What is the purpose of the `checkEntityTouch` method?
+- How does the current implementation of `onEntityTouch` handle entity interactions?
+- Is there any specific logic planned for the `onEntityTouch` method in future updates?
+- How does the addition of these methods affect backwards compatibility with existing code?
+- What are the potential implications of using function pointers for these methods instead of inline functions?
+- Are there any thread safety concerns introduced by these new methods?
 
 *Source: unknown | chunk_id: github_pr_1143_comment_1977728718*

@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_rare_snow_snale.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprint configuration, entity variants, spawn chances, Cubyz entity system, rare snow snale
+**Keywords:** blueprint configuration, entity variants, spawn probability, game assets, Cubyz entity system
 **Concepts:** entity ECS, world generation
 
 ## Summary
-Defines blueprints for various snow snale entities with different sizes and spawn chances.
+Defines blueprints for different variants of the snow snale entity.
 
 ## Explanation
-This chunk defines a configuration structure containing blueprints for different variants of the rare snow snale entity in Cubyz. Each blueprint specifies an ID and optionally a chance value, which determines the probability of that variant spawning. The blueprints are organized into an array within a larger anonymous struct.
+This chunk contains a configuration for various blueprints related to the snow snale entity in Cubyz. Each blueprint has an ID that uniquely identifies it, and some blueprints have an associated chance value which likely influences their spawn probability or generation likelihood within the game world.
 
 ## Related Questions
 - What are the different IDs defined for the snow snale blueprints?
-- How many different sizes of snow snales are defined in this configuration?
-- What is the spawn chance for the 'medium' size snow snale?
-- Does every blueprint have a specified spawn chance?
-- Where is this configuration used within the Cubyz engine?
-- How does the spawn chance affect the rarity of each variant?
+- How many blueprints have a chance value associated with them?
+- What is the chance value for the 'medium' variant of the snow snale?
+- Does every blueprint have an ID field?
+- Are there any other fields besides 'id' and 'chance' in the blueprint definitions?
+- How might these blueprints be used within the Cubyz game engine?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_rare_snow_snale.zig.zon_chunk_0*

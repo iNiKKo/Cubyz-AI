@@ -1,33 +1,31 @@
 # [easy/codebase_mods_cubyz_rotations_hanging.zig] - Chunk 0
 
-**Type:** gameplay
-**Keywords:** hanging blocks, neighbor direction, replaceable check, top bottom models, data state update, transform model, mesh start index, block typ match, dirUp dirDown, support validation, model index add, zon get default, quads neighbor facing, replaceable blocks, hanging block logic
+**Type:** implementation
+**Keywords:** model index, texture mapping, neighbor checking, block placement conditions, data update
 **Symbols:** dependsOnNeighbors, transform, init, deinit, reset, createBlockModel, model, generateData, updateData
-**Concepts:** hanging blocks, neighbor support validation, rotation mode data state updates
+**Concepts:** block model creation, data generation, hanging blocks
 
 ## Summary
-Chunk implementing hanging-block rotation mechanics, including neighbor support validation and data state updates.
+Handles block model creation and data generation for hanging blocks.
 
 ## Explanation
-This chunk defines a public API for handling blocks that hang from above. It imports main modules (blocks, models, vec) and defines a dependency flag dependsOnNeighbors = true indicating it interacts with adjacent blocks. The transform function is declared but empty; createBlockModel uses zon.get to retrieve top/bottom model names defaulting to cubyz:cube, then applies the empty transform via getModelIndex.model().transformModel. model returns a ModelIndex by adding block.data%2 to the mesh start index for this rotation mode. generateData takes neighbor info and current/neighbor blocks; when blockPlacing is true it checks that the neighbor direction is dirUp (otherwise false), verifies sameBlock typ, then computes support: if the neighbor block is not replaceable and its model's neighborFacingQuads[Neighbor.dirDown.toInt()] has non-zero length, support is true. If not supported it returns false; otherwise it sets currentData.data = 1 and returns true. updateData only acts when neighbor == .dirDown; it computes newData as 0 if typs match else 1, compares to block.data (returns false if equal), assigns block.data = newData, then returns true.
+This chunk defines logic for handling hanging blocks in the Cubyz voxel engine. It includes functions for initializing, deinitializing, and resetting block models. The `createBlockModel` function generates a model index based on top and bottom textures specified in ZonElement. The `model` function retrieves the model index for a given block. The `generateData` function checks conditions for placing a hanging block, ensuring it is supported by a non-replaceable block below. The `updateData` function updates the block's data when its neighbor changes.
 
 ## Code Example
 ```zig
-pub fn model(block: Block) ModelIndex {
-	return blocks.meshes.modelIndexStart(block).add(block.data%2);
-}
+pub fn init() void {}
+
+pub fn deinit() void {}
+
+pub fn reset() void {}
 ```
 
 ## Related Questions
-- How does createBlockModel determine which models to use for a hanging block?
-- What conditions cause generateData to reject placing a block on top of another?
-- How is the support check computed using neighborFacingQuads in generateData?
-- Why does updateData only process neighbors when they are dirDown?
-- Does this chunk modify any global state besides block.data?
-- What happens if the sameBlock typ check fails during placement validation?
-- How does model use block.data to compute a ModelIndex for rotation modes?
-- Is the transform function ever called with non-empty parameters in this chunk?
-- Why is dependsOnNeighbors set to true and what does it imply about execution order?
-- Can generateData return false without modifying currentData.data when blockPlacing is true?
+- What is the purpose of the `dependsOnNeighbors` constant?
+- How does the `createBlockModel` function determine the model index?
+- What conditions must be met for a block to be placed using `generateData`?
+- How does the `updateData` function handle changes in neighboring blocks?
+- What is the role of the `transform` function in this module?
+- How are block models initialized, deinitialized, and reset in this chunk?
 
 *Source: unknown | chunk_id: codebase_mods_cubyz_rotations_hanging.zig_chunk_0*

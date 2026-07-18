@@ -1,28 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_branch_birch.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** choppable, wood, branch, decay, durability, mass damage, hardness damage, swing speed, density, elasticity, hardness, texture roughness, colors, modifiers
-**Symbols:** tags, onUpdate, blockHealth, texture0, texture1, texture2, texture3, texture4, texture5, item, material, durability, massDamage, hardnessDamage, swingSpeed, density, elasticity, hardness, textureRoughness, colors, modifiers
-**Concepts:** block configuration, decay behavior, item properties, material properties
+**Keywords:** block configuration, material attributes, texture paths, decay behavior, choppable tag
+**Concepts:** block configuration, material properties, texture mapping
 
 ## Summary
-Birch branch block configuration
+Defines properties for the birch branch block in Cubyz, including textures, health, and decay behavior.
 
 ## Explanation
-This chunk defines the properties of a Birch branch block in Cubyz. It includes tags for chopping, wood type, and branch category. The onUpdate function is set to decay, indicating it will naturally break over time. The block's health is 4 units. Textures are specified for different stages of the branch's growth. The item associated with this block has a material configuration including durability, mass damage, hardness damage, swing speed, density, elasticity, hardness, texture roughness, and colors. It also includes modifiers to enhance durability. The block is set as a decay prohibitor, meaning it cannot be chopped down by players.
+This chunk defines the configuration for the birch branch block in the Cubyz game engine. It specifies various properties such as tags (choppable, wood, branch), onUpdate behavior (decay), block health, and multiple texture paths for different orientations of the branch. The item properties include material attributes like durability, mass damage, swing speed, and colors. Additionally, it sets decayProhibitor to true, indicating that this block does not decay over time.
 
 ## Related Questions
-- What are the tags associated with this Birch branch block?
-- How is the onUpdate function set for this block?
-- What is the initial health of the Birch branch block?
-- Which textures are specified for different stages of the Birch branch's growth?
-- What material properties does the item associated with this block have?
-- What modifiers are applied to enhance durability in the item?
-- Is this Birch branch block a decay prohibitor?
-- How many colors are defined for the item texture?
-- What is the maximum durability of the item?
-- What is the mass damage value for the item?
-- What is the hardness damage value for the item?
-- What is the swing speed value for the item?
+- What are the tags associated with the birch branch block?
+- How does the birch branch block update over time?
+- What is the health value of the birch branch block?
+- Which textures are used for different orientations of the birch branch block?
+- What are the material attributes of the birch branch item?
+- Is the birch branch block subject to decay?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_branch_birch.zig.zon_chunk_0*

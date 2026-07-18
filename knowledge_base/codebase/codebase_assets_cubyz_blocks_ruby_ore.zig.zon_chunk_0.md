@@ -1,28 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_ruby_ore.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** mineable tag, block health, item texture, durability, mass damage, hardness damage, swing speed, texture roughness, color palette, modifier restriction, encased condition, vein count, height range, density value, auto drops
-**Symbols:** tags, blockHealth, blockResistance, item, texture, material, durability, massDamage, hardnessDamage, swingSpeed, textureRoughness, colors, modifiers, id, strength, restriction, encased, tag, amount, ore, veins, size, maxHeight, minHeight, density, drops, rotation, model
-**Concepts:** block asset definition, material properties, vein generation parameters, drop configuration
+**Keywords:** mineable, blockHealth, blockResistance, item properties, ore veins, drop behavior
+**Concepts:** block configuration, ore generation
 
 ## Summary
-Defines the Ruby ore block asset with its mining properties, item texture/material stats, vein generation parameters, and drop configuration.
+Defines properties for the Ruby Ore block in Cubyz, including its mineability, health, resistance, item details, ore generation parameters, and drop behavior.
 
 ## Explanation
-This chunk declares a single top-level object containing tags (mineable), block health/resistance values, an item definition with texture path and material sub-structure (durability, massDamage, hardnessDamage, swingSpeed, textureRoughness, colors array, modifiers array), ore generation settings (veins count, size, maxHeight, minHeight, density), drops configuration (auto items), rotation string, model identifier, and texture identifier. No executable logic or functions are present; it is purely a data/configuration definition.
+This chunk configures the Ruby Ore block with various attributes such as tags, health, resistance, and item properties like texture and material characteristics. It also specifies ore generation parameters like vein density, size, height range, and density. The block's rotation and model are defined, along with its texture. The drops section indicates that the block will drop items automatically.
 
 ## Related Questions
-- What tags are assigned to the Ruby ore block?
-- What is the health and resistance of the Ruby ore block?
-- Which texture file is used for the Ruby item drop?
-- What durability value does the Ruby material have?
-- How much mass damage does the Ruby material deal?
-- What hardness damage does the Ruby material inflict?
-- What swing speed is configured for the Ruby material?
-- What roughness texture value is set on the Ruby material?
-- Which colors are included in the Ruby material palette?
-- What restriction modifier is defined for the Ruby ore?
-- How many veins does the Ruby ore generate and what size do they have?
-- What height range defines where Ruby ore can spawn?
+- What is the texture file used for Ruby Ore?
+- How much health does a Ruby Ore block have?
+- What is the resistance value of Ruby Ore?
+- What are the colors defined for Ruby Ore's material?
+- How many veins of Ruby Ore can generate per chunk?
+- What is the size of each vein of Ruby Ore?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_ruby_ore.zig.zon_chunk_0*

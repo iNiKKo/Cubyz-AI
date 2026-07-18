@@ -1,23 +1,33 @@
 # [hard/codebase_src_renderer.zig] - Chunk 3
 
 **Type:** implementation
-**Keywords:** pipeline, buffer, vertex array object, uniform, fog, downsample, query, render pass, texture swap, validation
-**Symbols:** MenuBackGround, MenuBackGround.init
-**Concepts:** bloom post-processing, multi-pass rendering, GPU performance profiling, viewport resizing, fog-aware color extraction, uniform binding, Vulkan pipeline creation
+**Keywords:** frame buffer, pipeline, texture, shader, GPU performance, rendering passes, resource management
+**Symbols:** Bloom, Bloom.buffer1, Bloom.buffer2, Bloom.emptyBuffer, Bloom.width, Bloom.height, Bloom.firstPassPipeline, Bloom.secondPassPipeline, Bloom.colorExtractAndDownsamplePipeline, Bloom.colorExtractUniforms, Bloom.init, Bloom.deinit, Bloom.extractImageDataAndDownsample, Bloom.firstPass, Bloom.secondPass, Bloom.render, Bloom.bindReplacementImage
+**Concepts:** post-processing effect, frame buffer, pipeline, texture, shader, GPU performance measurement
 
 ## Summary
-Implements the bloom post-processing pipeline with multi-pass rendering, fog-aware color extraction and downsampling, GPU performance query instrumentation, viewport resizing logic, and a menu background shader setup.
+The Bloom struct manages the bloom post-processing effect, initializing and deinitializing resources, and rendering the effect in multiple passes.
 
 ## Explanation
-The chunk defines several graphics pipelines: emptyBuffer (initialized to an empty image), firstPassPipeline and secondPassPipeline for the two bloom passes using SimpleVertex2D with no culling, depth testing or blending, and colorExtractAndDownsamplePipeline which binds uniforms including fog parameters. The deinit function releases all buffers and pipelines. extractImageDataAndDownsample configures uniform values: it checks blocks.meshes.hasFog to decide whether to use world dayTime.fog settings (fogColor, density, lower/higher) or block-specific fogColor/density with extreme fog bounds; it sets invViewMatrix transpose, player position integer/fraction uniforms, zNear/zFar, tanXY derived from the projection matrix rows, then draws a rectVao triangle strip. firstPass and secondPass swap buffer bindings (texture vs render target) for each pass. render handles width/height changes by updating buffer sizes with GL_R11F_G11F_B10F format and asserting validation; it starts GPU performance queries named bloom_extract_downsample, bloom_first_pass, bloom_second_pass, draws the extracted image to a quarter-size viewport, then draws the first pass result into buffer2 (bound as texture5) at full resolution. bindReplacementImage binds emptyBuffer to slot 5. MenuBackGround is a struct with pipeline, uniforms (viewMatrix, projectionMatrix), vao, texture, and angle; its init defines MenuBackgroundVertex with pos [3]f32 and uv [2]f32 fields and provides attributeDescriptions for Vulkan vertex input.
+The Bloom struct handles the bloom post-processing effect by managing frame buffers, pipelines, and textures. It initializes resources such as frame buffers and pipelines with specific shaders. The `render` method orchestrates the bloom effect by resizing buffers if necessary, executing three passes (extracting image data and downscaling, first pass, and second pass), and measuring GPU performance for each step. The `deinit` method cleans up all allocated resources. The struct also includes methods to bind replacement images and extract image data with downsampling.
+
+## Code Example
+```zig
+pub fn deinit() void {
+	buffer1.deinit();
+	buffer2.deinit();
+	firstPassPipeline.deinit();
+	secondPassPipeline.deinit();
+	colorExtractAndDownsamplePipeline.deinit();
+}
+```
 
 ## Related Questions
-- What are the exact shader file paths used for each bloom pipeline?
-- How does extractImageDataAndDownsample decide between world fog and block-specific fog settings?
-- Which uniform locations are configured in extractImageDataAndDownsample and what values do they receive?
-- In what order are firstPass and secondPass executed relative to GPU performance queries?
-- What happens when render is called with different width/height than the current stored dimensions?
-- How does bindReplacementImage affect texture slot usage after bloom rendering?
-- What vertex attribute layout is defined inside MenuBackGround.init for the menu background shader?
+- What are the steps involved in initializing the Bloom effect?
+- How does the Bloom struct handle buffer resizing during rendering?
+- Which shaders are used for each pass of the bloom effect?
+- What is the purpose of the `bindReplacementImage` method?
+- How is GPU performance measured during the bloom rendering process?
+- What resources are cleaned up when the Bloom struct is deinitialized?
 
 *Source: unknown | chunk_id: codebase_src_renderer.zig_chunk_3*

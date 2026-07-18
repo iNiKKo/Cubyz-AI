@@ -1,36 +1,30 @@
 # [hard/codebase_src_server_storage.zig] - Chunk 1
 
-**Type:** implementation
-**Keywords:** BinaryWriter, mutex locking, file path construction, error handling, cache initialization, concurrency control
-**Symbols:** RegionFile, RegionFile.modified, RegionFile.chunks, RegionFile.pos, RegionFile.saveFolder, RegionFile.mutex, RegionFile.storeChunk, RegionFile.getChunk, cacheSize, cacheMask, associativity, cache, HashContext, stillUsedHashMap, hashMapMutex, cacheDeinit, cacheInit, tryHashmapDeinit, loadRegionFileAndIncreaseRefCount, ChunkCompression, ChunkCompression.ChunkCompressionAlgo, ChunkCompression.BlockEntityCompressionAlgo, ChunkCompression.Target, ChunkCompression.storeChunk
-**Concepts:** region file management, chunk storage, memory caching, thread safety, file I/O
+**Type:** serialization
+**Keywords:** mutex locking, binary serialization, file I/O, memory management, concurrency control
+**Symbols:** RegionFile, RegionFile.version, RegionFile.regionShift, RegionFile.regionSize, RegionFile.regionVolume, RegionFile.headerSize, RegionFile.chunks, RegionFile.pos, RegionFile.mutex, RegionFile.modified, RegionFile.refCount, RegionFile.storedInHashMap, RegionFile.saveFolder, RegionFile.getIndex, RegionFile.init, RegionFile.load, RegionFile.deinit, RegionFile.increaseRefCount, RegionFile.decreaseRefCount, RegionFile.store, RegionFile.storeChunk, RegionFile.getChunk
+**Concepts:** chunk storage, region-based file system, thread safety, reference counting
 
 ## Summary
-Handles region file storage and chunk management in a server environment.
+The RegionFile struct manages the storage and retrieval of voxel chunks in a region-based file system.
 
 ## Explanation
-This chunk manages the storage of region files and chunks within those files. It includes functions to store, retrieve, and compress/decompress chunks. The `RegionFile` struct handles writing and reading data, while the cache mechanism manages memory usage efficiently by reusing region file instances. Functions like `storeChunk`, `getChunk`, and `loadRegionFileAndIncreaseRefCount` are crucial for interacting with chunk data. Error handling is present for file operations, and concurrency is managed using mutexes to ensure thread safety.
+The RegionFile struct is responsible for handling the storage and retrieval of voxel chunks within a specific region. It includes methods for initializing, loading, storing, and managing references to these chunks. The struct uses a mutex for thread safety when accessing shared data. Key functionalities include loading chunk data from disk, storing modified chunks back to disk, increasing and decreasing reference counts, and retrieving chunks based on their relative positions within the region.
 
 ## Code Example
 ```zig
-fn cacheDeinit(region: *RegionFile) void {
-	if (region.refCount.load(.monotonic) != 1) { // Someone else might still use it, so we store it in the hashmap.
-		hashMapMutex.lock();
-		defer hashMapMutex.unlock();
-		region.storedInHashMap = true;
-		stillUsedHashMap.put(region.pos, region) catch unreachable;
-	} else {
-		region.decreaseRefCount();
-	}
+pub fn getIndex(x: usize, y: usize, z: usize) usize {
+	std.debug.assert(x < regionSize and y < regionSize and z < regionSize);
+	return ((x*regionSize) + y)*regionSize + z;
 }
 ```
 
 ## Related Questions
-- How does the RegionFile struct handle chunk storage?
-- What is the purpose of the cache mechanism in this module?
-- How are errors handled during file operations?
-- What concurrency mechanisms are used to ensure thread safety?
-- How is chunk data compressed and stored?
-- What steps are taken to manage memory usage efficiently?
+- What is the version of the RegionFile format?
+- How does the RegionFile struct handle thread safety?
+- What method is used to load chunk data from disk?
+- How are chunks stored back to disk in the RegionFile struct?
+- What is the purpose of the reference counting mechanism in RegionFile?
+- How does the RegionFile struct manage memory allocation and deallocation for chunks?
 
 *Source: unknown | chunk_id: codebase_src_server_storage.zig_chunk_1*

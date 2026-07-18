@@ -1,22 +1,22 @@
 # [src/items.zig] - PR #2891 review diff
 
 **Type:** review
-**Keywords:** refactoring, memory usage, pointer manipulation, code clarity, flexibility, value return, pointer return, property access
+**Keywords:** refactoring, pointer manipulation, value access, API completeness, flexible access
 **Symbols:** ProceduralItem, getProperty, getPropertyPtr, ProceduralItemProperty
-**Concepts:** Memory Management, Code Clarity, Flexibility
+**Concepts:** API design, flexibility, symmetry
 
 ## Summary
-Refactored the `getProperty` method in `ProceduralItem` to return a value instead of a pointer, added a new `getPropertyPtr` method for when a pointer is needed.
+Refactored the `ProceduralItem` struct by renaming the `getProperty` function to `getPropertyPtr` and adding a new `getProperty` function that returns a value instead of a pointer.
 
 ## Explanation
-The change refactors the existing `getProperty` method to directly return an `f32` value rather than a pointer. This modification aligns with scenarios where only the value is required, optimizing memory usage and reducing potential issues related to pointer manipulation. Additionally, a new `getPropertyPtr` method was introduced to provide access to the property's pointer when necessary. The reviewer suggests that this approach maintains flexibility while improving code clarity and safety.
+The refactoring aims to provide flexibility in accessing properties of `ProceduralItem`. The original `getProperty` method, which returned a pointer to an `f32`, has been renamed to `getPropertyPtr`. A new `getProperty` function has been added that returns the property value directly. This change allows for scenarios where only the value is needed without the overhead or potential issues associated with pointer manipulation. The reviewer suggests considering adding a corresponding `setProperty` method for completeness, indicating an intention to maintain symmetry in the API.
 
 ## Related Questions
-- What is the purpose of renaming `getProperty` to return a value instead of a pointer?
-- Why was a new `getPropertyPtr` method added?
-- How does this change impact memory management in Cubyz?
-- Can you explain the benefits of returning a value directly from `getProperty`?
-- What are the potential drawbacks of using pointers in property access?
-- How does this refactoring align with the overall architecture of Cubyz?
+- What is the purpose of renaming `getProperty` to `getPropertyPtr`?
+- Why was a new `getProperty` function added?
+- Does this change affect existing code that uses `ProceduralItem`?
+- How does this refactoring improve the flexibility of accessing properties?
+- Is there any potential performance impact from returning values instead of pointers?
+- What are the implications of adding a `setProperty` method in future updates?
 
 *Source: unknown | chunk_id: github_pr_2891_comment_3069409346*

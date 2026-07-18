@@ -1,28 +1,27 @@
 # [easy/codebase_src_server_terrain_terrain.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** blue noise, terrain map, climate generator, structure placement, world initialization
+**Keywords:** terrain gen, biome init, blue noise load, chunk generators, generator state, block generator, generator registry, init and init, global init, deinit
 **Symbols:** ZonElement, NeverFailingAllocator, biomes, noise, structures, Biome, ClimateMap, SurfaceMap, LightMap, CaveBiomeMap, CaveMap, cave_layers, StructureMap, sbb, sdf, chunk_generators, GeneratorState, BlockGenerator, generatorRegistry, getAndInitGenerators, TerrainGenerationProfile, init, globalInit, deinit
-**Concepts:** terrain generation, world setup, map initialization, biome configuration
+**Concepts:** terrain generation, biome initialization, blue noise loading
 
 ## Summary
-Terrain generation profile initialization and setup
+Terrain generation and biome initialization logic
 
 ## Explanation
-This chunk initializes the terrain generation profile, sets up various maps and biomes, and loads blue noise data. It also provides functions to deinitialize these components.
+This chunk defines the terrain generation profile, initializes various maps and biomes, and loads blue noise. It also includes functions for global initialization and deinitialization.
+
+## Code Example
+```zig
+pub const GeneratorState = enum { enabled, disabled }
+```
 
 ## Related Questions
-- What is the purpose of the `globalInit` function?
-- How are block generators initialized and prioritized?
-- What are the default settings for climate wavelengths?
-- Which biome map is used to generate cave biomes?
-- What is the initialization process for surface maps?
-- In which file can I find the implementation details of the `CaveMap` struct?
-- How are climate generators initialized and configured?
-- What is the purpose of the `StructureMap` in the terrain generation process?
-- Where is the code to deinitialize all generated components located?
-- Which function handles the initialization of biomes?
-- What is the default state for block generators?
-- In which file can I find the implementation details of the `TerrainGenerationProfile` struct?
+- What is the purpose of the `BlockGenerator` struct?
+- How are generators prioritized in the generation process?
+- What is the default state for a generator?
+- Where can I find the list of all supported block generators?
+- How do climate wavelengths affect terrain generation?
+- What is the global initialization function for terrain generation?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_terrain.zig_chunk_0*

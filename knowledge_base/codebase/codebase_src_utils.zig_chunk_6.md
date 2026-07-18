@@ -1,34 +1,33 @@
 # [hard/codebase_src_utils.zig] - Chunk 6
 
 **Type:** implementation
-**Keywords:** thread pool, task scheduling, mutex locking, semaphore, priority queue, concurrent execution, performance metrics
-**Symbols:** ThreadPool, ThreadPool.TaskType, ThreadPool.taskTypes, ThreadPool.Task, ThreadPool.VTable, ThreadPool.Performance, ThreadPool.refreshTime, ThreadPool.threads, ThreadPool.currentTasks, ThreadPool.loadList, ThreadPool.playerJobQueue, ThreadPool.taskCountSemaphore, ThreadPool.stopSemaphore, ThreadPool.startSemaphore, ThreadPool.allocator, ThreadPool.running, ThreadPool.paused, ThreadPool.performance, ThreadPool.trueQueueSize
-**Concepts:** thread pool, task management, priority queue, synchronization, performance tracking
+**Keywords:** binary heap, mutex locking, dynamic resizing, max-heap, concurrency
+**Symbols:** ConcurrentMaxHeap, ConcurrentMaxHeap.initialSize, ConcurrentMaxHeap.size, ConcurrentMaxHeap.array, ConcurrentMaxHeap.mutex, ConcurrentMaxHeap.allocator, ConcurrentMaxHeap.init, ConcurrentMaxHeap.deinit, ConcurrentMaxHeap.siftDown, ConcurrentMaxHeap.siftUp, ConcurrentMaxHeap.updatePriority, ConcurrentMaxHeap.get, ConcurrentMaxHeap.add, ConcurrentMaxHeap.addMany, ConcurrentMaxHeap.removeIndex, ConcurrentMaxHeap.extractMax, ConcurrentMaxHeap.extractAny, ConcurrentMaxHeap.increaseCapacity
+**Concepts:** binary heap, thread safety, priority queue
 
 ## Summary
-Defines a thread pool with task management and priority handling.
+Defines a thread-safe concurrent max-heap data structure in Zig.
 
 ## Explanation
-The chunk defines a `ThreadPool` struct that manages a collection of threads to execute tasks concurrently. It includes methods for initializing, deinitializing, and managing tasks such as adding tasks to the load list, extracting tasks based on priority, and updating task priorities. The thread pool uses mutexes for synchronization and semaphores for controlling task execution flow. Tasks are categorized by type and tracked for performance metrics.
+The chunk defines a generic ConcurrentMaxHeap type that implements a binary heap with max-priority. It is designed to be thread-safe using a mutex for synchronization. The heap supports operations like adding elements, extracting the maximum element, and updating priorities. Key methods include `init`, `deinit`, `add`, `extractMax`, and internal helper functions like `siftDown` and `siftUp`. The heap dynamically resizes its underlying array when necessary.
 
 ## Code Example
 ```zig
-pub fn extractMax(self: *@This()) ?T {
-    self.mutex.lock();
-    defer self.mutex.unlock();
-    if (self.size == 0) return null;
-    const ret = self.array[0];
-    self.removeIndex(0);
-    return ret;
+pub fn init(allocator: NeverFailingAllocator) @This() {
+	return .{
+		.size = 0,
+		.array = allocator.alloc(T, initialSize),
+		.allocator = allocator,
+	};
 }
 ```
 
 ## Related Questions
-- How does the thread pool handle task prioritization?
-- What is the purpose of the `Performance` struct in the thread pool?
-- How are tasks added to and removed from the load list in the thread pool?
-- What synchronization mechanisms are used in the thread pool implementation?
-- How does the thread pool manage its worker threads?
-- What happens when a task is extracted from the thread pool?
+- What is the initial size of the heap array?
+- How does the heap ensure thread safety?
+- What method is used to add elements to the heap?
+- How does the heap handle capacity overflow?
+- What is the purpose of the `siftDown` function?
+- How do you extract the maximum element from the heap?
 
 *Source: unknown | chunk_id: codebase_src_utils.zig_chunk_6*

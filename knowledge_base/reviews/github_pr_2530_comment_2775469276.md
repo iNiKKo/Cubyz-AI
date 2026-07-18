@@ -1,26 +1,22 @@
-# [src/server/permission.zig] - Chunk 2775469276
+# [src/server/permission.zig] - PR #2530 review diff
 
 **Type:** review
-**Keywords:** HashMapUnmanaged, std.StringHashMap, deprecated, allocator, memory management, permission.zig, unmanaged maps, dedicated allocator, leak prevention, architectural consistency
-**Symbols:** std.StringHashMap, HashMapUnmanaged, NeverFailingAllocator, Permissions, PermissionGroup, permissionWhiteList, permissionBlackList, addPermission, removePermission
-**Concepts:** memory management, deprecated API usage, unmanaged hash maps, dedicated allocator pattern, architectural consistency, leak prevention, server-side permissions
+**Keywords:** permissions, HashMapUnmanaged, ZonElement, threadContext, allocator, deinit, hasPermission, addPermission, removePermission
+**Symbols:** mapFromZon, mapToZon, Permissions, ListType, NeverFailingAllocator, NeverFailingArenaAllocator, ZonElement, PermissionResult, PermissionGroup, groups, currentId
+**Concepts:** thread safety, memory management, data structures, performance optimization
 
 ## Summary
-The review critiques the use of `std.StringHashMap` in permission.zig, recommending replacement with `HashMapUnmanaged` paired with a dedicated allocator to align with Cubyz's memory management strategy and avoid deprecated APIs.
+The `permission.zig` file introduces a new module for handling permissions in the server. It defines structures and functions to manage permission lists, convert between internal data structures and external formats (ZonElement), and check permissions based on paths.
 
 ## Explanation
-The reviewer points out that the current implementation uses `std.StringHashMap`, which is marked as deprecated. The architectural direction for Cubyz favors unmanaged hash maps (`HashMapUnmanaged`) combined with explicit allocators, ensuring better control over memory lifetimes and avoiding reliance on internal allocator management. Additionally, the reviewer suggests that keys should be allocated from this same dedicated allocator rather than relying on default heap behavior. This change improves consistency across the codebase, reduces potential leaks or double-free scenarios, and aligns permission storage with other parts of the server that already use unmanaged maps and arena allocators.
+This chunk of code adds a comprehensive permission management system to the Cubyz server. The `Permissions` struct manages two types of permission lists: white and black. It provides methods to add, remove, and check permissions, ensuring that operations are thread-safe by asserting the correct context. The `PermissionGroup` struct encapsulates a set of permissions with an ID, allowing for group-based permission management. The code also includes functions to initialize and deinitialize the permission system, managing memory allocation with custom allocators. Reviewers noted concerns about using deprecated managed HashMaps and suggested using `HashMapUnmanaged` with a separate allocator for better performance and correctness.
 
 ## Related Questions
-- What is the current type used for permissionWhiteList and permissionBlackList in permission.zig?
-- Why does the reviewer suggest using HashMapUnmanaged instead of std.StringHashMap?
-- How should keys be allocated according to the review comment?
-- Which allocator is recommended to replace the default heap allocation for permission keys?
-- What benefits does switching to unmanaged maps provide in Cubyz's architecture?
-- Are there any other parts of the codebase that already use HashMapUnmanaged with a dedicated allocator?
-- How would changing from std.StringHashMap affect memory safety guarantees?
-- Is there a migration path suggested for existing permission entries when switching map types?
-- What implications does this change have on performance or allocation patterns?
-- Does the review mention any specific deprecation warnings associated with std.StringHashMap?
+- What is the purpose of the `mapFromZon` function?
+- How does the `Permissions` struct manage white and black lists?
+- Why are separate allocators used for permission keys and values?
+- What is the role of the `PermissionGroup` struct in the permission system?
+- How are permissions checked based on paths in this implementation?
+- What changes were suggested to improve memory management in this code?
 
 *Source: unknown | chunk_id: github_pr_2530_comment_2775469276*

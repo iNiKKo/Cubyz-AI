@@ -1,22 +1,31 @@
 # [hard/codebase_src_utils.zig] - Chunk 16
 
-**Type:** serialization
-**Keywords:** read/write, serialization, testing, data types, generic ID
-**Symbols:** ReadWriteTest, ReadWriteTest.testInt, ReadWriteTest.testVarInt, ReadWriteTest.testFloat, ReadWriteTest.testInvalidFloat, ReadWriteTest.testEnum, ReadWriteTest.testVec, ReadWriteTest.getWriter, ReadWriteTest.getReader, DenseId
-**Concepts:** serialization, testing, data types
+**Type:** implementation
+**Keywords:** SparseSet, data structure, storage, retrieval, unique identifiers, lists, memory management
+**Symbols:** SparseSet, SparseSet.clear, SparseSet.deinit, SparseSet.contains, SparseSet.add, SparseSet.set, SparseSet.fetchRemove, SparseSet.remove, SparseSet.get
+**Concepts:** SparseSet data structure, efficient storage and retrieval, unique identifiers
 
 ## Summary
-This chunk contains various test functions for reading and writing different data types using a custom serialization mechanism, as well as a definition for a generic ID type.
+Defines a SparseSet data structure for efficient storage and retrieval of elements using unique identifiers.
 
 ## Explanation
-The chunk defines several test functions that utilize the `ReadWriteTest` struct to verify the correctness of read/write operations for various data types including unsigned integers, signed integers, variable-length integers, floating-point numbers, enums, and vector types. Each test function iterates over a range of values or types and uses methods like `testInt`, `testVarInt`, `testFloat`, `testEnum`, and `testVec` to perform the read/write operations. Additionally, there is a test for mixed data types that writes and reads a sequence of different types using the same writer and reader. The chunk also defines a generic function `DenseId` that takes an ID type as a parameter and returns a new type.
+The SparseSet is a specialized container that maps unique identifiers to values. It uses three main lists: `dense` for storing the actual values, `denseToSparseIndex` for mapping dense indices back to sparse IDs, and `sparseToDenseIndex` for quickly finding the dense index of a given sparse ID. The `clear` method resets the set while retaining capacity. The `deinit` method deallocates all memory. The `contains` method checks if an ID is present. The `add` method inserts a new element, expanding the sparse index as needed. The `set` method adds or updates an element's value. The `fetchRemove` method removes and returns an element by its ID, adjusting indices accordingly. The `remove` method simply calls `fetchRemove`. The `get` method retrieves a pointer to an element by its ID. Tests verify various operations like setting values at different indices, removing elements, and handling non-existent entries.
+
+## Code Example
+```zig
+pub fn clear(self: *Self) void {
+	self.dense.clearRetainingCapacity();
+	self.denseToSparseIndex.clearRetainingCapacity();
+	self.sparseToDenseIndex.clearRetainingCapacity();
+}
+```
 
 ## Related Questions
-- What are the test functions defined in this chunk?
-- How does the `ReadWriteTest` struct perform read/write operations?
-- What data types are tested in the chunk?
-- What is the purpose of the `DenseId` function?
-- How are variable-length integers handled in the tests?
-- What specific values are used for testing floating-point numbers?
+- How does the SparseSet handle memory allocation and deallocation?
+- What is the purpose of the `denseToSparseIndex` list in the SparseSet?
+- How does the SparseSet ensure efficient removal of elements?
+- Can you explain how the `add` method works in the SparseSet?
+- What happens if an element with a non-existent ID is removed from the SparseSet?
+- How does the SparseSet maintain the relationship between sparse and dense indices?
 
 *Source: unknown | chunk_id: codebase_src_utils.zig_chunk_16*

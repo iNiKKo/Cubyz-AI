@@ -1,7 +1,7 @@
 # [easy/codebase_assets_cubyz_sbb_tree_cirrus_rings_middle.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprint configuration, tree rings, child blueprint ID, Cubyz voxel engine, engine logic
+**Keywords:** tree, configuration, blueprint, Cirrus, rings
 **Symbols:** blueprints, children
 **Concepts:** tree blueprint, Cirrus rings
 
@@ -9,20 +9,14 @@
 Tree blueprint configurations for Cirrus rings middle.
 
 ## Explanation
-This chunk defines the configuration for various tree blueprints in the Cubyz voxel engine. It includes a list of IDs for different tree ring configurations and specifies their children, which are other tree blueprint IDs.
+This chunk defines a set of tree blueprint configurations for the Cirrus ring structure in Cubyz. Each configuration specifies an ID and includes child references to other tree parts.
 
 ## Related Questions
 - What are the IDs of the tree blueprints defined in this chunk?
-- How many different tree ring configurations are there?
-- Which blueprint is specified as a child for the 'white' configuration?
-- What are the possible configurations for the 'no_top' tree ring?
-- Can you list all the IDs of the tree blueprints that have a 'double' configuration?
-- How many children does the 'middle' configuration have?
-- What is the ID of the child blueprint specified for the 'middle' configuration?
-- Are there any configurations without a 'white' child?
-- Can you identify any configurations with more than one child?
-- What are the IDs of the tree blueprints that do not have a 'no_top' configuration?
-- How many different configurations include the 'double' blueprint as a child?
-- Is there a configuration that has exactly two children?
+- How many tree blueprint configurations are there?
+- Which child reference is used for the top part of the Cirrus rings?
+- What are the possible configurations for the middle parts of the Cirrus rings?
+- Are there any configurations that do not include a top part?
+- How are the blueprints organized in this chunk?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_tree_cirrus_rings_middle.zig.zon_chunk_0*

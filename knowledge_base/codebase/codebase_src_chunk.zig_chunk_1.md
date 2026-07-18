@@ -1,26 +1,29 @@
 # [hard/codebase_src_chunk.zig] - Chunk 1
 
-**Type:** api
-**Keywords:** Lod enum, voxelSizeMask, localMask, ChunkPosition struct, initFromWorldPos, hashCode, equals optional, getMinDistanceSquared, chunkSize constant
-**Symbols:** Lod, ChunkPosition
-**Concepts:** level of detail, resolution masks, chunk coordinates, voxel size scaling, coordinate conversion, hashing, distance calculation
+**Type:** implementation
+**Keywords:** enum, methods, navigation, conversion, masks, unit tests
+**Symbols:** Lod, Lod.min, Lod.max, Lod.next, Lod.previous, Lod.toInt, Lod.voxelSize, Lod.chunkWidth, Lod.voxelSizeShift, Lod.voxelSizeMask, Lod.localMask
+**Concepts:** Level of Detail (LOD)
 
 ## Summary
-Defines the Lod LOD (Level of Detail) enum with resolution masks and chunk position utilities for world coordinate conversion.
+Defines the Level of Detail (LOD) enumeration and associated methods for managing LOD values in a voxel engine.
 
 ## Explanation
-The chunk declares a public const Lod enum representing LOD levels from 1 to 32, each mapped to an integer value. It includes inline functions next/previous for navigation, toInt for extracting the underlying integer, voxelSize returning 1 << level, chunkWidth multiplying by a global chunkSize constant, voxelSizeShift returning the integer tag, and two mask functions: voxelSizeMask producing ~((voxelSize - 1)) as an i32 for converting global coordinates to LOD resolution space, and localMask producing ~(voxelSize*chunkSize - 1) for converting global coordinates to chunk-local coordinates. The chunk also defines a public const ChunkPosition struct with wx/wy/wz fields of type i32 and a voxelSize field of type u31; it provides initFromWorldPos which applies the localMask derived from voxelSize and chunkSize, hashCode using ctz-based shifts and modulo arithmetic, equals handling optional/pointer types and comparing to ServerChunk.super.pos, and getMinDistanceSquared computing halfWidth via @divExact(chunkSize, 2) and absolute differences. All functions are inline or public, indicating they form part of the exposed API for LOD management.
+This chunk defines an enum `Lod` representing different levels of detail, each with a corresponding integer value. It includes methods to navigate between LODs (`next`, `previous`), convert LODs to integers (`toInt`), calculate voxel sizes (`voxelSize`), and determine chunk widths (`chunkWidth`). Additional utility functions provide masks for converting global coordinates to LOD resolution and chunk local coordinates (`voxelSizeMask`, `localMask`). The chunk also contains unit tests verifying the correctness of these methods.
+
+## Code Example
+```zig
+pub inline fn next(self: Lod) Lod {
+	return @enumFromInt(@intFromEnum(self) + 1);
+}
+```
 
 ## Related Questions
-- What integer value corresponds to Lod level 4?
-- How does voxelSizeMask convert global coordinates to LOD resolution space?
-- What is the purpose of localMask in coordinate conversion?
-- Which fields are stored inside ChunkPosition?
-- How does initFromWorldPos apply masking to world positions?
-- Does hashCode use ctz-based shifts for its computation?
-- How does equals handle optional types compared to pointers?
-- What is the role of @divExact in getMinDistanceSquared?
-- Can ChunkPosition be directly compared with ServerChunk using equals?
-- What happens if equals receives an unsupported type?
+- What are the possible values of the Lod enum?
+- How do you get the next LOD level from a given LOD?
+- What is the minimum LOD value and its voxel size?
+- How does the chunkWidth method calculate the width based on LOD?
+- What is the purpose of the voxelSizeMask method in this context?
+- How are unit tests structured for the Lod enum methods?
 
 *Source: unknown | chunk_id: codebase_src_chunk.zig_chunk_1*

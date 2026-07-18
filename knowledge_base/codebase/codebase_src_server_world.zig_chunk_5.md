@@ -1,34 +1,29 @@
 # [hard/codebase_src_server_world.zig] - Chunk 5
 
 **Type:** implementation
-**Keywords:** world versioning, file I/O, data migration, thread pool, mutex locking
-**Symbols:** worldDataVersion, ServerWorld.loadWorldConfig, ServerWorld.saveWorldConfig, ServerWorld.loadPlayerLoginInfo, RegenerateLODTask, RegenerateLODTask.pos, RegenerateLODTask.storeMaps, RegenerateLODTask.vtable, RegenerateLODTask.schedule, RegenerateLODTask.getPriority, RegenerateLODTask.isStillNeeded, RegenerateLODTask.run, RegenerateLODTask.clean
-**Concepts:** world migration, configuration management, player login processing, chunk LOD regeneration
+**Keywords:** ZON file, thread pool, mutex locking, Level of Detail (LOD), chunk generation
+**Symbols:** ServerWorld, worldData.put, loadPlayerLoginInfo, RegenerateLODTask, RegenerateLODTask.schedule, RegenerateLODTask.getPriority, RegenerateLODTask.isStillNeeded, RegenerateLODTask.run, RegenerateLODTask.clean, regenerateLOD
+**Concepts:** world data serialization, player login info loading, chunk LOD regeneration
 
 ## Summary
-Handles world migration, configuration loading/saving, and player login info processing.
+Handles world data serialization, player login info loading, and LOD regeneration tasks.
 
 ## Explanation
-This chunk manages the migration of world data from older versions to the current version by updating specific settings and file structures. It also includes functions for loading and saving world configurations, as well as processing player login information by reading player files and updating internal databases. The `RegenerateLODTask` struct defines a task for regenerating level-of-detail maps for chunks, including methods for scheduling, priority determination, execution, and cleanup.
+This chunk manages various aspects of the server world's state. It includes functions for saving world data to a ZON file, loading player login information from files, and scheduling tasks to regenerate Level of Detail (LOD) for chunks. The `RegenerateLODTask` struct defines a task that can be added to a thread pool to update LODs asynchronously. This involves locking region mutexes, generating or retrieving chunks, and updating higher-resolution chunks based on lower-resolution ones.
 
 ## Code Example
 ```zig
-pub fn schedule(pos: ChunkPosition, storeMaps: bool) void {
-	const task = main.globalAllocator.create(RegenerateLODTask);
-	task.* = .{
-		.pos = pos,
-		.storeMaps = storeMaps,
-	};
-	main.threadPool.addTask(task, &vtable);
-}
+pub fn getPriority(_: *RegenerateLODTask) f32 {
+			return std.math.floatMax(f32);
+		}
 ```
 
 ## Related Questions
-- How does the world migration process work in this chunk?
-- What is the purpose of the `RegenerateLODTask` struct?
-- How are player login files processed and stored internally?
-- What version of the world data is expected by this module?
-- How does the chunk handle errors during file operations?
-- What methods are available for saving world configurations?
+- How does the world data get serialized to a ZON file?
+- What is the process for loading player login information?
+- How are LOD regeneration tasks scheduled and executed?
+- What happens if a player file contains leading zeroes?
+- How is mutex locking used in LOD regeneration?
+- What error handling is implemented when deleting old LOD directories?
 
 *Source: unknown | chunk_id: codebase_src_server_world.zig_chunk_5*

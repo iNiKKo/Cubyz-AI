@@ -1,17 +1,15 @@
 # [hard/codebase_src_graphics_pipelines.zig] - Chunk 1
 
-**Type:** implementation
-**Keywords:** shader initialization, pipeline state creation, SPIR-V compilation, uniform binding, rasterization settings, multisampling, depth stencil testing
-**Symbols:** init, initCompute, createShaderModule, bind, deinit, RasterizationState, RasterizationState.depthClamp, RasterizationState.rasterizerDiscard, RasterizationState.polygonMode, RasterizationState.cullMode, RasterizationState.frontFace, RasterizationState.depthBias, RasterizationState.lineWidth, RasterizationState.PolygonMode, RasterizationState.CullModeFlags, RasterizationState.FrontFace, RasterizationState.DepthBias, RasterizationState.toVulkan, MultisampleState, MultisampleState.rasterizationSamples, MultisampleState.sampleShading, MultisampleState.minSampleShading, MultisampleState.sampleMask, MultisampleState.alphaToCoverage, MultisampleState.alphaToOne, MultisampleState.Count, MultisampleState.toVulkan, DepthStencilState, DepthStencilState.depthTest, DepthStencilState.depthWrite, DepthStencilState.depthCompare, DepthStencilState.depthBoundsTest, DepthStencilState.stencilTest
-**Concepts:** shader management, graphics pipeline configuration, Vulkan API interaction
+**Type:** api
+**Keywords:** GLSL, SPIR-V, shader linking, uniforms, Vulkan API
+**Symbols:** Shader, Shader.id, Shader.ShaderStage, Shader.compileToSpirV, Shader.addShader, Shader.link, Shader.init, Shader.initCompute, Shader.createShaderModule, Shader.bind, Shader.deinit
+**Concepts:** shader management, GLSL compilation, SPIR-V generation, Vulkan shader modules
 
 ## Summary
-This chunk defines shader initialization, binding, and deinitialization functions, as well as structures for rasterization, multisample, and depth stencil states in the graphics pipeline.
+The `Shader` struct manages shader compilation, linking, and usage in a graphics pipeline.
 
 ## Explanation
-The chunk contains several functions related to shader management: `init`, `initCompute`, and `createShaderModule`. The `init` function initializes a shader program with vertex and fragment shaders, while `initCompute` does the same for compute shaders. Both functions handle adding shaders, linking them, and setting up uniform locations if provided. The `createShaderModule` function reads a shader file, compiles it to SPIR-V, and creates a Vulkan shader module.
-
-Structures like `RasterizationState`, `MultisampleState`, and `DepthStencilState` are defined with methods to convert their settings into Vulkan-compatible structures (`toVulkan`). These structs manage various aspects of the graphics pipeline such as rasterization parameters, multisampling, and depth/stencil testing.
+The `Shader` struct encapsulates the logic for handling shaders in the Cubyz engine. It includes methods for compiling GLSL source to SPIR-V, adding shaders to a program, linking programs, initializing vertex and compute shaders, creating Vulkan shader modules, binding shaders for use, and deinitializing resources. The `compileToSpirV` function handles the conversion of GLSL code into SPIR-V format using glslang. The `addShader` method compiles individual shaders and attaches them to a program. The `link` method links all added shaders into a complete shader program. The `init` and `initCompute` functions set up vertex and compute shaders, respectively, by adding and linking shaders and setting uniform locations. The `createShaderModule` function creates Vulkan shader modules from SPIR-V code. The `bind` method activates the shader program for rendering, and `deinit` cleans up resources.
 
 ## Code Example
 ```zig
@@ -21,11 +19,15 @@ fn bind(self: *const Shader) void {
 ```
 
 ## Related Questions
-- How do you initialize a shader program with vertex and fragment shaders?
-- What does the `createShaderModule` function do?
-- How is the rasterization state converted to Vulkan format?
-- What are the possible values for `RasterizationState.polygonMode`?
-- How is depth bias handled in the shader initialization process?
-- What settings can be configured in the multisample state?
+- What is the purpose of the `ShaderStage` enum?
+- How does the `compileToSpirV` function work?
+- What steps are involved in initializing a vertex shader?
+- How are errors handled during shader compilation and linking?
+- What is the role of the `createShaderModule` function?
+- How do you bind a shader for rendering?
+- What does the `deinit` method clean up?
+- How are uniform locations set for shaders?
+- What Vulkan API functions are used in this code?
+- How does the shader management system handle different shader stages?
 
 *Source: unknown | chunk_id: codebase_src_graphics_pipelines.zig_chunk_1*

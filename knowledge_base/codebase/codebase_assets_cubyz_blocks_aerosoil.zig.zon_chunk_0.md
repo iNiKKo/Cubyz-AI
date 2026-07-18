@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_aerosoil.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** block configuration, diggable, health value, drops, model, rotation, texture
-**Concepts:** block properties, asset configuration
+**Keywords:** block properties, configuration data, texture mapping, model definition, rotation settings
+**Concepts:** block configuration
 
 ## Summary
-Defines properties for the Aerosoil block in Cubyz, including tags, health, drops, model, rotation, and texture.
+Defines properties for the Aerosoil block in Cubyz.
 
 ## Explanation
-This chunk defines a configuration for the Aerosoil block within the Cubyz game engine. It specifies that the block is diggable, has a health value of 6.5, and drops items automatically when mined. The block uses a cube model with stairs-like rotation and features a specific texture named 'aerosoil'. This configuration is part of the assets defining various blocks in the game.
+This chunk defines the configuration for the Aerosoil block, including its tags, health, drops, model, rotation, and texture. The block is marked as diggable with a health value of 6.5. It drops items automatically when broken. The model is set to 'cubyz:cube', indicating it uses a cube-based mesh. The rotation property is set to 'cubyz:stairs', suggesting it can be rotated like stairs. The texture used for the block is 'cubyz:aerosoil'.
 
 ## Related Questions
-- What tags are assigned to the Aerosoil block?
+- What are the tags associated with the Aerosoil block?
 - What is the health value of the Aerosoil block?
-- Does the Aerosoil block drop items when mined?
+- How does the Aerosoil block drop items when broken?
 - Which model is used for the Aerosoil block?
-- How is the rotation applied to the Aerosoil block?
-- What texture is associated with the Aerosoil block?
+- What rotation setting is applied to the Aerosoil block?
+- Which texture is assigned to the Aerosoil block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_aerosoil.zig.zon_chunk_0*

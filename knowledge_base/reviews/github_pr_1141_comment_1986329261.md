@@ -1,22 +1,22 @@
 # [src/blueprint.zig] - PR #1141 review diff
 
 **Type:** review
-**Keywords:** server-side, client-side, data structures, architectural review, double updates, network interface, strict separation, data integrity
-**Symbols:** blueprintVersion, GameIdToBlueprintIdMapType, BlockIdSizeType, BlockStorageType, BinaryWriter, BinaryReader, BlueprintCompression, FileHeader, Blueprint, main.List(Block), Vec3i, NeverFailingAllocator, User, mesh_storage, Block
-**Concepts:** thread safety, backwards compatibility, memory leak, architectural design, data integrity
+**Keywords:** blueprint.zig, FileHeader, BlueprintCompression, BinaryWriter, BinaryReader, getBlockArraySize, getDecompressedDataSizeBytes, init, deinit, clear, capture, paste, mesh_storage, updateBlock
+**Symbols:** blueprintVersion, GameIdToBlueprintIdMapType, BlockIdSizeType, BlockStorageType, BinaryWriter, BinaryReader, BlueprintCompression, FileHeader, Blueprint, main.List(Block), Vec3i, NeverFailingAllocator, User, mesh_storage, Block, ZonElement
+**Concepts:** thread safety, backwards compatibility, memory leak
 
 ## Summary
-The review highlights a critical architectural issue where server-side code attempts to directly update client-side data structures, which is prohibited.
+The `paste` function attempts to update block data on the server side by directly accessing a client-side structure (`mesh_storage`), which is architecturally incorrect.
 
 ## Explanation
-The reviewer points out that accessing client-side data structures from the server side is fundamentally flawed. This practice can lead to unintended behavior such as double updates of the same data, once through the network interface and again within the server code. The review emphasizes the importance of maintaining strict separation between client and server logic to prevent such issues.
+The reviewer points out that the `paste` function in the `Blueprint` struct accesses and modifies `mesh_storage`, which is a client-side data structure. This direct access from server-side code is fundamentally flawed because it violates the separation of concerns between client and server. Additionally, this approach could lead to duplicate updates: once through the network interface and again directly on the server side. The reviewer emphasizes that such practices are never allowed and can cause significant architectural issues.
 
 ## Related Questions
-- How can the server-side code be modified to avoid direct access to client-side data structures?
-- What are the potential consequences of double updating the same data in Cubyz?
-- How can strict separation between client and server logic be enforced in Cubyz?
-- Can you provide examples of other architectural issues similar to this one in Cubyz?
-- What measures should be taken to prevent memory leaks in Cubyz's blueprint system?
-- How does the current implementation ensure thread safety when accessing shared data structures?
+- Why is direct access to client-side structures from server-side code problematic?
+- How can the `paste` function be modified to avoid updating data twice?
+- What are the potential consequences of not separating client and server data handling?
+- How should the architecture be adjusted to prevent such violations in the future?
+- Can you provide an example of how to correctly handle block updates between the client and server?
+- What measures can be taken to ensure that server-side code does not inadvertently access client-side structures?
 
 *Source: unknown | chunk_id: github_pr_1141_comment_1986329261*

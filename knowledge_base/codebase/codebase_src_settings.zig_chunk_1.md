@@ -1,22 +1,47 @@
 # [medium/codebase_src_settings.zig] - Chunk 1
 
-**Type:** configuration
-**Keywords:** readToZon, writeZon, join, preferLeft, getAlloc, dupe, fallback defaults, globalArena, pub var, struct fields
-**Symbols:** launchConfig, environment
-**Concepts:** configuration loading, file I/O, ZonElement serialization, arena allocation, settings merging
+**Type:** serialization
+**Keywords:** deinitialization, serialization, ZonElement, keyboard configuration, file reading/writing, environment variables
+**Symbols:** deinit, save, launchConfig, launchConfig.cubyzDir, launchConfig.autoEnterWorld, launchConfig.headlessServer, launchConfig.preferredAuthenticationAlgorithm, launchConfig.vulkanTestingMode, launchConfig.init, environment, environment.SDL_GAMECONTROLLERCONFIG, environment.env, environment.init
+**Concepts:** settings management, configuration loading, keyboard settings, file I/O
 
 ## Summary
-This chunk defines the public API for loading and saving Cubyz configuration files (launchConfig.zon) and environment variables, including merging old settings while preserving unknown fields.
+Handles settings deinitialization and saving, including keyboard settings.
 
 ## Explanation
-The chunk declares two top-level structs: launchConfig and environment. launchConfig contains pub var fields cubyzDir, autoEnterWorld, headlessServer, preferredAuthenticationAlgorithm, vulkanTestingMode, and a pub fn init() that reads launchConfig.zon from the current working directory using main.files.cwd().readToZon(), then populates each field by calling zon.get() with fallbacks to defaults. It also dupe()-s string fields into main.globalArena for ownership transfer. environment contains pub var SDL_GAMECONTROLLERCONFIG and env, plus a pub fn init(_env: std.process.Environ) that copies the environ and allocates SDL_GAMECONTROLLERCONFIG via env.getAlloc(main.globalArena.allocator, 
+This chunk defines functions for deinitializing and saving settings. The `deinit` function saves the current settings and then deallocates non-const fields, handling both structs and slices. The `save` function serializes settings into a ZonElement object, preserving unknown settings from an old file if it exists. It also handles keyboard settings specifically. The `launchConfig` struct initializes configuration settings from a launch config file. The `environment` struct captures environment variables related to SDL.
+
+## Code Example
+```zig
+pub fn deinit() void {
+	save();
+	inline for (@typeInfo(@This()).@"struct".decls) |decl| {
+		const is_const = @typeInfo(@TypeOf(&@field(@This(), decl.name))).pointer.is_const; // Sadly there is no direct way to check if a declaration is const.
+		if (!is_const) {
+			const DeclType = @TypeOf(@field(@This(), decl.name));
+			if (@typeInfo(DeclType) == .@"struct") {
+				if (DeclType == std.Io.Duration) continue;
+				@field(@This(), decl.name).deinit(main.globalAllocator);
+				continue;
+			}
+			if (@typeInfo(DeclType) == .pointer) {
+				if (@typeInfo(DeclType).pointer.size == .slice) {
+					main.globalAllocator.free(@field(@This(), decl.name));
+				} else {
+					@compileError("Not implemented yet.");
+				}
+			}
+		}
+	}
+}
+```
 
 ## Related Questions
-- What are the default values used when launchConfig.zon is missing or a field cannot be read?
-- How does the chunk ensure that unknown settings from an old configuration file are not lost during merging?
-- Which allocator is used to store string fields copied from launchConfig.zon, and why is this choice made?
-- What happens if reading launchConfig.zon fails with an error other than FileNotFound?
-- Does the chunk write any data back to disk when init() runs, or only read?
-- How are boolean flags like headlessServer and vulkanTestingMode initialized in launchConfig?
+- How does the `deinit` function handle non-const fields?
+- What is the purpose of the `save` function in this chunk?
+- How are keyboard settings serialized in the `save` function?
+- What file is read during the initialization of `launchConfig`?
+- How does the `environment` struct capture SDL-related environment variables?
+- What error handling is implemented when reading or writing settings files?
 
 *Source: unknown | chunk_id: codebase_src_settings.zig_chunk_1*

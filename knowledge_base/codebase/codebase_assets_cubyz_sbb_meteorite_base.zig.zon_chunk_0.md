@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_meteorite_base.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprints, children, asset references, configuration data, static settings
-**Concepts:** asset management, blueprint definition
+**Keywords:** blueprints, children, asset structure, meteorite components, identifier mapping
+**Concepts:** asset definition, blueprint management
 
 ## Summary
 Defines blueprints and children for a meteorite asset.
 
 ## Explanation
-This chunk defines the structure of a meteorite asset in Cubyz. It specifies a blueprint with an ID 'cubyz:meteorite/crater/0' and a child asset with the key 'white' pointing to 'cubyz:meteorite/rock'. This configuration is used for organizing and referencing assets within the game.
+This chunk defines the structure of a meteorite asset in Cubyz. It specifies the blueprints associated with the meteorite, including its unique identifier. Additionally, it lists the child assets that are part of the meteorite, such as rocks.
 
 ## Related Questions
-- What is the ID of the blueprint defined in this chunk?
-- Which asset does the 'white' key reference?
-- How many blueprints are defined in this chunk?
-- What type of data structure is used to define the children assets?
-- Is there any dynamic logic or computation in this chunk?
-- Can this configuration be modified at runtime?
+- What is the unique identifier for the meteorite crater blueprint?
+- Which asset is listed as a child of the meteorite?
+- How are blueprints defined in this chunk?
+- What does the 'children' field represent in this configuration?
+- Is there any function or method defined in this chunk?
+- What type of information does this chunk primarily convey?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_meteorite_base.zig.zon_chunk_0*

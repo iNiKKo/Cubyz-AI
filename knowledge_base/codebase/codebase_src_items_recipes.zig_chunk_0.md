@@ -1,15 +1,15 @@
 # [medium/codebase_src_items_recipes.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** pattern parsing, string matching, key-value pairs, item recipes, memory management
-**Symbols:** Segment, parsePattern, ItemStackPattern, parseItemZon, matchWithKeys, ItemWithAmount, ItemKeyPair, findRecipeItemOptions
-**Concepts:** item stack patterns, recipe matching, string parsing
+**Keywords:** pattern parsing, symbol handling, string matching, key-value pairs, error handling
+**Symbols:** Segment, parsePattern, ItemStackPattern, parseItemZon, matchWithKeys, ItemWithAmount, ItemKeyPair
+**Concepts:** item pattern parsing, pattern matching, string manipulation
 
 ## Summary
-Handles parsing and matching item stack patterns with recipes.
+Parses item patterns and matches them against target strings.
 
 ## Explanation
-This chunk defines functions for parsing item stack patterns from strings, matching these patterns against target strings using a set of keys, and finding recipe item options based on parsed patterns. It uses Zig's standard library for string manipulation and memory management. The `parsePattern` function breaks down a pattern string into segments of literals and symbols. The `parseItemZon` function parses an item stack pattern from a ZonElement. The `matchWithKeys` function attempts to match a target string against a pattern using provided keys, handling both literal and symbolic segments. The `findRecipeItemOptions` function finds possible items that match a given item stack pattern, considering the amount specified.
+This chunk defines functions for parsing item patterns from strings and matching those patterns against target strings. It includes a `parsePattern` function that converts a pattern string into segments of literals and symbols, a `parseItemZon` function that parses an item pattern from a ZonElement, and a `matchWithKeys` function that attempts to match a pattern against a target string using a set of keys. The chunk also defines several structs for representing item patterns, amounts, and key pairs.
 
 ## Code Example
 ```zig
@@ -19,9 +19,9 @@ const Segment = union(enum) { literal: []const u8, symbol: []const u8 }
 ## Related Questions
 - How does the `parsePattern` function work?
 - What is the purpose of the `ItemStackPattern` struct?
-- How are item stack patterns parsed from ZonElements?
-- What does the `matchWithKeys` function do with symbolic segments?
-- How does the `findRecipeItemOptions` function handle literal segments?
+- How are symbols and literals handled in pattern parsing?
 - What error can occur if there are ambiguous symbols in a pattern?
+- How does the `matchWithKeys` function handle multiple possible matches?
+- What is the role of the `ItemWithAmount` struct?
 
 *Source: unknown | chunk_id: codebase_src_items_recipes.zig_chunk_0*

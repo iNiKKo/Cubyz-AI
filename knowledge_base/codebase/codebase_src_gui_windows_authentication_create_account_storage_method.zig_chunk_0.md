@@ -1,22 +1,31 @@
 # [easy/codebase_src_gui_windows_authentication_create_account_storage_method.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** GuiWindow, VerticalList, Button, StorageMethod, onOpen, onClose, initText, initWithInt, closeIfMouseIsGrabbed
-**Symbols:** settings, Vec2f, gui, GuiComponent, GuiWindow, Button, CheckBox, HorizontalList, Label, TextInput, VerticalList, StorageMethod, window, padding, next, onOpen, onClose
-**Concepts:** account code storage method selection UI, vertical list component construction, button action callbacks with enum conversion, window lifecycle management (open/close), storage method enumeration
+**Keywords:** GUI window, button click, component initialization, window positioning, deinitialization
+**Symbols:** window, padding, next, onOpen, onClose
+**Concepts:** GUI component management, user input handling, window lifecycle
 
 ## Summary
-This chunk defines the UI window for selecting an account code storage method, exposing a public `onOpen` handler that builds a vertical list of buttons (Password Manager, Save as file, Write it down yourself) and a private `next` helper that closes the current window, sets the chosen StorageMethod via the windowlist API, and reopens the same window.
+Handles the GUI logic for selecting account storage methods during account creation.
 
 ## Explanation
-The chunk imports std and main, then pulls GuiComponent, GuiWindow, Button, CheckBox, HorizontalList, Label, TextInput, VerticalList from gui.GuiComponent. It also imports the enum StorageMethod from gui.windowlist.@
+This chunk defines a GUI window that allows users to choose how they want to store their Account Code. It includes a vertical list of buttons, each corresponding to a different storage method (Password Manager, Save as file, Write it down yourself). The `next` function is called when a button is clicked, which closes the current window, sets the selected storage method, and opens the next relevant window. The `onOpen` function initializes the GUI components and layout when the window is opened, while the `onClose` function deinitializes them when the window is closed.
+
+## Code Example
+```zig
+fn next(storageMethod: usize) void {
+	gui.closeWindowFromRef(&window);
+	gui.windowlist.@"authentication/create_account_account_code".setStorageMethod(@enumFromInt(storageMethod));
+	gui.openWindow("authentication/create_account_account_code");
+}
+```
 
 ## Related Questions
-- What is the default content size of the authentication create account window?
-- Which storage methods are presented to the user in the UI list?
-- How does the next function update the global windowlist state after a selection?
-- Does the onOpen handler perform any cleanup before building its component tree?
-- What happens to the rootComponent when onClose is invoked?
-- Is the closeable flag of the window set to true or false by default in this chunk?
+- What is the purpose of the `next` function?
+- How does the GUI window handle user input for selecting storage methods?
+- What components are initialized when the window opens?
+- What happens to the GUI components when the window closes?
+- How is the content size of the window determined?
+- Which storage method is recommended by default?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_authentication_create_account_storage_method.zig_chunk_0*

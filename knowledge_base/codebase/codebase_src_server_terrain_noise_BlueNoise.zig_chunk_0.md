@@ -1,28 +1,71 @@
 # [easy/codebase_src_server_terrain_noise_BlueNoise.zig] - Chunk 0
 
-**Type:** world_generation
-**Keywords:** blue noise, feature grid, seeded random, neighbor check, distance limit, aligned blocks, packed coordinates, runtime safety, allocator ownership, pattern array, compression masks, region data
-**Symbols:** sizeShift, size, sizeMask, featureShift, featureSize, featureMask, pattern, load, sample, getRegionData
-**Concepts:** noise generation, grid sampling, terrain features, region extraction, random seeding, coordinate compression
+**Type:** implementation
+**Keywords:** noise_map, grid_based, random_movement, subregion_extraction, compression
+**Symbols:** random, Array2D, NeverFailingAllocator
+**Concepts:** world_generation
 
 ## Summary
-Loads a pre-seeded noise map and provides region sampling for terrain generation.
+Loads a pre-seeded noise map for world generation.
 
 ## Explanation
-The chunk defines constants sizeShift=7, featureShift=2, and derives size, sizeMask, featureSize, featureMask. It declares a global var pattern: [size*size]u8 initialized to undefined. The public function load() sets runtime safety off, seeds random with 54095248685739, runs repetitions=4 of iterations=16 passes over the grid; each pass picks a random point and attempts to move it by checking all neighbors within dx/dy in [-2..2], computing neighbor coordinates using sizeShift/featureShift masks, calculating squared distance from (xOffset,yOffset), and continuing only if distSqr < 8. After the inner loops finish, pattern[i] is set to the point and break exits the iteration loop. The sample(x,y) function reads a compressed coordinate from pattern. getRegionData(allocator,x,y,width,height) aligns x/y down to feature boundaries using featureMask, computes xMin/xMax/yMin/yMax, allocates a main.List(u32), iterates over aligned blocks, calls sample on each block's top-left, decodes the 8-bit value into (val>>3,val&7) offsets, adds those to local coordinates, and appends packed u32 results if they fall within the requested width/height. Finally it returns result.toOwnedSlice(allocator).
+The `load` function initializes the `pattern` array with random values to create a simple square grid used for world generation. It uses a basic grid-based approach where each point is moved randomly to ensure the grid remains valid in each step, repeated multiple times for optimal results. The `sample` function retrieves a value from the `pattern` array based on given coordinates. The `getRegionData` function extracts a subregion of the noise map and returns it as an array of 32-bit integers representing the coordinates relative to the compressed input coordinates.
+
+## Code Example
+```zig
+pub fn load() void { // TODO: Do this at compile time once the caching is good enough.
+	@setRuntimeSafety(false); // TODO: Replace with optimizations.
+	var seed: u64 = 54095248685739;
+	const distSquareLimit = 8;
+	const repetitions = 4;
+	const iterations = 16;
+	// Go through all points and try to move them randomly.
+	// Ensures that the grid is valid in each step.
+	// This is repeated multiple times for optimal results.
+	// In the last repetition is enforced, to remove grid artifacts.
+	for (0..repetitions) |_| {
+		for (0..pattern.len) |i| {
+			const x: i32 = @intCast(i >> sizeShift);
+			const y: i32 = @intCast(i & sizeMask);
+			outer: for (0..iterations) |_| {
+				const point = random.nextInt(u6, &seed);
+				const xOffset = point >> 3 & 7;
+				const yOffset = point & 7;
+				// Go through all neighbors and check validity:
+			var dx: i32 = -2;
+			while (dx <= 2) : (dx += 1) {
+				var dy: i32 = -2;
+				while (dy <= 2) : (dy += 1) {
+					if (dx == 0 and dy == 0) continue; // Don't compare with itself!
+					const neighbor = (x + dx & sizeMask) << sizeShift | (y + dy & sizeMask);
+					const neighborPos = pattern[@intCast(neighbor)];
+					const nx = (neighborPos >> 3) + (dx << featureShift);
+					const ny = (neighborPos & 7) + (dy << featureShift);
+					const distSqr = (nx - xOffset)*(nx - xOffset) + (ny - yOffset)*(ny - yOffset);
+					if (distSqr < distSquareLimit) continue :outer;
+				}
+			}
+
+			pattern[i] = point;
+			break;
+			}
+		}
+	}
+}
+```
 
 ## Related Questions
-- What is the default seed value used by load() and why is runtime safety disabled?
-- How does load() ensure the pattern grid becomes valid after each repetition?
-- Why are repetitions set to 4 and iterations to 16 in this implementation?
-- What coordinate transformation does sample(x,y) perform on its arguments?
-- Explain how getRegionData aligns input coordinates before sampling the pattern.
-- What happens inside the innermost loop of load() when a neighbor fails the distance check?
-- How are the packed u32 results constructed from xRes and yRes in getRegionData?
-- Why does getRegionData use featureMask to compute xMin/xMax/yMin/yMax?
-- Is pattern ever initialized before load() is called, or only after load()? What is its initial state?
-- What would happen if distSquareLimit were increased beyond 8 in the neighbor check?
-- How does the break statement affect control flow after setting pattern[i] = point?
-- Does getRegionData guarantee that returned coordinates are within [0,width) × [0,height)?
+- What is the purpose of the `load` function?
+- How does the `load` function initialize the `pattern` array?
+- What are the parameters of the `getRegionData` function?
+- What is the logic behind the `sample` function?
+- How is the subregion extracted from the noise map in the `getRegionData` function?
+- Why is the `@setRuntimeSafety(false)` line used in the `load` function?
+- What are the constants used in the `load` function?
+- What is the purpose of the outer loop in the `load` function?
+- How does the `load` function ensure that the grid remains valid in each step?
+- What is the purpose of the inner loop in the `load` function?
+- What are the conditions for moving a point randomly in the `load` function?
+- How many times is the grid repeated to ensure optimal results?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_noise_BlueNoise.zig_chunk_0*

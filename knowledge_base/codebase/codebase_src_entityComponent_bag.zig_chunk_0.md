@@ -1,23 +1,33 @@
 # [easy/codebase_src_entityComponent_bag.zig] - Chunk 0
 
-**Type:** api
-**Keywords:** SparseSet, BagInventory, BinaryReader, BinaryWriter, entityComponentVersion, init, deinit, load, unload, getBag
-**Symbols:** entityComponentID, entityComponentVersion, playerBagSizeLimit, client, server
-**Concepts:** entity component system, sparse set storage, binary serialization, versioning checks, lifecycle management, client server separation
+**Type:** implementation
+**Keywords:** entityComponentID, entityComponentVersion, playerBagSizeLimit, client, server, Entity, ServerChunk, game, graphics, ZonElement, renderer, settings, utils, BinaryReader, BinaryWriter
+**Symbols:** entityComponentID, entityComponentVersion, playerBagSizeLimit, client, server, Entity, ServerChunk, game, graphics, ZonElement, renderer, settings, utils, BinaryReader, BinaryWriter, vec, Mat4f, Vec3d, Vec3f, Vec4f, Vec3i, NeverFailingAllocator, blocks, World, ServerWorld, items, ItemStack, random
+**Concepts:** entity component, inventory management, sparse set, serialization, deletion
 
 ## Summary
-This chunk defines the entity component system for player bags, providing separate client and server implementations with sparse set storage, binary serialization, versioning checks, and lifecycle management (init/deinit/load/unload).
+Entity component for managing player bags
 
 ## Explanation
-The chunk declares a global entityComponentID and version constant. It exposes two public structs: client and server. The client struct contains a Component with a BagInventory field and a SparseSet mapping Entity to Component; it provides init, deinit, clear, getBag (returns pointer or null), load (reads binary data after version check), and unload (removes from sparse set and deallocates). The server struct similarly defines a Component with a BagInventory and a save method that writes bytes only for disk or playerHimself audiences; it includes init, deinit, get, getBag, loadFromData (adds component if missing, reads binary data), loadEmpty (adds empty component), and unload. Both structs use main.globalAllocator for allocations. The chunk imports various types from other modules but does not define any functions or methods beyond those inside the client/server structs.
+This chunk defines the entity component for managing player bags. It includes client and server-specific implementations of bag management, including initialization, deinitialization, clearing, loading, saving, and unloading. The bag is stored in a sparse set using an allocator and has a size limit of 120 items.
+
+## Code Example
+```zig
+pub fn init() void {}
+```
 
 ## Related Questions
-- What is the default size limit for a player bag?
-- How does the client load function handle version mismatches?
-- Which audience types trigger actual binary writes on the server side?
-- Does the client struct provide a method to clear all components?
-- What happens when getBag returns null in the client implementation?
-- Is there any difference between load and loadFromData on the server?
-- How are components allocated during initialization on both sides?
+- What is the purpose of the entityComponentID variable?
+- How many symbols are defined in this chunk?
+- What is the size limit for player bags?
+- Where is the client-specific bag management implemented?
+- What is the server-specific bag management implementation?
+- What is the default save behavior for the server's bag component?
+- What happens if an invalid version number is encountered during loading?
+- How is the bag data read from a binary reader?
+- What is the purpose of the loadFromData function?
+- What is the purpose of the loadEmpty function?
+- What does the unload function do for a player's bag?
+- Where is the client-specific bag management initialized?
 
 *Source: unknown | chunk_id: codebase_src_entityComponent_bag.zig_chunk_0*

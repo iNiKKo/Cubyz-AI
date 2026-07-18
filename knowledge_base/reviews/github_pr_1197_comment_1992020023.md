@@ -1,22 +1,22 @@
 # [src/rotation.zig] - PR #1197 review diff
 
 **Type:** review
-**Keywords:** inline, rotation, stair data, sub-block masking, optimizer, conditional branches
-**Symbols:** subBlockMask, hasSubBlock, rotateX, rotateTable
-**Concepts:** inline functions, compile-time computation, runtime optimization
+**Keywords:** rotateX, stair data, rotation, sub-blocks, inline table, optimizer, conditional branches, performance, precompute, avoidance
+**Symbols:** RotationModes, Stairs, subBlockMask, hasSubBlock, rotateX
+**Concepts:** performance optimization, inline functions, precomputation, branch avoidance
 
 ## Summary
-The code introduces an inline function `rotateX` for rotating stair data and uses a precomputed rotation table to optimize sub-block masking operations.
+Added a `rotateX` function for rotating stair data along the X-axis. The function uses an inline table to map sub-block positions after rotation.
 
 ## Explanation
-The change involves refactoring the `subBlockMask` and `hasSubBlock` functions to be inline, which may improve performance by reducing function call overhead. The new `rotateX` function calculates a rotation table at compile time for rotating stair data. This approach aims to avoid conditional branches during runtime, potentially enhancing execution speed. However, there is uncertainty about whether the optimizer already handles these optimizations effectively.
+The change introduces a new function `rotateX` within the `RotationModes.Stairs` struct in `rotation.zig`. This function is designed to rotate stair data by 90 degrees around the X-axis. The implementation uses an inline table (`rotateTable`) to precompute the rotated positions of sub-blocks, aiming to avoid conditional branches for performance optimization. The reviewer notes that while this approach avoids explicit branching, it may be unnecessary if the compiler optimizes away such branches anyway.
 
 ## Related Questions
-- Is the inline keyword necessary for performance improvement in this context?
-- How does the rotation table affect memory usage and cache performance?
-- Can the optimizer handle the conditional logic within `rotateX` effectively?
-- What are the potential trade-offs between compile-time computation and runtime flexibility?
-- How does this change impact the overall performance of the Cubyz engine?
-- Are there any potential regressions introduced by modifying these functions?
+- What is the purpose of the `rotateX` function in `rotation.zig`?
+- How does the `rotateX` function use the `rotateTable` to achieve rotation?
+- Does the reviewer suggest that the branch avoidance optimization might be redundant?
+- Why was the `subBlockMask` and `hasSubBlock` functions marked as inline?
+- What potential performance benefits could come from precomputing sub-block positions in `rotateX`?
+- How does the `rotateTable` handle the rotation of sub-blocks around the X-axis?
 
 *Source: unknown | chunk_id: github_pr_1197_comment_1992020023*

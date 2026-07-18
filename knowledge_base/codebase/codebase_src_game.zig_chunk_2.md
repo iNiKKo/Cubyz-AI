@@ -1,40 +1,29 @@
 # [hard/codebase_src_game.zig] - Chunk 2
 
-**Type:** implementation
-**Keywords:** connection management, asset loading, game pause, handshake processing, inventory setup
-**Symbols:** World, World.conn, World.manager, World.name, World.milliTime, World.gameTime, World.dayTime, World.connected, World.paused, World.blockPalette, World.itemPalette, World.proceduralItemPalette, World.biomePalette, World.entityModelPalette, World.entityComponentPalette, World.itemDrops, World.playerBiome, World.shouldRestart, World.shouldReload, World.init, World.@continue, World.deinit, World.pause, World.finishHandshake
-**Concepts:** networking, asset management, game state initialization, player inventory, gamemode handling
+**Type:** gameplay
+**Keywords:** struct, nested struct, initialization, update, asset loading, day-night cycle, player data, time management, lighting conditions, sky color transitions, ambient lighting
+**Symbols:** World, DayTime, init, update, loadFrom, dayCycleLength, minimumAmbientLight, nightStart, dayStart, biomeFog, fog, ambientLight, dayTime, getDayProgress, getStarOpacity, updateAmbientLight, updateTimeOfDay, getSkyColorFactor, testWorld, world
+**Concepts:** Game Engine, Cubyz Game, World Management, Day-Night Cycle, Player Data, Asset Loading, Time Management, Lighting Conditions, Sky Color Transitions, Ambient Lighting
 
 ## Summary
-The `World` struct manages game state, including initialization, deinitialization, and handling network handshakes.
+This is a code snippet from a game engine, specifically for the Cubyz game. It defines a `World` struct that manages various aspects of the game world such as time, player data, and asset loading. The `DayTime` nested struct handles the day-night cycle and lighting conditions. The code also includes initialization and update functions for the world and its components.
 
 ## Explanation
-The `World` struct in the Cubyz engine is responsible for managing various aspects of the game world. It initializes network connections, handles assets, and sets up game states such as player inventory and gamemode. The `init` method establishes a connection to the server, while the `deinit` method cleans up resources. The `pause` method pauses the game, deinitializes GUIs, and resets various components. The `finishHandshake` method processes data received during the handshake with the server, initializing palettes and loading assets.
+The provided code snippet is part of a larger Cubyz game engine implementation. It defines a `World` struct that encapsulates various functionalities related to the game world, including time management, player data handling, and asset loading. The `DayTime` nested struct within the `World` struct manages the day-night cycle, ambient lighting, and sky color transitions based on the current time of day. The code includes methods for initializing the world with assets from a specified directory, updating the game time, sending player position updates to the server, and handling various aspects of the day-night cycle such as calculating ambient light levels, star opacity, and sky color factors. Additionally, there are global variables `testWorld` and `world` that hold instances of the `World` struct, with `world` being a nullable pointer to the current world instance.
 
 ## Code Example
 ```zig
-pub fn deinit(self: *World) void {
-	main.server.stop(.stop);
-
-	if (main.server.thread) |serverThread| {
-		serverThread.join();
-		main.server.thread = null;
-	}
-
-	self.conn.deinit();
-
-	self.connected = false;
-	self.pause();
-	self.manager.deinit();
-}
+pub fn getDayProgress(self: *DayTime) f32 {
+			return @as(f32, @floatFromInt(self.dayTime))/@as(f32, @floatFromInt(dayCycleLength));
+		}
 ```
 
 ## Related Questions
-- What is the purpose of the `World` struct in the Cubyz engine?
-- How does the `World` struct initialize network connections?
-- What methods are available for deinitializing the game world?
-- How does the `World` struct handle pausing the game?
-- What assets are loaded during the handshake process?
-- How is the player's inventory initialized in the `World` struct?
+- How does the `World` struct manage player data in Cubyz?
+- What is the purpose of the `DayTime` nested struct within the `World` struct?
+- Can you explain how asset loading works in this Cubyz code snippet?
+- How is the day-night cycle implemented in the provided code?
+- What role does the `updateAmbientLight` function play in the game world's lighting conditions?
+- How are global variables like `testWorld` and `world` used in the Cubyz engine?
 
 *Source: unknown | chunk_id: codebase_src_game.zig_chunk_2*

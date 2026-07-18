@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_chalk_indigo.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** texture mapping, assets management, configuration files, block rendering, resource paths
-**Concepts:** block textures
+**Keywords:** configuration, ZON format, texture path, Indigo Chalk block, static settings
+**Concepts:** block configuration, texture mapping
 
 ## Summary
-Defines the texture for the Chalk Indigo block.
+Defines configuration for the Indigo Chalk block, specifying its texture.
 
 ## Explanation
-This chunk is a configuration file that specifies the texture asset used for rendering the Chalk Indigo block in the Cubyz voxel engine. The texture path 'cubyz:chalk/indigo' indicates the location of the image file within the assets directory structure.
+This chunk is a simple configuration file in Zig's ZON format, which is used for defining static settings and data. It specifies the texture path for the Indigo Chalk block, indicating that the block will use the 'cubyz:chalk/indigo' texture resource.
 
 ## Related Questions
-- What is the texture path for the Chalk Indigo block?
-- Where is the Chalk Indigo block's texture located in the assets directory?
-- How does this configuration file affect the rendering of the Chalk Indigo block?
-- What other blocks might have similar configuration files in the Cubyz engine?
-- Is there a way to change the texture for the Chalk Indigo block without modifying this file?
-- Does this chunk define any functions or methods?
+- What is the texture path for the Indigo Chalk block?
+- Is there any executable logic in this chunk?
+- How is the texture for the Indigo Chalk block specified?
+- Does this chunk define any symbols?
+- What format is used for defining static settings in this file?
+- What is the purpose of this configuration file?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_chalk_indigo.zig.zon_chunk_0*

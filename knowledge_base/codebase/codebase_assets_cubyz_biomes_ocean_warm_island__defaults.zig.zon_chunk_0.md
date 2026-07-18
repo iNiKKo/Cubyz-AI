@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_ocean_warm_island__defaults.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome settings, oceanic properties, ground structures, music association, block types
-**Concepts:** world generation, biome configuration
+**Keywords:** biome configuration, ocean island, ground patch, music track, stone block
+**Concepts:** world_generation
 
 ## Summary
-Defines default settings for the Warm Ocean Island biome in Cubyz.
+Defines default settings for a warm ocean island biome in Cubyz.
 
 ## Explanation
-This chunk specifies configuration data for a specific biome in the Cubyz game engine, detailing its properties, music, stone block type, and structures. The biome is identified as having oceanic and hot characteristics, with associated music and visual elements like sandstone. It also includes a structure definition for a ground patch that can generate amber ore within sandy areas.
+This chunk defines the configuration for a specific biome type in the Cubyz game engine, focusing on its properties, music, stone block, and structures. The biome is characterized as having an ocean and being hot. It specifies a particular music track and stone block material. Additionally, it includes details about ground patches, such as their ID, block type, generation chance, dimensions, and smoothness.
 
 ## Related Questions
-- What is the chance of generating this Warm Ocean Island biome?
-- Which music track is associated with the Warm Ocean Island biome?
-- What type of stone block is used in the Warm Ocean Island biome?
-- How many structures are defined for the Warm Ocean Island biome?
-- What is the ID of the structure defined for the Warm Ocean Island biome?
-- What block type is used to generate the ground patch in the Warm Ocean Island biome?
+- What is the chance of generating this warm ocean island biome?
+- Which music track is associated with this biome?
+- What type of stone block is used in this biome?
+- How many ground patches are defined for this biome?
+- What is the generation chance for each ground patch in this biome?
+- What are the dimensions and smoothness settings for the ground patches?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_ocean_warm_island__defaults.zig.zon_chunk_0*

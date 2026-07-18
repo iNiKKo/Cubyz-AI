@@ -1,15 +1,15 @@
 # [medium/codebase_src_server_terrain_cavegen_FractalCaveGenerator.zig] - Chunk 0
 
 **Type:** world_generation
-**Keywords:** fractal generation, cave generation, voxel terrain, randomness, spherical cavities
-**Symbols:** id, priority, generatorSeed, defaultState, init, chunkShift, chunkSize, range, initialBranchLength, splittingChance, splitFactor, zSplitReduction, maxSplitLength, branchChance, minRadius, maxInitialRadius, heightVariance, generate, considerCoordinates, generateSphere_, generateSphere, generateCaveBetween
-**Concepts:** chunk meshing, world generation, terrain modification
+**Keywords:** fractal generation, spherical carving, random seed, voxel terrain, chunk processing
+**Symbols:** id, priority, generatorSeed, defaultState, init, chunkShift, chunkSize, range, initialBranchLength, splittingChance, splitFactor, zSplitReduction, maxSplitLength, branchChance, minRadius, maxInitialRadius, heightVariance, generate, considerCoordinates, generateSphere_, generateSphere
+**Concepts:** chunk meshing, world generation, cave generation
 
 ## Summary
-The FractalCaveGenerator module is responsible for generating fractal cave structures within the game world.
+This chunk implements the Fractal Cave Generator for generating cave structures in a voxel world.
 
 ## Explanation
-This chunk defines a fractal cave generator for the Cubyz voxel engine. It includes constants for configuration such as seed values, dimensions, and probabilities. The `generate` function initializes the generation process by considering nearby chunks and their positions. The `generateSphere_` function creates spherical cavities within the map, either adding or removing terrain based on parameters. The `generateSphere` function wraps this with logic to handle negative radii. The `generateCaveBetween` function begins the process of generating caves between two points, checking if the segment can cross the current chunk.
+The FractalCaveGenerator module is responsible for creating cave-like structures within the game world. It uses a fractal-based approach to generate caves by considering nearby chunks and applying spherical carving techniques. The generator initializes with specific parameters such as chunk size, range, and probabilities for branching and splitting. The `generate` function iterates over neighboring chunks, calculates seeds based on their positions, and calls `considerCoordinates` to evaluate and carve out cave structures. The `generateSphere_` function handles the actual carving of spherical cavities, either adding or removing terrain based on the specified radius. The `generateSphere` function manages the sign of the radius to determine whether to add or remove terrain.
 
 ## Code Example
 ```zig
@@ -19,11 +19,11 @@ pub fn init(parameters: ZonElement) void {
 ```
 
 ## Related Questions
-- What is the priority of the fractal cave generator?
-- How does the `generate` function determine if a segment can cross the current chunk?
-- What role does the `generateSphere_` function play in cave generation?
-- How is randomness incorporated into the cave generation process?
+- What is the priority of the Fractal Cave Generator?
+- How does the generator determine the range for neighboring chunks?
+- What function is responsible for carving out spherical cavities?
+- How does the generator handle the sign of the radius in `generateSphere`?
 - What is the purpose of the `considerCoordinates` function?
-- How are spherical cavities created within the map?
+- What are the default parameters for fractal cave generation?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_cavegen_FractalCaveGenerator.zig_chunk_0*

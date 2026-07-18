@@ -2,13 +2,13 @@
 
 **Type:** configuration
 **Keywords:** configuration, block properties, tags, health, drops, transparency, model, texture, friction
-**Concepts:** block configuration, ice block properties
+**Concepts:** block properties, ice block
 
 ## Summary
 Defines properties for the ice block in Cubyz, including tags, health, drops, transparency, model, texture, and friction.
 
 ## Explanation
-This chunk defines a configuration for an ice block in the Cubyz game engine. It specifies various properties such as tags (mineable and cold), block health, drop behavior, transparency settings, model and texture paths, and friction coefficient. These properties determine how the ice block interacts with the game world, including its physical characteristics and visual appearance.
+This chunk defines a configuration for an ice block in the Cubyz game engine. It specifies various properties such as tags (mineable and cold), block health, drop behavior, transparency settings, model type, texture, and friction coefficient. The configuration is structured as a JSON-like object with key-value pairs representing each property.
 
 ## Related Questions
 - What are the tags associated with the ice block?
@@ -16,6 +16,6 @@ This chunk defines a configuration for an ice block in the Cubyz game engine. It
 - What items can be dropped from the ice block?
 - Is the ice block transparent?
 - Does the ice block have a back face?
-- What is the absorbed light color of the ice block?
+- What is the absorbed light value for the ice block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_ice.zig.zon_chunk_0*

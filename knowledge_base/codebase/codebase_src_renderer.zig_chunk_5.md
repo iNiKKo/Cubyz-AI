@@ -1,42 +1,35 @@
 # [hard/codebase_src_renderer.zig] - Chunk 5
 
 **Type:** implementation
-**Keywords:** OpenGL rendering, framebuffer, image capture, star rendering, Gaussian distribution
-**Symbols:** render, takeBackgroundImage, Skybox, Skybox.starPipeline, Skybox.starUniforms, Skybox.starVao, Skybox.starSsbo, Skybox.getStarPos, Skybox.getStarColor, Skybox.init
+**Keywords:** reference counting, binary serialization, mutex locking, random number generation, OpenGL rendering
+**Symbols:** Skybox, Skybox.starPipeline, Skybox.starUniforms, Skybox.starVao, Skybox.starSsbo, Skybox.numStars, Skybox.getStarPos, Skybox.getStarColor, Skybox.init, Skybox.deinit, Skybox.render
 **Concepts:** chunk meshing, entity ECS, world generation, networking protocol
 
 ## Summary
-The chunk implements rendering and skybox initialization for the Cubyz engine.
+The Skybox struct manages star rendering in the Cubyz engine, including initialization of star positions and colors, pipeline setup, and rendering logic.
 
 ## Explanation
-This chunk contains functions for rendering the scene (`render`) and taking a background image (`takeBackgroundImage`). It also defines a `Skybox` struct with methods for initializing stars and generating star positions and colors. The `render` function sets up the viewport, binds textures, and draws elements using OpenGL. The `takeBackgroundImage` function captures the current view into an image file. The `Skybox` struct handles star rendering, including loading a color image, setting up a pipeline, and generating star data.
+The Skybox struct is responsible for rendering stars in the sky. It initializes a graphics pipeline, vertex array, shader storage buffer object (SSBO), and loads a star color image. The `init` function generates random star positions and colors based on temperature and light intensity, storing them in an SSBO. The `render` method binds the pipeline, sets uniforms for opacity and model-view-projection matrix, and draws the stars using OpenGL commands.
 
 ## Code Example
 ```zig
-pub fn render(deltaTime: f64) void {
-	c.glViewport(0, 0, main.Window.width, main.Window.height);
-	if (texture.textureID == 0) return;
+fn getStarPos(seed: *u64) Vec3f {
+	const x: f32 = @floatCast(main.random.nextFloatGauss(seed));
+	const y: f32 = @floatCast(main.random.nextFloatGauss(seed));
+	const z: f32 = @floatCast(main.random.nextFloatGauss(seed));
 
-	// Use a simple rotation around the z axis, with a steadily increasing angle.
-	angle += @as(f32, @floatCast(deltaTime))/20.0;
-	const viewMatrix = Mat4f.rotationZ(angle);
-	pipeline.bind(null);
-	c.glUniformMatrix4fv(uniforms.viewMatrix, 1, c.GL_TRUE, @ptrCast(&viewMatrix));
-	c.glUniformMatrix4fv(uniforms.projectionMatrix, 1, c.GL_TRUE, @ptrCast(&game.projectionMatrix));
+	const r = std.math.cbrt(main.random.nextFloat(seed))*5000.0;
 
-	texture.bindTo(0);
-
-	vao.bind();
-	c.glDrawElements(c.GL_TRIANGLES, 24, c.GL_UNSIGNED_INT, null);
+	return vec.normalize(Vec3f{x, y, z})*@as(Vec3f, @splat(r));
 }
 ```
 
 ## Related Questions
-- How does the `render` function set up the viewport?
-- What is the purpose of the `takeBackgroundImage` function?
-- How are star positions generated in the `Skybox` struct?
-- What OpenGL functions are used to draw elements in the `render` function?
-- How is the star color determined in the `Skybox` struct?
-- What steps are involved in initializing the skybox pipeline?
+- What is the purpose of the `getStarPos` function in the Skybox struct?
+- How does the Skybox struct initialize its star positions and colors?
+- What OpenGL commands are used to render the stars in the Skybox struct?
+- How does the Skybox struct handle errors when loading the star color image?
+- What is the role of the SSBO in the Skybox struct's rendering process?
+- How does the Skybox struct update its rendering based on the game world's day time?
 
 *Source: unknown | chunk_id: codebase_src_renderer.zig_chunk_5*

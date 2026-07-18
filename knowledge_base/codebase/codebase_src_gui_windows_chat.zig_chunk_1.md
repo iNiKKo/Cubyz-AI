@@ -1,38 +1,37 @@
 # [medium/codebase_src_gui_windows_chat.zig] - Chunk 1
 
 **Type:** implementation
-**Keywords:** chat window, message queue, history, input field, fading out, rendering
-**Symbols:** init, deinit, refresh, onOpen, loadNextHistoryEntry, loadPreviousHistoryEntry, onClose, update, render, addMessage, sendMessage
-**Concepts:** GUI chat window, message queue, history management, input handling, fading effect
+**Keywords:** vertical list, input field, message history, message expiration, visibility update
+**Symbols:** refresh, onOpen, loadNextHistoryEntry, loadPreviousHistoryEntry, onClose, update, render, addMessage, sendMessage
+**Concepts:** GUI components, message handling, user input, chat window management
 
 ## Summary
-Handles chat window initialization, deinitialization, message management, and rendering.
+Handles the chat window's refresh, message handling, and user input.
 
 ## Explanation
-This chunk manages the lifecycle of a chat window in the GUI system. It initializes various data structures like history, message queue, and expiration time. The `refresh` function updates the display by clearing old components and adding new messages or input fields. The `onOpen` and `onClose` functions handle opening and closing the chat window, respectively, managing input fields and message histories. The `update` function processes incoming messages from a queue, appends them to history, and handles fading out old messages based on time. The `render` function draws the chat window background if input is visible. The chunk also includes functions for adding messages, sending messages, and cycling through message history.
+The chunk manages the chat window's GUI components, including refreshing the display, handling user input for sending messages, cycling through message history, and updating the visibility of old messages. It uses a vertical list to manage chat messages and an input field for new messages. The `refresh` function updates the displayed messages and layout. `onOpen` initializes the input field and refreshes the window. `loadNextHistoryEntry` and `loadPreviousHistoryEntry` cycle through the message history. `onClose` clears resources when the chat window is closed. `update` processes incoming messages, manages message expiration, and updates the visibility of old messages based on time. `render` draws the input field background if visible. `addMessage` queues a new message for display. `sendMessage` sends the current input as a chat message or command.
 
 ## Code Example
 ```zig
-pub fn deinit() void {
-	for (history.items) |label| {
-		label.deinit();
-	}
-	history.deinit();
+pub fn onClose() void {
+	clearChat();
 	while (messageQueue.popFront()) |msg| {
 		main.globalAllocator.free(msg);
 	}
-	messageHistory.deinit();
-	messageQueue.deinit();
-	expirationTime.deinit();
+	messageHistory.clear();
+	input.deinit();
+	window.rootComponent.?.verticalList.children.clearRetainingCapacity();
+	window.rootComponent.?.deinit();
+	window.rootComponent = null;
 }
 ```
 
 ## Related Questions
-- What is the purpose of the `init` function in this chunk?
-- How does the `refresh` function update the chat window display?
-- What happens when a message is added to the chat using the `addMessage` function?
-- How does the `update` function handle incoming messages from the queue?
-- What role does the `render` function play in the chat window's appearance?
-- How is the chat history managed and updated within this chunk?
+- How does the chat window refresh its display?
+- What happens when a new message is added to the queue?
+- How is user input processed in the chat window?
+- What steps are taken to cycle through message history?
+- How are messages sent from the chat window?
+- What resources are cleared when the chat window is closed?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_chat.zig_chunk_1*

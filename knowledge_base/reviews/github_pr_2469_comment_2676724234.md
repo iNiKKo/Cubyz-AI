@@ -1,22 +1,22 @@
 # [src/Inventory.zig] - PR #2469 review diff
 
 **Type:** review
-**Keywords:** DepositToAny, destinations, owned, source, amount, globalAllocator, stackAllocator, finalize, creation, mismatched allocators
-**Symbols:** Inventory, DepositToAny, run, Context
-**Concepts:** thread safety, allocator management
+**Keywords:** inventory, deposit, multiple destinations, memory allocation, deferred free
+**Symbols:** DepositToAny, destinations, owned, Inventory, Context
+**Concepts:** memory management, allocator consistency
 
 ## Summary
-The `DepositToAny` struct in `Inventory.zig` has been updated to accept an array of destinations instead of a single destination. The reviewer emphasizes that the allocator should be passed during creation rather than parsed globally.
+The `DepositToAny` struct in `Inventory.zig` has been updated to accept an array of destinations instead of a single destination. A new field `owned` is introduced to manage memory allocation for the destinations array.
 
 ## Explanation
-The change involves modifying the `DepositToAny` struct to handle multiple inventory destinations, replacing the singular `dest` field with a `destinations` array. The reviewer highlights the importance of passing the allocator at creation time to maintain consistency and prevent potential issues with mismatched allocators in the `finalize` method.
+This change refactors the `DepositToAny` command to support depositing items into multiple inventories rather than just one. The introduction of the `owned` field allows the struct to handle its own memory management for the destinations array, ensuring proper cleanup with a deferred free operation. This modification enhances flexibility and correctness by allowing more complex inventory operations while maintaining allocator consistency.
 
 ## Related Questions
-- What is the purpose of passing the allocator during creation in `DepositToAny`?
-- How does the use of a stack allocator affect memory management in this context?
-- Why is it important to prevent mismatched allocators in the `finalize` method?
-- What changes were made to handle multiple destinations in `DepositToAny`?
-- How does the `defer` statement ensure proper resource management in this code snippet?
-- What are the potential implications of using a global allocator instead of passing it during creation?
+- What is the purpose of the `owned` field in the `DepositToAny` struct?
+- How does the change affect memory management in the `Inventory.zig` file?
+- Why was it decided to pass the allocator on creation instead of using a global allocator in the finalize method?
+- Can you explain the impact of this change on the performance of inventory operations?
+- What are the potential risks associated with mismatched allocators in this context?
+- How does this refactor ensure thread safety during inventory operations?
 
 *Source: unknown | chunk_id: github_pr_2469_comment_2676724234*

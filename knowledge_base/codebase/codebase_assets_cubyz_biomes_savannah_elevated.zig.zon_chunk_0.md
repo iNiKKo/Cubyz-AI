@@ -1,28 +1,28 @@
 # [easy/codebase_assets_cubyz_biomes_savannah_elevated.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** savannah biome, elevated variant, baobab trees, vegetation tags, ground structure references, spawnable structures, player spawn validation, roughness parameter, height limits, parent biome linking
-**Symbols:** properties, tags, minHeight, maxHeight, minRadius, maxRadius, roughness, chance, hills, validPlayerSpawn, ground_structure, stoneBlock, structures, parentBiomes
-**Concepts:** biome configuration, terrain generation parameters, structure spawning rules
+**Keywords:** biome properties, structure definitions, chance of occurrence, parent biomes, place modes
+**Symbols:** hot, dry, baobab, cactus, minHeight, maxHeight, minRadius, maxRadius, roughness, chance, hills, validPlayerSpawn, ground_structure, stoneBlock, structures, id, blocks, block, placeMode
+**Concepts:** biome configuration, structure generation, terrain generation
 
 ## Summary
-Defines the elevated savannah biome configuration with terrain height limits, vegetation tags, ground structure references, and a list of spawnable structures including baobab trees and various patches.
+Savannah Biome Configuration
 
 ## Explanation
-This chunk is a .zon configuration file defining the 'elevated' variant of the savannah biome. It sets environmental properties (.hot, .dry) and tags (.baobab, .cactus). Terrain generation parameters include minHeight=64, maxHeight=65, minRadius=80, maxRadius=128, roughness=15, hills=2. The validPlayerSpawn flag is true. Ground structure references cubyz:grass/temperate. StoneBlock is set to cubyz:limestone/smooth. Structures are defined as an array of objects with id, blocks (or block), chance, width, variation, density, priority, height, depth, smoothness, placeMode, and structure fields; entries include flower_patch variants using cubyz:grass/vegetation/dry or cubyz:marigold, simple_vegetation using cubyz:cactus, ground_patch using cubyz:dirt or cubyz:grass/dry, sbb (baobab) structures referencing cubyz:tree/baobab/young and cubyz:tree/baobab/grandidieri with placeMode .degradable. ParentBiomes contains a single entry pointing to cubyz:savannah/base with chance=8.
+This chunk defines the configuration for a savannah biome in Cubyz. It specifies properties like hot and dry, tags such as baobab and cactus, minimum and maximum heights, radius, roughness, chance of occurrence, hills count, valid player spawn, ground structure block, stone block, structures with their IDs, blocks, chances, widths, variations, densities, priorities, parent biomes, and place modes for structures.
 
 ## Related Questions
-- What are the environmental properties defined for this elevated savannah biome?
-- Which vegetation tags are associated with this biome configuration?
-- What is the minimum and maximum height range for terrain generation in this biome?
-- How many hills are configured for this biome variant?
-- Is player spawning allowed in this biome according to its configuration?
-- What ground structure block type does this biome reference by default?
-- Which stone block type is specified as the primary stone for this biome?
-- List all structure entries defined within this biome's configuration.
-- What baobab tree structures are included and what are their spawn chances?
-- How do the flower_patch variants differ in terms of blocks used and density settings?
-- What parent biome does this elevated savannah reference and with what chance value?
-- Are any structures marked as degradable and which ones?
+- What are the minimum and maximum heights for this savannah biome?
+- Which tags are associated with this savannah biome?
+- How many hills does this savannah biome have?
+- Is it valid for players to spawn in this savannah biome?
+- What is the ground structure block used in this savannah biome?
+- What is the stone block used in this savannah biome?
+- What are the IDs of the structures defined in this savannah biome?
+- What blocks are associated with the 'flower_patch' structure?
+- What is the chance of occurrence for the 'simple_vegetation' structure?
+- What is the width of the 'ground_patch' structure?
+- What is the variation of the 'flower_patch' structure?
+- What is the density of the 'flower_patch' structure?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_savannah_elevated.zig.zon_chunk_0*

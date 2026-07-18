@@ -1,26 +1,26 @@
 # [easy/codebase_assets_cubyz_blocks_sign__defaults.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** choppable, wood, drops, auto, viewThrough, collide, rotation, model, blockEntity, edit_sign
-**Symbols:** .tags, .blockHealth, .drops, .viewThrough, .alwaysViewThrough, .collide, .rotation, .model, .side, .ceiling, .floor, .blockEntity, .onInteract
-**Concepts:** block defaults, sign configuration, item drops, view properties, rotation model paths, interaction types
+**Keywords:** sign block, block config, interaction type, view-through, collision behavior
+**Symbols:** tags, blockHealth, drops, viewThrough, alwaysViewThrough, collide, rotation, model, blockEntity, onInteract, lodReplacement
+**Concepts:** sign block, block configuration, interaction type
 
 ## Summary
-Defines the default configuration for a sign block in Cubyz, specifying its tags, health, drops, view properties, rotation model paths, and interaction behavior.
+Sign block configuration
 
 ## Explanation
-This chunk declares a single top-level struct instance (implicitly named by context) containing all static defaults for the sign block. The .tags field lists .choppable and .wood as string literals; .blockHealth is an integer literal 2; .drops contains one element with items set to the auto enum variant; .viewThrough and .alwaysViewThrough are boolean literals true; .collide is a boolean literal false; .rotation holds the string literal cubyz:sign; .model is a struct with three fields (side, ceiling, floor) each holding string literals referencing cubyz:sign/side, cubyz:sign/ceiling, and cubyz:sign/floor respectively; .blockEntity is the string literal cubyz:sign; .onInteract contains one element whose type field holds the enum variant edit_sign. All fields are initialized with compile-time constants or string literals, indicating this chunk serves purely as configuration data with no executable logic.
+This chunk defines the default properties and behaviors of a sign block in Cubyz. It specifies tags, health, drop items, view-through settings, collision behavior, rotation model, models for different sides, block entity, interaction type, and LOD replacement.
 
 ## Related Questions
-- What tags are assigned to the sign block by default?
-- How much health does the sign block have out of its maximum?
-- Which item drop configuration is used for the sign block?
-- Does the sign block allow viewing through it by default?
-- Is there a separate alwaysViewThrough flag and what value does it hold?
-- Can players collide with the sign block under these defaults?
-- What rotation identifier is specified for the sign block model?
-- Which three model parts are referenced in the .model field?
-- What block entity name is associated with this sign configuration?
-- What interaction type is defined when a player interacts with the sign?
+- What are the tags associated with this sign block?
+- How many items can be dropped when breaking this sign block?
+- Does this sign block allow view-through from all sides?
+- Is this sign block always view-through regardless of its orientation?
+- Can this sign block collide with other blocks or entities?
+- What is the rotation model used for this sign block?
+- Which models are used for different sides of the sign block?
+- What is the block entity associated with this sign block?
+- What type of interaction does this sign block trigger when interacted with?
+- What is the LOD replacement block for this sign block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_sign__defaults.zig.zon_chunk_0*

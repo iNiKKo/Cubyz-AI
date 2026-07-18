@@ -12,7 +12,7 @@ This chunk defines the configuration for a Mahogany Planks block in the Cubyz vo
 
 ## Related Questions
 - What is the durability of Mahogany Planks?
-- Which texture is used for Mahogany Planks?
+- Which texture is assigned to Mahogany Planks?
 - How many color variations are defined for Mahogany Planks?
 - What modifiers are applied to Mahogany Planks?
 - What is the swing speed of Mahogany Planks?

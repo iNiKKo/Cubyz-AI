@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_chest_baobab.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** texture mapping, block assets, chest block, Baobab texture, Cubyz engine
-**Concepts:** block texturing
+**Keywords:** texture mapping, configuration data, block assets, file paths, resource loading
+**Concepts:** block textures, asset management
 
 ## Summary
-This chunk defines texture paths for a Baobab chest block in the Cubyz voxel engine.
+Defines texture paths for the Baobab chest block.
 
 ## Explanation
-The chunk contains a single anonymous struct with fields mapping to different sides of a chest block. Each field specifies the path to a texture file used for rendering that particular side of the chest. The textures are organized by direction: back, front, left, right, top, and bottom.
+This chunk contains a configuration object that specifies the texture paths for different sides of the Baobab chest block in the Cubyz voxel engine. Each field corresponds to a specific face of the block (back, front, left, right, top, bottom) and maps it to its respective texture file path within the 'cubyz:chest/baobab' directory.
 
 ## Related Questions
-- What is the texture path for the front of the Baobab chest?
-- Which textures are used for the left and right sides of the Baobab chest?
-- How many different texture paths are defined for the Baobab chest block?
-- What is the texture file name for the top of the Baobab chest?
-- Is there a separate texture for the bottom of the Baobab chest?
-- Which module or file might use this configuration to render the Baobab chest?
+- What is the texture file path for the front face of the Baobab chest block?
+- How are textures mapped to different sides of the Baobab chest block in this configuration?
+- Where are the texture files for the Baobab chest block located according to this configuration?
+- Does this chunk define any functions or methods?
+- What is the purpose of this configuration object in the Cubyz engine?
+- Are there any other blocks defined with similar texture configurations in the codebase?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_chest_baobab.zig.zon_chunk_0*

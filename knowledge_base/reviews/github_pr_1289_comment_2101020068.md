@@ -1,22 +1,22 @@
 # [src/main.zig] - PR #1289 review diff
 
 **Type:** review
-**Keywords:** TODO comment, Managed hashmap, Zig language update, architectural change, dependency removal
-**Symbols:** refAllDeclsRecursiveExceptCImports, Managed
-**Concepts:** architectural review, dependency management
+**Keywords:** Zig, hashmap, Managed, TODO, refAllDeclsRecursiveExceptCImports, decl.name, c, hbft, stb_image, architectural review, exception handling, temporary workaround
+**Symbols:** refAllDeclsRecursiveExceptCImports, decl.name, Managed
+**Concepts:** architectural review, exception handling, temporary workaround
 
 ## Summary
-A new condition was added to skip processing of the 'Managed' declaration in the `refAllDeclsRecursiveExceptCImports` function.
+A new condition was added to skip processing of a 'Managed' declaration in the `refAllDeclsRecursiveExceptCImports` function.
 
 ## Explanation
-The reviewer suggests adding a TODO comment to document why skipping the 'Managed' declaration is necessary. The comment also notes that this condition should be removed once Zig removes its Managed hashmap, indicating an architectural change dependency on future updates to the Zig language or standard library.
+The change introduces a conditional check to bypass the processing of a 'Managed' declaration. This is likely due to an issue or limitation with how the 'Managed' hashmap is handled in Zig, necessitating a temporary workaround. The reviewer suggests adding a TODO comment to document this exception and to ensure it is removed once the underlying issue in Zig is resolved.
 
 ## Related Questions
 - Why is the 'Managed' declaration being skipped in refAllDeclsRecursiveExceptCImports?
-- What changes are expected in Zig that would allow removing the condition for 'Managed'?
-- How does this change impact the overall architecture of the project?
-- Is there a timeline for when Zig might remove its Managed hashmap?
-- What other dependencies should be reviewed for potential removal with future Zig updates?
-- How can we ensure that all such TODOs are tracked and addressed in future versions?
+- What issue does the 'Managed' hashmap cause in Zig that requires this bypass?
+- When will the underlying issue with the 'Managed' hashmap be resolved in Zig?
+- How should the TODO comment be phrased to effectively communicate the need for removal?
+- Are there any other similar workarounds in the codebase that should be reviewed?
+- What are the potential implications of not removing this bypass once the issue is fixed?
 
 *Source: unknown | chunk_id: github_pr_1289_comment_2101020068*

@@ -1,28 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_daisies.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** cuttable, sliceable, toolEffective, replaceable, degradable, absorbedLight, lodReplacement, check_support_blocks, alwaysViewThrough
-**Symbols:** daisies
-**Concepts:** block configuration, drop mechanics, selection capabilities, light absorption, LOD replacement, support checking
+**Keywords:** block configuration, tags, drops, textures, health
+**Concepts:** block configuration, voxel properties
 
 ## Summary
-Defines the daisies block configuration with cuttable/sliceable tags, low health (0.2), tool-specific drops, selection capabilities, replaceability, degradability, collision settings, light absorption, model/rotation references, LOD replacement, and an onUpdate support check.
+Defines properties for the daisy block in Cubyz, including tags, health, drops, and textures.
 
 ## Explanation
-This chunk is a .zon configuration file that declares the daisies block's metadata: tags (.cuttable, .sliceable), health (0.2), drop behavior (auto items allowed only with cuttable tools), selection capabilities (.toolEffective), replaceability (true), degradability (true), collision (false), alwaysViewThrough (true), absorbedLight (0x121012), model (
+This chunk defines a configuration for the daisy block in the Cubyz voxel engine. It specifies various properties such as tags (cuttable, sliceable), block health, drop behavior, selection capabilities, replaceability, degradability, collision settings, light absorption, model and rotation types, update behavior, texture, item texture, and LOD replacement.
 
 ## Related Questions
-- What tags are assigned to the daisies block?
-- How is the health of the daisies block defined?
-- Which tool tag allows drops from the daisies block?
-- What selection capabilities does the daisies block have?
-- Is the daisies block replaceable by default?
-- Does the daisies block degrade over time?
-- How is collision handled for the daisies block?
-- What light absorption value is set for the daisies block?
-- Which model and rotation are referenced for the daisies block?
-- What LOD replacement is configured for the daisies block?
-- What onUpdate behavior does the daisies block implement?
-- What texture is assigned to the daisies item?
+- What are the tags associated with the daisy block?
+- How much health does the daisy block have?
+- What items can be dropped from the daisy block?
+- Is the daisy block replaceable?
+- Does the daisy block degrade over time?
+- What is the model type for the daisy block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_daisies.zig.zon_chunk_0*

@@ -1,26 +1,42 @@
 # [hard/codebase_src_models.zig] - Chunk 1
 
 **Type:** implementation
-**Keywords:** snapToGrid, getFaceNeighbor, addQuad, fullyOccludesNeighbor, generateCollision, collisionGridSize, CollisionGridInteger, edge interpolation, depth solving, normal component selection
-**Symbols:** ModelIndex, edgeInterp, solveDepth, rasterize
-**Concepts:** quad snapping to grid, neighbor vs internal quad classification, per-face neighbor arrays, collision model generation, triangle rasterization against a collision grid, edge interpolation for depth calculation
+**Keywords:** vector operations, fixed-point arithmetic, grid snapping, neighbor determination, occlusion checking
+**Symbols:** Model, Model.min, Model.max, Model.internalQuads, Model.neighborFacingQuads, Model.isNeighborOccluded, Model.allNeighborsOccluded, Model.noNeighborsOccluded, Model.hasNeighborFacingQuads, Model.collision, Model.getFaceNeighbor, Model.fullyOccludesNeighbor, Model.initWithCollisionModel, Model.init, edgeInterp, solveDepth, rasterize
+**Concepts:** model management, quad processing, collision detection, triangle rasterization
 
 ## Summary
-Defines ModelIndex and its initialization via initWithCollisionModel/initWithQuadInfos, snapping quad data to a fixed point grid, counting neighbor-facing vs internal quads, allocating per-face neighbor arrays and an internal array, then rasterizing triangles against a collision grid using edge interpolation and depth solving.
+The `Model` struct manages model data including its bounding box, quads, and collision information. It provides methods to initialize models with or without collision data and to rasterize triangles.
 
 ## Explanation
-The chunk declares pub const ModelIndex = enum { ... } (the exact enum values are not shown here but the type is referenced). It provides pub fn initWithCollisionModel(quadInfos: []const QuadInfo, collisionModel: ?[]const Box) ModelIndex which allocates a stack buffer adjustedQuads, copies each QuadInfo into it, snaps corners and cornerUV to grid via snapToGrid, snaps normals, then initializes self.min/max by iterating over all snapped corners. It counts neighbor-facing quads (via getFaceNeighbor) and internal quads, storing per-face indices in amounts[6] and a single internalAmount. For each face i it allocates QuadIndex[] with main.globalAllocator; similarly allocates internalQuads. Then it iterates adjustedQuads again: if the quad has a neighbor it subtracts the normal from corners, calls addQuad(quad) catch continue to get a ModelIndex, stores that index into self.neighborFacingQuads[neighbor.toInt()][indices[...]] and increments indices; otherwise it just adds the quad internally. After populating all faces it reallocates each face array to its final length (using main.globalAllocator.realloc) and the internal array. It sets flags hasNeighborFacingQuads, allNeighborsOccluded, noNeighborsOccluded, then loops over 0..6: for each neighbor's array it calls fullyOccludesNeighbor(quad.quadInfo()) on every quad; if true it marks self.isNeighborOccluded[neighbor] = true. It also updates the three boolean flags (hasNeighborFacingQuads becomes true if any face has quads, allNeighborsOccluded is ANDed with each occlusion result, noNeighborsOccluded is ANDed with NOT of each occlusion). If a collisionModel is provided it dupe‑copies Box into self.collision; otherwise it calls generateCollision(self, adjustedQuads). The chunk also defines pub fn init(quadInfos: []const QuadInfo) ModelIndex which simply forwards to initWithCollisionModel with null. It declares edgeInterp(y, x0, y0, x1, y1) f32 returning linear interpolation or the endpoint when y1==y0. It declares solveDepth(normal, v0, xIndex, yIndex, zIndex, u, v) f32 which extracts normal components by index, computes planeOffset = -vec.dot(v0, normal), then returns -(nX*u + nY*v + planeOffset)/nZ. Finally it declares rasterize(triangle: [3]Vec3f, grid: *[collisionGridSize][collisionGridSize]CollisionGridInteger, normal: Vec3f) void which sets up xIndex/yIndex/zIndex based on the absolute largest normal component (choosing 1/2/0, 0/2/1, or 0/1/2 respectively), scales triangle vertices by collisionGridSize via @splat(@floatFromInt(...)), computes min/max of the three vertices, then builds voxelMin and voxelMax using @floor/@ceil and clamping to >=0. It constructs p0/p1/p2 as Vec2f from the chosen x/y components of each vertex.
+The `Model` struct contains fields for the minimum and maximum coordinates (`min`, `max`), internal quads (`internalQuads`), neighbor-facing quads (`neighborFacingQuads`), occlusion status of neighbors (`isNeighborOccluded`), overall occlusion flags (`allNeighborsOccluded`, `noNeighborsOccluded`), presence of neighbor-facing quads (`hasNeighborFacingQuads`), and collision boxes (`collision`). The `getFaceNeighbor` function determines the neighboring direction based on quad corners. The `fullyOccludesNeighbor` function checks if a quad fully occludes a neighbor. The `initWithCollisionModel` method initializes a model with given quad information and optional collision data, adjusting quads to a fixed-point grid, categorizing them into internal or neighbor-facing quads, and setting occlusion flags. The `init` method is a convenience wrapper that calls `initWithCollisionModel` without collision data. The `edgeInterp`, `solveDepth`, and `rasterize` functions handle triangle rasterization by interpolating edges, solving depth, and updating the collision grid.
+
+## Code Example
+```zig
+fn getFaceNeighbor(quad: *const QuadInfo) ?chunk.Neighbor {
+	var allZero: @Vector(3, bool) = .{true, true, true};
+	var allOne: @Vector(3, bool) = .{true, true, true};
+	for (quad.corners) |corner| {
+		allZero = allZero & (corner == @as(Vec3f, @splat(0)));
+		allOne = allOne & (corner == @as(Vec3f, @splat(1)));
+	}
+	if (allZero[0]) return .dirNegX;
+	if (allZero[1]) return .dirNegY;
+	if (allZero[2]) return .dirDown;
+	if (allOne[0]) return .dirPosX;
+	if (allOne[1]) return .dirPosY;
+	if (allOne[2]) return .dirUp;
+	return null;
+}
+```
 
 ## Related Questions
-- What does ModelIndex represent in this file and how is it constructed?
-- How are quad corners snapped to the fixed point grid before any neighbor checks?
-- In initWithCollisionModel, what determines whether a quad is counted as neighbor-facing or internal?
-- Why are per-face QuadIndex arrays allocated separately from the internal array?
-- What happens when addQuad fails inside the second loop over adjustedQuads?
-- How does fullyOccludesNeighbor decide if a neighbor quad occludes the current face?
-- If collisionModel is provided, how is it stored in ModelIndex versus when generateCollision is called?
-- What are xIndex/yIndex/zIndex chosen for rasterize based on and why?
-- How does solveDepth compute the plane offset and which normal component is used as divisor?
-- Does rasterize modify the grid or just read from it, and what is its return type?
+- What is the purpose of the `getFaceNeighbor` function?
+- How does the `fullyOccludesNeighbor` function determine if a quad fully occludes a neighbor?
+- What steps are involved in initializing a model with collision data using `initWithCollisionModel`?
+- What is the role of the `init` method in the `Model` struct?
+- How does the `edgeInterp` function work to interpolate edge values?
+- What is the purpose of the `solveDepth` function in the context of triangle rasterization?
+- How does the `rasterize` function update the collision grid with triangle information?
 
 *Source: unknown | chunk_id: codebase_src_models.zig_chunk_1*

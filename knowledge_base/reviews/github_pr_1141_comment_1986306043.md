@@ -1,26 +1,26 @@
 # [src/blueprint.zig] - PR #1141 review diff
 
 **Type:** review
-**Keywords:** blueprint.zig, BlueprintCompression, FileHeader, BinaryWriter, BinaryReader, BlockStorageType, allocator, externalAllocator, stackAllocator, capture, paste, store
-**Symbols:** blueprintVersion, GameIdToBlueprintIdMapType, BlockIdSizeType, BlockStorageType, BinaryWriter, BinaryReader, BlueprintCompression, FileHeader, Blueprint, NeverFailingAllocator, User, Vec3i, ZonElement
-**Concepts:** Data Serialization, Memory Management, Resource Capture and Restoration, Thread Safety, Backwards Compatibility
+**Keywords:** blueprint, capture, paste, store, load, compression, allocator, stackAllocator, blockArraySize, paletteSizeBytes
+**Symbols:** blueprintVersion, GameIdToBlueprintIdMapType, BlockIdSizeType, BlockStorageType, BinaryWriter, BinaryReader, BlueprintCompression, FileHeader, Blueprint, NeverFailingAllocator, User, Vec3i, mesh_storage, Block
+**Concepts:** Data Serialization, Memory Management, Structures and Enums, File I/O, Concurrency
 
 ## Summary
-The new `blueprint.zig` file introduces a blueprint system for capturing and pasting game blocks. It includes structures for handling file headers, block storage, and compression.
+The new `blueprint.zig` file introduces a blueprint system for capturing and pasting game blocks. It includes structures for handling file headers and blueprints, with methods for storing, loading, and manipulating block data.
 
 ## Explanation
-This code defines a blueprint system that allows users to capture a section of the game world and store it as a blueprint. The `Blueprint` struct captures blocks within a specified region and stores them in a list. The `FileHeader` struct manages metadata about the blueprint, including version, compression type, and dimensions. The review highlights naming consistency issues with allocators and suggests avoiding local aliasing of global allocators to prevent confusion.
+The added code defines a `Blueprint` struct that manages a list of blocks and their dimensions. The `FileHeader` struct is used to store metadata about the blueprint file, including version, compression type, and block array sizes. Methods like `store`, `load`, and `capture` facilitate the creation and manipulation of blueprints. The reviewer points out naming inconsistencies with allocators and suggests avoiding local aliasing of global allocators for clarity and consistency.
 
 ## Related Questions
-- What is the purpose of the `blueprintVersion` constant?
+- What is the purpose of the `blueprintVersion` constant in the code?
 - How does the `FileHeader` struct handle different data types during storage and loading?
-- Why is there a concern about naming consistency with allocators in this code?
-- What is the role of the `NeverFailingAllocator` in the blueprint system?
-- How does the `Blueprint` struct manage block storage and retrieval?
+- Why is there a concern about naming allocators as `allocator` in the code?
+- What methods are available for manipulating block data within the `Blueprint` struct?
+- How does the `capture` method determine the size of the captured area?
+- What is the role of the `mesh_storage.updateBlock` function call in the `paste` method?
+- How does the `store` method handle memory allocation for storing blueprint data?
+- What potential issues could arise from using a stack allocator locally within the `store` method?
+- How does the code ensure compatibility with different block sizes during capture and paste operations?
 - What is the significance of the `getBlockArraySizeBytes` method in the `FileHeader` struct?
-- How does the `capture` method determine the bounds of the captured region?
-- What steps are taken to ensure thread safety when pasting blocks?
-- How does the blueprint system handle compression and decompression of data?
-- What is the impact of using `stackAllocator` locally in this context?
 
 *Source: unknown | chunk_id: github_pr_1141_comment_1986306043*

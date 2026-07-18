@@ -1,39 +1,69 @@
 # [easy/codebase_src_server_terrain_simple_structures_Boulder.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** GenerationMode, ServerChunk, updateBlockInGeneration, liesInChunk, startIndex, point cloud, potential function, random.nextFloat, worldArena.create
+**Keywords:** boulder generation, point cloud, potential function, voxel placement, chunk update
 **Symbols:** id, generationMode, Boulder, loadModel, generate
-**Concepts:** simple structure generation, point cloud potential function, chunk coordinate mapping, random seeded noise, block placement filtering
+**Concepts:** block generation, point cloud, potential function
 
 ## Summary
-Defines the Boulder simple structure model with floor generation mode and implements a point-cloud potential function to generate smooth boulder geometry within a chunk.
+Boulder generation logic
 
 ## Explanation
-The chunk declares a public Boulder struct containing block, size, and sizeVariation fields. It provides loadModel which parses ZonElement parameters (block name defaults to cubyz:slate/smooth, size defaults to 4, size_variation defaults to 1) and allocates the Boulder via main.worldArena.create. The generate method takes a GenerationMode (unused), world coordinates x/y/z, a ServerChunk pointer, cave maps (ignored), a seed for random number generation, and an unused boolean flag. It computes radius as base size plus a variation term scaled by random.nextFloat(seed)*2-1. A point cloud of 4 points is initialized with offsets derived from the same seed. The method then iterates over a bounding box around the target position using chunk.startIndex to map world coordinates to chunk voxel indices, skipping positions outside the chunk via liesInChunk. For each candidate voxel it accumulates a potential value as sum(1/distSqr) over all point cloud points, scaled by radius^2/4/numberOfPoints. If potential >= 1 the block is placed via chunk.updateBlockInGeneration.
+This chunk defines the Boulder structure with a block, size, and size variation. It provides a loadModel function to parse parameters and a generate function to place blocks based on a point cloud potential function.
 
 ## Code Example
 ```zig
-pub fn loadModel(parameters: ZonElement) ?*Boulder {
-	const self = main.worldArena.create(Boulder);
-	self.* = .{
-		.block = main.blocks.parseBlock(parameters.get([]const u8, "block") orelse "cubyz:slate/smooth"),
-		.size = parameters.get(f32, "size") orelse 4,
-		.sizeVariation = parameters.get(f32, "size_variation") orelse 1,
-	};
-	return self;
+pub fn generate(self: *Boulder, _: GenerationMode, x: i32, y: i32, z: i32, chunk: *main.chunk.ServerChunk, caveMap: CaveMapView, _: CaveBiomeMapView, seed: *u64, _: bool) void {
+	_ = caveMap;
+	const radius = self.size + self.sizeVariation*(random.nextFloat(seed)*2 - 1);
+	// My basic idea is to use a point cloud and a potential function to achieve somewhat smooth boulders without being a sphere.
+	const numberOfPoints = 4;
+	var pointCloud: [numberOfPoints]Vec3f = undefined;
+	for (&pointCloud) |*point| {
+		point.* = Vec3f{
+			(random.nextFloat(seed) - 0.5)*radius/2,
+			(random.nextFloat(seed) - 0.5)*radius/2,
+			(random.nextFloat(seed) - 0.5)*radius/2,
+		};
+	}
+	// My potential functions is ¹⁄ₙ Σ (radius/2)²/(x⃗ - x⃗ₚₒᵢₙₜ)²
+	// This ensures that the entire boulder is inside of a square with sidelength 2*radius.
+	const maxRadius: i32 = @ceil(radius);
+	var px = chunk.startIndex(x - maxRadius);
+	while (px < x + maxRadius) : (px += chunk.super.pos.voxelSize) {
+		var py = chunk.startIndex(y - maxRadius);
+		while (py < y + maxRadius) : (py += chunk.super.pos.voxelSize) {
+			var pz = chunk.startIndex(z - maxRadius);
+			while (pz < z + maxRadius) : (pz += chunk.super.pos.voxelSize) {
+				if (!chunk.liesInChunk(px, py, pz)) continue;
+				var potential: f32 = 0;
+				for (&pointCloud) |point| {
+					const delta = @as(Vec3f, @floatFromInt(Vec3i{px, py, pz} - Vec3i{x, y, z})) - point;
+					const distSqr = vec.dot(delta, delta);
+					potential += 1/distSqr;
+				}
+				potential *= radius*radius/4/numberOfPoints;
+				if (potential >= 1) {
+					chunk.updateBlockInGeneration(px, py, pz, self.block);
+				}
+			}
+		}
+	}
 }
 ```
 
 ## Related Questions
-- What default block is used when the ZonElement parameter 'block' is missing?
-- How does generate compute the radius for a Boulder instance?
-- Why are CaveMapView and CaveBiomeMapView parameters ignored in generate?
-- What condition determines whether a voxel gets placed during generation?
-- How many points are used in the point cloud for the potential function?
-- Which method is responsible for allocating a new Boulder struct on the world arena?
-- Does generate accept any GenerationMode value or only floor mode?
-- What role does seed play in random.nextFloat calls within generate?
-- How does startIndex translate world coordinates to chunk voxel indices?
-- Is liesInChunk used before or after computing potential for a voxel?
+- What is the purpose of the Boulder structure?
+- How does the loadModel function parse parameters for the Boulder structure?
+- What is the generationMode for the Boulder structure?
+- What is the generate function used for in the Boulder structure?
+- What is the point cloud potential function used in the Boulder structure?
+- What is the radius calculation used in the Boulder structure?
+- How does the Boulder structure place blocks based on the point cloud potential function?
+- What is the maximum radius used in the Boulder structure?
+- What is the chunk update logic used in the Boulder structure?
+- What is the block placement condition used in the Boulder structure?
+- What is the potential calculation used in the Boulder structure?
+- What is the distance calculation used in the Boulder structure?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_simple_structures_Boulder.zig_chunk_0*

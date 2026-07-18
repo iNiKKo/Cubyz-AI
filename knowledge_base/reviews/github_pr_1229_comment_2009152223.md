@@ -1,28 +1,22 @@
-# [src/assets.zig] - Chunk 2009152223
+# [src/assets.zig] - PR #1229 review diff
 
 **Type:** review
-**Keywords:** createAssetStringID, .zig.zon, .zon, NeverFailingAllocator, endsWithIgnoreCase, whitespace, regex, case sensitive, Windows, Unix, addonName, fileBaseName, relativeFilePath
-**Symbols:** createAssetStringID, readAllZonFilesInAddons, NeverFailingAllocator, std.ascii.endsWithIgnoreCase
-**Concepts:** file extension handling, asset ID normalization, cross-platform compatibility, regex-based naming constraints, case sensitivity in identifiers, memory allocation safety
+**Keywords:** asset string IDs, dots in file extensions, whitespace in IDs, regex constraint, block names, parameter parsing, case sensitivity, Windows to Unix transfer
+**Symbols:** createAssetStringID, NeverFailingAllocator
+**Concepts:** file extension conventions, parameter parsing, case sensitivity, operating system compatibility
 
 ## Summary
-The change introduces a new helper function `createAssetStringID` in `src/assets.zig` that constructs asset identifiers by appending the appropriate file suffix (`.zig.zon` or `.zon`) to a base name, while the accompanying review comments argue for stricter naming conventions and case-insensitive handling of addon names.
+The review discusses the creation of asset string IDs and raises concerns about using dots in file extensions and allowing whitespace in IDs.
 
 ## Explanation
-The diff adds logic to determine the correct file extension based on whether the base name ends with `.zig.zon`, ensuring that asset IDs are formed consistently. The reviewer raises architectural concerns: allowing arbitrary whitespace in IDs creates parsing complexity, so they suggest constraining block names to a regex `[a-zA-Z0-9-_]+`. They also highlight cross-platform compatibility issues where Windows treats `addon:Stone` and `addon:stone` differently, implying that the current case-sensitive ID handling could lead to bugs when transferring assets between OSes. The new function is part of a broader effort to normalize asset naming before they are stored or referenced elsewhere in the codebase.
+The reviewer is concerned about the use of dots in file extensions, suggesting that they are arbitrary separators and proposing a regex constraint for block names to include only alphanumeric characters, hyphens, and underscores. The reviewer also points out potential issues with case sensitivity in block IDs when transferring between Windows and Unix systems.
 
 ## Related Questions
-- What is the purpose of the `NeverFailingAllocator` parameter in `createAssetStringID`?
-- How does the code decide between using `.zig.zon` and `.zon` as the suffix?
-- Why might allowing whitespace in asset IDs be problematic for command parsing?
-- What regex pattern is suggested by the reviewer to constrain block names?
-- In what scenario could case-sensitive addon names cause issues across operating systems?
-- Does `std.ascii.endsWithIgnoreCase` handle locale-specific casing rules or just ASCII?
-- Where in the codebase are asset IDs used after being created by this function?
-- Is there any existing validation of `fileBaseName` before calling `createAssetStringID`?
-- How does the new function interact with the surrounding `readAllZonFilesInAddons` logic?
-- What would happen if `externalAllocator` were not truly never-failing in practice?
-- Are there any tests that cover the `.zig.zon` suffix path specifically?
-- Could this change affect memory usage patterns for large addon directories?
+- What are the potential issues with using dots as separators in file extensions?
+- How does allowing whitespace in IDs affect parameter parsing?
+- Why is it suggested to constrain block names to a specific regex pattern?
+- What are the implications of case sensitivity in block IDs for cross-platform compatibility?
+- Can you provide examples of how to handle case sensitivity issues when transferring files between Windows and Unix systems?
+- How does the proposed regex constraint simplify reasoning about ID parsing?
 
 *Source: unknown | chunk_id: github_pr_1229_comment_2009152223*

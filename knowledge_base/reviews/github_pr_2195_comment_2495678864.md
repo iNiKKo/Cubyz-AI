@@ -1,22 +1,22 @@
 # [src/server/terrain/simple_structures/SbbGen.zig] - PR #2195 review diff
 
 **Type:** review
-**Keywords:** memory allocation, unused allocations, invalid memory access, structure loading, architectural review
+**Keywords:** memory allocation, unused allocations, error handling, robustness, memory safety, invalid memory access
 **Symbols:** SbbGen, loadModel, ZonElement, postResolutionChecks
-**Concepts:** memory management, thread safety, backwards compatibility
+**Concepts:** memory safety, invalid memory access, error handling
 
 ## Summary
-The review discusses changes in the `loadModel` function to handle potential memory allocation issues and ensure valid memory usage during structure loading.
+The review discusses changes in the `loadModel` function to handle potential memory allocation issues and improve robustness.
 
 ## Explanation
-The reviewer points out that the current implementation may lead to unused allocations, which can cause invalid memory access when used later. The author responds by explaining that the change is necessary to prevent such issues, as the exact number of entries cannot be known beforehand. The review highlights architectural concerns around memory management and suggests alternative approaches to ensure valid memory usage during structure loading.
+The reviewer points out that the current implementation in master may leave unused allocations, which can lead to invalid memory usage during `postResolutionChecks`. The proposed change modifies the return type of `loadModel` from `*SbbGen` to `?*SbbGen`, allowing for a more controlled handling of potential errors. The reviewer argues that this is necessary because the exact number of entries needed cannot be determined beforehand, and attempting to resize the list based on assumptions can lead back to the same problem. The discussion revolves around ensuring memory safety and preventing invalid memory access.
 
 ## Related Questions
-- What is the purpose of the `loadModel` function in SbbGen.zig?
-- How does the current implementation handle memory allocation for structures?
-- Why is it necessary to change the return type of `loadModel` from *SbbGen to ?*SbbGen?
-- What potential issues could arise if unused allocations are left in the arena?
-- How does the reviewer suggest preventing invalid memory access during structure loading?
-- What alternative approaches are mentioned for handling memory allocation in this context?
+- What is the purpose of changing the return type of `loadModel` from `*SbbGen` to `?*SbbGen`?
+- How does the current implementation in master lead to unused allocations?
+- Why is it necessary to handle potential errors when loading models?
+- What are the implications of not knowing the exact number of entries needed beforehand?
+- How can memory safety be ensured during `postResolutionChecks`?
+- What alternative approaches could be taken to avoid invalid memory access?
 
 *Source: unknown | chunk_id: github_pr_2195_comment_2495678864*

@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_volcano_peak.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome properties, radius, height range, interpolation, music, parent biomes, ground structure, stone block
-**Concepts:** biome configuration, volcano peak
+**Keywords:** radius, height range, interpolation, music, parent biomes, sub-biome count, ground structure, stone block
+**Concepts:** world generation, biome configuration
 
 ## Summary
-Defines properties and structure for a volcano peak biome in Cubyz.
+Defines properties and characteristics of a volcano peak biome.
 
 ## Explanation
-This chunk configures the characteristics of a volcano peak biome, including its radius, height range, interpolation method, music, parent biomes, maximum sub-biome count, ground structure, and stone block type. It specifies that this biome is a mountain type with smooth interpolation and no chance of occurrence on its own. The ground structure includes lava and magma blocks, while the stone block is defined as smooth basalt.
+This chunk configures the properties of a volcano peak biome, including its radius, height range, interpolation method, music, parent biomes, maximum sub-biome count, ground structure, and stone block type. It specifies that this biome has no chance of occurring naturally but can be generated as a child of another biome with specific parameters.
 
 ## Related Questions
 - What is the radius of the volcano peak biome?
 - Which music track is associated with the volcano peak biome?
-- How many parent biomes does the volcano peak have?
+- How many parent biomes does the volcano peak biome have?
 - What are the ground structure components of the volcano peak biome?
-- What type of stone block is used in the volcano peak biome?
-- Is there a chance for the volcano peak biome to occur naturally?
+- What is the stone block type used in the volcano peak biome?
+- What is the chance of the volcano peak biome occurring naturally?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_volcano_peak.zig.zon_chunk_0*

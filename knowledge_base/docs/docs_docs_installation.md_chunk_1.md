@@ -1,22 +1,27 @@
 # [medium/docs_docs_installation.md] - Chunk 1
 
 **Type:** documentation
-**Keywords:** Ubuntu, Debian, Fedora, Git, GitHub, Cubyz, run_linux.sh, crashes, Discord, issue board
-**Symbols:** git, Cubyz, run_linux.sh
-**Concepts:** installation, updating, troubleshooting
+**Keywords:** update, crash, git pull, Discord, GitHub issues
+**Symbols:** git pull, Cubyz
+**Concepts:** Updating Cubyz, Troubleshooting Crashes
 
 ## Summary
-Provides installation instructions for Cubyz on Ubuntu/Debian and Fedora, including updating the game and troubleshooting tips.
+Instructions for updating Cubyz and troubleshooting crashes.
 
 ## Explanation
-The documentation outlines the steps to install Cubyz on Linux distributions such as Ubuntu/Debian and Fedora. It includes commands to install Git, clone the Cubyz repository from GitHub, navigate into the game directory, and run the game using a shell script. Additionally, it provides instructions for updating the game by pulling the latest changes from the repository. The document also mentions troubleshooting steps in case of crashes or issues, directing users to join the Cubyz Discord Server or create an issue on the GitHub issue board.
+To update Cubyz, navigate to the `Cubyz` folder in your terminal and execute the command `git pull`. If Cubyz crashes or fails to run, users can seek assistance through the Cubyz Discord Server (https://discord.com/invite/stBh54hF7U) or by creating an issue on the Cubyz GitHub issue board (https://github.com/pixelguys/cubyz/issues).
+
+## Code Example
+```zig
+git pull
+```
 
 ## Related Questions
-- How do I install Cubyz on Ubuntu?
-- What command is used to update Cubyz after installation?
+- How do I update Cubyz?
+- What command should I use to update Cubyz?
 - Where can I find help if Cubyz crashes?
-- How do I clone the Cubyz repository from GitHub?
-- What script should I run to start Cubyz on Linux?
-- Which package manager is used for installing Git on Fedora?
+- Is there a Discord server for Cubyz support?
+- How do I report an issue with Cubyz?
+- What is the GitHub repository for Cubyz issues?
 
 *Source: unknown | chunk_id: docs_docs_installation.md_chunk_1*

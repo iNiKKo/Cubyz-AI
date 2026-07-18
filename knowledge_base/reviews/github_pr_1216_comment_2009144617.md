@@ -1,26 +1,22 @@
-# [src/rotation.zig] - Chunk 2009144617
+# [src/rotation.zig] - PR #1216 review diff
 
 **Type:** review
-**Keywords:** TexturePile, rotatedModels, blockToStateCountMap, u16, virtual functions, function signatures, memory usage, compile time, deduplication, generic class, ModelIndex
-**Symbols:** RotationModes, TexturePile, rotatedModels, blockToStateCountMap, ModelIndex
-**Concepts:** virtual functions, function signature complexity, memory optimization, code deduplication, compile time bloat, generic instantiation, state pointer passing, architectural flexibility
+**Keywords:** TexturePile, virtual functions, state pointer, u16, memory optimization, generics, compile time, deduplication
+**Symbols:** RotationModes, TexturePile, rotatedModels, blockToStateCountMap
+**Concepts:** memory usage, function signatures, code deduplication, compile time
 
 ## Summary
-The diff introduces a new TexturePile struct with rotatedModels and blockToStateCountMap fields, but reviewers reject it due to excessive function signature complexity, lack of meaningful memory savings (u16 is already indexable), and Zig's poor code deduplication leading to compile-time bloat.
+The review discusses adding a TexturePile struct to handle rotated models and block state counts, with architectural considerations around memory usage and function signatures.
 
 ## Explanation
-The architectural review highlights that passing a pointer to state in virtual functions would make signatures unwieldy. The proposed TexturePile uses u16 for blockToStateCountMap, which reviewers argue is unnecessary since u16 can already serve as an index into local lists without restrictions. Memory optimization claims are dismissed because adding this parameter to every block only saves 128 kiB, deemed not worth the cost. Additionally, making TexturePile generic would instantiate 15 copies in Zig due to its inability to deduplicate code, worsening compile times which are already problematic.
+The reviewer suggests passing a pointer to the state to all virtual functions for flexibility and less memory usage by reusing rotations. The author prefers avoiding this due to long function signatures and the potential for code duplication if using generics. The review highlights that a `u16` can be used as an index into a local list, with minimal memory impact (128 kiB) even if added to every block. The reviewer also notes that Zig's handling of generics could lead to significant compile time overhead.
 
 ## Related Questions
-- What is the purpose of TexturePile in rotation.zig?
-- Why does the reviewer oppose passing a pointer to state in virtual functions?
-- How much memory would be saved by adding TexturePile parameters to every block?
-- What limitation of Zig causes generic classes to compile multiple instances?
-- Is u16 sufficient for indexing without restrictions in this context?
-- What alternative approach is suggested instead of TexturePile?
-- Why is 128 kiB considered not worth optimizing here?
-- How does the current RotationModes struct handle state management?
-- What would happen if TexturePile were made generic with different maxStateCount values?
-- Are there any existing patterns in rotation.zig that avoid pointer-heavy virtual functions?
+- What is the impact of passing a state pointer to all virtual functions?
+- How does using a `u16` as an index into a local list affect memory usage?
+- Why might Zig's handling of generics lead to increased compile time?
+- What are the potential benefits and drawbacks of reusing rotations with the same specialization?
+- How does the addition of TexturePile impact the overall architecture of the rotation module?
+- What is the expected memory footprint of adding this parameter to every block?
 
 *Source: unknown | chunk_id: github_pr_1216_comment_2009144617*

@@ -1,22 +1,22 @@
 # [src/server/terrain/simple_structures/SbbGen.zig] - PR #2195 review diff
 
 **Type:** review
-**Keywords:** optional pointer, invalid memory access, structure registration, slice bounds, bug fix
-**Symbols:** SbbGen, loadModel, ZonElement, structureList
-**Concepts:** memory safety, slice bounds checking
+**Keywords:** optional pointer, invalid memory, resize, loop bounds, issue #1932, ugly implementation
+**Symbols:** SbbGen, getHash, loadModel, ZonElement, structureList
+**Concepts:** memory safety, bounds checking
 
 ## Summary
-The `loadModel` function in SbbGen.zig now returns an optional pointer instead of a non-optional one, addressing issue #1932 by preventing invalid memory access during structure registration.
+The `loadModel` function in `SbbGen.zig` now returns an optional pointer, and the loop over `structureList` is bounded to prevent accessing invalid memory.
 
 ## Explanation
-The root cause of the issue was that the `structureList` was resized to a larger size than necessary, resulting in the last 'n' items being invalid memory. The fix involves bounding the slice loop by the number of items successfully registered (`0..stage1Count`). This change ensures that only valid structures are processed, preventing potential crashes or undefined behavior.
+The original implementation of `loadModel` could lead to accessing invalid memory due to resizing `structureList` larger than necessary. The fix involves returning an optional pointer and adjusting the loop bounds to only iterate over valid items, addressing issue #1932. While the current implementation is considered 'ugly,' it will be cleaned up later.
 
 ## Related Questions
-- What was the original issue with `structureList` resizing?
-- How does the new implementation prevent invalid memory access?
-- Why is it important to bound the slice loop by `stage1Count`?
-- Can you explain the potential consequences of not fixing this issue?
-- Is there a risk of introducing new bugs with this change?
-- What are the implications for performance with this fix?
+- What is the purpose of returning an optional pointer in `loadModel`?
+- How does the fix prevent accessing invalid memory?
+- What was the root cause of issue #1932?
+- Why is the current implementation considered 'ugly'?
+- When will the ugly implementation be cleaned up?
+- What changes were made to the loop over `structureList`?
 
 *Source: unknown | chunk_id: github_pr_2195_comment_2492433648*

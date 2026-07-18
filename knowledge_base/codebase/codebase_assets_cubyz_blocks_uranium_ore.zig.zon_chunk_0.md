@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_uranium_ore.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** mineable, block health, ores, drop behavior, emitted light, model, texture
-**Concepts:** block configuration, ore generation
+**Keywords:** mineable, blockHealth, blockResistance, veins, size, drops, emittedLight, rotation, model, texture
+**Concepts:** block configuration, ore properties
 
 ## Summary
-Defines properties for the Uranium Ore block in Cubyz, including its mineability, health, resistance, ore generation parameters, drop behavior, emitted light, rotation, model, texture, and item texture.
+Defines properties for the Uranium Ore block in Cubyz, including its mineability, health, resistance, ore distribution, drops, light emission, rotation, model, texture, and item details.
 
 ## Explanation
-This chunk defines a configuration object for the Uranium Ore block. It specifies that the block is mineable with a health of 40 and a resistance of 17.5. The ore generation parameters include vein density, size, maximum height, and density. The block drops an item automatically when mined. It emits light with a color value of 0x214200. The rotation, model, and texture are set to specific identifiers within the Cubyz asset system. Additionally, it specifies a separate texture for the item representation.
+This chunk defines a configuration for the Uranium Ore block within the Cubyz game engine. It specifies various properties such as the block's tags (mineable), health, resistance, and ore characteristics like vein density and size. The chunk also outlines what items are dropped when the ore is mined, the light emitted by the block, its rotation behavior, model type, texture, and item-specific texture.
 
 ## Related Questions
-- What is the mineability status of Uranium Ore?
+- What are the tags associated with Uranium Ore?
 - How much health does Uranium Ore have?
-- What is the resistance value for Uranium Ore?
-- How many veins are generated per chunk for Uranium Ore?
-- What is the size of each vein for Uranium Ore?
-- What is the maximum height at which Uranium Ore can generate?
+- What is the resistance of Uranium Ore?
+- How many veins of uranium ore can be found?
+- What size do the uranium ore veins typically have?
+- What items are dropped when Uranium Ore is mined?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_uranium_ore.zig.zon_chunk_0*

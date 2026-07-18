@@ -1,22 +1,22 @@
 # [src/server/world.zig] - PR #2108 review diff
 
 **Type:** review
-**Keywords:** entity chunks, reference count, deinit, tryRemoveEntityChunk, garbage collector, thread safety, memory management
-**Symbols:** ServerWorld, main.ListUnmanaged, EntityChunk, ChunkManager.mutex, tryRemoveEntityChunk
-**Concepts:** thread safety, memory leak, garbage collection
+**Keywords:** ServerWorld, entity chunks, ChunkManager, mutex, increaseRefCount, append, deinit, tryRemoveEntityChunk, GarbageCollector, thread safety, memory management, garbage collection
+**Symbols:** ServerWorld, main.ListUnmanaged, EntityChunk, ChunkManager.mutex, increaseRefCount, append, deinit, tryRemoveEntityChunk, main.heap.GarbageCollector
+**Concepts:** thread safety, memory management, garbage collection
 
 ## Summary
-The code now uses `tryRemoveEntityChunk` to safely remove and deinitialize entity chunks, ensuring proper garbage collection.
+The code has been modified to use the `main.heap.GarbageCollector` for freeing entity chunks instead of directly calling `deinit()`, ensuring safe memory management across threads.
 
 ## Explanation
-The change involves modifying the handling of entity chunks during the ticking process. Previously, the code directly decreased the reference count and deinited the chunk. The new approach uses `tryRemoveEntityChunk`, which checks if it's safe to remove the chunk without causing a race condition or memory leak. This is crucial for maintaining thread safety and preventing dangling references. The reviewer suggests using the main heap garbage collector to ensure that chunks are freed only when no other threads hold a reference, thus avoiding potential memory leaks and ensuring correct resource management.
+The reviewer points out that using the `main.heap.GarbageCollector` is crucial for thread safety. Directly calling `deinit()` on an entity chunk could lead to a use-after-free error if another thread still holds a reference to it. By deferring the garbage collection, the system ensures that all references are safely managed and prevents potential memory leaks or undefined behavior in a multi-threaded environment.
 
 ## Related Questions
-- What is the purpose of `tryRemoveEntityChunk` in this context?
-- How does the use of `main.heap.GarbageCollector` improve memory safety?
-- Why was it important to modify the reference count handling for entity chunks?
-- Can you explain the potential consequences of not using `tryRemoveEntityChunk`?
-- What is the role of `ChunkManager.mutex` in this code snippet?
-- How does this change impact the performance of chunk management?
+- What is the purpose of using `main.heap.GarbageCollector` instead of direct `deinit()`?
+- How does this change ensure thread safety in the ServerWorld module?
+- Can you explain the potential consequences of not using a garbage collector for memory management in a multi-threaded environment?
+- What other parts of the codebase might benefit from similar changes to improve thread safety?
+- How does the `tryRemoveEntityChunk` function interact with the garbage collection process?
+- Is there any performance impact associated with using a garbage collector instead of direct deallocation?
 
 *Source: unknown | chunk_id: github_pr_2108_comment_2482688152*

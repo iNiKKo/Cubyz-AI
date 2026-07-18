@@ -1,26 +1,28 @@
 # [easy/codebase_assets_cubyz_biomes_hills_large__defaults.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** minHeightLimit, maxHeight, smoothBeaches, minRadius, maxRadius, roughness, hills, mountains, soilCreep, validPlayerSpawn
-**Symbols:** minHeightLimit, minHeight, maxHeight, maxHeightLimit, smoothBeaches, minRadius, maxRadius, roughness, hills, mountains, soilCreep, chance, validPlayerSpawn, structures
-**Concepts:** biome configuration, height limits, structure spawning, terrain generation parameters
+**Keywords:** biome, heights, beaches, radius, roughness, structures
+**Symbols:** minHeightLimit, minHeight, maxHeight, smoothBeaches, minRadius, maxRadius, roughness, hills, mountains, soilCreep, chance, validPlayerSpawn, structures
+**Concepts:** biome configuration, structure definition
 
 ## Summary
-Defines biome configuration parameters for hills terrain including height limits, generation radius, structure spawn chances, and specific boulder/flower patch definitions.
+Hills biome configuration
 
 ## Explanation
-This chunk contains only static configuration data with no executable logic. It defines minHeightLimit (16), minHeight (30), maxHeight (90), maxHeightLimit (100) for vertical bounds; smoothBeaches flag set to true; minRadius (128) and maxRadius (256) for generation area; roughness value of 3; hills count of 40 and mountains count of 10; soilCreep factor of 1.5; chance parameter of 0.4; validPlayerSpawn flag set to true. The structures array defines three entries: a boulder structure with id cubyz:boulder, block cubyz:slate/smooth, size 5, size_variance 1; two flower_patch structures both sharing the same id cubyz:flower_patch but differing in blocks (cubyz:daisies vs cubyz:dandelions), each with their own chance values (0.003 and 0.002), width dimensions (10 and 6), variation counts (6 and 4), density of 0.3, and priority of 0.1.
+This chunk defines the hills biome with various parameters including minimum and maximum heights, smooth beaches setting, radius limits, roughness, hill and mountain counts, soil creep rate, spawn chance, valid player spawn flag, and structures. Structures include boulders and flower patches.
 
 ## Related Questions
-- What is the minimum height limit for hills biome generation?
-- How many hills structures are configured to spawn in this biome?
-- What block type is used for the boulder structure definition?
-- Is smooth beach generation enabled by default in this configuration?
-- What is the maximum radius value set for hills terrain generation?
-- Which flower patch variant uses daisies as its blocks array?
-- What is the chance probability for spawning a cubyz:boulder structure?
-- Does this biome allow valid player spawn locations?
-- What roughness factor is applied to hills terrain generation?
-- How many mountain structures are defined in this configuration?
+- What is the minimum height limit for the hills biome?
+- How many hills are generated in the hills biome?
+- What is the maximum radius of the hills biome?
+- Is there a chance to spawn structures in the hills biome?
+- What is the probability of spawning a boulder structure?
+- Which blocks can be used for flower patches in the hills biome?
+- What is the width of a flower patch structure?
+- How many variations are allowed for flower patch structures?
+- What is the density of flower patch structures?
+- What is the priority of flower patch structures?
+- Is it valid to spawn players in the hills biome?
+- What structures are defined in the hills biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_hills_large__defaults.zig.zon_chunk_0*

@@ -1310,7 +1310,81 @@ def sanitize_extraction(data: dict, raw_content: str, p_key: str = "CODEBASE") -
 
     return data
 
+# The WIKI prompt already tells the model not to do this (see RAG_PROMPTS["WIKI"]'s "VERBATIM FACT
+# PRESERVATION" rule, with this exact healing example baked in) -- but that's a request, not an
+# enforcement, and it demonstrably doesn't always work: a live knowledge_base/docs/docs_docs_faq.md
+# chunk was found (2026-07-18, during RAG debugging) doing precisely this on the live FAQ source,
+# with the effect confirmed against real webapp/local_rag_chat.py runs -- "Can the player heal?"
+# answered "Yes" because the chunk's Explanation only said the FAQ "covers... healing mechanics"
+# instead of restating the source's actual "there is currently no means to heal." CODEBASE chunks
+# get a real verbatim check on code_example (below); WIKI chunks had no code-level check at all for
+# the equivalent failure on prose facts. This is a narrow, source-comparison heuristic for exactly
+# that shape of bug -- not a general fact-checker -- so it only fires when all of these hold: (1)
+# raw_content has a markdown "## question?" heading followed by a short (<=40 word) answer, (2)
+# that answer contains an explicit negation word, (3) the explanation clearly discusses the same
+# topic (shares a keyword with the question), and (4) no negation word appears anywhere in the
+# explanation at all. That combination is what a dropped yes/no fact looks like; it won't fire on
+# longer/discursive answers or topics the model never mentions at all (those are already caught by
+# the existing "doesn't answer" behavior, not this bug).
+_FAQ_QA_PATTERN = re.compile(r'(?m)^#{1,6}\s*(.+?\??)\s*$\n+(.*?)(?=\n#{1,6}\s|\Z)', re.S)
+_NEGATION_WORDS = {"no", "not", "cannot", "can't", "isn't", "doesn't", "don't", "never", "none", "nothing", "n't"}
+_STOPWORDS = {"the", "and", "for", "are", "you", "your", "with", "this", "that", "how", "what",
+              "does", "will", "can", "there", "way", "currently", "right", "now"}
+
+
+def check_wiki_faq_grounding(data: dict, raw_content: str) -> tuple:
+    explanation = (data.get("comprehensive_explanation") or "").lower()
+    if not explanation:
+        return True, ""
+
+    for question, answer in _FAQ_QA_PATTERN.findall(raw_content):
+        question = question.strip()
+        if not question.endswith("?"):
+            continue
+        answer_clean = " ".join(answer.split())
+        if not answer_clean or len(answer_clean.split()) > 40:
+            continue  # only short, single-fact FAQ-style answers -- not general prose
+        answer_words = set(re.findall(r"[a-z']+", answer_clean.lower()))
+        if not (answer_words & _NEGATION_WORDS):
+            continue  # this particular Q&A isn't a negation-shaped fact
+        q_keywords = {w for w in re.findall(r"[a-z']+", question.lower())
+                      if len(w) >= 4 and w not in _STOPWORDS}
+        if not q_keywords:
+            continue
+
+        # A negation word appearing SOMEWHERE in a multi-topic explanation doesn't mean THIS
+        # topic's negation was preserved -- a dense, comma-separated topic list (exactly the shape
+        # a condensed FAQ explanation tends to take) packs unrelated topics within a fixed
+        # character window of each other, so a character-radius check falsely "found" an unrelated
+        # neighboring negation (confirmed live: "...doesn't start, healing mechanics, eating..." --
+        # the "doesn't" belongs to the previous topic, not healing). Splitting on clause boundaries
+        # (,;.) and requiring the topic keyword and a negation to land in the SAME clause fixes
+        # that false-negative while still catching the real bug, where the negation is missing
+        # from the sentence/clause that actually discusses this topic (substring match on the
+        # keyword since "heal"/"healing" share a root but aren't the same token).
+        clauses = re.split(r"[,;.]", explanation)
+        found_topic, found_negation_nearby = False, False
+        for clause in clauses:
+            clause_words = set(re.findall(r"[a-z']+", clause))
+            if any(qk in w or w in qk for qk in q_keywords for w in clause_words if len(w) >= 4):
+                found_topic = True
+                if clause_words & _NEGATION_WORDS:
+                    found_negation_nearby = True
+                    break
+        if found_topic and not found_negation_nearby:
+            return False, (f"source Q&A {question!r} answers with a negation "
+                            f"('no'/'cannot'/etc.) but comprehensive_explanation mentions the same "
+                            f"topic without stating that negation nearby -- likely dropped the "
+                            f"actual answer the way the FAQ healing bug did")
+    return True, ""
+
+
 def validate_extraction(data: dict, raw_content: str, p_key: str) -> tuple:
+
+    if p_key == "WIKI":
+        ok, reason = check_wiki_faq_grounding(data, raw_content)
+        if not ok:
+            return False, reason
 
     code_example = data.get("code_example")
     if isinstance(code_example, str) and code_example.strip():

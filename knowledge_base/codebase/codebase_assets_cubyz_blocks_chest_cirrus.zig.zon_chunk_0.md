@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_chest_cirrus.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** texture paths, asset management, block configuration, front face, side faces
-**Concepts:** block rendering, texture mapping
+**Keywords:** texture mapping, configuration data, block assets, Cubyz engine, chest block
+**Concepts:** world generation, block textures
 
 ## Summary
-Defines texture paths for the Cirrus chest block.
+This chunk defines texture paths for a specific type of chest block in the Cubyz voxel engine.
 
 ## Explanation
-This chunk contains a configuration object that specifies the texture paths for each face of the Cirrus chest block in the Cubyz voxel engine. The textures are organized by their respective positions: back, front, left side, right side, top, and bottom. Each texture path is a string that references the location of the texture file within the asset system.
+The chunk contains configuration data specifying the texture files used for different sides and faces of a 'cirrus' themed chest block. Each field (e.g., .texture, .texture_front) maps to a string representing the path to the corresponding texture image within the Cubyz asset system.
 
 ## Related Questions
-- What is the texture path for the front of the Cirrus chest block?
-- How are the textures for the left and right sides of the Cirrus chest block specified?
-- Which texture file is used for the top face of the Cirrus chest block?
-- Can you provide the texture path for the bottom face of the Cirrus chest block?
-- What is the overall structure of the configuration object for the Cirrus chest block?
-- How does this chunk contribute to the rendering of the Cirrus chest block in the Cubyz engine?
+- What is the texture path for the front of the cirrus chest block?
+- Which textures are used for the sides of the cirrus chest block?
+- How many different texture paths are defined for the cirrus chest block?
+- What is the purpose of this configuration data in the Cubyz engine?
+- Can you list all the texture paths defined for the cirrus chest block?
+- Is there a specific naming convention for these texture files?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_chest_cirrus.zig.zon_chunk_0*

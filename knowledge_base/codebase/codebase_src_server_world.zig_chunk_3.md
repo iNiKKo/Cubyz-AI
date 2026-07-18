@@ -1,27 +1,27 @@
 # [hard/codebase_src_server_world.zig] - Chunk 3
 
 **Type:** implementation
-**Keywords:** file I/O, mutex locking, thread safety, palette loading, position validation
-**Symbols:** ServerWorld, ServerWorld.itemDropManager, ServerWorld.blockPalette, ServerWorld.itemPalette, ServerWorld.proceduralItemPalette, ServerWorld.biomePalette, ServerWorld.entityModelPalette, ServerWorld.entityComponentPalette, ServerWorld.chunkManager, ServerWorld.gameTime, ServerWorld.milliTime, ServerWorld.lastUpdateTime, ServerWorld.lastUnimportantDataSent, ServerWorld.doGameTimeCycle, ServerWorld.tickSpeed, ServerWorld.settings, ServerWorld.mode, ServerWorld.path, ServerWorld.name, ServerWorld.spawn, ServerWorld.mutex, ServerWorld.chunkUpdateQueue, ServerWorld.regionUpdateQueue, ServerWorld.playerDatabase, ServerWorld.localPlayerIndex, ServerWorld.nextPlayerIndex, ServerWorld.biomeChecksum, ServerWorld.ChunkUpdateRequest, ServerWorld.RegionUpdateRequest, ServerWorld.Mode, ServerWorld.init, chunkInitFunctionForCacheAndIncreaseRefCount, chunkDeinitFunctionForCache, getOrGenerateChunkAndIncreaseRefCount, getChunkFromCacheAndIncreaseRefCount
-**Concepts:** chunk management, world initialization, player data handling
+**Keywords:** world initialization, palette management, chunk updates, player database, resource cleanup
+**Symbols:** ServerWorld, ServerWorld.itemDropManager, ServerWorld.blockPalette, ServerWorld.itemPalette, ServerWorld.proceduralItemPalette, ServerWorld.biomePalette, ServerWorld.entityModelPalette, ServerWorld.entityComponentPalette, ServerWorld.chunkManager, ServerWorld.gameTime, ServerWorld.milliTime, ServerWorld.lastUpdateTime, ServerWorld.lastUnimportantDataSent, ServerWorld.doGameTimeCycle, ServerWorld.tickSpeed, ServerWorld.settings, ServerWorld.mode, ServerWorld.path, ServerWorld.name, ServerWorld.spawn, ServerWorld.mutex, ServerWorld.chunkUpdateQueue, ServerWorld.regionUpdateQueue, ServerWorld.playerDatabase, ServerWorld.localPlayerIndex, ServerWorld.nextPlayerIndex, ServerWorld.biomeChecksum, ServerWorld.ChunkUpdateRequest, ServerWorld.RegionUpdateRequest, ServerWorld.Mode, ServerWorld.init, ServerWorld.loadPalette, ServerWorld.deinit
+**Concepts:** world management, palette loading, chunk management, player data handling
 
 ## Summary
-Handles chunk management and world initialization for the server.
+The ServerWorld struct manages server-side world data, including palettes, chunk management, and player information.
 
 ## Explanation
-This chunk defines the `ServerWorld` struct, which manages various aspects of the game world on the server side. It includes methods for initializing the world, managing chunks (loading from cache or generating new ones), and handling player data. The code involves operations like file I/O for loading palettes, assertions for position validation, and mutex locking for thread safety.
+The ServerWorld struct is responsible for managing the state of a server-side world. It initializes various palettes (block, item, procedural item, biome, entity model, and entity component) by loading them from files. The struct also manages chunks through a ChunkManager and handles player data using a StringHashMapUnmanaged. The init function sets up these components, while the deinit function ensures proper cleanup by saving configurations and releasing resources.
 
 ## Code Example
 ```zig
-pub const Mode = enum { singleplayer, multiplayer }
+pub const Mode = enum { singleplayer, multiplayer };
 ```
 
 ## Related Questions
-- How does the `ServerWorld` struct manage chunk data?
-- What is the purpose of the `chunkInitFunctionForCacheAndIncreaseRefCount` function?
-- How are palettes loaded in the `init` method?
-- What ensures thread safety when managing chunks?
-- How are player indices managed in the `ServerWorld` struct?
-- What is the role of the `getOrGenerateChunkAndIncreaseRefCount` method?
+- What is the purpose of the ServerWorld struct?
+- How does the ServerWorld initialize its palettes?
+- What components are managed by the ChunkManager in ServerWorld?
+- How is player data handled in ServerWorld?
+- What steps are taken during the deinitialization of ServerWorld?
+- How are chunk updates queued and processed in ServerWorld?
 
 *Source: unknown | chunk_id: codebase_src_server_world.zig_chunk_3*

@@ -1,16 +1,21 @@
 # [easy/docs_docs_development_api_documentation.md] - Chunk 0
 
 **Type:** documentation
-**Keywords:** API Documentation, wiki landing page
-**Concepts:** API Documentation
+**Keywords:** Cubyz API, Application Programming Interface, Engine interaction, Developer tools, Extension capabilities
+**Concepts:** API, Documentation
 
 ## Summary
-This is the landing page for the API Documentation section of the Cubyz wiki; it contains only a title, no body content.
+API documentation for Cubyz voxel engine.
 
 ## Explanation
-The raw source for this page consists solely of icon frontmatter and the heading "# API Documentation". It has no descriptive body text at all -- no claims can be made about what the API covers, how to access it, or what features it has, since none of that is present in the source.
+The API documentation provides information on how to interact with the Cubyz voxel engine through its Application Programming Interface. This includes details on available functions, classes, and methods that developers can use to extend or modify the engine's behavior.
 
 ## Related Questions
-- What is on the Cubyz wiki's API Documentation index page?
+- What is the purpose of the Cubyz API?
+- How can developers use the Cubyz API to extend the engine?
+- What information does the API documentation cover?
+- Are there any specific functions or classes highlighted in the API documentation?
+- Can developers modify the engine's behavior using the API?
+- What tools are available for interacting with the Cubyz API?
 
 *Source: unknown | chunk_id: docs_docs_development_api_documentation.md_chunk_0*

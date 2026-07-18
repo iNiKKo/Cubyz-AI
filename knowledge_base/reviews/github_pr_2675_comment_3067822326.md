@@ -1,22 +1,22 @@
 # [src/entity.zig] - PR #2675 review diff
 
 **Type:** review
-**Keywords:** EntityComponentVTable, unload functions, initComponents, deinitComponents, loadComponent, resource management, memory leak prevention, function renaming
+**Keywords:** EntityComponentVTable, serverLoad, clientLoad, serverUnload, clientUnload, initComponents, deinitComponents, loadComponent, componentList, BinaryReader
 **Symbols:** EntityComponentLoadError, EntityComponentVTable, serverLoad, clientLoad, serverUnload, clientUnload, componentList, initComponents, deinitComponents, load
-**Concepts:** resource management, memory leak prevention, function renaming for clarity
+**Concepts:** Memory Management, Initialization and Cleanup, Component System Design
 
 ## Summary
-Refactored `EntityComponentVTable` to include unload functions and renamed `initComponent` to `initComponents`. Added a new function `deinitComponents` for cleanup. The reviewer suggests renaming the `load` function to `loadComponent` for clarity.
+The code introduces new functions for loading and unloading components on both server and client sides. It also renames the `initComponent` function to `initComponents` and adds a corresponding `deinitComponents` function.
 
 ## Explanation
-The change introduces unload functions (`serverUnload` and `clientUnload`) in the `EntityComponentVTable` structure, which were previously missing. This addition ensures that resources associated with components can be properly released when they are no longer needed. The function `initComponents` is introduced to replace `initComponent`, handling the initialization of component lists more comprehensively. A new function `deinitComponents` is added to deinitialize and clean up the component list, preventing potential memory leaks or resource management issues. The reviewer points out that the current name `load` for the loading function might be confusing and suggests renaming it to `loadComponent` to improve clarity.
+The changes involve expanding the `EntityComponentVTable` struct to include `serverUnload` and `clientUnload` functions, which are responsible for unloading components. The `initComponents` function now initializes these unload functions along with the load functions. Additionally, a new `deinitComponents` function is added to properly deinitialize the component list. The reviewer suggests renaming the `load` function to `loadComponent` to avoid confusion.
 
 ## Related Questions
-- What are the potential impacts of adding unload functions to `EntityComponentVTable`?
-- How does the new `initComponents` function differ from the old `initComponent`?
-- Why is it important to have a `deinitComponents` function in this context?
-- What specific issues could arise if the `load` function is not renamed to `loadComponent`?
-- How does the introduction of unload functions affect the overall architecture of entity components?
-- Can you explain the purpose of the `componentList` variable and its role in the new initialization process?
+- What is the purpose of the `serverUnload` and `clientUnload` functions in the `EntityComponentVTable` struct?
+- How does the `initComponents` function ensure that each component ID has a unique entry in the `componentList`?
+- Why was the `load` function renamed to `loadComponent` according to the reviewer's suggestion?
+- What is the role of the `deinitComponents` function in the component system?
+- How does the code handle duplicate component IDs during initialization?
+- Can you explain the purpose of the `main.worldArena` in the context of appending items to the list?
 
 *Source: unknown | chunk_id: github_pr_2675_comment_3067822326*

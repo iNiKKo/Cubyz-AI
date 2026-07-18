@@ -1,26 +1,33 @@
 # [easy/codebase_assets_cubyz_tools_chisel.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** tags, disabled, optional, parameters, massDamage, hardnessDamage, durability, swingSpeed, matrix, factor, method
-**Symbols:** tags, disabled, optional, parameters
-**Concepts:** voxel property configuration, attribute mapping, matrix blending, chiselable tags
+**Keywords:** configuration, matrix transformation, attribute interaction, chisel tool, disabled states, optional flags
+**Concepts:** tool configuration, attribute mapping
 
 ## Summary
-Defines a static configuration block for chiselable voxel properties containing tags, per-axis disable flags, optional status arrays, and multiple parameter sets mapping source attributes to destination fields via matrix transformations.
+This chunk defines configuration settings for the chisel tool in Cubyz, including tags, disabled states, optional flags, and parameters that map various attributes like mass damage, hardness, durability, and swing speed to their respective destinations.
 
 ## Explanation
-This chunk contains only a single top-level anonymous struct literal with no executable logic. It declares the field 'tags' as an array of one element tagged '.chiselable'. The field 'disabled' is a 5x5 boolean-like array (using integers) where specific axes are marked disabled: rows [0,1], cols [2,3] and diagonals [4,5]. The field 'optional' is another 5x5 array indicating optional status per axis. The field 'parameters' holds an array of five parameter objects; each object specifies a source attribute (massDamage, hardnessDamage, durability, swingSpeed), a destination attribute (damage, maxDurability, or the same attribute), a 5x5 numeric matrix defining linear blending coefficients, a scalar factor (0.2, 0.8, 1.0, -0.2, 1.2), and a method enum value (.sum or .average). No functions are defined here; all data is static configuration intended to be consumed by other modules.
+The chunk is a configuration file structured as a Zig object literal. It contains several key fields:
+
+- `.tags`: A list of tags associated with the chisel tool, in this case, just `chiselable`.
+- `.disabled`: A 5x5 matrix indicating which attributes are disabled for the chisel tool.
+- `.optional`: Another 5x5 matrix indicating which attributes are optional for the chisel tool.
+- `.parameters`: An array of parameter objects that define how different attributes (like mass damage, hardness, durability, and swing speed) affect other attributes. Each parameter object includes:
+  - `.source`: The source attribute.
+  - `.destination`: The destination attribute where the effect is applied.
+  - `.matrix`: A 5x5 matrix defining the transformation from source to destination.
+  - `.factor`: A scaling factor for the transformation.
+  - `.method`: The method used to combine the transformed values (either `sum` or `average`).
+
+This configuration file is likely used by the Cubyz engine to determine how the chisel tool interacts with different materials and attributes in the game world.
 
 ## Related Questions
-- What is the value of the tags array in this configuration?
-- Which axes are marked as disabled by the disabled field?
-- How many optional entries exist and which ones are enabled?
-- List all source attributes defined across the parameters array.
-- Describe the matrix coefficients for the first parameter entry.
-- What method is used for the second parameter entry?
-- Which destination attribute corresponds to the third parameter entry?
-- Are any parameters configured with a negative factor value?
-- How many parameters map swingSpeed to itself?
-- Does this configuration define any hardnessDamage mappings?
+- What tags are associated with the chisel tool?
+- How is the disabled state matrix structured for the chisel tool?
+- Which attributes have optional settings in the chisel configuration?
+- How does mass damage affect other attributes according to the parameters?
+- What methods are used to combine transformed values in the chisel's parameter mappings?
+- Can you explain the structure of the `.parameters` array in the chisel configuration?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_tools_chisel.zig.zon_chunk_0*

@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_lamp.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** mineable, block health, drops, emitted light, model, texture
-**Concepts:** block configuration, lamp properties
+**Keywords:** block configuration, texture mapping, light color, model rendering, drop behavior
+**Concepts:** block properties, mineable blocks, light emission
 
 ## Summary
-Defines properties for a lamp block in the Cubyz game.
+Defines properties for a lamp block in the Cubyz voxel engine.
 
 ## Explanation
-This chunk defines the configuration for a lamp block, including its tags, health, drops, emitted light color, model, and textures. The lamp is marked as mineable with a health of 10. It drops itself when mined. The emitted light color is specified in hexadecimal format. The block uses a cube model and has different textures for the top and bottom faces.
+This chunk configures a specific block type, identified as a lamp. It specifies that the block is mineable, has a health value of 10, and drops itself when mined. The emitted light color is set to 0xd9cab4. The model used for rendering is 'cubyz:cube', with textures 'cubyz:lamp' for sides and 'cubyz:lamp_top' for top and bottom.
 
 ## Related Questions
-- What are the tags associated with the lamp block?
-- How much health does the lamp block have?
-- What items does the lamp block drop when mined?
-- What is the color of the light emitted by the lamp block?
-- Which model is used for the lamp block?
-- What textures are applied to the top and bottom faces of the lamp block?
+- What is the health value of the lamp block?
+- Is the lamp block mineable?
+- What texture is used for the sides of the lamp block?
+- What color does the lamp block emit light as?
+- Which model is used to render the lamp block?
+- What happens when the lamp block is mined?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_lamp.zig.zon_chunk_0*

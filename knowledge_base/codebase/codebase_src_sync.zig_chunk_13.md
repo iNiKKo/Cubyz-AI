@@ -1,28 +1,93 @@
 # [hard/codebase_src_sync.zig] - Chunk 13
 
 **Type:** implementation
-**Keywords:** UpdateBlock, AddHealth, cmpxchgBlock, blockUpdate, canBeChangedInto, useDurability, delete, dropLocation, getUserListAndIncreaseRefCount, freeUserListAndDecreaseRefCount, serialize, deserialize
-**Symbols:** UpdateBlock, AddHealth
-**Concepts:** block modification, inventory changes, atomic block swap, client protocol messages, item drops, health addition, user list resolution, gamemode checks, binary serialization
+**Keywords:** block change, inventory update, random item drop, binary serialization, server-client synchronization
+**Symbols:** UpdateBlock, UpdateBlock.source, UpdateBlock.pos, UpdateBlock.dropLocation, UpdateBlock.oldBlock, UpdateBlock.newBlock, UpdateBlock.run, UpdateBlock.serialize, UpdateBlock.deserialize
+**Concepts:** block update, inventory management, item drops
 
 ## Summary
-Defines UpdateBlock and AddHealth structs with their run/serialize/deserialize methods for block modification and health addition logic.
+The chunk implements block update logic, including inventory changes and item drops.
 
 ## Explanation
-The chunk declares two top-level structs: UpdateBlock and AddHealth. UpdateBlock contains fields source, pos, dropLocation (normalDir, min, max), oldBlock, newBlock. Its run method checks costOfChange via a switch on ctx.gamemode and self.oldBlock.canBeChangedInto; if allowed it performs atomic cmpxchgBlock on the server world, sends blockUpdate protocol messages to clients, applies inventory changes using ctx.execute (useDurability or delete), and drops items from self.dropLocation.drop. It also includes serialize/deserialize methods that write/read Vec3i/Vec3f/u32 via BinaryWriter/BinaryReader. AddHealth contains fields target, health, cause; its run method resolves the target user on the server side by iterating a userList obtained via main.server.getUserListAndIncreaseRefCount (with defer to freeUserListAndDecreaseRefCount), returns error.serverFailure if not found or if gamemode is creative, and executes ctx.execute(.{.addHealth = ...}). The chunk uses main.random.nextFloatVectorSigned/nextFloat for drop randomness, vec.normalize/cross for direction vectors, and @bitCast/@floatCast for type conversions.
+This chunk defines the `UpdateBlock` struct with methods for running block updates, serializing, and deserializing. The `run` method checks if a block can be changed based on game mode and inventory conditions, then updates the server world and informs clients of changes. It also handles item drops when blocks are broken. Serialization and deserialization methods ensure that block update data can be written to and read from binary streams.
+
+## Code Example
+```zig
+fn run(self: UpdateBlock, ctx: Context) error{serverFailure}!void {
+			const stack = self.source.ref();
+
+			var shouldDropSourceBlockOnSuccess: bool = true;
+			const costOfChange = if (ctx.gamemode != .creative) self.oldBlock.canBeChangedInto(self.newBlock, stack.*, &shouldDropSourceBlockOnSuccess) else .yes;
+
+			// Check if we can change it:
+			if (!switch (costOfChange) {
+				.no => false,
+				.yes => true,
+				.yes_costsDurability => stack.item == .proceduralItem,
+				.yes_costsItems => |amount| stack.amount >= amount,
+			}) {
+				if (ctx.side == .server) {
+					// Inform the client of the actual block:
+					var writer = BinaryWriter.init(main.stackAllocator);
+					defer writer.deinit();
+
+					const actualBlock = main.server.world.?.getBlockAndBlockEntityData(self.pos[0], self.pos[1], self.pos[2], &writer) orelse return;
+					main.network.protocols.blockUpdate.send(ctx.user.?.conn, &.{.init(self.pos, actualBlock, writer.data.items)});
+				}
+				return;
+			}
+
+			if (ctx.side == .server) {
+				if (main.server.world.?.cmpxchgBlock(self.pos[0], self.pos[1], self.pos[2], self.oldBlock, self.newBlock) != null) {
+					// Inform the client of the actual block:
+					var writer = BinaryWriter.init(main.stackAllocator);
+					defer writer.deinit();
+
+					const actualBlock = main.server.world.?.getBlockAndBlockEntityData(self.pos[0], self.pos[1], self.pos[2], &writer) orelse return;
+					main.network.protocols.blockUpdate.send(ctx.user.?.conn, &.{.init(self.pos, actualBlock, writer.data.items)});
+					return error.serverFailure;
+				}
+			}
+
+			// Apply inventory changes:
+			const handItem = self.source.inv.getItem(self.source.slot); // State should be stored before procedural item breaks
+			switch (costOfChange) {
+				.no => unreachable,
+				.yes => {},
+				.yes_costsDurability => |durability| {
+					ctx.execute(.{.useDurability = .{
+						.source = self.source,
+						.durability = durability,
+					}});
+				},
+				.yes_costsItems => |amount| {
+					ctx.execute(.{.delete = .{
+						.source = self.source,
+						.amount = amount,
+					}});
+				},
+			}
+			if (ctx.side == .server and ctx.gamemode != .creative and shouldDropSourceBlockOnSuccess) {
+				const dropAmount = self.oldBlock.mode().itemDropsOnChange(self.oldBlock, self.newBlock);
+				for (0..dropAmount) |_| {
+					for (self.oldBlock.blockDrops()) |drop| {
+						if (!drop.isDroppedWhenBrokenWithItem(handItem)) continue;
+
+						if (drop.chance == 1 or main.random.nextFloat(&main.seed) < drop.chance) {
+							self.dropLocation.drop(self.pos, self.newBlock, drop);
+						}
+					}
+				}
+			}
+		}
+```
 
 ## Related Questions
-- What fields does UpdateBlock contain and how are they used in its run method?
-- How does the chunk determine whether a block change is allowed before modifying it?
-- Describe the sequence of operations performed when ctx.side == .server inside UpdateBlock.run.
-- What error is returned if the atomic cmpxchgBlock fails or if the target user is not found in AddHealth.run?
-- How are inventory changes applied after a successful block modification in UpdateBlock?
-- Explain how item drops are generated and filtered by dropLocation.drop in UpdateBlock.
-- What role does main.random.nextFloatVectorSigned play in the drop direction calculation?
-- How is the target user resolved from the server userList in AddHealth.run?
-- Under what conditions does AddHealth.run skip execution without modifying health?
-- What are the exact steps performed by UpdateBlock.serialize and UpdateBlock.deserialize for binary I/O?
-- Which protocol message is sent to clients when a block change occurs on the server side?
-- How does the chunk handle procedural items versus regular items during inventory changes?
+- What is the purpose of the `run` method in the `UpdateBlock` struct?
+- How does the `UpdateBlock` struct handle item drops when a block is broken?
+- What conditions are checked before updating a block on the server?
+- How is the `UpdateBlock` struct serialized and deserialized?
+- What role does the `dropLocation` field play in the `UpdateBlock` struct?
+- How does the `run` method inform clients of actual block changes?
 
 *Source: unknown | chunk_id: codebase_src_sync.zig_chunk_13*

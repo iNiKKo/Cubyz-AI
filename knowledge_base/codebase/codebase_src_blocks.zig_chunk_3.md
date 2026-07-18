@@ -1,26 +1,30 @@
 # [hard/codebase_src_blocks.zig] - Chunk 3
 
-**Type:** api
-**Keywords:** packed struct, inline method, reverse indices, block data parsing, migration apply, std.mem.indexOfScalar, ListManaged append, formatBlockData call, selection capabilities, block drops array
-**Symbols:** ParseBlockConfig, parseBlockData, parseBlock, parseBlockWithOptions, getBlockById, getBlockData, hasRegistered, Block, air, toInt, fromInt, transparent, collide, id, blockHealth, blockResistance, replaceable, selectionCapabilities, blockDrops, degradable, viewThrough, alwaysViewThrough, hasBackFace, tags, hasTag, light, absorption
-**Concepts:** block parsing, packed struct layout, inline accessor methods, reverse index lookup, migration application, data serialization, error handling with std.log
+**Type:** implementation
+**Keywords:** packed struct, inline functions, static arrays, callbacks, block transformations
+**Symbols:** Block, Block.typ, Block.data, Block.air, Block.toInt, Block.fromInt, Block.transparent, Block.collide, Block.id, Block.idAndData, Block.blockHealth, Block.blockResistance, Block.replaceable, Block.selectionCapabilities, Block.blockDrops, Block.degradable, Block.viewThrough, Block.alwaysViewThrough, Block.hasBackFace, Block.tags, Block.hasTag, Block.light, Block.absorption, Block.onInteract, Block.onBreak, Block.onUpdate, Block.mode, Block.modeData, Block.rotateZ, Block.lodReplacement, Block.opaqueVariant, Block.friction, Block.bounciness, Block.density, Block.terminalVelocity, Block.mobility, Block.allowOres, Block.onTick, Block.onTouch, Block.blockEntity, Block.canBeChangedInto, Block.isSelectableByItem
+**Concepts:** block properties, block interactions, voxel engine blocks
 
 ## Summary
-This chunk defines the core parsing and lookup logic for Cubyz blocks, including a packed struct definition with many inline accessor methods, plus public functions to parse block data strings, retrieve blocks by ID, check registration, and apply migrations.
+The `Block` struct defines the properties and behaviors of blocks in the Cubyz voxel engine, including type, data, transparency, collision, health, resistance, and various callbacks for interactions.
 
 ## Explanation
-The chunk declares ParseBlockConfig as a const struct with an applyMigrations bool field. It defines parseBlockData which splits on ':' and delegates ore parsing or parses raw u16 data; it logs warnings/errors via std.log.warn/std.log.err. The public parseBlock function wraps parseBlockWithOptions with an empty config. parseBlockWithOptions extracts the block ID up to the first ':', calls parseBlockData for the remainder, optionally applies a migration via main.migrations.applySingle if config.applyMigrations is true, then looks up the type in reverseIndices; if found it builds a Block with typ from reverseIndices and data either from parsing or the block's naturalStandard mode, otherwise logs an error and returns air. getBlockById locates the first ':' to split ID and addon name, finds the second ':' to locate data end, extracts id, then calls reverseIndices.get returning NotFound if missing. getBlockData similarly splits on ':', checks for empty data string (returning EmptyDataString), parses the remainder as u16 (catching InvalidData). hasRegistered simply returns reverseIndices.contains(id). The Block struct is a packed(u32) with fields typ:u16 and data:u16; it defines air as a public const Block{.typ=0,.data=0}. It provides toInt/fromInt for integer round-trip, transparent/collide/id/blockHealth/blockResistance/replaceable/viewThrough/alwaysViewThrough/hasBackFace/tags/hasTag/light/absorption all as inline methods returning values from static arrays (_transparent/_collide/_id/_blockHealth/_blockResistance/_replaceable/_selectionCapabilities/_blockDrops/_degradable/_viewThrough/_alwaysViewThrough/_hasBackFace/_tags/_light/_absorption). idAndData appends the block's ID string to a ListManaged(u8) and, if data is non-zero, appends ':' then calls self.mode().formatBlockData(self,list); selectionCapabilities returns _selectionCapabilities[self.typ]; blockDrops returns _blockDrops[self.typ]. All these methods are inline for zero-cost abstraction. The chunk relies on main.migrations.applySingle (external), reverseIndices (external map), std.mem.indexOfScalar/indexOfScalarPos, std.fmt.parseInt, and std.log for diagnostics.
+The `Block` struct is a packed structure containing two fields: `typ` (type) and `data`. It provides methods to convert between block instances and integer representations. The struct includes numerous inline functions that return properties of the block based on its type, such as transparency, collision capabilities, health, resistance, and more. These properties are accessed through static arrays like `_transparent`, `_collide`, `_blockHealth`, etc., which map block types to their respective attributes. Additionally, the struct defines methods for handling interactions, such as `onInteract`, `onBreak`, and `onUpdate`, returning callbacks that define how blocks respond to player actions or environmental changes. The `canBeChangedInto` method checks if a block can be transformed into another type based on certain conditions.
+
+## Code Example
+```zig
+pub inline fn transparent(self: Block) bool {
+	return _transparent[self.typ];
+}
+```
 
 ## Related Questions
-- How does parseBlockWithOptions handle the case when a block ID is not found in reverseIndices?
-- What happens to the data field of a newly constructed Block when reverseIndices.get returns a resultType but blockData is null?
-- In getBlockById, why does the function return error.MissingAddonNameSeparator if there is no ':' character in idAndData?
-- How does hasRegistered differ from calling parseBlockWithOptions with an empty config on the same ID string?
-- What are the exact conditions under which Block.idAndData will append a ':' before invoking formatBlockData?
-- Which static arrays are accessed by the inline methods transparent, collide, id, blockHealth, etc., and how is their indexing performed?
-- How does the packed struct definition of Block affect memory layout when toInt/fromInt are used for serialization?
-- What role does main.migrations.applySingle play in parseBlockWithOptions and under what config flag is it invoked?
-- If getBlockData receives an empty data string after splitting on ':', which error variant is returned and why?
-- How does the chunk ensure that block IDs are normalized before lookup, given the optional migration step?
+- What is the purpose of the `Block` struct in Cubyz?
+- How does a block's type and data relate to its properties?
+- What methods are available for checking block transparency?
+- How are block interactions handled through callbacks?
+- What static arrays are used to store block properties?
+- How can blocks be transformed into other types?
+- What is the role of the `mode` method in block behavior?
 
 *Source: unknown | chunk_id: codebase_src_blocks.zig_chunk_3*

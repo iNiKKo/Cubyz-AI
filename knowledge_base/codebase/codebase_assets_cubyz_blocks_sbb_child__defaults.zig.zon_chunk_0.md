@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_sbb_child__defaults.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, block properties, tags, model, rotation
-**Concepts:** block configuration, default settings
+**Keywords:** default settings, block child, model reference, rotation direction, tags
+**Concepts:** block properties, SBB hierarchy
 
 ## Summary
-Defines default properties for a child block in the Cubyz voxel engine.
+Defines default properties for a block child in the Cubyz engine.
 
 ## Explanation
-This chunk is a configuration file that specifies default settings for a child block within the Cubyz engine. It sets the tags to include 'sbbChild', assigns the model as 'cubyz:cube', and defines the rotation using 'cubyz:direction'. These properties are used to configure how the child block behaves and appears in the game world.
+This chunk specifies the default settings for a block child, including tags, model, and rotation. The `.tags` field is set to `.sbbChild`, indicating that this block is part of an SBB (Structured Block Bundle) hierarchy. The `.model` field references the 'cubyz:cube' model, suggesting that the block visually represents a cube. The `.rotation` field points to 'cubyz:direction', which likely defines how the block can be oriented in the game world.
 
 ## Related Questions
-- What tags are assigned to the child block?
-- Which model is used for the child block?
-- How is the rotation of the child block defined?
-- Where is this configuration file located in the Cubyz codebase?
-- What other properties can be set for a child block in Cubyz?
-- How does this configuration affect the rendering of the child block?
+- What are the default tags for a block child?
+- Which model is referenced by default for a block child?
+- How is the rotation of a block child defined?
+- What does the '.tags' field indicate in this configuration?
+- Is there any mention of custom models or rotations in this chunk?
+- Does this chunk define any new functions or methods?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_sbb_child__defaults.zig.zon_chunk_0*

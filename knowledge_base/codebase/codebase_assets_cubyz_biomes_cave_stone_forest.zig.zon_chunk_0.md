@@ -1,24 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_cave_stone_forest.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** shallow_cave_layer, ground_structure, spawn chance, size_variance, height_variation, partial_sphere, biome tags
-**Symbols:** isCave, tags, chance, music, ground_structure, structures, caveModels
-**Concepts:** biome configuration, structure spawning, cave generation, block placement rules
+**Keywords:** biome configuration, cave generation, stone forest, structures, music
+**Concepts:** world_generation
 
 ## Summary
-Defines a cave biome configuration with shallow layer tags, gravel and slate ground structures, boulder and vegetation spawn rules, tree generation variants, and partial sphere cave models.
+Defines configuration for a cave biome with stone forest elements.
 
 ## Explanation
-This chunk is a .zon configuration file that declares a single biome object containing static settings for world generation. The biome is identified as a cave via the isCave flag set to true and tagged with shallow_cave_layer. Ground structure defines two block types: gravel from 0-1 height and smooth slate elsewhere. Structures array lists spawnable entities each with an id, chance probability, block identifier, size parameters (size and size_variance for boulders), or height parameters (height and height_variation for vegetation/trees). Two simple_tree entries differ only in their leaves block type (rough vs smooth) while sharing the same log block and generation probabilities. CaveModels array defines partial_sphere cave models with min/max amount counts and radius ranges.
+This chunk defines the configuration for a specific cave biome in the Cubyz game engine. It specifies properties such as whether it is a cave, tags, generation chance, music, ground structures, various structures like boulders and trees, and cave models. The configuration uses a structured format to define the probabilities and types of elements that can appear within this biome.
 
 ## Related Questions
-- What is the probability of spawning a boulder in this cave biome?
-- Which block types are used for ground generation at heights 0 to 1?
-- How many distinct tree variants are defined and what distinguishes them?
-- What radius range does the partial_sphere cave model support?
-- Is there any music associated with this biome configuration?
-- Does the structures array include any non-vegetation entities besides boulders?
-- What is the minimum amount of partial spheres generated per chunk?
-- How does size_variance affect boulder generation in this config?
+- What is the chance of generating this cave biome?
+- Which music track is associated with this cave biome?
+- What types of ground structures are defined for this biome?
+- How many different types of boulders are specified in this biome configuration?
+- What are the characteristics of the trees defined in this biome?
+- Which cave models are used to generate caves in this biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_cave_stone_forest.zig.zon_chunk_0*

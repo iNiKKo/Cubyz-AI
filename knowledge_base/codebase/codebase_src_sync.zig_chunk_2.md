@@ -1,28 +1,34 @@
 # [hard/codebase_src_sync.zig] - Chunk 2
 
-**Type:** serialization
-**Keywords:** union variants, InventoryAndSlot, stack size limits, deserialize, ref assignment, update method, client messages, server logic, item manipulation, health energy operations
-**Symbols:** Payload, BaseOperationType, BaseOperation, SyncOperationType, SyncOperation, executeFromData
-**Concepts:** inventory synchronization, payload union types, base operations, server-side updates, serialization protocol
+**Type:** api
+**Keywords:** gamemode setting, payload types, base operations, sync operations, inventory manipulation
+**Symbols:** setGamemode, Command, Command.PayloadType, Command.Payload, BaseOperationType, BaseOperation, SyncOperationType, SyncOperation
+**Concepts:** command handling, inventory management, server-client synchronization
 
 ## Summary
-Defines the server-side inventory synchronization protocol, including payload types for client requests and base operations for item manipulation.
+Defines functions and data structures for handling game commands and inventory operations.
 
 ## Explanation
-This chunk declares a union of PayloadType values (open, close, depositOrSwap, etc.) that represent different kinds of client-to-server messages. It then defines BaseOperationType as an enum with move, swap, delete, create, moveToBag, takeFromBag, useDurability, addHealth, and addEnergy. Each base operation is a union variant containing fields like dest/source InventoryAndSlot, amount u16, item Item, or pointers to User for health/energy changes. A separate SyncOperationType enum (create, delete, useDurability, health, kill, energy) is provided with corresponding union variants that include the inv field and amount/durability values; these are used on the server side to apply updates from serialized data. The executeFromData function begins deserialization logic for create and delete operations, checking item nullness, stack size limits, and updating inventory amounts via ref().item assignment and .update() calls.
+The chunk defines a function `setGamemode` that sets the gamemode for either a client or a server user based on the provided `user` parameter. It also declares several structs and enums related to command payloads, base operations, and sync operations. The `Command.PayloadType` enum lists various types of commands, each associated with a specific payload structure. The `BaseOperationType` enum defines different types of inventory operations, such as move, swap, delete, create, etc., with corresponding struct fields for each operation type. The `SyncOperationType` enum and its associated union define server-side synchronization operations, including creating or deleting items, using durability, updating health, killing entities, and managing energy.
+
+## Code Example
+```zig
+pub fn setGamemode(user: ?*main.server.User, gamemode: Gamemode) void {
+	if (user == null) {
+		client.setGamemode(gamemode);
+	} else {
+		server.setGamemode(user.?, gamemode);
+	}
+}
+```
 
 ## Related Questions
-- What payload types are defined for client requests in this chunk?
-- How is the BaseOperationType enum structured and what values does it include?
-- What fields are present in each variant of the BaseOperation union?
-- Is there a separate SyncOperation type and how does it differ from BaseOperation?
-- Which operations are included in SyncOperationType for server-side updates?
-- Where does executeFromData begin processing deserialized data?
-- How does create handle null items versus existing items during execution?
-- What validation is performed on stack size before applying an item creation?
-- How does delete check whether the removal amount exceeds current inventory contents?
-- When does delete set the item to null after removing its quantity?
-- Are there any other functions defined in this chunk beyond executeFromData?
-- Do these definitions import or reference types from other modules?
+- What is the purpose of the `setGamemode` function?
+- How are different types of commands represented in this chunk?
+- What operations can be performed using the `BaseOperationType` enum?
+- How does the `SyncOperation` handle server-side updates?
+- What is the structure of a `create` operation in `SyncOperation`?
+- How are payloads for different command types defined?
+- What is the role of the `PayloadType` enum in the command system?
 
 *Source: unknown | chunk_id: codebase_src_sync.zig_chunk_2*

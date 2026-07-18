@@ -1,19 +1,19 @@
 # [easy/codebase_src_server_command_tickspeed.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** tickspeed, command, tickrate, atomic, threadsafe
-**Symbols:** description, usage, Args, ArgParser, execute
-**Concepts:** server command, random tickrate, atomic operations
+**Keywords:** command, argument parser, tick speed, world state, error handling
+**Symbols:** description, usage, Args, ArgParser, execute, errorMessage, User, main.server.world, main.server.world.tickSpeed
+**Concepts:** command handling, argument parsing, world state modification
 
 ## Summary
-Server command to get or set the random tickrate.
+Handles server tick speed commands
 
 ## Explanation
-This chunk defines a server command `/tickspeed` that allows users to retrieve or modify the server's random tick rate, measured in blocks per chunk per tick. The command can be used with or without an argument. If no argument is provided, it resets the tick rate to its default value. The tick rate is stored and retrieved using atomic operations for thread safety.
+The chunk defines a command to get or set the server's random tickrate, measured in blocks per chunk per tick. It uses an argument parser to handle different command formats and updates the world's tick speed accordingly.
 
 ## Code Example
 ```zig
-pub fn execute(args: []const u8, source: *User) void {
+fn execute(args: []const u8, source: *User) void {
 	var errorMessage: main.List(u8) = .empty;
 	defer errorMessage.deinit(main.stackAllocator);
 
@@ -31,14 +31,11 @@ pub fn execute(args: []const u8, source: *User) void {
 ```
 
 ## Related Questions
-- What is the purpose of the `description` variable in this chunk?
-- How does the `ArgParser.parse` function work in this chunk?
-- What is the default value for the tick rate if no argument is provided?
-- What is the data structure used to store and retrieve the tick rate?
-- What are the atomic operations performed on the tick rate?
-- What happens if an error occurs during parsing of the command arguments?
-- How is the user informed about any errors that occur during execution?
-- What is the purpose of the `errorMessage` variable in this chunk?
-- What is the data structure used to store error messages?
+- What is the purpose of the `execute` function?
+- How does the command parser handle different arguments?
+- What happens if an error occurs during parsing?
+- What is the default behavior when no rate is provided?
+- How is the world's tick speed updated?
+- What message is sent to the user upon successful execution or error?
 
 *Source: unknown | chunk_id: codebase_src_server_command_tickspeed.zig_chunk_0*

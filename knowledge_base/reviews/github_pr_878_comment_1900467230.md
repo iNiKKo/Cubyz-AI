@@ -1,22 +1,22 @@
 # [src/server/world.zig] - PR #878 review diff
 
 **Type:** review
-**Keywords:** base64, hashing, file handling, player data, gamemode, ZonElement, readToZon, savePlayer, object type check, directory traversal
-**Symbols:** ServerWorld, User, files.readToZon, main.stackAllocator, std.fmt.bufPrint, hashedName, playerData, player.loadFrom, main.items.Inventory.Sync.setGamemode, std.meta.stringToEnum, main.game.Gamemode, savePlayer, path, playerZon
-**Concepts:** thread safety, backwards compatibility, memory leak
+**Keywords:** base64, hashedName, playerData, readToZon, savePlayer, ZonElement, object, array, crash, put, gamemode, inventory
+**Symbols:** ServerWorld, User, files.readToZon, std.fmt.bufPrint, std.base64.url_safe.Encoder.encode, player.loadFrom, main.items.Inventory.Sync.setGamemode, std.meta.stringToEnum, main.game.Gamemode, playerData.getChild, playerData.get, ZonElement.initObject
+**Concepts:** File Handling, Error Handling, Security, Data Serialization, Architectural Review
 
 ## Summary
-The `findPlayer` function has been updated to hash the player's name for safer file handling and to load specific child elements from the player data. A new `savePlayer` function has been added to save player data, with a critical review noting potential issues if `readToZon` returns an array instead of an object.
+Refactored the `findPlayer` function to use hashed usernames for file paths and added a new `savePlayer` function. Updated error handling in `savePlayer` to ensure `playerZon` is an object.
 
 ## Explanation
-The changes in the `findPlayer` function include hashing the player's name using base64 URL-safe encoding to prevent directory traversal attacks and ensure safer file paths. The function now specifically loads the 'entity' child from the player data and sets the gamemode based on the data retrieved. A new `savePlayer` function has been introduced to handle saving player data, including creating a new ZonElement if `readToZon` does not return an object. This is crucial for preventing crashes when calling put operations on non-object types.
+The refactoring of the `findPlayer` function involved changing how player data files are accessed by using a base64 URL-safe encoded version of the username instead of the raw username. This change aims to prevent issues with special characters in filenames and improve security. The new `savePlayer` function is introduced to handle saving player data, ensuring that if the file does not exist or is not an object, a new one is created. The reviewer highlighted a critical architectural concern regarding the potential return type of `readToZon`, which might be an array instead of an object. This could lead to crashes when calling methods like `put`. The review emphasizes the need to check if `playerZon` is indeed an object and create a new one if it is not, thus preventing runtime errors.
 
 ## Related Questions
-- What is the purpose of hashing the player's name in the `findPlayer` function?
-- How does the new `savePlayer` function handle cases where `readToZon` returns an array instead of an object?
-- Why is it important to check if `playerZon` is an object before performing put operations?
-- What potential security risks are mitigated by hashing the player's name in file paths?
-- How does the `savePlayer` function ensure that player data is saved correctly?
-- What changes were made to the `findPlayer` function to improve its functionality and safety?
+- What is the purpose of hashing the username in the file path?
+- How does the refactored `findPlayer` function handle player data loading?
+- Why is there a check for `playerZon` being an object in the `savePlayer` function?
+- What potential issues could arise if `readToZon` returns an array instead of an object?
+- How does the new `savePlayer` function ensure data integrity during saving?
+- What are the benefits of using base64 encoding for usernames in file paths?
 
 *Source: unknown | chunk_id: github_pr_878_comment_1900467230*

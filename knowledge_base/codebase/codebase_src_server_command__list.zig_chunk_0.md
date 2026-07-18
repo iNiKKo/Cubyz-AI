@@ -1,7 +1,7 @@
 # [easy/codebase_src_server_command__list.zig] - Chunk 0
 
 **Type:** api
-**Keywords:** command import, server command module, Cubyz voxel engine, game server functionality, client-server communication
+**Keywords:** commands, server, list, imported, exposed
 **Symbols:** clear, gamemode, help, invite, kick, kill, particles, seed, server, spawn, tickspeed, time, tp, avatar, perm, undo, redo, pos1, pos2, deselect, copy, paste, blueprint, rotate, set, mask, replace, toggledecay
 **Concepts:** command list, server commands
 
@@ -9,20 +9,18 @@
 Command list module
 
 ## Explanation
-This module contains imports for various server commands used in the Cubyz voxel engine. Each command is imported from a separate file and exposed as a public constant.
+This module provides a comprehensive list of server commands available in the Cubyz voxel engine. Each command is imported from its respective file and exposed as a public constant.
 
 ## Related Questions
-- What are the public constants defined in this module?
-- Which files are imported to define these commands?
-- How many command modules are there in total?
-- Are there any dependencies or imports that are not listed here?
-- What is the purpose of each command in the server context?
-- Can you explain how these commands interact with the game world and player entities?
-- Which permissions are required to use these commands?
-- How are these commands serialized for network transmission?
-- Are there any error handling mechanisms implemented for these commands?
-- What is the concurrency model used in this module?
-- Is there any memory management involved in these command implementations?
-- Can you describe how these commands might affect other parts of the game engine?
+- What are the available server commands in Cubyz?
+- How many command files are imported into this module?
+- Which command is used to clear the world?
+- What file contains the implementation of the 'kick' command?
+- List all the commands that start with 'undo'.
+- Explain how the 'perm' command works in Cubyz.
+- What function is responsible for handling the 'spawn' command?
+- How many commands are related to world editing in this module?
+- Which command is used to set a specific position in the world?
+- List all the commands that involve copying and pasting blocks.
 
 *Source: unknown | chunk_id: codebase_src_server_command__list.zig_chunk_0*

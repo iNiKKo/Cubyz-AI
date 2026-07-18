@@ -1,44 +1,31 @@
 # [easy/codebase_src_server_terrain_sdf_models_torus.zig] - Chunk 0
 
-**Type:** implementation
-**Keywords:** SDF, Torus, Initialization, Instantiation, Random Seed
+**Type:** world_generation
+**Keywords:** SDF model, randomization, distance calculation, torus geometry, configuration parsing
 **Symbols:** id, minRadius, maxRadius, minThickness, maxThickness, Instance, initAndGetExtend, instantiate, generate
-**Concepts:** SDF Model, Torus Shape, Randomization
+**Concepts:** Signed Distance Function (SDF), terrain generation, torus shape
 
 ## Summary
-Torus SDF Model Initialization and Instantiation
+Defines a torus-shaped Signed Distance Function (SDF) model for terrain generation.
 
 ## Explanation
-This chunk defines a torus-shaped SDF model with customizable minimum and maximum radius and thickness. It initializes the model based on ZonElement data, calculates its extend, and provides an instantiation function to generate the model's instance using a random seed.
+This chunk implements the logic for creating and using a torus SDF model. It includes functions to initialize the model from configuration data, instantiate specific torus instances with random parameters within given ranges, and calculate the distance from any point in space to the surface of the torus. The `initAndGetExtend` function reads parameters from a ZonElement and sets up the model's bounds. The `instantiate` function generates a new torus instance with randomized radius and thickness, returning an SdfInstance that can be used for further calculations. The `generate` function computes the distance to the torus surface using mathematical formulas based on the sample position.
 
 ## Code Example
 ```zig
-pub fn initAndGetExtend(zon: ZonElement) sdf.SdfModel.InitResult {
-	const self = main.worldArena.create(@This());
-	self.minRadius = zon.get(f32, "minRadius") orelse 16;
-	self.maxRadius = zon.get(f32, "maxRadius") orelse self.minRadius;
-	self.minThickness = zon.get(f32, "minThickness") orelse self.minRadius/2;
-	self.maxThickness = zon.get(f32, "maxThickness") orelse self.minThickness;
-
-	return .{.model = self, .maxExtend = .{
-		.min = .{@floor(-self.maxRadius - self.maxThickness), @floor(-self.maxRadius - self.maxThickness), @floor(-self.maxThickness)},
-		.max = .{@ceil(-self.maxRadius - self.maxThickness), @ceil(-self.maxRadius - self.maxThickness), @ceil(-self.maxThickness)},
-	}};
+pub fn generate(self: *Instance, samplePos: Vec3f) f32 {
+    const radialDistance: f32 = @sqrt(samplePos[0]*samplePos[0] + samplePos[1]*samplePos[1]);
+    const adjustedDistance: f32 = radialDistance - self.radius;
+    return @sqrt(adjustedDistance*adjustedDistance + samplePos[2]*samplePos[2]) - self.thickness;
 }
 ```
 
 ## Related Questions
-- What is the purpose of the `id` field in this chunk?
-- How does the `initAndGetExtend` function initialize the torus model based on ZonElement data?
-- What are the default values for `minRadius`, `maxRadius`, `minThickness`, and `maxThickness`?
-- What is the purpose of the `Instance` struct in this chunk?
-- How does the `instantiate` function generate an instance of the torus model using a random seed?
-- What is the purpose of the `generate` function in this chunk?
-- How does the `generate` function calculate the distance for a given sample position to determine if it falls within the torus shape?
-- What are the minimum and maximum bounds calculated by the `initAndGetExtend` function?
-- What is the center position offset used in the `instantiate` function?
-- What is the purpose of the `generate` function's return value?
-- How does the `Instance` struct store the radius and thickness values for the torus model?
-- What are the default values for the radius and thickness when they are not provided in the ZonElement data?
+- What is the purpose of the `initAndGetExtend` function?
+- How does the `instantiate` function generate a new torus instance?
+- What mathematical formula is used in the `generate` function to calculate the distance to the torus surface?
+- What are the parameters that define the torus shape in this model?
+- How does the code handle default values for configuration parameters?
+- What is the role of the `Instance` struct in this chunk?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_sdf_models_torus.zig_chunk_0*

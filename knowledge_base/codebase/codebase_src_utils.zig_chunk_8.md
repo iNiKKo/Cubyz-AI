@@ -1,35 +1,33 @@
 # [hard/codebase_src_utils.zig] - Chunk 8
 
 **Type:** implementation
-**Keywords:** thread pool, semaphore, dynamic array, bit manipulation, task execution, priority update
-**Symbols:** ThreadPool, ThreadPool.taskCountSemaphore, ThreadPool.currentTasks, ThreadPool.performance, ThreadPool.loadList, ThreadPool.trueQueueSize, ThreadPool.playerJobQueue, ThreadPool.getNextTask, ThreadPool.updateTaskPriority, ThreadPool.addTask, ThreadPool.addPlayer, ThreadPool.queueSize, DynamicPackedIntArray, DynamicPackedIntArray.data, DynamicPackedIntArray.bitSize, DynamicPackedIntArray.initCapacity, DynamicPackedIntArray.deinit, DynamicPackedIntArray.bitInterleave, DynamicPackedIntArray.resizeOnceFrom, DynamicPackedIntArray.getValue, DynamicPackedIntArray.setValue, DynamicPackedIntArray.setAndGetValue
-**Concepts:** thread pool management, dynamic packed integer array, task scheduling, priority updates
+**Keywords:** dynamic allocation, bit manipulation, memory management, thread safety, power of two
+**Symbols:** dynamicIntArrayAllocator, initDynamicIntArrayStorage, deinitDynamicIntArrayStorage, DynamicPackedIntArray, DynamicPackedIntArray.initCapacity, DynamicPackedIntArray.deinit, DynamicPackedIntArray.bitInterleave, DynamicPackedIntArray.resizeOnceFrom, DynamicPackedIntArray.getValue, DynamicPackedIntArray.setValue, DynamicPackedIntArray.setAndGetValue
+**Concepts:** dynamic array, bit packing, atomic operations
 
 ## Summary
-This chunk defines a thread pool and dynamic packed integer array utilities.
+Defines a dynamic packed integer array with variable bit size and provides methods for initialization, resizing, and accessing values.
 
 ## Explanation
-The chunk contains the implementation of a `ThreadPool` struct with methods for managing tasks, updating task priorities, adding tasks, adding players, and checking queue size. It also includes a dynamic packed integer array utility that allows resizing and manipulating arrays of integers with varying bit sizes. The thread pool uses semaphores to manage task execution and priority updates, while the dynamic packed integer array provides efficient storage for integers with flexible bit sizes.
+The chunk defines a `DynamicPackedIntArray` type that allows storing integers in a compact format using a variable number of bits per integer. It includes methods for initializing the storage (`initCapacity`), deinitializing it (`deinit`), resizing from another array (`resizeOnceFrom`), and getting or setting values at specific indices (`getValue`, `setValue`, `setAndGetValue`). The implementation uses an atomic allocator to manage memory and ensures that bit sizes are powers of two. It also includes a helper function `bitInterleave` for interleaving bits during resizing.
 
 ## Code Example
 ```zig
-pub fn addTask(self: *ThreadPool, task: *anyopaque, vtable: *const VTable) void {
-	self.loadList.add(Task{
-		.cachedPriority = vtable.getPriority(task),
-		.vtable = vtable,
-		.self = task,
-	});
-	self.taskCountSemaphore.post();
-	_ = self.trueQueueSize.fetchAdd(1, .monotonic);
-}
+pub fn initCapacity(bitSize: u5) Self {
+			std.debug.assert(bitSize == 0 or bitSize & bitSize - 1 == 0); // Must be a power of 2
+			return .{
+				.data = dynamicIntArrayAllocator.allocator().alignedAlloc(Atomic(u32), .@"64", @as(usize, @divExact(size, @bitSizeOf(u32)))*bitSize),
+				.bitSize = bitSize,
+			};
+		}
 ```
 
 ## Related Questions
-- How does the ThreadPool manage task execution?
-- What is the purpose of the DynamicPackedIntArray utility?
-- How does the ThreadPool handle priority updates for tasks?
-- How does the DynamicPackedIntArray resize its storage?
-- What methods are available in the ThreadPool struct?
-- How does the ThreadPool add a new player to its job queue?
+- How is the `dynamicIntArrayAllocator` initialized?
+- What is the purpose of the `bitInterleave` function?
+- How does the `resizeOnceFrom` method work?
+- What happens if an invalid bit size is provided to `initCapacity`?
+- How are values retrieved from the `DynamicPackedIntArray`?
+- What is the role of atomic operations in this implementation?
 
 *Source: unknown | chunk_id: codebase_src_utils.zig_chunk_8*

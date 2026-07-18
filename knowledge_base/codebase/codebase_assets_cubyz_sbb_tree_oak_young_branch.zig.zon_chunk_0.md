@@ -1,26 +1,28 @@
 # [easy/codebase_assets_cubyz_sbb_tree_oak_young_branch.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprint, chance, identifier, array literal, null entry, oak tree, young branch, side deco, bolete, probability
+**Keywords:** blueprint, chance, generation, tree branch, configuration
 **Symbols:** blueprints
-**Concepts:** tree generation, branch placement, probability weighting, deco elements
+**Concepts:** tree, branch, blueprint, chance
 
 ## Summary
-This chunk defines a static array of blueprint entries for young oak tree branches and side deco elements, each with an identifier string and a probability weight.
+Tree branch blueprint configuration
 
 ## Explanation
-The chunk declares a single top-level anonymous struct containing one field named blueprints. This field is initialized as an array literal of nine elements. Each element is a struct literal with two fields: id (a string constant) and chance (a floating-point literal). The identifiers follow the pattern cubyz:tree/oak/young/branch/N for N from 0 to 7, then cubyz:deco/bolete_side, followed by a null entry. No executable logic is present; this is purely configuration data.
+This chunk defines a set of tree branch blueprints with their respective IDs and chances for generation in the game world.
 
 ## Related Questions
-- What is the identifier for the first young oak branch blueprint entry?
-- Which blueprint entries have a chance value of 0.25?
-- How many total blueprint entries are defined in this configuration array?
-- Is there any null entry included in the blueprints array and at what index?
-- What is the identifier for the deco element named bolete_side?
-- Are all branch identifiers prefixed with cubyz:tree/oak/young/branch?
-- Does this chunk contain any executable logic or function definitions?
-- How many distinct chance values are used across all blueprint entries?
-- What is the highest probability weight assigned to any single entry?
-- Is there a pattern in the numeric suffixes of the branch identifiers?
+- What are the IDs of the tree branch blueprints defined in this configuration?
+- How many tree branch blueprints are there in total?
+- What is the chance for generating a 'cubyz:tree/oak/young/branch/0' blueprint?
+- Which blueprint has the highest chance for generation?
+- What is the ID of the last blueprint defined?
+- How many blueprints have a null ID?
+- What are the chances of all blueprints combined?
+- Are there any duplicate IDs among the tree branch blueprints?
+- What is the total chance for generating any of these blueprints?
+- Which blueprint has the lowest chance for generation?
+- How many blueprints have a chance greater than 0.25?
+- What are the chances of all blueprints except 'cubyz:deco/bolete_side'?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_tree_oak_young_branch.zig.zon_chunk_0*

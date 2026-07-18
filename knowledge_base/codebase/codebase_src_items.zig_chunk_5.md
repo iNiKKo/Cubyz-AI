@@ -1,29 +1,31 @@
 # [hard/codebase_src_items.zig] - Chunk 5
 
 **Type:** api
-**Keywords:** enum reading, iterator, ID to index conversion, property access, image handling, texture generation, cloning
-**Symbols:** ProceduralItemTypeIndex, ProceduralItemTypeIterator, fromId, id, tags, properties, slotInfos, pixelSources, pixelSourcesOverlay, ProceduralItemType, ProceduralItemProperty, ProceduralItem, craftingGridSize, CraftingGridMask, init, deinit, clone, initFromCraftingGrid, initFromInventory
-**Concepts:** item management, procedural item generation
+**Keywords:** enum, struct, serialization, iteration, attribute access
+**Symbols:** ProceduralItemTypeIndex, ProceduralItemTypeIndex.ProceduralItemTypeIterator, ProceduralItemTypeIndex.next, ProceduralItemTypeIndex.toBytes, ProceduralItemTypeIndex.fromBytes, ProceduralItemTypeIndex.iterator, ProceduralItemTypeIndex.fromId, ProceduralItemTypeIndex.id, ProceduralItemTypeIndex.tags, ProceduralItemTypeIndex.properties, ProceduralItemTypeIndex.slotInfos, ProceduralItemTypeIndex.pixelSources, ProceduralItemTypeIndex.pixelSourcesOverlay, ProceduralItemProperty, ProceduralItemProperty.fromString
+**Concepts:** item management, serialization, enumeration
 
 ## Summary
-This chunk defines the procedural item system, including reading from a reader, iterating over items, and managing properties and textures.
+Defines the structure and methods for procedural item types in Cubyz.
 
 ## Explanation
-The chunk contains definitions for procedural item types and their properties. It includes functions to read an enum from a reader, iterate over items, convert IDs to indices, and access various properties of procedural items such as tags, properties, slot information, and pixel sources. The `ProceduralItem` struct manages crafting grids, material grids, modifiers, tooltips, images, textures, seed, type, durability, handle position, inertia, center of mass, and moment of inertia. It provides methods for initialization, deinitialization, cloning, and creating items from a crafting grid or inventory.
+This chunk defines an enum `ProceduralItemTypeIndex` representing indices of procedural item types, along with a struct `ProceduralItemProperty` for properties of items. It includes methods for serialization (`toBytes`, `fromBytes`), iteration (`iterator`, `next`), and accessing various attributes of items such as ID, tags, properties, slot information, pixel sources, and overlays. The chunk also defines a struct `ProceduralItemType` that holds detailed data about each item type.
 
 ## Code Example
 ```zig
-pub fn iterator() ProceduralItemTypeIterator {
-	return .{};
+pub fn next(self: *ProceduralItemTypeIterator) ?ProceduralItemTypeIndex {
+	if (self.i >= proceduralItemTypeList.items.len) return null;
+	defer self.i += 1;
+	return @enumFromInt(self.i);
 }
 ```
 
 ## Related Questions
-- How do you read an enum from a reader?
-- What is the function to convert an ID to a procedural item index?
-- How do you access the tags of a procedural item?
-- What methods are available for managing procedural item properties?
-- How does the `ProceduralItem` struct handle initialization and deinitialization?
-- What steps are involved in cloning a procedural item?
+- How do you iterate over all procedural item types?
+- What methods are available for serializing and deserializing procedural item types?
+- How is the ID of a procedural item type accessed?
+- What properties can be retrieved from a procedural item type?
+- How does the code handle invalid enum tags during deserialization?
+- What is the structure of the `ProceduralItemType` struct?
 
 *Source: unknown | chunk_id: codebase_src_items.zig_chunk_5*

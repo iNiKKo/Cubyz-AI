@@ -1,22 +1,22 @@
 # [src/server/command/worldedit/pattern.zig] - PR #1237 review diff
 
 **Type:** review
-**Keywords:** pattern parsing, block weights, AliasTable, memory management, deinit, ownsSlice, explicit control, leak prevention
-**Symbols:** AliasTable, Entry, Block, ListUnmanaged, NeverFailingAllocator
+**Keywords:** pattern parsing, world edit, block specifications, weights, AliasTable, memory management, leak prevention
+**Symbols:** std, main, AliasTable, Block, ListUnmanaged, NeverFailingAllocator, Entry, initFromString
 **Concepts:** memory leak, thread safety, backwards compatibility
 
 ## Summary
-The code introduces a new module for pattern parsing in the worldedit command of Cubyz, handling block patterns with weights. A critical architectural review highlights a memory leak issue in the `AliasTable` initialization.
+The code introduces a new module for parsing world edit patterns in Cubyz, handling block specifications and weights. A critical architectural review highlights a memory leak issue with the `AliasTable` initialization.
 
 ## Explanation
-The added code defines a new module `pattern.zig` that parses block patterns from strings, where each block can have an associated weight. The reviewer points out a significant memory leak issue: when `AliasTable` is initialized with `.init()`, it does not properly handle the deallocation of its internal slice, leading to a memory leak. The reviewer suggests manually freeing elements separately instead of relying on automatic mechanisms like `ownsSlice`, indicating a preference for explicit control over memory management to prevent such issues.
+The added code defines a new module responsible for parsing world edit patterns from strings into a structured format using an `AliasTable`. Each entry in the table represents a block with an associated chance or weight. The reviewer points out a significant memory leak issue where elements are not properly deallocated when the `AliasTable` is initialized, suggesting that manual management of allocated slices might be necessary to prevent this.
 
 ## Related Questions
-- How does the `AliasTable` initialization affect memory allocation?
-- What is the purpose of the `weightedEntries` list in the pattern parsing function?
-- Why is manual element freeing preferred over automatic mechanisms like `ownsSlice`?
-- How can the memory leak issue be resolved in the `AliasTable` deinitialization?
-- What are the implications of not handling the deallocation of internal slices in `AliasTable`?
-- How does the pattern parsing function handle invalid input strings?
+- How is the memory leak in AliasTable being addressed?
+- What are the potential implications of manual slice management in this context?
+- Is there a preferred method for handling memory allocation and deallocation in Cubyz modules?
+- Can you provide an example of how to correctly initialize and deinitialize AliasTable to avoid leaks?
+- How does the current implementation handle parsing errors, especially with malformed input strings?
+- What are the performance implications of using ListUnmanaged for temporary storage during pattern initialization?
 
 *Source: unknown | chunk_id: github_pr_1237_comment_2010812976*

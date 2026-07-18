@@ -1,26 +1,26 @@
 # [medium/addon_creator_app-core.js] - Chunk 1
 
 **Type:** ui
-**Keywords:** metrics display, dropdown options, form changes, sidebar project tree, server database metrics, searchable items, texture options, unsaved changes, UI components, event handlers
-**Symbols:** loadServerAssets, renderMetricsUI, toggleMetricsPanel, updateSearchableItems, markFormAsDirty, renderDropdownOptions, rebuildDropdowns, deletedAddonElements, updateSidebarProjectTree
-**Concepts:** data-binding, form validation, live preview, UI rendering, event handling
+**Keywords:** metrics UI, toggle panel, searchable items, mark form dirty, dropdown options, rebuild dropdowns, texture filtering, event listeners, UI updates, form changes
+**Symbols:** window.renderMetricsUI, window.toggleMetricsPanel, updateSearchableItems, window.markFormAsDirty, window.renderDropdownOptions, window.rebuildDropdowns
+**Concepts:** data-binding, form validation, live preview
 
 ## Summary
-The chunk implements UI rendering and interaction for displaying server metrics, updating dropdown options, marking form changes as dirty, and rebuilding sidebar project trees.
+The `addon_creator_app-core.js` file contains functions for rendering UI components related to metrics, handling form changes, and managing dropdown options in the Cubyz Addon Creator workspace.
 
 ## Explanation
-This JavaScript code snippet is part of the Cubyz Addon Creator workspace. It defines several functions and event handlers related to UI components such as metrics display, dropdowns, and form validation. The `renderMetricsUI` function updates the status container with server database metrics based on the expanded state. The `toggleMetricsPanel` function toggles the visibility of the metrics panel. The `updateSearchableItems` function generates a list of searchable items based on project data. The `markFormAsDirty` function marks the form as having unsaved changes. The `renderDropdownOptions` function populates dropdowns with texture options, and `rebuildDropdowns` rebuilds all relevant dropdowns. The `updateSidebarProjectTree` function updates the sidebar tree view for different project elements like blocks, items, biomes, entities, and particles.
+This JavaScript file defines several functions that manage various aspects of the user interface within the Cubyz Addon Creator. The `renderMetricsUI` function updates the status panel with metrics information based on the current state. The `toggleMetricsPanel` function toggles the visibility of the metrics panel and updates the UI accordingly. The `updateSearchableItems` function generates a list of searchable items based on project data and server lists. The `markFormAsDirty` function marks the form as having unsaved changes, triggering updates in the sidebar project tree if necessary. The `renderDropdownOptions` function populates dropdown menus with texture options, handling custom textures and filtering based on dropdown type. The `rebuildDropdowns` function rebuilds all dropdowns, setting up event listeners for focus and input events to filter and display options dynamically.
 
 ## Related Questions
-- What function is responsible for updating the server metrics UI?
+- What is the purpose of the `renderMetricsUI` function?
 - How does the `toggleMetricsPanel` function affect the UI?
-- What items are included in the searchable items list?
-- When is the form marked as dirty?
-- How are dropdown options populated and filtered?
-- What elements are updated in the sidebar project tree?
-- How does the code handle errors when loading server assets?
-- What CSS classes are used to style the status container?
-- How are custom block and item IDs generated?
-- What is the purpose of the `deletedAddonElements` object?
+- What data is used to populate the searchable items list?
+- When is the form marked as dirty, and what happens next?
+- How are dropdown options rendered in the UI?
+- What events trigger the rebuilding of dropdowns?
+- How does texture filtering work in the dropdown menus?
+- What is the role of `markFormAsDirty` in the addon creation process?
+- How is the metrics panel expanded or collapsed?
+- What happens when a user selects an option from a dropdown menu?
 
 *Source: unknown | chunk_id: addon_creator_app-core.js_chunk_1*

@@ -1,38 +1,39 @@
 # [medium/codebase_src_gui_components_VerticalList.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** GUI components, vertical list, scrollbar, layout management, event handling, rendering
-**Symbols:** VerticalList, VerticalList.pos, VerticalList.size, VerticalList.children, VerticalList.padding, VerticalList.maxHeight, VerticalList.childrenHeight, VerticalList.scrollBar, VerticalList.scrollBarEnabled, init, deinit, toComponent, add, finish, updateSelected, updateHovered, render, mainButtonPressed
-**Concepts:** GUI component management, vertical layout, scrolling functionality
+**Keywords:** GUI components, vertical list, layout management, scrollbar, hover interaction
+**Symbols:** VerticalList, VerticalList.pos, VerticalList.size, VerticalList.children, VerticalList.padding, VerticalList.maxHeight, VerticalList.childrenHeight, VerticalList.scrollBar, VerticalList.scrollBarEnabled, init, deinit, toComponent, add, finish, updateSelected, updateHovered, render
+**Concepts:** GUI component management, vertical layout, scrolling, interaction handling
 
 ## Summary
-The VerticalList component manages a vertical list of GUI components with optional scrolling.
+The VerticalList component manages a list of GUI components vertically, handling layout, scrolling, and interaction.
 
 ## Explanation
-This chunk defines the VerticalList struct, which is responsible for managing a vertical list of GUI components. It includes methods for initialization (`init`), deinitialization (`deinit`), adding children (`add`), finishing layout (`finish`), updating selected and hovered states (`updateSelected`, `updateHovered`), rendering (`render`), and handling button presses (`mainButtonPressed`). The VerticalList handles scrolling if the total height of its children exceeds the maximum allowed height. It uses a ScrollBar component for scrolling functionality.
+The VerticalList struct is responsible for managing a vertical arrangement of GUI components. It includes methods to initialize and deinitialize the list, add components, finalize the layout, update selection and hover states, and render the components. The component handles scrolling if the total height exceeds the maximum allowed height, using a scrollbar for navigation.
 
 ## Code Example
 ```zig
-pub fn deinit(self: *const VerticalList) void {
-	for (self.children.items) |*child| {
-		child.deinit();
-	}
-	self.scrollBar.deinit();
-	self.children.deinit();
-	main.globalAllocator.destroy(self);
+pub fn init(pos: Vec2f, maxHeight: f32, padding: f32) *VerticalList {
+	const scrollBar = ScrollBar.init(undefined, scrollBarWidth, maxHeight - 2*border, 0);
+	const self = main.globalAllocator.create(VerticalList);
+	self.* = VerticalList{
+		.children = .init(main.globalAllocator),
+		.pos = pos,
+		.size = .{0, 0},
+		.padding = padding,
+		.maxHeight = maxHeight,
+		.scrollBar = scrollBar,
+	};
+	return self;
 }
 ```
 
 ## Related Questions
-- How does VerticalList initialize its components?
-- What is the purpose of the `scrollBarEnabled` field in VerticalList?
-- How does VerticalList handle adding new components?
-- What method is used to finish the layout of a VerticalList?
-- How does VerticalList update the selected component?
-- How does VerticalList render its children and scrollbar?
-- What happens when a button is pressed on a VerticalList?
-- How does VerticalList manage scrolling functionality?
-- What role does the `childrenHeight` field play in VerticalList?
-- How does VerticalList handle mouse hover events?
+- How does the VerticalList initialize its scrollbar?
+- What is the purpose of the `finish` method in VerticalList?
+- How does the VerticalList handle component addition?
+- What conditions trigger the scrollbar to be enabled?
+- How does the VerticalList update the hover state of its components?
+- What role does the padding parameter play in the layout of VerticalList?
 
 *Source: unknown | chunk_id: codebase_src_gui_components_VerticalList.zig_chunk_0*

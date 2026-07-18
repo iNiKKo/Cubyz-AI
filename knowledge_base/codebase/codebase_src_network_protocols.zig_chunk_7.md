@@ -1,37 +1,29 @@
 # [hard/codebase_src_network_protocols.zig] - Chunk 7
 
 **Type:** networking
-**Keywords:** network protocols, light map transmission, inventory, thread pool, binary writer, compression, client-server communication
-**Symbols:** lightMapTransmission, lightMapTransmission.id, lightMapTransmission.LightMapTask, lightMapTransmission.LightMapTask.wx, lightMapTransmission.LightMapTask.wy, lightMapTransmission.LightMapTask.voxelSizeShift, lightMapTransmission.LightMapTask.data, lightMapTransmission.LightMapTask.getPriority, lightMapTransmission.LightMapTask.isStillNeeded, lightMapTransmission.LightMapTask.run, lightMapTransmission.LightMapTask.clean, lightMapTransmission.clientReceive, lightMapTransmission.sendLightMap, inventory, inventory.id, inventory.clientReceive, inventory.serverReceive, inventory.sendCommand, inventory.sendConfirmation
-**Concepts:** networking, thread pool, binary serialization, compression, inventory management
+**Keywords:** thread pool, binary serialization, error handling, compression, network protocols
+**Symbols:** lightMapTransmission, lightMapTransmission.id, LightMapTask, LightMapTask.wx, LightMapTask.wy, LightMapTask.voxelSizeShift, LightMapTask.data, LightMapTask.getPriority, LightMapTask.isStillNeeded, LightMapTask.run, LightMapTask.clean, clientReceive, sendLightMap, inventory, inventory.id, serverReceive, sendCommand, sendConfirmation, sendFailure, sendSyncOperation
+**Concepts:** networking, light map transmission, inventory operations
 
 ## Summary
-This chunk defines network protocols for light map transmission and inventory management.
+Defines network protocols for light map transmission and inventory operations.
 
 ## Explanation
-The chunk contains two main sections: `lightMapTransmission` and `inventory`. The `lightMapTransmission` section handles sending and receiving light map data. It includes functions to send requests, process tasks in a thread pool, and handle client reception of light map data. The `inventory` section manages inventory-related network communication, including handling client and server-side receptions, sending commands, and sending confirmations.
+The chunk defines two main network protocols: `lightMapTransmission` and `inventory`. The `lightMapTransmission` protocol handles the sending and receiving of light map data, including decompression and updating the renderer's mesh storage. It uses a thread pool for task management and includes error handling for data integrity issues. The `inventory` protocol manages inventory-related network operations, such as sending commands, confirmations, failures, and synchronization operations. Both protocols use binary readers and writers for data serialization and deserialization.
 
 ## Code Example
 ```zig
-pub fn sendRequest(conn: *Connection, requests: []main.server.terrain.SurfaceMap.MapFragmentPosition) void {
-	if (requests.len == 0) return;
-	var writer = utils.BinaryWriter.initCapacity(main.stackAllocator, 9*requests.len);
-	defer writer.deinit();
-	for (requests) |req| {
-		writer.writeInt(i32, req.wx);
-		writer.writeInt(i32, req.wy);
-		writer.writeInt(u8, req.voxelSizeShift);
-	}
-	conn.send(.secure, id, writer.data.items); // TODO: Can this use the slow channel?
+pub fn getPriority(_: *LightMapTask) f32 {
+	return std.math.floatMax(f32);
 }
 ```
 
 ## Related Questions
-- What is the purpose of the `sendRequest` function in the `lightMapTransmission` section?
-- How does the `LightMapTask` struct handle decompression and error checking for light map data?
-- What role does the `clientReceive` function play in the `inventory` section?
-- How are tasks managed in the thread pool within the `lightMapTransmission` section?
-- What is the process for sending a confirmation message in the `inventory` section?
-- How does the chunk handle invalid data received during light map transmission?
+- What is the ID for light map transmission?
+- How does the `LightMapTask` handle decompression errors?
+- What are the possible types of inventory operations defined in this chunk?
+- How is data serialized and deserialized in the inventory protocol?
+- What role does the thread pool play in handling light map tasks?
+- How is a confirmation message sent in the inventory protocol?
 
 *Source: unknown | chunk_id: codebase_src_network_protocols.zig_chunk_7*

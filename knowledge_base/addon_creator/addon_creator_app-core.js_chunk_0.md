@@ -1,26 +1,26 @@
 # [medium/addon_creator_app-core.js] - Chunk 0
 
 **Type:** ui
-**Keywords:** server assets, async loading, texture categorization, UI metrics, status updates, global variables, fetch API, Promise.all, error handling, UI rendering
-**Symbols:** serverBlocks, serverItems, serverTextures, serverMusicList, serverEntityModels, serverParticles, blockTexturesOnly, itemTexturesOnly, particleTexturesOnly, allSearchableItems, dropdownsGenerated, VERSION_PATH, hasUnsavedChanges, currentPanelName, editingId, projectData, metricsExpandedState, metricCounts, loadServerAssets, renderMetricsUI
-**Concepts:** data-binding, asynchronous data loading, UI updates based on data, error handling in UI
+**Keywords:** server assets, fetching data, UI components, status badge, dropdowns, metrics UI, error handling
+**Symbols:** window.serverBlocks, window.serverItems, window.serverTextures, window.serverMusicList, window.serverEntityModels, window.serverParticles, window.blockTexturesOnly, window.itemTexturesOnly, window.particleTexturesOnly, window.allSearchableItems, window.dropdownsGenerated, window.VERSION_PATH, window.hasUnsavedChanges, window.currentPanelName, window.editingId, window.projectData, window.metricsExpandedState, window.metricCounts, loadServerAssets
+**Concepts:** data-binding, async operations, UI updates, error handling
 
 ## Summary
-The script initializes server asset data and UI components for the Cubyz Addon Creator, handling asynchronous loading of assets and updating UI elements based on loaded data.
+This chunk handles the loading of server assets and updating UI components based on the loaded data.
 
 ## Explanation
-This JavaScript file is part of the Cubyz Addon Creator application. It defines several global variables to store server asset data such as blocks, items, textures, recipes, music, entities, and particles. The `loadServerAssets` function asynchronously fetches these assets from a specified version path and updates the corresponding global arrays. It also processes texture paths to categorize them into block, item, entity, or particle textures, updating metrics accordingly. The `renderMetricsUI` function updates the UI with status information and metrics based on the loaded data. Additionally, there are placeholders for other functions like `updateSearchableItems`, `rebuildDropdowns`, and `updateSidebarProjectTree` which are assumed to be defined elsewhere in the application.
+The chunk defines several global variables to store server asset data, such as blocks, items, textures, recipes, music, entities, and particles. It includes an asynchronous function `loadServerAssets` that fetches JSON data from the server for these assets. The function updates various UI components like status badges, dropdowns, and metrics UI based on the loaded data. It also handles errors by logging them to the console and updating the status badge with an error message.
 
 ## Related Questions
 - What is the purpose of the `loadServerAssets` function?
-- How does the script handle errors when loading server assets?
-- What data structures are used to store server asset information?
-- How are textures categorized in this script?
-- What UI elements are updated based on the loaded metrics?
-- What is the role of the `renderMetricsUI` function?
-- How does the script manage unsaved changes?
-- What global variables are defined for project data management?
-- How are dropdowns generated and managed in this script?
-- What is the structure of the `projectData` object?
+- How does the chunk handle errors when fetching server data?
+- Which global variables store the loaded server assets?
+- What UI components are updated after loading the server assets?
+- How does the chunk categorize textures into different types?
+- What is the role of the `window.metricCounts` object?
+- How does the chunk update the status badge in case of an error?
+- What is the structure of the `textureObject` created for each texture?
+- How are dropdowns rebuilt after loading server assets?
+- What happens if some JSON files are missing on the server during the fetch operation?
 
 *Source: unknown | chunk_id: addon_creator_app-core.js_chunk_0*

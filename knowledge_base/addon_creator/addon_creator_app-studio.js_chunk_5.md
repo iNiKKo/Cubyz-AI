@@ -1,26 +1,26 @@
 # [hard/addon_creator_app-studio.js] - Chunk 5
 
 **Type:** ui
-**Keywords:** structure row, feature type selector, spawn chance, dropdown focus trigger, sub-field injection, filter on input, mark form dirty, readonly search field, hidden value binding, clear button wrapper
-**Symbols:** window.addStructureRow, window.toggleStructSubFields, window.initDropdownClearButtons, displayLabels, createInputHTML, createNormalInputHTML
-**Concepts:** dynamic form generation, type-specific sub-fields, searchable dropdowns with focus trigger, live filtering on input, form dirty state tracking, hidden value binding to visible search, UI event delegation via inline handlers
+**Keywords:** structure rows, biome structures, custom textures, dropdowns, input fields, subfields, event listeners, data URL, file reader, UI generation
+**Symbols:** handleCustomBlockTexture, addStructureRow, toggleStructSubFields
+**Concepts:** data-binding, form validation, dynamic UI generation, event handling, user input management
 
 ## Summary
-This chunk defines the core UI logic for adding and configuring biome structure rows, including dynamic sub-field toggling based on selected feature type.
+The chunk implements a UI component for adding and managing structure rows in the addon creator app. Each row allows users to define different types of biome structures with specific parameters.
 
 ## Explanation
-The code implements window.addStructureRow to create a new row in #biomeStructuresContainer with a hidden value input, a searchable dropdown (triggered on focus), spawn chance number field, and a remove button. It populates displayLabels for types like cubyz:simple_tree, cubyz:simple_vegetation, etc., and renders them as clickable options inside an absolute-positioned dropdown div. When a user selects an option via mousedown, it updates the hidden value input, the search text input, calls window.toggleStructSubFields with the rowId and selected type, and hides the dropdown. The toggleStructSubFields function clears any existing sub-fields in .struct-subfields-wrapper and conditionally injects HTML for each supported type: simple_tree adds Log Block (dropdown), Leaves Block (dropdown), Base Trunk Height, Height Variance, Crown Size; simple_vegetation adds Foliage Sprite Block (dropdown) and Sprite Max Height; flower_patch adds Foliage/Flower Block (dropdown), Patch Width Scale, Patch Variance, Patch Density; boulder adds Stone Block Variant (dropdown), Base Radius Size, Size Variance Step; ground_patch adds Replacement Block (dropdown), Patch Width, Patch Depth layers, Edge Smoothness; fallen_tree adds Log Block Type (dropdown), Log Length size, Length Variance; sbb adds SBB Asset path ID and Place Mode flag. Each dropdown input has onfocus="window.showRecipeDropdown(...)" to open a recipe list and oninput="window.filterDropdown(...)" to filter as the user types. Normal inputs have placeholder text and are bound via createNormalInputHTML. After injecting HTML, it attaches an 'input' event listener to all newly created inputs that calls window.markFormAsDirty() unless window.isInitializingPanel is true. The chunk also includes partial implementation of initDropdownClearButtons which iterates over .texture-select-wrapper elements, finds the text input, and if not readonly creates a clear button wrapper (code truncated).
+This JavaScript code snippet defines two primary functions: `handleCustomBlockTexture` and `addStructureRow`. The `handleCustomBlockTexture` function handles file input for custom block textures, reading the file, processing it into a data URL, and updating relevant UI elements. The `addStructureRow` function dynamically adds new structure rows to the UI, each containing dropdowns for selecting structure types, inputs for spawn chances, and additional subfields based on the selected structure type. These subfields allow users to specify detailed parameters for each structure type, such as log blocks, foliage sprites, or SBB asset paths.
 
 ## Related Questions
-- What happens when a user focuses the structure type search input?
-- How does toggleStructSubFields determine which inputs to render for a given feature type?
-- Which event listeners are attached to newly created sub-field inputs and why?
-- Is there any validation on spawn chance values before they are stored?
-- What is the purpose of window.markFormAsDirty in this context?
-- How does the code handle saving existing data when adding a row with savedData parameter?
-- Are dropdown options generated dynamically or hardcoded, and how are they populated?
-- What role does initDropdownClearButtons play for texture-select-wrapper elements?
-- Does the UI support undoing changes to structure rows before finalizing the addon?
-- How are placeholder values chosen when a row is created without savedData?
+- What is the purpose of the `handleCustomBlockTexture` function?
+- How does the `addStructureRow` function dynamically add new structure rows to the UI?
+- What types of parameters can users specify for each structure type in the subfields?
+- How are event listeners used in this chunk to manage user input?
+- What is the role of the `toggleStructSubFields` function in the UI component?
+- How does the code handle custom block textures and update the UI accordingly?
+- What is the purpose of the `displayLabels` object in the `addStructureRow` function?
+- How are dropdown options dynamically generated for each structure type?
+- What happens when a user selects a different structure type from the dropdown?
+- How does the code ensure that the form remains marked as dirty after user input?
 
 *Source: unknown | chunk_id: addon_creator_app-studio.js_chunk_5*

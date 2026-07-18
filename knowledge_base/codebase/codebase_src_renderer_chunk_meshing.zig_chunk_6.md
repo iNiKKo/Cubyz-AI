@@ -1,21 +1,21 @@
 # [hard/codebase_src_renderer_chunk_meshing.zig] - Chunk 6
 
 **Type:** implementation
-**Keywords:** OcclusionInfo, bitMask, transparent, alwaysViewThrough, appendInternalQuads, appendNeighborFacingQuads
-**Concepts:** chunk meshing, occlusion culling, view-through effects
+**Keywords:** mesh generation, visibility determination, quads appending, block processing, depth filtering
+**Concepts:** chunk meshing, voxel rendering, occlusion culling
 
 ## Summary
-This chunk handles the meshing of chunks by determining occlusion information and generating bitmasks for view-through effects.
+The chunk meshing logic processes voxel data to determine visibility and generate meshes for rendering.
 
 ## Explanation
-The chunk processes each block in a chunk to determine its occlusion status relative to neighbors. It uses this information to generate masks that help decide which faces are visible or need special rendering treatment like transparency or always-view-through properties. The chunk iterates over blocks, checks their visibility based on neighbor relationships and material properties, and appends appropriate quad data to either transparent or opaque core structures for later rendering.
+This chunk contains the core logic for generating chunk meshes in a voxel engine. It starts by calculating occlusion information for each block, determining which neighbors are visible and whether blocks have internal or external quads. It then generates masks to filter view-through properties based on depth and neighbor visibility. Finally, it iterates over each direction (positive X, negative X, positive Y, etc.) to append appropriate quads to the mesh, considering transparency and view-through properties of blocks.
 
 ## Related Questions
-- How does the chunk determine if a block can see all its neighbors?
-- What is the purpose of the `depthFilteredViewThroughMask` array?
-- How are internal quads handled in this chunk?
-- What role do the `hasFaces`, `canSeeAllNeighbors`, and `canSeeNeighbor` arrays play in mesh generation?
-- How does the chunk handle blocks that need to check their neighbor for view-through properties?
-- What is the process for generating meshes based on neighbor relationships?
+- What is the purpose of the `paletteCache` array in the chunk meshing process?
+- How does the code determine if a block can see all its neighbors?
+- What role does the `depthFilteredViewThroughMask` play in the mesh generation?
+- How are quads appended for blocks with external faces?
+- What conditions must be met for a block to have its type changed to an opaque variant during meshing?
+- How is the visibility of neighboring blocks checked when generating meshes?
 
 *Source: unknown | chunk_id: codebase_src_renderer_chunk_meshing.zig_chunk_6*

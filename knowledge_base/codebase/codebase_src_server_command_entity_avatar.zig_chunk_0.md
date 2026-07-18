@@ -1,22 +1,55 @@
 # [easy/codebase_src_server_command_entity_avatar.zig] - Chunk 0
 
-**Type:** api
-**Keywords:** union enum, argparse parser, stack allocator, defer cleanup, entity model index, get put server, message list
+**Type:** implementation
+**Keywords:** command parser, avatar update, entity model change, user interface logic, server command execution
 **Symbols:** description, usage, Args, ArgParser, execute
-**Concepts:** command parsing, argument union dispatch, server-side state mutation, user messaging
+**Concepts:** command processing, user interaction, entity management
 
 ## Summary
-Implements the /avatar command handler for server-side avatar lookup and modification.
+Handles avatar lookup or change commands
 
 ## Explanation
-The chunk defines a public description and usage string for the /avatar command, then declares an Args union with two cases: one for bare /avatar (struct {}) and one for /avatar <entityModel> carrying an entityModel field of type command.EntityModel. It instantiates ArgParser using main.argparse.Parser(Args, .{.commandName = "/avatar"}). The execute function takes a raw argument slice and a source User pointer; it allocates a List(u8) errorMessage on the stack allocator with defer cleanup. Parsing is performed via ArgParser.parse(main.stackAllocator, args, &errorMessage), catching any parse failure: on error the message list is sent to the user as red text and execution returns early. On success, result is switched over: for the parameterized case it calls model.server.put(source.id, .{.entityModel = params.entityModel.index}) to store the new entity model index under the user's ID, then sends a green confirmation message containing the resolved entityModelId via rc.get().entityModelId. For the bare /avatar case it attempts to retrieve the existing record with model.server.get(source.id); if found (rc is non-null) it sends a green message showing the current entityModelId, otherwise it sends a magenta "You are invisible." message.
+This chunk defines the logic for handling avatar-related commands in the Cubyz server. It includes parsing arguments, executing commands based on user input, and updating the user's entity model.
+
+## Code Example
+```zig
+pub fn execute(args: []const u8, source: *User) void {
+	var errorMessage: main.List(u8) = .empty;
+	defer errorMessage.deinit(main.stackAllocator);
+
+	const result = ArgParser.parse(main.stackAllocator, args, &errorMessage) catch {
+		source.sendMessage("#ff0000{s}", .{errorMessage.items});
+		return;
+	};
+
+	switch (result) {
+		.@"/avatar <entityModel>" => |params| {
+			model.server.put(source.id, .{
+				.entityModel = params.entityModel.index,
+			});
+			source.sendMessage("#00ff00Your entity model was changed to {s}.", .{params.entityModel.index.get().entityModelId});
+		},
+		.@"/avatar" => {
+			if (model.server.get(source.id)) |rc| {
+				source.sendMessage("#00ff00You are a {s}", .{rc.entityModel.get().entityModelId});
+			} else source.sendMessage("#ff00ffYou are invisible.", .{});
+		},
+	}
+}
+```
 
 ## Related Questions
-- What does the Args union contain and how are its cases distinguished?
-- How is ArgParser instantiated for this command?
-- What happens when parsing fails in execute?
-- Which function is called to store a new avatar under a user ID?
-- How is the current avatar retrieved before displaying it?
-- What text color is used for an invisible user message?
+- What is the purpose of the `execute` function in this chunk?
+- How does the `ArgParser.parse` function work in relation to command processing?
+- What data structures are used for storing and retrieving user entity models?
+- What error handling mechanism is implemented when parsing command arguments?
+- How are messages sent to users from the server in response to commands?
+- What is the logic behind determining if a user is visible or invisible based on their entity model?
+- What is the role of `model.server.put` and `model.server.get` functions in this chunk?
+- Can you explain how the command parser handles different types of avatar-related commands?
+- How are messages formatted for sending to users from the server?
+- What is the significance of the `errorMessage` variable in this chunk?
+- What is the purpose of the `defer errorMessage.deinit(main.stackAllocator)` statement?
+- Can you describe how the switch statement handles different command types and their respective actions?
 
 *Source: unknown | chunk_id: codebase_src_server_command_entity_avatar.zig_chunk_0*

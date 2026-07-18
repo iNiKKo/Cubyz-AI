@@ -1,28 +1,44 @@
 # [medium/codebase_src_server_terrain_cavegen_FractalCaveGenerator.zig] - Chunk 1
 
-**Type:** implementation
-**Keywords:** cave generation, fractal subdivision, biome scaling, recursive carving, branching logic, safety interval, random noise biasing, voxel bounds truncation, chunk overlap checking, midpoint splitting, perpendicular direction finding, radius clamping, seed scrambling, CaveMapFragment, CaveBiomeMapView
-**Symbols:** generateSphere, generateCaveBetween, generateCaveBetweenAndCheckBiomeProperties, generateBranchingCaveBetween
-**Concepts:** fractal generation, cave carving, recursive subdivision, biome-aware scaling, branching logic, safety interval computation, random noise biasing, voxel bounds truncation, chunk overlap checking, midpoint splitting, perpendicular direction finding, radius clamping, seed scrambling
+**Type:** gameplay
+**Keywords:** Cave generation, Game world, Fractal noise, Randomness, Branching, Biomes, Recursion, Voxel-based, Chunk-based, 3D space
+**Symbols:** generateCaveBetween, generateBranchingCaveBetween, startRelPos, endRelPos, bias, startRadius, endRadius, randomness, distance, maxFractalShift, weight, mid, midRadius, splitXY, splitZ, offsetX, offsetY, offsetZ, newBias1, newBias2, mid1, mid2, newStartRadius, newEndRadius
+**Concepts:** Fractal noise generation, Random branching cave system, Biome property influence on cave shape and size, Recursive function for cave generation, Parameters controlling cave complexity and realism
 
 ## Summary
-Implements fractal cave generation with recursive subdivision, biome-aware radius scaling, and branching logic.
+This code generates a cave system within a chunk of a game world. It uses fractal noise and random branching to create complex cave structures based on biome properties. The `generateCaveBetween` function creates a cave between two points with specified radii, while the `generateBranchingCaveBetween` function recursively adds branches to the cave system, increasing complexity and realism.
 
 ## Explanation
-The chunk defines a public API surface for generating caves within a CaveMapFragment. generateSphere handles spherical carving (with negative-radius recursion). generateCaveBetween performs the core recursive subdivision: it computes a safety interval based on segment length and randomness, truncates start/end positions to integer voxel bounds, checks if the segment crosses the current chunk, then either carves a sphere at short distances or recurses with a midpoint biased by random noise. generateCaveBetweenAndCheckBiomeProperties wraps generateCaveBetween, querying biomeMap.getRoughBiome at both endpoints and scaling start/end radii by the returned caveRadiusFactor before recursing. generateBranchingCaveBetween is the top-level recursive function that drives fractal generation: it first checks if distance < 32 to stop branching (to avoid crowded caves) and delegates to biome-aware carving; otherwise it computes a weight for non-binary subdivision, optionally splits into two branches when random noise permits (finding a perpendicular direction, normalizing offsets, computing new biases, midpoints, and radii), or performs a single biased midpoint split. All recursion uses the same pattern: compute safety interval, truncate bounds, check chunk overlap, then either carve a sphere or recurse with adjusted parameters. The code relies on random.scrambleSeed, random.nextInt, random.nextFloatSigned, and random.nextFloat for noise; it uses std.math.sign and @sqrt for radius clamping and normalization. No mutable state is carried beyond the seed parameter; all geometry updates are performed via map.addRange/map.removeRange calls inside generateSphere (not shown in this chunk but implied by its signature).
+The code defines functions for generating caves within a chunk of a game world. The main function, `generateCaveBetween`, creates a cave between two points with specified radii using fractal noise and biome properties to determine the shape and size of the cave. The `generateBranchingCaveBetween` function recursively adds branches to the cave system, increasing complexity and realism by introducing random splits and variations in direction and radius. The code uses various parameters such as bias, randomness, and branch length to control the generation process and ensure a diverse range of cave structures.
+
+## Code Example
+```zig
+fn generateCaveBetweenAndCheckBiomeProperties(_seed: u64, map: *CaveMapFragment, biomeMap: *const CaveBiomeMapView, startRelPos: Vec3f, endRelPos: Vec3f, bias: Vec3f, startRadius: f32, endRadius: f32, randomness: f32) void {
+	// Check if the segment can cross this chunk:
+	const maxHeight = @max(@abs(startRadius), @abs(endRadius));
+	const distance = vec.length(startRelPos - endRelPos);
+	const maxFractalShift = distance*randomness;
+	const safetyInterval = maxHeight + maxFractalShift;
+	const min: Vec3i = @trunc(@min(startRelPos, endRelPos) - @as(Vec3f, @splat(safetyInterval)));
+	const max: Vec3i = @trunc(@max(startRelPos, endRelPos) + @as(Vec3f, @splat(safetyInterval)));
+	// Only divide further if the cave may go through the considered chunk.
+	if (min[0] >= CaveMapFragment.width*map.pos.voxelSize or max[0] < 0) return;
+	if (min[1] >= CaveMapFragment.width*map.pos.voxelSize or max[1] < 0) return;
+	if (min[2] >= CaveMapFragment.height*map.pos.voxelSize or max[2] < 0) return;
+
+	const startRadiusFactor = biomeMap.getRoughBiome(map.pos.wx +% @as(i32, @trunc(startRelPos[0])), map.pos.wy +% @as(i32, @trunc(startRelPos[1])), map.pos.wz +% @as(i32, @trunc(startRelPos[2])), false, undefined, false).caveRadiusFactor;
+	const endRadiusFactor = biomeMap.getRoughBiome(map.pos.wx +% @as(i32, @trunc(endRelPos[0])), map.pos.wy +% @as(i32, @trunc(endRelPos[1])), map.pos.wz +% @as(i32, @trunc(endRelPos[2])), false, undefined, false).caveRadiusFactor;
+	generateCaveBetween(_seed, map, startRelPos, endRelPos, bias, startRadius*startRadiusFactor, endRadius*endRadiusFactor, randomness);
+}
+```
 
 ## Related Questions
-- How does generateCaveBetween determine whether a cave segment crosses the current chunk?
-- What is the purpose of the safetyInterval computed in generateCaveBetweenAndCheckBiomeProperties?
-- How are start and end radii adjusted when calling generateCaveBetween from generateCaveBetweenAndCheckBiomeProperties?
-- At what distance threshold does generateBranchingCaveBetween stop creating new branches, and why?
-- What steps are taken inside the optional split block of generateBranchingCaveBetween to find a perpendicular direction?
-- How is the weight for non-binary subdivision computed in generateBranchingCaveBetween?
-- Which random functions are used throughout these cave generation routines and what do they provide?
-- Does generateSphere handle negative radius values, and if so how does it recurse?
-- What happens when min[0] >= CaveMapFragment.width*map.pos.voxelSize inside generateCaveBetween?
-- How is the midpoint position calculated in both the single-split and double-split paths of generateBranchingCaveBetween?
-- Are there any checks to prevent caves from becoming too crowded, and where are they implemented?
-- What role does biomeMap.getRoughBiome play in the cave generation pipeline?
+- How does the code handle cave generation in different biomes?
+- What is the role of randomness in the cave generation process?
+- Can you explain how the recursive branching works in this cave generation algorithm?
+- How does the code ensure that caves do not extend beyond the chunk boundaries?
+- What are some potential optimizations for improving the performance of this cave generation algorithm?
+- How could the code be modified to generate different types of caves, such as lava tubes or underground rivers?
+- Can you provide an example of how to use these functions in a game world?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_cavegen_FractalCaveGenerator.zig_chunk_1*

@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_cloth_aqua.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** texture mapping, configuration file, block properties, item texture, asset management
-**Concepts:** block configuration, item representation
+**Keywords:** texture mapping, block definition, item texture, configuration file, asset paths
+**Concepts:** block configuration, item properties
 
 ## Summary
-Defines configuration for the Aqua Cloth block, including its texture and item representation.
+Defines configuration for the Aqua Cloth block, including its texture and item properties.
 
 ## Explanation
-This chunk is a configuration file in the Cubyz voxel engine that specifies properties for the Aqua Cloth block. It sets the block's texture to 'cubyz:cloth/aqua' and defines an item with a specific texture 'cloth/aqua.png'. This configuration ensures that when the Aqua Cloth block is rendered or used as an item, it displays the appropriate visual assets.
+This chunk is a configuration file in the Cubyz voxel engine that specifies details for the Aqua Cloth block. It sets the block's texture to 'cubyz:cloth/aqua' and defines the item associated with this block, which has its own texture specified as 'cloth/aqua.png'. This configuration ensures that when the Aqua Cloth block is rendered or interacted with as an item, the correct visual assets are used.
 
 ## Related Questions
 - What is the texture path for the Aqua Cloth block?
-- How is the item representation of the Aqua Cloth block configured?
-- Where is the texture file for the Aqua Cloth item located?
-- Does this chunk define any functions or methods?
-- What concepts are implemented in this configuration file?
-- How does this chunk contribute to asset management in the Cubyz engine?
+- How is the item associated with the Aqua Cloth block defined in this configuration?
+- Where are the textures for the Aqua Cloth block stored according to this file?
+- Does this chunk define any additional properties for the Aqua Cloth block beyond its texture and item?
+- What would be the impact if the 'cloth/aqua.png' texture file was missing?
+- How does this configuration file interact with other parts of the Cubyz engine?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_cloth_aqua.zig.zon_chunk_0*

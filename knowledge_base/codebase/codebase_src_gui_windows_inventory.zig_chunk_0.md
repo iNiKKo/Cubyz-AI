@@ -1,15 +1,15 @@
 # [easy/codebase_src_gui_windows_inventory.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** inventory, gui, slots, buttons, hotbar, crafting
+**Keywords:** inventory, hotbar, slots, buttons, init, deinit
 **Symbols:** window, padding, craftingIcon, itemSlots
-**Concepts:** GUI, Inventory, Hotbar, Crafting, ItemSlot
+**Concepts:** inventory window, layout management, item slots, buttons
 
 ## Summary
-Inventory GUI implementation
+Inventory window initialization and management
 
 ## Explanation
-This chunk defines the inventory window for a game, including hotbar and crafting slots. It initializes the window size and position, creates item slots for each player's inventory, adds buttons for crafting and bag slots, and updates window positions after opening or closing.
+This chunk initializes the inventory window, including its layout with a hotbar reference, content size, scale, and HUD status. It also manages item slots and buttons for crafting and other items. The inventory is populated with a bag slot and a crafting icon button.
 
 ## Code Example
 ```zig
@@ -19,17 +19,17 @@ pub fn init() void {
 ```
 
 ## Related Questions
-- What is the purpose of the `window` variable?
-- How are item slots initialized and stored?
-- Where does the crafting icon come from?
-- What components are used to create the inventory window?
-- How is the inventory window updated after opening or closing?
-- What is the size of the inventory window?
-- Where are the hotbar and crafting slots located within the inventory window?
-- What buttons are added to the inventory window?
-- How is the bag slot displayed in the inventory window?
-- What is the default appearance of an item slot?
-- What is the normal appearance of an item slot?
-- What is the position of the inventory window relative to other components?
+- What is the purpose of the `window` variable in this chunk?
+- How does the inventory window manage its content size and scale?
+- What are the initial contents of the inventory slots?
+- What is the function responsible for initializing the crafting icon?
+- What is the function responsible for deinitializing the crafting icon?
+- What is the purpose of the `itemSlots` array in this chunk?
+- How does the inventory window handle bag slots and crafting buttons?
+- What is the layout structure used to populate the inventory window?
+- What is the function responsible for initializing the inventory window on open?
+- What is the function responsible for deinitializing the inventory window on close?
+- What are the dependencies of this chunk?
+- How does the inventory window update its positions?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_inventory.zig_chunk_0*

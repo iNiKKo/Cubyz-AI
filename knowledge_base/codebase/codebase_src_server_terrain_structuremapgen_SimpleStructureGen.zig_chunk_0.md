@@ -1,15 +1,15 @@
 # [medium/codebase_src_server_terrain_structuremapgen_SimpleStructureGen.zig] - Chunk 0
 
 **Type:** world_generation
-**Keywords:** blue noise, random seed, terrain change detection, structure priority, biome vegetation models
-**Symbols:** id, priority, generatorSeed, defaultState, init, adjustToCaveMap, generate
-**Concepts:** terrain generation, structure placement, biome influence, cave map integration
+**Keywords:** terrain change detection, random positioning, mode selection, surface proximity check, structure adjustment
+**Symbols:** id, priority, generatorSeed, defaultState, init, adjustToCaveMap
+**Concepts:** cave generation, structure placement, biome influence
 
 ## Summary
-This chunk implements the logic for generating simple structures in a terrain, adjusting their placement based on cave maps and biome data.
+This chunk implements the logic for generating simple structures in a cave environment based on biome and cave map data.
 
 ## Explanation
-The chunk defines a structure generator that places simple structures in the game world. It uses blue noise to distribute structures evenly and adjusts their positions based on cave maps and biome conditions. The `generate` function initializes necessary maps and iterates over potential placement points, checking if they meet criteria like being above or below terrain changes. Structures are placed using a random seed and added to the map with specific priorities.
+The chunk defines a structure generation system that adjusts structure placement to fit within cave maps. It uses various modes like floor, ceiling, air, underground, and water surface to determine where structures should be placed relative to the cave's terrain changes. The `adjustToCaveMap` function calculates the appropriate Z position for a structure based on its mode and ensures it remains close to the surface.
 
 ## Code Example
 ```zig
@@ -20,10 +20,10 @@ pub fn init(parameters: ZonElement) void {
 
 ## Related Questions
 - What is the ID of this structure generator?
-- How does the generator adjust structure positions based on cave maps?
-- What is the default state of this structure generator?
-- How are structures distributed in the world using blue noise?
-- What conditions must be met for a structure to be placed above terrain changes?
-- How are random seeds used in generating structures?
+- How does the structure generator prioritize its execution?
+- What is the default state of this generator?
+- Which function initializes the structure generator with parameters?
+- How does the `adjustToCaveMap` function determine the Z position for a structure?
+- What are the different generation modes available for structures in caves?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_structuremapgen_SimpleStructureGen.zig_chunk_0*

@@ -1,26 +1,29 @@
 # [medium/codebase_src_random.zig] - Chunk 0
 
 **Type:** algorithm
-**Keywords:** PRNG, LCG, seed mutation, bit masking, spatial locality, bounded sampling, vectorized sequences, Box-Muller, exponential distribution, uniform float
-**Symbols:** Vec2f, Vec2i, Vec3i, multiplier, addend, mask, scrambleSeed, nextWithBitSize, next, nextInt, nextIntBounded, nextFloat, nextFloatSigned, nextFloatExp, nextFloatGauss, nextPointInUnitCircle, initSeed3D, initSeed2D, RandomRange
-**Concepts:** pseudo-random number generation, linear congruential generator, spatial seeding, bounded sampling, vectorized random sequences, Box-Muller transform, exponential distribution, uniform float generation
+**Keywords:** random numbers, LCG algorithm, integer generation, floating-point generation, vector generation, seed scrambling
+**Symbols:** scrambleSeed, nextInt, nextIntBounded, nextFloat, nextFloatSigned, nextFloatExp, nextFloatGauss, nextFloatVector, nextFloatVectorSigned, nextDouble, nextDoubleSigned, nextDoubleVector, nextDoubleVectorSigned, nextPointInUnitCircle, initSeed3D, initSeed2D
+**Concepts:** random number generation, linear congruential generator (LCG)
 
 ## Summary
-This chunk defines a deterministic pseudo-random number generator (PRNG) suite providing integer and floating-point sequences via linear congruential generation, seeded per-world-position for spatial locality, plus bounded sampling and vectorized variants.
+This chunk provides a set of functions for generating random numbers and points using a linear congruential generator (LCG) algorithm.
 
 ## Explanation
-The file imports std and re-exports main.vec types Vec2f, Vec2i, Vec3i; it defines constants multiplier (0x5deece66d), addend (0xb), mask ((1<<48)-1). The public function scrambleSeed mutates a seed pointer by XORing with multiplier then masking to 48 bits. nextWithBitSize performs the LCG step (seed = (seed*multiplier + addend) & mask) and returns an @intCast of the high-order (48-bitSize) bits; it is called by next which adapts bitSize via @bitSizeOf(T). nextInt handles types larger than 32 bits by looping over 32-bit chunks, otherwise delegates to next. nextIntBounded asserts T must be an integer type, converts signed bounds to unsigned if needed, computes the minimal bitSize required for bound via std.math.log2_int_ceil, then repeatedly draws until result < bound. nextFloat returns a uniform f32 in [0,1) by casting a 24-bit integer to float and dividing by 2^24; nextFloatSigned casts to i24 before the same division (range [-1/8, 1)). nextFloatExp applies -log(U[0,1)) for exponential distribution. nextFloatGauss uses Box-Muller: sqrt(-2*log(U1))*cos(2*pi*U2). nextPointInUnitCircle repeatedly draws two signed floats until x^2+y^2<1 and returns the Vec2f point. initSeed3D and initSeed2D compute a world-local seed by XOR-reducing fac (Vec3i or Vec2i) multiplied modulo pos, then cast to u32 and XOR with worldSeed; these are used for spatial seeding. nextDouble splits into lower 32 bits and upper 20 bits via two calls to nextInt(u32) and nextInt(u20), casts to f64 by shifting upper left 32 and dividing by 2^52 (unsigned) or 2^51 (signed). nextDoubleVector/nextDoubleVectorSigned similarly iterate over a compile-time length. All functions are public except nextWithBitSize which is internal.
+The chunk defines several public functions to generate random values of various types, including integers, floating-point numbers, vectors, and points. It uses a linear congruential generator (LCG) with specific constants for generating pseudo-random numbers. The `scrambleSeed` function modifies the seed using bitwise operations. The `nextInt` function generates an integer of a specified type by either directly using the LCG or combining multiple 32-bit results if the type size exceeds 32 bits. The `nextIntBounded` function ensures that the generated number is within a given bound. Functions like `nextFloat`, `nextFloatSigned`, and their vector counterparts generate floating-point numbers, including signed versions and vectors of floats. The `nextDouble` and `nextDoubleVector` functions generate double-precision floating-point numbers and vectors. Additionally, there are functions to generate points within a unit circle (`nextPointInUnitCircle`) and initialize seeds based on 3D or 2D positions (`initSeed3D`, `initSeed2D`).
+
+## Code Example
+```zig
+pub fn scrambleSeed(seed: *u64) void {
+	seed.* = (seed.* ^ multiplier) & mask;
+}
+```
 
 ## Related Questions
-- How does scrambleSeed modify the seed value and why is a mask applied?
-- What are the exact constants used in the linear congruential generator (multiplier, addend) and how do they affect period length?
-- Explain the difference between nextFloat and nextFloatSigned: what ranges do they produce and how is the sign handled?
-- How does nextIntBounded guarantee a result strictly less than bound without biasing toward lower values?
-- What is the purpose of initSeed3D/initSeed2D and how are fac vectors chosen to ensure good spatial distribution?
-- Describe the Box-Muller implementation in nextFloatGauss: why two uniform samples and what trigonometric function is used?
-- How does nextDouble split a 64-bit float into lower and upper parts using nextInt calls, and why are different bit widths chosen for signed vs unsigned?
-- What compile-time constraints exist on the types passed to these random functions (e.g., integer check in nextIntBounded)?
-- How does the mask ((1<<48)-1) limit the LCG state space and what impact does that have on reproducibility across builds?
-- Can a caller safely mutate the seed pointer after calling scrambleSeed, or must they preserve the original value?
+- How does the `scrambleSeed` function modify the seed?
+- What is the purpose of the `nextIntBounded` function?
+- How are floating-point numbers generated in this chunk?
+- What algorithm is used for generating random numbers?
+- How do the vector generation functions work?
+- What is the role of the `initSeed3D` and `initSeed2D` functions?
 
 *Source: unknown | chunk_id: codebase_src_random.zig_chunk_0*

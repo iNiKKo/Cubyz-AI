@@ -8,14 +8,14 @@
 Defines blueprints and children for a slate circle structure in the Cubyz game.
 
 ## Explanation
-This chunk is a configuration file that specifies the blueprints and child components of a specific structure within the Cubyz game. The blueprints are identified by unique IDs, and the children are categorized by color names ('grey' and 'lime'), each associated with a corresponding component ID.
+This chunk is a configuration file that specifies the blueprints and child components of a slate circle structure within the Cubyz game. The blueprints are identified by unique IDs, and the children are categorized by color names ('grey' and 'lime'), each associated with a specific component type.
 
 ## Related Questions
-- What are the IDs of the blueprints defined in this chunk?
-- Which components are associated with the 'grey' color category?
-- How many child components are defined for this structure?
-- What is the ID of the component associated with the 'lime' color category?
-- Are there any other colors besides 'grey' and 'lime' used to categorize child components in this chunk?
-- Is there a function or method defined within this chunk that manipulates or processes these blueprints and children?
+- What are the IDs of the blueprints defined for the slate circle structure?
+- Which components are associated with the 'grey' color in the slate circle structure?
+- How are the child components categorized in the slate circle configuration?
+- What is the purpose of the unique IDs assigned to each blueprint?
+- Are there any specific rules or constraints on how these blueprints and children are used within the game?
+- Can the slate circle structure be modified by changing its blueprint or child component configurations?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_ruins_slate_circle.zig.zon_chunk_0*

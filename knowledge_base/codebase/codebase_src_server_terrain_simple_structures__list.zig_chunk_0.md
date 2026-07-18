@@ -1,26 +1,22 @@
 # [easy/codebase_src_server_terrain_simple_structures__list.zig] - Chunk 0
 
-**Type:** api
-**Keywords:** pub const, @import, re-export, Boulder, FallenTree, FlowerPatch, GroundPatch, SbbGen, SimpleTreeModel, SimpleVegetation, Stalagmite
+**Type:** configuration
+**Keywords:** import, re-export, terrain generation, structures, modules
 **Symbols:** Boulder, FallenTree, FlowerPatch, GroundPatch, SbbGen, SimpleTreeModel, SimpleVegetation, Stalagmite
-**Concepts:** terrain structures, simple structures list, public re-exports, server API surface
+**Concepts:** world_generation, terrain structures
 
 ## Summary
-This chunk declares public re-exports of terrain structure definitions from separate files, exposing Boulder, FallenTree, FlowerPatch, GroundPatch, SbbGen, SimpleTreeModel, SimpleVegetation, and Stalagmite as part of the server's simple structures API.
+This chunk re-exports various simple terrain structures from other modules.
 
 ## Explanation
-The chunk contains only eight public const declarations that re-export types from other files using @import. Each declaration is a bare pub const NAME = @import(
+The chunk consists solely of public constant imports, each representing a different type of simple terrain structure. These include Boulder, FallenTree, FlowerPatch, GroundPatch, SbbGen, SimpleTreeModel, SimpleVegetation, and Stalagmite. Each import statement brings in a module that likely defines the respective structure's properties and behaviors within the Cubyz voxel engine.
 
 ## Related Questions
-- What terrain structure types are exposed by this chunk?
-- Which files does this chunk import to define its public API?
-- How is the Boulder type referenced in the server codebase?
-- Is SbbGen a publicly exported symbol from this file?
-- Can SimpleVegetation be used directly without importing its source?
-- What is the purpose of using pub const with @import here?
-- Does this chunk define any functions or methods itself?
-- How many terrain structure definitions are listed in this file?
-- Which simple structures are available for world generation via this list?
-- Is FallenTree a public re-export from this module?
+- What types of simple terrain structures are available in the Cubyz voxel engine?
+- Which module defines the Boulder structure?
+- How is the FallenTree structure implemented?
+- What does the FlowerPatch module provide?
+- Can you list all the imported modules for simple terrain structures?
+- Where is the definition for GroundPatch located?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_simple_structures__list.zig_chunk_0*

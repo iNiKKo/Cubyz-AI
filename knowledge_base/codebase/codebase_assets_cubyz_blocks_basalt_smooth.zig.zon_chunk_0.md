@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_basalt_smooth.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** block configuration, ore generation, model rotation, texturing, smooth basalt
+**Keywords:** configuration, block settings, texture assignment, model selection, ore generation
 **Concepts:** block properties, texture mapping
 
 ## Summary
 Defines properties for the smooth basalt block in Cubyz.
 
 ## Explanation
-This chunk configures the smooth basalt block, specifying that it allows ores to be generated within it. It uses a stair rotation model and applies a specific texture from the 'cubyz:basalt/smooth' path.
+This chunk specifies configuration settings for a smooth basalt block within the Cubyz game engine. It sets the block to allow ore generation, uses a stairs rotation model, applies a cube model, and assigns a specific texture path for rendering.
 
 ## Related Questions
-- What texture is applied to the smooth basalt block?
+- What is the texture path for the smooth basalt block?
 - Does the smooth basalt block allow ore generation?
-- Which model type is used for the smooth basalt block?
+- Which model is used for rendering the smooth basalt block?
 - How is the rotation of the smooth basalt block defined?
-- Where is the texture file for the smooth basalt block located?
-- What properties are configured for the smooth basalt block?
+- Is there any specific configuration related to lighting or shading for this block?
+- What other blocks in Cubyz use similar configurations?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_basalt_smooth.zig.zon_chunk_0*

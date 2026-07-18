@@ -1,26 +1,22 @@
-# [src/items.zig] - Chunk 2054623602
+# [src/items.zig] - PR #1332 review diff
 
 **Type:** review
-**Keywords:** MaterialProperty, density, strength, elasticity, hardness, fromString, std.meta.stringToEnum, enum variant, ignored, fallback, default, scale, invalid input
-**Symbols:** Modifier, MaterialProperty, density, elasticity, hardness, fromString
-**Concepts:** enum parsing, fallback default behavior, data integrity, scale mismatch, invalid input handling, type safety
+**Keywords:** MaterialProperty, strength, grip, density, enum, default, replacement, ignored, asset designer, scaling
+**Symbols:** Modifier, MaterialProperty, fromString
+**Concepts:** enum handling, error handling, default values
 
 ## Summary
-Replaced the fallback default material property from strength to density when an unknown string is parsed, addressing a reviewer's concern that invalid values should be ignored rather than mapped to an arbitrary default.
+Removed 'strength' and 'grip' from MaterialProperty enum and changed the default replacement from 'strength' to 'density'.
 
 ## Explanation
-The original code used std.meta.stringToEnum on MaterialProperty and, upon failure, logged an error and returned .strength as the fallback. The reviewer argued that any unknown property value is likely out of scale with density (the chosen default) and therefore mapping to strength is equally arbitrary; they suggested introducing a dedicated enum variant `ignored` so that invalid inputs are dropped rather than silently substituted. This change aligns with the architectural principle of preserving data integrity: when an asset designer provides a property name that does not exist, the system should not assume a default magnitude for it. By switching the fallback to .density (or eventually to a new .ignored variant), we reduce the risk of unintended physics behavior caused by mismatched scales. The diff also removes the now‑unused .strength and .grip entries from the enum definition, simplifying the type surface.
+The reviewer suggests that invalid material properties should be ignored instead of replaced with a default value, as there is no universally appropriate default. The current change replaces 'strength' with 'density' when an unknown property is encountered, but the reviewer argues that this is arbitrary and could lead to incorrect scaling assumptions by asset designers. The reviewer proposes adding an 'ignored' enum value to handle such cases more appropriately.
 
 ## Related Questions
-- What enum variants are currently defined in MaterialProperty?
-- How does fromString handle an unknown string value today?
-- Why was .strength chosen as the original fallback default?
-- Does the current code log any error when parsing fails?
-- Is there a plan to introduce an `ignored` variant for invalid inputs?
-- What happens to asset data if a designer provides a property name that does not exist in MaterialProperty?
-- Are .grip and .strength still referenced elsewhere after the enum definition change?
-- How would changing the fallback from strength to density affect physics calculations?
-- Is there any test coverage for the stringToEnum failure path in items.zig?
-- What is the impact of removing unused enum variants on binary size or API compatibility?
+- What is the purpose of the 'fromString' function in the MaterialProperty enum?
+- Why was 'strength' removed from the MaterialProperty enum?
+- How does the current implementation handle unknown material properties?
+- What are the potential issues with using 'density' as a default replacement for unknown properties?
+- How would adding an 'ignored' enum value improve error handling?
+- What considerations should be made when choosing a default value for invalid material properties?
 
 *Source: unknown | chunk_id: github_pr_1332_comment_2054623602*

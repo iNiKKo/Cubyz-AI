@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_prairie_dry_spell_base.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** terrain retention, parent biomes, sub-biome count, structures, chance, size, variation
+**Keywords:** terrain retention, parent biomes, structures, configuration, probability, dimensions
 **Concepts:** world generation, biome configuration
 
 ## Summary
-Defines configuration for the 'dry_spell' biome in Cubyz, including terrain retention, parent biomes, maximum sub-biome count, and various structures with their properties.
+Defines configuration for the dry spell prairie biome, including terrain retention, parent biomes, and various structures with their probabilities and properties.
 
 ## Explanation
-This chunk is a configuration file defining the properties of the 'dry_spell' biome in the Cubyz game. It specifies that 50% of the original terrain should be retained. The biome has one parent biome, 'cubyz:prairie/base', with a chance of 3 out of 10 to generate. The maximum number of sub-biomes allowed is 1. The chunk also lists several structures that can appear in this biome, each with specific properties such as type, block IDs, chances, sizes, and variations. These structures include ground patches, boulders, flower patches, simple trees, and fallen trees.
+This chunk is a configuration file in the Cubyz voxel engine that specifies settings for a particular biome called 'dry spell prairie'. It includes parameters such as terrain retention probability, parent biomes, maximum sub-biome count, and detailed configurations for various structures like ground patches, boulders, flower patches, simple trees, and fallen trees. Each structure entry defines its ID, block types, chance of occurrence, dimensions, variations, and other specific properties.
 
 ## Related Questions
-- What is the chance of generating the 'dry_spell' biome?
-- Which blocks are used in the structures within the 'dry_spell' biome?
-- How many parent biomes does the 'dry_spell' biome have?
-- What is the maximum number of sub-biomes allowed in the 'dry_spell' biome?
-- Can you list all the structures that can appear in the 'dry_spell' biome?
-- What is the retention rate for the original terrain in the 'dry_spell' biome?
+- What is the terrain retention probability for the dry spell prairie biome?
+- Which parent biome does the dry spell prairie inherit from and with what chance?
+- How many different structures are defined in the dry spell prairie biome configuration?
+- What are the block types used in the ground patches of the dry spell prairie biome?
+- What is the maximum number of sub-biomes allowed in the dry spell prairie biome?
+- Which structure has the highest chance of occurrence in the dry spell prairie biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_prairie_dry_spell_base.zig.zon_chunk_0*

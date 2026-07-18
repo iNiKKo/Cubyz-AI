@@ -1,33 +1,29 @@
 # [hard/codebase_src_graphics_Window.zig] - Chunk 5
 
-**Type:** implementation
-**Keywords:** GLFW, Vulkan, input callbacks, window size, clipboard operations, scroll events
-**Symbols:** scroll, glDebugOutput, nextKeypressListener, setNextKeypressListener, nextGamepadListener, setNextGamepadListener, resetNextInputListenters, updateCursor, releaseButtonsOnGrabChange, setMouseGrabbed, getMousePosition, getWindowSize, reloadSettings, getClipboardString, setClipboardString, init
-**Concepts:** window management, input handling, Vulkan initialization, OpenGL debug output
+**Type:** api
+**Keywords:** GLFW, callback functions, error logging, keyboard input, mouse input, framebuffer resizing, cursor position, smooth mouse movement
+**Symbols:** GLFWCallbacks, GLFWCallbacks.errorCallback, GLFWCallbacks.keyCallback, GLFWCallbacks.charCallback, GLFWCallbacks.framebufferSize, GLFWCallbacks.cursorPosition, GLFWCallbacks.applyCursorPositionChanges, GLFWCallbacks.mouseButton, GLFWCallbacks.scroll, GLFWCallbacks.glDebugOutput, nextKeypressListener, setNextKeypressListener, nextGamepadListener, setNextGamepadListener
+**Concepts:** input handling, window management, event callbacks, cursor smoothing
 
 ## Summary
-Handles window management, input callbacks, and Vulkan initialization in the Cubyz graphics engine.
+Handles GLFW callbacks for window events such as key presses, mouse movements, and framebuffer resizing.
 
 ## Explanation
-This chunk manages various aspects of the game window including handling scroll events, setting up OpenGL debug output, managing input listeners for keypresses and gamepads, updating cursor states based on mouse grab status, initializing GLFW and Vulkan, and managing clipboard operations. It also includes functions to get mouse position, window size, reload settings, and initialize the window with appropriate configurations.
+This chunk defines a struct `GLFWCallbacks` that encapsulates various callback functions for handling different types of input and window events using GLFW. The primary responsibilities include logging errors, processing keyboard and mouse inputs, updating the viewport and GUI when the framebuffer size changes, and managing cursor position data to smooth out mouse movements. It also provides mechanisms to set listeners for future keypresses and gamepad events, ensuring that only one listener can be active at a time.
 
 ## Code Example
 ```zig
-fn scroll(_: ?*c.GLFWwindow, xOffset: f64, yOffset: f64) callconv(.c) void {
-	_ = xOffset;
-	scrollOffset += @floatCast(yOffset);
-	scrollOffsetFraction += @floatCast(yOffset);
-	scrollOffsetInteger += @round(scrollOffsetFraction);
-	scrollOffsetFraction -= @round(scrollOffsetFraction);
+fn errorCallback(errorCode: c_int, description: [*c]const u8) callconv(.c) void {
+	std.log.err("GLFW Error({}): {s}", .{errorCode, description});
 }
 ```
 
 ## Related Questions
-- How does the scroll function handle input?
-- What is the purpose of the glDebugOutput function?
-- How are keypress listeners set and managed?
-- What happens when the mouse grab status changes?
-- How is Vulkan initialized in this chunk?
-- How does the window size retrieval work?
+- What is the purpose of the `errorCallback` function in the GLFWCallbacks struct?
+- How does the `keyCallback` function handle key presses and releases?
+- What does the `framebufferSize` callback do when the window size changes?
+- How are mouse cursor position changes smoothed out in this code?
+- What is the role of the `nextKeypressListener` variable?
+- How does the `glDebugOutput` function categorize and log OpenGL debug messages?
 
 *Source: unknown | chunk_id: codebase_src_graphics_Window.zig_chunk_5*

@@ -1,26 +1,56 @@
 # [easy/codebase_src_server_terrain_cavegen_OceanFixer.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** CaveMapFragment, biome surface height, local minima, ocean floor, range block, neighbor comparison, voxel grid iteration, stack allocator, deinit defer, getSurfaceHeight
+**Keywords:** cave fixer, ocean floor, height calculation, sealing caves, voxel modification
 **Symbols:** id, priority, generatorSeed, defaultState, init, generate
-**Concepts:** cave sealing, biome surface height analysis, local minima detection, ocean floor intersection, range block addition, neighbor comparison, voxel grid iteration, stack allocator usage
+**Concepts:** cave generation, terrain modification
 
 ## Summary
-This chunk defines the OceanFixer generator that seals off caves intersecting the ocean floor by analyzing biome surface heights and adding range blocks when local minima fall below a threshold.
+Ocean fixer generator for cave maps
 
 ## Explanation
-The chunk declares public constants id, priority, generatorSeed, and defaultState for configuration. It imports ZonElement from main and uses it as a parameter type in init which discards the argument. The generate function takes a CaveMapFragment pointer and worldSeed (discarded). It computes width using map.pos.voxelSize, initializes a CaveBiomeMapView with stackAllocator at map.pos covering that width, defers deinit. Nested loops iterate x and y from 0 to width stepping by map.pos.voxelSize. Inside the inner loop it calls biomeMap.getSurfaceHeight for the current cell and its four neighbors (east, south, west, north) using map.pos.wx + x, map.pos.wy + y offsets with +% and -% arithmetic. It computes smallestHeight via @min of those five values. relativeHeight is height minus map.pos.wz. If smallestHeight < 1 it calls map.addRange(x, y, smallestHeight -% map.pos.voxelSize -% map.pos.wz, relativeHeight) to seal the cave.
+This chunk defines a generator function `generate` that modifies the height of cave fragments in a terrain map based on the ocean floor. It calculates the smallest height around each voxel and seals off caves if they intersect the ocean floor.
+
+## Code Example
+```zig
+pub fn generate(map: *CaveMapFragment, worldSeed: u64) void {
+	_ = worldSeed;
+	const width = CaveMapFragment.width*map.pos.voxelSize;
+	const biomeMap = CaveBiomeMapView.init(main.stackAllocator, map.pos, width, 0);
+	defer biomeMap.deinit();
+	var x: u31 = 0;
+	while (x < width) : (x += map.pos.voxelSize) {
+		var y: u31 = 0;
+		while (y < width) : (y += map.pos.voxelSize) {
+			const height = biomeMap.getSurfaceHeight(map.pos.wx + x, map.pos.wy + y);
+			const smallestHeight: i32 = @min(
+				biomeMap.getSurfaceHeight(map.pos.wx +% x +% 1, map.pos.wy +% y),
+				biomeMap.getSurfaceHeight(map.pos.wx +% x, map.pos.wy +% y +% 1),
+				biomeMap.getSurfaceHeight(map.pos.wx +% x -% 1, map.pos.wy +% y),
+				biomeMap.getSurfaceHeight(map.pos.wx +% x, map.pos.wy +% y -% 1),
+				height,
+			);
+			const relativeHeight: i32 = height -% map.pos.wz;
+			if (smallestHeight < 1) { // Seal off caves that intersect the ocean floor.
+				map.addRange(x, y, smallestHeight -% map.pos.voxelSize -% map.pos.wz, relativeHeight);
+			}
+		}
+	}
+}
+```
 
 ## Related Questions
 - What is the purpose of the OceanFixer generator?
-- How does the generate function determine which caves to seal?
-- Which biome map API is used to query surface heights in this chunk?
-- What happens to the worldSeed parameter passed into generate?
-- How are neighbor cells accessed relative to the current cell coordinates?
-- What condition triggers a call to map.addRange inside the loops?
-- Is the CaveBiomeMapView allocated on the heap or stack, and how is it cleaned up?
-- What does the defaultState constant represent for this generator?
-- How are voxel size offsets applied when iterating over the grid?
-- Does init perform any validation of its ZonElement parameter?
+- How does the generator modify cave heights based on ocean floor height?
+- What is the logic for sealing off caves that intersect the ocean floor?
+- What are the steps involved in calculating the smallest height around each voxel?
+- How is the relative height calculated in relation to the world's Z coordinate?
+- What happens if the smallest height is less than 1, and how does this affect cave modification?
+- Where is the `generate` function defined within the codebase?
+- What are the parameters required for the `generate` function?
+- How is the biome map initialized in the generator function?
+- What is the purpose of the `defer` statement used in the generator function?
+- What is the logic behind the `addRange` method called on the cave map fragment?
+- Where are the constants `id`, `priority`, and `generatorSeed` defined within the codebase?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_cavegen_OceanFixer.zig_chunk_0*

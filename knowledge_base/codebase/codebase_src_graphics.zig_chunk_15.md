@@ -1,31 +1,33 @@
 # [hard/codebase_src_graphics.zig] - Chunk 15
 
 **Type:** implementation
-**Keywords:** texture initialization, mipmap generation, GPU texture upload, image loading, OpenGL bindings
-**Symbols:** Texture, Texture.textureID, Texture.init, Texture.initFromFile, Texture.initFromMipmapFiles, TextureArray, TextureArray.generate
-**Concepts:** texture handling, mipmapping, GPU buffer management
+**Keywords:** framebuffer, texture, OpenGL, rendering, resource management
+**Symbols:** FrameBuffer, FrameBuffer.frameBuffer, FrameBuffer.texture, FrameBuffer.hasDepthTexture, FrameBuffer.depthTexture, FrameBuffer.init, FrameBuffer.deinit, FrameBuffer.updateSize, FrameBuffer.clear, FrameBuffer.validate, FrameBuffer.bindTexture, FrameBuffer.bindDepthTexture, FrameBuffer.bind, FrameBuffer.unbind
+**Concepts:** OpenGL framebuffer management, texture handling, rendering setup
 
 ## Summary
-This chunk defines texture handling logic including initialization from files and mipmapping generation.
+The FrameBuffer struct manages OpenGL framebuffers and textures for rendering.
 
 ## Explanation
-The chunk contains definitions for `Texture` and `TextureArray` structs, each with methods for initializing textures from files or generating mipmaps. The `generate` method in `TextureArray` handles creating a GPU buffer, calculating mipmap levels, and uploading texture data to the GPU. The `initFromFile` and `initFromMipmapFiles` methods in `Texture` handle loading images and setting up textures with appropriate parameters.
+The FrameBuffer struct encapsulates the creation, management, and destruction of OpenGL framebuffers and their associated textures. It provides methods to initialize (`init`), deinitialize (`deinit`), update size (`updateSize`), clear (`clear`), validate (`validate`), bind textures (`bindTexture`, `bindDepthTexture`), bind the framebuffer itself (`bind`), and unbind it (`unbind`). The struct maintains state for the framebuffer ID, texture ID, depth texture presence, and depth texture ID. It uses OpenGL functions to manage these resources, ensuring proper setup and teardown of framebuffers and textures.
 
 ## Code Example
 ```zig
-pub fn init() Texture {
-	var self: Texture = undefined;
-	c.glGenTextures(1, &self.textureID);
-	return self;
+pub fn clear(_: FrameBuffer, clearColor: Vec4f) void {
+	c.glDepthFunc(c.GL_LESS);
+	c.glDepthMask(c.GL_TRUE);
+	c.glDisable(c.GL_SCISSOR_TEST);
+	c.glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+	c.glClear(c.GL_COLOR_BUFFER_BIT | c.GL_DEPTH_BUFFER_BIT);
 }
 ```
 
 ## Related Questions
-- How does the `Texture` struct initialize a texture from a file?
-- What is the purpose of the `generate` method in the `TextureArray` struct?
-- How are mipmaps generated and uploaded to the GPU in this chunk?
-- What error handling is implemented when loading images for textures?
-- How does the chunk ensure that texture dimensions are powers of two?
-- What OpenGL parameters are set for textures in this implementation?
+- How does the FrameBuffer struct initialize its OpenGL resources?
+- What methods are provided to update the size of a framebuffer and its textures?
+- How is depth texture handling managed within the FrameBuffer struct?
+- What steps are taken to validate that a framebuffer is complete?
+- How do you bind and unbind a framebuffer using the FrameBuffer struct?
+- What OpenGL functions are used in the clear method of FrameBuffer?
 
 *Source: unknown | chunk_id: codebase_src_graphics.zig_chunk_15*

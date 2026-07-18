@@ -1,28 +1,27 @@
 # [easy/codebase_assets_cubyz_blocks_osier.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** cuttable, sliceable, blockHealth, drops, toolEffective, replaceable, degradable, alwaysViewThrough, absorbedLight, texture, lodReplacement
-**Symbols:** tags, blockHealth, drops, selectionCapabilities, replaceable, degradable, collide, alwaysViewThrough, absorbedLight, model, rotation, onUpdate, texture, item, lodReplacement
-**Concepts:** block configuration, drop mechanics, selection capabilities, light absorption, LOD replacement, update hooks
+**Keywords:** block properties, configuration data, texture mapping, drop conditions, update behavior
+**Concepts:** block configuration, item properties
 
 ## Summary
-Defines the Osier block configuration with cuttable/sliceable tags, health value, drop behavior, selection capabilities, replaceability, degradability, collision settings, light absorption, model/rotation references, texture and item definitions, LOD replacement, and an onUpdate hook for support checking.
+Defines properties for the Osier block in Cubyz, including tags, health, drops, selection capabilities, and textures.
 
 ## Explanation
-This chunk is a .zon configuration file that declares the Osier block's static properties. It sets tags to cuttable and sliceable, assigns a blockHealth of 0.2, defines drops as auto with allowedToolTags restricted to cuttable, enables toolEffective selection capabilities, marks the block as replaceable and degradable, disables collision (collide = false), sets alwaysViewThrough to true, specifies absorbedLight as 0x121012, references model cubyz:plane and rotation cubyz:carpet, provides texture cubyz:osier, defines item with texture osier.png, sets lodReplacement to cubyz:air, and includes an onUpdate hook of type check_support_blocks.
+This chunk defines the configuration for the Osier block in the Cubyz game. It specifies various properties such as tags (cuttable, sliceable), block health, drop items with conditions, selection capabilities, replaceability, degradability, collision behavior, light absorption, model and rotation types, update behavior, texture, item texture, and LOD replacement.
 
 ## Related Questions
-- What tags are assigned to the Osier block?
-- How is the health of the Osier block defined?
-- Which tool tag is required for drops from the Osier block?
-- What selection capabilities does the Osier block support?
-- Is the Osier block replaceable in the world?
-- Does the Osier block collide with other blocks?
-- Can players see through the Osier block by default?
-- What is the absorbedLight value for the Osier block?
-- Which model and rotation are referenced for the Osier block?
-- What texture is used for the Osier item?
-- What LOD replacement does the Osier block use?
-- What type of onUpdate hook is configured for the Osier block?
+- What are the tags associated with the Osier block?
+- How much health does the Osier block have?
+- What items can be dropped from the Osier block and under what conditions?
+- Does the Osier block allow tool selection?
+- Is the Osier block replaceable?
+- Can the Osier block degrade over time?
+- Does the Osier block collide with other objects?
+- Can players always view through the Osier block?
+- What is the absorbed light value for the Osier block?
+- Which model and rotation type does the Osier block use?
+- What update behavior is associated with the Osier block?
+- What texture is used for the Osier block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_osier.zig.zon_chunk_0*

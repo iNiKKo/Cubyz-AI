@@ -1,22 +1,22 @@
 # [src/blocks.zig] - PR #1143 review diff
 
 **Type:** review
-**Keywords:** Block, checkEntityTouch, onEntityTouch, entity interaction, function pointer, dynamic behavior, block types
-**Symbols:** Block, _allowOres, _checkEntityTouch, canBeChangedInto, main.items.ItemStack, main.rotation.RotationMode.CanBeChangedInto, onEntityTouch, main.server.Entity
+**Keywords:** Block, entity touch, function pointer, dynamic behavior, architectural review
+**Symbols:** Block, _allowOres, _checkEntityTouch, canBeChangedInto, onEntityTouch
 **Concepts:** thread safety, backwards compatibility, memory leak
 
 ## Summary
 Added new methods `checkEntityTouch` and `onEntityTouch` to the Block struct in blocks.zig.
 
 ## Explanation
-The changes introduce two new methods to the Block struct: `checkEntityTouch` and `onEntityTouch`. The `checkEntityTouch` method checks if a block allows entities to touch it, while `onEntityTouch` is intended to handle interactions when an entity touches the block. The reviewer suggests using function pointers for further implementation, indicating a potential need for dynamic behavior based on block types.
+The changes introduce two new functions within the Block struct: `checkEntityTouch` and `onEntityTouch`. The `checkEntityTouch` function checks if a block allows entities to touch it, while `onEntityTouch` is intended to handle actions when an entity touches the block. The reviewer suggests using function pointers for future implementation, indicating a potential need for more dynamic behavior in how blocks interact with entities.
 
 ## Related Questions
 - What is the purpose of the `checkEntityTouch` method in the Block struct?
-- How does the `onEntityTouch` method currently handle entity interactions?
-- Why are function pointers being considered for future implementation?
-- What potential issues could arise from adding these new methods to the Block struct?
-- How might these changes affect backwards compatibility with existing block types?
-- Is there a risk of memory leaks introduced by the new methods?
+- How does the `onEntityTouch` method currently handle entity interactions with blocks?
+- Why did the reviewer suggest using function pointers for block-entity interactions?
+- Is there any potential impact on performance or memory usage with these new methods?
+- What architectural considerations were taken into account when adding these methods?
+- How might these changes affect backwards compatibility with existing Cubyz code?
 
 *Source: unknown | chunk_id: github_pr_1143_comment_1977731254*

@@ -1,26 +1,26 @@
 # [medium/addon_creator_app-io.js] - Chunk 1
 
 **Type:** ui
-**Keywords:** .zig.zon, items, entities, particles, recipes, biomes, extractVal, regex match, brace counting, projectData
-**Symbols:** window.projectData.items, window.projectData.entities, window.projectData.particles, window.projectData.recipes, extractVal, extractMinMax, getSideTex, parseIntegerToHexColor
-**Concepts:** file parsing, regex extraction, nested JSON handling, project data population, addon blueprint processing
+**Keywords:** absorbedLightColor, dropAuto, hasItemIcon, material properties, callbacks, sides, tags, stackSize, foodValue, blockPlacement, texture, durability, swingSpeed, modifierType, height
+**Symbols:** absorbedLightColor, dropAuto, dropSearch, hasItemIcon, itemIconSearch, baseTexture, callbacks, sides, tags, parsedTags, content, extractVal, getSideTex, stackSize, foodValue, blockPlacement, texture, colors, baseColor, material, durability, swingSpeed, textureRoughness, massDamage, hardnessDamage, modifierType, modifierStrength, height, coordinateSystem, model, defaultTexture, speedRange, lifeRange, densityRange, rotRange, dragRange, directionVectorMatch, hasEmission, speedMin, speedMax, lifeMin, lifeMax, densityMin, densityMax, rotVelMin, rotVelMax, dragMin, dragMax, randomRotate, collides, shape, shapeRadius, shapeSize, mode, dirX, dirY, dirZ, inputsParsed, inputsMatch, outputs
+**Concepts:** data-binding, file parsing, project data model, regular expressions, configuration extraction
 
 ## Summary
-This module parses .zig.zon addon files and populates the projectData object with items, entities, particles, recipes, and biomes by extracting values from file contents.
+This chunk handles the parsing and processing of different types of files (.zig.zon) within an addon project, extracting relevant data and populating it into the corresponding sections of the project's data structure.
 
 ## Explanation
-The code handles multiple file paths: blocks (absorbedLightColor, dropAuto, etc.), items (stackSize, foodValue, blockPlacement, tags, texture, colors, baseColor, material), entityModels/models (height, coordinateSystem, model, defaultTexture, tags), particles (speedRange, lifeRange, densityRange, rotRange, dragRange, directionVectorMatch, hasEmission, shape, mode), recipes (inputsParsed, output), and biomes (parsedStructures). It uses extractVal helper for simple key-value extraction, extractMinMax for range values, regex matches for complex structures like tags or inputs, and manual brace counting for nested JSON-like blocks. Each parsed section pushes an object into the corresponding window.projectData array or property.
+The chunk processes various file paths and their content to extract specific configurations and data. It uses regular expressions to parse values from the file content, such as tags, texture paths, material properties, and more. The extracted data is then structured into objects that are pushed into arrays or added to objects within `window.projectData`, which represents the project's overall data model. This includes handling files for blocks, items, entity models, particles, recipes, and biomes.
 
 ## Related Questions
-- How does the code extract tags from a .zig.zon file?
-- What happens if a block file lacks an absorbedLight value?
-- How are particle speed ranges parsed from content?
-- Where is the entity model ID constructed in the code?
-- Does the recipe parser handle quoted input strings?
-- How does the biome parser locate structures within nested braces?
-- What default values are used when extractVal fails to find a key?
-- Is there any validation for texture file existence before pushing items?
-- How is the coordinateSystem determined for an entity model?
-- Can the particle shape be changed dynamically by editing the .zig.zon?
+- How does the chunk extract and process data from .zig.zon files for blocks?
+- What regular expressions are used to parse material properties in item files?
+- How is the `callbacks` object populated based on the content of block files?
+- What steps are taken to ensure that texture paths are correctly formatted in entity model files?
+- How does the chunk handle parsing and storing data for recipes, including inputs and outputs?
+- What mechanisms are used to validate or sanitize extracted values before they are added to `window.projectData`?
+- How does the chunk manage different coordinate systems specified in entity model files?
+- What is the process for extracting and handling speed ranges from particle files?
+- How does the chunk ensure that default texture paths are correctly formatted in biomes files?
+- What steps are taken to parse and store structure data from biome files?
 
 *Source: unknown | chunk_id: addon_creator_app-io.js_chunk_1*

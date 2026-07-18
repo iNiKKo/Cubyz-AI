@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_desert_hoodoos__defaults.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome properties, fog density, stripe configuration, music association, environmental attributes
-**Concepts:** biome configuration, environmental settings
+**Keywords:** biome properties, stripe patterns, fog settings, music association, environmental attributes
+**Concepts:** biome configuration
 
 ## Summary
-Defines default properties for the Desert Hoodoos biome in Cubyz, including climate, music, fog settings, and stripe configurations.
+Defines default properties for the Desert Hoodoos biome in Cubyz.
 
 ## Explanation
-This chunk configures the Desert Hoodoos biome with specific attributes. It sets the biome as hot, dry, and barren. The associated music is specified as 'cubyz:mischol/desert_firefly'. Fog density is set to 1.5, and the fog color is defined as 0xe9f2e2. Additionally, it includes a stripe configuration with one stripe that has a direction vector of (1, 1, 6), uses 'cubyz:limestone/smooth' blocks, has a distance of 10 units, an offset of 6 units, and a width of 2 units.
+This chunk configures various attributes of the Desert Hoodoos biome, including its environmental properties (hot, dry, barren), associated music, fog density and color, and specific stripe patterns. The stripes are defined with direction vectors, block types, distances, offsets, and widths to create distinct visual features within the biome.
 
 ## Related Questions
-- What are the climate properties of the Desert Hoodoos biome?
-- Which music is associated with the Desert Hoodoos biome?
-- What is the fog density setting for the Desert Hoodoos biome?
-- What color is the fog in the Desert Hoodoos biome?
-- How many stripes are defined for the Desert Hoodoos biome?
-- What block type is used in the stripe configuration of the Desert Hoodoos biome?
+- What are the environmental properties of the Desert Hoodoos biome?
+- Which music track is associated with the Desert Hoodoos biome?
+- What is the fog density and color for the Desert Hoodoos biome?
+- How many stripe patterns are defined for the Desert Hoodoos biome?
+- What block type is used in the first stripe pattern of the Desert Hoodoos biome?
+- What are the direction, distance, offset, and width parameters for the first stripe pattern?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_desert_hoodoos__defaults.zig.zon_chunk_0*

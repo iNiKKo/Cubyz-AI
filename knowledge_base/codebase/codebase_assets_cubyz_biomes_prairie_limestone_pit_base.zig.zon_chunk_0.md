@@ -1,23 +1,27 @@
 # [easy/codebase_assets_cubyz_biomes_prairie_limestone_pit_base.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** dry, barren, minRadius, maxRadius, chance, roughness, hills, stoneBlock, parentBiomes, structures
-**Symbols:** .properties, .dry, .barren, .minRadius, .maxRadius, .chance, .minHeight, .maxHeight, .roughness, .hills, .stoneBlock, .parentBiomes, .structures
-**Concepts:** biome configuration, terrain bounds, structure generation, parent inheritance
+**Keywords:** biome config, radius, chance, height, roughness, hills, stone block, parent biome, structure
+**Symbols:** PrairieLimestonePitBaseBiome, PrairieLimestonePitBaseBiome.properties, PrairieLimestonePitBaseBiome.minRadius, PrairieLimestonePitBaseBiome.maxRadius, PrairieLimestonePitBaseBiome.chance, PrairieLimestonePitBaseBiome.minHeight, PrairieLimestonePitBaseBiome.maxHeight, PrairieLimestonePitBaseBiome.roughness, PrairieLimestonePitBaseBiome.hills, PrairieLimestonePitBaseBiome.stoneBlock, PrairieLimestonePitBaseBiome.parentBiomes, PrairieLimestonePitBaseBiome.structures
+**Concepts:** biome configuration, min/max radius, chance, height range, roughness, hill count, stone block type, parent biomes, structures
 
 ## Summary
-Defines the Prairie Limestone Pit biome configuration with terrain bounds, parent inheritance from cubyz:prairie/base, and boulder structure generation rules.
+Prairie Limestone Pit Base Biome Configuration
 
 ## Explanation
-This chunk is a .zon configuration file declaring static biome properties. It sets dry and barren flags, defines minRadius 16 and maxRadius 22, chance 0, minHeight 30, maxHeight 36, roughness 1, hills count 10, stoneBlock identifier cubyz:limestone/smooth, a single parentBiome entry referencing cubyz:prairie/base with spawn chance 3, and one structure entry for id cubyz:boulder using block cubyz:limestone/smooth with size 2 and size_variance 9.
+This chunk defines the configuration for a Prairie Limestone Pit Base biome. It specifies properties like dry and barren, minimum and maximum radius, chance, height range, roughness, hill count, stone block type, parent biomes, and structures with their respective chances, sizes, and size variance.
 
 ## Related Questions
-- What flags are set for the Prairie Limestone Pit biome?
-- What is the minimum and maximum radius defined for this biome?
-- Which parent biome does this configuration inherit from and what is its spawn chance?
-- What block identifier is used for terrain generation in this biome?
-- How many hills are configured to generate in this biome?
-- What structure ID is defined for the Prairie Limestone Pit biome?
-- What block type is used for the boulder structure and what is its size variance?
+- What are the properties of the Prairie Limestone Pit Base Biome?
+- What is the minimum and maximum radius for this biome?
+- What is the chance of generating structures in this biome?
+- What is the height range for this biome?
+- What is the roughness value for this biome?
+- How many hills are generated in this biome?
+- What is the type of stone block used in this biome?
+- Which parent biomes does this biome inherit from?
+- What structures can be generated in this biome and what is their chance?
+- What is the size of the structures that can be generated in this biome?
+- What is the variance in the size of the structures that can be generated in this biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_prairie_limestone_pit_base.zig.zon_chunk_0*

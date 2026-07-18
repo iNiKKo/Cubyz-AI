@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_tree_baobab_young.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprint, children, asset configuration, tree parts, leaf types
-**Concepts:** asset configuration, tree asset
+**Keywords:** blueprint, children, asset ID, configuration, tree parts
+**Concepts:** asset configuration, tree structure
 
 ## Summary
 Defines blueprints and children for a young baobab tree asset.
 
 ## Explanation
-This chunk defines the configuration for a young baobab tree asset in Cubyz. It specifies the blueprints, which are unique identifiers for different parts of the trunk, and the children, which are references to other assets representing the leaves of the tree. The blueprints include four distinct trunk segments, while the children specify two types of leaves: white for side leaves and grey for top leaves.
+This chunk defines the configuration for a young baobab tree asset in Cubyz. It specifies the blueprints, which are unique identifiers for different parts of the trunk, and the children, which map colors to specific leaf types. The blueprints array contains four entries, each with an 'id' field representing a part of the trunk. The children object maps two color keys ('white' and 'grey') to corresponding leaf asset IDs.
 
 ## Related Questions
-- What are the unique identifiers for the trunk segments of the young baobab tree?
-- Which asset represents the side leaves of the young baobab tree?
-- Which asset represents the top leaves of the young baobab tree?
-- How many different trunk segments are defined for the young baobab tree?
-- What is the configuration structure for a young baobab tree asset in Cubyz?
-- Are there any other types of leaves specified for the young baobab tree?
+- What are the IDs of the trunk parts for the young baobab tree?
+- Which leaf asset is associated with the 'white' color in the young baobab tree configuration?
+- How many different trunk parts are defined for the young baobab tree?
+- What color keys are used to map to leaf assets in the young baobab tree configuration?
+- Which leaf asset is linked to the 'grey' color in the young baobab tree configuration?
+- What is the overall structure of the young baobab tree asset configuration?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_tree_baobab_young.zig.zon_chunk_0*

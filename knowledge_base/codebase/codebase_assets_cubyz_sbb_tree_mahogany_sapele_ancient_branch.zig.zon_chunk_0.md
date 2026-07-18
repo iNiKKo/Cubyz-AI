@@ -1,22 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_tree_mahogany_sapele_ancient_branch.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** array, chance, null, sum to one, blueprint
-**Symbols:** blueprints
-**Concepts:** configuration, data structure
+**Keywords:** blueprints, chance, tree branches, generation probabilities, default fallback
+**Concepts:** world_generation
 
 ## Summary
-Configuration data for tree branch blueprints.
+Defines blueprints for different types of mahogany and sapele tree branches with associated generation chances.
 
 ## Explanation
-This chunk contains a configuration structure with an array of blueprint entries. Each entry specifies a unique ID and a chance value, where the sum of all chances must equal 1.0. The last entry has a null ID and a chance of 1.0, indicating that no branch should be placed if none of the previous conditions are met.
+This chunk contains a configuration structure defining various blueprints for mahogany and sapele tree branches. Each blueprint has an ID string that uniquely identifies the branch type and a chance value representing the probability of generating that specific branch type during world generation. The last entry in the array has a null ID with a chance of 1.0, which likely serves as a default or fallback option.
 
 ## Related Questions
-- What is the purpose of this configuration data?
-- How many different branch blueprints are defined here?
-- What happens if none of the specified conditions are met?
-- Can you explain the structure of a blueprint entry?
-- What does the 'chance' value represent in this context?
-- Is there any error handling for invalid chance values?
+- What are the different types of mahogany and sapele tree branches defined in this configuration?
+- What is the chance of generating each type of branch during world generation?
+- How does the last entry in the blueprints array function?
+- Is there a default or fallback option for branch generation, and how is it specified?
+- Can you list all the IDs for the branches defined in this configuration?
+- What is the purpose of the chance values associated with each blueprint?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_tree_mahogany_sapele_ancient_branch.zig.zon_chunk_0*

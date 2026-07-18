@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_terracotta_rough.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, block definition, texture mapping, model specification, ore spawning
-**Concepts:** block properties, terrain configuration
+**Keywords:** block configuration, rotation model, texturing, ore generation, cube model
+**Concepts:** block properties, texture mapping
 
 ## Summary
-Defines properties for a rough terracotta block in the Cubyz voxel engine.
+Defines properties for a rough terracotta block in Cubyz.
 
 ## Explanation
-This chunk is a configuration file that specifies various properties of a rough terracotta block. It sets `allowOres` to true, indicating that ores can spawn within this block type. The `rotation` property is set to 'cubyz:stairs', suggesting that the block can be rotated like stairs. The `model` is defined as 'cubyz:cube', meaning it uses a cube model for rendering. Finally, the `texture` is specified as 'cubyz:terracotta/rough', indicating the texture file used to render the rough terracotta appearance.
+This chunk specifies configuration settings for a specific type of block within the Cubyz voxel engine. The block allows ore generation, uses a stair-like rotation model, has a cube shape, and is textured with a rough terracotta pattern.
 
 ## Related Questions
-- What texture is used for the rough terracotta block?
-- Can ores spawn within the rough terracotta block?
-- How is the rough terracotta block rendered in terms of model and rotation?
+- What is the texture used for the rough terracotta block?
+- Does this block allow ore generation?
+- Which rotation model is applied to the rough terracotta block?
+- What shape does the rough terracotta block have?
 - Is there any specific configuration related to lighting or shading for this block?
-- Does this block have any special interaction behaviors defined?
-- What other blocks share similar properties with the rough terracotta block?
+- How does this block interact with other blocks in terms of stacking or placement?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_terracotta_rough.zig.zon_chunk_0*

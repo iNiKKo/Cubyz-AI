@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_grass_temperate.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** block drops, texture mapping, biome configuration, asset data, voxel engine
-**Concepts:** block properties, biome-specific assets
+**Keywords:** configuration, drops, textures, biome specific, block definition
+**Concepts:** block properties, item drops, texturing
 
 ## Summary
 Defines the properties of a grass block in the temperate biome, including its drops and textures.
 
 ## Explanation
-This chunk defines the configuration for a grass block specifically found in the temperate biome. It specifies that when this block is broken, it will drop soil items. The texture used for the top face of the block is 'cubyz:grass/temperate', while the bottom face uses 'cubyz:soil'. This configuration is part of the asset data for the Cubyz voxel engine, detailing how blocks behave and appear in different biomes.
+This chunk specifies the configuration for a grass block variant found in the temperate biome. It defines what items are dropped when the block is broken (soil) and assigns specific texture files for the top and bottom faces of the block. The `.drops` field contains an array of item drop configurations, where each entry specifies the items that can be obtained. The `.texture` field points to the texture file used for the top face of the grass block, while the `.texture_bottom` field specifies the texture for the bottom face, which is set to soil.
 
 ## Related Questions
-- What items does the temperate grass block drop when broken?
-- Which texture is used for the top face of the temperate grass block?
-- What texture is applied to the bottom face of the temperate grass block?
-- How is the asset data structured for defining block properties in Cubyz?
-- Can you provide the configuration details for the temperate grass block?
-- Where are the textures for the temperate grass block defined?
+- What items are dropped when the grass block is broken?
+- Which texture file is used for the top face of the grass block?
+- Which texture file is used for the bottom face of the grass block?
+- How many different item drop configurations are defined for this grass block?
+- Is there a specific biome associated with this grass block configuration?
+- What is the purpose of the `.drops` field in this block definition?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_grass_temperate.zig.zon_chunk_0*

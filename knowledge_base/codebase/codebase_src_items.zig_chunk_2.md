@@ -1,29 +1,33 @@
 # [hard/codebase_src_items.zig] - Chunk 2
 
 **Type:** implementation
-**Keywords:** item attributes, texture map, material information, height map, randomness
-**Symbols:** BaseItem, BaseItem.image, BaseItem.texture, BaseItem.id, BaseItem.name, BaseItem.tags, BaseItem.tooltip, BaseItem.stackSize, BaseItem.material, BaseItem.block, BaseItem.foodValue, BaseItem.init, BaseItem.hashCode, BaseItem.getTexture, BaseItem.getTooltip, BaseItem.hasTag, TextureGenerator, TextureGenerator.generateHeightMap
-**Concepts:** item properties, texture generation
+**Keywords:** struct, initialization, hashing, textures, tooltips
+**Symbols:** BaseItem, BaseItem.image, BaseItem.texture, BaseItem.id, BaseItem.name, BaseItem.tags, BaseItem.tooltip, BaseItem.stackSize, BaseItem.material, BaseItem.block, BaseItem.foodValue, BaseItem.init, BaseItem.hashCode, BaseItem.getTexture, BaseItem.getTooltip, BaseItem.hasTag
+**Concepts:** item management, texture handling, tooltip generation
 
 ## Summary
-Defines item properties and texture generation logic.
+Defines the `BaseItem` struct with methods for initialization, texture handling, and tooltip generation.
 
 ## Explanation
-This chunk defines the `BaseItem` struct, which represents basic item attributes such as image, texture, ID, name, tags, stack size, material, block type, food value, and tooltip. It includes methods to retrieve these properties. Additionally, it provides a `TextureGenerator` struct with a method to generate a height map for procedural items based on their material information.
+The `BaseItem` struct encapsulates properties of an item in the game, including its image, ID, name, tags, stack size, material, block type, food value, and tooltip. The `init` method initializes these fields using provided data and allocator. The `hashCode` method computes a hash for the item's ID. The `getTexture` method generates or retrieves the texture associated with the item. The `getTooltip` method returns the item's tooltip text. The `hasTag` method checks if the item has a specific tag.
 
 ## Code Example
 ```zig
-pub fn stackSize(self: BaseItemIndex) u16 {
-	return itemList[@intFromEnum(self)].stackSize;
+fn hashCode(self: BaseItem) u32 {
+	var hash: u32 = 0;
+	for (self.id) |char| {
+		hash = hash*%33 +% char;
+	}
+	return hash;
 }
 ```
 
 ## Related Questions
-- What is the purpose of the `BaseItem` struct?
-- How does the `init` method initialize a `BaseItem` instance?
-- What does the `generateHeightMap` function do in the `TextureGenerator` struct?
-- How are item tags managed within the `BaseItem` struct?
-- What is the role of the `hashCode` method in the `BaseItem` struct?
-- How is the texture for a `BaseItem` generated if no texture path is provided?
+- What is the purpose of the `init` method in the `BaseItem` struct?
+- How does the `hashCode` method compute the hash for an item's ID?
+- What steps are involved in generating or retrieving the texture for an item using the `getTexture` method?
+- How is the tooltip text generated and returned by the `getTooltip` method?
+- What does the `hasTag` method check for in an item?
+- How is memory allocated for string fields like `id`, `name`, and `tooltip` in the `BaseItem` struct?
 
 *Source: unknown | chunk_id: codebase_src_items.zig_chunk_2*

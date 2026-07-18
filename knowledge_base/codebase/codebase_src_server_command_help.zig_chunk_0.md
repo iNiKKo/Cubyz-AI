@@ -1,22 +1,71 @@
 # [easy/codebase_src_server_command_help.zig] - Chunk 0
 
 **Type:** api
-**Keywords:** union enum, value iterator, catch error, defer deinit, append slice, trim newline
-**Symbols:** Args, ArgParser, Cmd
-**Concepts:** command parsing, argument union enumeration, error handling with defer cleanup, message formatting
+**Keywords:** command execution, error handling, string manipulation, user feedback, argument parsing
+**Symbols:** description, usage, Args, ArgParser, execute, Cmd
+**Concepts:** server command processing, argument parsing, command help system
 
 ## Summary
-Implements the /help server command that parses arguments and lists all available commands or details a specific one.
+Handles the /help server command to display information about available commands.
 
 ## Explanation
-The chunk defines an Args union with three cases: bare '/help', '/help <command>', and '/help <bobik>'. It uses ArgParser to parse incoming args into result, catching errors and sending a red error message if parsing fails. On success it builds a yellow message buffer (msg) by appending the prefix '#ffff00' then iterating over command.commands.valueIterator() for the bare case, or extracting params.command.cmd for the specific-case. For each matched command it appends '/name: description\n'. The '<bobik>' case hardcodes 'Even Bobik can't help you anymore '. After building msg it trims a trailing newline if present and sends the result via source.sendMessage.
+This chunk defines the logic for processing the '/help' command in a server context. It uses an argument parser to handle different forms of the command, such as listing all commands or providing usage details for a specific command. The `execute` function parses the input arguments and constructs a response message accordingly. If there's an error during parsing, it sends an error message back to the user. The `Cmd` struct is responsible for parsing individual command names and handling errors if the command is not recognized.
+
+## Code Example
+```zig
+pub fn execute(args: []const u8, source: *User) void {
+	var errorMessage: main.List(u8) = .empty;
+	defer errorMessage.deinit(main.stackAllocator);
+
+	const result = ArgParser.parse(main.stackAllocator, args, &errorMessage) catch {
+		source.sendMessage("#ff0000{s}", .{errorMessage.items});
+		return;
+	};
+
+	var msg: main.ListManaged(u8) = .init(main.stackAllocator);
+	defer msg.deinit();
+	msg.appendSlice("#ffff00");
+	switch (result) {
+		.@"/help" => {
+			var iterator = command.commands.valueIterator();
+			while (iterator.next()) |cmd| {
+				msg.append('/');
+				msg.appendSlice(cmd.name);
+				msg.appendSlice(": ");
+				msg.appendSlice(cmd.description);
+				msg.append('\n');
+			}
+			msg.appendSlice("\nUse /help <command> for usage of a specific command.\n");
+		},
+		.@"/help <command>" => |params| {
+			const cmd = params.command.cmd;
+			msg.append('/');
+			msg.appendSlice(cmd.name);
+			msg.appendSlice(": ");
+			msg.appendSlice(cmd.description);
+			msg.append('\n');
+			msg.appendSlice(cmd.usage);
+			msg.append('\n');
+		},
+		.@"/help <bobik>" => {
+			msg.appendSlice("Even Bobik can't help you anymore ");
+		},
+	}
+	if (msg.items[msg.items.len - 1] == '\n') _ = msg.pop();
+	source.sendMessage("{s}", .{msg.items});
+}
+```
 
 ## Related Questions
-- How does the Args union differentiate between a bare /help and a specific command?
-- What happens when ArgParser.parse fails in execute?
-- Which iterator is used to traverse all commands in the bare /help case?
-- How are command details formatted before being sent to the user?
-- Where does the hardcoded Bobik message appear in the switch statement?
-- Why is a trailing newline removed from msg.items before sending?
+- What is the purpose of the 'description' constant in this chunk?
+- How does the 'execute' function handle different forms of the '/help' command?
+- What error handling is implemented for unrecognized commands?
+- What is the role of the 'Cmd' struct in this code?
+- How are messages constructed and sent back to the user?
+- What is the structure of the 'Args' union(enum)?
+- How does the argument parser work in this chunk?
+- What is the function of the 'NeverFailingAllocator'?
+- How are command descriptions retrieved and displayed?
+- What happens if there's an error during argument parsing?
 
 *Source: unknown | chunk_id: codebase_src_server_command_help.zig_chunk_0*

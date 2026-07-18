@@ -1,33 +1,33 @@
 # [easy/codebase_src_server_terrain_cavegen_SurfaceGenerator.zig] - Chunk 0
 
-**Type:** implementation
-**Keywords:** surface generator, cave map, biome height, voxel removal, priority
+**Type:** world_generation
+**Keywords:** voxel manipulation, surface terrain, biome mapping, heightmap generation, cave map generation
 **Symbols:** id, priority, generatorSeed, defaultState, init, generate
-**Concepts:** surface generation, cave maps, biome heights, voxel removal
+**Concepts:** world generation, terrain generation
 
 ## Summary
-Surface generation algorithm for cave maps
+The SurfaceGenerator module is responsible for generating surface terrain in cave maps.
 
 ## Explanation
-This chunk defines a surface generator for cave maps. It initializes the generator with a seed, generates the surface by removing ranges of voxels based on biome heights, and sets the priority to 32768.
+This chunk defines a SurfaceGenerator that operates on CaveMapFragments. It initializes with parameters and generates the surface by iterating over the map's width and height, using a biome map to determine surface heights and removing voxels accordingly.
 
 ## Code Example
 ```zig
-pub fn generate(map: *CaveMapFragment, worldSeed: u64) void { _ = worldSeed; const width = CaveMapFragment.width*map.pos.voxelSize; const biomeMap = CaveBiomeMapView.init(main.stackAllocator, map.pos, width, 0); defer biomeMap.deinit(); var x: u31 = 0; while (x < width) : (x += map.pos.voxelSize) { var y: u31 = 0; while (y < width) : (y += map.pos.voxelSize) { const height = biomeMap.getSurfaceHeight(map.pos.wx + x, map.pos.wy + y); const relativeHeight: i32 = height -% map.pos.wz; map.removeRange(x, y, relativeHeight, CaveMapFragment.height*map.pos.voxelSize); } } }
+pub fn init(parameters: ZonElement) void {
+	_ = parameters;
+}
 ```
 
 ## Related Questions
-- What is the purpose of the `generate` function in this chunk?
-- How does the surface generator remove voxels from the cave map based on biome heights?
-- What is the default state of the surface generator?
-- What is the priority of the surface generator?
-- What is the seed used by the surface generator?
-- How many lines are in the `generate` function's body?
-- What is the width calculation for the cave map in this chunk?
-- What is the purpose of the `biomeMap` variable in the `generate` function?
-- What is the purpose of the `removeRange` method on the `map` object in the `generate` function?
-- How many lines are in the `init` function's body?
-- What is the purpose of the `init` function in this chunk?
-- What is the default value for the `priority` variable?
+- What is the ID of the SurfaceGenerator?
+- What is the priority level of the SurfaceGenerator?
+- What is the generator seed used by the SurfaceGenerator?
+- What is the default state of the SurfaceGenerator?
+- How does the SurfaceGenerator initialize?
+- How does the SurfaceGenerator generate surface terrain?
+- What parameters are passed to the init function of the SurfaceGenerator?
+- What operations are performed in the generate function of the SurfaceGenerator?
+- How is the biome map initialized in the SurfaceGenerator?
+- What is the purpose of the removeRange method in the SurfaceGenerator?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_cavegen_SurfaceGenerator.zig_chunk_0*

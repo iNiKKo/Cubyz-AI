@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_ocean_temperate_shelf.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** ocean shelf, linear interpolation, height constraints, ground structure, music assignment
-**Concepts:** biome generation
+**Keywords:** ocean biome, terrain height, music, ground structure, linear interpolation
+**Concepts:** world generation, biome configuration
 
 ## Summary
-Defines properties for a temperate ocean shelf biome in Cubyz.
+Defines properties for the Temperate Ocean Shelf biome, including terrain height, music, and ground structure.
 
 ## Explanation
-This chunk configures the characteristics of a specific biome within the Cubyz game engine. It specifies that this is an ocean-based biome with linear interpolation, a radius of 500 units, and height constraints from -4 to 0. The biome has a chance value of 0, indicating it might not generate naturally but could be placed manually. It includes hills and assigns specific music and ground structures.
+This chunk configures the Temperate Ocean Shelf biome in Cubyz. It specifies that the biome is an ocean type with a radius of 500 units, heights ranging from -4 to 0, and no chance of occurrence. The interpolation method used is linear. There are 10 hills present in the biome. The music associated with this biome is 'cubyz:totaldemented/tides'. The ground structure consists of layers of sand between 2 and 4 cubyz units thick.
 
 ## Related Questions
-- What is the radius of the temperate ocean shelf biome?
-- Which music track is assigned to this biome?
-- How many hills are present in this biome configuration?
-- What is the interpolation method used for this biome?
-- What are the height constraints for the temperate ocean shelf biome?
-- Is there a chance for this biome to generate naturally?
+- What is the radius of the Temperate Ocean Shelf biome?
+- Which music track is associated with the Temperate Ocean Shelf biome?
+- How many hills are present in the Temperate Ocean Shelf biome?
+- What is the minimum height for the Temperate Ocean Shelf biome?
+- What is the maximum height for the Temperate Ocean Shelf biome?
+- What interpolation method is used for the Temperate Ocean Shelf biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_ocean_temperate_shelf.zig.zon_chunk_0*

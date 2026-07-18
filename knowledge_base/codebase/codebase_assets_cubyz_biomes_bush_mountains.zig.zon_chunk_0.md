@@ -1,22 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_bush_mountains.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** terrain generation, biome properties, structure placement, height limits, music, ground structure
-**Symbols:** properties, tags, minHeightLimit, minHeight, maxHeight, smoothBeaches, roughness, mountains, rivers, music, ground_structure, structures
-**Concepts:** world_generation, biome configuration
+**Keywords:** height limit, tags, roughness, structures, ground patch
+**Concepts:** biome generation
 
 ## Summary
-Defines properties and settings for bush mountains biome in Cubyz.
+Defines properties and structures for a snowy bush mountain biome in Cubyz.
 
 ## Explanation
-This chunk specifies the characteristics of the bush mountains biome, including its terrain features, structures, and environmental elements like music and ground structure. It sets limits on height, applies roughness and mountain density, and includes specific blocks and structures with their placement probabilities and parameters.
+This chunk configures the characteristics of a specific biome within the Cubyz game engine. It specifies properties like height limits, tags, roughness, and musical theme. The configuration also details ground structures and various structures that can appear within this biome, such as trees and patches of gravel or snow.
 
 ## Related Questions
-- What are the height limits for the bush mountains biome?
-- How many mountains are present in the bush mountains biome?
-- What type of music plays in the bush mountains biome?
-- What structures can be found in the bush mountains biome?
-- What is the ground structure like in the bush mountains biome?
-- Are rivers present in the bush mountains biome?
+- What are the height limits for this biome?
+- Which tags are associated with this biome?
+- How is roughness configured for this biome?
+- What musical theme is assigned to this biome?
+- What types of ground structures can be found in this biome?
+- What are the chances of encountering an oak tree in this biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_bush_mountains.zig.zon_chunk_0*

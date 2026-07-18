@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_planks_cirrus.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** durability, mass damage, hardness damage, swing speed, texture roughness, colors, modifiers, light modifier
+**Keywords:** durability, texture, modifiers, light strength, color variations
 **Concepts:** block configuration, material properties
 
 ## Summary
 Defines properties and texture for the Cirrus Planks block.
 
 ## Explanation
-This chunk configures the material properties, durability, mass damage, hardness damage, swing speed, texture roughness, colors, and modifiers for the Cirrus Planks block. It specifies a light modifier with a strength of 0.1 and assigns a texture path to the block.
+This chunk defines the configuration for a specific type of block in the Cubyz game, known as 'Cirrus Planks'. It specifies various material properties such as durability, mass damage, hardness damage, swing speed, texture roughness, and color variations. Additionally, it includes a modifier that affects light strength. The texture file path is also specified.
 
 ## Related Questions
-- What is the durability of the Cirrus Planks block?
-- How many colors are defined for the Cirrus Planks block?
-- What texture path is assigned to the Cirrus Planks block?
-- What is the strength of the light modifier applied to the Cirrus Planks block?
-- What is the swing speed of the Cirrus Planks block?
-- What is the texture roughness value for the Cirrus Planks block?
+- What is the durability of Cirrus Planks?
+- Which texture file is used for Cirrus Planks?
+- How many color variations are defined for Cirrus Planks?
+- What is the light strength modifier for Cirrus Planks?
+- What is the swing speed of Cirrus Planks?
+- What is the mass damage value for Cirrus Planks?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_planks_cirrus.zig.zon_chunk_0*

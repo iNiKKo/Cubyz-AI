@@ -1,22 +1,22 @@
 # [src/gui/windows/main.zig] - PR #382 review diff
 
 **Type:** review
-**Keywords:** exitGame, defer, deinit, settings save, leak check, GLFW window, running flag, main loop
+**Keywords:** exitGame, std.process.exit, defer ...deinit(), GLFW window, running flag, application termination, cleanup, resource deallocation, settings save, leak check
 **Symbols:** exitGame, GuiWindow, std.process.exit
-**Concepts:** thread safety, backwards compatibility, memory leak
+**Concepts:** deferred deinitialization, resource management, memory leak detection
 
 ## Summary
-The function `exitGame` is added to close the application, but it bypasses proper cleanup and leak detection.
+The function `exitGame` is added to close the application, but it bypasses proper cleanup and resource deallocation.
 
 ## Explanation
-The review points out that using `std.process.exit(0)` in the `exitGame` function immediately terminates the application without executing any deferred deinitialization calls. This omission prevents settings from being saved and skips Zig's general purpose allocator leak check, which is crucial for development. The reviewer suggests either closing the GLFW window if possible or adding a `running` flag to control the main loop instead of forcefully exiting.
+The reviewer points out that calling `std.process.exit(0)` in the `exitGame` function immediately terminates the program without executing any deferred deinitialization code. This results in unsaved settings and skipped memory leak checks by Zig's allocator, which are crucial for both production and development environments. The reviewer suggests either closing the GLFW window or adding a `running` flag to control the main loop instead of forcefully exiting the application.
 
 ## Related Questions
-- How can we modify the `exitGame` function to ensure all deferred deinitialization calls are executed?
-- Is there a way to close the GLFW window instead of using `std.process.exit(0)`?
-- What are the potential side-effects of bypassing Zig's general purpose allocator leak check in production?
-- How can we implement a `running` flag to control the main loop instead of forcefully exiting the application?
-- What changes need to be made to ensure settings are saved before the application exits?
-- Can we explore alternative methods to handle application termination that address both cleanup and leak detection?
+- How can we modify the `exitGame` function to ensure all deferred deinitialization code is executed?
+- What are the potential side-effects of using `std.process.exit(0)` in a Zig application?
+- Can we close the GLFW window instead of exiting the process, and if so, how?
+- How does adding a `running` flag to the main loop prevent immediate application termination?
+- What is the impact of not saving settings on application behavior?
+- Why is it important to perform memory leak checks during development?
 
 *Source: unknown | chunk_id: github_pr_382_comment_1613009188*

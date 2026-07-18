@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_tundra_snowy__defaults.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome properties, music association, environmental parameters, player spawn validation, configuration data
-**Concepts:** biome configuration
+**Keywords:** cold, wet, barren, music, tags, roughness, fog density, soil creep, player spawn
+**Concepts:** world generation, biome configuration
 
 ## Summary
-Defines default properties for the Tundra Snowy biome in Cubyz.
+Defines default properties for the snowy tundra biome in Cubyz.
 
 ## Explanation
-This chunk specifies configuration settings for the Tundra Snowy biome, including its properties (cold, wet, barren), associated music, tags (snowy), and various environmental parameters like roughness, fog density, fog color, soil creep, and player spawn validity. These settings are used to create a visually and environmentally distinct biome within the Cubyz game world.
+This chunk specifies configuration settings for a snowy tundra biome, including its properties (cold, wet, barren), associated music, tags, roughness, fog density and color, soil creep factor, and whether it is valid for player spawning. These settings are used to create the visual and auditory characteristics of the biome within the game.
 
 ## Related Questions
-- What are the properties of the Tundra Snowy biome?
-- Which music track is associated with the Tundra Snowy biome?
-- What tags does the Tundra Snowy biome have?
-- What is the roughness value for the Tundra Snowy biome?
-- How dense is the fog in the Tundra Snowy biome?
-- What color is the fog in the Tundra Snowy biome?
+- What are the properties of the snowy tundra biome?
+- Which music is associated with the snowy tundra biome?
+- Is the snowy tundra biome valid for player spawning?
+- What is the fog density in the snowy tundra biome?
+- What is the soil creep factor in the snowy tundra biome?
+- What tags are assigned to the snowy tundra biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_tundra_snowy__defaults.zig.zon_chunk_0*

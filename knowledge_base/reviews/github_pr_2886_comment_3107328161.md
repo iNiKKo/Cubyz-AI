@@ -1,26 +1,22 @@
 # [src/blocks.zig] - PR #2886 review diff
 
 **Type:** review
-**Keywords:** allowedToolTags, Tag.loadTagsFromZon, worldArena, stackAllocator, memory management, error handling, block drops, items.ItemStack
-**Symbols:** loadBlockDrop, blockId, zon, items.BaseItemIndex.fromId, resultItems.append, main.worldArena.dupe, allowedToolTags, Tag.loadTagsFromZon, blockDrop.getChildOrNull, tagZon, tags.len, std.log.err, blockDrops[i], blockDrop.get, f32, forbiddenToolTags
-**Concepts:** memory leak, thread safety, backwards compatibility
+**Keywords:** allowedToolTags, forbiddenToolTags, chance, worldArena, Tag.loadTagsFromZon, memory leak prevention, error logging
+**Symbols:** loadBlockDrop, blockId, zon, items.BaseItemIndex.fromId, resultItems.append, main.worldArena.dupe, allowedToolTags, tagZon, Tag.loadTagsFromZon, main.stackAllocator, blockDrops[i], blockDrop.getChildOrNull, blockDrop.get, f32
+**Concepts:** memory management, error handling, architectural design
 
 ## Summary
-The code now loads allowed tool tags from a ZonElement and assigns them to block drops. It also includes a check for empty allowed tool tags and logs an error if they are found.
+The code now loads allowed tool tags for block drops and checks if they are empty, logging an error if so. It also initializes the `chance` field and uses the `worldArena` for memory allocation.
 
 ## Explanation
-The change introduces functionality to load 'allowedToolTags' from a ZonElement, which specifies the tools that can drop a particular block. This is done by checking if the 'allowedToolTags' field exists in the ZonElement and loading the tags accordingly. If the field is empty, an error message is logged. The reviewer notes that the use of 'main.stackAllocator' for loading tags should be replaced with 'main.worldArena' to prevent memory leaks, as the allocated memory would not be freed otherwise.
+This change introduces functionality to handle allowed tool tags for block drops, ensuring that if the array is empty, an error is logged. The `chance` field is initialized with a default value of 1. The use of `worldArena` for memory allocation is crucial for preventing memory leaks, as it ensures that allocated memory is properly managed and freed when no longer needed.
 
 ## Related Questions
-- What is the purpose of the 'allowedToolTags' field in the ZonElement?
-- How does the code handle an empty array for 'allowedToolTags'?
-- Why is it recommended to use 'main.worldArena' instead of 'main.stackAllocator'?
-- What potential issues could arise from not freeing memory allocated with 'main.stackAllocator'?
-- How does the code ensure that only valid tools can drop a block?
-- What changes would be necessary to make this feature backwards compatible?
-- Can you explain the role of 'resultItems.append' in the context of loading block drops?
-- How is the 'chance' field for block drops being handled in this update?
-- What are the implications of using 'main.worldArena' for memory allocation in this context?
-- How does the code handle the case where 'forbiddenToolTags' are specified?
+- What is the purpose of the `allowedToolTags` variable?
+- How does the code handle empty arrays for allowed tool tags?
+- Why is the `worldArena` used for memory allocation in this context?
+- What is the default value for the `chance` field?
+- How are errors logged if the `.allowedToolTags` array is empty?
+- What is the role of `Tag.loadTagsFromZon` in this code snippet?
 
 *Source: unknown | chunk_id: github_pr_2886_comment_3107328161*

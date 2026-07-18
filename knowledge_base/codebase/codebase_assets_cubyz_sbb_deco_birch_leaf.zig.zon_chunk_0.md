@@ -15,7 +15,7 @@ This chunk contains a configuration structure defining blueprints for birch leaf
 - What is the chance associated with the second blueprint entry?
 - How many blueprint entries are defined in this configuration?
 - Is there a blueprint entry with a null ID?
-- What is the total chance value for all blueprint entries combined?
-- Can you provide the structure of the blueprint configuration?
+- What is the total probability represented by these blueprint chances?
+- Can you provide the IDs and their respective chances from the blueprint configurations?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_deco_birch_leaf.zig.zon_chunk_0*

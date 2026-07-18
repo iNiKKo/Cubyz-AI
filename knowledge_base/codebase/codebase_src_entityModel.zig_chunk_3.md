@@ -1,34 +1,30 @@
 # [medium/codebase_src_entityModel.zig] - Chunk 3
 
-**Type:** api
-**Keywords:** entity models, initialization, resetting, retrieval by ID, loading textures
-**Symbols:** entityModels, reverseIndices, playerEntityModels
-**Concepts:** entity ECS, model management
+**Type:** implementation
+**Keywords:** GLTF parsing, vertex buffer, index buffer, error handling, scene graph traversal
+**Symbols:** EntityModel, EntityModel.vao, EntityModel.indexCount, EntityModel.nodeCount, EntityModel.loadFromGltf, EntityModel.getHierarchyDepth, EntityModel.getGltfError, EntityModel.bind
+**Concepts:** entity ECS, 3D model loading, GLTF format, vertex array object binding
 
 ## Summary
-Handles entity models, including initialization, resetting, retrieval by ID, and loading of models and textures.
+The chunk implements entity model loading and binding using GLTF format.
 
 ## Explanation
-This chunk manages the lifecycle of entity models within the Cubyz engine. It includes functions to append new models, reset all models, retrieve a model index by its ID, provide a default model if none is available, and load both models and their associated textures. The `reset` function deinitializes all models and clears internal data structures. The `getById` function searches for an entity model by its ID using a reverse index map. The `default` function ensures that there is always a fallback model available. The `loadModelsAndTexture` function attempts to load each model's texture, and if it fails, it replaces the model with a default one and retries loading.
+This chunk defines the `EntityModel` struct, which handles the loading of 3D models in the GLTF format. It includes methods for processing primitives, reading attributes like position, normal, and UV coordinates, converting them to engine-specific formats, and binding the model for rendering. The `getHierarchyDepth` function calculates the depth of a node in the scene graph, while `getGltfError` maps CGltf error codes to Zig errors. The `bind` method prepares the model for rendering by binding the vertex array object and texture.
 
 ## Code Example
 ```zig
-pub fn reset() void {
-	for (entityModels.items) |*model| {
-		model.deinit();
+pub fn bind(self: *EntityModel) void {
+		self.vao.?.bind();
+		self.defaultTexture.?.bindTo(0);
 	}
-	entityModels = .empty;
-	reverseIndices = .{};
-	playerEntityModels = .empty;
-}
 ```
 
 ## Related Questions
-- How do you append a new entity model?
-- What does the reset function do in this chunk?
-- How is an entity model retrieved by its ID?
-- What happens if a default entity model cannot be found?
-- How are models and textures loaded for each entity?
-- What data structures are used to manage entity models?
+- How does the `EntityModel` struct handle GLTF model data?
+- What is the purpose of the `getHierarchyDepth` function in this chunk?
+- How are errors from CGltf mapped to Zig errors in this code?
+- What steps are involved in binding an entity model for rendering?
+- How does the chunk process vertex and index data from GLTF primitives?
+- What is the role of the `coordinateSystem.convertVec` method in this implementation?
 
 *Source: unknown | chunk_id: codebase_src_entityModel.zig_chunk_3*

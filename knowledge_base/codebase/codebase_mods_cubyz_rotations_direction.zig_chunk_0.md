@@ -1,34 +1,33 @@
 # [easy/codebase_mods_cubyz_rotations_direction.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** rotation, matrix, hashmap, deinit, allocator, transformModel, log, world generation, block meshing, gameplay mechanics
+**Keywords:** string hash map, model rotation, rotation matrix, block data, neighbor support
 **Symbols:** rotatedModels, init, deinit, reset, createBlockModel, model, rotateZ, generateData, updateBlockFromNeighborConnectivity
-**Concepts:** hash map, model rotation, block data, neighbor connectivity, transformation matrix
+**Concepts:** block model rotations, data generation, neighbor connectivity
 
 ## Summary
-Manages rotated models for blocks in the Cubyz engine.
+Handles block model rotations and data generation based on neighbor connectivity.
 
 ## Explanation
-This chunk provides functions to initialize, deinitialize, and reset a hash map of rotated models. It also includes methods to create block models by rotating base models based on specific transformations. Additionally, it offers utility functions for rotating data and updating blocks based on neighbor connectivity.
+This chunk manages the creation and rotation of block models. It initializes a string hash map to store rotated models, providing functions to initialize, deinitialize, and reset this map. The `createBlockModel` function generates a unique model index for each block by rotating its base model based on various angles. The `model` function retrieves the model index for a given block. The `rotateZ` function uses a precomputed rotation table to rotate block data around the Z-axis. The `generateData` function updates block data based on neighbor connectivity during block placement. Additionally, the `updateBlockFromNeighborConnectivity` function checks and updates block properties based on neighboring blocks' support.
 
 ## Code Example
 ```zig
-pub fn init() void {
-	rotatedModels = .init(main.globalAllocator.allocator);
+pub fn deinit() void {
+	rotatedModels.deinit();
 }
 ```
 
 ## Related Questions
-- What does the `createBlockModel` function do?
-- How is the `rotateZ` function implemented?
-- What happens when `generateData` is called with blockPlacing set to true?
-- How is memory allocated and deallocated in this chunk?
-- Which functions are responsible for updating blocks based on neighbor connectivity?
-- What error handling is done in the `createBlockModel` function?
-- How does the `model` function determine which model index to return?
-- What transformation matrices are used in the `createBlockModel` function?
-- How is the `rotatedModels` hash map initialized and deinitialized?
-- What happens if an invalid model data string is encountered in `createBlockModel`?
-- Which functions are part of the public interface for this module?
+- How is the `rotatedModels` hash map initialized?
+- What does the `createBlockModel` function do with the base model?
+- How is block data rotated around the Z-axis in this chunk?
+- What conditions trigger the update of block data in `generateData`?
+- How does the `updateBlockFromNeighborConnectivity` function determine if a block should be set to air?
+- What is the purpose of the `reset` function in this module?
+- How are models retrieved for a given block using the `model` function?
+- What is the role of the rotation table in the `rotateZ` function?
+- How does the chunk handle errors when retrieving model data from ZonElement?
+- What is the relationship between block placement and neighbor connectivity in this module?
 
 *Source: unknown | chunk_id: codebase_mods_cubyz_rotations_direction.zig_chunk_0*

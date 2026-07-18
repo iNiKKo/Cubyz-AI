@@ -1,28 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_lava.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** tags, drops, selectionCapabilities, replaceable, degradable, transparent, backFaceCollision, collisionDetection, absorbedLight, emittedLight, density, terminalVelocity, mobility, model, texture
-**Symbols:** LavaBlock
-**Concepts:** block configuration, lava properties
+**Keywords:** configuration, block definition, fluid behavior, lighting, damage effects
+**Concepts:** block properties, fluid mechanics, player interaction
 
 ## Summary
-Lava block configuration
+Defines properties for the Lava block in Cubyz, including its fluid behavior and interaction effects.
 
 ## Explanation
-This chunk defines the lava block's properties, including tags, drops, selection capabilities, replaceability, degradation, transparency, back face collision, collision detection, absorbed light color, emitted light color, density, terminal velocity, mobility, model, texture, and touch interaction.
+This chunk defines a configuration object for the Lava block in the Cubyz voxel engine. It specifies various properties such as tags (fluid, hot), drops (none), selection capabilities (toolEffective), replaceability, degradability, transparency, back face visibility, collision behavior, light absorption and emission colors, density, terminal velocity, mobility, model type, texture, and onTouch effects (hurt with 2.0 damage per second of heat type).
 
 ## Related Questions
-- What are the tags associated with the lava block?
-- Which drops does the lava block drop when mined?
-- What selection capabilities does the lava block have?
-- Is the lava block replaceable?
-- Can the lava block be degraded?
-- Is the lava block transparent?
-- Does the lava block have a back face collision?
-- Does the lava block collide with other blocks?
-- What is the absorbed light color of the lava block?
-- What is the emitted light color of the lava block?
-- What is the density of the lava block?
-- What is the terminal velocity of the lava block?
+- What are the tags associated with the Lava block?
+- Does the Lava block emit light, and if so, what color is it?
+- How does the Lava block interact with players upon contact?
+- Is the Lava block replaceable or degradable?
+- What is the terminal velocity of the Lava block?
+- Which model and texture are used for the Lava block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_lava.zig.zon_chunk_0*

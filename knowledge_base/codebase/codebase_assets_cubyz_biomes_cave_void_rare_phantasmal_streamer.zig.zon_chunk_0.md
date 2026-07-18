@@ -1,22 +1,27 @@
 # [easy/codebase_assets_cubyz_biomes_cave_void_rare_phantasmal_streamer.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome, structure, chance, rotation, cave model, radius
-**Symbols:** structures, structure, chance, rotation, caveModels, id, minAmount, maxAmount, minRadius, maxRadius
-**Concepts:** configuration, world_generation
+**Keywords:** structure configuration, cave model, chance, rotation, amount, radius
+**Symbols:** cubyz:sbb, cubyz:phantasmal/auroras/high, cubyz:phantasmal/auroras/low, cubyz:partial_sphere
+**Concepts:** configuration, cave void, phantasmal streamer
 
 ## Summary
-Configuration data for cave void rare phantasmal streamer biomes.
+Cave void rare phantasmal streamer configuration
 
 ## Explanation
-This chunk contains configuration data for specific structures and cave models used in the 'cave_void_rare_phantasmal_streamer' biome. It defines probabilities, rotations, and ranges for generating auroras and partial spheres within the cave environment.
+This chunk defines the configuration for cave void rare phantasmal streamers. It specifies structures and cave models with their respective IDs, chances, rotations, minimum and maximum amounts, and radii.
 
 ## Related Questions
-- What structures are defined in the 'cave_void_rare_phantasmal_streamer' biome?
-- How often does each structure appear?
-- What is the range of cave models used in this biome?
-- What is the minimum and maximum radius for partial spheres?
-- Which IDs are associated with the structures and cave models?
-- What is the rotation applied to the structures?
+- What are the IDs of the structures for cave void rare phantasmal streamers?
+- How many different cave models are defined in this configuration?
+- What is the minimum amount of partial sphere cave models that can be generated?
+- What is the maximum radius of the partial sphere cave models?
+- What is the chance of generating a high aurora structure for cave void rare phantasmal streamers?
+- What is the rotation angle for the low aurora structure in cave void rare phantasmal streamers?
+- How many structures are defined in total for cave void rare phantasmal streamers?
+- What is the minimum amount of partial sphere cave models that can be generated per structure?
+- What is the maximum radius of the partial sphere cave models per structure?
+- What is the chance of generating a low aurora structure for cave void rare phantasmal streamers?
+- How many different rotation angles are defined for the structures in cave void rare phantasmal streamers?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_cave_void_rare_phantasmal_streamer.zig.zon_chunk_0*

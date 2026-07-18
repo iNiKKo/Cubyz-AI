@@ -1,22 +1,28 @@
 # [easy/codebase_assets_cubyz_biomes_peak.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** properties, tags, minHeightLimit, maxHeight, smoothBeaches, fogDensity, ground_structure, structures, chance, size_variation
-**Symbols:** .properties, .tags, .mountain, .cold, .barren, .wet, .snowy, .minHeightLimit, .minHeight, .maxHeight, .smoothBeaches, .fogDensity, .fogColor, .mountains, .music, .soilCreep, .ground_structure, .structures
-**Concepts:** biome configuration, terrain generation parameters, structure spawning rules, fog settings, block definitions
+**Keywords:** biome config, height limit, fog setting, music, soil creep, ground struct, stone block, structure
+**Symbols:** properties, tags, minHeightLimit, minHeight, maxHeight, smoothBeaches, fogDensity, fogColor, mountains, music, soilCreep, ground_structure, stoneBlock, structures
+**Concepts:** biome configuration, height limits, fog settings, music, soil creep, ground structure, stone block, structures
 
 ## Summary
-Configuration data defining the peak biome with its terrain parameters, block definitions, and structure generation rules.
+Biome configuration for 'Peak' biome
 
 ## Explanation
-This chunk is a .zon configuration file containing static settings for the 'peak' biome. It defines an enum-like set of properties (.mountain, .cold, .barren, .wet) and tags (.snowy). Numeric parameters include minHeightLimit (7), minHeight (120), maxHeight (256), smoothBeaches (true), fogDensity (1.5), fogColor (0xe2f2ff), mountains count (125), soilCreep (1.0), music path, stoneBlock identifier ('cubyz:glacite/smooth'), and a ground_structure array specifying snow and permafrost layers with quantity ranges. It also declares a structures object containing one structure definition for 'cubyz:stalagmite' made of 'cubyz:ice' with a 0.08 chance and size parameters.
+Defines properties, tags, height limits, fog settings, music, soil creep, ground structure, stone block, and structures for the 'Peak' biome.
 
 ## Related Questions
-- What properties are defined for the peak biome configuration?
-- Which tags are associated with this biome entry?
-- What is the minimum height limit set for terrain generation in this chunk?
-- How many mountain structures are configured to generate here?
-- What music track is assigned to this biome's environment?
-- Which block type is specified as the stoneBlock for this configuration?
+- What are the tags associated with the 'Peak' biome?
+- What is the minimum height limit for the 'Peak' biome?
+- What is the maximum height limit for the 'Peak' biome?
+- What is the fog density setting for the 'Peak' biome?
+- What is the music track assigned to the 'Peak' biome?
+- What is the soil creep rate for the 'Peak' biome?
+- What are the ground structures associated with the 'Peak' biome?
+- What block is used as the stone block in the 'Peak' biome?
+- How many stalagmites can be generated per chunk in the 'Peak' biome?
+- What is the size of each stalagmite generated in the 'Peak' biome?
+- What is the variation in size for each stalagmite generated in the 'Peak' biome?
+- What block is used as the stalagmite block in the 'Peak' biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_peak.zig.zon_chunk_0*

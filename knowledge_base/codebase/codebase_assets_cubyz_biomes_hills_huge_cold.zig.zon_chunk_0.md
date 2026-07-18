@@ -1,28 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_hills_huge_cold.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** cold biome, pine tags, grass cold, soil block, boulder chance, fallen tree, flower patch, simple vegetation, coniferous pine, degradable mode
-**Symbols:** .properties, .tags, .ground_structure, .music, .structures
-**Concepts:** biome configuration, procedural generation, structure placement, chance-based spawning, vegetation definition, tree structures, ground blocks, music assignment
+**Keywords:** cold biome, pine forest, ground structures, music, structures
+**Concepts:** biome configuration, world generation
 
 ## Summary
-Defines a cold biome configuration with pine tags and ground structures including grass, soil, boulders, fallen trees, flower patches, simple vegetation, and coniferous tree structures.
+Defines properties and structures for a cold, pine-covered hill biome.
 
 ## Explanation
-This chunk is a .zon configuration file defining the properties of a cold biome. It sets the biome temperature to 'cold' and assigns pine tags. The ground_structure property lists two blocks: cubyz:grass/cold and cubyz:soil. The music field references cubyz:totaldemented/hypoxia. The structures array defines multiple procedural generation entries with varying parameters such as chance, size, width, depth, smoothness, height, density, priority, and placeMode (degradable). Each structure entry includes an id, block or log reference, and optional variation fields.
+This chunk defines the configuration for a specific biome in the Cubyz game engine. It specifies various properties such as temperature (cold), tags (pine), ground structure blocks, music, and detailed structures that can appear within this biome. The structures include boulders, ground patches with different materials, fallen trees, flower patches, simple vegetation, and specific tree models placed using a Structure Block Builder (SBB) method.
 
 ## Related Questions
-- What blocks are defined in the ground_structure for this biome?
-- Which music track is assigned to this cold biome configuration?
-- How many structure entries are listed under .structures and what do they represent?
-- What is the chance value for cubyz:boulder generation in this biome?
-- Does any structure use a degradable placeMode and which ones are those?
-- Which tree structures are defined with coniferous pine variants?
-- What variation parameters are provided for fallen_tree entries?
-- How does density affect flower_patch generation in this configuration?
-- Are there multiple ground_patch entries and how do they differ by block type?
-- What is the height_variation setting for simple_vegetation?
-- Which biome tags are applied to this configuration besides cold?
-- Does any structure reference a log block instead of a regular block?
+- What are the properties of the cold, pine-covered hill biome?
+- Which blocks make up the ground structure in this biome?
+- What music is associated with this biome?
+- How often do boulders appear in this biome?
+- What types of trees can be found in this biome?
+- What is the chance of encountering a flower patch in this biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_hills_huge_cold.zig.zon_chunk_0*

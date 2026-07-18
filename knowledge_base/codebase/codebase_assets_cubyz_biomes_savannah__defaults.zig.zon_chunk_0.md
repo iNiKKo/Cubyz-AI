@@ -12,10 +12,10 @@ This chunk contains configuration data for the Savannah biome, specifying its fo
 
 ## Related Questions
 - What is the fog density for the Savannah biome?
-- What color is assigned to the fog in the Savannah biome?
+- What color is specified for the fog in the Savannah biome?
 - How is the configuration data structured for the Savannah biome?
-- Is there any function or method defined in this chunk?
-- What does the .fogColor value represent in hexadecimal format?
-- Can you provide the exact value for the fog density in the Savannah biome?
+- Is there any executable logic in this chunk?
+- What are the default settings defined for the Savannah biome?
+- Are there any other biomes mentioned in this chunk?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_savannah__defaults.zig.zon_chunk_0*

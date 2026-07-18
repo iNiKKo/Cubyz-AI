@@ -1,26 +1,22 @@
 # [hard/addon_creator_app-save.js] - Chunk 4
 
-**Type:** ui
-**Keywords:** biomes, recipes, entities, particles, Zig.ZON, ZIP export, data formatting, optional fields, default values, file structure
-**Symbols:** bio, bioZon, rZon, ent, pZon, packs, folders, writeTex, exportFullAddon
-**Concepts:** data serialization, file generation, ZIP file creation, conditional data inclusion
+**Type:** implementation
+**Keywords:** exportFullAddon, Cubyz, JSZip, Zig, ZIP, blocks, items, biomes, recipes, entities, particles, textures, models
+**Symbols:** exportFullAddon, window.projectData, JSZip, folders, packs, zip, writeTex
+**Concepts:** Cubyz game engine, addon export, Zig format, ZIP archive, blocks, items, biomes, recipes, entities, particles, textures, custom models
 
 ## Summary
-Handles the saving of addon data, including biomes, recipes, entities, and particles into a ZIP file.
+This script exports an addon for the Cubyz game engine. It generates various files and folders containing information about blocks, items, biomes, recipes, entities, particles, and textures. The data is structured in Zig format and saved as a ZIP file. The script handles different types of elements like boulders, ground patches, fallen trees, structure blocks, recipes, entity models, and particle effects. It also manages custom textures and models, ensuring they are included in the export.
 
 ## Explanation
-This JavaScript code snippet is responsible for exporting an entire Cubyz addon project. It processes various types of data such as biomes, recipes, entities, and particles, formatting them into specific Zig.ZON files. The script ensures that each element's properties are correctly serialized, including handling optional fields and default values. For example, it formats chance values to two decimal places and checks if certain conditions (like `isCave`) are met before adding additional properties. It also manages the creation of subfolders based on the data's structure and writes files accordingly. The final step is to generate a ZIP file containing all these formatted files and prompt the user to download it.
+The script begins by defining a function `exportFullAddon` that handles the entire process of exporting an addon. It starts by creating a ZIP archive using the JSZip library. The script then iterates through various elements defined in the project data, such as blocks, items, biomes, recipes, entities, and particles, and writes their information to corresponding files in the ZIP archive. Each element's data is formatted according to Zig syntax rules. For textures, the script checks if they are custom or need to be fetched from URLs, then adds them to the appropriate folders within the ZIP. The script also handles custom entity models by writing them directly to the models folder. Finally, it generates a blob of the ZIP file and triggers a download for the user. This comprehensive approach ensures that all necessary components of an addon are correctly exported and organized.
 
 ## Related Questions
-- How does the script handle optional properties when generating Zig.ZON files?
-- What is the purpose of the `writeTex` function in this code snippet?
-- How are biomes with structures handled differently compared to those without?
-- Can you explain how the script ensures that each entity's model and texture paths are correctly formatted?
-- What steps does the script take to generate a ZIP file containing all the addon data?
-- How does the script manage the creation of subfolders for different types of data (e.g., biomes, recipes)?
-- What is the role of the `exportFullAddon` function in this context?
-- How are default values applied when serializing properties to Zig.ZON files?
-- Can you describe how the script handles different types of structures within biomes?
-- What mechanisms does the script use to ensure that all necessary textures are included in the final ZIP file?
+- How does the script handle custom textures and models?
+- What is the purpose of the `writeTex` function in the script?
+- Can you explain how the script formats data for Zig syntax?
+- How are recipes and entity models exported in this script?
+- What types of elements are included in the addon export process?
+- How does the script ensure that all necessary components are correctly organized within the ZIP archive?
 
 *Source: unknown | chunk_id: addon_creator_app-save.js_chunk_4*

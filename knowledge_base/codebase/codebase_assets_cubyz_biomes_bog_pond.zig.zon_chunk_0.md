@@ -1,22 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_bog_pond.zig.zon] - Chunk 0
 
-**Type:** world_generation
-**Keywords:** properties, height range, radius, temperature, music, ground structure, structures, parent biomes
-**Symbols:** properties, minHeight, maxHeight, minRadius, maxRadius, chance, roughness, hills, music, ground_structure, structures, parentBiomes
-**Concepts:** world_generation, biome definition, structure generation
+**Type:** configuration
+**Keywords:** biome configuration, terrain generation, structure placement, music association, ground structure
+**Concepts:** world_generation
 
 ## Summary
-Defines properties and generation rules for a bog pond biome in Cubyz.
+Defines properties and structures for a bog pond biome.
 
 ## Explanation
-This chunk specifies the characteristics of a bog pond biome, including its temperature, height range, radius, and structures to generate. It also defines parent biomes that this biome can replace with certain probabilities.
+This chunk defines the configuration for a specific biome in the Cubyz voxel engine, focusing on a bog pond. It specifies various properties such as height, radius, chance of occurrence, roughness, and music associated with the biome. The ground structure is defined to include mud blocks, and several structures like flower patches and ground patches are specified with details such as block types, generation modes, chances, sizes, and priorities.
 
 ## Related Questions
-- What properties does the bog pond biome have?
-- What is the height range of the bog pond biome?
-- How many structures are defined for the bog pond biome?
-- Which parent biomes can replace the bog pond biome?
-- What is the music associated with the bog pond biome?
-- How does the roughness affect the generation of the bog pond biome?
+- What are the properties defined for the bog pond biome?
+- Which blocks are used in the ground structure of the bog pond biome?
+- How many different structures are specified for the bog pond biome?
+- What is the chance of generating a flower patch with duckweed in the bog pond biome?
+- Which music track is associated with the bog pond biome?
+- What is the maximum height and radius of the bog pond biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_bog_pond.zig.zon_chunk_0*

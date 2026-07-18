@@ -1,26 +1,22 @@
-# [mods/cubyz/rotations.zig] - Chunk 3447394923
+# [mods/cubyz/rotations.zig] - PR #3266 review diff
 
 **Type:** review
-**Keywords:** @import, pub const, rotations.zig, re-export, module path, architecture, iteration, generated structs, linting, discoverability
+**Keywords:** rotations.zig, @"mod:path/name", data structures, tagging structs, linter enforcement, status quo, architectural review
 **Symbols:** stairs, no_rotation, texture_pile, ore, hanging, torch, decayable, direction, planar, log, carpet, branch, fence, sign
-**Concepts:** module re-export, import hygiene, public API surface, linter enforcement, code organization
+**Concepts:** module imports, architectural design, code complexity, iteration vs. access, named fields
 
 ## Summary
-The diff introduces a public const block in rotations.zig that re-exports multiple submodule constants using @import calls to individual .zig files within the rotations directory.
+The review discusses various options for handling module imports in Zig, focusing on architectural concerns and code complexity.
 
 ## Explanation
-This change consolidates scattered imports into a single module-level declaration, improving discoverability and reducing duplication across the codebase. It reflects an architectural decision to expose specific rotation-related entities (stairs, no_rotation, texture_pile, etc.) as public constants rather than requiring direct imports of each submodule. The reviewer notes concerns about potential iteration complexity if these were generated structs, suggesting that tagging or dual data structures might be overkill; instead, they lean toward keeping the @import syntax and enforcing a simpler import pattern via linting.
+The reviewer evaluates different approaches to managing module imports in the Cubyz project. The primary concern is balancing simplicity with maintainability. The options considered include accepting the current status quo using `@"mod:path/name"`, creating separate data structures for iteration and access, or tagging structs with named fields. The reviewer ultimately leans towards sticking with the `@"mod:path/name"` syntax due to its simplicity and ease of use, even though it might not be aesthetically pleasing.
 
 ## Related Questions
-- What files are imported by the new pub const block in rotations.zig?
-- Which rotation-related modules are exposed as public constants after this change?
-- How does this diff affect imports of stairs.zig from other parts of the project?
-- Are any of the imported names already defined elsewhere, causing potential shadowing?
-- What is the intended purpose of grouping these @import calls in a single const block?
-- Does the reviewer suggest adding a linter rule to enforce direct imports instead of re-exports?
-- Which submodule paths are referenced relative to the rotations directory?
-- Is there any documentation or comment explaining why these specific modules were chosen for public export?
-- How might this change impact build order or dependency resolution in Zig?
-- Are any of the imported names reserved keywords or conflicting with standard library symbols?
+- What are the potential drawbacks of using `@"mod:path/name"` syntax in Zig?
+- How could creating separate data structures for iteration and access improve code maintainability?
+- Why might tagging structs with named fields complicate iteration and generation code?
+- Can you explain the benefits of enforcing module import syntax through a linter?
+- What are the trade-offs between simplicity and complexity in architectural design decisions?
+- How does the reviewer's preference for `@"mod:path/name"` align with best practices in Zig development?
 
 *Source: unknown | chunk_id: github_pr_3266_comment_3447394923*

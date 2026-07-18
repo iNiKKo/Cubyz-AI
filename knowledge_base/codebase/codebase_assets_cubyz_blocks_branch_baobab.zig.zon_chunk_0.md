@@ -1,24 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_branch_baobab.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** choppable, wood, branch, decay, durability, massDamage, hardnessDamage, swingSpeed, textureRoughness, modifier
-**Symbols:** tags, onUpdate, blockHealth, texture0, texture1, texture2, texture3, texture4, texture5, item, material, durability, massDamage, hardnessDamage, swingSpeed, textureRoughness, colors, modifiers, decayProhibitor
-**Concepts:** block definition, asset metadata, decay behavior, item properties, modifier system
+**Keywords:** block definition, texture assignment, decay behavior, material attributes, decay prohibition
+**Concepts:** block configuration, texture mapping, material properties
 
 ## Summary
-Defines the baobab branch block asset with decay behavior and associated textures.
+Defines properties for the Baobab branch block, including textures, health, and decay behavior.
 
 ## Explanation
-This chunk declares a single block definition containing metadata tags (choppable, wood, branch), an onUpdate callback specifying decay type, a blockHealth value of 4, five texture paths for different break stages, item properties including material durability (28), massDamage (1.2), hardnessDamage (0.47), swingSpeed (3.75), textureRoughness (0.7), and an array of color values, plus a single modifier with id durable and strength 0.45, and a decayProhibitor flag set to true.
+This chunk defines a configuration for the Baobab branch block in the Cubyz voxel engine. It specifies tags like 'choppable', 'wood', and 'branch'. The block has an onUpdate behavior of type 'decay' with a health value of 4. Multiple textures are assigned to different orientations of the branch. The item properties include material attributes such as durability, mass damage, hardness damage, swing speed, texture roughness, colors, and modifiers. The decayProhibitor flag is set to true, indicating that this block can prevent nearby blocks from decaying.
 
 ## Related Questions
-- What tags are assigned to the baobab branch block?
-- How does the onUpdate callback affect this block's behavior?
-- What is the health value of the baobab branch block?
-- Which texture paths are defined for different break stages?
-- What item properties are configured for the dropped baobab branch?
-- Is decay prohibited for this block and what does that imply?
-- How many color values are included in the material definition?
-- What modifier is applied to the baobab branch item and with what strength?
+- What are the tags assigned to the Baobab branch block?
+- How many textures are defined for the Baobab branch block?
+- What is the onUpdate behavior of the Baobab branch block?
+- What is the durability value of the Baobab branch item?
+- Which texture is used for the Baobab branch item?
+- Is the decayProhibitor flag set for the Baobab branch block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_branch_baobab.zig.zon_chunk_0*

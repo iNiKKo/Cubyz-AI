@@ -1,28 +1,39 @@
 # [medium/codebase_mods_cubyz_rotations_sign.zig] - Chunk 1
 
 **Type:** implementation
-**Keywords:** centerRotations, Neighbor.fromRelPos, getRotationFromDir, switch expression, placing flag, null neighbor check, block reset, enum switch, comparison thresholds, data assignment, return false guard, pointer dereference, block type zeroing, relative direction mapping, up/down rotation handling
-**Symbols:** generateData, updateData
-**Concepts:** rotation thresholds, neighbor breaking, data generation, block placement validation
+**Keywords:** block manipulation, conditional checks, state transition, data assignment, logical conditions
+**Symbols:** updateData
+**Concepts:** block update, neighbor interaction, rotation logic
 
 ## Summary
-Implements rotation-based block data generation and neighbor-driven breaking logic using centerRotations thresholds.
+The chunk defines a function to update block data based on neighbor direction and rotation state.
 
 ## Explanation
-The chunk defines generateData which takes a world, position vectors, player direction, relative direction, optional neighbor, current block pointer, the neighbor's block type, and a placing flag; it returns false if neighbor is null or not placing, otherwise computes an integer data value via a switch on Neighbor.fromRelPos(neighbor).? mapping dirNegX/dirPosY to 2*centerRotations + offset (0/1/2/3), dirNegY to 2*centerRotations+1, dirPosX to 2*centerRotations+2, dirUp/down to centerRotations plus getRotationFromDir(playerDir) or just getRotationFromDir(playerDir); it assigns this to currentData.data and returns true. The chunk defines updateData which takes a block pointer, neighbor enum, and the neighbor's block type; it computes shouldBeBroken via switch on neighbor: dirNegX/dirPosY compare block.data == 2*centerRotations+offset (0/1/2/3), dirNegY compares block.data == 2*centerRotations+1, dirUp compares block.data >= centerRotations and < 2*centerRotations, dirDown compares block.data < centerRotations; if shouldBeBroken is false it returns false, otherwise it resets the block to typ=0 and data=0 and returns true.
+This chunk contains a single public function `updateData` which takes three parameters: a pointer to a `Block`, a `Neighbor`, and another `Block`. The function determines if the block should be broken based on its current data and the direction of the neighbor. If the conditions are met, it sets the block's type and data to zero and returns true; otherwise, it returns false.
+
+## Code Example
+```zig
+pub fn updateData(block: *Block, neighbor: Neighbor, _: Block) bool {
+	const shouldBeBroken = switch (neighbor) {
+		.dirNegX => block.data == 2*centerRotations,
+		.dirNegY => block.data == 2*centerRotations + 1,
+		.dirPosX => block.data == 2*centerRotations + 2,
+		.dirPosY => block.data == 2*centerRotations + 3,
+		.dirDown => block.data < centerRotations,
+		.dirUp => block.data >= centerRotations and block.data < 2*centerRotations,
+	};
+	if (!shouldBeBroken) return false;
+	block.* = .{.typ = 0, .data = 0};
+	return true;
+}
+```
 
 ## Related Questions
-- How does generateData handle the case when neighbor is null?
-- What happens to currentData.data when blockPlacing is false in generateData?
-- Which Neighbor enum values map to 2*centerRotations + offset in generateData?
-- How does updateData determine whether a block should be broken based on its data value?
-- What rotation range defines the dirUp case in updateData's switch expression?
-- Does updateData modify the neighbor's block type or only the target block?
-- Is there any validation of playerDir before calling getRotationFromDir in generateData?
-- How does Neighbor.fromRelPos relate to the relativeDir argument passed into generateData?
-- What integer value is assigned when neighbor.dirNegX matches in generateData?
-- Does updateData return true only after resetting block.* to typ=0 and data=0?
-- Are there any side effects on world or other blocks besides currentData in generateData?
-- How does the chunk ensure that dirPosY uses 2*centerRotations + 2 instead of a different offset?
+- What is the purpose of the `updateData` function?
+- How does the function determine if a block should be broken?
+- What happens to the block's data and type if it should be broken?
+- What are the possible values for the `Neighbor` parameter in this function?
+- How many conditions are checked within the switch statement of the `updateData` function?
+- What is the role of `centerRotations` in the conditional checks?
 
 *Source: unknown | chunk_id: codebase_mods_cubyz_rotations_sign.zig_chunk_1*

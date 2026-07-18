@@ -1,22 +1,22 @@
 # [src/gui/windows/creative_inventory.zig] - PR #1700 review diff
 
 **Type:** review
-**Keywords:** creative_inventory.zig, VerticalList, items, searchString, tags, block types, architectural review, undefined, zero initialization
-**Symbols:** initContent, VerticalList, items, main.globalAllocator, itemIterator, searchString, bestTags, item.hasTag, item.block, main.blocks.Block
-**Concepts:** architectural review, tag-based filtering, undefined vs. zero initialization
+**Keywords:** VerticalList, initContent, items, searchString, Item, baseItem, hasTag, block, findSimilar, undefined
+**Symbols:** VerticalList, initContent, items, main.items.iterator(), searchString, Item, baseItem, item.id(), std.mem.containsAtLeast, bestTags, main.Tag.findSimilar, item.hasTag, item.block
+**Concepts:** tag-based search, iterator usage, data field handling
 
 ## Summary
-The code now checks for tags in items and blocks, with a special case for searches starting with '.'.
+The code now checks for tags in items and blocks, optimizing search functionality.
 
 ## Explanation
-The change introduces a new feature where the search functionality in the creative inventory window can filter items based on tags. If the search string starts with '.', it finds similar tags and filters items that have those tags or related block types. The reviewer suggests explicitly setting the 'data' field to 'undefined' instead of '0' for better clarity, although this is noted as a minor architectural concern.
+The change introduces a new condition to handle searches based on tags. It iterates over items and checks if they have specific tags or if their associated blocks have those tags. The reviewer suggests explicitly setting the 'data' field to undefined for clarity, although this is noted as a minor concern.
 
 ## Related Questions
-- What is the purpose of the 'bestTags' variable in this code snippet?
-- How does the search functionality change when the search string starts with '.'?
-- Why is there a suggestion to use 'undefined' instead of '0' for the 'data' field?
-- What is the role of the 'itemIterator' in this function?
-- How does the code handle items that do not match the search criteria?
-- Can you explain the logic behind filtering items based on tags and block types?
+- What is the purpose of the 'bestTags' variable in this code?
+- How does the new condition handle searches based on tags?
+- Why is the 'data' field set to undefined in the reviewer's suggestion?
+- What impact might this change have on performance?
+- Is there a risk of memory leaks introduced by this modification?
+- How does this change affect backward compatibility with previous versions?
 
 *Source: unknown | chunk_id: github_pr_1700_comment_2223633968*

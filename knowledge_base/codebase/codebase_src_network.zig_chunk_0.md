@@ -1,22 +1,22 @@
 # [hard/codebase_src_network.zig] - Chunk 0
 
 **Type:** networking
-**Keywords:** socket initialization, sendto, recvfrom, polling, Windows networking, POSIX networking
-**Symbols:** Socket, Socket.socketID, Socket.windowsError, Socket.startup, Socket.init, Socket.deinit, Socket.send, Socket.receive, authentication, protocols
-**Concepts:** networking, UDP sockets, OS compatibility, error handling
+**Keywords:** import, timestamp, inline, atomic, milliseconds
+**Symbols:** Atomic, game, settings, utils, NeverFailingAllocator, authentication, protocols, ms, networkTimestamp
+**Concepts:** networking
 
 ## Summary
-The chunk defines a `Socket` struct for UDP networking with Windows and POSIX compatibility, including initialization, sending, receiving, and error handling.
+This chunk imports necessary modules and sets up constants for the networking subsystem, including a timestamp function.
 
 ## Explanation
-The `Socket` struct encapsulates the functionality of a UDP socket, providing methods for initializing (`init`), deinitializing (`deinit`), sending data (`send`), and receiving data (`receive`). It handles OS-specific differences between Windows and POSIX systems. The `startup` function initializes the networking environment on Windows. Error handling is implemented in `windowsError`, which maps Windows socket errors to Zig error types. The `send` method sends data to a specified address, while the `receive` method waits for incoming data with a timeout.
+The chunk begins by importing standard library modules such as `builtin`, `std`, and custom modules like `main`, `game`, `settings`, `utils`, and `NeverFailingAllocator`. It then re-exports two submodules: `authentication` and `protocols`. The C standard library is also imported. A constant `ms` is defined to represent one thousand milliseconds. An inline function `networkTimestamp` is provided, which calculates the current timestamp in milliseconds by converting nanoseconds to milliseconds.
 
 ## Related Questions
-- How does the `Socket` struct handle OS-specific differences?
-- What is the purpose of the `windowsError` function?
-- How is a UDP socket initialized in this code?
-- What methods are provided by the `Socket` struct?
-- How does the `send` method work?
-- What error handling is implemented for receiving data?
+- What modules are imported in the networking subsystem?
+- How is the timestamp calculated in milliseconds?
+- Which submodules are re-exported by this chunk?
+- What does the `ms` constant represent?
+- Is SSL or similar encoding used for messages?
+- Where is the C standard library imported from?
 
 *Source: unknown | chunk_id: codebase_src_network.zig_chunk_0*

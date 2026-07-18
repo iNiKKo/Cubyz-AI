@@ -1,15 +1,15 @@
 # [medium/codebase_src_server_terrain_sbb.zig] - Chunk 3
 
-**Type:** api
-**Keywords:** map, list, rotation, registration, reset
-**Symbols:** registerChildBlock, registerBlueprints, getByStringId, list, reset
-**Concepts:** structure building blocks, blueprints, registration, management
+**Type:** implementation
+**Keywords:** registration, error handling, capacity allocation, data structures, blueprint rotation
+**Symbols:** registerSBB, registerChildBlock, registerBlueprints, getByStringId, list, reset
+**Concepts:** structure building blocks (SBBs), blueprints, world generation
 
 ## Summary
-Handles registration and management of structure building blocks (SBBs) and blueprints.
+Handles registration and management of structure building blocks (SBBs) and blueprints in the Cubyz server.
 
 ## Explanation
-This chunk manages the lifecycle of structure building blocks and their associated blueprints. It includes functions to register child blocks, load blueprints with various rotations, retrieve SBBs by string ID, list all SBBs, and reset the internal state. The code uses a combination of maps and lists to store and manage these structures efficiently.
+This chunk defines functions to register SBBs, child blocks, and blueprints. It includes error handling for failed registrations and ensures proper capacity allocation for internal data structures. The `registerSBB` function initializes and populates structure lists and maps, while `registerChildBlock` manages child block registration. The `registerBlueprints` function loads and rotates blueprint entries. Other functions provide access to registered SBBs and blueprints, as well as resetting the registry.
 
 ## Code Example
 ```zig
@@ -29,11 +29,11 @@ pub fn registerChildBlock(numericId: u16, stringId: []const u8) void {
 ```
 
 ## Related Questions
-- How does the `registerChildBlock` function work?
-- What is the purpose of the `registerBlueprints` function?
-- How are blueprints rotated in this code?
-- What does the `getByStringId` function return?
-- How many different rotations of a blueprint are created?
-- What happens if a blueprint cannot be loaded during registration?
+- How does the `registerSBB` function handle errors during structure registration?
+- What is the purpose of the `childrenToResolve` variable in the `registerSBB` function?
+- How are blueprints rotated in the `registerBlueprints` function?
+- What does the `getByStringId` function return if a string ID is not found?
+- How does the `reset` function clear all registered SBBs and blueprints?
+- What assertion checks are performed at the beginning of the `registerChildBlock` function?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_sbb.zig_chunk_3*

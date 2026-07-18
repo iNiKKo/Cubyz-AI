@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_leaves_birch.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, texture, LOD, replacement, variant
-**Concepts:** block configuration, texture mapping, level of detail
+**Keywords:** texture, LOD replacement, opaque variant, block properties, configuration
+**Concepts:** block configuration, texture mapping
 
 ## Summary
 Defines configuration for birch leaves block.
 
 ## Explanation
-This chunk contains a configuration object for the birch leaves block in Cubyz. It specifies the texture, LOD replacement, and opaque variant for the block. The `.texture` field points to the texture file used for rendering the birch leaves. The `.lodReplacement` field indicates the block that should replace this one at lower levels of detail (LOD). The `.opaqueVariant` field specifies an alternative block type that is fully opaque, which can be used for certain rendering optimizations.
+This chunk contains a JSON-like structure defining the properties of birch leaves in the Cubyz voxel engine. It specifies the texture, LOD (Level of Detail) replacement, and opaque variant for the birch leaves block. The `texture` field points to the image file used for rendering the leaves. The `lodReplacement` field indicates the texture that should be used when the level of detail is reduced, which helps in optimizing performance by using simpler textures at lower resolutions. The `opaqueVariant` field specifies an alternative texture that can be used if the block needs to be rendered as opaque under certain conditions.
 
 ## Related Questions
-- What is the texture file used for birch leaves?
-- Which block replaces birch leaves at lower LOD levels?
+- What texture is used for birch leaves?
+- Which texture is used as the LOD replacement for birch leaves?
 - What is the opaque variant of birch leaves?
-- How many configuration fields are defined for birch leaves?
+- How many properties are defined for birch leaves in this configuration?
 - Is there a function or method defined in this chunk?
-- What does the `.lodReplacement` field specify?
+- Does this chunk define any new types or structures?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_leaves_birch.zig.zon_chunk_0*

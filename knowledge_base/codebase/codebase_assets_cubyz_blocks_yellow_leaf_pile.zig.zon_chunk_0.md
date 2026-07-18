@@ -1,28 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_yellow_leaf_pile.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** block health, drop items, selection capabilities, replaceable, degradable, collision, visibility through blocks, absorbed light, model specification, rotation, update function, texture, item texture, LOD replacement
-**Symbols:** blockHealth, drops, selectionCapabilities, replaceable, degradable, collide, alwaysViewThrough, absorbedLight, model, rotation, onUpdate, texture0, texture1, texture2, texture3, item, lodReplacement
-**Concepts:** block configuration, material properties, interaction settings, rendering details
+**Keywords:** block definition, texture mapping, model specification, drop mechanics, collision handling
+**Concepts:** block properties, item behavior
 
 ## Summary
-Block configuration for Yellow Leaf Pile
+Defines properties and behaviors for the yellow leaf pile block in Cubyz.
 
 ## Explanation
-This chunk defines the properties and behavior of a block named 'Yellow Leaf Pile'. It includes details such as tags, health, drop items, selection capabilities, replaceability, degradation, collision settings, visibility through blocks, absorbed light, model specifications, rotation, update function, textures, item texture, and LOD replacement.
+This chunk specifies various attributes of the yellow leaf pile block, including its tags (cuttable, sliceable, leaf), health, drop behavior, selection capabilities, replaceability, degradability, collision properties, light absorption, model details, rotation type, update behavior, textures for different states, item texture, and LOD replacement. The block is designed to be cuttable with tools tagged as 'cuttable' and has a plane model with four states. It does not collide with entities and always allows view-through.
 
 ## Related Questions
-- What are the tags associated with the Yellow Leaf Pile block?
-- How is the health of the Yellow Leaf Pile block set?
-- Which items can be dropped when the Yellow Leaf Pile block is broken?
-- What selection capabilities does the Yellow Leaf Pile block have?
-- Is the Yellow Leaf Pile block replaceable?
-- Can the Yellow Leaf Pile block degrade over time?
-- Does the Yellow Leaf Pile block collide with other blocks?
-- Is the Yellow Leaf Pile block always view-through?
-- What is the absorbed light value of the Yellow Leaf Pile block?
-- What model does the Yellow Leaf Pile block use?
-- How is the rotation of the Yellow Leaf Pile block defined?
-- What function is called when the Yellow Leaf Pile block updates its state?
+- What are the tags associated with the yellow leaf pile block?
+- How does the yellow leaf pile block handle collisions?
+- Which tools can be used to cut the yellow leaf pile block?
+- What is the model type and number of states for the yellow leaf pile block?
+- What texture is used for the item representation of the yellow leaf pile block?
+- What happens when the yellow leaf pile block updates?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_yellow_leaf_pile.zig.zon_chunk_0*

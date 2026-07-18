@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_glow_crystal_aqua.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** emitted light, texture path, block properties, configuration data, color specification
-**Concepts:** block configuration, texture mapping
+**Keywords:** configuration, block definition, texture path, emitted light, hexadecimal color
+**Concepts:** block properties, light emission, texturing
 
 ## Summary
 Defines properties for the Aqua Glow Crystal block.
 
 ## Explanation
-This chunk defines a configuration for the Aqua Glow Crystal block, specifying its emitted light color and texture. The emitted light color is set to 0x16a7da, which represents a specific shade of blue-green. The texture is specified as 'cubyz:glow_crystal/aqua', indicating the path to the texture file used for rendering this block.
+This chunk defines a configuration object for the Aqua Glow Crystal block in Cubyz. It specifies the emitted light color and texture path. The `emittedLight` field is set to a hexadecimal color value, and the `texture` field points to the image file used for rendering the block.
 
 ## Related Questions
 - What is the emitted light color of the Aqua Glow Crystal block?
 - Where is the texture file for the Aqua Glow Crystal block located?
 - How is the configuration for the Aqua Glow Crystal block defined?
-- What properties are specified for the Aqua Glow Crystal block in this chunk?
-- Can you provide the texture path for the Aqua Glow Crystal block?
-- What color does the Aqua Glow Crystal block emit?
+- What fields are included in the Aqua Glow Crystal block's configuration?
+- Can you provide the hexadecimal value for the emitted light color of the Aqua Glow Crystal block?
+- Is there any executable logic in this chunk?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_glow_crystal_aqua.zig.zon_chunk_0*

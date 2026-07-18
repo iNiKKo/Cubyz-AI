@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_structure_tables_rare.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** structure tables, rare structures, placement modes, chance values, configuration files
-**Concepts:** world generation, configuration
+**Keywords:** configuration, rare structures, place modes, structure files, world generation
+**Concepts:** world generation, structure placement
 
 ## Summary
-Defines configuration for rare structures in the Cubyz game, including their placement modes and associated structure files.
+Defines rare structure tables with specific placement modes and associated structures.
 
 ## Explanation
-This chunk is a configuration file that specifies details about rare structures within the Cubyz game world. It defines an array of structures with each having an ID, a place mode (either 'all' or 'degradable'), and a path to the structure file. The configuration also includes a unique identifier for the set of rare structures and a chance value indicating how frequently these structures should appear.
+This chunk defines a configuration for rare structures in the Cubyz voxel engine. It specifies an ID, tags, chance of occurrence, and a list of structures with their respective IDs, place modes, and paths to their structure files. The place mode determines where these structures can be placed (e.g., all locations or degradable areas).
 
 ## Related Questions
-- What is the unique identifier for this set of rare structures?
-- How often do these rare structures appear in the game world?
-- List the IDs and placement modes of all rare structures defined here.
-- What is the path to the structure file for the 'triclops_statue'?
-- Which rare structure has a degradable place mode?
-- What is the format of this configuration file?
+- What is the ID of this rare structure table?
+- How many different structures are defined in this table?
+- What is the chance of any of these structures occurring?
+- Which place mode is used for the triclops statue structure?
+- Where is the mushroom pole base structure file located?
+- Are there any tags associated with this rare structure table?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_structure_tables_rare.zig.zon_chunk_0*

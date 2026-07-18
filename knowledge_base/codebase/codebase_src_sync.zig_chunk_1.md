@@ -1,15 +1,15 @@
 # [hard/codebase_src_sync.zig] - Chunk 1
 
-**Type:** implementation
-**Keywords:** server-side logic, command handling, user interactions, serialization, deserialization, networking
-**Symbols:** server, server.init, server.deinit, server.executeCommand, server.executeUserCommand, server.receiveCommand, server.setGamemode, addHealth, setGamemode, Command, Command.PayloadType, Command.Payload, Command.BaseOperationType
-**Concepts:** command execution, gamemode management, health updates, network communication
+**Type:** api
+**Keywords:** thread context, command payload, network protocols, inventory sync, gamemodes
+**Symbols:** server, server.init, server.deinit, server.executeCommand, server.executeUserCommand, server.receiveCommand, server.setGamemode, addHealth
+**Concepts:** command execution, user management, health system
 
 ## Summary
-This chunk defines the server-side logic for handling commands and user interactions, including command execution, gamemode management, and health updates.
+Handles server-side command execution and user management.
 
 ## Explanation
-The chunk contains a `server` struct with methods to initialize and deinitialize server context, execute commands from users, handle incoming commands, and set gamemodes. It also includes a function to add health to entities based on the side (client or server). The `Command` struct defines various payload types and operations that can be executed. The code handles command serialization, deserialization, and execution, as well as network communication for inventory updates and gamemode changes.
+This chunk defines the `server` struct with methods for initializing, deinitializing, executing commands, handling user commands, receiving commands, and setting gamemodes. It also includes a function to add health to an entity, which can be executed on either the client or server side based on the provided context.
 
 ## Code Example
 ```zig
@@ -19,11 +19,11 @@ pub fn init() void {
 ```
 
 ## Related Questions
-- How does the server initialize its context?
-- What methods are available in the `server` struct?
-- How is a command executed on the server side?
-- What happens when a user sends a command to the server?
-- How is gamemode set for a user on the server?
-- How is health added to an entity, and what sides (client/server) are involved?
+- What is the purpose of the `init` method in the server struct?
+- How does the `executeCommand` function handle errors?
+- What does the `setGamemode` function do?
+- How are commands received and processed by the server?
+- What is the role of the `addHealth` function?
+- How is thread context managed within the server module?
 
 *Source: unknown | chunk_id: codebase_src_sync.zig_chunk_1*

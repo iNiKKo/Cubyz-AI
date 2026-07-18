@@ -139,7 +139,9 @@ def load_index(rebuild=False):
 
 def retrieve(query, index, global_top_k=GLOBAL_TOP_K, min_per_collection=MIN_PER_COLLECTION):
     q_emb = embed_batch([query])[0]
-    scored = sorted(index, key=lambda e: -cosine(q_emb, e["embedding"]))
+    for e in index:
+        e["_score"] = cosine(q_emb, e["embedding"])
+    scored = sorted(index, key=lambda e: -e["_score"])
 
     # Best chunks overall first -- this is what actually matters for relevance.
     hits = scored[:global_top_k]
@@ -167,7 +169,15 @@ def retrieve(query, index, global_top_k=GLOBAL_TOP_K, min_per_collection=MIN_PER
 
 def ask(question, index, verbose=True):
     hits = retrieve(question, index)
-    context = "\n\n---\n\n".join(f"[{h['collection']}/{h['filename']}]\n{h['text']}" for h in hits)
+
+    # Present the single best-matching chunk LAST, right next to the user's question, not first.
+    # LLMs attend more reliably to the start and end of a long context than the middle ("lost in
+    # the middle" -- Liu et al. 2023); with 10-14 chunks in context, burying the exact answer at
+    # position 1 of 14 instead of the end measurably hurt single-fact lookups in manual testing
+    # (e.g. flipping "left mouse button" -> "right mouse button" run to run with the correct chunk
+    # present the whole time). Retrieval/ranking logic above is unchanged -- only presentation order.
+    ordered = sorted(hits, key=lambda h: h["_score"])
+    context = "\n\n---\n\n".join(f"[{h['collection']}/{h['filename']}]\n{h['text']}" for h in ordered)
     system = SYSTEM_PROMPT + f"\n\n## Retrieved context\n{context}"
 
     if verbose:
@@ -189,7 +199,7 @@ def ask(question, index, verbose=True):
         # runs of the 96-question batch test, which made it impossible to tell a real fix from
         # noise. Greedy decoding trades a little phrasing variety for reproducibility, which
         # matters more here since this is a fact-lookup assistant, not creative writing.
-        "options": {"temperature": 0.0, "num_ctx": 16384},
+        "options": {"temperature": 0.0, "num_ctx": 16384, "seed": 42},
     })
     return result["message"]["content"]
 

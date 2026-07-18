@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_slate_bricks.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** block definition, model rotation, texture mapping, configuration file, voxel engine
-**Concepts:** block configuration
+**Keywords:** block configuration, model definition, texture assignment, rotation behavior, stairs model
+**Concepts:** block properties, texture mapping
 
 ## Summary
-Defines configuration for slate bricks block.
+Defines the properties of slate bricks block.
 
 ## Explanation
-This chunk defines the configuration for a specific type of block in the Cubyz voxel engine, named 'slate bricks'. It specifies that this block uses a rotation model similar to stairs ('cubyz:stairs'), has a cube model ('cubyz:cube'), and is textured with 'cubyz:slate/bricks'. This configuration is used by the engine to render and interact with the slate bricks block in the game world.
+This chunk defines a configuration for a block type in Cubyz, specifically slate bricks. It specifies the rotation behavior using 'cubyz:stairs', indicating that the block can be rotated like stairs. The model is set to 'cubyz:cube', meaning it uses a cube model. The texture is defined as 'cubyz:slate/bricks', which points to the specific texture file for slate bricks.
 
 ## Related Questions
-- What is the model used for the slate bricks block?
-- Which texture is applied to the slate bricks block?
-- How does the slate bricks block rotate in the game world?
-- Where is the configuration for the slate bricks block defined?
-- What type of engine uses this block configuration?
-- Can the rotation model of the slate bricks be changed?
+- What is the rotation behavior of slate bricks in Cubyz?
+- Which model is used for the slate bricks block?
+- Where is the texture file for slate bricks located?
+- How is the slate bricks block configured in the Cubyz engine?
+- Does the slate bricks block use a cube model?
+- What specific texture is assigned to the slate bricks?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_slate_bricks.zig.zon_chunk_0*

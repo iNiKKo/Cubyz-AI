@@ -1,22 +1,22 @@
 # [src/main.zig] - PR #2026 review diff
 
 **Type:** review
-**Keywords:** pressAction, releaseAction, key binding, input events, action handling, GLFW, gamepad
+**Keywords:** key bind, toggle, action pointers, sprint, hideGui, hideDisplayItem
 **Symbols:** KeyBoard, GLFW_KEY_LEFT_CONTROL, GLFW_GAMEPAD_BUTTON_LEFT_THUMB, game.pressSprint, game.releaseSprint
-**Concepts:** input handling, event-driven programming, flexible architecture
+**Concepts:** thread safety, backwards compatibility, memory leak
 
 ## Summary
-Added `pressAction` and `releaseAction` fields to the KeyBoard struct for handling specific actions on key press and release events.
+The change adds `pressAction` and `releaseAction` fields to the `KeyBoard` struct in `src/main.zig`, allowing for more complex actions on key press and release events.
 
 ## Explanation
-The change introduces new fields `pressAction` and `releaseAction` in the KeyBoard struct, allowing for the specification of functions to be executed when a key is pressed or released. This modification aims to provide more flexibility in handling input events, specifically for actions like sprinting. The reviewer questions whether this approach is practical given the limited number of simple toggles required and suggests that such functionality might be better suited for specific cases rather than a general solution.
+The reviewer is concerned about the practicality of adding action pointers directly to the `KeyBoard` struct, as it may lead to a proliferation of simple toggles. The reviewer questions whether this approach is necessary or if there are better ways to handle such actions, especially considering that the sprint functionality might not be a straightforward toggle. The reviewer suggests that only a few specific actions (like sprint, hideGui, and hideDisplayItem) might benefit from this kind of setup.
 
 ## Related Questions
-- What are the potential performance implications of adding function pointers to key bindings?
-- How does this change affect backwards compatibility with existing input handling code?
-- Can you provide examples of other actions that could benefit from using `pressAction` and `releaseAction`?
-- What is the expected behavior if a key binding has both `gamepadButton` and `pressAction/releaseAction` specified?
-- How does this modification impact thread safety in the input handling system?
-- Are there any memory management considerations with adding function pointers to structs?
+- What are the potential implications of adding action pointers to the KeyBoard struct?
+- How does this change affect the overall architecture of the input handling system?
+- Are there any memory management considerations with the new action pointers?
+- Can you provide examples of other actions that might benefit from this kind of setup?
+- What is the current implementation of `game.pressSprint` and `game.releaseSprint`?
+- How does this change impact backwards compatibility with existing key bindings?
 
 *Source: unknown | chunk_id: github_pr_2026_comment_2437419662*

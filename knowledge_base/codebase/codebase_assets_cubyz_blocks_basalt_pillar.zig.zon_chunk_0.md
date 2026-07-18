@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_basalt_pillar.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, block properties, texture assignment, model definition, directional rotation
-**Concepts:** block configuration, texture mapping
+**Keywords:** block, configuration, rotation, model, texture
+**Concepts:** block configuration
 
 ## Summary
-Defines configuration for the Basalt Pillar block, including textures and model.
+Defines configuration for the Basalt Pillar block in Cubyz.
 
 ## Explanation
-This chunk is a configuration file defining properties of the Basalt Pillar block in the Cubyz voxel engine. It specifies the rotation behavior using 'cubyz:direction', sets the model to 'cubyz:cube', and assigns specific textures for different sides: 'cubyz:basalt/pillar' for the sides, 'cubyz:basalt/pillar_top' for the top, and 'cubyz:basalt/pillar_bottom' for the bottom.
+This chunk contains a configuration object for the Basalt Pillar block. It specifies the rotation behavior, model type, and texture paths for different sides of the block. The `.rotation` field indicates that the block can rotate based on the 'cubyz:direction' property. The `.model` field sets the block's model to 'cubyz:cube', indicating a simple cubic shape. The `.texture`, `.texture_top`, and `.texture_bottom` fields define the textures for the sides, top, and bottom of the block, respectively.
 
 ## Related Questions
-- What is the model used for the Basalt Pillar block?
-- Which texture is assigned to the top of the Basalt Pillar block?
-- How does the Basalt Pillar block handle rotation?
-- What textures are defined for the Basalt Pillar block in total?
-- Is there a specific model for the Basalt Pillar block, or is it generic?
-- Which direction property is used to control the rotation of the Basalt Pillar block?
+- What is the rotation behavior of the Basalt Pillar block?
+- Which model type is used for the Basalt Pillar block?
+- What texture is applied to the sides of the Basalt Pillar block?
+- What texture is applied to the top of the Basalt Pillar block?
+- What texture is applied to the bottom of the Basalt Pillar block?
+- How does the configuration object for the Basalt Pillar block define its appearance?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_basalt_pillar.zig.zon_chunk_0*

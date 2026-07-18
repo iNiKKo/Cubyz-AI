@@ -1,26 +1,33 @@
 # [hard/codebase_src_utils_Futex.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** wait, wake, futex, thread synchronization, atomic.Value, platform detection, deadlock avoidance, timeout handling, single-threaded fallback, NtDll RtlWaitOnAddress
-**Symbols:** Futex, wait, timedWait, wake, UnsupportedImpl, SingleThreadedImpl, WindowsImpl
-**Concepts:** thread synchronization, futex wait wake, platform detection, atomic value comparison, deadlock avoidance, timeout handling, single-threaded fallback, NtDll RtlWaitOnAddress
+**Keywords:** atomic operations, thread blocking, sequential consistency, operating system detection, unsupported platforms
+**Symbols:** Futex, Futex.wait, Futex.timedWait, Futex.wake, Impl, UnsupportedImpl, SingleThreadedImpl
+**Concepts:** thread synchronization, futexes, operating system support
 
 ## Summary
-Implements futex-based thread synchronization primitives (wait/wake) with per-platform backends and a single-threaded fallback.
+Provides a mechanism for thread synchronization using futexes, supporting various operating systems.
 
 ## Explanation
-The chunk defines the Futex struct containing public wait, timedWait, and wake methods that delegate to an Impl type selected via a compile-time switch over builtin.single_threaded, OS tag, CPU arch, pthread availability, etc. UnsupportedImpl provides stub implementations that call unsupported() which asserts on unused arguments and then @compileError with the target OS name. SingleThreadedImpl implements wait by checking ptr.raw against expect; if they differ it returns immediately, otherwise it treats a missing timeout as unreachable (deadlock) and always returns error.Timeout. wake in SingleThreadedImpl discards both arguments. WindowsImpl uses NtDll.RtlWaitOnAddress with a LARGE_INTEGER timeout converted to 100‑ns units (negative for relative), returning on .SUCCESS or .TIMEOUT; its wake stub begins by casting ptr to ?*const anyopaque but the body is truncated in this chunk. The Impl switch also includes DarwinImpl, LinuxImpl, FreebsdImpl, OpenbsdImpl, WasmImpl, and PosixImpl as alternatives depending on platform detection.
+The Futex module implements a mechanism to block and unblock threads based on the value of a 32-bit memory address. It includes functions `wait`, `timedWait`, and `wake` for different scenarios of blocking and waking up threads. The implementation varies depending on the operating system, with specific implementations for Windows, Linux, Darwin (macOS), FreeBSD, OpenBSD, WebAssembly, POSIX systems, and a single-threaded environment. The module uses atomic operations to ensure thread safety and sequential consistency in wait/wake operations.
+
+## Code Example
+```zig
+pub fn wait(ptr: *const atomic.Value(u32), expect: u32) void {
+	@branchHint(.cold);
+
+	Impl.wait(ptr, expect, null) catch |err| switch (err) {
+		error.Timeout => unreachable, // null timeout meant to wait forever
+	};
+}
+```
 
 ## Related Questions
-- What does the Futex struct provide for thread synchronization?
-- How is the Impl type selected at compile time in this chunk?
-- What happens when a wait call finds ptr.raw != expect in SingleThreadedImpl?
-- Why does SingleThreadedImpl treat a missing timeout as unreachable?
-- Which platforms are covered by the Impl switch statement here?
-- How is the WindowsImpl wait method implemented using NtDll?
-- What error does UnsupportedImpl return when its stub is invoked?
-- Does timedWait ever call the OS directly for zero timeouts in this chunk?
-- What arguments are discarded in SingleThreadedImpl.wake?
-- Is there any public API surface beyond wait, timedWait, and wake defined here?
+- How does the Futex module handle unsupported operating systems?
+- What is the purpose of the `@branchHint(.cold)` directive in the Futex functions?
+- How does the `timedWait` function differ from the `wait` function?
+- What happens if `max_waiters` is 0 in the `wake` function?
+- How does the module ensure atomic operations for thread safety?
+- What is the role of the `Impl` constant in the Futex implementation?
 
 *Source: unknown | chunk_id: codebase_src_utils_Futex.zig_chunk_0*

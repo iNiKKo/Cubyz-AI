@@ -1,22 +1,28 @@
 # [easy/docs_docs_development_addons_blocks.md] - Chunk 0
 
-**Type:** gameplay
-**Keywords:** block properties, transparent, collide, blockHealth, blockResistance, replaceable, selectable, blockDrops, degradable, viewThrough, alwaysViewThrough, hasBackface, tags, emittedLight, absorption
+**Type:** documentation
+**Keywords:** block properties, rotation modes, ore fields, cubyz blocks, game mechanics, config properties
 **Symbols:** transparent, collide, blockHealth, blockResistance, replaceable, selectable, blockDrops, degradable, viewThrough, alwaysViewThrough, hasBackface, tags, emittedLight, absorption, onInteract, rotation, lodReplacement, opaqueVariant, friction, bounciness, density, terminalVelocity, mobility, allowOres, ore, item
-**Concepts:** Block Properties, Rotation Modes, Ore Generation
+**Concepts:** Blocks, Rotation Modes, Ore Fields
 
 ## Summary
-This document outlines the properties and behaviors of blocks in Cubyz, including transparency, collision, health, resistance, and more. It also details rotation modes and ore generation settings.
+Describes block properties and rotation modes in Cubyz.
 
 ## Explanation
-Blocks in Cubyz are defined by a `zig.zon` file containing various properties that determine their behavior and appearance. These properties include whether the block is transparent or collidable, its health and resistance, and what items it drops when broken. Additional properties like degradability, light emission, and tags allow for more nuanced control over block interactions and rendering. Rotation modes define how blocks can be oriented in the world, while ore generation settings specify how resources are distributed within a block.
+Blocks have various properties such as transparency, collision, health, resistance, replaceability, selectability, drop items, degradability, view-through settings, tags, emitted light, absorption, interaction callbacks, rotation mode, LOD replacements, opaque variants, friction, bounciness, density, terminal velocity, mobility, ore generation, and item properties.
 
 ## Related Questions
-- What property determines if a block is transparent?
-- How does the `collide` property affect entities in Cubyz?
-- Can you explain the purpose of the `blockDrops` property?
-- What are the different rotation modes available for blocks?
-- How do ore generation settings work in Cubyz?
-- What does the `emittedLight` property control?
+- What are the properties of a block in Cubyz?
+- How can I determine if a block is transparent or not?
+- Can you explain the difference between 'replaceable' and 'selectable' blocks?
+- What are some common rotation modes used for blocks in Cubyz?
+- How does the `ore` field work in Cubyz, and what are its properties?
+- Can you provide an example of a block's `item` property?
+- What is the purpose of the `onInteract` callback in Cubyz blocks?
+- How can I modify the LOD replacement for a block?
+- What is the difference between 'opaqueVariant' and 'lodReplacement'?
+- Can you explain the impact of friction on block physics in Cubyz?
+- What are some common use cases for setting `allowOres` to true?
+- How does the terminal velocity affect falling through blocks in Cubyz?
 
 *Source: unknown | chunk_id: docs_docs_development_addons_blocks.md_chunk_0*

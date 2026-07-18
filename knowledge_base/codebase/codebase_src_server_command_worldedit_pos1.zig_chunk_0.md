@@ -1,19 +1,19 @@
 # [easy/codebase_src_server_command_worldedit_pos1.zig] - Chunk 0
 
-**Type:** implementation
-**Keywords:** command parsing, position setting, world edit update, network packet sending, error handling
-**Symbols:** description, usage, Args, ArgParser, execute, errorMessage, source, Vec3i, main.stackAllocator, source.player().pos, source.worldEditData.selectionPosition1, main.network.protocols.genericUpdate.sendWorldEditPos, source.conn, .selectedPos1, pos
-**Concepts:** command handling, world edit data management, network communication
+**Type:** api
+**Keywords:** command parsing, position selection, network update, world edit data, flooring coordinates
+**Symbols:** description, usage, Args, ArgParser, execute
+**Concepts:** world editing, command handling, player position selection
 
 ## Summary
-Handles the /pos1 command to set the player's position as position 1.
+Handles the '/pos1' command to select player position as position 1 for world editing.
 
 ## Explanation
-The chunk defines a function `execute` that handles the '/pos1' command. It parses the arguments, retrieves the player's position, updates the world edit data with the selected position, and sends an update packet to the client. The function also sends a confirmation message to the user.
+This chunk defines a command handler for the '/pos1' command, which selects the player's current position as the first selection point for world editing. It uses an argument parser to validate the command and then retrieves the player's position, floors it to integer coordinates, and stores it in the user's world edit data. The updated position is also sent over the network to clients.
 
 ## Code Example
 ```zig
-fn execute(args: []const u8, source: *User) void {
+pub fn execute(args: []const u8, source: *User) void {
 	var errorMessage: main.List(u8) = .empty;
 	defer errorMessage.deinit(main.stackAllocator);
 
@@ -32,17 +32,11 @@ fn execute(args: []const u8, source: *User) void {
 ```
 
 ## Related Questions
-- What is the purpose of the 'execute' function in this chunk?
-- How does the function handle command parsing errors?
-- What data structure is used to store the selected position?
-- Which network protocol is used to send updates to clients?
-- What message format is used for error messages?
-- How is the player's current position retrieved and floored?
-- What is the purpose of the 'worldEditData' struct in this chunk?
-- What function sends an update packet to the client?
-- What is the format of the 'selectedPos1' message?
-- What is the purpose of the 'Vec3i' type in this chunk?
-- How does the function send a confirmation message to the user?
-- What are the keywords used in the code snippet for error handling?
+- What is the description of the '/pos1' command?
+- How does the chunk parse arguments for the '/pos1' command?
+- What happens if the argument parsing fails in the '/pos1' command?
+- Where is the player's position stored after executing the '/pos1' command?
+- How is the updated position sent over the network?
+- What message is sent to the user after successfully setting position 1?
 
 *Source: unknown | chunk_id: codebase_src_server_command_worldedit_pos1.zig_chunk_0*

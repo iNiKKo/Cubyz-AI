@@ -1,28 +1,28 @@
 # [easy/codebase_assets_cubyz_blocks_vine__defaults.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** cuttable, sliceable, vine_decay, toolEffective, replaceable, degradable, viewThrough, absorbedLight, collision, model, rotation, LOD
-**Symbols:** .tags, .blockHealth, .onUpdate, .drops, .selectionCapabilities, .replaceable, .degradable, .viewThrough, .absorbedLight, .collide, .model.top, .model.bottom, .rotation, .lodReplacement
-**Concepts:** block defaults, item drops, tool tags, update behavior, selection capabilities, light absorption, collision settings, model definitions, rotation configuration, LOD replacement
+**Keywords:** block properties, update logic, drop items, selection capabilities, replaceability, degradation, view-through, absorbed light, collision settings, model details, rotation, LOD replacement
+**Symbols:** vine_decay, auto
+**Concepts:** block configuration, vines, Cubyz engine
 
 ## Summary
-Defines default configuration for the vine block, specifying its tags, health, update behavior, drop rules, selection capabilities, replaceability, degradability, light absorption, collision settings, and model/rotation definitions.
+Vine block configuration
 
 ## Explanation
-This chunk declares a single top-level struct literal containing all default properties of the vine block. The .tags field lists cuttable and sliceable tags; .blockHealth is set to 0.3; .onUpdate references the vine_decay update type; .drops contains an item with auto drop behavior restricted to cuttable tools via allowedToolTags; .selectionCapabilities includes toolEffective; .replaceable and .degradable are both true; .viewThrough is true; .absorbedLight is zero (0x000000); .collide is false; the .model object defines top as cubyz:cross and bottom as cubyz:cross_with_texture_1; .rotation is set to cubyz:hanging; .lodReplacement points to cubyz:air.
+Defines the properties and behavior of a vine block in Cubyz, including its health, update logic, drop items, selection capabilities, replaceability, degradation status, view-through property, absorbed light level, collision settings, model details, rotation, and LOD replacement.
 
 ## Related Questions
-- What tags are assigned to the vine block by default?
-- How is the health of the vine block configured in this chunk?
-- Which update type is associated with the vine block's behavior?
-- Under what conditions does the vine drop items, and which tools allow drops?
-- What selection capabilities does the vine block support out of the box?
-- Is the vine block replaceable by default, and can it degrade?
-- Does the vine block allow viewing through it, and how is light absorption handled?
-- Are there any collision settings defined for the vine block in this configuration?
-- What model assets are referenced for the top and bottom of the vine block?
-- How is the rotation of the vine block specified by default?
-- Which LOD replacement asset is used when the vine becomes invisible?
-- Can I infer any other blocks that share these exact default values from this chunk?
+- What are the tags associated with this vine block?
+- How is the health of the vine block defined?
+- What update logic is applied to the vine block?
+- Which items can be dropped when the vine block is broken?
+- What tool tags are allowed for breaking the vine block?
+- Is the vine block replaceable?
+- Can the vine block degrade over time?
+- Does the vine block allow players to see through it?
+- What is the absorbed light level of the vine block?
+- Does the vine block collide with other blocks?
+- What model is used for the top and bottom parts of the vine block?
+- What rotation is applied to the vine block when placed in the world?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_vine__defaults.zig.zon_chunk_0*

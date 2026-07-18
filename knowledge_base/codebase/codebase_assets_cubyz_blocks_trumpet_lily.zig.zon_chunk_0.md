@@ -1,26 +1,28 @@
 # [easy/codebase_assets_cubyz_blocks_trumpet_lily.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** cuttable, sliceable, blockHealth, drops, toolEffective, replaceable, degradable, viewThrough, absorbedLight, collide, model, rotation, texture, item, lodReplacement
-**Symbols:** trumpet_lily
-**Concepts:** block configuration, cuttable tags, tool-specific drops, replaceability, light absorption, model references, texture mapping, support block checking
+**Keywords:** block properties, update function, texture mapping, LOD replacement, selection capabilities
+**Symbols:** TrumpetLily
+**Concepts:** block configuration, properties, update function
 
 ## Summary
-Defines the trumpet lily block configuration with cuttable/sliceable tags, low health, tool-specific drops, replaceability, light absorption properties, model/rotation references, texture mappings, and a support-check update callback.
+Block configuration for Trumpet Lily
 
 ## Explanation
-This chunk declares a single block entity named trumpet_lily. Its tags are set to .cuttable and .sliceable, indicating it can be harvested with cutting tools. The blockHealth is 0.2, meaning it breaks quickly under any damage source. Drops are defined as an auto-item that requires the cuttable tool tag; no other drop sources are listed. SelectionCapabilities includes only .toolEffective, so players must use a tool to select it. Replaceable and degradable flags are true, allowing block replacement and degradation mechanics. ViewThrough is true, making the block transparent for rendering purposes. AbsorbedLight is 0x000000 (no light absorption). Collide is false, meaning entities pass through without collision. The model reference points to cubyz:flower/height_10, and rotation uses cubyz:planar. Texture mappings assign the same trumpet_lily texture for front/sides and trumpet_lily_top for top/bottom faces. The item representation references trumpet_lily.png. OnUpdate is set to .check_support_blocks, indicating a runtime check for support block validity.
+Defines a block with specific properties such as tags, health, drops, selection capabilities, replaceability, degradability, view-through status, absorbed light, collision behavior, model, rotation, update function, textures, item texture, and LOD replacement.
 
 ## Related Questions
-- What tags are assigned to the trumpet lily block?
-- How does the trumpet lily handle player selection capabilities?
-- Is the trumpet lily replaceable and degradable by default?
-- Does the trumpet lily absorb light or is it fully transparent?
-- Which model reference is used for rendering the trumpet lily?
-- What rotation style is applied to the trumpet lily block?
-- How are textures mapped across different faces of the trumpet lily?
-- What item texture represents the trumpet lily in inventory views?
-- Does the trumpet lily have any collision properties enabled?
-- What update callback is registered for the trumpet lily on runtime?
+- What are the tags associated with this block?
+- How is the health of this block defined?
+- What items can be dropped when this block is broken?
+- What tool tags are allowed for cutting this block?
+- Is this block replaceable?
+- Can this block degrade over time?
+- Does this block allow players to see through it?
+- What color does this block absorb light?
+- Does this block collide with other blocks?
+- What model is used for rendering this block?
+- How is the rotation of this block defined?
+- What function is called when this block updates its state?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_trumpet_lily.zig.zon_chunk_0*

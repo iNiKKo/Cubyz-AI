@@ -1,28 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_red_leaf_pile.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** block properties, selection capabilities, replaceability, degradation, collision, visibility through walls, light absorption, model details, update logic
-**Symbols:** RedLeafPile
-**Concepts:** block configuration, Cubyz blocks, texture mapping, item representation
+**Keywords:** tags, drops, selection capabilities, textures, model
+**Concepts:** block properties, item definition
 
 ## Summary
-Block configuration for Red Leaf Pile
+Defines properties for the red leaf pile block in Cubyz, including tags, health, drops, selection capabilities, and textures.
 
 ## Explanation
-Defines the properties and behavior of a block in Cubyz, including its tags, health, drops, selection capabilities, replaceability, degradation, collision, visibility through walls, light absorption, model details, rotation, update logic, textures, item representation, and LOD replacement.
+This chunk defines a configuration for the red leaf pile block in the Cubyz game engine. It specifies various properties such as tags (cuttable, sliceable, leaf), block health, drop behavior, selection capabilities, replaceability, degradability, collision settings, light absorption, model details, rotation type, update behavior, and textures. The configuration also includes an item representation with a specific texture.
 
 ## Related Questions
-- What are the tags associated with the Red Leaf Pile block?
-- How is the health of the Red Leaf Pile block defined?
-- What items can be dropped when the Red Leaf Pile block is broken?
-- What tool tags are allowed for breaking the Red Leaf Pile block?
-- Is the Red Leaf Pile block replaceable?
-- Can the Red Leaf Pile block degrade over time?
-- Does the Red Leaf Pile block collide with other blocks?
-- Is the Red Leaf Pile block always view-through through walls?
-- What is the light absorption value of the Red Leaf Pile block?
-- What model is used for the Red Leaf Pile block?
-- How many states does the Red Leaf Pile block have in its model?
-- What rotation texture is applied to the Red Leaf Pile block?
+- What are the tags associated with the red leaf pile block?
+- How much health does the red leaf pile block have?
+- What items can be dropped from the red leaf pile block?
+- Are there any specific tools required to cut the red leaf pile block?
+- Can the red leaf pile block be replaced by other blocks?
+- Is the red leaf pile block degradable over time?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_red_leaf_pile.zig.zon_chunk_0*

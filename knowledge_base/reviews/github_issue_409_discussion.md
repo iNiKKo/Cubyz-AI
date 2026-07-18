@@ -1,0 +1,22 @@
+# [issues/issue_409.md] - Issue #409 discussion
+
+**Type:** review
+**Keywords:** ReleaseSafe, ReleaseFast, undefined behavior, performance impact, fast math, profiling, DebugAllocator, SmpAllocator, bug detection, compile flags
+**Symbols:** run, ReleaseSafe, ReleaseFast, @setRuntimeSafety(false), @setFloatMode, FloatMode, -ffast-math, time, GPA, DebugAllocator, SmpAllocator
+**Concepts:** performance optimization, debugging, memory safety, allocator choice
+
+## Summary
+The discussion revolves around whether to compile Cubyz scripts in ReleaseSafe instead of ReleaseFast, considering the trade-offs between better debug information and potential performance degradation.
+
+## Explanation
+The maintainers initially considered disabling safety checks in critical functions but found that the performance impact could be significant. The user suggested using fast math options, which led to a comparison showing a 20% increase in runtime. The maintainers ultimately decided against switching to ReleaseSafe due to the longer compile and run times, although they acknowledged its benefits for bug detection. With Zig 14.0 introducing new allocators like DebugAllocator and SmpAllocator, there is a renewed interest in using DebugAllocator for debug scripts and considering options for release scripts, including safety features or performance optimizations.
+
+## Related Questions
+- What is the performance impact of using DebugAllocator in Cubyz?
+- How can we profile Cubyz more accurately without including menu times?
+- Is there a way to log profiling results for further analysis?
+- What are the potential benefits and drawbacks of switching to ReleaseSafe mode?
+- Can we implement compile flags to allow users to choose between different allocators?
+- How does enabling fast math affect floating-point operations in Cubyz?
+
+*Source: unknown | chunk_id: github_issue_409_discussion*

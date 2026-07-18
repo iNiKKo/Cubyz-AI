@@ -1,7 +1,7 @@
 # [easy/codebase_assets_cubyz_biomes_decorative_stone_pit.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome config, terrain gen, stone pit, parent biomes, chance distribution
+**Keywords:** biome, configuration, stone pit, terrain generation, parent biomes
 **Symbols:** radius, chance, minHeight, maxHeight, keepOriginalTerrain, roughness, stoneBlock, parentBiomes
 **Concepts:** biome configuration, terrain generation
 
@@ -9,20 +9,20 @@
 Biome configuration for decorative stone pit.
 
 ## Explanation
-This chunk defines a biome configuration for decorative stone pits. It includes properties such as radius, chance, minimum and maximum heights, original terrain preservation, roughness, stone block type, and parent biomes with their respective chances.
+This chunk defines a biome configuration for decorative stone pits. It specifies properties such as radius, chance of occurrence, minimum and maximum heights, keeping original terrain probability, roughness, stone block type, and parent biomes with their respective chances.
 
 ## Related Questions
-- What is the radius of the decorative stone pit biome configuration?
-- What is the minimum height for the decorative stone pit biome configuration?
-- What is the maximum height for the decorative stone pit biome configuration?
+- What is the radius of the decorative stone pit biome?
+- What is the chance of occurrence for the decorative stone pit biome?
+- What are the minimum and maximum heights for the decorative stone pit biome?
+- What is the probability of keeping original terrain when generating the decorative stone pit biome?
+- What is the roughness setting for the decorative stone pit biome?
+- Which block type is used for the decorative stone pit biome?
+- What parent biomes are associated with the decorative stone pit biome and their respective chances?
 - How many parent biomes are configured for the decorative stone pit biome?
-- Which parent biome has the highest chance for the decorative stone pit biome configuration?
-- What is the stone block type used in the decorative stone pit biome configuration?
-- What is the probability of a terrain being preserved when generating the decorative stone pit biome?
-- How many different parent biomes are configured with their respective chances?
-- What is the roughness value for the decorative stone pit biome configuration?
-- Which parent biome has the lowest chance for the decorative stone pit biome configuration?
-- What is the total chance distribution of all parent biomes for the decorative stone pit biome configuration?
-- How many different parent biomes are configured with a chance greater than 10?
+- What is the total chance of all parent biomes combined for the decorative stone pit biome?
+- Is there any error handling or validation in this configuration chunk?
+- Does this configuration chunk use any concurrency mechanisms?
+- Are there any memory ownership issues related to this configuration chunk?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_decorative_stone_pit.zig.zon_chunk_0*

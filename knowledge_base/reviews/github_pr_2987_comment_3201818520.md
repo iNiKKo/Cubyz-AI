@@ -1,22 +1,22 @@
 # [src/blocks.zig] - PR #2987 review diff
 
 **Type:** review
-**Keywords:** blocks.zig, register function, zon element, selection capabilities, callsite constant, struct-local constants, load and check functions
-**Symbols:** register, zon, SelectionRule, selectionCapabilities
-**Concepts:** architectural design, data management, constant handling
+**Keywords:** selectionCapabilities, callsite, constant, struct-local, load function, check function
+**Symbols:** register, zon, SelectionRule, SelectionCapability
+**Concepts:** architectural review, struct design
 
 ## Summary
-The change introduces a new variable `selectionCapabilities` to store selection capabilities for blocks, but the reviewer notes that the current implementation lacks a corresponding constant at the callsite.
+The change introduces a new variable `selectionCapabilities` to store selection capabilities, but the reviewer notes that the callsite does not have an extra constant and suggests using a struct with local constants for better architecture.
 
 ## Explanation
-The patch adds a new variable `selectionCapabilities` to handle block selection capabilities. However, the reviewer points out that this change alone is insufficient because it does not address the issue at the callsite where there is no associated constant. The reviewer suggests using a struct with local constants and load/check functions to properly manage these capabilities.
+The code modification adds a new variable `selectionCapabilities` to handle selection capabilities. However, the reviewer points out that the current approach lacks an extra constant at the callsite, which could lead to architectural issues. The reviewer recommends using a struct with a struct-local constant and associated load and check functions to improve the design and prevent potential bugs.
 
 ## Related Questions
-- What is the purpose of the `selectionCapabilities` variable?
-- Why does the reviewer mention a lack of constant at the callsite?
-- How can the struct with local constants and load/check functions be implemented?
-- What are the implications of not having a constant at the callsite?
-- Can you provide an example of how to use the suggested struct for managing selection capabilities?
-- How does this change affect the overall architecture of block registration?
+- What is the purpose of introducing `selectionCapabilities`?
+- Why does the reviewer mention a lack of an extra constant at the callsite?
+- How can using a struct with local constants improve the architecture?
+- What are the potential benefits of adding load and check functions to the struct?
+- Could this change lead to any performance improvements or regressions?
+- How might this modification affect backwards compatibility?
 
 *Source: unknown | chunk_id: github_pr_2987_comment_3201818520*

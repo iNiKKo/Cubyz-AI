@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_rare_triclops_statue_root_extension3.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprints, children, spawn chance, node configuration, world generation
-**Concepts:** world generation
+**Keywords:** blueprints, children, asset generation, configuration data, ID linking
+**Concepts:** asset configuration, blueprint definition
 
 ## Summary
-Defines blueprints and children for a triclops statue root extension.
+Defines blueprints and children for a rare Triclops statue root extension.
 
 ## Explanation
-This chunk defines the configuration for a triclops statue root extension, including its blueprints with IDs and spawn chances, and specifies its child node. The blueprints array contains two entries: one with an ID and a chance of 0.5, and another with a null ID indicating the end of the list. The children object maps the color 'red' to the extension's child node ID.
+This chunk defines the configuration for a specific asset in the Cubyz game engine. It specifies two blueprints, where the first has an ID of 'cubyz:rare/triclops_statue/root/0' with a chance of 0.5 and the second has no ID (null). The children section links to another extension with the ID 'cubyz:rare/triclops_statue/root/extension3'. This configuration is used for asset generation and management within the game.
 
 ## Related Questions
-- What are the IDs and spawn chances defined for the triclops statue root extension?
-- Which child node is associated with the color 'red' in this configuration?
-- How many blueprints are defined for this triclops statue root extension?
-- Is there a null entry in the blueprints array, and what does it signify?
-- What is the purpose of the children object in this configuration?
-- Can you provide the IDs of all child nodes associated with this root extension?
+- What are the IDs defined in the blueprints?
+- What is the chance associated with the first blueprint?
+- Which extension is linked as a child?
+- How many blueprints are defined in this configuration?
+- Is there an ID for the second blueprint?
+- What does the children section specify?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_rare_triclops_statue_root_extension3.zig.zon_chunk_0*

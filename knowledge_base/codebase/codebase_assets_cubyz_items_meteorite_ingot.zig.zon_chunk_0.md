@@ -12,9 +12,9 @@ This chunk defines the configuration for a meteorite ingot item in the Cubyz vox
 
 ## Related Questions
 - What tags are associated with the meteorite ingot item?
-- Which texture is assigned to the meteorite ingot item?
+- Which texture is used for the meteorite ingot item?
 - What is the durability of the meteorite ingot item?
-- How much mass damage does the meteorite ingot cause?
+- How much mass damage does the meteorite ingot item cause?
 - What is the hardness damage of the meteorite ingot item?
 - What is the swing speed of the meteorite ingot item?
 

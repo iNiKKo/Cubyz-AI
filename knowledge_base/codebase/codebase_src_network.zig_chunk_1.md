@@ -1,43 +1,45 @@
 # [hard/codebase_src_network.zig] - Chunk 1
 
 **Type:** networking
-**Keywords:** sendto, recvfrom, OS-specific handling, domain name resolution, NAT traversal
-**Symbols:** Socket, Socket.sendto, Socket.receive, resolveIP, getPort, Address, Address.ip, Address.port, Address.isSymmetricNAT, Address.localHost, Address.format, Request, Request.address, Request.data, Request.requestNotifier, stun, stun.ipServerList
-**Concepts:** network communication, socket programming, IP address resolution, STUN protocol
+**Keywords:** UDP, socket operations, OS-specific handling, error management, timeout handling
+**Symbols:** Socket, Socket.posix, Socket.socketID, Socket.windowsError, Socket.startup, Socket.init, Socket.deinit, Socket.send, Socket.receive, Socket.resolveIP, Socket.getPort
+**Concepts:** networking
 
 ## Summary
-This chunk implements network communication functionalities including sending and receiving data over sockets, resolving IP addresses, and handling different operating systems' socket APIs.
+The chunk defines a `Socket` struct for UDP networking, handling OS-specific socket operations and errors.
 
 ## Explanation
-The chunk defines a `Socket` struct with methods for sending (`sendto`) and receiving (`recvfrom`) data. It handles OS-specific differences in socket operations, particularly between Windows and POSIX-compliant systems. The `resolveIP` function resolves domain names to IP addresses using the standard library's network functions. Additionally, it includes an `Address` struct for storing IP addresses and ports, with formatting capabilities. The chunk also initializes and deinitializes networking components and implements parts of the STUN protocol for NAT traversal.
+This chunk implements a `Socket` struct that encapsulates the creation, initialization, sending, receiving, and cleanup of UDP sockets. It handles both Windows and POSIX-compliant systems by checking the operating system tag at compile time. The `Socket` struct includes methods for error handling specific to Windows (`windowsError`), initializing the socket (`init`), deinitializing it (`deinit`), sending data (`send`), receiving data with a timeout (`receive`), resolving IP addresses from hostnames (`resolveIP`), and retrieving the local port of the socket (`getPort`). The code manages OS-specific differences in socket operations, such as using `WSAStartup` on Windows and handling different error codes. It also includes logging for warnings and errors encountered during socket operations.
 
 ## Code Example
 ```zig
-fn resolveIP(name: []const u8) !u32 {
-	var nameBuf: [255]u8 = undefined;
-	var buf: [16]std.Io.net.HostName.LookupResult = undefined;
-	var resultQueue = std.Io.Queue(std.Io.net.HostName.LookupResult).init(&buf);
-	try std.Io.net.HostName.lookup(try .init(name), main.io, &resultQueue, .{.canonical_name_buffer = &nameBuf, .port = 0});
-	while (true) {
-		const entry = resultQueue.getOneUncancelable(main.io) catch break;
-		switch (entry) {
-			.address => |addr| {
-				if (addr != .ip4) continue;
-				return std.mem.bytesToValue(u32, addr.ip4.bytes[0..4]);
-			},
-			.canonical_name => {},
+fn windowsError(err: c_int) !void {
+		if (err == 0) return;
+		switch (err) {
+			c.WSASYSNOTREADY => return error.NetworkDown,
+			c.WSAVERNOTSUPPORTED => return error.VersionUnsupported,
+			c.WSAEINPROGRESS => return error.BlockingOperationInProgress,
+			c.WSAEPROCLIM => return error.ProcessFdQuotaExceeded,
+			c.WSAEFAULT => unreachable,
+			c.WSANOTINITIALISED => unreachable,
+			c.WSAENETDOWN => return error.NetworkDown,
+			c.WSAEACCES => return error.AccessDenied,
+			c.WSAEADDRINUSE => return error.AddressInUse,
+			c.WSAEADDRNOTAVAIL => return error.AddressNotAvailable,
+			c.WSAEINVAL => unreachable,
+			c.WSAENOBUFS => return error.SystemResources,
+			c.WSAENOTSOCK => return error.FileDescriptorNotASocket,
+			else => return error.UNKNOWN,
 		}
 	}
-	return error.ReachedEndWithoutFindingAnything;
-}
 ```
 
 ## Related Questions
-- How does the `Socket.sendto` function handle OS-specific differences?
-- What is the purpose of the `resolveIP` function in this chunk?
-- How does the `Address.format` method work?
-- What error handling is implemented for socket operations in this chunk?
-- How is the STUN protocol partially implemented in this code?
-- What are the key differences between Windows and POSIX socket handling in this chunk?
+- What is the purpose of the `windowsError` function in the Socket struct?
+- How does the `Socket.init` method handle socket creation on Windows and POSIX systems?
+- What steps are taken to resolve an IP address from a hostname using the `resolveIP` method?
+- Describe the error handling mechanism for sending data through the `send` method.
+- How is the local port of a socket retrieved in the `getPort` method?
+- What is the role of the `startup` function in the Socket struct, and when is it called?
 
 *Source: unknown | chunk_id: codebase_src_network.zig_chunk_1*

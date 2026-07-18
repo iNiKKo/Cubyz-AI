@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_items_apple.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** texture mapping, food value, item properties, configuration data, game assets
-**Concepts:** item configuration
+**Keywords:** texture mapping, food value, item configuration, Cubyz assets, gameplay mechanics
+**Concepts:** item properties, food items
 
 ## Summary
-Defines properties for an apple item in the Cubyz game.
+Defines the properties of an apple item in Cubyz.
 
 ## Explanation
-This chunk defines a configuration object for an apple item, specifying its texture and food value. The texture is set to 'apple.png', indicating the image file used to represent the apple in-game. The food value is set to 4, which likely represents the amount of health or energy restored when consuming the apple.
+This chunk defines a configuration for an apple item within the Cubyz game engine. It specifies that the apple uses the texture 'apple.png' and provides 4 food points when consumed.
 
 ## Related Questions
-- What is the texture file used for the apple item?
-- How much food value does the apple provide?
-- Where is the configuration data for the apple item stored?
-- Is there any additional properties defined for the apple item in this chunk?
-- How might the food value of the apple be utilized in the game?
-- What file format is used to store the texture 'apple.png'?
+- What texture is used for the apple item?
+- How many food points does the apple provide?
+- Where is the apple item's configuration defined in the Cubyz codebase?
+- Is there any additional functionality or properties associated with the apple item beyond its texture and food value?
+- How might the apple item's configuration be modified to change its appearance or effects?
+- Are there other items in the Cubyz codebase that follow a similar configuration structure?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_items_apple.zig.zon_chunk_0*

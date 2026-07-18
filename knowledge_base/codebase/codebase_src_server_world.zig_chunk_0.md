@@ -1,29 +1,57 @@
 # [hard/codebase_src_server_world.zig] - Chunk 0
 
-**Type:** api
-**Keywords:** settings serialization, directory creation, file writing, cache management, reference counting, mutex locking
-**Symbols:** Settings, Settings.defaultGamemode, Settings.allowCheats, Settings.testingMode, Settings.seed, Settings.defaults, Settings.fromZon, Settings.toZon, findValidFolderName, tryCreateWorld, ChunkManager, ChunkManager.world, ChunkManager.terrainGenerationProfile, ChunkManager.reducedChunkCacheMask, ChunkManager.chunkCache, ChunkManager.HashContext, ChunkManager.simulationChunkHashMap, ChunkManager.mutex, ChunkManager.getSimulationChunkAndIncreaseRefCount
-**Concepts:** world settings, folder name validation, world creation, chunk management
+**Type:** implementation
+**Keywords:** world settings, folder name validation, ZonElement serialization, directory creation, error handling
+**Symbols:** Settings, Settings.defaultGamemode, Settings.allowCheats, Settings.testingMode, Settings.seed, Settings.defaults, Settings.fromZon, Settings.toZon, findValidFolderName, tryCreateWorld
+**Concepts:** world creation, settings management, file I/O, directory handling
 
 ## Summary
-Defines world settings, folder name validation, world creation logic, and chunk management for the server.
+Handles world creation and settings management.
 
 ## Explanation
-This chunk contains definitions for world settings, including default gamemode, cheat permissions, testing mode, and seed. It includes a function to validate and create unique folder names for worlds. The `tryCreateWorld` function handles the creation of a new world by setting up directories, writing configuration files, and initializing assets. The `ChunkManager` struct manages chunks within the server world, including caching and reference counting mechanisms.
+This chunk defines the `Settings` struct for managing world configuration, including default gamemode, cheat allowance, testing mode, and seed. It includes methods to load (`fromZon`) and save (`toZon`) these settings from/to a ZonElement format. The `findValidFolderName` function ensures that the world folder name is valid by escaping illegal characters and avoiding duplicates. The `tryCreateWorld` function creates a new world directory, initializes world information, writes it to disk, and sets up necessary subdirectories.
 
 ## Code Example
 ```zig
-pub fn hash(_: HashContext, a: chunk.ChunkPosition) u64 {
-			return a.hashCode();
-		}
+pub const Settings = struct {
+	defaultGamemode: Gamemode = .creative,
+	allowCheats: bool = true,
+	testingMode: bool = false,
+	seed: u64 = undefined,
+
+	pub const defaults: Settings = .{};
+
+	pub fn fromZon(zon: ZonElement) error{NoSeed}!Settings {
+		return .{
+			.seed = zon.get(u64, "seed") orelse {
+				std.log.err("Cannot load world. World has no seed!", .{});
+				return error.NoSeed;
+			},
+			.defaultGamemode = std.meta.stringToEnum(main.game.Gamemode, zon.get([]const u8, "defaultGamemode") orelse @tagName(defaults.defaultGamemode)) orelse defaults.defaultGamemode,
+			.allowCheats = zon.get(bool, "allowCheats") orelse defaults.allowCheats,
+			.testingMode = zon.get(bool, "testingMode") orelse defaults.testingMode,
+		};
+	}
+
+	pub fn toZon(self: Settings, allocator: NeverFailingAllocator) ZonElement {
+		const zon = main.ZonElement.initObject(allocator);
+
+		zon.put("defaultGamemode", @tagName(self.defaultGamemode));
+		zon.put("allowCheats", self.allowCheats);
+		zon.put("testingMode", self.testingMode);
+		zon.put("seed", self.seed);
+
+		return zon;
+	}
+}
 ```
 
 ## Related Questions
 - How does the `Settings` struct handle default values?
 - What is the purpose of the `findValidFolderName` function?
-- How are chunks managed within the `ChunkManager` struct?
-- What error handling is implemented in the `tryCreateWorld` function?
-- How are world settings serialized and deserialized?
-- What is the role of the `simulationChunkHashMap` in chunk management?
+- How are world settings serialized and deserialized in this chunk?
+- What error handling is implemented when creating a new world?
+- How does the chunk ensure unique folder names for worlds?
+- What subdirectories are created during world initialization?
 
 *Source: unknown | chunk_id: codebase_src_server_world.zig_chunk_0*

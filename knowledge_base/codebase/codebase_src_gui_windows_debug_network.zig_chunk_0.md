@@ -1,19 +1,19 @@
 # [easy/codebase_src_gui_windows_debug_network.zig] - Chunk 0
 
-**Type:** api
-**Keywords:** atomic operations, GUI rendering, network metrics, player list, packet loss
-**Symbols:** window, render
-**Concepts:** network debugging, GUI window management, statistics display
+**Type:** implementation
+**Keywords:** GUI, Network stats, Players connected, Packet loss, Overhead, Protocols
+**Symbols:** graphics, draw, Texture, network, Vec2f, GuiWindow, GuiComponent, window, render
+**Concepts:** GUI, Network statistics display, Player connection, Packet loss, Internal message overhead, Header overhead, Protocol-specific data
 
 ## Summary
-The chunk defines a debug network window for displaying network statistics and user list.
+Network statistics display
 
 ## Explanation
-This chunk initializes a GUI window named 'window' with specific properties such as relative position, content size, and visibility settings. The `render` function updates the window's content by drawing various network-related statistics, including player count, packet loss, message overheads, and protocol-specific data transfer rates. It uses atomic operations to safely read network metrics and formats them for display using a drawing API.
+This chunk displays network-related statistics in the GUI. It retrieves and renders information about players connected, packet loss, internal message overhead, header overhead, and protocol-specific data sent/received.
 
 ## Code Example
 ```zig
-pub fn render() void {
+render() void {
 	var y: f32 = 0;
 	if (main.game.world != null) {
 		if (main.server.world != null) {
@@ -49,11 +49,11 @@ pub fn render() void {
 ```
 
 ## Related Questions
-- What is the purpose of the 'window' variable?
-- How does the 'render' function update the GUI window?
-- What network metrics are displayed in the debug window?
-- How is packet loss calculated and displayed?
-- What role do atomic operations play in this chunk?
-- How is the user list retrieved and managed within the render function?
+- How many lines of code are in the render function?
+- What is the purpose of the `render` function?
+- Which module does the `render` function belong to?
+- What data structures are used in the `render` function?
+- What algorithms are implemented in the `render` function?
+- What error handling mechanisms are present in the `render` function?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_debug_network.zig_chunk_0*

@@ -1,0 +1,21 @@
+# [issues/issue_1738.md] - Issue #1738 discussion
+
+**Type:** review
+**Keywords:** disconnection behavior, attackable ghost, fading ghost, geiger counter, logout timer, combat logging prevention, base security, server-side mod, multiplayer experience
+**Concepts:** combat logging, base haunting, ghost player, logout timer, geiger counter
+
+## Summary
+Discussion on player disconnection behavior, focusing on implications of leaving bodies and potential solutions like temporary ghost states or logout timers.
+
+## Explanation
+The issue revolves around modifying player disconnection mechanics to prevent combat logging and base haunting. The discussion explores various solutions such as making disconnected players attackable for a short period, fading ghosts over time, using geiger counters to detect player presence, and implementing logout timers. Maintainers express concerns about the permanence of ghost entities and their potential misuse for griefing. The final decision leans towards server-side mods rather than core game features due to concerns about disrupting cooperative multiplayer experiences.
+
+## Related Questions
+- What are the potential implications of making disconnected players attackable for a short period?
+- How could fading ghosts over time address combat logging and base haunting issues?
+- What is the purpose of implementing a geiger counter in this context?
+- Why was the logout timer solution considered less suitable for the core game experience?
+- Can you explain the concerns regarding the permanence of ghost entities?
+- How might server-side mods be used to implement these disconnection behaviors?
+
+*Source: unknown | chunk_id: github_issue_1738_discussion*

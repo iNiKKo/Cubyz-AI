@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_cactus_young.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprint, configuration, cactus, height variation, world generation
-**Concepts:** world generation
+**Keywords:** configuration, blueprints, assets, cactus, variants
+**Concepts:** asset management, blueprint definition
 
 ## Summary
-Defines blueprints for young cacti of various heights.
+Defines blueprints for young cactus assets.
 
 ## Explanation
-This chunk contains a configuration structure defining multiple blueprints for young cacti, each with a unique identifier specifying its height. The blueprints are stored in an array under the `.blueprints` key. Each blueprint is represented as a struct with an `.id` field that holds the string identifier of the cactus variant.
+This chunk contains a configuration structure defining various blueprints for young cactus assets. Each blueprint is identified by a unique string ID, specifying different variants of the cactus in terms of height and possibly other attributes like orientation or texture variation.
 
 ## Related Questions
-- What are the identifiers for the young cacti blueprints defined in this chunk?
-- How many different heights of young cacti are specified in the configuration?
-- Is there a blueprint for a young cactus that is 6 tall?
-- What is the structure of each blueprint entry in the configuration?
-- Are there any other properties or fields associated with each blueprint besides the ID?
-- How might this configuration be used in the world generation process?
+- What are the IDs of the young cactus blueprints defined in this chunk?
+- How many different variants of young cactus assets are specified here?
+- Is there a blueprint for a 6-tall young cactus in this configuration?
+- What is the structure of the blueprints defined in this chunk?
+- Are there any other attributes besides height specified for these cactus blueprints?
+- How might these blueprints be used within the Cubyz engine?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_cactus_young.zig.zon_chunk_0*

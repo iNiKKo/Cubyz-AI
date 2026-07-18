@@ -1,22 +1,28 @@
 # [easy/codebase_assets_cubyz_biomes_desert_hoodoos_base.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** cactus, hoodoo, sandstone, saguaro, placeMode, degradable, ground_patch, flower_patch, minHeightLimit, maxRadius
-**Symbols:** tags, chance, minHeightLimit, minHeight, maxHeight, maxHeightLimit, minRadius, maxRadius, hills, validPlayerSpawn, structures, stoneBlock
-**Concepts:** biome configuration, structure placement, terrain generation parameters, degradable structures, ground patches, flower patches
+**Keywords:** desert hoodoos, biome config, structure chance, block probability, height limits
+**Symbols:** DesertHoodoosBiomeConfig
+**Concepts:** biome configuration, structure placement, block types
 
 ## Summary
-This chunk defines the configuration for a desert biome featuring hoodoo formations and cactus structures with associated terrain generation parameters.
+Desert Hoodoos Biome Configuration
 
 ## Explanation
-The chunk declares a struct containing tags, chance values, height limits, radius bounds, hill count, valid player spawn flag, and an array of structure definitions. Each structure entry includes an id, the referenced structure asset path, a place mode (degradable), and a chance value. Additionally, ground patches are defined with block type, chance, width, variation, depth, and smoothness parameters. Flower patches are similarly configured with blocks, chance, width, variation, density, and priority fields.
+This chunk defines a desert hoodoos biome configuration with specific parameters for height, radius, structure placement, and block types. It includes details on the tags associated with the biome, chance of occurrence, minimum and maximum heights, valid player spawn status, structures to place, and their respective probabilities.
 
 ## Related Questions
-- What tags are associated with this desert biome configuration?
-- How is the chance for generating hoodoo structures defined in this chunk?
-- Which structure asset paths are referenced for cactus generation?
-- What place mode is applied to all structures defined here?
-- How does the ground_patch definition specify sandstone terrain generation?
-- What parameters control flower patch density and priority in this configuration?
+- What is the minimum height limit for this desert hoodoos biome?
+- How many structures are defined in the configuration?
+- What is the maximum radius of the desert hoodoos biome?
+- Which block type has a chance of 0.2 to be placed?
+- What is the probability of placing a cactus saguaro structure?
+- What is the width of the flower patch structure?
+- How many blocks are in the flower patch structure's block list?
+- What is the priority of the flower patch structure?
+- What is the chance of placing a ground patch structure with a specific block type?
+- What is the depth of the ground patch structure?
+- What is the smoothness of the ground patch structure?
+- What are the tags associated with this desert hoodoos biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_desert_hoodoos_base.zig.zon_chunk_0*

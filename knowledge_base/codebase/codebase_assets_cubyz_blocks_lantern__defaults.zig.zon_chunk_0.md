@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_lantern__defaults.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, block properties, mineable, drops, view-through, model, LOD replacement
-**Concepts:** block configuration, mineable blocks, drop behavior, transparency
+**Keywords:** mineable, blockHealth, drops, viewThrough, rotation, model, lodReplacement
+**Concepts:** block properties, mineable blocks, drop behavior, transparency
 
 ## Summary
 Defines default properties for the lantern block in Cubyz.
 
 ## Explanation
-This chunk specifies the configuration defaults for a lantern block, including its tags, health, drop behavior, transparency, rotation model, and level of detail (LOD) replacement. The lantern is marked as mineable with a health value of 0.5, meaning it can be destroyed by mining tools. It drops itself when mined. The block allows view-through and uses specific models for its sides, ceiling, and floor. In lower levels of detail, it is replaced by air.
+This chunk specifies various attributes of the lantern block, including its mineability, health, drop behavior, transparency, rotation model, and level of detail (LOD) replacement. The `.tags` field marks it as mineable. The `blockHealth` is set to 0.5, indicating moderate durability. The `drops` array specifies that it drops items automatically when mined. The block allows view-through with the `viewThrough` flag. The `rotation` property uses a specific model for orientation. The `model` field defines different textures for its sides, ceiling, and floor. Lastly, the `lodReplacement` is set to 'air', suggesting how it should be rendered at lower levels of detail.
 
 ## Related Questions
-- What are the tags associated with the lantern block?
+- What tags are assigned to the lantern block?
 - How much health does the lantern block have?
-- What items does the lantern drop when mined?
-- Is the lantern block transparent?
-- Which model is used for the lantern's sides?
-- What happens to the lantern block in lower levels of detail?
+- Does the lantern block drop items when mined?
+- Can players see through the lantern block?
+- Which model is used for rotating the lantern block?
+- What textures are applied to different sides of the lantern block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_lantern__defaults.zig.zon_chunk_0*

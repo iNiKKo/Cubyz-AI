@@ -1,7 +1,7 @@
 # [easy/codebase_assets_cubyz_blocks_log_mahogany.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** texture mapping, resource paths, configuration data, block assets, Mahogany log
+**Keywords:** texture mapping, resource paths, block assets, configuration data, Mahogany log
 **Concepts:** block texturing
 
 ## Summary

@@ -1,26 +1,22 @@
 # [medium/docs_docs_installation.md] - Chunk 0
 
 **Type:** documentation
-**Keywords:** installation, requirements, GPU, OpenGL 4.6, CPU, RAM, release, GitHub, source code, compile, Git clone, run script, assets folder
-**Symbols:** Cubyz, Cubyz.exe, launchConfig.zon, assets, run_linux.sh, run_windows.bat, git clone, winget install, sudo pacman -S git, sudo apt update && sudo apt install git
-**Concepts:** Installation, Hardware Requirements, Release Downloads, Source Compilation, Git Setup, OpenGL Support Verification
+**Keywords:** Cubyz, installation, requirements, download, compile, source code, OpenGL 4.6, Linux, Windows, GPU, CPU, RAM
+**Symbols:** Radeon Vega 8, Intel HD Graphics 530, NVIDIA GTX 750, Ryzen 3 2200G, Intel i3-6100, Cubyz, launchConfig.zon, assets, run_linux.sh, run_windows.bat
+**Concepts:** Installation, Hardware Requirements, Downloading a Release, Compiling from Source
 
 ## Summary
-Installation guide covering hardware requirements (OS, GPU with OpenGL 4.6 support, CPU, RAM) and release/download procedures for Windows/Linux.
+Cubyz can be installed either by downloading a pre-built release or compiling from source. The minimum hardware requirements include Windows/Linux OS, specific GPUs, dual-core CPUs, and at least 4 GB of RAM.
 
 ## Explanation
-Cubyz is distributed as a ready-to-run binary or compiled from source; the release package contains three mandatory files (Cubyz/Cubyz.exe, launchConfig.zon, assets) that must remain in the same directory. Users can download releases via GitHub and run them directly after extracting, or build from source using provided scripts (run_linux.sh/run_windows.bat) or Git clones with platform-specific install commands for Git.
+To play Cubyz, users have two main installation options: downloading a ready-to-run release from the GitHub releases page or compiling the latest development version themselves using source code. The game has specified hardware requirements to ensure smooth gameplay, including support for OpenGL 4.6 and adequate CPU, GPU, and RAM specifications. For downloading, users extract the archive containing `Cubyz`, `launchConfig.zon`, and `assets` files, then run the executable. Compiling from source can be done either by downloading a ZIP file and running a launch script or using Git to clone the repository and compile it directly.
 
 ## Related Questions
-- What are the minimum hardware specifications recommended for running Cubyz on Full HD?
-- Which operating systems does Cubyz officially support out of the box?
-- How can I verify if my GPU meets Cubyz's OpenGL requirements before installing?
-- Where is the official download page for Cubyz release binaries hosted?
-- What three files must remain in the same directory after extracting a Cubyz release archive?
-- Is there an easy way to compile Cubyz without installing any development tools?
-- How do I clone the Cubyz repository using Git on Windows with PowerShell?
-- Which command installs Git on Arch Linux for building Cubyz from source?
-- What is the correct sequence of commands to build and run Cubyz after cloning via Git on Ubuntu?
-- Why does the documentation warn that hardware below minimum specs may cause gameplay issues?
+- What are the minimum hardware requirements for Cubyz?
+- How do I download a pre-built release of Cubyz?
+- Can I compile Cubyz from source? If so, how?
+- What are the necessary files to run Cubyz after downloading?
+- What is the process for compiling Cubyz on Linux using Git?
+- What is the recommended GPU for running Cubyz smoothly?
 
 *Source: unknown | chunk_id: docs_docs_installation.md_chunk_0*

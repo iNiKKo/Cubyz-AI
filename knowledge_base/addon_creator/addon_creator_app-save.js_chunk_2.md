@@ -1,26 +1,26 @@
 # [hard/addon_creator_app-save.js] - Chunk 2
 
 **Type:** ui
-**Keywords:** biome, entity, particle, project data, ZIP export, input fields, validation, texture inclusion, model files
-**Symbols:** saveBiomeToProject, saveEntityToProject, saveParticleToProject, exportFullAddon
-**Concepts:** data-binding, form validation, file export
+**Keywords:** biome, entity, project data, input validation, color conversion, structural layers, UI update
+**Symbols:** saveBiomeToProject, saveEntityToProject, getHexColorAsRGBVector, autoNamespaceBlock
+**Concepts:** data-binding, form validation, live preview
 
 ## Summary
-This chunk handles saving biome, entity, and particle configurations to the project data and exporting the full addon as a ZIP file.
+The chunk implements functions to save biome and entity configurations to the project data, handling input validation and updating the UI.
 
 ## Explanation
-The chunk includes functions for saving biomes, entities, and particles to the project data. Each function retrieves values from input fields, validates them, and updates the corresponding section in `window.projectData`. The `exportFullAddon` function checks if the project is empty, creates a ZIP archive with necessary folders, and writes configuration files based on the project data. It also handles texture and model file inclusion.
+This JavaScript code defines two functions, `saveBiomeToProject` and `saveEntityToProject`, which are responsible for saving biome and entity configurations respectively into the project's data structure. Both functions perform input validation, sanitize user inputs, and update the project data accordingly. The `saveBiomeToProject` function also handles complex data structures like structural layers and color conversions. After saving, it updates the UI by resetting certain flags and updating the sidebar project tree.
 
 ## Related Questions
-- What is the purpose of the `saveBiomeToProject` function?
-- How does the `exportFullAddon` function handle empty projects?
-- What validation checks are performed when saving an entity?
-- How are textures and models included in the exported ZIP file?
-- What happens if a user tries to save a biome without specifying an ID?
-- How is the project data updated after saving a particle configuration?
-- What is the role of `autoNamespaceBlock` in the biome saving process?
-- How does the chunk ensure that only valid IDs are used for entities and particles?
-- What steps are taken to prevent duplicate entries when saving configurations?
-- How is the sidebar project tree updated after saving a configuration?
+- What is the purpose of the `getHexColorAsRGBVector` function?
+- How does the code handle invalid biome or entity IDs?
+- What data structures are used to store structural layers in a biome configuration?
+- How does the code ensure that only valid block IDs are used in the project data?
+- What happens if a user tries to save a biome without specifying a Biome ID?
+- How is the `autoNamespaceBlock` function used in the code?
+- What UI elements are updated after saving a biome or entity configuration?
+- How does the code handle default values for various properties when saving a biome?
+- What types of structural layers can be configured for a biome, and how are they represented?
+- How is the project data structure modified when a new biome or entity is saved?
 
 *Source: unknown | chunk_id: addon_creator_app-save.js_chunk_2*

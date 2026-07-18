@@ -1,26 +1,26 @@
 # [src/rotation.zig] - PR #1197 review diff
 
 **Type:** review
-**Keywords:** inline function, rotation table, bitwise operations, conditional moves, optimization
-**Symbols:** subBlockMask, hasSubBlock, rotateX, rotateTable
-**Concepts:** bit manipulation, rotation transformation, optimization
+**Keywords:** rotateX, subBlockMask, hasSubBlock, trig functions, precomputed table, optimizer, cmov instruction
+**Symbols:** subBlockMask, hasSubBlock, rotateX
+**Concepts:** inline functions, trigonometry, rotation matrix, optimization
 
 ## Summary
-The code introduces an inline function `rotateX` for rotating stair data and uses a rotation table to map sub-block positions after rotation.
+The code introduces an inline function `rotateX` in `rotation.zig` to handle rotation logic for stairs, utilizing trigonometric functions and a precomputed rotation table.
 
 ## Explanation
-The change involves adding a new function `rotateX` that handles the rotation of stair data by 90 degrees around the X-axis. The function uses a precomputed rotation table to determine the new positions of sub-blocks after rotation. The reviewer notes that using multiplication in the bitwise operations might hinder optimization, suggesting that conditional moves (`cmov`) would be more efficient.
+The change involves adding a new function `rotateX` that calculates the rotated state of stair subblocks. The function uses a precomputed rotation table to map original coordinates to their rotated counterparts. Reviewer notes suggest that using multiplication might hinder optimization, as it could prevent the compiler from utilizing efficient conditional move (`cmov`) instructions.
 
 ## Related Questions
-- What is the purpose of the `rotateX` function in the code?
-- How does the rotation table contribute to the efficiency of the rotation process?
-- Why are the bitwise operations inside the loop using multiplication?
-- Can you explain how the `subBlockMask` and `hasSubBlock` functions work together?
-- What is the impact of using inline functions in this context?
-- How does the reviewer suggest improving the optimization of the code?
-- What mathematical principles are applied in the rotation calculations?
-- Is there a potential for memory leaks or other resource management issues in this code?
-- How might changes to the `rotateTable` affect the behavior of the `rotateX` function?
-- Can you identify any potential performance bottlenecks in the current implementation?
+- What is the purpose of the `rotateTable` in the `rotateX` function?
+- How does the use of trigonometric functions affect performance in this context?
+- Why are the coordinates scaled by a factor of 2.0 before rotation?
+- Can you explain the logic behind using bitwise operations in the `rotateX` function?
+- What potential issues might arise from using multiplication instead of conditional moves?
+- How does the inline keyword impact the performance and optimization of these functions?
+- Is there any risk of precision loss when converting between integer and floating-point types in this code?
+- Can you provide an example of how the `rotateX` function would be used in practice?
+- What are the implications of changing the rotation logic to use a different mathematical approach?
+- How might this change affect the overall performance of the Cubyz engine during rendering or physics calculations?
 
 *Source: unknown | chunk_id: github_pr_1197_comment_1992040519*

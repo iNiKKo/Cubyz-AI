@@ -1,27 +1,37 @@
 # [hard/codebase_src_utils.zig] - Chunk 10
 
 **Type:** implementation
-**Keywords:** palette management, atomic operations, deferred free, memory optimization, CHUNK_TYPE: implementation, code_example: pub fn getValue(self: *const Self, i: usize) T { const impl = self.impl.load(.acquire); return impl.palette[impl.data.getValue(i)].load(.unordered); }, synthetic_queries, How does the palette-based storage work in this chunk?, What is the purpose of the getTargetBitSize function?, How does the setValue method handle memory allocation when needed?, Can you explain the role of atomic operations in this code?, What steps are taken to optimize the layout of the palette?, How does the deferred free mechanism work in this chunk?
-**Symbols:** getTargetBitSize, getValue, palette, fillUniform, getOrInsertPaletteIndex, setRawValue, setValue, setValueInColumn, optimizeLayout, optimizeLayoutInternal
-**Concepts:** palette-based storage, atomic operations, garbage collection
+**Keywords:** set associative cache, mutex locking, atomic counters, interpolation, spline coefficients
+**Symbols:** Cache, Cache.Bucket, Cache.Bucket.mutex, Cache.Bucket.items, Cache.Bucket.find, Cache.Bucket.add, Cache.Bucket.findOrCreate, Cache.Bucket.clear, Cache.Bucket.foreach, unitIntervalSpline
+**Concepts:** cache, LRU replacement, cubic Hermite spline
 
 ## Summary
-This chunk implements a palette-based data structure with methods for value manipulation, memory management, and optimization.
+Implements a simple set associative cache with LRU replacement strategy and a cubic Hermite spline function.
 
 ## Explanation
-The chunk defines a utility class that manages a palette of values, allowing efficient storage and retrieval. It includes methods for getting and setting values, optimizing the layout based on active entries, and handling memory allocation and deallocation. The code uses atomic operations to ensure thread safety and employs a deferred free mechanism for garbage collection.
+The chunk defines a generic Cache type that uses a set-associative approach with LRU (Least Recently Used) replacement. It includes methods for finding, adding, clearing, and iterating over cached items, each protected by a mutex to ensure thread safety. The cache is parameterized by the type of stored items, the number of buckets, the size of each bucket, and a deinitialization function for freeing resources when items are removed. Additionally, it provides atomic counters for tracking cache requests and misses.
+
+The chunk also defines a unitIntervalSpline function that computes coefficients for a cubic Hermite spline given two points and their tangents on the unit interval (0, 1). This function is useful for smooth interpolation between values.
 
 ## Code Example
 ```zig
-pub fn getValue(self: *const Self, i: usize) T { const impl = self.impl.load(.acquire); return impl.palette[impl.data.getValue(i)].load(.unordered); }
+pub fn clear(self: *@This()) void {
+			for (&self.buckets) |*bucket| {
+				bucket.clear();
+			}
+		}
 ```
 
 ## Related Questions
-- How does the palette-based storage work in this chunk?
-- What is the purpose of the getTargetBitSize function?
-- How does the setValue method handle memory allocation when needed?
-- Can you explain the role of atomic operations in this code?
-- What steps are taken to optimize the layout of the palette?
-- How does the deferred free mechanism work in this chunk?
+- How is the cache's number of buckets validated?
+- What method is used to find an item in the cache?
+- How does the cache handle adding a new item?
+- What function is responsible for clearing all items from the cache?
+- How are atomic counters used in the cache implementation?
+- What is the purpose of the unitIntervalSpline function?
+- How does the cache ensure thread safety?
+- What happens if an item is not found in the cache?
+- How are items removed from the cache and what must be done with them?
+- What is the structure of a Bucket in the cache implementation?
 
 *Source: unknown | chunk_id: codebase_src_utils.zig_chunk_10*

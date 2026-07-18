@@ -1,21 +1,22 @@
 # [easy/codebase_assets_cubyz_sbb_tree_coniferous_pine_loblolly_branches_lushy_2_top.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, blueprints, assets, identification, resource management
-**Concepts:** asset management, blueprint definition
+**Keywords:** configuration, asset management, blueprint ID, tree branch, easy module
+**Symbols:** .blueprints
+**Concepts:** asset configuration, blueprint definition
 
 ## Summary
 Defines a blueprint for a coniferous pine loblolly tree branch asset.
 
 ## Explanation
-This chunk contains configuration data defining a single blueprint for a specific type of tree branch in the Cubyz voxel engine. The blueprint is identified by the string 'cubyz:tree/coniferous/branch/lushy/2/0'. This identifier likely corresponds to a unique asset or resource within the game, specifying its location and properties.
+This chunk contains configuration data for an asset in the Cubyz voxel engine. It defines a single blueprint with an ID that identifies the specific type of tree branch. The blueprint is part of the easy module, which likely handles basic or common assets.
 
 ## Related Questions
-- What is the identifier for the coniferous pine loblolly tree branch asset?
-- Where is this blueprint configuration data used in the Cubyz engine?
-- How does the identifier 'cubyz:tree/coniferous/branch/lushy/2/0' relate to other assets in the game?
-- What purpose do blueprints serve in the Cubyz voxel engine?
-- Is there any additional information or metadata associated with this blueprint?
-- How might this configuration data be loaded and utilized by the game engine?
+- What is the ID of the defined blueprint?
+- Which module does this asset configuration belong to?
+- How many blueprints are defined in this chunk?
+- Is there any executable logic in this chunk?
+- What type of asset does this blueprint represent?
+- Where might this blueprint be used within the Cubyz engine?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_tree_coniferous_pine_loblolly_branches_lushy_2_top.zig.zon_chunk_0*

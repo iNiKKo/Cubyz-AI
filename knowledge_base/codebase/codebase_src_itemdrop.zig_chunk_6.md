@@ -1,33 +1,29 @@
 # [hard/codebase_src_itemdrop.zig] - Chunk 6
 
 **Type:** implementation
-**Keywords:** linear interpolation, matrix multiplication, color blending, 3D rendering, uniform binding
-**Symbols:** blendColors, renderDisplayItems
-**Concepts:** item display, lighting calculation, model rendering, transformation matrices
+**Keywords:** uniform binding, model drawing, light interpolation, voxel model cache, player inventory
+**Symbols:** itemModelSSBO, modelData, freeSlots, voxelModels, getModel, bindCommonUniforms, bindLightUniform, bindModelUniforms, drawItem, renderItemDrops, getIndex, blendColors, renderDisplayItems
+**Concepts:** item rendering, lighting calculations, model transformations, inventory display
 
 ## Summary
-Handles rendering of item displays in the game world.
+Handles rendering of item drops and display items in the game world.
 
 ## Explanation
-The chunk contains a function `renderDisplayItems` that renders items based on their position, rotation, and lighting conditions. It uses linear interpolation to blend colors from neighboring blocks for realistic lighting effects. The function also handles different types of items (blocks vs. non-blocks) with specific rendering parameters and transformations.
+This chunk manages the rendering of both item drops scattered in the world and items displayed on the screen. It initializes resources, binds uniforms, and draws models for these items. The `renderItemDrops` function updates item drop positions, calculates lighting, and renders each item with appropriate transformations. The `renderDisplayItems` function handles the display of selected items from the player's inventory, calculating lighting based on surrounding blocks and rendering the item in a fixed position relative to the camera.
 
 ## Code Example
 ```zig
-inline fn blendColors(a: [6]f32, b: [6]f32, t: f32) [6]f32 {
-	var result: [6]f32 = .{0, 0, 0, 0, 0, 0};
-	inline for (0..6) |i| {
-		result[i] = std.math.lerp(a[i], b[i], t);
+fn getIndex(x: u8, y: u8, z: u8) u32 {
+		return (z*4) + (y*2) + (x);
 	}
-	return result;
-}
 ```
 
 ## Related Questions
-- What function is used to blend colors between blocks?
-- How does the chunk handle different types of items for rendering?
-- What parameters are considered when calculating the model matrix for item rendering?
-- Where is the ambient light information passed in the rendering process?
-- What method is used to get lighting data from neighboring blocks?
-- How many vertices are used to render a non-block item by default?
+- What is the purpose of the `getModel` function?
+- How does the chunk handle lighting for item drops?
+- What resources are initialized in the `deinit` method?
+- How are model matrices calculated and applied during rendering?
+- What is the role of the `blendColors` function in rendering?
+- How does the chunk manage the display of items from the player's inventory?
 
 *Source: unknown | chunk_id: codebase_src_itemdrop.zig_chunk_6*

@@ -1,26 +1,26 @@
 # [medium/addon_creator_app-io.js] - Chunk 2
 
 **Type:** ui
-**Keywords:** import, parse, addon, biome, zig.zon, structures, properties, updateSearchableItems, updateSidebarProjectTree, alert
-**Symbols:** inputsParsed, content, parsedStructures, startIdx, openBrace, idx, braceCount, structuresText, sIdx, openObj, subCount, subIdx, objText, lines, attrs, structObj, climate, humidity, zone, growth, elevationType, properties, propMatch, props, groundMatch, surfaceBlock, subBlock, nameToken, extractedSubFolder
-**Concepts:** data-binding, file parsing, biome configuration, project data management
+**Keywords:** file import, biome configuration, properties extraction, structures parsing, default values, validation checks, JSON object, projectData.biomes, updateSearchableItems, updateSidebarProjectTree
+**Symbols:** inputsParsed, content, parsedStructures, startIdx, openBrace, idx, braceCount, structuresText, sIdx, openObj, subCount, subIdx, objText, lines, attrs, match, val, structObj, climate, humidity, zone, growth, elevationType, properties, propMatch, props, p, groundMatch, surfaceBlock, subBlock, nameToken, extractedSubFolder, window.projectData.biomes
+**Concepts:** data-binding, file parsing, configuration generation, biome properties extraction, structure parsing
 
 ## Summary
-Handles the import and parsing of addon files, specifically for biomes with '.zig.zon' extension.
+Handles file import and parsing for biome configuration files, extracting properties and structures.
 
 ## Explanation
-This code snippet is responsible for processing imported addon files that are related to biomes. It checks if the file path includes '/biomes/' and ends with '.zig.zon'. If so, it reads the content of the file and extracts various properties such as structures, climate, humidity, zone, growth, elevation type, surface block, sub-block, stone block, and other biome-specific attributes. The extracted data is then added to the `window.projectData.biomes` array. Additionally, it updates searchable items and the sidebar project tree if the respective functions are available.
+This code snippet is part of the Cubyz Addon Creator workspace, specifically responsible for processing imported .zig.zon files related to biomes. It extracts various properties such as climate, humidity, zone, growth, and elevation type from the file content. Additionally, it parses structures defined within the file, handling different types like trees, vegetation, flower patches, boulders, ground patches, fallen trees, and SBB (Structure Block Building) entries. The extracted data is then structured into a JSON object representing the biome configuration, which is added to the project's biomes array. This process includes validation checks for required attributes and default values where necessary.
 
 ## Related Questions
-- What is the purpose of the `inputsParsed` variable in this code snippet?
-- How does the code extract and parse structures from the biome file content?
-- What conditions are checked to determine if a file should be processed as a biome file?
-- How are climate, humidity, zone, growth, and elevation type properties determined from the file content?
-- What is the role of the `updateSearchableItems` function in this code snippet?
-- How does the code handle errors during the parsing process?
-- What specific attributes are extracted for each structure type (e.g., 'cubyz:simple_tree')?
-- How is the surface block and sub-block determined from the file content?
-- What is the significance of the `isValidPlayerSpawn` property in the biome configuration?
-- How does the code manage to update the sidebar project tree after parsing a new biome file?
+- What is the purpose of parsing .zig.zon files in this code snippet?
+- How does the code handle different types of structures defined within the biome file?
+- What default values are set for properties that might not be explicitly defined in the file?
+- How is validation performed on the extracted data from the file?
+- What happens if a required attribute is missing during parsing?
+- How are the parsed biomes added to the project's data structure?
+- Can you explain how the code handles nested structures within the biome file?
+- What functions are called after successfully importing and parsing the file?
+- How does the code manage different climate types when parsing the biome file?
+- What is the role of the 'updateSearchableItems' function in this context?
 
 *Source: unknown | chunk_id: addon_creator_app-io.js_chunk_2*

@@ -1,26 +1,22 @@
 # [src/structure_building_blocks.zig] - PR #1207 review diff
 
 **Type:** review
-**Keywords:** structure building blocks, blueprint, child block, origin block, hash map, pointer stability, RVO
-**Symbols:** std, main, terrain, ZonElement, Blueprint, List, AliasTable, Neighbor, Block, parseBlock, Degrees, hashInt, NeverFailingAllocator, arena, arena_allocator, structureCache, blueprintCache, BlueprintEntry, Info, StructureBlock, isChildBlock, isOriginBlock, originBlockStringId, originBlockNumericId, childBlockNumericIdMap, childBlockStringId, StructureBuildingBlock, Children, initChildTableFromZon, Child
-**Concepts:** memory management, caching, pointer stability, return value optimization (RVO)
+**Keywords:** std.StringHashMapUnmanaged, Pointer Stability, Memory Management, Hash Map, Return Value Optimization, Child Struct Initialization, StructureBuildingBlock, BlueprintEntry, Info, Children
+**Symbols:** StructureBuildingBlock, BlueprintEntry, Info, StructureBlock, Children, Child, std.StringHashMapUnmanaged, NeverFailingAllocator, main.heap.NeverFailingArenaAllocator, main.globalAllocator
+**Concepts:** pointer stability, memory management, hash map, return value optimization (RVO)
 
 ## Summary
-The code introduces a new module for structure building blocks, including caching mechanisms and initialization logic for blueprints and children blocks.
+The review discusses potential issues with pointer stability and memory management in the `structure_building_blocks.zig` file, particularly around the use of `std.StringHashMapUnmanaged` and the initialization of `Child` structs.
 
 ## Explanation
-This chunk of code defines a new module `structure_building_blocks.zig` that handles the creation and management of structure building blocks in Cubyz. It includes several key components: caching structures (`structureCache` and `blueprintCache`), blueprint parsing, and child block initialization. The reviewer raises concerns about pointer stability, particularly regarding the use of return value optimization (RVO) and whether it is guaranteed to maintain pointer stability when inserting new elements into hash maps.
+The reviewer raises concerns about whether the code guarantees pointer stability for entries in hash maps. Specifically, they question if the return value optimization (RVO) is guaranteed when initializing `Child` structs and whether this affects the use of `std.StringHashMapUnmanaged`. The reviewer suggests that if pointer stability is not guaranteed, then `structureCache` should be changed to store pointers instead of values. This discussion highlights the importance of ensuring memory safety and stability in data structures used for caching and managing resources.
 
 ## Related Questions
-- Is pointer stability guaranteed in Zig when using return value optimization (RVO)?
-- How does the use of `NeverFailingAllocator` affect memory management in this module?
-- What is the purpose of the `structureCache` and `blueprintCache` in this module?
-- How are origin blocks identified and handled during blueprint initialization?
-- What potential issues could arise from the current implementation of child block initialization?
-- How does the `Children` struct manage different color tables for child blocks?
-- What is the role of the `AliasTable` in this module, and how is it used?
-- How does the code ensure that blueprint entries are correctly linked to their respective structures?
-- What measures are taken to handle errors during blueprint parsing and initialization?
-- How does the `finalize` method contribute to the overall functionality of the structure building blocks?
+- Is pointer stability guaranteed for entries in `std.StringHashMapUnmanaged`?
+- What are the implications of using return value optimization (RVO) in this context?
+- How does changing `structureCache` to store pointers instead of values affect memory management?
+- Are there any potential memory leaks or instability issues with the current implementation?
+- How can we ensure that `Child` structs are initialized safely without violating pointer stability?
+- What is the impact of using `NeverFailingAllocator` on memory allocation and deallocation in this module?
 
 *Source: unknown | chunk_id: github_pr_1207_comment_2008814108*

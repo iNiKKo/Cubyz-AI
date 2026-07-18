@@ -1,22 +1,26 @@
 # [src/chunk.zig] - PR #1197 review diff
 
 **Type:** review
-**Keywords:** rotateX, neighbor, chunk.zig, 90 degrees, counterclockwise, x-axis, caching strategy, storage space, iteration order, cache locality, performance impact
+**Keywords:** rotateX, cache locality, storage space, performance, blueprint rotation, iteration order
 **Symbols:** Neighbor, rotateX
-**Concepts:** rotation, cache optimization, performance vs. memory
+**Concepts:** thread safety, backwards compatibility, memory leak
 
 ## Summary
-Added a new function `rotateX` to the `Neighbor` enum in `chunk.zig`, which rotates a neighbor by 90 degrees counterclockwise around the x-axis.
+Added a function to rotate neighbors counterclockwise around the x-axis.
 
 ## Explanation
-The addition of the `rotateX` function introduces a new capability for rotating neighbors, which could be useful for various operations within the Cubyz engine. The reviewer suggests an alternative caching strategy to optimize storage and performance, but notes potential trade-offs in cache locality. This review highlights considerations around architectural design choices that balance functionality with performance.
+The change introduces a new inline function `rotateX` in the `Neighbor` enum within the `chunk.zig` file. This function is designed to return the neighbor that is rotated by 90 degrees counterclockwise around the x-axis. The reviewer suggests an alternative architectural approach to optimize storage space by using one type array and multiple data arrays for required rotations, which could improve iteration order but may lead to poor cache locality in certain cases.
 
 ## Related Questions
-- What is the purpose of the `rotateX` function in the `Neighbor` enum?
-- How does the suggested caching strategy affect memory usage?
-- What are the potential performance implications of changing iteration order for rotations?
-- Can you explain the trade-offs between cache locality and storage optimization in this context?
-- How might the addition of `rotateX` impact existing functionality in Cubyz?
-- Is there a preferred method for handling neighbor rotations in Cubyz, and why?
+- What is the impact of rotating neighbors on performance?
+- How does the proposed storage optimization affect cache locality?
+- Can you explain the potential trade-offs between storage space and performance in this context?
+- Is there a way to improve cache locality while optimizing storage space?
+- What are the implications of changing iteration order for blueprint rotation?
+- How might the new `rotateX` function be used in the broader Cubyz architecture?
+- Are there any potential memory leaks introduced by this change?
+- How does this change affect backwards compatibility with existing code?
+- Can you provide a benchmark comparison between the current and proposed storage optimizations?
+- What are the architectural considerations for implementing neighbor rotation in 3D space?
 
 *Source: unknown | chunk_id: github_pr_1197_comment_1993180400*

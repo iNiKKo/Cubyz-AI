@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_chalk_red.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, texture mapping, assets, red chalk block, .zon format
+**Keywords:** texture mapping, asset configuration, red chalk block, Cubyz engine, configuration file
 **Concepts:** block textures
 
 ## Summary
 Defines the texture for a red chalk block.
 
 ## Explanation
-This chunk is a configuration file that specifies the texture asset for a red chalk block in the Cubyz voxel engine. It uses the `.zon` format, which is typically used for defining static settings and configurations. The `texture` field is set to "cubyz:chalk/red", indicating that the block will use this specific texture resource.
+This chunk is a configuration file that specifies the texture asset used for rendering a red chalk block in the Cubyz voxel engine. The texture path 'cubyz:chalk/red' indicates the location of the image file within the assets directory structure.
 
 ## Related Questions
-- What is the texture specified for the red chalk block?
-- Where is the texture resource located in the Cubyz engine?
-- How does this configuration file relate to other block configurations?
-- Can this configuration be modified to use a different texture?
-- Is there a corresponding code file that uses this configuration?
-- What is the purpose of the .zon format in the Cubyz engine?
+- What is the texture path for the red chalk block?
+- Where is the texture file located in the assets directory?
+- How does this configuration affect the rendering of the red chalk block?
+- Is there any other configuration related to the red chalk block?
+- Can this texture be changed without modifying the code?
+- What format should the texture file be in?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_chalk_red.zig.zon_chunk_0*

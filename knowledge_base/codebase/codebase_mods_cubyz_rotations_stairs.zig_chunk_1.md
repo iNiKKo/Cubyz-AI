@@ -1,28 +1,177 @@
 # [medium/codebase_mods_cubyz_rotations_stairs.zig] - Chunk 1
 
 **Type:** implementation
-**Keywords:** model index, quad info, collision boxes, texture slots, neighbor directions, greedy meshing, visibility arrays, subblock masks, UV coordinates, stack allocator, defer cleanup, Vec3f splat, hasSubBlock check, mergeFaces call, Box struct literal
-**Symbols:** createBlockModel, QuadInfo, GreedyFaceInfo, Box, Neighbor, hasSubBlock, mergeFaces, subBlockMask, main.ListManaged, main.models.Model.initWithCollisionModel, main.physics.collision.Box
-**Concepts:** block model creation, neighbor texture handling, collision box generation, greedy meshing, visibility culling, UV coordinate mapping, stack allocator management, mask-based subblock iteration
+**Keywords:** reference counting, binary serialization, mutex locking, greedy meshing, vector operations, collision detection
+**Symbols:** createBlockModel
+**Concepts:** chunk meshing, entity ECS, world generation, networking protocol
 
 ## Summary
-Implements block model creation with neighbor texture handling and collision box generation.
+Generates block models for stairs with various rotations and textures.
 
 ## Explanation
-The chunk defines a public function createBlockModel that takes a Block, a pointer to u16 (modelIndex), and a ZonElement. It first checks if modelIndex is already set; if so it returns the existing index. Otherwise it iterates over 0..256 (block indices). For each block it initializes a managed list of QuadInfo quads using main.ListManaged(main.models.QuadInfo) with a stack allocator, deferring deinit. It then loops over Neighbor.iterable to process each neighbor direction. For each neighbor it computes absolute texture components xComponent and yComponent via @abs(neighbor.textureX()) and @abs(neighbor.textureY()), and the normal vector from neighbor.relX/relY/relZ. The zComponent is derived as @abs(normal). A two-element array zMap is constructed: if the sum of normal components exceeds 0 it becomes [{splat(0), splat(1)}] else [{splat(1), splat(0)}]. Two visibility arrays visibleFront and visibleMiddle are declared undefined. Nested loops over x and y (0..2) compute xSplat and ySplat as @splat(@intCast(x)) and @splat(@intCast(y)). Positions posFront and posBack are calculated using component splats and zMap entries. hasSubBlock is called for each position with the block index i cast to u32; results populate visibleFront[x][y] and visibleMiddle[x][y] (middle visibility is true only if front is false and subblock exists). The neighbor texture components are converted to Vec3f via @floatFromInt. A faces array of GreedyFaceInfo is declared undefined. mergeFaces is called with visibleFront and &faces; the returned frontFaces are iterated. For each face, xLower and xUpper are computed as @abs(xAxis) multiplied by splatted min/max values from face.min[0]/face.max[0]; if xAxis sum is negative std.mem.swap swaps them. Similarly yLower/yUpper are derived from yAxis and face.min[1]/face.max[1] with swap on negative sum. zValue is @floatFromInt(zComponent*zMap[1]). Neighbor-specific transformations apply: for dirNegX or dirPosY, min/max x coordinates are mirrored via 1 - value and a temporary swap variable; for dirUp, both min and max are inverted using Vec2f{1,1} - face.min/max and then swapped; for dirDown, only the y component is mirrored with a swap. A QuadInfo struct literal is appended to quads containing normal = zAxis, corners computed as xLower+yLower+zValue etc., cornerUV derived from face min/max values, and textureSlot = neighbor.toInt(). The same pattern repeats for middleFaces using visibleMiddle; here zValue uses splat(0.5) instead of the full component. After processing all neighbors, a managed list boxes of main.physics.collision.Box is initialized with capacity 4 (deferred deinit). A remaining mask variable holds ~@intCast(i). Nested loops over dx/dy/dz (0..2) compute subBlockMask for each offset; if remaining & mask == 0 the iteration continues. Offsets are incremented by 1 to form dx2/dy2/dz2. Additional logic expands masks when dz==0 and remaining has bit at mask<<1, similarly for dy and dx using shifts of 2 and 4 respectively; in those cases dx2/dy2/dz2 is incremented and the mask bits are ORed with their shifted counterparts. A Box struct literal is appended via appendAssumeCapacity with min = @floatFromInt(@Vector{dx,dy,dz}) / splat(2) and max = @floatFromInt(@Vector{dx2,dy2,dz2}) / splat(2). remaining is updated by masking out the processed bits. After all loops, main.models.Model.initWithCollisionModel is called with quads.items and boxes.items; if i == 0 the returned index is stored into modelIndex.
+The `createBlockModel` function generates a 3D model for a block, specifically handling the complex geometry of stairs. It iterates through possible configurations (up to 256), calculates visible faces using greedy meshing, and constructs quads for rendering. It also manages collision boxes for physics interactions. The function uses vector operations to determine texture coordinates and face orientations based on neighbor directions.
+
+## Code Example
+```zig
+pub fn createBlockModel(_: Block, _: *u16, _: ZonElement) ModelIndex {
+	if (modelIndex) |idx| return idx;
+	for (0..256) |i| {
+		var quads = main.ListManaged(main.models.QuadInfo).init(main.stackAllocator);
+		defer quads.deinit();
+		for (Neighbor.iterable) |neighbor| {
+			const xComponent = @abs(neighbor.textureX());
+			const yComponent = @abs(neighbor.textureY());
+			const normal = Vec3i{neighbor.relX(), neighbor.relY(), neighbor.relZ()};
+			const zComponent = @abs(normal);
+			const zMap: [2]@Vector(3, u32) = if (@reduce(.Add, normal) > 0) .{@splat(0), @splat(1)} else .{@splat(1), @splat(0)};
+			var visibleFront: [2][2]bool = undefined;
+			var visibleMiddle: [2][2]bool = undefined;
+			for (0..2) |x| {
+				for (0..2) |y| {
+					const xSplat: @TypeOf(xComponent) = @splat(@intCast(x));
+					const ySplat: @TypeOf(xComponent) = @splat(@intCast(y));
+					const posFront = xComponent*xSplat + yComponent*ySplat + zComponent*zMap[1];
+					const posBack = xComponent*xSplat + yComponent*ySplat + zComponent*zMap[0];
+					visibleFront[x][y] = hasSubBlock(@intCast(i), @intCast(posFront[0]), @intCast(posFront[1]), @intCast(posFront[2]));
+					visibleMiddle[x][y] = !visibleFront[x][y] and hasSubBlock(@intCast(i), @intCast(posBack[0]), @intCast(posBack[1]), @intCast(posBack[2]));
+				}
+			}
+			const xAxis = @as(Vec3f, @floatFromInt(neighbor.textureX()));
+			const yAxis = @as(Vec3f, @floatFromInt(neighbor.textureY()));
+			const zAxis = @as(Vec3f, @floatFromInt(normal));
+			// Greedy mesh it:
+			var faces: [2]GreedyFaceInfo = undefined;
+			const frontFaces = mergeFaces(visibleFront, &faces);
+			for (frontFaces) |*face| {
+				var xLower = @abs(xAxis)*@as(Vec3f, @splat(face.min[0]));
+				var xUpper = @abs(xAxis)*@as(Vec3f, @splat(face.max[0]));
+				if (@reduce(.Add, xAxis) < 0) std.mem.swap(Vec3f, &xLower, &xUpper);
+				var yLower = @abs(yAxis)*@as(Vec3f, @splat(face.min[1]));
+				var yUpper = @abs(yAxis)*@as(Vec3f, @splat(face.max[1]));
+				if (@reduce(.Add, yAxis) < 0) std.mem.swap(Vec3f, &yLower, &yUpper);
+				const zValue: Vec3f = @floatFromInt(zComponent*zMap[1]);
+				if (neighbor == .dirNegX or neighbor == .dirPosY) {
+					face.min[0] = 1 - face.min[0];
+					face.max[0] = 1 - face.max[0];
+					const swap = face.min[0];
+					face.min[0] = face.max[0];
+					face.max[0] = swap;
+				}
+				if (neighbor == .dirUp) {
+					face.min = Vec2f{1, 1} - face.min;
+					face.max = Vec2f{1, 1} - face.max;
+					std.mem.swap(Vec2f, &face.min, &face.max);
+				}
+				if (neighbor == .dirDown) {
+					face.min[1] = 1 - face.min[1];
+					face.max[1] = 1 - face.max[1];
+					const swap = face.min[1];
+					face.min[1] = face.max[1];
+					face.max[1] = swap;
+				}
+				quads.append(.{
+					.normal = zAxis,
+					.corners = .{
+						xLower + yLower + zValue,
+						xLower + yUpper + zValue,
+						xUpper + yLower + zValue,
+						xUpper + yUpper + zValue,
+					},
+					.cornerUV = .{.{face.min[0], face.min[1]}, .{face.min[0], face.max[1]}, .{face.max[0], face.min[1]}, .{face.max[0], face.max[1]}},
+					.textureSlot = neighbor.toInt(),
+				});
+			}
+			const middleFaces = mergeFaces(visibleMiddle, &faces);
+			for (middleFaces) |*face| {
+				var xLower = @abs(xAxis)*@as(Vec3f, @splat(face.min[0]));
+				var xUpper = @abs(xAxis)*@as(Vec3f, @splat(face.max[0]));
+				if (@reduce(.Add, xAxis) < 0) std.mem.swap(Vec3f, &xLower, &xUpper);
+				var yLower = @abs(yAxis)*@as(Vec3f, @splat(face.min[1]));
+				var yUpper = @abs(yAxis)*@as(Vec3f, @splat(face.max[1]));
+				if (@reduce(.Add, yAxis) < 0) std.mem.swap(Vec3f, &yLower, &yUpper);
+				const zValue = @as(Vec3f, @floatFromInt(zComponent))*@as(Vec3f, @splat(0.5));
+				if (neighbor == .dirNegX or neighbor == .dirPosY) {
+					face.min[0] = 1 - face.min[0];
+					face.max[0] = 1 - face.max[0];
+					const swap = face.min[0];
+					face.min[0] = face.max[0];
+					face.max[0] = swap;
+				}
+				if (neighbor == .dirUp) {
+					face.min = Vec2f{1, 1} - face.min;
+					face.max = Vec2f{1, 1} - face.max;
+					std.mem.swap(Vec2f, &face.min, &face.max);
+				}
+				if (neighbor == .dirDown) {
+					face.min[1] = 1 - face.min[1];
+					face.max[1] = 1 - face.max[1];
+					const swap = face.min[1];
+					face.min[1] = face.max[1];
+					face.max[1] = swap;
+				}
+				quads.append(.{
+					.normal = zAxis,
+					.corners = .{
+						xLower + yLower + zValue,
+						xLower + yUpper + zValue,
+						xUpper + yLower + zValue,
+						xUpper + yUpper + zValue,
+					},
+					.cornerUV = .{.{face.min[0], face.min[1]}, .{face.min[0], face.max[1]}, .{face.max[0], face.min[1]}, .{face.max[0], face.max[1]}},
+					.textureSlot = neighbor.toInt(),
+				});
+			}
+		}
+		var boxes: main.List(main.physics.collision.Box) = .initCapacity(main.stackAllocator, 4);
+		defer boxes.deinit(main.stackAllocator);
+		var remaining: u8 = ~@as(u8, @intCast(i));
+		for (0..2) |dx| {
+			for (0..2) |dy| {
+				for (0..2) |dz| {
+					var mask = subBlockMask(@intCast(dx), @intCast(dy), @intCast(dz));
+					if (remaining & mask == 0) continue;
+					var dx2 = dx + 1;
+					var dy2 = dy + 1;
+					var dz2 = dz + 1;
+					if (dz == 0 and remaining & (mask << 1) == (mask << 1)) {
+						dz2 += 1;
+						mask |= mask << 1;
+					}
+					if (dy == 0 and remaining & (mask << 2) == (mask << 2)) {
+						dy2 += 1;
+						mask |= mask << 2;
+					}
+					if (dx == 0 and remaining & (mask << 4) == (mask << 4)) {
+						dx2 += 1;
+						mask |= mask << 4;
+					}
+					boxes.appendAssumeCapacity(.{
+						.min = @as(Vec3d, @floatFromInt(@Vector(3, usize){dx, dy, dz}))/@as(Vec3d, @splat(2)),
+						.max = @as(Vec3d, @floatFromInt(@Vector(3, usize){dx2, dy2, dz2}))/@as(Vec3d, @splat(2)),
+					});
+					remaining &= ~mask;
+				}
+			}
+		}
+		const index = main.models.Model.initWithCollisionModel(quads.items, boxes.items);
+		if (i == 0) {
+			modelIndex = index;
+		}
+	}
+	return modelIndex.?;
+}
+```
 
 ## Related Questions
-- How does createBlockModel handle an already-set modelIndex?
-- What is the purpose of the zMap array in neighbor processing?
-- How are front and middle face visibilities computed differently?
-- Why are dx2/dy2/dz2 incremented when certain mask bits are set?
-- Which neighbor directions trigger UV mirroring transformations?
-- How does the chunk ensure quad normals align with block faces?
-- What role does appendAssumeCapacity play in box list construction?
-- Is there any error handling for failed subblock checks?
-- How is the final collision model constructed from quads and boxes?
-- Does the chunk allocate memory on the heap or stack?
-- Are texture slots mapped directly to neighbor enum values?
-- What happens if hasSubBlock returns false for all neighbors?
+- What is the purpose of the `createBlockModel` function?
+- How does the function handle different block configurations?
+- What data structures are used to store quads and collision boxes?
+- How does the function determine texture coordinates for each face?
+- What is the role of greedy meshing in this implementation?
+- How are collision boxes calculated and managed?
+- What is the significance of the `modelIndex` variable?
+- How does the function handle neighbor directions to orient faces correctly?
+- What vector operations are used in the texture coordinate calculations?
+- How does the function ensure efficient memory management with `defer` statements?
 
 *Source: unknown | chunk_id: codebase_mods_cubyz_rotations_stairs.zig_chunk_1*

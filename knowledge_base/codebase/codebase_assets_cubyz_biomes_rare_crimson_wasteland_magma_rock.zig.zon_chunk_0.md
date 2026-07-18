@@ -1,22 +1,28 @@
 # [easy/codebase_assets_cubyz_biomes_rare_crimson_wasteland_magma_rock.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** minHeight, maxHeight, roughness, ground_patch, magma block, parentBiomes, interpolation, chance, width variation, depth smoothing
-**Symbols:** properties, minHeight, maxHeight, minRadius, maxRadius, roughness, chance, hills, interpolation, stoneBlock, structures, ground_patch, block, parentBiomes
-**Concepts:** biome configuration, structure generation parameters, height layering, roughness interpolation
+**Keywords:** biome config, stone block, structures, parent biome, chance of occurrence
+**Symbols:** MagmaRockBiomeConfig
+**Concepts:** biome configuration, magma rock, rare crimson wasteland
 
 ## Summary
-Configuration data defining the Crimson Wasteland biome with height bounds, roughness parameters, and a single ground_patch structure using magma blocks.
+Magma Rock Biome Configuration
 
 ## Explanation
-This chunk is a .zon configuration file containing static biome settings. It declares no executable logic or functions. The properties object includes minHeight (84), maxHeight (85), minRadius (16), maxRadius (36), roughness (24), chance (0), hills (2), interpolation (.linear), and stoneBlock ('cubyz:obsidian'). The structures array contains one entry with id 'cubyz:ground_patch', block 'cubyz:magma', chance 0.4, width 3, variation 2, depth 3, smoothness 0.8. The parentBiomes array references a base biome 'cubyz:rare/crimson_wasteland/base' with chance 6.
+This chunk defines the configuration for a rare Crimson Wasteland Magma Rock biome. It specifies properties such as minimum and maximum heights, radius, roughness, chance of occurrence, hills, interpolation method, stone block, structures, and parent biomes.
 
 ## Related Questions
-- What is the minimum height for the Crimson Wasteland biome?
-- Which block type is used for ground patches in this biome configuration?
-- What is the chance value assigned to the ground_patch structure?
-- How many hills are configured for this biome layer?
-- What interpolation method is specified for terrain generation?
-- Which parent biome does this configuration reference and with what chance?
+- What is the minimum height for this Magma Rock Biome?
+- What is the maximum height for this Magma Rock Biome?
+- What is the minimum radius for this Magma Rock Biome?
+- What is the maximum radius for this Magma Rock Biome?
+- What is the roughness value for this Magma Rock Biome?
+- What is the chance of occurrence for this Magma Rock Biome?
+- How many hills are generated in this Magma Rock Biome?
+- What interpolation method is used for this Magma Rock Biome?
+- Which block is used as the stone block in this Magma Rock Biome?
+- What structures are present in this Magma Rock Biome and their chances of occurrence?
+- What parent biomes influence the generation of this Magma Rock Biome?
+- How many child biomes does this Magma Rock Biome have?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_rare_crimson_wasteland_magma_rock.zig.zon_chunk_0*

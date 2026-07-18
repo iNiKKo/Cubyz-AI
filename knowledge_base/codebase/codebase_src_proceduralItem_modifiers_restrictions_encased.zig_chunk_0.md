@@ -1,31 +1,35 @@
 # [easy/codebase_src_proceduralItem_modifiers_restrictions_encased.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** Encased, satisfied, loadFromZon, printTooltip, tag, amount, neighborhood, hasTag, getItemAt, default value
+**Keywords:** 3x3 grid check, tag matching, allocator usage, zon element parsing, error logging
 **Symbols:** Encased, Encased.tag, Encased.amount, Encased.satisfied, Encased.loadFromZon, Encased.printTooltip
-**Concepts:** modifier restrictions, encased item validation, neighborhood checking, tag matching, zon element parsing, tooltip generation
+**Concepts:** item restrictions, surrounding item checks, tooltip generation
 
 ## Summary
-Defines the Encased modifier restriction that validates a procedural item is surrounded by a required number of matching tags within its immediate 3x3 neighborhood.
+The `Encased` struct and its methods handle restrictions based on surrounding items with specific tags.
 
 ## Explanation
-The chunk declares a public struct Encased with fields tag (main.Tag) and amount (usize). It provides satisfied(self, proceduralItem, x, y) which iterates over the 3x3 grid centered at (x,y), skips cells outside bounds via getItemAt returning null, counts neighbors whose hasTag matches self.tag, and returns true only if count >= self.amount. loadFromZon(allocator, zon) parses a ZonElement: it reads 'tag' as a string and resolves it via main.Tag.find, logging an error and returning the sentinel 'not specified' if missing; it reads 'amount' as usize with a default of 8 on failure. printTooltip(self, outString) formats a tooltip string showing the amount and tag name.
+The `Encased` struct represents a restriction where an item must be encased by a certain number of other items with a specified tag. The `satisfied` method checks if the given procedural item is surrounded by at least the required amount of items with the specified tag within a 3x3 grid centered on the item's position. The `loadFromZon` function creates an `Encased` instance from a ZonElement, extracting the tag and amount from the ZonElement data. If the tag field is missing, it logs an error and defaults to 'not specified'. The `printTooltip` method formats a tooltip string describing the encased restriction.
 
 ## Code Example
 ```zig
-pub fn printTooltip(self: *const Encased, outString: *main.ListManaged(u8)) void {
-	outString.print("encased in {} .{s}", .{self.amount, self.tag.getName()});
+pub fn satisfied(self: *const Encased, proceduralItem: *const ProceduralItem, x: i32, y: i32) bool {
+	var count: usize = 0;
+	for ([_]i32{-1, 0, 1}) |dx| {
+		for ([_]i32{-1, 0, 1}) |dy| {
+			if ((proceduralItem.getItemAt(x + dx, y + dy) orelse continue).hasTag(self.tag)) count += 1;
+		}
+	}
+	return count >= self.amount;
 }
 ```
 
 ## Related Questions
-- What does the satisfied function return when fewer than amount neighbors have the required tag?
-- How is a missing 'tag' field handled during loadFromZon and what sentinel value is used?
-- What default amount is applied if parsing fails in loadFromZon?
-- Which main.Tag method is invoked to resolve the string tag name inside Encased?
-- Does satisfied check only orthogonal neighbors or all eight surrounding cells?
-- How does getItemAt signal an out-of-bounds coordinate within the neighborhood loop?
-- What exact tooltip text format is produced by printTooltip for a given amount and tag?
-- Is Encased marked as pub so other modules can instantiate it directly?
+- What does the `satisfied` method check for?
+- How is the `Encased` struct loaded from a ZonElement?
+- What happens if the 'tag' field is missing in the ZonElement?
+- How does the `printTooltip` method format its output?
+- What is the purpose of the 3x3 grid check in the `satisfied` method?
+- How does the `Encased` struct handle memory allocation?
 
 *Source: unknown | chunk_id: codebase_src_proceduralItem_modifiers_restrictions_encased.zig_chunk_0*

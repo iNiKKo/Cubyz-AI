@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_mushroom_side_bolete.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, blueprints, null, id, chance
-**Concepts:** blueprint configuration
+**Keywords:** blueprints, configuration, ID, chance, null
+**Concepts:** asset configuration, blueprint definition
 
 ## Summary
-This chunk defines a configuration for blueprints related to mushroom side boletes.
+Defines blueprints for mushroom side bolete assets.
 
 ## Explanation
-The chunk contains a single structure with a field named 'blueprints'. The 'blueprints' field is an array of two entries. Each entry is a struct containing two fields: 'id' and 'chance'. The first entry has an 'id' of 'cubyz:mushroom/side/bolete' and a 'chance' of 0.1. The second entry has both 'id' and 'chance' set to null.
+This chunk defines a configuration structure containing blueprints for mushroom side bolete assets. Each blueprint has an ID and a chance value. The first blueprint specifies the ID 'cubyz:mushroom/side/bolete' with a chance of 0.1, indicating the probability of this asset being generated. The second blueprint has a null ID, which likely signifies the end of the list or a placeholder.
 
 ## Related Questions
-- What is the ID of the first blueprint defined in this chunk?
-- What is the chance associated with the first blueprint?
-- Why is the second blueprint's ID and chance set to null?
+- What is the ID of the first mushroom side bolete blueprint?
+- What is the chance value associated with the first mushroom side bolete blueprint?
+- Why is the second blueprint's ID set to null?
 - How many blueprints are defined in this configuration?
-- Can you provide the structure of the 'blueprints' array?
-- Is there any function or method defined in this chunk?
+- Can you provide the structure of the blueprints configuration?
+- Is there any default or fallback behavior for a null ID in blueprints?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_mushroom_side_bolete.zig.zon_chunk_0*

@@ -1,29 +1,31 @@
 # [hard/codebase_src_graphics.zig] - Chunk 16
 
-**Type:** api
-**Keywords:** texture initialization, error handling, OpenGL bindings, mipmaps, cubemaps
-**Symbols:** Texture, CubeMapTexture, Texture.init, Texture.deinit, Texture.bindTo, Texture.bind, Texture.generate, Texture.render, Texture.size, CubeMapTexture.init, CubeMapTexture.deinit, CubeMapTexture.bindTo, CubeMapTexture.bind, CubeMapTexture.generate, CubeMapTexture.faceNormal, CubeMapTexture.faceUp, CubeMapTexture.faceRight
-**Concepts:** texture handling, cubemap textures, mipmap generation, OpenGL texture parameters
+**Type:** implementation
+**Keywords:** OpenGL, texture array, mipmaps, gamma correction, nearest sampling
+**Symbols:** TextureArray, TextureArray.textureID, TextureArray.init, TextureArray.deinit, TextureArray.bind, TextureArray.lodColorInterpolation, TextureArray.generate
+**Concepts:** texture array management, mipmap generation, alpha correction, OpenGL texture handling
 
 ## Summary
-This chunk defines texture handling logic including initialization, generation, binding, and rendering of textures and cubemap textures.
+The TextureArray struct manages the creation and destruction of a texture array in OpenGL, including generating mipmaps with optional alpha correction.
 
 ## Explanation
-The chunk contains definitions for `Texture` and `CubeMapTexture` structs with methods to initialize, deinitialize, bind, generate, and render textures. It includes error handling for image file reading and sets various texture parameters such as filtering and wrapping modes. The `initFromMipmapFiles` function initializes a texture from a series of mipmap files. The chunk also provides utility functions like `faceNormal`, `faceUp`, and `faceRight` for cubemap textures.
+The TextureArray struct encapsulates functionality for handling a texture array in OpenGL. It includes methods to initialize (`init`), deinitialize (`deinit`), and bind (`bind`) the texture array. The `generate` method is responsible for creating the GPU buffer, uploading images, and generating mipmaps with optional alpha correction. This involves calculating the maximum dimensions of the input images, ensuring they are powers of two, and then filling a buffer using nearest sampling to create each mipmap level. The `lodColorInterpolation` function computes the color for each pixel in the mipmap levels based on surrounding pixels, applying gamma correction if specified.
 
 ## Code Example
 ```zig
-pub fn deinit(self: Texture) void {
-	c.glDeleteTextures(1, &self.textureID);
+pub fn init() TextureArray {
+	var self: TextureArray = undefined;
+	c.glGenTextures(1, &self.textureID);
+	return self;
 }
 ```
 
 ## Related Questions
-- How does the `Texture` struct initialize from a file?
-- What error handling is implemented when reading image files for textures?
-- How are texture parameters set in the `generate` method of the `Texture` struct?
-- What methods are available for binding and rendering textures?
-- How does the `initFromMipmapFiles` function work to create a mipmap texture?
-- What is the purpose of the `faceNormal`, `faceUp`, and `faceRight` functions in the `CubeMapTexture` struct?
+- How does the TextureArray struct initialize a texture array in OpenGL?
+- What method is used to delete a texture array in the TextureArray struct?
+- Can you explain how mipmaps are generated in the TextureArray struct?
+- What role does alpha correction play in mipmap generation within the TextureArray struct?
+- How does the TextureArray struct ensure that image dimensions are powers of two?
+- What is the purpose of the lodColorInterpolation function in the TextureArray struct?
 
 *Source: unknown | chunk_id: codebase_src_graphics.zig_chunk_16*

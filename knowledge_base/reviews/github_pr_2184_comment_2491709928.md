@@ -1,22 +1,22 @@
 # [src/game.zig] - PR #2184 review diff
 
 **Type:** review
-**Keywords:** refactoring, nested struct, eye data, player death handling, code organization, encapsulation, maintainability
-**Symbols:** Player, EyeData, Vec3d, collision.Box
-**Concepts:** Code Organization, Encapsulation, Maintainability
+**Keywords:** refactoring, nested struct, default values, player state, death handling, code readability
+**Symbols:** EyeData, pos, vel, coyote, step, box, desiredPos, Player, super, eye
+**Concepts:** code organization, state management
 
 ## Summary
-Refactored Player struct by introducing an EyeData nested struct and updating eye-related fields.
+Refactored Player struct by introducing an EyeData nested struct to encapsulate eye-related properties.
 
 ## Explanation
-The change introduces a new nested struct `EyeData` within the `Player` struct to encapsulate eye-related properties such as position, velocity, coyote time, step status, collision box, and desired position. This refactoring improves code organization and makes it easier to handle player death by resetting the eye data with a single assignment (`Player.eye = .{}`), enhancing maintainability and readability.
+The change introduces a new nested struct, EyeData, within the Player struct to group all eye-related properties together. This refactoring improves code organization and makes it easier to handle player death by resetting the eye data with `Player.eye = .{}`. The reviewer suggests setting default values in the struct to simplify handling of player state changes.
 
 ## Related Questions
-- What are the benefits of encapsulating eye-related properties in a nested struct?
-- How does resetting the eye data simplify player death handling?
-- What potential issues might arise from this refactoring?
-- Can you explain the purpose of each field in the EyeData struct?
-- How does this change impact the overall architecture of the Player struct?
-- What are the implications for backward compatibility with existing code?
+- What is the purpose of introducing the EyeData nested struct in the Player struct?
+- How does setting default values in the EyeData struct simplify player death handling?
+- What are the benefits of grouping eye-related properties together in a nested struct?
+- Can you explain the potential impact on performance due to this refactoring?
+- How might this change affect backwards compatibility with existing code?
+- What considerations should be made regarding thread safety when modifying player state?
 
 *Source: unknown | chunk_id: github_pr_2184_comment_2491709928*

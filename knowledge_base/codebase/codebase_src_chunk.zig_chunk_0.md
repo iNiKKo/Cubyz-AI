@@ -1,22 +1,29 @@
 # [hard/codebase_src_chunk.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** enum, inline fn, Vec3i, bitMask, orthogonalComponents, rotateZ, extractDirectionComponent, memoryPool, serverPool
-**Symbols:** chunkShift, chunkSize, chunkSizeIterator, chunkVolume, chunkMask, Neighbor, Lod
-**Concepts:** neighbor enumeration, relative position lookup, texture coordinate generation, memory pooling, LOD levels
+**Keywords:** constants, enum, relative positions, bitmask, texture coordinates, memory pool, global arena allocator
+**Symbols:** chunkShift, chunkSize, chunkSizeIterator, chunkVolume, chunkMask, Neighbor, Neighbor.dirUp, Neighbor.dirDown, Neighbor.dirPosX, Neighbor.dirNegX, Neighbor.dirPosY, Neighbor.dirNegY, Neighbor.toInt, Neighbor.relX, Neighbor.relY, Neighbor.relZ, Neighbor.relPos, Neighbor.fromRelPos, Neighbor.bitMask, Neighbor.iterable, Neighbor.orthogonalComponents, Neighbor.textureX, Neighbor.textureY, Neighbor.reverse, Neighbor.isPositive, Neighbor.VectorComponentEnum, Neighbor.vectorComponent, Neighbor.extractDirectionComponent, Neighbor.rotateZ, memoryPool, serverPool
+**Concepts:** chunk management, neighbor relationships, memory pooling
 
 ## Summary
-Defines chunk constants (shift/size/mask), a Neighbor enum with relative position and texture lookup methods, LOD levels, and memory pool declarations.
+Defines constants and structures for chunk management, including neighbor relationships and memory pooling.
 
 ## Explanation
-The chunk declares pub const chunkShift = 5 and derives chunkSize as 1 << chunkShift, chunkVolume as 1 << 3*chunkShift, and chunkMask as chunkSize - 1. It defines a public Neighbor enum(u3) with six directional variants (dirUp, dirDown, dirPosX, dirNegX, dirPosY, dirNegY). Each variant exposes inline toInt returning the enum value, relX/relY/relZ returning i32 offsets from static arrays, and relPos returning Vec3i composed of those offsets. The enum also provides bitMask (u6) shifting 1 by the enum value, an iterable array of all six neighbors, orthogonalComponents returning Vec3i with two non-zero entries per neighbor, textureX/textureY returning Vec3i for face normals, reverse flipping the least significant bit via XOR 1, isPositive checking LSB == 0, vectorComponent mapping to VectorComponentEnum (x/y/z), extractDirectionComponent using a comptime switch on val.vectorComponent() to index into anytype input, and rotateZ returning a neighbor rotated 90° CCW around Z. Two global heap pools are declared: memoryPool of type main.heap.MemoryPool(Chunk) initialized with main.globalArena, and serverPool of type main.heap.MemoryPool(ServerChunk) also initialized with main.globalArena.
+This chunk defines several constants related to chunk dimensions and a Neighbor enum that describes the six possible directions of neighboring blocks. The Neighbor enum includes methods to convert between direction and relative positions, bitmasks, and texture coordinates. It also provides utility functions for reversing directions, checking positivity, extracting vector components, rotating around the z-axis, and iterating over all neighbors. Additionally, it declares memory pools for managing Chunk and ServerChunk instances using a global arena allocator.
+
+## Code Example
+```zig
+pub inline fn toInt(self: Neighbor) u3 {
+	return @intFromEnum(self);
+}
+```
 
 ## Related Questions
-- What does the Neighbor enum represent and how many directions are defined?
-- How is chunkSize computed from chunkShift in this file?
-- Which methods on Neighbor return relative coordinate offsets for each direction?
-- How can I obtain a neighbor rotated 90 degrees around the Z axis using this enum?
-- What does the bitMask method produce and why is it useful?
-- Where are the global memory pools declared and what types do they hold?
+- What is the size of a chunk in Cubyz?
+- How are neighboring blocks defined in Cubyz?
+- What methods does the Neighbor enum provide for direction manipulation?
+- How is memory allocated for chunks in Cubyz?
+- What is the purpose of the chunkMask constant?
+- How do you determine the relative position of a neighbor in Cubyz?
 
 *Source: unknown | chunk_id: codebase_src_chunk.zig_chunk_0*

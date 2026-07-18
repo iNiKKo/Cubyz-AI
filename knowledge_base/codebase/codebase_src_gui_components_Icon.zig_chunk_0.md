@@ -1,29 +1,29 @@
 # [easy/codebase_src_gui_components_Icon.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** GuiComponent, Texture, Vec2f, globalAllocator, deinit, render, updateTexture, position, size, allocation
-**Symbols:** Icon, Icon.pos, Icon.size, Icon.texture, Icon.init, Icon.deinit, Icon.toComponent, Icon.updateTexture, Icon.render
-**Concepts:** gui component, texture rendering, resource management, allocation lifecycle
+**Keywords:** memory allocation, texture management, rendering pipeline, component-based architecture, global allocator
+**Symbols:** Icon, Icon.fontSize, Icon.pos, Icon.size, Icon.texture, Icon.init, Icon.deinit, Icon.toComponent, Icon.updateTexture, Icon.render
+**Concepts:** GUI components, texture rendering
 
 ## Summary
-This chunk defines the Icon GuiComponent struct with initialization, deinitialization, texture update, and rendering methods.
+The Icon component handles rendering and updating textures for GUI elements.
 
 ## Explanation
-The chunk declares an Icon struct (aliased via @This) containing pos: Vec2f, size: Vec2f, and texture: Texture fields. It provides a public init function that allocates the struct on main.globalAllocator, initializes all fields, and returns the pointer. The deinit function destroys the allocated memory using main.globalAllocator.destroy. A toComponent method converts an Icon into a GuiComponent with an icon field set to self. An updateTexture method allows replacing the texture while keeping position and size unchanged. A render method delegates to the Texture's render function using the stored pos and size.
+This chunk defines the Icon component, which is responsible for managing and displaying textures in a graphical user interface. It includes methods for initialization, deinitialization, converting to a generic GuiComponent, updating the texture, and rendering the icon. The Icon struct holds position, size, and texture data. Memory allocation and deallocation are managed using the global allocator.
 
 ## Code Example
 ```zig
-pub fn deinit(self: *const Icon) void {
-	main.globalAllocator.destroy(self);
+pub fn render(self: *Icon, _: Vec2f) void {
+	self.texture.render(self.pos, self.size);
 }
 ```
 
 ## Related Questions
-- How does the Icon component manage its texture resource lifecycle?
-- What is the exact signature and behavior of Icon.init?
-- Which allocator is used for Icon instances in this chunk?
-- How does toComponent wrap an Icon into a GuiComponent?
-- Does updateTexture modify position or size fields?
-- What arguments does render expect from its caller?
+- How does the Icon component initialize itself?
+- What method is used to update the texture of an Icon?
+- How is memory managed for Icon instances?
+- What is the role of the global allocator in this chunk?
+- How does the Icon convert itself to a GuiComponent?
+- What are the fields of the Icon struct?
 
 *Source: unknown | chunk_id: codebase_src_gui_components_Icon.zig_chunk_0*

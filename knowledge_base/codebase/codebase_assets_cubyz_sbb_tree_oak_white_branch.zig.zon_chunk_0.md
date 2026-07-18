@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_tree_oak_white_branch.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprints, children, asset configuration, Cubyz engine, oak white branch
+**Keywords:** blueprints, children, asset IDs, configuration data, Cubyz engine
 **Concepts:** asset management, blueprint definition
 
 ## Summary
-Defines blueprints and children for oak white branches in the Cubyz voxel engine.
+Defines blueprints and children for oak white branch assets.
 
 ## Explanation
-This chunk is a configuration file defining the blueprints and child assets for oak white branches. It lists three different branch blueprints with unique IDs and specifies that the crimson variant of these branches has leaves as its child asset.
+This chunk defines a configuration structure for oak white branch assets in the Cubyz voxel engine. It specifies multiple blueprints with unique IDs and lists a child asset, 'cubyz:tree/oak/white/leaf', under the 'crimson' key. This configuration is used to manage and reference these assets within the game.
 
 ## Related Questions
-- What are the IDs of the oak white branch blueprints?
-- Which asset is specified as the child for the crimson variant of oak white branches?
-- How many different branch blueprints are defined in this configuration?
-- Is there any mention of specific properties or attributes for these branches in this chunk?
-- Does this chunk define any functions or executable logic?
+- What are the blueprints defined for oak white branches?
+- Which asset is listed as a child under 'crimson' for oak white branches?
+- How many unique blueprints are specified for oak white branches?
 - What is the purpose of the 'children' field in this configuration?
+- Can you list all the asset IDs mentioned in this chunk?
+- Is there any function or method defined in this chunk?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_tree_oak_white_branch.zig.zon_chunk_0*

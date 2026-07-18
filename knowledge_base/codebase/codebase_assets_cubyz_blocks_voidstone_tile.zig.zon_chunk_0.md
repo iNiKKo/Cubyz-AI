@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_voidstone_tile.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, block properties, texture path, model reference, rotation model
-**Concepts:** block configuration, texture mapping
+**Keywords:** configuration, assets, block properties, rotation, model, texture
+**Concepts:** block configuration, asset references
 
 ## Summary
-Defines configuration for the Voidstone Tile block, specifying its rotation model and texture.
+Defines configuration for the Voidstone Tile block, specifying its rotation, model, and texture.
 
 ## Explanation
-This chunk is a configuration file in JSON-like format (ZON) that defines properties for a specific block type called 'Voidstone Tile'. It specifies three key attributes: 'rotation', 'model', and 'texture'. The 'rotation' attribute references a predefined rotation model named 'cubyz:stairs', indicating how the block should be oriented or animated. The 'model' attribute points to a basic cube model ('cubyz:cube'), which is likely a default shape for many blocks in the Cubyz engine. The 'texture' attribute specifies the path to the texture image used for rendering the Voidstone Tile, located at 'cubyz:voidstone/tile'. This configuration file does not contain any executable logic; it is purely static data intended to be read and applied by other parts of the Cubyz engine during block rendering or world generation.
+This chunk contains a single anonymous struct with three fields: .rotation, .model, and .texture. Each field is assigned a string value that references specific assets within the Cubyz engine. The .rotation field specifies the rotation behavior of the block using the 'cubyz:stairs' asset, indicating it behaves like stairs. The .model field uses the 'cubyz:cube' asset, suggesting the block has a cubic shape. The .texture field points to the 'cubyz:voidstone/tile' texture, which is applied to the block's surface.
 
 ## Related Questions
-- What is the rotation model for the Voidstone Tile block?
-- Which texture is used for rendering the Voidstone Tile block?
-- What is the default model referenced for the Voidstone Tile block?
-- Where is the texture file located for the Voidstone Tile block?
-- How does this configuration file define the appearance of the Voidstone Tile block?
-- What are the three key attributes defined in this block configuration?
+- What is the rotation behavior of the Voidstone Tile block?
+- Which model asset is used for the Voidstone Tile block?
+- What texture is applied to the Voidstone Tile block?
+- How does the configuration specify the block's appearance and behavior?
+- Are there any other fields in the struct besides .rotation, .model, and .texture?
+- Does this chunk define any functions or methods?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_voidstone_tile.zig.zon_chunk_0*

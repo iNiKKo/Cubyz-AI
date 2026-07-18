@@ -1,22 +1,28 @@
 # [easy/codebase_assets_cubyz_biomes_swamp_pond.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** properties, height range, radius, generation chances, ground structures, parent biomes
-**Symbols:** properties, hot, wet, minHeight, maxHeight, minRadius, maxRadius, chance, roughness, hills, music, ground_structure, structures, id, blocks, generationMode, width, variation, density, priority, parentBiomes
-**Concepts:** biome generation, configuration data, world structure
+**Keywords:** swamp, pond, biome, configuration, lily pad
+**Symbols:** Swamp_pond_biome
+**Concepts:** biome, configuration, lily pad
 
 ## Summary
-Describes the properties and characteristics of a swamp pond biome in Cubyz.
+Swamp pond biome configuration
 
 ## Explanation
-This configuration defines a specific biome type named 'swamp_pond' with various attributes such as temperature, height range, radius, and generation chances. It specifies ground structures like mud and flower patches, along with parent biomes that influence its formation.
+This chunk defines the properties, height range, radius, roughness, hills, music, ground structure, structures, and parent biomes for a swamp pond biome. It includes specific block IDs and generation modes for lily pads.
 
 ## Related Questions
-- What properties define the 'swamp_pond' biome?
-- How is the height range for the 'swamp_pond' biome specified?
-- What are the ground structures included in the 'swamp_pond' biome?
-- Which parent biomes influence the formation of the 'swamp_pond' biome?
-- What type of music plays in the 'swamp_pond' biome?
-- How is the chance of generating a flower patch in the 'swamp_pond' biome determined?
+- What is the minimum height of the swamp pond biome?
+- What is the maximum height of the swamp pond biome?
+- What is the minimum radius of the swamp pond biome?
+- What is the maximum radius of the swamp pond biome?
+- What is the chance of generating a lily pad in the swamp pond biome?
+- What are the block IDs for lily pads in the swamp pond biome?
+- What generation mode is used for lily pads in the swamp pond biome?
+- What is the width of the lily pad structures in the swamp pond biome?
+- What is the variation of the lily pad structures in the swamp pond biome?
+- What is the density of the lily pad structures in the swamp pond biome?
+- What is the priority of the lily pad structures in the swamp pond biome?
+- What are the parent biomes for the swamp pond biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_swamp_pond.zig.zon_chunk_0*

@@ -1,28 +1,28 @@
 # [easy/docs_README.md] - Chunk 0
 
 **Type:** documentation
-**Keywords:** Cubyz, Zig, voxel sandbox, Level of Detail, 3D chunks, procedural crafting, Windows, Linux, OpenGL 4.3, compilation scripts, git clone, zig build run, IntegratedQuantum, Cubz, Discord
-**Symbols:** run_linux.sh, run_windows.bat, zig build run, git clone, git pull, Cubyz-Java, Java Launcher
-**Concepts:** compilation instructions, platform support, contributing guidelines, project history, troubleshooting build issues
+**Keywords:** voxel sandbox, level of detail, 3d chunks, procedural crafting, zig, windows, linux, macos, discord server, youtube, devlogs, history, java, zenith391, zausera
+**Symbols:** Cubyz, Zig, run_linux.sh, run_windows.bat
+**Concepts:** Voxel sandbox game, Level of Detail, 3D Chunks, Procedural Crafting
 
 ## Summary
-Cubyz is a Zig-written 3D voxel sandbox supporting Windows and Linux, featuring Level of Detail, unlimited-height 3D chunks, and procedural crafting.
+Cubyz is a voxel sandbox game written in Zig, supporting Windows and Linux. It features Level of Detail, 3D Chunks, and Procedural Crafting.
 
 ## Explanation
-The game was originally created on August 22, 2018 by zenith391 and ZaUserA under the name 'Cubz', later rewritten in Zig (started August 2022) and now maintained by IntegratedQuantum. It runs on Windows and Linux via provided batch/shell scripts or Zig build commands; Mac is unsupported due to lack of OpenGL 4.3. The documentation outlines two compilation paths: the easy way (download source, extract, run run_linux.sh/run_windows.bat) and the better way (clone repository, install Git, optionally use zig build run after installing a compatible Zig version). Troubleshooting notes include killing processes that hang longer than 10 minutes, deleting the zig-cache folder, reporting terminal errors via GitHub Issues or Discord, and requesting help on Discord for compilation issues. Contributing links point to separate docs for code guidelines, game design principles, and content suggestions.
+Cubyz allows players to explore an infinite world with far view distances and no height or depth limits. The procedural crafting system offers endless possibilities for tool crafting. Cubyz is written in Zig, a language known for its readability and small size. It supports Windows and Linux, but not macOS due to OpenGL 4.3 compatibility issues.
 
 ## Related Questions
-- What programming language is Cubyz written in?
-- Which operating systems are supported by Cubyz?
-- How do I compile a dev version of Cubyz without installing tools?
-- Where can I find the precompiled release binaries for Cubyz?
-- Why is Mac not supported for Cubyz?
-- What should I do if the compilation process hangs for more than 10 minutes?
-- How can I update my local Cubyz repository after cloning it?
-- Who maintains Cubyz now and who originally created it?
-- Where are the links to contribute code, gameplay, or content located in this README?
-- What is the relationship between the current Zig version of Cubyz and the old Java version?
-- How do I report errors encountered while compiling Cubyz locally?
-- Can I use zig build run instead of the provided batch/shell scripts?
+- What are the unique features of Cubyz?
+- How does Cubyz handle procedural crafting?
+- Which languages is Cubyz written in?
+- What operating systems does Cubyz support?
+- Where can I find the source code for Cubyz?
+- What is the purpose of the Discord server?
+- What are some devlogs available on YouTube?
+- When was Cubyz originally created?
+- Who were the original creators of Cubyz?
+- Is there a Java version of Cubyz available?
+- How can I compile Cubyz from source code?
+- What is the recommended way to update my local version of Cubyz?
 
 *Source: unknown | chunk_id: docs_README.md_chunk_0*

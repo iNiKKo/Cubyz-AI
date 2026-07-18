@@ -1,25 +1,25 @@
 # [hard/codebase_assets_cubyz_biomes_rare_modern_art.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome properties, terrain generation, music assignment, ground patches, chalk blocks
-**Concepts:** world_generation, biome configuration
+**Keywords:** height limits, music, ground structures, random patches, block types
+**Concepts:** world generation, biome configuration
 
 ## Summary
-Defines configuration for a rare modern art biome in Cubyz, including generation properties and music.
+Defines configuration for a rare modern art biome in Cubyz, including properties like height limits, music, and ground structures.
 
 ## Explanation
-This chunk is a configuration file defining the properties of a specific biome in the Cubyz game engine. It sets various parameters such as the chance of occurrence, height limits, terrain roughness, and musical theme. The biome includes multiple ground patches with different colored chalk blocks, each with its own generation chance and dimensions.
+This chunk is a configuration file defining the properties of a specific biome in the Cubyz game engine. It sets various parameters such as the chance of this biome appearing, height restrictions, music associated with it, and whether players can spawn within it. The primary focus is on configuring ground structures, specifically 'ground_patch' elements that appear randomly across the biome's terrain. Each patch has a defined block type, chance of appearance, size, variation, depth, and smoothness.
 
 ## Related Questions
-- What is the chance of this biome occurring?
-- Which musical theme is assigned to this biome?
-- How many different ground patches are defined for this biome?
-- What is the maximum height limit for this biome?
-- What type of blocks are used in the ground patches?
-- What is the smoothness value for the ground patches?
-- Is player spawning valid in this biome?
+- What is the chance of this rare modern art biome appearing?
+- Which music track is associated with this biome?
+- Can players spawn in this biome?
+- How many different ground patch structures are defined for this biome?
+- What is the block type used for the first ground patch structure?
+- What is the width and depth of each ground patch structure?
+- Is there any variation in the size of these patches?
+- How smooth are the edges of these ground patches?
 - What is the minimum height limit for this biome?
-- How many variations are allowed for each ground patch?
-- What is the depth of the ground patches?
+- What is the maximum height limit for this biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_rare_modern_art.zig.zon_chunk_0*

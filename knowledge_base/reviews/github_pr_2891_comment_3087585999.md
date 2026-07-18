@@ -1,22 +1,22 @@
 # [src/items.zig] - PR #2891 review diff
 
 **Type:** review
-**Keywords:** refactoring, multithreading, property access, pointer safety, tool creation
+**Keywords:** multithreading, property access, pointer safety, refactoring, architecture
 **Symbols:** ProceduralItem, getProperty, getPropertyPtr, ProceduralItemProperty
-**Concepts:** thread safety, pointer misuse
+**Concepts:** thread safety, memory management
 
 ## Summary
-Refactored the `getProperty` function in `ProceduralItem` to return a value instead of a pointer and added a new `getPropertyPtr` function. The reviewer expressed concerns about thread safety and potential misuse of pointers.
+Refactored `getProperty` method in `ProceduralItem` to return a value instead of a pointer, and added a new `getPropertyPtr` method. Addressed concerns about multithreading and potential misuse of pointers.
 
 ## Explanation
-The change refactors the `getProperty` function to return an `f32` value directly rather than a pointer, which aligns with safer access patterns. A new `getPropertyPtr` function is introduced to provide pointer access if needed. The reviewer's concern revolves around thread safety and the potential for misuse of pointers, suggesting that multithreaded operations on tool creation could lead to issues. The main unresolved concern remains the modification of these values after tool creation.
+The change refactors the `getProperty` method to return an `f32` value directly rather than a pointer to it. This modification aims to prevent issues related to multithreading, where multiple threads might attempt to modify the same property concurrently without proper synchronization. The addition of `getPropertyPtr` provides a way to obtain a pointer if needed, but this is done with caution to avoid potential misuse and threading issues. The reviewer remains concerned about modifying properties after tool creation, indicating that further safeguards or architectural considerations may be necessary.
 
 ## Related Questions
-- What are the potential thread safety issues with the current implementation of `getProperty` and `getPropertyPtr`?
-- How could storing a pointer to a `ProceduralItem` lead to misuse or bugs?
-- What architectural changes would be necessary to support multithreaded tool creation in Cubyz?
-- Can you explain why returning a value instead of a pointer is considered safer in this context?
-- What are the implications of not resolving the concern about modifying values after tool creation?
-- How could the new `getPropertyPtr` function be used safely in a multithreaded environment?
+- What are the potential risks of using `getPropertyPtr` in a multithreaded environment?
+- How does this change impact the performance of property access in `ProceduralItem`?
+- Are there any backward compatibility issues introduced by this refactoring?
+- What additional measures should be taken to ensure thread safety when accessing properties?
+- Can you explain the rationale behind changing `getProperty` to return a value instead of a pointer?
+- How might this change affect existing code that relies on direct property access?
 
 *Source: unknown | chunk_id: github_pr_2891_comment_3087585999*

@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_vine_cirrus.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** texture mapping, block assets, item definition, JSON structure, asset paths
-**Concepts:** block textures, item properties
+**Keywords:** texture mapping, block assets, item assets, Cirrus Vine, block faces
+**Concepts:** block rendering, item representation
 
 ## Summary
-Defines textures and item properties for the Cirrus Vine block.
+Defines texture paths for the Cirrus Vine block and its item representation.
 
 ## Explanation
-This chunk specifies the texture paths for different sides of the Cirrus Vine block. It also defines the item representation, including its texture. The configuration is structured as a JSON-like object with keys mapping to specific asset paths.
+This chunk specifies the textures used for different faces of the Cirrus Vine block in the Cubyz voxel engine. It includes the top, bottom, and item texture paths. The `.texture0` and `.texture1` fields define the textures for the top and bottom faces of the block, respectively. The `.item.texture` field specifies the texture used when the block is represented as an item.
 
 ## Related Questions
-- What is the texture path for the top of the Cirrus Vine block?
-- Which texture is used for the bottom of the Cirrus Vine block?
+- What is the texture path for the top face of the Cirrus Vine block?
+- Which texture is used for the bottom face of the Cirrus Vine block?
 - What is the item texture for the Cirrus Vine block?
-- How are textures defined in this configuration chunk?
-- Is there any additional information provided about the Cirrus Vine block's properties?
-- What format is used to define the asset paths in this chunk?
+- How many different textures are defined for the Cirrus Vine block in this configuration?
+- Where is the texture file for the top face of the Cirrus Vine block located?
+- Which module or file would you expect to find additional configurations for the Cirrus Vine block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_vine_cirrus.zig.zon_chunk_0*

@@ -1,29 +1,29 @@
 # [medium/codebase_src_vec.zig] - Chunk 3
 
 **Type:** implementation
-**Keywords:** vector operations, complex numbers, bounding boxes, arithmetic functions, scalar multiplication
-**Symbols:** add, addScalar, sub, subScalar, mul, mulScalar, div, divScalar, fromSqrt, exp, Boxi, Boxi.min, Boxi.max, Boxi.merge
-**Concepts:** complex number arithmetic, 3D bounding box
+**Keywords:** complex numbers, vector operations, bounding boxes, mathematical functions, merge operation
+**Symbols:** Complex, Complex.val, Complex.valSquare, Complex.conjugate, Complex.negate, Complex.add, Complex.addScalar, Complex.sub, Complex.subScalar, Complex.mul, Complex.mulScalar, Complex.div, Complex.divScalar, Complex.fromSqrt, Complex.exp, Boxi, Boxi.min, Boxi.max, Boxi.merge
+**Concepts:** complex number operations, 3D bounding box
 
 ## Summary
-This chunk defines operations for complex numbers and a simple box structure in 3D space.
+Defines complex number operations and a box structure with merging functionality.
 
 ## Explanation
-The chunk provides arithmetic operations (addition, subtraction, multiplication, division) for complex numbers, including scalar versions of these operations. It also includes functions to compute the square root and exponential of a complex number. Additionally, it defines a `Boxi` structure representing an axis-aligned bounding box in 3D space with integer coordinates and a method to merge two such boxes.
+The chunk defines a `Complex` struct for handling complex numbers, including methods for squaring the value, computing the conjugate, negation, addition (with scalar), subtraction (with scalar), multiplication (with another complex or scalar), division (with another complex or scalar), creating from square root, and exponentiation. It also defines a `Boxi` struct representing an axis-aligned bounding box in 3D space with integer coordinates, including a method to merge two boxes.
 
 ## Code Example
 ```zig
-pub fn add(a: Complex, b: Complex) Complex {
-	return .{.val = a.val + b.val};
+pub fn negate(a: Complex) Complex {
+	return .{.val = -a.val};
 }
 ```
 
 ## Related Questions
-- How do you add two complex numbers in this code?
-- What is the function to multiply a complex number by a scalar?
-- How does the `Boxi` structure represent a bounding box?
-- What method merges two `Boxi` instances?
-- How is the square root of a complex number calculated here?
-- Can you show how to divide one complex number by another?
+- How do you compute the square of a complex number?
+- What is the method to merge two Boxi instances?
+- How does the `Complex` struct handle division by another complex number?
+- Can you explain how the `exp` function works for complex numbers?
+- What is the purpose of the `conjugate` method in the Complex struct?
+- How do you add a scalar to a complex number?
 
 *Source: unknown | chunk_id: codebase_src_vec.zig_chunk_3*

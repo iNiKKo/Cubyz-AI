@@ -1,15 +1,15 @@
 # [easy/codebase_src_server_command_worldedit_undo.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** undo command, world edit, history restore, blueprint capture, undo history
-**Symbols:** description, usage, Args, ArgParser, execute, User, Block, Blueprint, worldEditData
-**Concepts:** undo, redo, world editing, command handling, history management
+**Keywords:** undo command, world edit, redo history, blueprint capture, world paste
+**Symbols:** description, usage, Args, ArgParser, execute, User, Block, Blueprint, source, worldEditData, undoHistory, pop, action, deinit, capture, globalAllocator, redo, success, failure, message, sendMessage
+**Concepts:** world editing, undo, redo history, blueprint capture, world paste
 
 ## Summary
 Handles the '/undo' command for world editing, restoring the previous state of the world.
 
 ## Explanation
-The function `execute` handles the '/undo' command in the server's world editing system. It parses the input arguments, checks if there is an undo history entry to restore, captures the redo history from the undone action, pastes it back into the world at the original position, and updates the redo history with the captured redo data. If no undo history exists, it sends a message indicating that nothing can be undone.
+The function `execute` handles the '/undo' command in the server's world editing system. It parses the input arguments, checks if there is an undo history entry to restore, captures the redo history from the undone action, pastes it back into the world at the original position, and updates the redo history with the new state. If no undo history exists, it sends a message indicating that nothing can be undone.
 
 ## Code Example
 ```zig
@@ -46,14 +46,14 @@ fn execute(args: []const u8, source: *User) void {
 - What is the purpose of the 'undo' command in the world editing system?
 - How does the function `execute` handle the '/undo' command?
 - What data structures are used for storing undo and redo history in the world editing system?
-- What error handling is implemented when restoring the previous state of the world?
-- How is the redo history captured after an undo action?
+- What error handling is implemented when capturing or pasting blueprints during an undo operation?
 - What message is sent to the user if there is nothing to undo?
-- What is the purpose of the 'preserveVoid' option when pasting a blueprint back into the world?
-- What is the difference between 'success' and 'failure' in the redo capture process?
-- How are the undo and redo history entries managed in the world editing system?
-- What is the role of the `ArgParser` in handling command arguments for the '/undo' command?
-- What is the purpose of the `List(u8)` used to store error messages in the function `execute`?
-- How does the function `execute` handle errors during argument parsing?
+- How does the function `execute` handle the restoration of a blueprint after an undo operation?
+- What information is stored in the redo history entry for each undone action?
+- What is the purpose of the 'capture' function used during an undo operation?
+- What is the purpose of the 'paste' function used during an undo operation?
+- How does the function `execute` handle the message associated with the undone action?
+- What is the purpose of the 'sendMessage' function used to communicate with users in the world editing system?
+- What are the possible outcomes when restoring a blueprint after an undo operation?
 
 *Source: unknown | chunk_id: codebase_src_server_command_worldedit_undo.zig_chunk_0*

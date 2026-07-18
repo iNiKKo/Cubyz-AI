@@ -1,15 +1,15 @@
 # [medium/codebase_src_gui_windows_controls.zig] - Chunk 0
 
-**Type:** api
-**Keywords:** GUI components, event listeners, settings update, input binding, slider values
-**Symbols:** window, padding, selectedKey, editingKeyboard, needsUpdate, keyFunction, keypressListener, gamepadFunction, gamepadListener, updateSensitivity, invertMouseYCallback, sprintIsToggleCallback, updateDeadzone, deadzoneFormatter, sensitivityFormatter, abortBindingProcess, toggleKeyboard, unbindKey, initWindow, deinitWindow
-**Concepts:** GUI window management, key binding configuration, sensitivity adjustment, user input handling
+**Type:** implementation
+**Keywords:** GuiWindow, VerticalList, Button, ContinuousSlider, CheckBox, settings save, user interaction, layout initialization
+**Symbols:** window, padding, selectedKey, editingKeyboard, needsUpdate, keyFunction, keypressListener, gamepadFunction, gamepadListener, updateSensitivity, invertMouseYCallback, sprintIsToggleCallback, updateDeadzone, deadzoneFormatter, sensitivityFormatter, abortBindingProcess, toggleKeyboard, unbindKey, initWindow
+**Concepts:** GUI window, game controls configuration, key bindings, sensitivity settings
 
 ## Summary
-This chunk manages the initialization and deinitialization of a GUI window for controlling game settings, including key bindings and sensitivity adjustments.
+This chunk defines the logic for a GUI window that allows users to configure game controls, including key bindings and sensitivity settings.
 
 ## Explanation
-The chunk defines a GUI window that allows users to configure game controls such as mouse and keyboard sensitivities, invert mouse Y-axis, toggle sprint, and bind/unbind keys. It uses various GUI components like buttons, sliders, and checkboxes to create an interactive interface. The `initWindow` function sets up the layout by adding these components in a vertical list. Key binding functions (`keyFunction`, `gamepadFunction`) handle user input for setting key bindings, while sensitivity adjustment functions (`updateSensitivity`, `updateDeadzone`) update settings based on slider values. The chunk also includes utility functions like formatters for displaying values and a function to abort the binding process.
+The code initializes a `GuiWindow` with a vertical list of components such as buttons, sliders, and checkboxes. It handles user interactions for setting up keyboard and gamepad controls, updating sensitivities, and saving changes to the settings. Functions like `keyFunction`, `gamepadFunction`, and `updateSensitivity` manage the binding process and update the settings accordingly. The `initWindow` function sets up the layout of the window with various components, including labels, buttons for key bindings, and sliders for adjusting sensitivities.
 
 ## Code Example
 ```zig
@@ -21,11 +21,11 @@ fn abortBindingProcess() void {
 ```
 
 ## Related Questions
-- What is the purpose of the `initWindow` function?
-- How does the chunk handle key binding for gamepads?
-- What settings can be adjusted through this GUI window?
-- How are sensitivity values formatted and displayed in the UI?
-- What happens when a user aborts the binding process?
-- How is the layout of the GUI window constructed?
+- What is the purpose of the `abortBindingProcess` function?
+- How does the `initWindow` function set up the GUI layout?
+- What components are added to the vertical list in the `initWindow` function?
+- How are key bindings updated when a user selects a new key or gamepad button?
+- What is the role of the `updateSensitivity` function in the code?
+- How does the code handle saving changes to the settings after updating them?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_controls.zig_chunk_0*

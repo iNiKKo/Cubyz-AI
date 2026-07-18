@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_log_toadstool.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** block properties, textures, tags, configuration data, voxel engine
+**Keywords:** configuration, texturing, tags, blocks, assets
 **Concepts:** block configuration, texture mapping
 
 ## Summary
-Defines block properties for a toadstool log, including textures and tags.
+Defines properties for the Toadstool log block, including textures and tags.
 
 ## Explanation
-This chunk defines the configuration for a specific type of block in the Cubyz voxel engine. It specifies six different textures (texture0 through texture5) that correspond to various orientations or features of the toadstool log block. Additionally, it assigns three tags to the block: 'cuttable', 'sliceable', and 'mushroom'. These properties determine how the block interacts with other blocks and tools within the game environment.
+This chunk defines a configuration object for the Toadstool log block in the Cubyz voxel engine. It specifies various texture paths for different orientations of the log (dot, line, bend, intersection, cross, top) and assigns tags such as cuttable, sliceable, and mushroom to categorize its behavior within the game.
 
 ## Related Questions
-- What are the tags assigned to the toadstool log block?
-- Which texture is used for the top of the toadstool log?
-- How many textures are defined for the toadstool log block?
-- What does the 'cuttable' tag imply about the toadstool log block?
-- Can the toadstool log block be sliced, and how is this indicated in the configuration?
-- Which texture corresponds to the intersection orientation of the toadstool log?
+- What are the tags assigned to the Toadstool log block?
+- Which textures are used for different orientations of the Toadstool log?
+- How many texture paths are defined for the Toadstool log block?
+- Is the Toadstool log block marked as cuttable?
+- What is the path for the 'dot' texture of the Toadstool log?
+- Are there any additional properties or behaviors defined for the Toadstool log block in this configuration?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_log_toadstool.zig.zon_chunk_0*

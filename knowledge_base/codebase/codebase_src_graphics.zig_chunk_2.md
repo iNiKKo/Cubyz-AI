@@ -1,34 +1,30 @@
 # [hard/codebase_src_graphics.zig] - Chunk 2
 
 **Type:** implementation
-**Keywords:** OpenGL, vertex arrays, shaders, uniforms, drawing functions
-**Symbols:** rectBorderVao, rectBorderPipeline, rectBorderUniforms, lineUniforms, linePipeline, lineVao, circleUniforms, circlePipeline, circleVao
-**Concepts:** OpenGL rendering, 2D graphics drawing, vertex arrays, shaders
+**Keywords:** pipeline initialization, VAO management, OpenGL commands, shader binding, uniform setting, triangle strip drawing
+**Symbols:** rectUniforms, rectPipeline, rectVao, initRect, deinitRect, rect, rectBorderUniforms, rectBorderPipeline, rectBorderVao, initRectBorder, deinitRectBorder, rectBorder, lineUniforms, linePipeline, lineVao, initLine
+**Concepts:** graphics pipeline, vertex array object, OpenGL rendering, rectangle drawing, border rendering, line drawing
 
 ## Summary
-This chunk defines functions for drawing rectangles with borders, lines, and circles using OpenGL.
+This chunk defines functions and data structures for rendering rectangles, rectangle borders, and lines in a graphics pipeline.
 
 ## Explanation
-The chunk contains several functions to draw different shapes using OpenGL. It initializes and deinitializes pipelines and vertex arrays for each shape type. The `rectBorder` function draws a rectangle border by setting up the pipeline, uniforms, and drawing the vertices. The `line` function draws a line between two points, and the `rectOutline` function draws an outline of a rectangle using lines. The `initCircle` function initializes the circle drawing pipeline and vertex array, but the deinitialization is incomplete.
+The chunk contains definitions for three main drawing functions: `rect`, `rectBorder`, and `drawLine`. Each function initializes its respective pipeline and vertex array object (VAO) with specific shaders and vertex data. The `initRect` and `deinitRect` functions manage the lifecycle of the rectangle rendering resources, while `rect` sets up and draws a filled rectangle using OpenGL commands. Similarly, `initRectBorder` and `deinitRectBorder` handle the border drawing resources, and `rectBorder` renders a rectangle with a border. The `drawLine` function is partially defined but not fully implemented in the provided snippet.
 
 ## Code Example
 ```zig
-fn deinitRectBorder() void {
-	rectBorderPipeline.deinit();
-	rectBorderVao.deinit();
+fn deinitRect() void {
+	rectPipeline.deinit();
+	rectVao.deinit();
 }
 ```
 
 ## Related Questions
-- What is the purpose of the `rectBorder` function?
-- How does the `line` function calculate the direction vector for drawing a line?
-- What are the uniforms used in the circle drawing pipeline?
-- Why is the deinitialization of the circle pipeline incomplete?
-- How many vertices are used to draw a rectangle border?
-- What shader files are used for drawing lines and circles?
-- How does the `rectOutline` function ensure the outline is drawn correctly?
-- What is the role of the `initLine` function in the graphics module?
-- How are the positions and dimensions scaled before drawing shapes?
-- What OpenGL functions are used to draw arrays in this chunk?
+- What is the purpose of the `initRect` function?
+- How does the `rect` function set up and draw a rectangle?
+- What resources are managed by `deinitRectBorder`?
+- How is the vertex data structured for border rendering?
+- What OpenGL command is used to draw the triangles in `rectBorder`?
+- Why is the line width scaled by `scale` in `rectBorder`?
 
 *Source: unknown | chunk_id: codebase_src_graphics.zig_chunk_2*

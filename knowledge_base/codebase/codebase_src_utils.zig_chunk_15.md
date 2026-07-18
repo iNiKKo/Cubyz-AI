@@ -1,29 +1,50 @@
 # [hard/codebase_src_utils.zig] - Chunk 15
 
 **Type:** serialization
-**Keywords:** binary writer, serialization, integer types, variable-length integers, floating-point numbers, enums, booleans, slices, testing
-**Symbols:** BinaryWriter, BinaryWriter.writeInt, BinaryWriter.writeVarInt, BinaryWriter.writeFloat, BinaryWriter.writeEnum, BinaryWriter.writeBool, BinaryWriter.writeSlice, BinaryWriter.writeSliceWithSize, BinaryWriter.writeWithDelimiter, ReadWriteTest, ReadWriteTest.getWriter, ReadWriteTest.getReader, ReadWriteTest.testInt, ReadWriteTest.testVarInt, ReadWriteTest.testFloat, ReadWriteTest.testInvalidFloat, ReadWriteTest.testEnum, ReadWriteTest.TestEnum, ReadWriteTest.testVec
-**Concepts:** binary serialization, data writing, testing framework
+**Keywords:** enum serialization, vector serialization, mixed data serialization, dense identifiers, unit testing
+**Symbols:** DenseId
+**Concepts:** serialization, testing
 
 ## Summary
-This chunk defines a `BinaryWriter` struct with methods for writing various data types to a binary stream. It also includes test functions to verify the correctness of these write operations.
+This chunk contains test functions for reading and writing various data types, including enums, vectors, and mixed data. It also defines a generic DenseId type.
 
 ## Explanation
-The `BinaryWriter` struct provides methods such as `writeInt`, `writeVarInt`, `writeFloat`, `writeEnum`, `writeBool`, `writeSlice`, `writeSliceWithSize`, and `writeWithDelimiter`. Each method is responsible for writing a specific type of data to the binary stream. The `ReadWriteTest` struct contains test functions that create instances of `BinaryWriter` and `BinaryReader`, perform write operations, and then read back the data to verify correctness. The tests cover various integer types (both signed and unsigned), variable-length integers, floating-point numbers, enums, booleans, slices, and slices with size prefixes.
+The chunk includes several test functions that verify the read/write functionality for different types such as enums with varying bit-widths (u2 to u32), Vec3i vectors with integer components, and Vec3f/Vec3d vectors with floating-point components. The tests cover edge cases like minimum and maximum values. Additionally, there is a test for mixed data types where various primitive types are written and read back. The DenseId function defines an enum type that represents dense identifiers using an unsigned integer type, ensuring the 'noValue' variant is set to the maximum value of the provided IdType.
 
 ## Code Example
 ```zig
-pub fn writeBool(self: *BinaryWriter, value: bool) void {
-	self.writeInt(u1, @intFromBool(value));
+test "read/write enum" {
+	inline for ([_]type{
+		ReadWriteTest.TestEnum(u2),
+		ReadWriteTest.TestEnum(u4),
+		ReadWriteTest.TestEnum(u5),
+		ReadWriteTest.TestEnum(u8),
+		ReadWriteTest.TestEnum(u16),
+		ReadWriteTest.TestEnum(u32),
+		ReadWriteTest.TestEnum(i2),
+		ReadWriteTest.TestEnum(i4),
+		ReadWriteTest.TestEnum(i5),
+		ReadWriteTest.TestEnum(i8),
+		ReadWriteTest.TestEnum(i16),
+		ReadWriteTest.TestEnum(i32),
+	}) |enumT| {
+		try ReadWriteTest.testEnum(enumT, .first);
+		try ReadWriteTest.testEnum(enumT, .center);
+		try ReadWriteTest.testEnum(enumT, .last);
+	}
 }
 ```
 
 ## Related Questions
-- How does the `writeInt` method work in the `BinaryWriter` struct?
-- What is the purpose of the `testVarInt` function in the `ReadWriteTest` struct?
-- Can you explain how the `writeSliceWithSize` method handles writing slices with size prefixes?
-- What assertion is made in the `writeWithDelimiter` method to ensure data integrity?
-- How does the `BinaryWriter` handle different integer types during serialization?
-- What is the role of the `ReadWriteTest.TestEnum` function in testing enum serialization?
+- What types of data are tested for read/write functionality in this chunk?
+- How does the DenseId function ensure that the 'noValue' variant is valid?
+- What specific edge cases are covered in the Vec3f/Vec3d tests?
+- Can you explain the purpose of the mixed data type test in this chunk?
+- Which Zig standard library functions are used to determine the maximum and minimum values for vector components?
+- How does the DenseId function assert that the provided IdType is an unsigned integer?
+- What is the role of the 'noValue' variant in the DenseId enum?
+- Are there any tests for signed enums or other types not mentioned in this chunk?
+- How are the writer and reader initialized in the mixed data type test?
+- What does the code check at the end of the mixed data type test to ensure all data has been read?
 
 *Source: unknown | chunk_id: codebase_src_utils.zig_chunk_15*

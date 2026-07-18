@@ -1,22 +1,22 @@
-# [src/main.zig] - PR #3219 review comment
+# [src/main.zig] - PR #3219 review diff
 
 **Type:** review
-**Keywords:** main, audio.init, audio.deinit, garbage collection, thread pool, defer, resource cleanup, crash prevention, thread safety, allocator
+**Keywords:** audio initialization, thread pool, deferred cleanup, garbage collection, crash prevention, resource management, CPU threads, global allocator, settings configuration, system resources
 **Symbols:** main, graphics.init, graphics.deinit, audio.init, audio.deinit, utils.initDynamicIntArrayStorage, utils.deinitDynamicIntArrayStorage, heap.GarbageCollection.forceAllFreeItemsFromList, utils.ThreadPool.init, threadPool.deinit, globalAllocator, settings.cpuThreads, std.Thread.getCpuCount
-**Concepts:** resource management, deferred cleanup, thread safety, crash prevention
+**Concepts:** deferred execution, garbage collection, thread safety, resource management
 
 ## Summary
-The code reorders and adds a new deferred call for garbage collection. It also initializes a thread pool before audio initialization to ensure proper resource management and prevent crashes.
+The code reorders and adds a new deferred call for garbage collection and initializes a thread pool before audio initialization. The reviewer notes that audio deinitialization requires the thread pool to be initialized.
 
 ## Explanation
-The change involves moving the `heap.GarbageCollection.forceAllFreeItemsFromList()` call earlier in the main function's cleanup sequence. This ensures that any resources allocated during the game execution are properly freed before other components like the audio system are deinitialized. The reviewer emphasizes the critical nature of initializing the thread pool before audio initialization to prevent crashes, as `audio.deinit` accesses the threadPool. This architectural adjustment is aimed at improving resource management and ensuring robustness against potential issues related to resource cleanup order.
+The change involves restructuring the initialization sequence in the `main` function of `src/main.zig`. A new deferred call is added to force all free items from the heap garbage collector, ensuring proper cleanup. Additionally, a thread pool is initialized using the global allocator and settings for CPU threads before audio initialization. The reviewer emphasizes that audio deinitialization accesses the thread pool, necessitating its prior initialization to prevent crashes.
 
 ## Related Questions
-- What is the purpose of initializing the thread pool before audio deinitialization?
-- How does the new garbage collection call affect resource management in the main function?
-- Why is it important to ensure proper cleanup order for resources like audio and graphics?
-- Can you explain the role of `heap.GarbageCollection.forceAllFreeItemsFromList()` in this context?
-- What potential issues could arise if the thread pool initialization were omitted before audio deinitialization?
-- How does this change impact the overall robustness of the application's resource management?
+- What is the purpose of the new deferred call to `heap.GarbageCollection.forceAllFreeItemsFromList()`?
+- Why is the thread pool initialized before audio initialization?
+- How does the reviewer ensure that audio deinitialization does not cause a crash?
+- What potential issues could arise from the order of resource initialization and deinitialization in this code?
+- How does the use of `defer` statements contribute to resource management in this function?
+- What is the role of `globalAllocator` in initializing the thread pool, and how might it affect performance?
 
 *Source: unknown | chunk_id: github_pr_3219_comment_3409751648*

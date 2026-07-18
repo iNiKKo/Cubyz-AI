@@ -1,22 +1,22 @@
 # [src/network.zig] - PR #1297 review diff
 
 **Type:** review
-**Keywords:** bufPrint, allocPrint, stackAllocator, IP address, IPv10, performance, safety, flexibility
-**Symbols:** ConnectionManager, newConnectionCallback, allowNewConnections, ChannelId.init
-**Concepts:** thread safety, backwards compatibility, memory leak
+**Keywords:** bufPrint, allocPrint, network, connection handling, IP addresses, buffer overflow, dynamic content, performance critical, logging
+**Symbols:** ConnectionManager, newConnectionCallback, allowNewConnections, stackAllocator, allocPrint
+**Concepts:** thread safety, memory safety, dynamic memory allocation
 
 ## Summary
-The review suggests replacing `bufPrint` with `allocPrint` in the network module to improve safety and flexibility.
+The review suggests replacing `bufPrint` with `allocPrint` for better safety and predictability in network connection handling.
 
 ## Explanation
-The reviewer points out that `bufPrint` is generally used in older code and is not suitable for dynamic or unpredictable string sizes, such as IP addresses. They argue that using `allocPrint` is safer and more flexible, especially considering potential future changes like IPv10 support. The review also mentions that `bufPrint` should only be used if it solves a specific performance problem, which is unlikely given the minimal runtime string formatting in this context.
+The reviewer highlights that `bufPrint` is generally unsafe for dynamic content like IP addresses, as it can lead to buffer overflows. They recommend using `allocPrint`, which allocates memory dynamically based on the required size, ensuring safety. The review also notes that `bufPrint` should only be used in specific scenarios where performance is critical, such as logging, and not for general string formatting like IP addresses.
 
 ## Related Questions
-- What are the potential risks of using bufPrint for IP addresses?
-- How does allocPrint improve safety and flexibility in this context?
-- Can you explain why bufPrint should only be used if it solves a specific performance problem?
-- What are the implications of future changes like IPv10 support on the current code?
-- How does the use of stackAllocator affect memory management in this module?
-- Are there any other scenarios where bufPrint might still be preferable?
+- What are the potential risks of using bufPrint for IP addresses in network connections?
+- How does allocPrint improve safety compared to bufPrint in this context?
+- Are there any performance implications when switching from bufPrint to allocPrint?
+- Can you provide examples of other scenarios where bufPrint should be avoided?
+- What are the benefits of using stackAllocator with allocPrint in network code?
+- How does this change affect the overall architecture of the ConnectionManager?
 
 *Source: unknown | chunk_id: github_pr_1297_comment_2049448555*

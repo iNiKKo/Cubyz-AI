@@ -1,22 +1,72 @@
 # [hard/codebase_src_items.zig] - Chunk 3
 
 **Type:** implementation
-**Keywords:** height map, material properties, lighting calculations, property evaluation, modifiers
-**Symbols:** TextureGenerator, TextureGenerator.generateHeightMap, TextureGenerator.generate, ProceduralItemPhysics, ProceduralItemPhysics.evaluateProceduralItem
-**Concepts:** texture generation, physics calculation, procedural content
+**Keywords:** height map, material roughness, lighting intensity, image rendering, grid processing
+**Symbols:** TextureGenerator, TextureGenerator.generateHeightMap, TextureGenerator.generate
+**Concepts:** texture generation, material handling, lighting calculations
 
 ## Summary
-The chunk defines structures for generating procedural item textures and physics properties.
+The TextureGenerator struct generates textures for ProceduralItems based on material information and crafting grid data.
 
 ## Explanation
-The chunk contains two main structs: `TextureGenerator` and `ProceduralItemPhysics`. The `TextureGenerator` struct has a method `generateHeightMap` that creates a height map based on the material grid of an item. It also has a public method `generate` that generates the texture of a procedural item by setting pixel colors based on the height map and material properties. The `ProceduralItemPhysics` struct contains a method `evaluateProceduralItem` that calculates various physical properties of a procedural item, such as durability and swing speed, using modifiers and material properties.
+The TextureGenerator struct contains two main functions: generateHeightMap and generate. The generateHeightMap function creates a height map from the itemGrid, considering neighbor items and their materials to determine texture roughness. The generate function initializes the materialGrid based on the crafting grid and seed, then uses the height map to calculate lighting for each pixel, setting colors in the proceduralItem's image accordingly.
+
+## Code Example
+```zig
+fn generateHeightMap(itemGrid: *[16][16]?BaseItemIndex, seed: *u64) [17][17]f32 {
+		var heightMap: [17][17]f32 = undefined;
+		var x: u8 = 0;
+		while (x < 17) : (x += 1) {
+			var y: u8 = 0;
+			while (y < 17) : (y += 1) {
+				heightMap[x][y] = 0;
+				// The heighmap basically consists of the amount of neighbors this pixel has.
+				// Also check if there are different neighbors.
+				const oneItem = itemGrid[if (x == 0) x else x - 1][if (y == 0) y else y - 1];
+				var hasDifferentItems: bool = false;
+				var dx: i32 = -1;
+				while (dx <= 0) : (dx += 1) {
+					if (x + dx < 0 or x + dx >= 16) continue;
+					var dy: i32 = -1;
+					while (dy <= 0) : (dy += 1) {
+						if (y + dy < 0 or y + dy >= 16) continue;
+						const otherItem = itemGrid[@intCast(x + dx)][@intCast(y + dy)];
+						heightMap[x][y] = if (otherItem) |item| (if (item.material()) |material| 1 + (4*random.nextFloat(seed) - 2)*material.textureRoughness else 0) else 0;
+						if (otherItem != oneItem) {
+							hasDifferentItems = true;
+						}
+					}
+				}
+
+				// If there is multiple items at this junction, make it go inward to make embedded parts stick out more:
+				if (hasDifferentItems) {
+					heightMap[x][y] -= 1;
+				}
+
+				// Take into account further neighbors with lower priority:
+				dx = -2;
+				while (dx <= 1) : (dx += 1) {
+					if (x + dx < 0 or x + dx >= 16) continue;
+					var dy: i32 = -2;
+					while (dy <= 1) : (dy += 1) {
+						if (y + dy < 0 or y + dy >= 16) continue;
+						const otherItem = itemGrid[@intCast(x + dx)][@intCast(y + dy)];
+						const dVec = Vec2f{@as(f32, @floatFromInt(dx)) + 0.5, @as(f32, @floatFromInt(dy)) + 0.5};
+						heightMap[x][y] += if (otherItem != null) 1.0/vec.dot(dVec, dVec) else 0;
+					}
+				}
+			}
+		}
+		return heightMap;
+	}
+```
 
 ## Related Questions
-- What is the purpose of the `generateHeightMap` function in the `TextureGenerator` struct?
-- How does the `generate` method in the `TextureGenerator` struct set pixel colors for a procedural item?
-- What properties are evaluated by the `evaluateProceduralItem` method in the `ProceduralItemPhysics` struct?
-- How is the height map used in the texture generation process?
-- What role do modifiers play in calculating physical properties of a procedural item?
-- How does the code handle cases where materials or properties are null?
+- What is the purpose of the TextureGenerator struct?
+- How does the generateHeightMap function work?
+- What data does the generate function use to create textures?
+- How are lighting calculations performed in the generate function?
+- What is the role of the height map in texture generation?
+- How is the materialGrid initialized in the generate function?
 
 *Source: unknown | chunk_id: codebase_src_items.zig_chunk_3*

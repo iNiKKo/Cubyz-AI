@@ -1,28 +1,28 @@
 # [easy/codebase_assets_cubyz_sbb_tree_oak_old_growth_small_branch.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprints, chances, tree branches, generation configuration, game assets
+**Keywords:** blueprint, chance, selection, tree generation, branch
 **Symbols:** blueprints
-**Concepts:** tree, branch, blueprint, chance
+**Concepts:** tree generation, branch blueprint
 
 ## Summary
 Tree branch blueprint configuration
 
 ## Explanation
-This chunk defines a set of tree branch blueprints with their respective IDs and chances for generation in the game world.
+This chunk defines a set of tree branch blueprints for the Cubyz voxel engine. Each blueprint specifies an ID and a chance for selection.
 
 ## Related Questions
-- What are the IDs of the tree branch blueprints defined in this chunk?
-- How many different tree branch blueprints are there?
-- What is the chance for each tree branch blueprint to be generated?
-- Which blueprint has a chance of 0.2?
-- Are there any null entries in the blueprint list?
-- Can you provide the total number of entries in the blueprint list?
-- How many unique IDs are present among the tree branch blueprints?
-- What is the probability distribution of the chances for the tree branch blueprints?
-- Is there a specific order or pattern to the blueprint IDs and their chances?
-- Are there any dependencies between the tree branch blueprints in terms of generation chance?
-- Can you explain how these blueprints contribute to the overall tree structure in the game world?
-- What is the purpose of having null entries in the blueprint list?
+- What is the purpose of this chunk in the Cubyz voxel engine?
+- How many tree branch blueprints are defined?
+- What is the ID of the first blueprint?
+- What is the chance associated with the second blueprint?
+- Which blueprint has a null ID?
+- What is the total number of blueprints defined?
+- Is there any additional information provided about these blueprints in the source code?
+- How are these blueprints used within the engine's tree generation logic?
+- Can you explain how the chance values for the blueprints are determined?
+- Are there any dependencies or interactions between these blueprints and other parts of the engine?
+- What is the significance of using null IDs in this context?
+- How might these blueprints be modified or extended in future updates to the Cubyz voxel engine?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_tree_oak_old_growth_small_branch.zig.zon_chunk_0*

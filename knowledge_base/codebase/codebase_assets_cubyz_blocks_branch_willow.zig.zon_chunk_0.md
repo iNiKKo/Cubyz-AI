@@ -1,24 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_branch_willow.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** choppable, wood, branch, decay, durability, massDamage, hardnessDamage, swingSpeed, textureRoughness, modifier
-**Symbols:** tags, onUpdate, blockHealth, texture0, texture1, texture2, texture3, texture4, texture5, item, material, durability, massDamage, hardnessDamage, swingSpeed, textureRoughness, colors, modifiers, decayProhibitor
-**Concepts:** block configuration, item material properties, decay mechanics, texture atlasing, modifier system
+**Keywords:** block definition, material attributes, texture assignment, decay behavior, item properties
+**Concepts:** block configuration, material properties, texture mapping
 
 ## Summary
-This chunk defines the Willow branch block configuration with decay mechanics and associated item properties.
+Defines properties for the willow branch block, including textures, health, and decay behavior.
 
 ## Explanation
-The chunk declares a block definition containing tags (choppable, wood, branch), an onUpdate callback specifying decay type, blockHealth set to 4, five texture references for different break stages, and an item object defining material stats including durability of 28, massDamage of 1.35, hardnessDamage of 0.65, swingSpeed of 4.3, a roughness value of 0.7, a palette of five color hex values, one modifier with id durable and strength 0.45, the item texture path, and decayProhibitor set to true.
+This chunk defines a configuration for the willow branch block in the Cubyz voxel engine. It specifies tags like 'choppable', 'wood', and 'branch'. The block has an onUpdate behavior of type 'decay' with a health value of 4. Multiple textures are assigned to different orientations of the branch. The item properties include material attributes such as durability, mass damage, hardness damage, swing speed, texture roughness, colors, and modifiers. The decayProhibitor flag is set to true, indicating that this block can prevent nearby blocks from decaying.
 
 ## Related Questions
-- What tags are assigned to the Willow branch block?
-- How does the onUpdate callback affect this block's behavior?
-- What is the health value of the Willow branch block?
-- Which textures correspond to different break stages for the Willow branch?
-- What durability and damage values define the item dropped by the Willow branch?
-- Is decay prohibited on the Willow branch block, and what does that imply?
-- How many color entries are included in the material palette?
-- What modifier is applied to the Willow branch item and with what strength?
+- What are the tags assigned to the willow branch block?
+- How many textures are defined for the willow branch block?
+- What is the durability of the willow branch item?
+- Does the willow branch block have a decay behavior?
+- What is the swing speed of the willow branch item?
+- Is the willow branch block capable of preventing nearby blocks from decaying?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_branch_willow.zig.zon_chunk_0*

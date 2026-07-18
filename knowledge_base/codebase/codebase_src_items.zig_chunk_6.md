@@ -1,35 +1,29 @@
 # [hard/codebase_src_items.zig] - Chunk 6
 
-**Type:** serialization
-**Keywords:** binary serialization, inventory handling, texture generation, property evaluation, item retrieval
-**Symbols:** initFromCraftingGrid, initFromInventory, initFromZon, extractItemsFromZon, save, fromBytes, toBytes, hashCode, getItemAt, getProperty, setProperty, getTexture, getTooltip
-**Concepts:** item initialization, serialization, property management
+**Type:** gameplay
+**Keywords:** ProceduralItem, crafting grid, durability, seed, type, material grid, properties, texture, tooltip, modifiers, tags, initialization, cloning, saving, loading
+**Symbols:** ProceduralItem, init, clone, save, fromBytes, toBytes, hashCode, getItemAt, getProperty, setProperty, getTexture, getTooltip, hasTag, isEffectiveOn, getBlockDamage, onUseReturnBroken, canPutIntoWorkbenchCallback
+**Concepts:** Procedural generation, Item management, Serialization, Deserialization, Property handling, Game mechanics
 
 ## Summary
-Handles procedural item initialization, serialization, and property management.
+Defines the ProceduralItem struct and its methods for initialization, cloning, saving, loading, property management, and interaction with other game components.
 
 ## Explanation
-This chunk defines methods for initializing procedural items from different sources such as crafting grids, inventories, and serialized data. It includes functions to save and load procedural items in both Zon and binary formats. The code also manages properties of procedural items, ensuring they are correctly evaluated and updated. Additionally, it provides utility functions for accessing item details and generating textures.
+The ProceduralItem struct represents a procedurally generated item in the game. It includes various fields such as crafting grid, durability, seed, type, material grid, properties, texture, tooltip, modifiers, and tags. The struct provides methods for initializing items from different sources (crafting grid, inventory, Zon file), cloning items, saving and loading items to/from binary format, managing item properties, retrieving textures and tooltips, checking tags and effectiveness on blocks, calculating block damage, handling durability, and determining if an item can be placed in a workbench.
 
 ## Code Example
 ```zig
-fn hashCode(self: ProceduralItem) u32 {
-    var hash: u32 = 0;
-    for (self.craftingGrid) |nullItem| {
-        if (nullItem) |item| {
-            hash = 33*%hash +% item.material().?.hashCode();
-        }
-    }
-    return hash;
-}
+pub fn getProperty(self: *ProceduralItem, prop: ProceduralItemProperty) f32 {
+		return self.properties[@intFromEnum(prop)];
+	}
 ```
 
 ## Related Questions
-- How is a procedural item initialized from a crafting grid?
-- What methods are available for serializing and deserializing procedural items?
-- How does the code handle properties of procedural items?
-- What steps are involved in generating textures for procedural items?
-- How are procedural items retrieved from an inventory?
-- What is the process for saving procedural item data to a Zon file?
+- How does ProceduralItem handle durability changes?
+- What methods are available for managing item properties in ProceduralItem?
+- Can you explain how ProceduralItem initializes from a Zon file?
+- How does ProceduralItem generate its texture and tooltip?
+- What is the purpose of the `canPutIntoWorkbenchCallback` method in ProceduralItem?
+- How does ProceduralItem handle block damage calculations?
 
 *Source: unknown | chunk_id: codebase_src_items.zig_chunk_6*

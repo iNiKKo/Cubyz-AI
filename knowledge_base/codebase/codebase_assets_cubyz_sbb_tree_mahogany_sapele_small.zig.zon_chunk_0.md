@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_tree_mahogany_sapele_small.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprint, tree, configuration, ID, namespace
+**Keywords:** blueprint, tree variant, configuration, ID management, asset definition
 **Concepts:** world generation
 
 ## Summary
 Defines blueprints for small mahogany and sapele trees.
 
 ## Explanation
-This chunk contains a configuration structure defining multiple blueprints for small mahogany and sapele trees. Each blueprint is identified by a unique string ID within the Cubyz namespace.
+This chunk contains a configuration structure defining multiple blueprints, each with an unique ID. These IDs are used to identify different variants of small mahogany and sapele trees within the Cubyz voxel engine. The blueprints are stored in an array under the `.blueprints` key.
 
 ## Related Questions
 - What are the IDs of the small mahogany and sapele tree blueprints?
-- How many different small mahogany and sapele tree blueprints are defined in this chunk?
-- Is there any executable logic in this configuration file?
-- What is the namespace used for these tree blueprint IDs?
-- Are there any other types of resources or entities defined in this chunk besides trees?
-- How might these blueprints be utilized within the Cubyz engine?
+- How many different variants of small mahogany and sapele trees are defined in this chunk?
+- Where is the configuration data for these tree blueprints stored within the Cubyz engine?
+- Are there any specific functions or methods associated with managing these tree blueprints in the Cubyz codebase?
+- What is the purpose of using unique IDs for each tree variant in the Cubyz engine?
+- How might these tree blueprints be utilized during world generation in the Cubyz voxel engine?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_tree_mahogany_sapele_small.zig.zon_chunk_0*

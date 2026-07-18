@@ -1,42 +1,31 @@
 # [hard/codebase_src_zon.zig] - Chunk 4
 
 **Type:** serialization
-**Keywords:** integer parsing, floating-point parsing, string parsing, array parsing, escape sequences
-**Symbols:** sign, intPart, floatPart, currentFactor, exponent, exponentSign, builder, list
-**Concepts:** data parsing, zon format
+**Keywords:** string conversion, recursive parsing, visual formatting, networking prefix, whitespace handling
+**Symbols:** recurseToString, toString, toStringEfficient, parseFromString
+**Concepts:** serialization, deserialization, Zon elements
 
 ## Summary
-Parses various data types from character arrays in a Zon format.
+Handles serialization and deserialization of Zon elements to/from strings.
 
 ## Explanation
-This chunk contains functions for parsing integers, floating-point numbers, strings, identifiers, and arrays from character arrays. It handles different numeric formats (decimal, hexadecimal), string literals with escape sequences, and nested array structures. The `parseElement` function is not shown but is assumed to call these specific parsers based on the current character context.
+This chunk provides functions for converting Zon elements into string representations and parsing strings back into Zon elements. The `toString` function converts a Zon element into a human-readable string with visual characters like spaces, tabs, and newlines. The `toStringEfficient` function is similar but omits these visual characters and allows adding a custom prefix, which can be useful for networking purposes. The `parseFromString` function parses a string back into a Zon element, handling whitespace and comments during the parsing process.
 
 ## Code Example
 ```zig
-fn parseArray(allocator: NeverFailingAllocator, filePath: ?[]const u8, chars: []const u8, index: *u32) ZonElement {
-		const list = allocator.create(ListManaged(ZonElement));
-		list.* = .init(allocator);
-		while (index.* < chars.len) {
-			skipWhitespaceAndComments(chars, index);
-			if (index.* >= chars.len) break;
-			if (chars[index.*] == '}') {
-				index.* += 1;
-				return .{.array = list};
-			}
-			list.append(parseElement(allocator, filePath, chars, index));
-			skipWhitespaceAndComments(chars, index);
-			if (index.* < chars.len and chars[index.*] == ',') {
-				index.* += 1;
-			}
-		}
+pub fn toString(zon: ZonElement, allocator: NeverFailingAllocator) []const u8 {
+	var string: ListManaged(u8) = .init(allocator);
+	recurseToString(zon, &string, 0, true);
+	return string.toOwnedSlice();
+}
 ```
 
 ## Related Questions
-- How does the function handle negative integers?
-- What is the process for parsing a hexadecimal integer?
-- How are escape sequences handled in string literals?
-- What happens if an unexpected character is encountered while parsing a float?
-- How does the code skip whitespace and comments before parsing an element?
-- What data structure is used to store parsed array elements?
+- How does the `toString` function convert a Zon element to a string?
+- What is the purpose of the `toStringEfficient` function?
+- How does the `parseFromString` function handle whitespace and comments?
+- What does the `recurseToString` function do in this chunk?
+- Can you explain the role of the `visualCharacters` parameter in the serialization functions?
+- How is memory managed during the string conversion process?
 
 *Source: unknown | chunk_id: codebase_src_zon.zig_chunk_4*

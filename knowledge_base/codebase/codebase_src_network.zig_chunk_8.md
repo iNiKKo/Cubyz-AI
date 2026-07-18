@@ -1,29 +1,36 @@
 # [hard/codebase_src_network.zig] - Chunk 8
 
 **Type:** networking
-**Keywords:** network buffer, data transmission, secure channel, priority queue, circular buffer, sequence index, retransmission timeout
-**Symbols:** ReceiveBuffer, ReceiveStatus, SendBuffer, Range, unconfirmedRanges, lostRanges, buffer, fullyConfirmedIndex, highestSentIndex, nextIndex, lastUnsentTime, init, deinit, insertMessage, insertMessageSecure, ReceiveConfirmationResult, receiveConfirmationAndGetTimestamp, checkForLosses
-**Concepts:** networking, buffer management, secure transmission, loss detection
+**Keywords:** sequence index, message insertion, secure transmission, acknowledgment processing, packet retrieval, memory allocation
+**Symbols:** SendBuffer, SendBuffer.fullyConfirmedIndex, SendBuffer.highestSentIndex, SendBuffer.nextIndex, SendBuffer.lastUnsentTime, SendBuffer.init, SendBuffer.deinit, SendBuffer.insertMessage, SendBuffer.insertMessageSecure, ReceiveConfirmationResult, SendBuffer.receiveConfirmationAndGetTimestamp, SendBuffer.checkForLosses, SendBuffer.getNextPacketToSend
+**Concepts:** networking, packet management, loss detection, retransmission, buffer handling
 
 ## Summary
-Handles network buffer operations for sending and receiving data, including secure transmission and loss detection.
+The SendBuffer struct manages the sending and confirmation of network packets, handling message insertion, loss detection, and packet retrieval for transmission.
 
 ## Explanation
-This chunk defines two main structures: `ReceiveBuffer` and `SendBuffer`. The `ReceiveBuffer` manages incoming data, ensuring it is processed securely and efficiently. It includes methods to receive data (`receive` and `receiveSecure`) and handle buffer capacity management. The `SendBuffer` manages outgoing data, including message insertion (`insertMessage` and `insertMessageSecure`), confirmation handling (`receiveConfirmationAndGetTimestamp`), and loss detection (`checkForLosses`). Both structures use Zig's standard library for managing buffers and queues, ensuring efficient memory usage and performance.
+The SendBuffer struct is responsible for managing the sending and confirmation of network packets. It maintains several fields including fullyConfirmedIndex, highestSentIndex, nextIndex, and lastUnsentTime to track the state of sent packets. The init function initializes these fields and allocates memory for internal buffers. The deinit function frees allocated resources. The insertMessage and insertMessageSecure methods add messages to the buffer, with the latter also handling secure transmission through a TLS channel. The receiveConfirmationAndGetTimestamp method processes acknowledgments from the network, updating internal state based on received confirmations. The checkForLosses method detects packet loss and marks packets for retransmission if necessary. The getNextPacketToSend method retrieves the next packet to send, either resending lost packets or sending new ones based on buffer availability and allowed delay.
 
 ## Code Example
 ```zig
-pub fn receive(self: *ReceiveBuffer, conn: *Connection, start: SequenceIndex, data: []const u8) !ReceiveStatus {
-	return self.receiveSecure(null, conn, start, data);
+pub fn init(index: SequenceIndex) SendBuffer {
+	return .{
+		.lostRanges = .init(main.globalAllocator, 1 << 10),
+		.buffer = .init(main.globalAllocator, 1 << 20),
+		.fullyConfirmedIndex = index,
+		.highestSentIndex = index,
+		.nextIndex = index,
+		.lastUnsentTime = networkTimestamp(),
+	};
 }
 ```
 
 ## Related Questions
-- What is the purpose of the `receive` method in the `ReceiveBuffer` struct?
-- How does the `SendBuffer` handle message insertion with secure transmission?
-- What is the role of the `unconfirmedRanges` priority queue in the `SendBuffer`?
-- How does the `checkForLosses` method in the `SendBuffer` detect packet losses?
-- What is the function of the `ReceiveConfirmationResult` struct in the `SendBuffer`?
-- How does the `ReceiveBuffer` manage buffer capacity to prevent overflow?
+- What is the purpose of the init function in SendBuffer?
+- How does SendBuffer handle secure message transmission?
+- What information does receiveConfirmationAndGetTimestamp update?
+- How does checkForLosses detect packet loss?
+- What conditions determine when a new packet is sent in getNextPacketToSend?
+- How does SendBuffer manage memory allocation and deallocation?
 
 *Source: unknown | chunk_id: codebase_src_network.zig_chunk_8*

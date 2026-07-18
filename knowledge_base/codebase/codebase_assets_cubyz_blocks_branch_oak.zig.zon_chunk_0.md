@@ -1,22 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_branch_oak.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** tags, onUpdate, blockHealth, texture paths, durability, massDamage, hardnessDamage, swingSpeed, decayProhibitor
-**Symbols:** tags, onUpdate, blockHealth, texture0, texture1, texture2, texture3, texture4, texture5, item, material, durability, massDamage, hardnessDamage, swingSpeed, textureRoughness, colors, modifiers, decayProhibitor
-**Concepts:** block asset configuration, decay behavior, item drop definition, material properties, modifier system
+**Keywords:** block definition, texture mapping, item attributes, decay behavior, choppable tag
+**Concepts:** block configuration, item properties
 
 ## Summary
-Defines the oak branch block asset with decay behavior and associated item drop properties.
+Defines properties for an oak branch block in the Cubyz voxel engine.
 
 ## Explanation
-This chunk declares a single configuration object for an oak branch block. It sets tags to choppable, wood, and branch; onUpdate type to decay; blockHealth to 4; provides six texture paths (dot, half_line, line, bend, intersection, cross); defines an item drop with material properties including durability of 36, massDamage of 1.25, hardnessDamage of 0.70, swingSpeed of 4.3, textureRoughness of 0.7, and a palette of five color values; includes one modifier named durable with strength 0.45; sets decayProhibitor to true.
+This chunk configures various attributes of an oak branch block, including its tags (choppable, wood, branch), health, textures, item properties such as durability and texture roughness, and decay behavior. The block is marked as a decay prohibitor, indicating it does not decay over time.
 
 ## Related Questions
-- What tags are assigned to the oak branch block?
-- How does the onUpdate field affect the oak branch block behavior?
-- What is the health value of the oak branch block?
-- Which texture paths are defined for the oak branch block?
-- What durability and damage values are set on the item drop from the oak branch block?
-- Is decay prohibited for the oak branch block by default?
+- What are the tags associated with the oak branch block?
+- How much health does the oak branch block have?
+- Which textures are used for different orientations of the oak branch block?
+- What is the durability of the item form of the oak branch block?
+- Is the oak branch block marked as a decay prohibitor?
+- What is the swing speed of the item form of the oak branch block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_branch_oak.zig.zon_chunk_0*

@@ -1,26 +1,22 @@
 # [src/main.zig] - PR #273 review diff
 
 **Type:** review
-**Keywords:** escape key, pause menu, inventory, Terraria, HUD, user experience
-**Symbols:** escape, Window.setMouseGrabbed, gui.openWindow, pause_menu
-**Concepts:** user interface design, keyboard input handling, game state management
+**Keywords:** escape key, pause menu, inventory, creative menu, Terraria, gear icon, HUD, title bar, mouse grab, user confusion
+**Symbols:** setNextKeypressListener, escape, Window.setMouseGrabbed, gui.openWindow, pause_menu
+**Concepts:** user interface design, keyboard shortcuts, game state management, user experience
 
 ## Summary
-The change introduces a new behavior for the escape key by opening the pause menu, which can be intrusive and confusing due to its multiple functionalities.
+The change introduces a new functionality where pressing the escape key opens the pause menu, which can be intrusive and confusing due to its multiple uses in different contexts.
 
 ## Explanation
-The reviewer points out that the current implementation of the escape key functionality is problematic because it opens the pause menu in various scenarios where users might expect different behaviors. For instance, pressing 'Escape' after opening the inventory should return to the game or inventory, not open the pause menu. The reviewer suggests adopting a more nuanced approach similar to Terraria, where pressing 'Escape' toggles between the game and the inventory, and a separate gear icon in the HUD opens the pause menu. This change aims to prevent user confusion and improve the overall user experience by clearly separating different GUI functionalities.
+The reviewer points out that the escape key has multiple functionalities beyond just opening the pause menu. It is also used to toggle between the game and inventory, and even the creative menu. The current implementation of opening the pause menu on pressing escape can lead to user confusion, as they might not intend to open the pause menu but instead return to a previously opened window like the inventory. The reviewer suggests adopting an approach similar to Terraria, where pressing escape opens the inventory or other GUIs, and a separate gear icon in the bottom right corner is used to access the pause menu. This change aims to prevent user confusion and improve the overall user experience by clearly separating different functionalities.
 
 ## Related Questions
-- What is the current behavior of the escape key in the game?
-- How does the new implementation differ from the old one?
-- Why was the decision made to change the escape key functionality?
-- What are the potential user experience improvements with this change?
-- How does the new pause menu window interact with other GUI elements?
-- What is the significance of setting `.isHud = true` for the gear icon window?
-- How does the `hideIfMouseIsGrabbed` option affect the visibility of the gear icon?
-- What are the implications of this change on existing game mechanics?
-- How can we ensure that this new implementation does not introduce any regressions?
-- What additional testing is required to validate this change?
+- What is the purpose of the `escape` function in the code?
+- How does the current implementation handle multiple functionalities of the escape key?
+- Why is the reviewer concerned about user confusion with the new pause menu functionality?
+- What alternative approach does the reviewer suggest for handling the escape key?
+- How does the suggested approach improve user experience?
+- What are the benefits and potential drawbacks of using a gear icon to access the pause menu?
 
 *Source: unknown | chunk_id: github_pr_273_comment_1503963762*

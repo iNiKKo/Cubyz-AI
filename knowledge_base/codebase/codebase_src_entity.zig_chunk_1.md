@@ -1,32 +1,35 @@
 # [medium/codebase_src_entity.zig] - Chunk 1
 
 **Type:** api
-**Keywords:** entity management, component lifecycle, network transmission, serialization, deserialization
-**Symbols:** client, server, clear, removeAllComponents, render, renderHud, init, deinit, update, componentsToBase64, transmitChange, loadComponentsFromBase64, AudienceInfo, ComponentSaveBehaviour
+**Keywords:** entity management, component handling, serialization, network transmission, rendering
+**Symbols:** client, client.init, client.deinit, client.clear, client.removeAllComponents, client.render, client.renderHud, server, server.init, server.deinit, server.update, server.componentsToBase64, server.removeAllComponents, server.transmitChange, loadComponentsFromBase64, AudienceInfo, ComponentSaveBehaviour
 **Concepts:** entity ECS, networking protocol, binary serialization
 
 ## Summary
-This chunk defines client and server entity management functions, including clearing entities, rendering, initializing, deinitializing systems and components, converting components to Base64, removing components, transmitting changes over the network, and loading components from Base64.
+This chunk defines client and server logic for entity management, including initialization, deinitialization, clearing, rendering, and component handling.
 
 ## Explanation
-The chunk contains two main sections: one for client-side operations and another for server-side operations. The client section includes functions like `clear`, which resets entity managers and components; `removeAllComponents`, which unloads all components of an entity; and `render` and `renderHud`, which update and render entities and their HUDs respectively. The server section manages initialization (`init`) and deinitialization (`deinit`) of systems and components, updates systems, converts components to Base64 for transmission, removes components from an entity, and transmits changes in entity components over the network using a binary protocol. Additionally, there are utility functions like `loadComponentsFromBase64` for decoding Base64 data into components and enums defining audience information and component save behavior.
+The chunk contains two main structs: `client` and `server`, each with methods for initializing, deinitializing, updating, and managing entities and their components. The client struct handles rendering and HUD updates, while the server struct manages component serialization to Base64, transmitting changes over the network, and loading components from Base64 data. It also defines enums for audience information and component save behavior.
 
 ## Code Example
 ```zig
-pub fn removeAllComponents(entity: Entity) void {
-		const list = main.entity.components;
-		inline for (@typeInfo(list).@"struct".decls) |decl| {
-			@field(list, decl.name).client.unload(entity);
+pub fn clear() void {
+		main.client.entity_manager.clear();
+		inline for (@typeInfo(components).@"struct".decls) |decl| {
+			@field(components, decl.name).client.clear();
+		}
+		inline for (@typeInfo(systems).@"struct".decls) |decl| {
+			@field(systems, decl.name).client.clear();
 		}
 	}
 ```
 
 ## Related Questions
-- How does the client clear entities and components?
-- What is the purpose of the `renderHud` function in the client section?
-- How are systems initialized on the server side?
-- How do components get converted to Base64 for transmission?
-- What happens when a component needs to be transmitted over the network?
-- How are components loaded from Base64 data?
+- How does the client initialize its entity manager and components?
+- What methods are available in the server struct for managing entities?
+- How is component data serialized to Base64 on the server side?
+- What happens when an entity's components are removed on the server?
+- How does the client handle rendering and HUD updates?
+- What error handling is implemented when loading components from Base64?
 
 *Source: unknown | chunk_id: codebase_src_entity.zig_chunk_1*

@@ -1,29 +1,22 @@
 # [hard/codebase_src_physics.zig] - Chunk 0
 
-**Type:** implementation
-**Keywords:** bounding box, collision checking, physical properties, surface interaction, vector calculations
-**Symbols:** baseGravity, playerAirTerminalVelocity, airDensity, playerDensity, epsilon, collision, collision.Box, collision.Box.min, collision.Box.max, collision.Box.center, collision.Box.extent, collision.Box.intersects, collision.Direction, collision.collideWithBlock, collision.collides, collision.SurfaceProperties, collision.calculateSurfaceProperties
-**Concepts:** collision detection, physics constants, entity interactions, block collisions
+**Type:** configuration
+**Keywords:** constants, imports, gravity, terminal velocity, density
+**Symbols:** baseGravity, playerAirTerminalVelocity, airDensity, playerDensity, epsilon
+**Concepts:** physics simulation, physical constants
 
 ## Summary
-Defines physics constants and collision detection logic for entities in the Cubyz engine.
+Defines constants and imports for physics calculations in the Cubyz engine.
 
 ## Explanation
-This chunk defines various physical constants such as gravity, terminal velocity, and densities. It includes a struct `collision` that handles collision detection between entities and blocks. The `Box` struct within `collision` represents a bounding box with methods to calculate its center, extent, and intersection with other boxes. The `collideWithBlock` function checks for collisions between an entity's bounding box and a block's collision model. The `collides` function determines if an entity collides with blocks in a given direction. Additionally, the `calculateSurfaceProperties` function calculates friction and bounciness properties based on surface interactions.
-
-## Code Example
-```zig
-pub fn center(self: Box) Vec3d {
-	return (self.min + self.max)*@as(Vec3d, @splat(0.5));
-}
-```
+This chunk primarily defines physical constants such as gravity, terminal velocity, air density, and player density. It also imports various modules necessary for handling vectors, items, settings, players, and camera functionalities. The constants are used to simulate realistic physics behavior within the game environment.
 
 ## Related Questions
-- What is the base gravity value defined in this chunk?
-- How does the `Box` struct calculate its center?
-- What function checks for collisions between an entity and a block?
-- How is the direction vector determined in the `collides` function?
-- What properties are calculated by the `calculateSurfaceProperties` function?
-- How is the intersection of two bounding boxes checked?
+- What is the value of baseGravity?
+- Which modules are imported in this chunk?
+- What does playerAirTerminalVelocity represent?
+- How is epsilon calculated?
+- What physical constants are defined in this chunk?
+- Which vector types are imported from vec.zig?
 
 *Source: unknown | chunk_id: codebase_src_physics.zig_chunk_0*

@@ -1,22 +1,22 @@
 # [src/blocks.zig] - PR #2990 review diff
 
 **Type:** review
-**Keywords:** Replaceability, enum, block placement, future proofing, flexibility, refactoring, rotation.RotationMode.CanBeChangedInto
-**Symbols:** Replaceability, enum
-**Concepts:** future-proofing, flexibility, refactoring
+**Keywords:** Replaceability, enum, union, block placement, drop behavior, rotation.RotationMode.CanBeChangedInto
+**Symbols:** Replaceability, enum, union
+**Concepts:** future-proofing, refactoring, architectural consistency
 
 ## Summary
-Added a new `Replaceability` enum to define how blocks behave when placed in the same position.
+The `Replaceability` enum in `blocks.zig` has been expanded with new values to handle different behaviors when placing blocks in the same position.
 
 ## Explanation
-The change introduces a new `Replaceability` enum within the `blocks.zig` file to specify different behaviors for block placement. The reviewer points out that this approach may not be future-proof, as it limits flexibility (e.g., adding support for different drop items would require a major refactor). The reviewer also notes a similar pattern exists in `rotation.RotationMode.CanBeChangedInto`, suggesting consistency or potential refactoring opportunities.
+The reviewer points out that the current implementation of the `Replaceability` enum is not future-proof, as it does not allow for flexibility in handling different drop items when a block is broken. The reviewer suggests using a union instead of an enum to accommodate this requirement, which would necessitate a major refactor. Additionally, the reviewer notes that a similar pattern has already been established in `rotation.RotationMode.CanBeChangedInto`, indicating consistency with existing architectural practices.
 
 ## Related Questions
-- What are the potential future use cases for the `Replaceability` enum?
-- How does adding a union instead of an enum affect memory usage and performance?
-- Is there a way to make the `Replaceability` enum more extensible without a major refactor?
-- Can you provide examples of how the `rotation.RotationMode.CanBeChangedInto` pattern is used in other parts of the codebase?
-- What are the implications of changing the `Replaceability` enum to a union for existing block behaviors?
-- How can we ensure backward compatibility when refactoring the `Replaceability` enum?
+- What are the potential impacts of changing `Replaceability` from an enum to a union?
+- How does the existing pattern in `rotation.RotationMode.CanBeChangedInto` relate to the proposed changes in `blocks.zig`?
+- What other future-proofing considerations should be taken into account for block behaviors?
+- How can we ensure that the refactoring of `Replaceability` does not introduce regressions?
+- What are the performance implications of using a union instead of an enum in this context?
+- How can we maintain architectural consistency while implementing these changes?
 
 *Source: unknown | chunk_id: github_pr_2990_comment_3168984030*

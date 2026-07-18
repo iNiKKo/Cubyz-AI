@@ -1,24 +1,28 @@
 # [easy/codebase_assets_cubyz_blocks_branch_leafy_baobab.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** decay, drops, cuttable, texture, lodReplacement, opaqueVariant, branch, leaves
-**Symbols:** onUpdate, drops, texture, texture6, texture7, texture8, texture9, texture10, lodReplacement, opaqueVariant
-**Concepts:** block configuration, decay mechanics, item drops, tool restrictions, texture mapping
+**Keywords:** block config, leafy baobab, drop items, textures, lod replacement, opaque variant
+**Symbols:** LeafyBaobabBlock
+**Concepts:** block, configuration, drop items, textures, LOD replacement, opaque variant
 
 ## Summary
-Defines the leafy baobab block configuration including decay behavior, drop items, and texture mappings.
+Leafy Baobab block configuration
 
 ## Explanation
-This chunk declares a single block definition with an onUpdate hook set to .decay that drops cubyz:branch/baobab. The drops field contains two entries: one dropping only cubyz:branch/baobab, and another dropping both cubyz:branch/baobab and cubyz:leaves/baobab while restricting the latter to tools tagged as cuttable. Texture fields map six variants (texture through texture10) to specific baobab branch textures including dot, half_line, line, bend, intersection, and cross. The lodReplacement and opaqueVariant both reference cubyz:leaves/opaque/baobab.
+This chunk defines the Leafy Baobab block's properties, including its update behavior, drop items, textures, LOD replacement, and opaque variant.
 
 ## Related Questions
-- What items are dropped when the leafy baobab block decays?
-- Which texture is assigned to the main face of the leafy baobab block?
-- How does the drop configuration differentiate between branch and leaves?
-- What tool tag restricts picking up the leaves variant?
-- Where are the LOD replacement and opaque variant textures defined for this block?
-- List all texture variants referenced in the leafy baobab block definition
-- Does the decay onUpdate hook drop any items other than cubyz:branch/baobab?
-- What is the purpose of the texture6 field in this block configuration?
+- What is the block's update behavior?
+- Which items does the block drop when broken?
+- What are the textures associated with the Leafy Baobab block?
+- How does the block replace itself at lower LOD levels?
+- What is the opaque variant of the Leafy Baobab block?
+- What tool tags are allowed for cutting the Leafy Baobab block?
+- What is the texture used for the branch part of the Leafy Baobab block?
+- What is the texture used for the half-line part of the Leafy Baobab block?
+- What is the texture used for the line part of the Leafy Baobab block?
+- What is the texture used for the bend part of the Leafy Baobab block?
+- What is the texture used for the intersection part of the Leafy Baobab block?
+- What is the texture used for the cross part of the Leafy Baobab block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_branch_leafy_baobab.zig.zon_chunk_0*

@@ -1,15 +1,15 @@
 # [medium/codebase_src_items_recipes.zig] - Chunk 1
 
 **Type:** api
-**Keywords:** recipe generation, pattern matching, Zon elements, item combinations, reversible recipes
-**Symbols:** ItemWithAmount, ItemKeyPair, findRecipeItemOptions, generateItemCombos, addRecipe, parseRecipe
-**Concepts:** item recipes, pattern matching, Zon parsing
+**Keywords:** NeverFailingAllocator, StringHashMap, ListManaged, ZonElement, ItemKeyPair, ItemWithAmount, Recipe
+**Symbols:** findRecipeItemOptions, generateItemCombos, addRecipe, parseRecipe
+**Concepts:** item recipes, pattern matching, recipe generation
 
 ## Summary
-Handles item recipes and their parsing from Zon elements.
+Handles item recipe parsing and generation.
 
 ## Explanation
-This chunk defines structures for items with amounts and key pairs. It includes functions to find recipe item options, generate item combinations from a recipe, add recipes to a list, and parse recipes from Zon elements. The `findRecipeItemOptions` function matches patterns and keys to find suitable items. `generateItemCombos` creates all possible combinations of input items for a given recipe. `addRecipe` constructs a Recipe struct and appends it to a list. `parseRecipe` parses a Zon element into recipes, handling reversible recipes if specified. Tests are provided for pattern parsing and matching.
+This chunk contains functions for finding recipe item options, generating item combinations from a recipe, adding recipes to a list, and parsing recipes from Zon elements. It also includes tests for pattern parsing and matching. The primary data structures used are `ItemKeyPair`, `ItemWithAmount`, and `Recipe`. Functions like `findRecipeItemOptions` handle specific logic for finding items that match given patterns, while `generateItemCombos` creates all possible combinations of input items based on a recipe. The `addRecipe` function adds a parsed recipe to a list, and `parseRecipe` processes Zon elements to define recipes, including handling reversible recipes.
 
 ## Code Example
 ```zig
@@ -31,11 +31,11 @@ fn addRecipe(itemCombo: []const ItemWithAmount, list: *main.ListManaged(Recipe))
 ```
 
 ## Related Questions
-- How do you find recipe item options?
-- What does the generateItemCombos function do?
-- How are recipes added to a list?
-- How is a Zon element parsed into recipes?
-- What error can occur during pattern parsing?
-- How is pattern matching with keys handled?
+- How does the `findRecipeItemOptions` function work?
+- What is the purpose of the `generateItemCombos` function?
+- How are recipes added to a list in this module?
+- What error handling is implemented for parsing recipes?
+- Can you explain how pattern matching works in this chunk?
+- What data structures are used to store item combinations and recipes?
 
 *Source: unknown | chunk_id: codebase_src_items_recipes.zig_chunk_1*

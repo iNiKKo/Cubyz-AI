@@ -1,39 +1,34 @@
 # [hard/codebase_src_utils.zig] - Chunk 11
 
-**Type:** implementation
-**Keywords:** mutex locking, atomic operations, hashing, LRU, set associative
-**Symbols:** Cache, Bucket, Bucket.mutex, Bucket.items, Bucket.find, Bucket.add, Bucket.findOrCreate, Bucket.clear, Bucket.foreach
-**Concepts:** cache, LRU eviction, set-associative hashing, thread safety
+**Type:** algorithm
+**Keywords:** interpolation, splines, time travel detection, velocity update, position update
+**Symbols:** GenericInterpolation, GenericInterpolation.init, GenericInterpolation.updatePosition, GenericInterpolation.evaluateSplineAt, GenericInterpolation.interpolateCoordinate, GenericInterpolation.determineNextDataPoint, GenericInterpolation.update, GenericInterpolation.updateIndexed
+**Concepts:** interpolation, cubic Hermite splines, motion updates
 
 ## Summary
-Implements a simple set associative cache with LRU replacement strategy.
+The chunk defines a generic interpolation system for smooth motion updates.
 
 ## Explanation
-This chunk defines a generic cache implementation using set-associative hashing and Least Recently Used (LRU) eviction policy. The `Cache` function template creates a type that manages a fixed number of buckets, each containing a fixed number of items. Each bucket is protected by a mutex to ensure thread safety during operations like finding or adding items. The cache supports operations such as finding an item, adding an item, clearing the cache, and iterating over all items. It also tracks cache requests and misses using atomic counters.
+This chunk implements a generic interpolation system that can handle motion updates for any number of elements. It uses cubic Hermite splines to interpolate positions and velocities smoothly over time. The `GenericInterpolation` function is a parameterized type that takes the number of elements as a compile-time constant. The struct returned by this function contains arrays to store past positions, velocities, and times, as well as pointers to the current output position and velocity. Methods include initialization (`init`), updating positions (`updatePosition`), evaluating splines (`evaluateSplineAt`), interpolating individual coordinates (`interpolateCoordinate`), determining the next data point (`determineNextDataPoint`), and updating the system with new time (`update`). The `updateIndexed` method allows for more complex updates based on an array of indices. Error handling includes a warning for detected time travel.
 
 ## Code Example
 ```zig
-fn find(self: *@This(), compare: anytype) ?*T {
-	self.mutex.assertLocked();
-	for (self.items, 0..) |item, i| {
-		if (compare.equals(item)) {
-			if (i != 0) {
-				std.mem.copyBackwards(?*T, self.items[1..], self.items[0..i]);
-				self.items[0] = item;
-			}
-			return item;
-		}
-	}
-	return null;
+pub fn init(self: *@This(), initialPosition: *[elements]f64, initialVelocity: *[elements]f64) void {
+	self.outPos = initialPosition;
+	self.outVel = initialVelocity;
+	@memset(&self.lastPos, self.outPos.*);
+	@memset(&self.lastVel, self.outVel.*);
+	self.frontIndex = 0;
+	self.currentPoint = null;
 }
 ```
 
 ## Related Questions
-- How does the cache handle collisions?
-- What is the purpose of the `mutex` in each bucket?
-- How are cache requests and misses tracked?
-- What happens when an item is added to a full bucket?
-- How does the cache ensure thread safety during operations?
-- What function is used to initialize new items in the cache?
+- What is the purpose of the `GenericInterpolation` function?
+- How does the `init` method initialize the interpolation system?
+- What algorithm is used for position and velocity interpolation?
+- How does the `updatePosition` method work?
+- What happens if time travel is detected during an update?
+- How does the `evaluateSplineAt` function calculate spline values?
 
 *Source: unknown | chunk_id: codebase_src_utils.zig_chunk_11*

@@ -1,28 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_tall_mountain_summit2.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome properties, height range, snow coverage, music selection, structure definition, inheritance
-**Symbols:** TallMountainSummit, properties, tags, minHeight, maxHeight, smoothBeaches, radius, hills, chance, stoneBlock, validPlayerSpawn, music, ground_structure, structures, parentBiomes
-**Concepts:** biome, height, snow, music, structure, inheritance
+**Keywords:** height range, smooth beaches, ground structures, player spawn, music, parent biomes, structures
+**Concepts:** world generation, biome configuration
 
 ## Summary
-Defines a tall mountain summit biome with specific properties and structures.
+Defines properties for a tall mountain summit biome in Cubyz.
 
 ## Explanation
-This chunk defines the Tall Mountain Summit biome, specifying its properties such as height range, snow coverage, music, ground structure, and structures like boulders. It also includes parent biomes for inheritance.
+This chunk defines the configuration for a specific biome in the Cubyz game engine, focusing on its terrain characteristics, climate, and potential structures. The biome is identified as a snowy mountain summit with a defined height range, smooth beaches, and a specific radius. It includes ground structures composed of snow and permafrost layers. The biome also specifies valid player spawn conditions, music, and parent biomes from which it can inherit properties. Structures like boulders made of snow are randomly placed within the biome.
 
 ## Related Questions
-- What are the minimum and maximum heights of the Tall Mountain Summit biome?
-- Which tags does the Tall Mountain Summit biome have?
-- Is it possible for players to spawn in the Tall Mountain Summit biome?
-- What is the music associated with the Tall Mountain Summit biome?
-- What ground structure is defined for the Tall Mountain Summit biome?
-- How many structures are defined for the Tall Mountain Summit biome, and what are their IDs?
-- Which parent biomes does the Tall Mountain Summit biome inherit from?
-- What is the chance of a boulder structure appearing in the Tall Mountain Summit biome?
-- What block is used for the boulder structure in the Tall Mountain Summit biome?
-- What size range is defined for the boulder structure in the Tall Mountain Summit biome?
-- How much variance is allowed for the size of the boulder structure in the Tall Mountain Summit biome?
-- What is the chance of a permafrost block appearing in the ground structure of the Tall Mountain Summit biome?
+- What is the height range of the tall mountain summit biome?
+- Does this biome allow player spawning?
+- What music is associated with this biome?
+- What are the ground structures present in this biome?
+- What types of structures can randomly appear in this biome?
+- Which parent biomes does this biome inherit from?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_tall_mountain_summit2.zig.zon_chunk_0*

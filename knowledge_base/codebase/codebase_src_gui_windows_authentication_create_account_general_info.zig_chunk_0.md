@@ -1,15 +1,15 @@
 # [easy/codebase_src_gui_windows_authentication_create_account_general_info.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** GUI components, window lifecycle, button state management, time-based logic, label text update
-**Symbols:** window, padding, enableTime, button, next, onOpen, update, onClose
-**Concepts:** GUI window management, user authentication flow, timer-based UI updates
+**Keywords:** GUI, Window, Button, Timer, Disable, Enable, Update
+**Symbols:** window, padding, enableTime, button
+**Concepts:** GUI, Window, Button, Timer
 
 ## Summary
-Handles the logic for a GUI window that prompts users to create an account with information about Account Codes.
+Handles the general information window for creating an account in the GUI.
 
 ## Explanation
-This chunk defines the behavior of a GUI window used in the authentication process. It initializes a vertical list containing labels and a button, sets up the window's content size, and manages the state of the 'Continue' button based on a timer. The `onOpen` function initializes the window components, including labels that provide instructions about Account Codes and a disabled 'Continue' button. The `update` function checks the remaining time and updates the button's text accordingly, enabling it after 8 seconds. The `onClose` function deinitializes the window's root component when the window is closed.
+The chunk defines a GUI window that displays instructions and a button to continue. The button is initially disabled and becomes enabled after 8 seconds, updating its text accordingly. The window updates its size based on its root component's position and size.
 
 ## Code Example
 ```zig
@@ -20,11 +20,17 @@ fn next() void {
 ```
 
 ## Related Questions
-- What is the purpose of the 'next' function in this chunk?
-- How does the 'update' function manage the state of the 'Continue' button?
-- What components are initialized when the window opens?
-- How is the remaining time calculated and displayed on the button?
-- What happens to the window's root component when the window closes?
-- How is the content size of the window determined?
+- What is the purpose of the `window` variable?
+- How does the `enableTime` variable get updated?
+- What is the initial state of the `button`?
+- How long does the button remain disabled before becoming enabled?
+- What function is called when the button is clicked?
+- Where is the text for the button's label updated?
+- What happens if the button becomes enabled after 8 seconds?
+- What is the purpose of the `padding` variable?
+- How is the window size calculated based on its root component?
+- What function is called when the window closes?
+- How does the `window.rootComponent` get deinitialized?
+- What is the initial state of the `button.disabled` property?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_authentication_create_account_general_info.zig_chunk_0*

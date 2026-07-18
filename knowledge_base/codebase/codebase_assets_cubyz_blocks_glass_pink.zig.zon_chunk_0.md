@@ -1,8 +1,8 @@
 # [easy/codebase_assets_cubyz_blocks_glass_pink.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** light absorption, texture mapping, block definition, material properties, color representation
-**Concepts:** block properties
+**Keywords:** block definition, light properties, texture reference, material settings, Cubyz assets
+**Concepts:** block properties, light absorption, texture mapping
 
 ## Summary
 Defines properties for a pink glass block.
@@ -13,9 +13,9 @@ This chunk defines the properties of a pink glass block in Cubyz, including its 
 ## Related Questions
 - What is the light absorption value for the pink glass block?
 - Where is the texture file located for the pink glass block?
-- How does the absorbedLight value affect the block's appearance in-game?
-- Can you provide the hexadecimal color value for the pink glass block's absorbed light?
-- Is there any additional configuration available for the pink glass block beyond its light absorption and texture?
-- What is the purpose of the `texture` field in this block definition?
+- How does the absorbedLight field affect the block's appearance in-game?
+- Is there any additional configuration available for this block type?
+- Can the texture path be changed to a different image?
+- What other properties might be defined for blocks in Cubyz?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_glass_pink.zig.zon_chunk_0*

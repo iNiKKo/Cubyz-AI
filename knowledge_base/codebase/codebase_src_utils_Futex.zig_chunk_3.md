@@ -1,22 +1,41 @@
 # [hard/codebase_src_utils_Futex.zig] - Chunk 3
 
 **Type:** implementation
-**Keywords:** pthread_cond_wait, pthread_mutex_lock, CLOCK_REALTIME, timespec, unreachable, static init, error.Timeout, deinit, state enum
-**Symbols:** Event, Event.cond, Event.mutex, Event.state, Event.init, Event.deinit, Event.wait
-**Concepts:** pthread condition variables, static initialization, mutex locking, timeout handling, state machine
+**Keywords:** atomic operations, inline assembly, WebAssembly atomics, timeout handling, synchronization primitives
+**Symbols:** WasmImpl, WasmImpl.wait, WasmImpl.wake
+**Concepts:** atomic synchronization, WebAssembly, memory wait/wake
 
 ## Summary
-Implements userspace wait queues via pthread condition variables on POSIX and atomic memory operations on WASM.
+Provides atomic wait and wake functionality for WebAssembly targets.
 
 ## Explanation
-The chunk defines two platform-specific implementations: PosixImpl uses a struct Event with a pthread_cond_t, pthread_mutex_t, and an enum state (empty/waiting/notified). The init() method statically initializes the cond and mutex to zero structs and sets state to empty. deinit() destroys both pthread objects, asserting that rc is SUCCESS or INVAL (EINVAL for static init), then clears self.* with undefined. wait() locks the mutex, returns early if already notified, computes an absolute timespec from a relative timeout using CLOCK.REALTIME (catching failure as unreachable), sets state to waiting, and enters a loop calling pthread_cond_wait or pthread_cond_timedwait depending on whether a timeout is provided; after waking it checks state again—if still empty it loops, otherwise returns. The switch on rc handles SUCCESS (continue), TIMEDOUT (reset state to empty and return error.Timeout), INVAL/PERM (unreachable). wake() is not defined in this chunk.
+The chunk defines a `WasmImpl` struct with two methods: `wait` and `wake`. The `wait` method atomically waits on a memory location until its value changes or a timeout occurs, returning an error if the timeout is reached. The `wake` method wakes up a specified number of waiters waiting on a memory location. Both methods check for the presence of atomic CPU features in WebAssembly targets and use inline assembly to perform atomic operations.
+
+## Code Example
+```zig
+fn wake(ptr: *const atomic.Value(u32), max_waiters: u32) void {
+		if (!comptime builtin.cpu.has(.wasm, .atomics)) @compileError("WASI target missing cpu feature 'atomics'");
+
+		assert(max_waiters != 0);
+		const woken_count = asm volatile (
+			\\local.get %[ptr]
+			\\local.get %[waiters]
+			\\memory.atomic.notify 0
+			\\local.set %[ret]
+			: [ret] "=r" (-> u32),
+			: [ptr] "r" (&ptr.raw),
+				[waiters] "r" (max_waiters),
+		);
+		_ = woken_count; // can be 0 when linker flag 'shared-memory' is not enabled
+	}
+```
 
 ## Related Questions
-- What is the purpose of the Event struct in PosixImpl?
-- How does Event.init() initialize pthread condition variables and mutexes?
-- Why does Event.deinit() assert that rc == .SUCCESS or rc == .INVAL?
-- What happens inside Event.wait() when a timeout is provided versus null?
-- How does the code handle the case where pthread_cond_wait returns TIMEDOUT?
-- What state transitions occur for Event.state during wait and wake operations?
+- What methods does the WasmImpl struct provide?
+- How does the wait method handle timeouts?
+- What error is returned if a timeout occurs in the wait method?
+- What does the wake method do?
+- How are atomic operations performed in this code?
+- Why is there an assertion that max_waiters should not be zero?
 
 *Source: unknown | chunk_id: codebase_src_utils_Futex.zig_chunk_3*

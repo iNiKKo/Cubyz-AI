@@ -1,70 +1,31 @@
 # [hard/codebase_src_graphics.zig] - Chunk 6
 
 **Type:** implementation
-**Keywords:** text parsing, glyph shaping, memory allocation, UTF-8 iteration, Harfbuzz buffer
-**Symbols:** TextBuffer, TextBuffer.alignment, TextBuffer.width, TextBuffer.buffer, TextBuffer.glyphs, TextBuffer.lines, TextBuffer.lineBreaks, TextBuffer.init, TextBuffer.deinit, countVisibleCharacters
-**Concepts:** text rendering, glyph management, UTF-8 handling, Harfbuzz integration
+**Keywords:** text alignment, font styling, line management, glyph processing, text parsing
+**Symbols:** TextBuffer, TextBuffer.Alignment, TextBuffer.FontEffect, TextBuffer.Line, TextBuffer.LineBreak, TextBuffer.GlyphData, TextBuffer.alignment, TextBuffer.width, TextBuffer.buffer, TextBuffer.glyphs, TextBuffer.lines, TextBuffer.lineBreaks, TextBuffer.addLine, TextBuffer.initLines, TextBuffer.Parser, TextBuffer.Parser.unicodeIterator, TextBuffer.Parser.currentFontEffect, TextBuffer.Parser.parsedText, TextBuffer.Parser.fontEffects, TextBuffer.Parser.characterIndex, TextBuffer.Parser.showControlCharacters, TextBuffer.Parser.curChar, TextBuffer.Parser.curIndex, TextBuffer.Parser.appendControlGetNext, TextBuffer.Parser.appendGetNext, TextBuffer.Parser.peekNextByte, TextBuffer.Parser.parse
+**Concepts:** text rendering, font effects, line breaks, glyph data
 
 ## Summary
-The `TextBuffer` struct and its associated functions handle text parsing, rendering, and management in the graphics module.
+The TextBuffer struct manages text rendering, including alignment, font effects, and line breaks.
 
 ## Explanation
-The chunk defines a `TextBuffer` struct that manages text data for rendering. It includes methods like `init`, which initializes the buffer by parsing input text, using Harfbuzz for shaping, and allocating glyphs. The `deinit` method frees resources. The `countVisibleCharacters` function counts visible characters in a given text string, handling special formatting characters. The chunk uses UTF-8 iteration, Harfbuzz for glyph shaping, and manages memory allocation and deallocation.
+The TextBuffer struct is designed to handle the complexities of text rendering in a graphics engine. It includes an Alignment enum for text justification, a FontEffect packed struct to manage various text styles like color, bold, italic, underline, and strikethrough. The Line and LineBreak structs define the structure of lines and line breaks within the text buffer. The GlyphData struct holds detailed information about each glyph, including its advance and offset values, character data, and font effects. The TextBuffer itself contains fields for alignment, width, a HarfBuzz buffer pointer, an array of glyphs, lists for managing lines and line breaks, and methods to add lines and initialize lines based on font effects. The Parser struct within TextBuffer is responsible for parsing text input, handling control characters, and applying font effects. It includes methods to append control characters, get next characters, peek at the next byte, and parse the entire text input.
 
 ## Code Example
 ```zig
-pub fn countVisibleCharacters(text: []const u8) usize {
-			var unicodeIterator = std.unicode.Utf8Iterator{.bytes = text, .i = 0};
-			var count: usize = 0;
-			var curChar = unicodeIterator.nextCodepoint() orelse return count;
-			outer: while (true) {
-				switch (curChar) {
-					'*' => {
-						curChar = unicodeIterator.nextCodepoint() orelse break;
-					},
-					'_' => {
-						curChar = unicodeIterator.nextCodepoint() orelse break;
-						if (curChar == '_') {
-							curChar = unicodeIterator.nextCodepoint() orelse break;
-						} else {
-							count += 1;
-						}
-					},
-					'~' => {
-						curChar = unicodeIterator.nextCodepoint() orelse break;
-						if (curChar == '~') {
-							curChar = unicodeIterator.nextCodepoint() orelse break;
-						} else {
-							count += 1;
-						}
-					},
-					'\\' => {
-						curChar = unicodeIterator.nextCodepoint() orelse break;
-						curChar = unicodeIterator.nextCodepoint() orelse break;
-						count += 1;
-					},
-					'#' => {
-						for (0..7) |_| curChar = unicodeIterator.nextCodepoint() orelse break :outer;
-					},
-					'§' => {
-						curChar = unicodeIterator.nextCodepoint() orelse break;
-					},
-					else => {
-						count += 1;
-						curChar = unicodeIterator.nextCodepoint() orelse break;
-					},
-				}
-			}
-			return count;
-		}
+fn addLine(self: *TextBuffer, line: Line) void {
+	if (line.start != line.end) {
+		self.lines.append(line);
+	}
+}
 ```
 
 ## Related Questions
-- What is the purpose of the `TextBuffer` struct?
-- How does the `init` method initialize a `TextBuffer` instance?
-- What function counts visible characters in a text string?
-- How does the chunk handle memory allocation and deallocation?
-- What role does Harfbuzz play in the text rendering process?
-- How are special formatting characters handled during text parsing?
+- What are the possible alignments for text in TextBuffer?
+- How does TextBuffer handle different font effects like bold and italic?
+- What is the structure of a LineBreak in TextBuffer?
+- How does the Parser struct within TextBuffer manage control characters?
+- What method initializes lines based on font effects in TextBuffer?
+- How does TextBuffer determine when to add a new line during rendering?
 
 *Source: unknown | chunk_id: codebase_src_graphics.zig_chunk_6*

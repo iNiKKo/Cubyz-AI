@@ -1,28 +1,28 @@
 # [easy/codebase_assets_cubyz_biomes_tall_mountain_base.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome configuration, terrain generation, procedural structures, block placement rules, sub-biome nesting, degradable structures, spawn restrictions, layered ground blocks
-**Symbols:** properties, tags, minHeight, maxHeight, keepOriginalTerrain, smoothBeaches, radius, mountains, chance, maxSubBiomeCount, stoneBlock, music, validPlayerSpawn, ground_structure, structures, parentBiomes
-**Concepts:** biome configuration, terrain generation, procedural structures, block placement rules, sub-biome nesting, degradable structures, spawn restrictions, layered ground blocks
+**Keywords:** biome properties, structure chance, vegetation types, terrain preservation, beach smoothing
+**Symbols:** TallMountainBase, properties, tags, minHeight, maxHeight, keepOriginalTerrain, smoothBeaches, radius, mountains, chance, maxSubBiomeCount, stoneBlock, music, validPlayerSpawn, ground_structure, structures, parentBiomes
+**Concepts:** biome configuration, structure placement, vegetation generation
 
 ## Summary
-Defines a tall mountain biome configuration with fixed height constraints, oak/birch tags, slate ground structures, and multiple procedural generation rules for trees, fallen logs, vegetation patches, flowers, boulders, and parent biome references.
+Configuration for Tall Mountain Base biome.
 
 ## Explanation
-This chunk is a .zon configuration file containing static data used by the world generation system. It declares properties including minHeight and maxHeight both set to 128, indicating a uniform vertical range for this biome type. The tags field lists oak and birch as allowed tree species. keepOriginalTerrain is set to 0.8, suggesting that 80% of original terrain height is preserved during generation. smoothBeaches is true, implying beach smoothing logic will be applied. radius is 380, defining the biome's spatial extent in world units. mountains count is 120, likely representing a target number of mountain peaks or structures to generate. chance is set to 0, meaning no random procedural features are spawned by default. maxSubBiomeCount is 1, restricting nested sub-biomes. stoneBlock references cubyz:slate/smooth as the primary block type for terrain generation. music points to a specific audio asset path. validPlayerSpawn is false, indicating this biome cannot be used as a player spawn location. ground_structure contains two entries: cubyz:grass/temperate and a range specification 4 to 6 cubyz:soil, defining layered surface blocks. structures array defines multiple generation rules with id, structure reference, placeMode set to degradable for all tree-related entries, chance probabilities, and additional fields like height, height_variation, width, variation, density, priority, log, top, block, size, and size_variance where applicable. Each structure entry specifies a unique combination of block IDs and spawn parameters. parentBiomes includes one reference to cubyz:mountains with a 0.75 chance, indicating this biome is intended to be generated within or adjacent to the mountains biome.
+Defines properties, tags, height range, terrain preservation, beach smoothing, radius, mountain count, structure placement, ground structures, and various vegetation and structure types with their respective probabilities and configurations.
 
 ## Related Questions
-- What is the minimum and maximum height for this biome?
-- Which tree tags are allowed in this biome configuration?
-- How much of the original terrain is preserved during generation?
-- Is beach smoothing enabled for this biome?
-- What is the radius defining the extent of this biome?
-- How many mountain structures are targeted to generate?
-- Are any random procedural features spawned by default in this biome?
-- What is the maximum number of sub-biomes allowed within this biome?
-- Which block type serves as the primary stone for terrain generation?
-- Is player spawning permitted in this biome configuration?
-- What ground structure blocks are defined for surface layering?
-- How many structure definitions are included and what do they specify?
+- What are the minimum and maximum heights for Tall Mountain Base?
+- How many mountains should be generated in Tall Mountain Base?
+- What is the probability of placing a tree structure in Tall Mountain Base?
+- Which blocks are used for ground structures in Tall Mountain Base?
+- What is the music associated with Tall Mountain Base?
+- Is Tall Mountain Base a valid player spawn location?
+- How many sub-biomes can be generated in Tall Mountain Base?
+- What block is used for stone in Tall Mountain Base?
+- What are the tags associated with Tall Mountain Base?
+- What properties does Tall Mountain Base have?
+- Which biomes should Tall Mountain Base inherit from?
+- What structures are placed in Tall Mountain Base?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_tall_mountain_base.zig.zon_chunk_0*

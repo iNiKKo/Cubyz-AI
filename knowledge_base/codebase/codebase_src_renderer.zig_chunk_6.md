@@ -1,33 +1,42 @@
 # [hard/codebase_src_renderer.zig] - Chunk 6
 
 **Type:** implementation
-**Keywords:** graphics pipeline, vertex array object, shader storage buffer, uniform binding, AABB intersection, camera frustum, random star generation, lighting threshold
-**Symbols:** init, deinit, render, Frustum, Frustum.Plane
-**Concepts:** skybox rendering, frustum culling, SSBO usage, day-night cycle integration
+**Keywords:** frustum culling, plane equations, vector math, matrix operations, field of view
+**Symbols:** Frustum, Frustum.Plane, Frustum.planes, Frustum.init, Frustum.testAAB
+**Concepts:** camera frustum, collision detection, axis-aligned bounding box (AABB)
 
 ## Summary
-This chunk defines the star rendering pipeline and a frustum culling utility.
+Defines the Frustum struct for camera frustum calculations and collision testing.
 
 ## Explanation
-The init() function loads a star texture, builds a graphics.Pipeline with vertex/fragment shaders for skybox stars, initializes an SSBO holding per-star data (position, color), and populates it by generating random positions, radii, temperatures, and lighting values until each star reaches a minimum light threshold. It then transforms three fixed triangle vertices into world space using rotation matrices derived from latitude/longitude computed from the normalized position, writes those transformed vertices plus the center point and color into the SSBO buffer, and finally creates an empty vertex array object. The deinit() function cleans up pipeline, SSBO, and VAO resources. render() checks star opacity via game.world.dayTime.getStarOpacity(), binds the pipeline with null shader (skybox), computes a combined MVP matrix using projection, view, and a rotation around X based on day progress, binds the SSBO at slot 12, sets uniforms for opacity and MVP, draws numStars*3 triangles as GL_TRIANGLES, then unbinds the SSBO. The Frustum struct defines four planes (right/left/top/bottom) computed from camera position, inverse rotation matrix, field of view, and viewport aspect; testAAB() checks whether an AABB intersects all frustum planes by computing dot distances to each plane and adding the most positive corner offset.
+The Frustum struct represents a camera's view frustum, used to determine which objects are visible. It contains four planes (right, left, top, bottom) defined by their position and normal vectors. The init function calculates these planes based on the camera's position, rotation matrix, field of view, and screen dimensions. The testAAB method checks if an axis-aligned bounding box (AABB) is within the frustum by testing its corners against each plane.
 
 ## Code Example
 ```zig
-pub fn deinit() void {
-	starPipeline.deinit();
-	starSsbo.deinit();
-	starVao.deinit();
-}
+pub fn init(cameraPos: Vec3f, rotationMatrix: Mat4f, fovY: f32, width: u31, height: u31) Frustum {
+		const invRotationMatrix = rotationMatrix.transpose();
+		const cameraDir = vec.xyz(invRotationMatrix.mulVec(Vec4f{0, 1, 0, 1}));
+		const cameraUp = vec.xyz(invRotationMatrix.mulVec(Vec4f{0, 0, 1, 1}));
+		const cameraRight = vec.xyz(invRotationMatrix.mulVec(Vec4f{1, 0, 0, 1}));
+
+		const halfVSide = std.math.tan(std.math.degreesToRadians(fovY)*0.5);
+		const halfHSide = halfVSide*@as(f32, @floatFromInt(width))/@as(f32, @floatFromInt(height));
+
+		var self: Frustum = undefined;
+		self.planes[0] = Plane{.pos = cameraPos, .norm = vec.cross(cameraUp, cameraDir + cameraRight*@as(Vec3f, @splat(halfHSide)))}; // right
+		self.planes[1] = Plane{.pos = cameraPos, .norm = vec.cross(cameraDir - cameraRight*@as(Vec3f, @splat(halfHSide)), cameraUp)}; // left
+		self.planes[2] = Plane{.pos = cameraPos, .norm = vec.cross(cameraRight, cameraDir - cameraUp*@as(Vec3f, @splat(halfVSide)))}; // top
+		self.planes[3] = Plane{.pos = cameraPos, .norm = vec.cross(cameraDir + cameraUp*@as(Vec3f, @splat(halfVSide)), cameraRight)}; // bottom
+		return self;
+	}
 ```
 
 ## Related Questions
-- How does the star rendering pipeline handle day-night opacity changes?
-- What is the purpose of binding null shaders in render()?
-- Why are three triangle vertices transformed per star instead of one?
-- How is the SSBO populated with star data during init()?
-- What determines whether a star reaches its minimum light threshold?
-- How are latitude and longitude derived from normalized position vectors?
-- What role does the Frustum testAAB function play in rendering?
-- Why is the rotation applied around X axis based on day progress?
+- How is the Frustum struct initialized?
+- What does the testAAB method do?
+- How are the frustum planes calculated in the init function?
+- What is the purpose of the Plane struct within Frustum?
+- How does the code handle vector and matrix operations in the init function?
+- What is the role of the field of view (fovY) in the frustum calculation?
 
 *Source: unknown | chunk_id: codebase_src_renderer.zig_chunk_6*

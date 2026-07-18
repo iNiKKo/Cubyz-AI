@@ -1,22 +1,22 @@
 # [src/gui/windows/authentication/unlock.zig] - PR #2757 review diff
 
 **Type:** review
-**Keywords:** authentication failure, onClose, invalid memory access, global label, component cleanup
-**Symbols:** textComponent, incorrectPassword, apply, failureText, accountCode
+**Keywords:** data corruption, invalid memory access, global label, architectural review, error handling, decryption failure, window closure
+**Symbols:** textComponent, incorrectPassword, apply, failureText, accountCode, main.settings.storedAccount.decryptFromPassword, std.log.err, error.AuthenticationFailed, onClose
 **Concepts:** data corruption, thread safety, memory management
 
 ## Summary
-The code now handles authentication failure by setting a flag and calling `onClose`, which leads to potential data corruption due to premature cleanup of components.
+The review addresses a critical data corruption issue in the `unlock.zig` file by modifying the error handling mechanism to prevent accessing invalid memory.
 
 ## Explanation
-The reviewer points out that setting `incorrectPassword` to true and immediately calling `onClose` results in the cleanup of components while they are still being iterated, leading to invalid memory access. The reviewer suggests storing the label text globally and updating it instead, which would prevent premature cleanup and potential data corruption.
+The reviewer identifies a significant architectural flaw where calling `onClose()` immediately after setting `incorrectPassword` to true leads to data corruption. This is because `onClose()` cleans up components that are still being iterated over, resulting in invalid memory access. The proposed solution involves storing the label text globally and updating it instead of directly closing the window, which prevents accessing invalid memory.
 
 ## Related Questions
-- What is the purpose of the `incorrectPassword` flag?
-- Why should `onClose` not be called immediately after setting `incorrectPassword`?
-- How does storing the label text globally prevent data corruption?
-- What are the potential consequences of premature component cleanup?
-- How can we ensure that components are not accessed after they are cleaned up?
-- What is the role of `main.stackAllocator` in this code snippet?
+- What is the purpose of the `incorrectPassword` variable in the `unlock.zig` file?
+- How does the current error handling mechanism lead to data corruption?
+- Why is it critical to prevent accessing invalid memory in this context?
+- What is the proposed solution to fix the data corruption issue?
+- How does storing the label text globally help prevent invalid memory access?
+- What are the potential implications of not addressing this architectural flaw?
 
 *Source: unknown | chunk_id: github_pr_2757_comment_2971604214*

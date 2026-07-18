@@ -1,26 +1,22 @@
-# [src/gui/windows/graphics.zig] - Chunk 2882110596
+# [src/gui/windows/graphics.zig] - PR #2395 review diff
 
 **Type:** review
-**Keywords:** fpsCapRound, FPSPresetsValue, u16, f32, preset, lookup table, static const, branching, rounding, deterministic
+**Keywords:** FPS presets, dynamic calculation, conditional logic, runtime errors, explicit definition
 **Symbols:** fpsCapRound, FPSPresetsValue
-**Concepts:** FPS preset values, static lookup table, floating-point comparison, deterministic behavior, code simplification, rounding logic
+**Concepts:** code simplification, constant arrays
 
 ## Summary
-Replaced a custom rounding function for FPS values with a static array of preset FPS values to simplify logic and improve readability.
+Replaced the `fpsCapRound` function with a new constant array `FPSPresetsValue` to define FPS presets.
 
 ## Explanation
-The original code defined a function fpsCapRound that took an f32, performed conditional integer division by 5.0 when the value was below 144.0, returned a capped value between 144.0 and 149.0 as-is, and otherwise returned null. This approach required floating-point comparisons and branching logic at runtime. The reviewer suggested replacing this with a const array FPSPresetsValue containing discrete FPS steps (5, 10, 15, ..., 360, 480). By using a static lookup table, the code becomes deterministic, avoids unnecessary float-to-int conversions, and makes it obvious which values are supported. This change also reduces potential for rounding errors and simplifies any downstream selection logic that previously relied on the function's return type (?u32) to now work with a fixed set of u16 presets.
+The original `fpsCapRound` function was replaced by a static array of FPS preset values. This change simplifies the code by removing the need for dynamic calculation and conditional logic, making it easier to maintain and understand. The reviewer suggests using a constant array to ensure that all possible FPS values are explicitly defined, which can help prevent runtime errors related to invalid or unexpected FPS settings.
 
 ## Related Questions
-- What values are included in the FPSPresetsValue array?
-- How does fpsCapRound handle inputs below 144.0 before the change?
-- Why was fpsCapRound replaced with a static array instead of keeping the function?
-- Is there any runtime computation involved after introducing FPSPresetsValue?
-- What type is returned by fpsCapRound in the original code versus the new approach?
-- Does the new preset list cover all previously supported FPS values from fpsCapRound?
-- How might downstream code that called fpsCapRound need to adapt to use FPSPresetsValue?
-- Are there any edge cases where a non-preset FPS value would be lost with the static array?
-- What is the benefit of using u16 for presets compared to returning ?u32 from fpsCapRound?
-- Could the static array cause issues if new hardware supports higher FPS not in the list?
+- What was the purpose of removing the `fpsCapRound` function?
+- How does the new constant array `FPSPresetsValue` improve code maintainability?
+- Can you explain why the reviewer suggests using a constant array for FPS presets?
+- What potential issues could arise from dynamic FPS calculations in this context?
+- How might the removal of `fpsCapRound` affect performance or stability?
+- Is there any risk of introducing new bugs with the change to a static FPS preset array?
 
 *Source: unknown | chunk_id: github_pr_2395_comment_2882110596*

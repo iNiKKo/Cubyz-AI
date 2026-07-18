@@ -1,26 +1,26 @@
 # [easy/docs_docs_development_addons_biomes.md] - Chunk 0
 
-**Type:** configuration
-**Keywords:** zig.zon, GenerationProperties, terrain height limits, border interpolation, sub-biomes, fog density, sky color, stoneBlock, SimpleStructureModel, isValidPlayerSpawn
-**Symbols:** .hot, .temperate, .cold, .inland, .land, .ocean, .wet, .neitherWetNorDry, .dry, .barren, .balanced, .overgrown, .mountain, .lowTerrain, .antiMountain, isCave, radius, minRadius, maxRadius, minHeight, maxHeight, minHeightLimit, maxHeightLimit, smoothBeaches, interpolation, interpolationWeight, roughness, hills, mountains, keepOriginalTerrain, caves, caveRadiusFactor, crystals, soilCreep, stoneBlock, fogLower, fogHigher, fogDensity, fogColor, skyColor, stripes, subBiomes, parentBiomes, transitionBiomes, ground_structure, structures, maxSubBiomeCount, music, isValidPlayerSpawn, chance, .none, .linear, .square, slate
-**Concepts:** biome definition files, generation properties, terrain height limits, border interpolation methods, sub-biome generation, fog and sky configuration, structure placement rules, parent biome constraints
+**Type:** documentation
+**Keywords:** zig.zon, biomes, world generation, properties, isCave, radius, minHeight, maxHeight, smoothBeaches, interpolation, roughness, hills, mountains, stoneBlock, fogColor
+**Symbols:** zig.zon, properties: GenerationProperties, isCave, radius, minRadius, maxRadius, minHeight, maxHeight, minHeightLimit, maxHeightLimit, smoothBeaches, interpolation, interpolationWeight, roughness, hills, mountains, keepOriginalTerrain, caves, caveRadiusFactor, crystals, soilCreep, stoneBlock, fogLower, fogHigher, fogDensity, fogColor, skyColor, stripes, subBiomes, parentBiomes, transitionBiomes, ground_structure, structures, maxSubBiomeCount, music, isValidPlayerSpawn, chance
+**Concepts:** Biome Definition, World Generation, Generation Properties, Biome Characteristics, Environmental Effects
 
 ## Summary
-Biomes are defined by zig.zon files containing generation properties, terrain limits, interpolation settings, fog/sky colors, sub-biome relationships, and structure definitions.
+Describes the structure and properties of `zig.zon` files used to define biomes in Cubyz, including various generation parameters and settings.
 
 ## Explanation
-The documentation specifies that every biome is generated from a zig.zon file which includes GenerationProperties for climate classification (hot/temperate/cold), wetness (wet/neitherWetNorDry/dry), terrain type (inland/land/ocean/barren/balanced/overgrown/mountain/lowTerrain/antiMountain), and cave status. Terrain generation is controlled by radius parameters, height limits (minHeight/maxHeight with hard interpolation limits minHeightLimit/maxHeightLimit), roughness factors for hills and mountains, soil creep erosion settings, and a stoneBlock base material defaulting to slate. Border smoothing uses an interpolation method (.none/.linear/.square) weighted by interpolationWeight, while sub-biome generation preserves parent terrain via keepOriginalTerrain and respects maxSubBiomeCount. Fog is configured with lower/upper boundaries, density, and RGB color; sky defaults to a specific blue vector. Biomes define ground_structure arrays, stripe definitions, SimpleStructureModel structures, and transitionBiomes for blending. ParentBiomes specify allowed generation contexts with optional chance weights, while isValidPlayerSpawn restricts spawning to biomes containing trees.
+Every biome in Cubyz is defined by a `zig.zon` file that contains essential data for world generation. The `properties: GenerationProperties` field specifies basic information about the biome's characteristics, such as temperature, terrain type, and moisture levels. The table lists various properties like `isCave`, `radius`, `minHeight`, `maxHeight`, and others that control the biome's behavior, appearance, and environmental effects. For example, `smoothBeaches` enables smooth beach generation, while `interpolation` defines how biomes blend with their neighbors. Each property has a specific type and default value, allowing for precise customization of biome generation.
 
 ## Related Questions
-- What is the default value for the stone block used in biome generation?
-- Which interpolation method resolves to .square when using the .smooth alias?
-- How does the isValidPlayerSpawn property affect player spawning behavior?
-- What field controls the average number of randomly placed Glow Crystals in a biome?
-- Can sub-biomes preserve parent terrain, and how is that percentage specified?
-- Which properties determine whether a biome generates caves or surface terrain?
-- How are transition biomes defined within the zig.zon file structure?
-- What happens to terrain generation when interpolationWeight is set to std.math.floatMin(f32)?
-- Are there any constraints on how many sub-biomes can exist per biome instance?
-- Which climate categories are available for defining a biome's temperature profile?
+- What is the purpose of the `zig.zon` file in Cubyz?
+- How do you define a cave biome using the `properties: GenerationProperties` field?
+- What are the valid values for the `interpolation` property in a `zig.zon` file?
+- How does the `smoothBeaches` property affect beach generation in Cubyz?
+- What is the default value for the `radius` property in a biome definition?
+- How can you specify multiple parent biomes for a single biome using the `parentBiomes` field?
+- What role does the `stoneBlock` property play in defining a biome's terrain?
+- How do you control the fog density and color in a Cubyz biome?
+- Can you explain the purpose of the `stripes` property in a `zig.zon` file?
+- What is the significance of the `isValidPlayerSpawn` property in a biome definition?
 
 *Source: unknown | chunk_id: docs_docs_development_addons_biomes.md_chunk_0*

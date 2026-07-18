@@ -1,28 +1,22 @@
 # [easy/docs_docs_blocks_soil.md] - Chunk 0
 
-**Type:** documentation
-**Keywords:** soil, decorative, temperate, biomes, grass, blocks, ground patches, breaking, drops, Shover, stairs, health, obtaining, usage, added
-**Symbols:** soil, Shover
-**Concepts:** decorative blocks, temperate biomes, grass breaking mechanics, block acquisition
+**Type:** gameplay
+**Keywords:** soil, temperate grass, health, tool, rotation, decoration, biomes, grass blocks, ground patches, version history
+**Symbols:** Soil, Shover
+**Concepts:** blocks, obtaining, usage, history
 
 ## Summary
-Soil is a decorative block found in temperate biomes, obtainable by breaking temperate grass.
+Soil is a block that hosts temperate grass and can be obtained by breaking grass blocks in temperate biomes.
 
 ## Explanation
-Soil serves as a decorative element within the Cubyz voxel engine. It naturally generates in temperate biomes either as part of grass blocks or as ground patches. Players can acquire soil by breaking temperate grass, which drops soil blocks upon destruction. The block has a health value of 6.5 and is mined using a Shover tool with a stairs rotation property.
+Soil is a decorative block in Cubyz that supports temperate grass. It has a health value of 6.5 and requires a Shover tool to break. Soil can be found as part of grass blocks or in ground patches within temperate biomes. Breaking these grass blocks will yield soil blocks. The block's texture is represented by an image linked in the documentation. Soil was added to the game in version 0.0.0.
 
 ## Related Questions
-- What biomes contain soil blocks?
-- How do I obtain soil in Cubyz?
-- Which tool is required to mine soil?
-- Does soil have any functional use beyond decoration?
-- What is the health value of a soil block?
-- Can soil be found as ground patches?
-- Is soil part of temperate grass blocks?
-- What rotation property does soil have when mined?
-- When was soil added to Cubyz?
-- Does breaking soil drop anything other than itself?
-- Are there any crafting recipes involving soil?
-- Can soil be used as a building material besides decoration?
+- What is the health value of Soil in Cubyz?
+- Which tool is required to break Soil?
+- Can Soil be found as part of grass blocks?
+- In which type of biomes can Soil be obtained?
+- How was Soil introduced into the game?
+- Is there a specific rotation property for Soil?
 
 *Source: unknown | chunk_id: docs_docs_blocks_soil.md_chunk_0*

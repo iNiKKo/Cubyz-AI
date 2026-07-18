@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_sandstone_smooth.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, block definition, texture, model, rotation
-**Concepts:** block properties, texture mapping, model selection
+**Keywords:** block configuration, rotation model, texture path, ore allowance, cube model
+**Concepts:** block properties, texture mapping
 
 ## Summary
-Defines properties for the smooth sandstone block, including texture and model.
+Defines properties for the smooth sandstone block in Cubyz.
 
 ## Explanation
-This chunk is a configuration file defining the properties of a specific block in the Cubyz voxel engine. It specifies that the block allows ores to be placed on it, uses a stairs rotation model, has a cube model, and applies a smooth sandstone texture.
+This chunk contains configuration data for a specific block type, smooth sandstone. It specifies that ores can be allowed within this block type and sets its rotation model to stairs. The visual model is defined as a cube, and the texture path points to the smooth sandstone texture file.
 
 ## Related Questions
-- What texture is applied to the smooth sandstone block?
-- Does the smooth sandstone block allow ores to be placed on it?
-- Which model is used for the smooth sandstone block?
-- How is the rotation of the smooth sandstone block defined?
-- Is there any specific configuration related to lighting or shading for this block?
-- What other blocks in Cubyz use similar configurations?
+- What is the texture path for the smooth sandstone block?
+- Is ore generation allowed in the smooth sandstone block?
+- What is the rotation model set for the smooth sandstone block?
+- How is the visual model of the smooth sandstone block defined?
+- Where is the configuration data for the smooth sandstone block stored?
+- Does the smooth sandstone block have any special properties?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_sandstone_smooth.zig.zon_chunk_0*

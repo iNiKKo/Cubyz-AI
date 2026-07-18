@@ -1,22 +1,22 @@
 # [src/blueprint.zig] - PR #1141 review diff
 
 **Type:** review
-**Keywords:** blueprintVersion, GameIdToBlueprintIdMapType, BlockIdSizeType, BlockStorageType, BinaryWriter, BinaryReader, BlueprintCompression, FileHeader, serialization, deserialization, network optimization, varints, universal serialization functions, ChunkPosition
-**Symbols:** blueprintVersion, GameIdToBlueprintIdMapType, BlockIdSizeType, BlockStorageType, BinaryWriter, BinaryReader, BlueprintCompression, FileHeader
-**Concepts:** thread safety, backwards compatibility, memory leak, serialization, deserialization, network optimization
+**Keywords:** blueprint.zig, FileHeader, BlueprintCompression, version, compression, paletteSizeBytes, paletteBlockCount, blockArraySizeX, blockArraySizeY, blockArraySizeZ, varints, network optimization, memory usage, backwards compatibility
+**Symbols:** blueprint.zig, FileHeader, BlueprintCompression, version, compression, paletteSizeBytes, paletteBlockCount, blockArraySizeX, blockArraySizeY, blockArraySizeZ
+**Concepts:** serialization, deserialization, backwards compatibility, network optimization, memory usage
 
 ## Summary
-The review discusses potential changes to the Blueprint file format and serialization process in Cubyz, focusing on architectural considerations and performance optimizations.
+The review discusses the addition of a new file `blueprint.zig` with a struct `FileHeader` and an enum `BlueprintCompression`. The reviewer emphasizes the importance of considering changes to serialized data structures carefully to maintain compatibility with older save files. They also suggest using variable-length integers (varints) for efficient network communication and propose adding serialization functions for common types like vectors.
 
 ## Explanation
-The reviewer raises concerns about the flexibility of the `FileHeader` struct, suggesting that any modifications could require extensive updates to serialization and deserialization code. They emphasize the importance of considering backward compatibility when making changes to stored data formats. The reviewer also highlights the need for efficient network usage, noting that current upload speeds may be insufficient for handling multiple clients simultaneously. They propose using variable-length integers (varints) for encoding block IDs to optimize memory usage, especially in small structures. Additionally, they suggest creating universal serialization functions for structs, vectors, and arrays to reduce code duplication, but also notes the potential benefits of adding member functions for commonly used types like `ChunkPosition`.
+The review focuses on the architectural implications of adding a new file `blueprint.zig` that includes a struct `FileHeader` and an enum `BlueprintCompression`. The reviewer highlights the need to be cautious when modifying serialized data structures, as changes can affect compatibility with older save files. They also discuss the importance of optimizing network communication by using varints for encoding packet lengths and other small integers, which can significantly reduce memory usage and improve performance in scenarios with limited bandwidth. Additionally, the reviewer suggests creating universal serialization functions for common types like vectors to avoid code duplication and improve maintainability.
 
 ## Related Questions
-- How does changing the `FileHeader` struct affect backward compatibility?
-- What are the potential performance implications of using varints for block IDs?
-- How can universal serialization functions be implemented to reduce code duplication?
-- What is the current implementation of network optimization in Cubyz?
-- How does the reviewer suggest optimizing memory usage in small structures?
-- What are the benefits and drawbacks of adding member functions for commonly used types like `ChunkPosition`?
+- How does changing the `FileHeader` struct affect serialization and deserialization?
+- What are the potential impacts of modifying serialized data structures on older save files?
+- How can varints be effectively used to optimize network communication in Cubyz?
+- Why is it important to consider network bandwidth when designing serialization formats?
+- What are the benefits of adding universal serialization functions for common types like vectors?
+- How does the use of varints impact memory usage in small structures?
 
 *Source: unknown | chunk_id: github_pr_1141_comment_1992122237*

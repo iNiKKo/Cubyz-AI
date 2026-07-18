@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_permafrost.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** block properties, configuration data, texture mapping, model definition, rotation settings
-**Concepts:** block configuration
+**Keywords:** block properties, configuration data, texture mapping, model definition, item drops
+**Concepts:** block configuration, game assets
 
 ## Summary
-Defines properties for the Permafrost block in Cubyz.
+Defines properties for the Permafrost block in Cubyz, including tags, health, drops, model, rotation, and texture.
 
 ## Explanation
-This chunk defines the configuration for the Permafrost block, including its tags, health, drops, model, rotation, and texture. The block is marked as diggable with a health value of 6.5. It drops items automatically when broken. The model is set to 'cubyz:cube', indicating it uses a cube-based mesh. The rotation property is set to 'cubyz:stairs', suggesting it can be rotated like stairs. The texture is specified as 'cubyz:permafrost'.
+This chunk defines a configuration for the Permafrost block in the Cubyz game. It specifies that the block is diggable, has a health value of 6.5, and drops items automatically when broken. The block uses a cube model with stairs-like rotation and has a specific texture associated with it.
 
 ## Related Questions
 - What are the tags associated with the Permafrost block?
-- What is the health value of the Permafrost block?
-- How does the Permafrost block drop items when broken?
+- How much health does the Permafrost block have?
+- What items does the Permafrost block drop when broken?
 - Which model is used for the Permafrost block?
-- What rotation setting is applied to the Permafrost block?
-- What texture is assigned to the Permafrost block?
+- How is the rotation of the Permafrost block defined?
+- What texture is applied to the Permafrost block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_permafrost.zig.zon_chunk_0*

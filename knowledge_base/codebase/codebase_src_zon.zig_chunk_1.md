@@ -1,44 +1,31 @@
 # [hard/codebase_src_zon.zig] - Chunk 1
 
-**Type:** implementation
-**Keywords:** ZonElement, allocator, type casting, array operations, object operations
-**Symbols:** createElementFromRandomType, append, put
-**Concepts:** data manipulation, type conversion, memory management
+**Type:** serialization
+**Keywords:** union, enum, memory management, type casting, error handling
+**Symbols:** ZonElement, ZonElement.int, ZonElement.float, ZonElement.string, ZonElement.stringOwned, ZonElement.bool, ZonElement.null, ZonElement.array, ZonElement.object, ZonElement.initObject, ZonElement.initArray, ZonElement.getAtIndex, ZonElement.getChildAtIndex, ZonElement.get, ZonElement.getChild, ZonElement.getChildOrNull, ZonElement.removeChild, ZonElement.clone, ZonElement.JoinPriority, ZonElement.joinGetNew, ZonElement.join, ZonElement.as
+**Concepts:** data serialization, dynamic data structures, type handling
 
 ## Summary
-Handles operations on ZonElement, including joining, type conversion, and appending values.
+Defines the ZonElement union and its associated methods for handling different data types, including initialization, access, cloning, joining, and type conversion.
 
 ## Explanation
-This chunk defines methods for manipulating ZonElement instances. It includes functions for cloning, joining elements with a specified priority, converting elements to different types, creating elements from random types, appending values to arrays, and putting key-value pairs into objects. The code handles various data types and ensures proper memory management through allocators.
+The ZonElement union in this chunk represents various data types such as integers, floats, strings, booleans, nulls, arrays, and objects. It includes methods for initializing objects and arrays, accessing elements by index or key, cloning the entire structure, joining two ZonElements with a specified priority, and converting the element to a specific type if possible. The chunk also defines an enumeration JoinPriority to determine how conflicts are resolved during the join operation.
 
 ## Code Example
 ```zig
-pub fn join(left: *const ZonElement, priority: JoinPriority, right: ZonElement) void {
-	if (right == .null) {
-		return;
-	}
-	if (left.* != .object or right != .object) {
-		if (!builtin.is_test) std.log.err("Trying to join zon that isn't an object.", .{}); // TODO: #1275
-		return;
-	}
-
-	var iter = right.object.iterator();
-	while (iter.next()) |entry| {
-		if (left.object.get(entry.key_ptr.*)) |val| {
-			left.put(entry.key_ptr.*, val.joinGetNew(priority, entry.value_ptr.*, .{.allocator = left.object.allocator, .IAssertThatTheProvidedAllocatorCantFail = {}}));
-		} else {
-			left.put(entry.key_ptr.*, entry.value_ptr.clone(.{.allocator = left.object.allocator, .IAssertThatTheProvidedAllocatorCantFail = {}}));
-		}
-	}
+pub fn initObject(allocator: NeverFailingAllocator) ZonElement {
+	const map = allocator.create(std.StringHashMap(ZonElement));
+	map.* = .init(allocator.allocator);
+	return .{.object = map};
 }
 ```
 
 ## Related Questions
-- How does the join function handle non-object types?
-- What is the purpose of the createElementFromRandomType function?
-- How does the append method work with different data types?
-- What error handling is implemented in the put method?
-- How does the code ensure memory safety during operations?
-- What are the supported types for conversion in the as method?
+- How do you initialize a ZonElement object?
+- What methods are available for accessing elements in a ZonElement array?
+- How does the clone method work for ZonElements?
+- What is the purpose of the JoinPriority enum?
+- How are conflicts resolved during the join operation?
+- How does the as method handle type conversion?
 
 *Source: unknown | chunk_id: codebase_src_zon.zig_chunk_1*

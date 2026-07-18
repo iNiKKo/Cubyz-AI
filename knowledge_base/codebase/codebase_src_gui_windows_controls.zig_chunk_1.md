@@ -1,30 +1,30 @@
 # [medium/codebase_src_gui_windows_controls.zig] - Chunk 1
 
 **Type:** implementation
-**Keywords:** GUI initialization, button creation, scroll position preservation, resource cleanup, event handling
+**Keywords:** window deinitialization, binding process, scroll state preservation, window initialization, rendering update
 **Symbols:** deinitWindow, onOpen, onClose, render
-**Concepts:** GUI controls, keyboard key binding, window lifecycle management
+**Concepts:** GUI window management, component lifecycle
 
 ## Summary
-Handles the initialization, rendering, and cleanup of a GUI window for keyboard key binding controls.
+Handles initialization, deinitialization, and rendering of GUI windows.
 
 ## Explanation
-This chunk manages the lifecycle of a GUI window focused on keyboard key bindings. It initializes the window with labels, buttons, and unbind options for each key. The `initWindow` function sets up the layout by iterating over `main.KeyBoard.keys`, creating labels and buttons based on whether a key is selected or being edited. The `deinitWindow` function cleans up resources when the window closes. The `onOpen` and `onClose` functions handle opening and closing events, respectively, including aborting any ongoing binding processes. The `render` function updates the window if changes are needed, preserving the scroll position.
+This chunk contains functions for managing the lifecycle of a GUI window within the Cubyz engine. The `deinitWindow` function deinitializes the window by calling the `deinit` method on its root component if it exists. The `onOpen` function aborts any ongoing binding process, initializes the window, and is likely called when the window is opened. The `onClose` function also aborts the binding process, deinitializes the window, and is triggered when the window is closed. The `render` function checks if an update is needed; if so, it resets the update flag, saves the current scroll state of the vertical list, deinitializes and reinitializes the window to refresh its contents, and then restores the scroll state.
 
 ## Code Example
 ```zig
-pub fn onOpen() void {
+fn onClose() void {
 	abortBindingProcess();
-	initWindow();
+	deinitWindow();
 }
 ```
 
 ## Related Questions
-- What function initializes the GUI window for keyboard key bindings?
-- How does the chunk handle the cleanup of resources when the window closes?
-- What event triggers the update of the GUI window's content?
-- How is the scroll position preserved during a window update?
-- Which function aborts any ongoing binding processes?
-- What are the responsibilities of the `deinitWindow` function?
+- What does the `deinitWindow` function do?
+- How is the window initialized when it opens?
+- What steps are taken to ensure the scroll state is preserved during a render update?
+- When is the `abortBindingProcess` function called?
+- What happens if an update is needed during rendering?
+- How does the chunk manage the lifecycle of GUI windows?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_controls.zig_chunk_1*

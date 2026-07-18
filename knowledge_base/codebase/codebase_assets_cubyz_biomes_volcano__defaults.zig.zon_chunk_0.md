@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_volcano__defaults.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, biome, fog density, color values, sky color
+**Keywords:** fog density, color settings, biome defaults, configuration data, volcano biome
 **Concepts:** biome configuration
 
 ## Summary
-Defines default settings for the Volcano biome.
+Defines default biome settings for a volcano.
 
 ## Explanation
-This chunk contains configuration data for the Volcano biome, specifying its fog density, fog color, and sky color. The values are set as follows: fogDensity is 2, fogColor is 0xb4b2b2 (a light gray), and skyColor is 0x9abbe3 (a light blue). These settings define the visual characteristics of the biome environment.
+This chunk contains configuration data for a volcano biome, specifying fog density, fog color, and sky color. The values are set to 2 for fog density, 0xb4b2b2 for fog color, and 0x9abbe3 for sky color.
 
 ## Related Questions
-- What is the fog density for the Volcano biome?
-- What is the fog color value for the Volcano biome?
-- What is the sky color value for the Volcano biome?
-- How many configuration settings are defined for the Volcano biome?
-- Are there any function definitions in this chunk?
-- What type of data structure is used to store the biome settings?
+- What is the fog density setting for the volcano biome?
+- What color is set for the sky in the volcano biome?
+- How is the fog color defined in this configuration?
+- Is there any function or method defined in this chunk?
+- What are the default settings for the volcano biome?
+- Are there any comments or explanations in this chunk?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_volcano__defaults.zig.zon_chunk_0*

@@ -1,26 +1,32 @@
 # [hard/codebase_src_utils_Futex.zig] - Chunk 5
 
 **Type:** implementation
-**Keywords:** futex, bucket, hashing, pending, mutex, queue, atomic, waiter, Treap, pointer, address
-**Symbols:** Address, Bucket, Waiter
-**Concepts:** futex synchronization, bucket hashing, atomic pending count, wait queue management, mutex locking, pointer address extraction
+**Keywords:** mutex locking, fibonacci hashing, atomic operations, queue management, hashing
+**Symbols:** pop, insert, remove, tryRemove, Bucket, Bucket.mutex, Bucket.pending, Bucket.treap, Bucket.buckets, from
+**Concepts:** synchronization, wait queues, buckets, address mapping
 
 ## Summary
-Implements a futex-based wait mechanism with bucketed waiter queues and atomic pending counts.
+The chunk implements a futex-like mechanism using wait queues and buckets for efficient synchronization.
 
 ## Explanation
-The chunk defines the Address struct to extract unique addresses from pointers, Bucket struct containing a mutex, an atomic.Value for pending count, and a Treap field. The Bucket.from function hashes an address using fibonacci multiplication into a power-of-two bucket array. The wait function acquires the bucket's mutex, checks if the pointed value matches expect, inserts a Waiter into the Treap queue, then releases the lock. It uses atomic operations on pending to avoid holding the mutex while waiting for cancellation. The tryRemove function removes a waiter from its queue by updating prev/next links and adjusting head/tail pointers in the Treap entry; it asserts is_queued state before removal. The WaitList struct (partially visible) provides dequeue logic that collects waiters into a returned slice, marking them as not queued after removal.
+This chunk defines several structures and functions related to a futex-like synchronization mechanism. It includes `WaitList`, `WaitQueue`, `Bucket`, and `Address` structs, each serving specific roles in managing waiters and addresses. The `pop` function removes a waiter from the top of a list, while `insert` adds a waiter to a queue associated with an address. The `remove` function dequeues up to a specified number of waiters from a queue, marking them as removed. The `tryRemove` function attempts to remove a specific waiter from its queue if it is still queued. The `Bucket` struct manages mutexes and pending values for addresses, using a global array of buckets indexed by a hash derived from the address. The `from` method in `Address` converts a pointer to an address.
+
+## Code Example
+```zig
+fn pop(self: *WaitList) ?*Waiter {
+	const waiter = self.top orelse return null;
+	self.top = waiter.next;
+	self.len -= 1;
+	return waiter;
+}
+```
 
 ## Related Questions
-- How does the Address.from function extract a unique address from a pointer?
-- What is the purpose of the atomic.Value in Bucket and how is it used?
-- Describe the steps taken inside the wait function before acquiring the mutex.
-- How does tryRemove handle a waiter that has both prev and next links set?
-- Why is the pending count decremented outside the critical section when canceled?
-- What assertion ensures a waiter can be removed from its queue in tryRemove?
-- Explain how Bucket.from uses fibonacci hashing to map addresses into buckets.
-- How does the wait function ensure that the announcement of a waiter happens before checking ptr == expect?
-- What state changes occur to Waiter.is_queued during removal operations?
-- Describe the role of the Treap field in managing waiter queues within Bucket.
+- How does the `pop` function work in the `WaitList` struct?
+- What is the purpose of the `insert` function in the `WaitQueue` struct?
+- How are waiters removed from a queue using the `remove` function?
+- What steps does the `tryRemove` function take to remove a waiter?
+- How are buckets indexed and managed in this implementation?
+- What role does the `from` method play in converting pointers to addresses?
 
 *Source: unknown | chunk_id: codebase_src_utils_Futex.zig_chunk_5*

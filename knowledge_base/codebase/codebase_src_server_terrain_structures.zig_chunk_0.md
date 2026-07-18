@@ -1,15 +1,15 @@
 # [medium/codebase_src_server_terrain_structures.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** SimpleStructureModel, StructureTable, generation modes, ZonElement, registration process
-**Symbols:** SimpleStructureModel, SimpleStructureModel.GenerationMode, SimpleStructureModel.VTable, SimpleStructureModel.initModel, SimpleStructureModel.generate, SimpleStructureModel.getHash, StructureTable, StructureTable.id, StructureTable.tags, StructureTable.structures, StructureTable.init, register, registerStructureTables, compareStructureTables, finishLoading, simple_structures
-**Concepts:** terrain structures, structure generation, ZonElement configuration
+**Keywords:** vtable, structure registration, terrain generation, asset loading, chance-based selection
+**Symbols:** SimpleStructureModel, SimpleStructureModel.GenerationMode, SimpleStructureModel.VTable, SimpleStructureModel.initModel, SimpleStructureModel.generate, SimpleStructureModel.getHash, StructureTable, StructureTable.id, StructureTable.tags, StructureTable.structures, StructureTable.init, finishedLoading, structureTables, structureTablesById, register, registerStructureTables, compareStructureTables, simple_structures
+**Concepts:** terrain structures, server environment, model generation, asset management
 
 ## Summary
 Defines the SimpleStructureModel and StructureTable for managing terrain structures in a server environment.
 
 ## Explanation
-This chunk defines two main types: SimpleStructureModel and StructureTable. SimpleStructureModel represents a model for generating simple structures with various generation modes, including floor, ceiling, air, underground, and water surface. It includes methods for initialization, generation, and hash calculation. The StructureTable manages multiple SimpleStructureModels, allowing them to be registered and loaded from ZonElement configurations. The chunk also provides functions for registering structure tables and finishing the loading process.
+The chunk defines two main structures: SimpleStructureModel and StructureTable. SimpleStructureModel represents a model for generating simple terrain structures, including methods for initialization and generation. It uses a vtable to delegate specific operations like loading the model and generating the structure. The StructureTable manages multiple SimpleStructureModels, allowing them to be registered and accessed by ID. The chunk also includes functions for registering structure tables from assets and comparing them.
 
 ## Code Example
 ```zig
@@ -34,11 +34,15 @@ pub fn initModel(parameters: ZonElement) ?SimpleStructureModel {
 ```
 
 ## Related Questions
-- What are the different generation modes for SimpleStructureModel?
-- How is a SimpleStructureModel initialized from ZonElement parameters?
-- What does the StructureTable manage and how is it initialized?
-- How are structure tables registered and what happens during registration?
-- What is the purpose of the finishLoading function in this chunk?
-- How does the code handle errors when loading structure models?
+- What is the purpose of the SimpleStructureModel struct?
+- How does the SimpleStructureModel initialize its model?
+- What methods are available in the VTable of SimpleStructureModel?
+- How are structure tables registered and managed?
+- What happens if the total chance of structures in a table is zero?
+- How is the hash function for a SimpleStructureModel implemented?
+- What data does the StructureTable contain?
+- How are structure models loaded from ZonElement parameters?
+- What is the role of the modelRegistry in SimpleStructureModel?
+- How are structure tables compared and sorted?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_structures.zig_chunk_0*

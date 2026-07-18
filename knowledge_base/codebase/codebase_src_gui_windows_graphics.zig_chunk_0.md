@@ -1,15 +1,15 @@
 # [medium/codebase_src_gui_windows_graphics.zig] - Chunk 0
 
 **Type:** api
-**Keywords:** GuiWindow, DiscreteSlider, ContinuousSlider, CheckBox, callback functions, settings update, user interaction
-**Symbols:** window, padding, renderDistances, lodValues, anisotropy, resolutions, leavesQualities, fpsPresetsValue, fpsPresetsText, fpsCapGetIndex, fpsCapCallback, renderDistanceCallback, highestLodCallback, leavesQualityCallback, fovCallback, fovFormatter, lodDistanceFormatter, lodDistanceCallback, contrastFormatter, contrastCallback, nightBrightnessCallback, nightBrightnessFormatter, bloomCallback, vsyncCallback, anisotropicFilteringCallback, resolutionScaleCallback, onOpen
-**Concepts:** GUI settings window, user interface components, configuration management, settings persistence
+**Keywords:** GuiWindow, callbacks, settings update, formatter functions, array of options
+**Symbols:** window, padding, renderDistances, lodValues, anisotropy, resolutions, leavesQualities, fpsPresetsValue, fpsPresetsText, fpsCapGetIndex, fpsCapCallback, renderDistanceCallback, highestLodCallback, leavesQualityCallback, fovCallback, fovFormatter, lodDistanceFormatter, lodDistanceCallback, contrastFormatter, contrastCallback, nightBrightnessCallback, nightBrightnessFormatter, bloomCallback, vsyncCallback, anisotropicFilteringCallback, resolutionScaleCallback
+**Concepts:** GUI settings window, user interface components, settings management, callback functions, text formatting
 
 ## Summary
-This chunk defines the GUI window for graphics settings, initializing various sliders and checkboxes to adjust rendering parameters.
+This chunk defines a GUI window for graphics settings with various sliders and checkboxes to adjust rendering parameters.
 
 ## Explanation
-The code initializes a `GuiWindow` with specific content size and behavior. It defines several arrays of configuration options for different settings like render distance, LOD values, anisotropy levels, resolutions, and FPS presets. Functions handle callbacks for each setting change, updating the global `settings` object and saving them. The `onOpen` function sets up a `VerticalList` containing various UI components such as `DiscreteSlider`, `ContinuousSlider`, and `CheckBox` to allow users to interactively adjust graphics settings.
+The code initializes a `GuiWindow` named `window` with specific content size and behavior. It declares several arrays of configuration options such as render distances, LOD values, anisotropy levels, resolutions, leaves qualities, FPS presets, and more. The chunk includes callback functions for each setting to update the corresponding settings in the `settings` module when a user interacts with the GUI components. These callbacks handle saving changes and reloading resources where necessary. Additionally, there are formatter functions that generate display text for certain settings values.
 
 ## Code Example
 ```zig
@@ -26,9 +26,9 @@ fn fpsCapGetIndex(fpsOptional: ?u32) u16 {
 ## Related Questions
 - What is the purpose of the `fpsCapGetIndex` function?
 - How does the `renderDistanceCallback` function update settings?
-- What components are added to the `VerticalList` in the `onOpen` function?
-- How are FPS presets formatted and displayed in the GUI?
-- What happens when a user changes the anisotropic filtering setting?
-- How is the night brightness setting formatted in the GUI?
+- What formatter function is used for displaying FOV values?
+- How are changes to anisotropic filtering applied in the code?
+- What happens when a user adjusts the resolution scale setting?
+- How are FPS presets stored and displayed in the GUI?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_graphics.zig_chunk_0*

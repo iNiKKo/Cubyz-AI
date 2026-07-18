@@ -1,22 +1,22 @@
 # [src/network.zig] - PR #1313 review diff
 
 **Type:** review
-**Keywords:** block update, loop, symmetry, robustness, remaining data, stream handling
-**Symbols:** Protocols, Connection, utils.BinaryReader, Block, renderer.mesh_storage.updateBlock, BlockUpdate
-**Concepts:** data processing loop, end-of-stream handling
+**Keywords:** network protocol, block update, loop, symmetry, remaining data, packet truncation, corruption
+**Symbols:** Protocols, Connection, utils.BinaryReader, Block, renderer.mesh_storage.updateBlock
+**Concepts:** packet handling, data processing loop, error handling
 
 ## Summary
-The change refactors the block update handling in the network protocol to read multiple updates in a loop until no more data is available, improving symmetry and robustness.
+The change refactors the block update handling in the network protocol to use a loop that processes all remaining data, improving symmetry and robustness.
 
 ## Explanation
-The original code only processed one block update per call. The refactor introduces a `while` loop that continues processing updates as long as there is data remaining in the reader. This change ensures that all available updates are processed, making the handling more robust and symmetrical. The reviewer suggests using `reader.remaining.len != 0` to check for remaining data, which is a more explicit way to handle the end of the stream.
+The original code read three integers (x, y, z) and a block ID, then updated the renderer's mesh storage. The reviewer suggests modifying this to process all available data in a loop until there is no more data left. This change ensures that any extra bytes are handled gracefully, preventing potential issues with packet truncation or corruption. The symmetry of using `reader.remaining.len != 0` as the loop condition makes the code cleaner and easier to understand.
 
 ## Related Questions
-- What is the purpose of the `while` loop introduced in the block update handling?
-- How does the use of `reader.remaining.len != 0` improve the end-of-stream handling?
-- What potential issues could arise if the `try reader.readInt(i32)` call fails within the loop?
-- How does this change affect the performance of block updates over the network?
-- Is there a risk of infinite looping with the current implementation?
-- What are the implications of processing multiple updates in one go for memory usage?
+- What is the purpose of the `while(true)` loop in the updated code?
+- How does the new loop condition `reader.remaining.len != 0` ensure that all data is processed?
+- What potential issues could arise from not handling extra bytes in the original code?
+- How does this change improve the robustness of the network protocol?
+- Can you explain the role of `try reader.readInt(i32)` within the loop?
+- What impact does this change have on performance, if any?
 
 *Source: unknown | chunk_id: github_pr_1313_comment_2059122703*

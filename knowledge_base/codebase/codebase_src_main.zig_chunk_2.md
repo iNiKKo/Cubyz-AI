@@ -1,34 +1,33 @@
 # [hard/codebase_src_main.zig] - Chunk 2
 
 **Type:** implementation
-**Keywords:** threading, logging, command line arguments, environment variables, file system, windowing, graphics, audio, input bindings
-**Symbols:** lastFrameTime, lastDeltaTime, shouldExitToMenu, exitToMenu, isHiddenOrParentHiddenPosix, main, findKey, key, setIsToggling
-**Concepts:** input handling, game initialization, subsystem management, environment configuration
+**Keywords:** Zig, Window, Key, input, gamepad, UI, hotbar, file path, POSIX
+**Symbols:** Window, Key, keys, findKey, key, setIsToggling, lastFrameTime, lastDeltaTime, shouldExitToMenu, exitToMenu, isHiddenOrParentHiddenPosix
+**Concepts:** Input handling, UI elements, Gamepad support, Hotbar management, File path checking, POSIX systems
 
 ## Summary
-Handles initialization and main loop of the Cubyz game engine, including setting up input bindings, logging, and initializing various subsystems.
+This code snippet defines a `Window` struct in Zig that handles keyboard and gamepad input, as well as various UI elements. It includes functions for finding keys by name, setting key toggling states, and managing hotbar slots. The struct also contains arrays of keys with associated actions and conditions for when those actions should be triggered. Additionally, it provides utility functions for checking if a file path is hidden or has a parent directory that is hidden on POSIX systems.
 
 ## Explanation
-This chunk contains the main entry point for the Cubyz game engine. It initializes essential components such as thread locals, logging, command line argument handling, environment settings, file system management, a thread pool, file monitoring, windowing, graphics, and audio systems. The code also defines input bindings for hotbar slots and camera controls, including both keyboard and gamepad inputs. Functions like `findKey`, `key`, and `setIsToggling` manage these input bindings. Additionally, it includes utility functions for checking hidden directories on POSIX systems and a global variable to track the last frame time.
+The `Window` struct in Zig is designed to manage input from both keyboards and gamepads, as well as various UI elements within the application. It includes an array of `Key` structs, each representing a different keyboard key or gamepad button with associated actions and conditions for when those actions should be triggered. The `findKey` function searches for a key by its name, while the `key` function returns a pointer to a key based on its name. The `setIsToggling` function allows setting whether a key is currently toggled or not.
+
+The struct also includes functions for managing hotbar slots, which are used to quickly switch between different items or actions in the game. Additionally, it provides utility functions for checking if a file path is hidden or has a parent directory that is hidden on POSIX systems.
+
+Overall, this code snippet provides a comprehensive solution for handling input and UI elements within a Zig application, making it easier to manage user interactions and create an intuitive user experience.
 
 ## Code Example
 ```zig
-fn findKey(name: []const u8) ?*Window.Key { // TODO: Maybe I should use a hashmap here?
-	for (&keys) |*_key| {
-		if (std.mem.eql(u8, name, _key.name)) {
-			return _key;
-		}
-	}
-	return null;
+pub fn exitToMenu() void {
+	shouldExitToMenu.store(true, .monotonic);
 }
 ```
 
 ## Related Questions
-- How does the game handle command line arguments?
-- What is the purpose of the `findKey` function in the code?
-- How are input bindings defined for hotbar slots and camera controls?
-- What subsystems are initialized by the main function?
-- How does the game manage hidden directories on POSIX systems?
-- What is the role of the `lastFrameTime` variable in the engine?
+- How does the `Window` struct handle input from both keyboards and gamepads?
+- What are some of the utility functions provided by the `Window` struct?
+- How can I manage hotbar slots using the `Window` struct?
+- How does the `Window` struct check if a file path is hidden or has a parent directory that is hidden on POSIX systems?
+- Can you explain how the `setIsToggling` function works in the `Window` struct?
+- What are some of the key features and benefits of using the `Window` struct in Zig applications?
 
 *Source: unknown | chunk_id: codebase_src_main.zig_chunk_2*

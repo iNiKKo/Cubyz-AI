@@ -1,33 +1,29 @@
 # [easy/codebase_src_server_BlockUpdateSystem.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** mutex, lock, defer, append, deinit, List, globalAllocator, onUpdate, swap, event loop
+**Keywords:** block updates, server environment, mutex, list management, chunk interaction
 **Symbols:** BlockUpdateSystem, BlockUpdateSystem.list, BlockUpdateSystem.mutex, BlockUpdateSystem.init, BlockUpdateSystem.deinit, BlockUpdateSystem.add, BlockUpdateSystem.update
-**Concepts:** event list management, mutex locking, defer cleanup, block update callbacks, chunk iteration
+**Concepts:** block update system, thread safety, mutex locking, chunk management
 
 ## Summary
-This chunk defines the BlockUpdateSystem struct that manages a list of BlockPos events protected by a mutex and provides an update method to process block change notifications on server chunks.
+Manages block update events in a server environment, handling concurrency and updating blocks within chunks.
 
 ## Explanation
-The struct contains two fields: list (a main.List(BlockPos) initialized as empty) and mutex (a main.utils.Mutex). The init() function returns an empty struct instance. deinit() releases the mutex by setting it to undefined and calls list.deinit(main.globalAllocator). add() locks the mutex, appends a BlockPos to the list using main.globalAllocator, then unlocks via defer. update() is the core processing method: it first swaps out the current list under lock (saving the old list, clearing self.list to .empty, unlocking), then iterates over the saved list items. For each event, it locks ch.mutex, retrieves the block at the event coordinates using ch.getBlock(), unlocks, and runs onUpdate() on that block with a context struct containing the block pointer, chunk pointer, and blockPos value.
+The BlockUpdateSystem module manages block update events in a server environment. It uses a mutex to ensure thread safety when accessing and modifying the list of block positions that need updates. The `init` function initializes an empty list and a mutex. The `deinit` function cleans up by deinitializing the list and marking the mutex as undefined. The `add` function adds a new block position to the list, locking the mutex during this operation. The `update` function swaps the current list with an empty one, then iterates over the old list to update each block in the corresponding chunk. It locks the chunk's mutex while accessing and updating the block, ensuring that block updates are thread-safe.
 
 ## Code Example
 ```zig
-pub fn add(self: *@This(), position: BlockPos) void {
-	self.mutex.lock();
-	defer self.mutex.unlock();
-	self.list.append(main.globalAllocator, position);
+pub fn init() @This() {
+	return .{};
 }
 ```
 
 ## Related Questions
-- What is the initial state of the list field in BlockUpdateSystem?
-- How does add() ensure thread safety when modifying the list?
-- Why is main.globalAllocator used for appending to the list?
-- Describe the order of operations inside update() before iterating events.
-- What happens to self.list after the swap block completes?
-- Which struct fields are required by onUpdate() and how are they populated?
-- How does deinit() prevent use-after-free on the mutex?
-- Is there any validation performed on positions added via add()?
+- How does the BlockUpdateSystem ensure thread safety?
+- What is the purpose of the `init` function in BlockUpdateSystem?
+- How are block positions added to the update list?
+- What happens during the `update` function of BlockUpdateSystem?
+- How does the BlockUpdateSystem handle deinitialization?
+- What role does the mutex play in managing block updates?
 
 *Source: unknown | chunk_id: codebase_src_server_BlockUpdateSystem.zig_chunk_0*

@@ -1,25 +1,28 @@
 # [easy/codebase_assets_cubyz_biomes_hills_huge__defaults.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** height limits, beach smoothness, radius range, structure distribution, block types, chance of occurrence
-**Symbols:** minHeightLimit, minHeight, maxHeight, maxHeightLimit, smoothBeaches, minRadius, maxRadius, roughness, hills, mountains, soilCreep, chance, validPlayerSpawn, structures
-**Concepts:** configuration, biome generation, terrain features, structure placement
+**Keywords:** height limit, radius, roughness, hill distribution, structure chance
+**Symbols:** minHeightLimit, minHeight, maxHeight, smoothBeaches, minRadius, maxRadius, roughness, hills, mountains, soilCreep, chance, validPlayerSpawn, structures
+**Concepts:** biome configuration, structure generation
 
 ## Summary
-Defines default settings for a large hill biome in the Cubyz game.
+Huge hills biome configuration
 
 ## Explanation
-This chunk provides configuration data for a specific biome, including height limits, terrain features, and structures. It sets parameters such as minimum and maximum heights, beach smoothness, radius range, roughness, and hill/mountain distribution. The 'structures' field lists various ground patches, boulders, and flower patches with their respective properties like block types, chances, sizes, and densities.
+Defines a huge hills biome with specific parameters for height, radius, roughness, and hill/mountain distribution. Includes structures like ground patches, boulders, flower patches, and their respective configurations.
 
 ## Related Questions
-- What are the minimum and maximum height limits for this biome?
-- How does the beach smoothness affect terrain generation?
-- What is the range of radius values for this biome?
-- How many hills and mountains are generated in this biome?
-- What structures are placed within this biome, and what are their properties?
-- Is player spawning allowed in this biome?
-- What is the chance of encountering a ground patch with gravel blocks?
-- How does the size variance affect boulder placement?
-- What types of flowers can be found in this biome, and how common are they?
+- What is the minimum height limit for this biome?
+- How many hills are generated in this biome?
+- What is the maximum radius of the hills?
+- What is the roughness level of the terrain?
+- What structures are included in this biome and their chances?
+- Is it valid for players to spawn on this biome?
+- What block is used for ground patches?
+- How many boulders are generated per chunk?
+- What blocks are used for flower patches?
+- What is the width of flower patches?
+- What is the density of flower patches?
+- What is the priority of flower patches?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_hills_huge__defaults.zig.zon_chunk_0*

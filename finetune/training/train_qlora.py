@@ -189,6 +189,15 @@ def main():
         load_best_model_at_end=True,
         metric_for_best_model="eval_loss",
         report_to="none",
+        # CPU-side only -- doesn't touch VRAM, so no OOM risk. Default dataloader_num_workers=0
+        # means the main process does its own tokenized-batch collation serially, in between GPU
+        # steps, instead of overlapping it with GPU compute; a few worker processes prefetch the
+        # next batches on CPU cores while the GPU is still busy with the current one. pin_memory
+        # speeds up the CPU->GPU transfer for whatever's prefetched. On a multi-core CPU sitting
+        # mostly idle during training (the actual bottleneck is the GPU compute itself), this is
+        # free throughput.
+        dataloader_num_workers=min(8, (os.cpu_count() or 4)),
+        dataloader_pin_memory=True,
     )
 
     trainer = SFTTrainer(

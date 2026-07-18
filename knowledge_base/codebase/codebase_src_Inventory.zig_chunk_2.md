@@ -1,31 +1,33 @@
 # [hard/codebase_src_Inventory.zig] - Chunk 2
 
 **Type:** api
-**Keywords:** mutex locking, user permissions, inventory sources, thread safety, command execution
-**Symbols:** inventoryCreationMutex, createInventory, closeInventory, getInventory, getInventoryFromSource, getInventoryFromId, getServerInventory, clearPlayerInventory, tryCollectingToPlayerInventory
-**Concepts:** entity ECS, inventory management, multiplayer synchronization
+**Keywords:** inventory retrieval, callbacks, client-server context, union types, enum types
+**Symbols:** getInventory, Callbacks, Callbacks.onUpdateCallback, Callbacks.onFirstOpenCallback, Callbacks.onLastCloseCallback, Callbacks.canPutInto, SourceType, SourceType.alreadyFreed, SourceType.playerInventory, SourceType.hand, SourceType.blockInventory, SourceType.workbench, SourceType.other, Source, Source.alreadyFreed, Source.playerInventory, Source.hand, Source.blockInventory, Source.workbench, Source.other
+**Concepts:** inventory management, callback mechanisms, context-based retrieval
 
 ## Summary
-Handles inventory creation, management, and access control in a multiplayer environment.
+Defines inventory retrieval and callback mechanisms for different contexts.
 
 ## Explanation
-This chunk manages the lifecycle of inventories in a Cubyz server. It includes functions for creating, closing, and accessing inventories based on user permissions and inventory sources. The `createInventory` function initializes new inventories with appropriate callbacks and ensures that only authorized users can access certain types of inventories. The `closeInventory` function removes users from an inventory when they disconnect or close it. The `getInventory` and related functions retrieve inventory instances by various identifiers, ensuring thread safety with mutex locks. Additional functions like `clearPlayerInventory` and `tryCollectingToPlayerInventory` handle specific inventory operations such as clearing all items for a player or collecting dropped items into a player's inventory.
+This chunk defines functions and structures related to inventory management. The `getInventory` function retrieves an inventory based on the context (client or server) and user information. The `Callbacks` struct contains optional callbacks for various inventory events like updates, first open, last close, and item placement checks. The `SourceType` enum categorizes different types of inventory sources, and the `Source` union holds specific data corresponding to each source type.
 
 ## Code Example
 ```zig
-pub fn closeInventory(user: *main.server.User, clientId: InventoryId) !void {
-	sync.threadContext.assertCorrectContext(.server);
-	const serverId = user.inventoryClientToServerIdMap.get(clientId) orelse return error.InventoryNotFound;
-	inventories.items()[@intFromEnum(serverId)].removeUser(user, clientId);
+pub fn getInventory(id: InventoryId, side: sync.Side, user: ?*main.server.User) ?Inventory {
+	sync.threadContext.assertCorrectContext(side);
+	return switch (side) {
+		.client => client.getInventory(id),
+		.server => server.getInventory(user.?, id),
+	};
 }
 ```
 
 ## Related Questions
-- How does the `createInventory` function ensure that only authorized users can access certain types of inventories?
-- What is the purpose of the `inventoryCreationMutex` in this chunk?
-- How does the `getInventoryFromSource` function retrieve an inventory by its source?
-- What operations are performed when a player's inventory is cleared using `clearPlayerInventory`?
-- How does the `tryCollectingToPlayerInventory` function handle item collection into a player's inventory?
-- What is the role of the `getInventory` function in this chunk?
+- How does the `getInventory` function determine which inventory to retrieve?
+- What are the possible values for the `SourceType` enum?
+- What is the purpose of the `Callbacks` struct in this code?
+- Can you explain how the `Source` union works with different source types?
+- What does the `onUpdateCallback` callback do in the `Callbacks` struct?
+- How is the client-server context handled in the `getInventory` function?
 
 *Source: unknown | chunk_id: codebase_src_Inventory.zig_chunk_2*

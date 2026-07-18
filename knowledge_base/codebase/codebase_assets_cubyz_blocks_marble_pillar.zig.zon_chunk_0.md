@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_marble_pillar.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, block properties, texture settings, rotation behavior, model definition
-**Concepts:** block configuration, texture mapping
+**Keywords:** block properties, rotation, model, textures, configuration
+**Concepts:** block configuration
 
 ## Summary
-Defines configuration for the marble pillar block, including rotation, model, and texture settings.
+Defines configuration for a marble pillar block in Cubyz.
 
 ## Explanation
-This chunk is a configuration file that specifies properties of the marble pillar block in the Cubyz voxel engine. It sets the rotation behavior to 'cubyz:direction', indicating that the block can be rotated in different directions. The model is defined as 'cubyz:cube', suggesting that the block is modeled as a cube. Textures are specified for the main sides ('cubyz:marble/pillar'), top ('cubyz:marble/pillar_top'), and bottom ('cubyz:marble/pillar_bottom') of the block, providing visual detail.
+This chunk contains a single anonymous struct that defines the properties of a marble pillar block. It specifies the rotation behavior, model type, and textures for different sides of the block. The `.rotation` field indicates that the block can be rotated in any direction, while the `.model` field specifies that it uses a cube model. The `.texture`, `.texture_top`, and `.texture_bottom` fields define the textures applied to the main faces and the top/bottom faces of the pillar respectively.
 
 ## Related Questions
 - What is the rotation behavior of the marble pillar block?
-- Which model is used for the marble pillar block?
-- What texture is applied to the main sides of the marble pillar block?
-- How is the top of the marble pillar block textured?
-- What texture is assigned to the bottom of the marble pillar block?
-- Are there any additional properties defined for the marble pillar block in this configuration?
+- Which model type does the marble pillar block use?
+- What texture is applied to the main faces of the marble pillar block?
+- What texture is used for the top face of the marble pillar block?
+- What texture is used for the bottom face of the marble pillar block?
+- How many different textures are defined for the marble pillar block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_marble_pillar.zig.zon_chunk_0*

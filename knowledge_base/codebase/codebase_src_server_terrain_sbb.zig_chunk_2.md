@@ -1,26 +1,53 @@
 # [medium/codebase_src_server_terrain_sbb.zig] - Chunk 2
 
 **Type:** implementation
-**Keywords:** StructureBuildingBlock, initFromZon, postResolutionChecks, blueprints, children, rotation, registerSBB, registerChildBlock, childBlockNumericIdMap, childBlockName, childBlockNameToLocalIndex, main.worldArena
-**Symbols:** registerSBB, registerChildBlock
-**Concepts:** structure building block registration, blueprint validation, child block configuration checking, ZON asset parsing, rotation parameter handling, map key string duplication, reverse lookup table construction
+**Keywords:** struct initialization, error handling, blueprint sampling, child structure retrieval, zon parsing
+**Symbols:** StructureBuildingBlock, StructureBuildingBlock.id, StructureBuildingBlock.children, StructureBuildingBlock.blueprints, StructureBuildingBlock.rotation, StructureBuildingBlock.initFromZon, StructureBuildingBlock.postResolutionChecks, StructureBuildingBlock.getBlueprints, StructureBuildingBlock.getChildStructure
+**Concepts:** world generation, blueprint system, structure configuration
 
 ## Summary
-This chunk defines the StructureBuildingBlock struct and its initialization logic from ZON blueprint data, including validation of child blocks against blueprints, rotation parsing, and registration functions for building block assets.
+Defines the StructureBuildingBlock struct and its methods for initialization from Zon data, post-resolution checks, blueprint sampling, and child structure retrieval.
 
 ## Explanation
-The chunk declares pub fn registerSBB which iterates over an Assets.ZonHashMap to load structure building blocks into a list and map, asserting the structures collection is initially empty. It calls StructureBuildingBlock.initFromZon (defined elsewhere) with each entry's key and value, then duplicates the ZON key string into main.worldArena for use as a map key. After loading all entries, it runs postResolutionChecks on every loaded SBB to validate that blueprint-referenced child blocks have corresponding configuration entries in self.children and that configured children are referenced by at least one blueprint. The chunk also defines pub fn registerChildBlock which registers a new child block given numericId and stringId, asserting numericId is non-zero, computing an index from childBlockNumericIdMap.count(), inserting the mapping into childBlockNumericIdMap, extracting the color name portion of stringId (splitting backwards on '/'), duplicating that color name into main.worldArena, appending it to childBlockName, and registering a reverse lookup in childBlockNameToLocalIndex. The chunk does not define any function bodies or struct/enum definitions within its own raw content; all referenced types like StructureBuildingBlock, Blueprints, BlueprintEntry, LocalBlockIndex, Rotation, Assets.ZonHashMap are declared elsewhere.
+The chunk defines a `StructureBuildingBlock` struct with fields for an ID, children, blueprints, and rotation. It includes methods for initializing from Zon data (`initFromZon`), performing post-resolution checks (`postResolutionChecks`), sampling blueprints based on a seed (`getBlueprints`), and retrieving child structures (`getChildStructure`). The `initFromZon` method handles parsing Zon elements to populate the struct, including error handling for missing or invalid fields. The `postResolutionChecks` method ensures that all configured child blocks are used in at least one blueprint and vice versa. The `getBlueprints` method returns a pointer to an array of blueprint entries based on a random seed. The `getChildStructure` method retrieves a child structure based on a given blueprint entry.
+
+## Code Example
+```zig
+fn postResolutionChecks(self: StructureBuildingBlock) void {
+	// Collect all unique child blocks used in blueprints of this SBB.
+	var childBlocksInBlueprints: List(LocalBlockIndex) = .empty;
+	defer childBlocksInBlueprints.deinit(main.stackAllocator);
+
+	for (self.blueprints.items, 0..) |blueprints, blueprintIndex| {
+		if (blueprints.items == null) continue;
+
+		for (blueprints.items.?[0].childBlocks) |child| {
+			if (std.mem.containsAtLeastScalar(LocalBlockIndex, childBlocksInBlueprints.items, 1, child.index)) continue;
+			childBlocksInBlueprints.append(main.stackAllocator, child.index);
+			// Check that all child blocks present in any of the blueprints have corresponding configurations.
+			if (self.children[@intFromEnum(child.index)] != null) continue;
+			std.log.err("['{s}'] Blueprint ({}) requires child block {s} but no configuration was specified for it.", .{self.id, blueprintIndex, child.id()});
+		}
+	}
+	// Check that all configured child blocks are used somewhere in one of the blueprints.
+	for (self.children, 0..) |child, childBlockIndex| {
+		if (child == null) continue;
+		if (std.mem.containsAtLeastScalar(LocalBlockIndex, childBlocksInBlueprints.items, 1, @enumFromInt(childBlockIndex))) continue;
+		std.log.err("['{s}'] None of the blueprints contains a child '{s}' but configuration for it was specified.", .{self.id, @as(LocalBlockIndex, @enumFromInt(childBlockIndex)).name()});
+	}
+}
+```
 
 ## Related Questions
-- What does registerSBB do with the input structures ZonHashMap?
-- How are child blocks validated against blueprints in postResolutionChecks?
-- What happens if a blueprint references a child block without configuration?
-- What is the purpose of duplicating the key string into main.worldArena?
-- How does registerChildBlock compute the index for a new child block?
-- Where are the color names extracted from the stringId in registerChildBlock?
-- Why does registerSBB assert that structureList.items.len == 0 before loading?
-- What error is logged when initFromZon fails during registration?
-- How are reverse lookups for child blocks stored after registration?
-- Does this chunk define any public functions besides registerSBB and registerChildBlock?
+- What is the purpose of the `initFromZon` method in the `StructureBuildingBlock` struct?
+- How does the `postResolutionChecks` method ensure that all child blocks are correctly configured?
+- What error handling is implemented when parsing blueprints from Zon data?
+- How does the `getBlueprints` method sample blueprints based on a seed?
+- What is the role of the `getChildStructure` method in retrieving child structures?
+- What fields does the `StructureBuildingBlock` struct contain?
+- How are errors logged when parsing Zon elements for `StructureBuildingBlock` initialization?
+- What checks are performed to ensure that all configured child blocks are used in blueprints?
+- How is memory management handled within the `initFromZon` method?
+- What is the relationship between blueprints and child structures in the `StructureBuildingBlock`?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_sbb.zig_chunk_2*

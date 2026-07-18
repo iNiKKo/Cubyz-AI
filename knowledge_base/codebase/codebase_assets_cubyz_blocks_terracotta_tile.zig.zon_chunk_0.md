@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_terracotta_tile.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** block properties, model, texture, rotation, cubyz:stairs, cubyz:cube, cubyz:terracotta/tile
-**Concepts:** block definition
+**Keywords:** configuration, block properties, texture mapping, model definition, rotation
+**Concepts:** block configuration
 
 ## Summary
-Defines the properties of a terracotta tile block.
+Defines configuration for a terracotta tile block.
 
 ## Explanation
-This chunk configures the visual and structural properties of a terracotta tile block in the Cubyz voxel engine. It specifies that the block uses a stair rotation model, a cube model for its shape, and applies a specific texture from the 'terracotta/tile' path.
+This chunk contains a single configuration object with properties specifying the rotation, model, and texture of a terracotta tile block. The rotation is set to 'cubyz:stairs', indicating it can be rotated like stairs. The model is defined as 'cubyz:cube', suggesting it uses a cube-based mesh. The texture is specified as 'cubyz:terracotta/tile', pointing to the image file used for its appearance.
 
 ## Related Questions
-- What is the rotation model used for the terracotta tile block?
-- Which texture is applied to the terracotta tile block?
-- What shape model does the terracotta tile block use?
-- How is the terracotta tile block defined in this configuration file?
-- Can you list all the properties of the terracotta tile block as specified in this chunk?
-- Is there any specific behavior or functionality associated with the terracotta tile block in this configuration?
+- What is the rotation property of the terracotta tile block?
+- Which model is used for the terracotta tile block?
+- Where is the texture file located for the terracotta tile block?
+- How many properties are defined for the terracotta tile block in this configuration?
+- Is there any function or method defined in this chunk?
+- What does the 'cubyz:stairs' rotation imply about the block's behavior?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_terracotta_tile.zig.zon_chunk_0*

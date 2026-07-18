@@ -1,15 +1,15 @@
 # [easy/codebase_src_proceduralItem_modifiers_durable.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** data struct, modifier func, durability inc, tooltip print, property set
+**Keywords:** packed struct, hypotenuse formula, property modification, tooltip formatting, ZonElement parsing
 **Symbols:** Data, priority, loadData, combineModifiers, changeProceduralItemParameters, printTooltip
-**Concepts:** procedural item modifiers, durable item, data structure, functionality
+**Concepts:** procedural item modifiers, durability increase, data loading, modifier combination, tooltip generation
 
 ## Summary
-Data structure and modifiers for durable procedural items
+Defines a modifier for procedural items that increases their durability.
 
 ## Explanation
-This chunk defines a data structure `Data` with fields `strength` and `pad`. It also provides functions to load, combine, change parameters of procedural items, and print tooltips related to durability.
+This chunk defines a modifier for procedural items that affects their durability. It includes a packed struct `Data` to store the strength of the modifier, a function `loadData` to load data from a ZonElement, a function `combineModifiers` to combine two modifiers' strengths using the hypotenuse formula, a function `changeProceduralItemParameters` to apply the modifier's effect on a procedural item's maximum durability, and a function `printTooltip` to generate a tooltip string describing the modifier's effect.
 
 ## Code Example
 ```zig
@@ -19,17 +19,11 @@ pub fn loadData(zon: main.ZonElement) Data {
 ```
 
 ## Related Questions
-- What is the priority level for this data structure?
-- How does loadData function to load durability data from a ZonElement?
-- What is the purpose of the combineModifiers function?
-- In what way does changeProceduralItemParameters modify procedural item properties?
-- How is the tooltip printed using printTooltip function?
-- What is the maximum length of the strength field in the Data structure?
-- Which data fields are used by loadData to load durability data?
-- What is the purpose of the pad field in the Data structure?
-- In what format is the strength value stored in the Data structure?
-- How does the combineModifiers function calculate the combined strength?
-- What is the maximum possible value for the strength field in the Data structure?
-- Which data fields are used by changeProceduralItemParameters to modify procedural item properties?
+- What is the purpose of the `Data` struct in this chunk?
+- How does the `loadData` function handle missing strength values?
+- Which mathematical operation is used to combine two modifier strengths?
+- What effect does the `changeProceduralItemParameters` function have on a procedural item?
+- How is the tooltip string formatted in the `printTooltip` function?
+- What is the value of the `priority` constant in this chunk?
 
 *Source: unknown | chunk_id: codebase_src_proceduralItem_modifiers_durable.zig_chunk_0*

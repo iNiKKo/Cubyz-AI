@@ -1,22 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_decorative_stone_rock.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, data structure, world generation, biome properties, chance distribution
-**Symbols:** properties, radius, chance, minHeight, maxHeight, keepOriginalTerrain, roughness, mountains, hills, stoneBlock, parentBiomes
-**Concepts:** biome configuration, terrain generation
+**Keywords:** biome configuration, terrain generation, height constraints, parent biomes, stone block type
+**Concepts:** world_generation
 
 ## Summary
-Defines properties for a biome with decorative stone rock.
+Defines configuration for a decorative stone rock biome in Cubyz.
 
 ## Explanation
-This chunk is a configuration/data structure that specifies the characteristics of a biome where decorative stone rock can be found. It includes properties such as radius, chance, height range, and parent biomes with their respective chances.
+This chunk contains a JSON-like configuration structure defining properties of a decorative stone rock biome. It specifies parameters such as radius, generation chance, height range, terrain preservation probability, roughness, and the types of mountains and hills present. The biome is associated with several parent biomes, each with its own generation chance.
 
 ## Related Questions
-- What is the radius of the biome?
-- Which blocks can be found in this biome?
-- How often does this biome appear compared to its parent biomes?
-- What is the height range for this biome?
-- What are the chances of finding this biome in relation to other biomes?
-- What specific properties define this biome?
+- What is the radius of the decorative stone rock biome?
+- What is the minimum height for this biome to generate?
+- Which stone block is used in this biome?
+- How many parent biomes are associated with this biome?
+- What is the chance of generating a mountain in this biome?
+- What is the probability of keeping the original terrain when generating this biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_decorative_stone_rock.zig.zon_chunk_0*

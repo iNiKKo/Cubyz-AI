@@ -1,26 +1,56 @@
 # [easy/codebase_mods_cubyz_rotations_ore.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** rotation mode, cube model, transparent block, view through, neighbor occluded, model cache, quad list duplication, texture slot offset, opaque in lod, block data swap
+**Keywords:** block models, ore blocks, model caching, block data formatting, rotation logic
 **Symbols:** modelCache, init, deinit, reset, createBlockModel, generateData, modifyBlock, canBeChangedInto, onBlockBreaking, formatBlockData
-**Concepts:** ore rotation, model caching, block modification, neighbor occlusion check, texture slot offset, serialization format
+**Concepts:** block model creation, block modification, rotation and ore handling
 
 ## Summary
-This chunk defines the ore rotation system for Cubyz, providing functions to create and cache block models (specifically for cube-based ores), modify blocks in place, determine if a block can be changed into another type during rotation, handle breaking of rotated blocks, and format block data for serialization.
+Rotations and ore block model creation
 
 ## Explanation
-The chunk imports the main module's blocks, models, vec, ZonElement, and rotation types. It declares a global modelCache variable to hold a cached ModelIndex for cube-based ores. The init() and deinit() functions are empty stubs; reset() clears the cache by setting modelCache to null. createBlockModel(block, _, zon) extracts the model ID from the ZonElement (falling back to 'cubyz:cube' if parsing fails), validates that it is exactly 'cubyz:cube', and returns early with the cached index if available. If not cached, it retrieves the base cube model, copies its quad list into a managed ListManaged<QuadInfo>, appends each original quad again (doubling the face count) while incrementing textureSlot by 16 for the duplicated faces and setting opaqueInLod to 2 on originals, then initializes a new ModelIndex from the modified quads and caches it. generateData is an empty stub returning false. modifyBlock(block, newBlockType) checks that the block is not transparent or view-through, that all neighbors are occluded (via model().allNeighborsOccluded), and that data != 0; if any check fails it returns false; otherwise it sets block.data = block.typ and block.typ = newBlockType. canBeChangedInto(oldBlock, newBlock, _, shouldDropSourceBlockOnSuccess) verifies oldBlock != newBlock, non-transparent/non-view-through, occluded neighbors, data != 0, and that newBlock.data == oldBlock.typ; if all pass it sets shouldDropSourceBlockOnSuccess.* = false and returns .{.yes_costsItems = 1}. onBlockBreaking(item, _, _, currentData) swaps the block's typ and data fields (setting data to 0). formatBlockData(block, _list) appends a serialized representation of the block with its original data moved into typ and data cleared.
+This chunk defines functions for creating block models based on ore data, handling block modification, checking if a block can be changed into another type, and formatting block data. It also includes initialization and deinitialization functions.
+
+## Code Example
+```zig
+pub fn createBlockModel(block: Block, _: *u16, zon: ZonElement) ModelIndex {
+	const modelId = zon.as([]const u8) orelse blk: {
+		std.log.err("Invalid model data for block {s} found {s}, expected string", .{block.id(), @tagName(zon)});
+		break :blk "cubyz:cube";
+	};
+	if (!std.mem.eql(u8, modelId, "cubyz:cube")) {
+		std.log.err("Ores can only be use on cube models, found '{s}'", .{modelId});
+	}
+	if (modelCache) |modelIndex| return modelIndex;
+
+	const baseModel = main.models.getModelIndex("cubyz:cube").model();
+	var quadList = main.ListManaged(main.models.QuadInfo).init(main.stackAllocator);
+	defer quadList.deinit();
+	baseModel.getRawFaces(&quadList);
+	const len = quadList.items.len;
+	for (0..len) |i| {
+		quadList.append(quadList.items[i]);
+		quadList.items[i + len].textureSlot += 16;
+		quadList.items[i].opaqueInLod = 2;
+	}
+	const modelIndex = main.models.Model.init(quadList.items);
+	modelCache = modelIndex;
+	return modelIndex;
+}
+```
 
 ## Related Questions
-- What happens if createBlockModel receives a ZonElement that does not parse to a string?
-- Under what conditions will modifyBlock return false without modifying the block?
-- How is textureSlot adjusted when duplicating quads in createBlockModel?
-- Why does canBeChangedInto set shouldDropSourceBlockOnSuccess to false on success?
-- What value does generateData always return and why might that be intentional?
-- Does reset() affect any other global state besides modelCache?
-- How is the base cube model obtained inside createBlockModel?
-- What fields are swapped in onBlockBreaking and what do they represent?
-- Can a block with data == 0 ever pass modifyBlock's checks?
-- Is there any caching of ModelIndex for non-cube models in this chunk?
+- What is the purpose of the `modelCache` variable?
+- How does the `createBlockModel` function handle invalid model data for blocks?
+- Can you explain how the `modifyBlock` function checks if a block can be changed into another type?
+- What is the logic behind the `onBlockBreaking` function?
+- How does the `formatBlockData` function format block data?
+- What are the conditions under which the `canBeChangedInto` function returns `.yes_costsItems = 1`?
+- What happens if a block's data is not zero when it is modified?
+- How does the `generateData` function handle block generation?
+- What is the purpose of the `reset` function?
+- Can you explain how the `createBlockModel` function handles cube models specifically?
+- What are the conditions under which the `modifyBlock` function returns false?
+- What is the logic behind the `onBlockBreaking` function when a block's data is set to zero?
 
 *Source: unknown | chunk_id: codebase_mods_cubyz_rotations_ore.zig_chunk_0*

@@ -1,26 +1,29 @@
 # [medium/codebase_src_utils_file_monitor.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** inotify_init, FIONREAD, ioctl, StringHashMap, AutoHashMap, mutex locking, needsUpdate flag, recursive scanning, callback deduplication, error handling
-**Symbols:** CallbackFunction, Impl, NoImpl, LinuxImpl, DirectoryInfo, init, deinit, handleEvents, listenToPath, removePath
-**Concepts:** file system monitoring, inotify integration, cross-platform abstraction, recursive directory watching, thread-safe event handling, callback invocation, error logging, memory allocation with global allocator
+**Keywords:** conditional compilation, callback functions, OS detection, empty implementations, public API
+**Symbols:** CallbackFunction, Impl
+**Concepts:** file monitoring, platform-specific code, event handling
 
 ## Summary
-Implements cross-platform file system monitoring via inotify on Linux, providing initialization, deinitialization, event handling, and path registration with recursive directory watching.
+This chunk defines a file monitoring utility with platform-specific implementations.
 
 ## Explanation
-The chunk defines a public API surface (init, deinit, handleEvents, listenToPath, removePath) that delegates to an OS-specific Impl selected at compile time via builtin.os.tag. For LinuxImpl it declares global state: fd (the inotify file descriptor), watchDescriptors (a StringHashMap mapping path strings to DirectoryInfo structs), callbacks (an AutoHashMap from FD to DirectoryInfo), and a mutex for thread safety. The init function calls c.inotify_init, logs errors on failure, then allocates the two hashmaps using main.globalAllocator. deinit closes fd with c.close, logging errors, then iterates watchDescriptors freeing each entry's allocated path string, calling deinit on each DirectoryInfo (which frees its own watchDescriptors list), and finally destroying both hashmaps. handleEvents locks the mutex, checks available bytes via ioctl(FIONREAD), allocates a buffer for events, reads from fd, parses inotify_event structs by casting the buffer, skips entries where no callback is registered, sets needsUpdate=true on directories (IN_ISDIR mask), collects callbacks into triggeredCallbacks to avoid duplicate invocations. For each collected callback it checks needsUpdate; if true it calls updateRecursiveCallback which re-adds all watched descriptors under that path after recursively scanning subdirectories. After unlocking the mutex it invokes the user-provided callback with userData, then relocks before continuing. The chunk also defines NoImpl as a struct with empty stub implementations for all public functions to satisfy the API when not on Windows or Linux.
+The codebase_src_utils_file_monitor.zig file provides a cross-platform interface for file system event monitoring. It uses conditional compilation based on the operating system to select the appropriate implementation (WindowsImpl, LinuxImpl, or NoImpl). The public API includes functions for initialization (`init`), deinitialization (`deinit`), handling events (`handleEvents`), listening to a path with a callback (`listenToPath`), and removing a monitored path (`removePath`). The `NoImpl` struct provides empty implementations for these functions when no specific implementation is available for the current OS.
+
+## Code Example
+```zig
+fn init() void {
+	Impl.init();
+}
+```
 
 ## Related Questions
-- What happens when inotify initialization fails on Linux?
-- How are watched directories recursively added to the monitor?
-- Why is a triggeredCallbacks hashmap used inside handleEvents?
-- Under what condition does updateRecursiveCallback get invoked?
-- Which global allocator is used for hashmaps and why?
-- What fields does DirectoryInfo contain and how are they freed?
-- How does the chunk ensure thread safety when invoking callbacks?
-- What stub implementation is provided for non-Linux/Windows targets?
-- How does handleEvents parse raw inotify_event data from the buffer?
-- What error logging pattern is used throughout LinuxImpl functions?
+- What is the purpose of the `CallbackFunction` type?
+- How does the code handle different operating systems?
+- What functions are provided in the public API?
+- What happens if no specific implementation is available for the current OS?
+- Where is the main module imported from?
+- What is the role of the `Impl` constant?
 
 *Source: unknown | chunk_id: codebase_src_utils_file_monitor.zig_chunk_0*

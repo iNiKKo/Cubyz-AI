@@ -1,22 +1,22 @@
 # [src/graphics/vulkan.zig] - PR #1753 review diff
 
 **Type:** review
-**Keywords:** VkSwapchainKHR, VkSurfaceFormatKHR, VkPresentModeKHR, VkExtent2D, image views, abstraction, Image struct
-**Symbols:** SwapChain, SupportDetails, createImageView
-**Concepts:** Vulkan API, swap chain management, abstraction
+**Keywords:** SwapChain, SupportDetails, VkSwapchainKHR, VkImage, VkImageView, VkFormat, VkExtent2D, vkGetPhysicalDeviceSurfaceCapabilitiesKHR, getPhysicalDeviceSurfaceFormatsKHR, getPhysicalDeviceSurfacePresentModesKHR, createImageView
+**Symbols:** SwapChain, SupportDetails, createLogicalDevice, c.VkSwapchainKHR, c.VkImage, c.VkImageView, c.VkFormat, c.VkExtent2D, c.vkGetPhysicalDeviceSurfaceCapabilitiesKHR, getPhysicalDeviceSurfaceFormatsKHR, getPhysicalDeviceSurfacePresentModesKHR, createImageView
+**Concepts:** Vulkan API, Swap Chain Management, Abstraction Layer, Initialization and Cleanup, Parameter Selection
 
 ## Summary
-Added SwapChain struct and related functions to handle Vulkan swap chain creation and management.
+Added SwapChain struct and related methods to manage Vulkan swap chains.
 
 ## Explanation
-The change introduces a new SwapChain struct to encapsulate swap chain-related data and operations. This includes methods to initialize, deinitialize, choose format, present mode, and extent for the swap chain. The reviewer suggests considering future abstraction by wrapping VkImage in an Image struct with a view() method, which could simplify image view creation.
+The change introduces a new `SwapChain` struct within the `vulkan.zig` file, which encapsulates details about the Vulkan swap chain such as images, image views, format, and extent. The struct includes nested `SupportDetails` for querying surface capabilities, formats, and present modes. Methods like `init`, `deinit`, `chooseFormat`, `chooseSwapPresentMode`, and `chooseSwapExtent` are provided to handle initialization, cleanup, and selection of appropriate swap chain parameters. The reviewer suggests considering an abstraction layer for Vulkan images with a view creation method in the future to simplify common operations.
 
 ## Related Questions
-- What is the purpose of the SwapChain struct in the Vulkan implementation?
-- How does the SupportDetails struct assist in choosing swap chain parameters?
-- Why is there a TODO comment about using MAILBOX present mode?
-- What potential benefits could come from abstracting VkImage into an Image struct?
-- How does the chooseSwapExtent function determine the extent of the swap chain images?
-- What are the implications of not finding the BGRA8 format during swap chain creation?
+- What is the purpose of the `SwapChain` struct in the Vulkan implementation?
+- How does the `SupportDetails` struct contribute to swap chain management?
+- What methods are provided within the `SupportDetails` struct and what do they do?
+- Why is there a suggestion for creating an abstraction layer for Vulkan images?
+- How does the `chooseSwapExtent` method determine the appropriate extent for the swap chain?
+- What is the role of the `createImageView` function in this context?
 
 *Source: unknown | chunk_id: github_pr_1753_comment_2455728414*

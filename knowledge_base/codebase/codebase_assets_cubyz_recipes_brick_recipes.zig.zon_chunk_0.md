@@ -1,22 +1,21 @@
 # [easy/codebase_assets_cubyz_recipes_brick_recipes.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** recipe, inputs, output, reversible, crafting, item, smooth, rough, tile, bricks, wall, pillar
-**Symbols:** inputs, output, reversible
-**Concepts:** recipe configuration, item crafting, smooth to rough conversion, smooth to tile conversion, smooth to bricks conversion, smooth to wall conversion, smooth to pillar conversion, reversible crafting
+**Keywords:** recipes, brick crafting, smooth to rough, tile, bricks, wall, pillar
+**Concepts:** crafting recipes, item transformation
 
 ## Summary
-This chunk defines a collection of brick recipe configurations, mapping smooth item inputs to various output forms including rough, tile, bricks, wall (quantity 2), and pillar.
+Defines various recipes for transforming smooth items into different brick types.
 
 ## Explanation
-The chunk contains five distinct recipe entries. Each entry specifies an inputs field containing a single smooth item reference formatted as cubyz:{item}/smooth, and an output field defining the resulting item or quantity of items. The first entry additionally includes a reversible flag set to true, indicating that this specific transformation can be undone. The remaining four entries lack the reversible attribute.
+This chunk contains a list of recipe definitions, each specifying the inputs and outputs for crafting different brick types from smooth items. Each recipe is represented as an anonymous struct with fields for inputs, output, and optionally reversibility. The inputs are always a single smooth item, while the outputs vary, including rough, tile, bricks, wall, and pillar forms of the same base item.
 
 ## Related Questions
-- What is the output of a smooth item when reversible crafting is enabled?
-- Which recipe produces two wall items from a single smooth input?
-- How many distinct outputs are defined for the smooth input in this chunk?
-- Is there any difference between the first and second recipe entries besides the reversible flag?
-- What output corresponds to the third entry in the list of brick recipes?
-- Which entry defines the pillar crafting outcome from a smooth item?
+- What are the possible outputs from transforming a smooth item?
+- Is there a recipe that allows reversing the transformation of a smooth item?
+- How many different types of brick transformations are defined in this chunk?
+- What is the input required for all recipes listed in this chunk?
+- Can a smooth item be transformed into a wall using these recipes?
+- Are there any reversible recipes defined in this chunk?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_recipes_brick_recipes.zig.zon_chunk_0*

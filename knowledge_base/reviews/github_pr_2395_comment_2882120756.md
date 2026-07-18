@@ -1,26 +1,26 @@
 # [src/gui/windows/graphics.zig] - PR #2395 review diff
 
 **Type:** review
-**Keywords:** FPS cap, presets, rounding, assertion, u16 range, refactoring, graphics settings, allocator, lowerBound, sort
-**Symbols:** fpsCapRound, fpsCapFormatter, fpsCapCallback, FPSPresetsValue, FPSPresetsText, fpsCapGetIndex
+**Keywords:** FPS cap, presets, rounding, formatter, callback, assertion, u16 range, lowerBound, allocator, unreachable
+**Symbols:** resolutions, leavesQualities, fpsCapRound, fpsCapFormatter, fpsCapCallback, FPSPresetsValue, FPSPresetsText, fpsCapGetIndex
 **Concepts:** thread safety, backwards compatibility, memory leak
 
 ## Summary
-Refactored FPS cap handling by replacing the `fpsCapRound` and `fpsCapFormatter` functions with a new array-based approach for presets. Added an assertion to ensure the FPS value is within the range of u16.
+Refactored FPS cap handling by introducing presets and updating callback logic.
 
 ## Explanation
-The change involves refactoring the FPS cap logic in the graphics settings window. The previous implementation used custom rounding logic for FPS values, which has been replaced by predefined presets stored in arrays (`FPSPresetsValue` and `FPSPresetsText`). This approach simplifies the code and makes it easier to manage different FPS options. The reviewer suggests adding an assertion to ensure that the FPS value is within the valid range of u16, which is a critical architectural consideration for preventing potential overflow or invalid states.
+The change introduces a set of predefined FPS presets stored in `FPSPresetsValue` and their corresponding text representations in `FPSPresetsText`. The function `fpsCapGetIndex` is added to find the index of a given FPS value within these presets. The reviewer suggests asserting that the FPS value is within the range of `u16` for safety, although this assertion is not included in the provided diff.
 
 ## Related Questions
 - What is the purpose of the `FPSPresetsValue` array?
-- How does the new FPS cap handling differ from the previous implementation?
-- Why was the assertion for u16 range added?
-- Can you explain the role of `fpsCapGetIndex` in the refactored code?
-- What is the impact of using presets on performance and maintainability?
-- How does this change affect backwards compatibility with older settings?
-- Is there a risk of memory leaks introduced by the new implementation?
-- What are the potential thread safety concerns with the refactored FPS cap logic?
-- How can we test the correctness of the new FPS cap presets?
-- What changes would be needed to support additional FPS values?
+- How does the `fpsCapGetIndex` function work with the `FPSPresetsValue` array?
+- Why was the assertion for `u16` range suggested but not included in the diff?
+- What changes were made to the FPS cap formatter and callback functions?
+- How do the new presets affect the user interface for setting FPS limits?
+- Is there a risk of memory leaks with the current allocator usage?
+- How does this change impact backwards compatibility with older versions of Cubyz?
+- What is the role of `std.sort.lowerBound` in finding the FPS preset index?
+- Are there any potential thread safety issues introduced by these changes?
+- How does the new FPS cap handling compare to the previous implementation?
 
 *Source: unknown | chunk_id: github_pr_2395_comment_2882120756*

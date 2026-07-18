@@ -1,26 +1,26 @@
 # [src/renderer.zig] - PR #950 review diff
 
 **Type:** review
-**Keywords:** skybox, shader, vertex array, buffer, rendering, performance measuring, debug menu
+**Keywords:** Skybox, Shader, Uniforms, VAO, VBO, Initialization, Deinitialization, Rendering, Performance Measurement, Debug Menu
 **Symbols:** Skybox, Shader, uniforms, vao, vbos, init, deinit, render
-**Concepts:** OpenGL rendering, resource management, GPU performance monitoring
+**Concepts:** OpenGL, GPU Performance Measurement, Rendering Pipeline
 
 ## Summary
-Added Skybox struct with initialization, deinitialization, and rendering functions. Encapsulated render function within GPU performance measuring.
+Added Skybox struct with initialization, deinitialization, and rendering functions. Encapsulated rendering within GPU performance measuring.
 
 ## Explanation
-The change introduces a new `Skybox` struct to handle skybox rendering in the Cubyz game engine. The struct includes methods for initializing resources (shaders, vertex array objects, and buffers), deinitializing them, and rendering the skybox. The reviewer suggests encapsulating the render function within GPU performance measuring functions (`start/stopQuery`) of a new type to integrate it into the GPU performance debug menu accessible via F5.
+The change introduces a new `Skybox` struct to handle skybox rendering in the Cubyz game engine. The struct includes methods for initializing resources (shaders, vertex arrays, buffers), deinitializing them, and rendering the skybox. The reviewer suggests encapsulating the rendering function within GPU performance measuring functions (`start/stopQuery`) to track its performance in the debug menu (F5). This will help in optimizing the rendering process by providing insights into its performance characteristics.
 
 ## Related Questions
-- What is the purpose of the `Skybox` struct in the Cubyz engine?
-- How does the `init` function initialize the skybox resources?
-- Why are the `glDisable` and `glEnable` calls used in the `render` function?
-- What changes were made to integrate the render function into GPU performance measuring?
-- How is the time uniform calculated for the skybox shader?
-- What is the role of the `viewMatrix` and `projectionMatrix` in rendering the skybox?
-- How does the skybox handle lighting direction calculations?
-- What are the implications of disabling culling and depth testing during skybox rendering?
-- How are the vertex and index data structured for the skybox?
-- What is the significance of using `@mod` to calculate time in the shader?
+- What is the purpose of the `Skybox` struct in the Cubyz game engine?
+- How are shaders and vertex buffers initialized in the `Skybox` struct?
+- What performance measurement functions should be used to encapsulate the rendering function?
+- How does the skybox handle time-based animations, such as day/night cycles?
+- What is the role of the `viewMatrix` and `projectionMatrix` in the skybox rendering process?
+- How are vertex attributes set up for the skybox vertices?
+- What steps are taken to ensure proper cleanup of resources in the `deinit` method?
+- How does the skybox handle depth testing and face culling during rendering?
+- What is the significance of the `lightMatrix` and `invLightMatrix` in the skybox shader?
+- How can the performance of the skybox rendering be monitored using the GPU debug menu?
 
 *Source: unknown | chunk_id: github_pr_950_comment_1949897465*

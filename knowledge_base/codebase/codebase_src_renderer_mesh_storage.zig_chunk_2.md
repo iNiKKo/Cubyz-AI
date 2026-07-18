@@ -1,47 +1,160 @@
 # [hard/codebase_src_renderer_mesh_storage.zig] - Chunk 2
 
 **Type:** implementation
-**Keywords:** render distance, mesh management, LOD handling, memory freeing, position checking
-**Symbols:** deltaY, maxZRenderDistance, minZ, maxZ, isMapInRenderDistance, pos, maxRenderDistance, size, mask, invMask, minX, maxX, deltaX, maxYRenderDistance, minY, maxY, freeOldMeshes, olderPx, olderPy, olderPz, olderRD, _lod, lod, maxRenderDistanceNew, maxRenderDistanceOld, storageSize, xIndex, deltaXNew, deltaXOld, maxYRenderDistanceNew, maxYRenderDistanceOld, minZOld, maxZOld, minZNew, maxZNew, zValues, zValuesLen, zIndex, index, node, oldMesh, mesh, updateHigherLodNodeFinishedMeshing, isNeighborLod
-**Concepts:** mesh storage, render distance checking, level of detail (LOD), memory management
+**Keywords:** mesh storage, player position, render distance, memory management, deferred deinitialization
+**Symbols:** freeOldMeshes
+**Concepts:** mesh management, level of detail (LOD)
 
 ## Summary
-Handles mesh storage and management, including checking render distances and freeing old meshes.
+The chunk manages the freeing of old mesh data based on new and old player positions and render distances.
 
 ## Explanation
-This chunk contains functions for managing mesh storage in the Cubyz voxel engine. It includes logic to determine if a map fragment is within render distance (`isMapInRenderDistance`) and to free old meshes that are no longer needed (`freeOldMeshes`). The `isMapInRenderDistance` function calculates whether a given position is within the maximum render distance, considering various dimensions and positions. The `freeOldMeshes` function iterates through different levels of detail (LOD) and frees mesh data that is outside the new render distance, updating storage lists and handling deferred deinitialization of old meshes.
+The `freeOldMeshes` function iterates over different levels of detail (LOD) to determine which mesh data needs to be freed. It calculates the maximum render distance for both the current and previous player positions, then determines the range of x, y, and z coordinates that need to be checked. For each coordinate within this range, it checks if the corresponding mesh or light map fragment should be freed. If a mesh is found, it swaps it out with `null`, marks the node as not finished meshing, and defers its deinitialization. The same process is applied to light map fragments.
 
 ## Code Example
 ```zig
-fn isMapInRenderDistance(pos: LightMap.MapFragmentPosition) bool {
-	const maxRenderDistance = lastRD*chunk.chunkSize*pos.voxelSize;
-	const size: u31 = @as(u31, LightMap.LightMapFragment.mapSize)*pos.voxelSize;
-	const mask: i32 = size - 1;
-	const invMask: i32 = ~mask;
+fn freeOldMeshes(olderPx: i32, olderPy: i32, olderPz: i32, olderRD: u16) void { // MARK: freeOldMeshes()
+	for (0..settings.highestLod + 1) |_lod| {
+		const lod: u5 = @intCast(_lod);
+		const maxRenderDistanceNew = lastRD*chunk.chunkSize << lod;
+		const maxRenderDistanceOld = olderRD*chunk.chunkSize << lod;
+		const size: u31 = chunk.chunkSize << lod;
+		const mask: i32 = size - 1;
+		const invMask: i32 = ~mask;
 
-	const minX = lastPx -% maxRenderDistance & invMask;
-	const maxX = lastPx +% maxRenderDistance +% size & invMask;
-	if (pos.wx -% minX < 0) return false;
-	if (pos.wx -% maxX >= 0) return false;
-	var deltaX: i64 = @abs(pos.wx +% size/2 -% lastPx);
-	deltaX = @max(0, deltaX - size/2);
+		std.debug.assert(@divFloor(2*maxRenderDistanceNew + size - 1, size) + 2 <= storageSize);
 
-	const maxYRenderDistance: i32 = reduceRenderDistance(maxRenderDistance, deltaX);
-	if (maxYRenderDistance == 0) return false;
-	const minY = lastPy -% maxYRenderDistance & invMask;
-	const maxY = lastPy +% maxYRenderDistance +% size & invMask;
-	if (pos.wy -% minY < 0) return false;
-	if (pos.wy -% maxY >= 0) return false;
-	return true;
+		const minX = olderPx -% maxRenderDistanceOld & invMask;
+		const maxX = olderPx +% maxRenderDistanceOld +% size & invMask;
+		var x = minX;
+		while (x != maxX) : (x +%= size) {
+			const xIndex = @divExact(x, size) & storageMask;
+			var deltaXNew: i64 = @abs(x +% size/2 -% lastPx);
+			deltaXNew = @max(0, deltaXNew - size/2);
+			var deltaXOld: i64 = @abs(x +% size/2 -% olderPx);
+			deltaXOld = @max(0, deltaXOld - size/2);
+			const maxYRenderDistanceNew: i32 = reduceRenderDistance(maxRenderDistanceNew, deltaXNew);
+			const maxYRenderDistanceOld: i32 = reduceRenderDistance(maxRenderDistanceOld, deltaXOld);
+
+			const minY = olderPy -% maxYRenderDistanceOld & invMask;
+			const maxY = olderPy +% maxYRenderDistanceOld +% size & invMask;
+			var y = minY;
+			while (y != maxY) : (y +%= size) {
+				const yIndex = @divExact(y, size) & storageMask;
+				var deltaYOld: i64 = @abs(y +% size/2 -% olderPy);
+				deltaYOld = @max(0, deltaYOld - size/2);
+				var deltaYNew: i64 = @abs(y +% size/2 -% lastPy);
+				deltaYNew = @max(0, deltaYNew - size/2);
+				var maxZRenderDistanceOld: i32 = reduceRenderDistance(maxYRenderDistanceOld, deltaYOld);
+				if (maxZRenderDistanceOld == 0) maxZRenderDistanceOld -= size/2;
+				var maxZRenderDistanceNew: i32 = reduceRenderDistance(maxYRenderDistanceNew, deltaYNew);
+				if (maxZRenderDistanceNew == 0) maxZRenderDistanceNew -= size/2;
+
+				const minZOld = olderPz -% maxZRenderDistanceOld & invMask;
+				const maxZOld = olderPz +% maxZRenderDistanceOld +% size & invMask;
+				const minZNew = lastPz -% maxZRenderDistanceNew & invMask;
+				const maxZNew = lastPz +% maxZRenderDistanceNew +% size & invMask;
+
+				var zValues: [storageSize]i32 = undefined;
+				var zValuesLen: usize = 0;
+				if (minZNew -% minZOld > 0) {
+					var z = minZOld;
+					while (z != minZNew and z != maxZOld) : (z +%= size) {
+						zValues[zValuesLen] = z;
+						zValuesLen += 1;
+					}
+				}
+				if (maxZOld -% maxZNew > 0) {
+					var z = minZOld +% @max(0, maxZNew -% minZOld);
+					while (z != maxZOld) : (z +%= size) {
+						zValues[zValuesLen] = z;
+						zValuesLen += 1;
+					}
+				}
+
+				for (zValues[0..zValuesLen]) |z| {
+					const zIndex = @divExact(z, size) & storageMask;
+					const index = (xIndex*storageSize + yIndex)*storageSize + zIndex;
+
+					const node = &storageLists[_lod][@intCast(index)];
+					const oldMesh = node.mesh.swap(null, .monotonic);
+					node.pos = undefined;
+					if (oldMesh) |mesh| {
+						node.finishedMeshing = false;
+						updateHigherLodNodeFinishedMeshing(mesh.pos, false);
+						mesh.deferredDeinit();
+					}
+					node.isNeighborLod = @splat(false);
+				}
+			}
+		}
+	}
+	for (0..settings.highestLod + 1) |_lod| {
+		const lod: u5 = @intCast(_lod);
+		const maxRenderDistanceNew = lastRD*chunk.chunkSize << lod;
+		const maxRenderDistanceOld = olderRD*chunk.chunkSize << lod;
+		const size: u31 = @as(u31, LightMap.LightMapFragment.mapSize) << lod;
+		const mask: i32 = size - 1;
+		const invMask: i32 = ~mask;
+
+		std.debug.assert(@divFloor(2*maxRenderDistanceNew + size - 1, size) + 2 <= storageSize);
+
+		const minX = olderPx -% maxRenderDistanceOld & invMask;
+		const maxX = olderPx +% maxRenderDistanceOld +% size & invMask;
+		var x = minX;
+		while (x != maxX) : (x +%= size) {
+			const xIndex = @divExact(x, size) & storageMask;
+			var deltaXNew: i64 = @abs(x +% size/2 -% lastPx);
+			deltaXNew = @max(0, deltaXNew - size/2);
+			var deltaXOld: i64 = @abs(x +% size/2 -% olderPx);
+			deltaXOld = @max(0, deltaXOld - size/2);
+			var maxYRenderDistanceNew: i32 = reduceRenderDistance(maxRenderDistanceNew, deltaXNew);
+			if (maxYRenderDistanceNew == 0) maxYRenderDistanceNew -= size/2;
+			var maxYRenderDistanceOld: i32 = reduceRenderDistance(maxRenderDistanceOld, deltaXOld);
+			if (maxYRenderDistanceOld == 0) maxYRenderDistanceOld -= size/2;
+
+			const minYOld = olderPy -% maxYRenderDistanceOld & invMask;
+			const maxYOld = olderPy +% maxYRenderDistanceOld +% size & invMask;
+			const minYNew = lastPy -% maxYRenderDistanceNew & invMask;
+			const maxYNew = lastPy +% maxYRenderDistanceNew +% size & invMask;
+
+			var yValues: [storageSize]i32 = undefined;
+			var yValuesLen: usize = 0;
+			if (minYNew -% minYOld > 0) {
+				var y = minYOld;
+				while (y != minYNew and y != maxYOld) : (y +%= size) {
+					yValues[yValuesLen] = y;
+					yValuesLen += 1;
+				}
+			}
+			if (maxYOld -% maxYNew > 0) {
+				var y = minYOld +% @max(0, maxYNew -% minYOld);
+				while (y != maxYOld) : (y +%= size) {
+					yValues[yValuesLen] = y;
+					yValuesLen += 1;
+				}
+			}
+
+			for (yValues[0..yValuesLen]) |y| {
+				const yIndex = @divExact(y, size) & storageMask;
+				const index = xIndex*storageSize + yIndex;
+
+				const oldMap = mapStorageLists[_lod][@intCast(index)].swap(null, .monotonic);
+				if (oldMap) |map| {
+					map.deferredDeinit();
+				}
+			}
+		}
+	}
 }
 ```
 
 ## Related Questions
-- What is the purpose of the `isMapInRenderDistance` function?
-- How does the `freeOldMeshes` function determine which meshes to free?
-- What role do LODs play in mesh storage management?
-- How is render distance calculated for a map fragment?
-- What happens to old meshes that are outside the new render distance?
-- How is memory managed when freeing old meshes?
+- What is the purpose of the `freeOldMeshes` function?
+- How does the function determine which mesh data to free?
+- What happens to a mesh when it is freed?
+- How are light map fragments managed in this chunk?
+- What is the role of LOD (Level of Detail) in this implementation?
+- How does the function handle memory management for old meshes?
 
 *Source: unknown | chunk_id: codebase_src_renderer_mesh_storage.zig_chunk_2*

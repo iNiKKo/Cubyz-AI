@@ -1,24 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_desert_hoodoos_pit.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** minRadius, maxRadius, chance, stoneBlock, structures, degradable, parentBiomes, roughness, rivers, height limits
-**Symbols:** minRadius, maxRadius, minHeightLimit, chance, minHeight, maxHeight, rivers, roughness, stoneBlock, structures, parentBiomes
-**Concepts:** biome configuration, structure placement, height generation limits, parent biome linking
+**Keywords:** radius limits, height constraints, structure placement, degradation mode, inheritance
+**Concepts:** world generation, biome configuration
 
 ## Summary
-This chunk defines a biome configuration for desert hoodoo pits, specifying generation parameters such as radius limits, height ranges, river presence, roughness, stone block type, and associated structures with placement modes.
+Defines properties for a desert hoodoo pit biome in Cubyz, including radius limits, height constraints, and structure placement probabilities.
 
 ## Explanation
-The chunk declares a struct-like object containing properties: minRadius (16), maxRadius (32), minHeightLimit (1), chance (0), minHeight (1), maxHeight (10), rivers (false), roughness (1), stoneBlock set to cubyz:sandstone/rough, and structures array with one entry defining id cubyz:sbb referencing structure cubyz:rock/hoodoo/small_medium in degradable mode with chance 0.08. It also includes parentBiomes array containing a single entry linking to biome cubyz:desert/hoodoos/base with chance 12.
+This chunk defines the configuration for a specific biome within the Cubyz game engine. It specifies various parameters such as minimum and maximum radius, height limits, chance of occurrence, stone block type, and structures that can be placed within this biome. The biome is configured to have small to medium hoodoos with a certain degradation mode and placement probability. Additionally, it inherits from another desert hoodoo base biome with a specified inheritance chance.
 
 ## Related Questions
-- What is the minimum radius for desert hoodoo pit biome generation?
-- Which stone block type is assigned to this biome configuration?
-- How does the chance value affect structure spawning in this biome?
-- What placement mode is used for the sbb structure entry?
-- Is river generation enabled by default in this biome config?
-- What are the minimum and maximum height limits defined here?
-- Which parent biome ID is linked to this configuration?
-- How many structures are included in the structures array of this chunk?
+- What is the minimum radius for the desert hoodoo pit biome?
+- Which stone block type is used in this biome?
+- How many different structures can be placed in this biome?
+- What is the chance of placing a small to medium hoodoo in this biome?
+- Does this biome have rivers?
+- What is the inheritance relationship of this biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_desert_hoodoos_pit.zig.zon_chunk_0*

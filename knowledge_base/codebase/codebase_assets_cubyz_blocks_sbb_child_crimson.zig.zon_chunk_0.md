@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_sbb_child_crimson.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** texture paths, Crimson block, side texture, top texture, bottom texture
-**Concepts:** block rendering, texture mapping
+**Keywords:** texture mapping, block assets, side textures, top texture, bottom texture
+**Concepts:** block texturing
 
 ## Summary
-Defines texture paths for the Crimson block variant.
+Defines texture paths for a crimson block variant.
 
 ## Explanation
-This chunk specifies the file paths for different textures of a Crimson block variant. It includes the side, top, and bottom textures used to render the block in the Cubyz voxel engine. Each texture path is a string that points to the location of the corresponding image asset within the game's resource directory.
+This chunk specifies the texture paths for different sides of a crimson block variant. It includes the side, top, and bottom textures, all pointing to specific files within the Cubyz assets directory.
 
 ## Related Questions
-- What are the texture paths for the Crimson block variant?
-- Where is the side texture for the Crimson block located?
-- Which file path is used for the top texture of the Crimson block?
-- Can you provide the bottom texture path for the Crimson block?
-- How many different textures are defined for the Crimson block in this configuration?
-- What is the purpose of specifying multiple texture paths for a single block variant?
+- What is the side texture for the crimson block variant?
+- Where is the top texture file located for the crimson block?
+- Which file path is specified for the bottom texture of the crimson block?
+- How many different textures are defined for the crimson block in this chunk?
+- Can you list all the texture paths defined for the crimson block?
+- What directory contains the assets for the crimson block variant?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_sbb_child_crimson.zig.zon_chunk_0*

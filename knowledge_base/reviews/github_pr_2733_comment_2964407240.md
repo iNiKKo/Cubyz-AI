@@ -1,26 +1,22 @@
 # [src/models.zig] - PR #2733 review diff
 
 **Type:** review
-**Keywords:** EntityModel, EntityVertex, VAO, VBO, EBO, position, normal, UV, texture slot, LOD, optimization, irrelevant
+**Keywords:** EntityModel, EntityVertex, vao, vbo, ebo, position, normal, UV, texture slot, irrelevant for entities
 **Symbols:** EntityModel, vao, vbo, ebo, size, EntityVertex, pos, normal, uv, textureSlot, opaqueInLod
-**Concepts:** data structure design, graphics pipeline, vertex buffer management
+**Concepts:** data structures, OpenGL bindings
 
 ## Summary
 A new struct `EntityModel` and its nested `EntityVertex` are added to the `models.zig` file.
 
 ## Explanation
-The addition of the `EntityModel` struct introduces a new data structure for managing entity models in the graphics pipeline. The struct includes fields for vertex array object (VAO), vertex buffer object (VBO), element buffer object (EBO), and model size. The nested `EntityVertex` struct defines the structure of individual vertices, including position, normal, UV coordinates, texture slot, and an opaque LOD flag. However, a critical architectural review comment suggests that this optimization is irrelevant for entities, as it was originally intended for blocks.
+The review indicates that a new struct `EntityModel` is being introduced, which includes fields for vertex array object (vao), vertex buffer object (vbo), element buffer object (ebo), and size. Additionally, a nested struct `EntityVertex` is defined with fields for position, normal, UV coordinates, texture slot, and an optional opaque in LOD flag. The reviewer notes that this addition is irrelevant for entities as it is an optimization intended for blocks.
 
 ## Related Questions
-- Why was the `EntityModel` struct added to the `models.zig` file?
-- What is the purpose of the `EntityVertex` nested struct within `EntityModel`?
-- How does the addition of `EntityModel` affect the existing graphics pipeline?
-- Is there a specific reason why this optimization is considered irrelevant for entities?
-- What potential performance implications might arise from adding these new structures?
-- How could the `EntityModel` struct be modified to better suit entity needs?
-- Are there any memory management considerations with the introduction of these new structs?
-- How does the addition of `EntityModel` impact backwards compatibility with existing code?
-- What architectural changes are necessary to integrate `EntityModel` into the current system?
-- Is there a need for additional testing or validation after adding `EntityModel`?
+- What is the purpose of the `EntityModel` struct in the context of Cubyz?
+- Why are fields like `vao`, `vbo`, and `ebo` included in the `EntityModel` struct?
+- How does the `EntityVertex` struct contribute to rendering entities in Cubyz?
+- What is the significance of the `opaqueInLod` field in the `EntityVertex` struct?
+- Why was this change marked as irrelevant for entities by the reviewer?
+- How might this addition impact performance or memory usage in Cubyz?
 
 *Source: unknown | chunk_id: github_pr_2733_comment_2964407240*

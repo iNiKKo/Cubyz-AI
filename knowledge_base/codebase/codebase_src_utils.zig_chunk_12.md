@@ -1,34 +1,38 @@
 # [hard/codebase_src_utils.zig] - Chunk 12
 
-**Type:** implementation
-**Keywords:** spline interpolation, frame management, velocity handling, time-based updates, drag calculation
-**Symbols:** unitIntervalSpline, GenericInterpolation, GenericInterpolation.init, GenericInterpolation.updatePosition, GenericInterpolation.update, evaluateSplineAt, interpolateCoordinate, determineNextDataPoint
-**Concepts:** cubic Hermite spline, generic interpolation, smooth transitions
+**Type:** serialization
+**Keywords:** atomic operations, mutex locking, endianness handling, variable-length integers, buffer management
+**Symbols:** TimeDifference, TimeDifference.difference, TimeDifference.firstValue, TimeDifference.addDataPoint, Mutex, Mutex.super, Mutex.tryLock, Mutex.lock, Mutex.unlock, Mutex.assertLocked, BinaryReader, BinaryReader.remaining, BinaryReader.AllErrors, BinaryReader.init, BinaryReader.readVec, BinaryReader.readInt, BinaryReader.readVarInt, BinaryReader.readFloat, BinaryReader.readEnum, BinaryReader.readBool, BinaryReader.readUntilDelimiter, BinaryReader.readSlice, BinaryReader.readSliceWithSize
+**Concepts:** time tracking, thread synchronization, binary data parsing
 
 ## Summary
-This chunk provides utility functions and a generic interpolation structure for handling smooth transitions between data points.
+This chunk defines utility structures and functions for time difference calculation, mutex management, and binary data reading.
 
 ## Explanation
-The chunk defines several utility functions and a struct for generic interpolation. The `unitIntervalSpline` function calculates coefficients for a cubic Hermite spline, which is used to interpolate values smoothly over time. The `GenericInterpolation` struct manages a set of frames with positions and velocities, allowing for smooth transitions between these points. It includes methods like `init`, `updatePosition`, and `update` to manage the interpolation process. The `evaluateSplineAt` function computes the value and derivative of the spline at a given time, while `interpolateCoordinate` applies this to individual coordinates. The `determineNextDataPoint` method selects the next data point to interpolate towards based on the current time.
+The chunk includes a `TimeDifference` struct that tracks the difference between two timestamps using atomic operations. It also provides a `Mutex` wrapper to handle OS-specific locking mechanisms. The `BinaryReader` struct is designed for reading various types of data from a byte slice, including integers, floats, enums, booleans, and variable-length integers. Each method in `BinaryReader` handles specific data types or operations, such as reading vectors, handling endianness, and managing buffer state.
 
 ## Code Example
 ```zig
-pub fn unitIntervalSpline(comptime Float: type, p0: Float, m0: Float, p1: Float, m1: Float) [4]Float { // MARK: unitIntervalSpline()
-	return .{
-		p0,
-		m0,
-		-3*p0 - 2*m0 + 3*p1 - m1,
-		2*p0 + m0 - 2*p1 + m1,
-	};
+pub fn readInt(self: *BinaryReader, T: type) error{ OutOfBounds, IntOutOfBounds }!T {
+	if (@mod(@typeInfo(T).int.bits, 8) != 0) {
+		const fullBits = comptime std.mem.alignForward(u16, @typeInfo(T).int.bits, 8);
+		const FullType = std.meta.Int(@typeInfo(T).int.signedness, fullBits);
+		const val = try self.readInt(FullType);
+		return std.math.cast(T, val) orelse return error.IntOutOfBounds;
+	}
+	const bufSize = @divExact(@typeInfo(T).int.bits, 8);
+	if (self.remaining.len < bufSize) return error.OutOfBounds;
+	defer self.remaining = self.remaining[bufSize..];
+	return std.mem.readInt(T, self.remaining[0..bufSize], endian);
 }
 ```
 
 ## Related Questions
-- How does the `unitIntervalSpline` function calculate the coefficients for a cubic Hermite spline?
-- What is the purpose of the `GenericInterpolation` struct in this chunk?
-- How does the `evaluateSplineAt` function compute the value and derivative of the spline at a given time?
-- What method determines the next data point to interpolate towards based on the current time?
-- How does the `updatePosition` method update the position and velocity frames?
-- What is the role of drag calculation in maintaining smooth transitions?
+- How does the `TimeDifference` struct calculate time differences?
+- What is the purpose of the `Mutex` wrapper in this code?
+- How does the `BinaryReader` handle reading variable-length integers?
+- What error handling is implemented for integer overflow in `BinaryReader` methods?
+- How does the `readEnum` method work in the `BinaryReader` struct?
+- What are the different types of errors that can be returned by `BinaryReader` methods?
 
 *Source: unknown | chunk_id: codebase_src_utils.zig_chunk_12*

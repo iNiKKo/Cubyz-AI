@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_log_glimmergill.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, tags, textures, block definition, Glimmergill log
-**Concepts:** block properties, texture mapping
+**Keywords:** texture paths, block properties, rendering configuration, orientation handling, material textures
+**Concepts:** block rendering, texture mapping
 
 ## Summary
-Defines properties for the Glimmergill log block, including textures and tags.
+Defines texture properties for the Glimmergill log block.
 
 ## Explanation
-This chunk is a configuration file that specifies various attributes of the Glimmergill log block. It includes an array of tags such as 'cuttable', 'sliceable', and 'mushroom' which categorize the block's behavior in the game. Additionally, it lists six texture paths corresponding to different orientations or states of the log (dot, line, bend, intersection, cross, top). These textures are used for rendering the block in the game environment.
+This chunk specifies the textures used for different orientations and intersections of the Glimmergill log block. Each field corresponds to a specific texture file path, indicating how the block should be rendered based on its orientation in the world.
 
 ## Related Questions
-- What are the tags associated with the Glimmergill log block?
-- Which textures are used for rendering the Glimmergill log block?
-- How many different texture orientations does the Glimmergill log have?
-- Is the Glimmergill log block cuttable?
-- What is the path to the top texture of the Glimmergill log block?
-- Does the Glimmergill log block have any special properties?
+- What are the texture paths defined for the Glimmergill log block?
+- How many different textures are specified for the Glimmergill log block?
+- Which texture is used for the top of the Glimmergill log block?
+- What tags are associated with the Glimmergill log block?
+- Is the Glimmergill log block cuttable and sliceable?
+- How does the chunk define the intersection texture for the Glimmergill log block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_log_glimmergill.zig.zon_chunk_0*

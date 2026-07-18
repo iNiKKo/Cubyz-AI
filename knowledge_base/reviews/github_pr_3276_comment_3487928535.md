@@ -1,26 +1,26 @@
-# [src/gui/tooltip.zig] - Chunk 3487928535
+# [src/gui/tooltip.zig] - PR #3276 review diff
 
 **Type:** review
-**Keywords:** tooltip, texture, cornerSize, globalInit, renderFromText, GuiComponent, defer deinit, alignment, bound9SliceImage, window bounds
-**Symbols:** tooltipTexture, cornerSize, globalInit, globalDeinit, posFromAlignment, render, renderFromText, GuiComponent.Label.init, draw.bound9SliceImage
-**Concepts:** defer cleanup placement, texture binding, 9-slice scaling, alignment clamping, window bounds checking, line break calculation, resource lifecycle management
+**Keywords:** tooltip, texture, rendering, alignment, defer deinit, bounds checking, GUI component
+**Symbols:** tooltipTexture, cornerSize, globalInit, globalDeinit, posFromAlignment, render, renderFromText
+**Concepts:** resource management, GUI rendering, bounds checking
 
 ## Summary
-The tooltip module introduces a background texture and corner sizing logic for rendering tooltips with proper alignment relative to mouse position and window bounds.
+Added tooltip rendering functionality in `tooltip.zig`, including texture initialization, position calculation, and rendering logic.
 
 ## Explanation
-This change adds the tooltipTexture and cornerSize variables, initializes them in globalInit(), and provides render() and renderFromText() functions. The render() function computes the final position based on alignment (right/left/center) with offset handling for centering, then clamps to window bounds. It binds the texture, draws a 9-slice scaled image using cornerSize, and updates the GuiComponent's position before rendering the label. The renderFromText() function builds a Label component from raw text, calculates line breaks at fontSize=16 with max width 300, adjusts size accordingly, then renders via the same render logic. A reviewer flagged that the defer deinit for the component is placed far from its init (10 lines later), which violates the principle of keeping resource cleanup adjacent to allocation for clarity and safety.
+The change introduces a new module for handling tooltips in the GUI system. It includes functions for initializing and deinitializing tooltip textures, calculating positions based on alignment, and rendering the tooltip with proper bounds checking to ensure it stays within the window. The reviewer notes that the `defer deinit` call should be placed immediately after the corresponding initialization function for better resource management.
 
 ## Related Questions
-- What is the purpose of the cornerSize variable in tooltip.zig?
-- How does posFromAlignment compute positions for different text alignments?
-- Why is the texture bound to slot 0 before drawing?
-- What happens if renderpos exceeds window bounds horizontally or vertically?
-- Where should the defer deinit be placed according to the reviewer's concern?
-- Does renderFromText handle multi-line text correctly with lineBreaks?
-- Is there any risk of memory leaks in the tooltip module after this change?
-- How does the code ensure tooltips stay within the window viewport?
-- What is the role of draw.bound9SliceImage in rendering the tooltip background?
-- Are there any assumptions about the size of tooltipTexture that could break on different resolutions?
+- What is the purpose of the `globalInit` function in `tooltip.zig`?
+- How does the `posFromAlignment` function determine the position of the tooltip based on alignment?
+- Why is it important to place `defer deinit` immediately after initialization in resource management?
+- What checks are performed to ensure the tooltip stays within the window boundaries?
+- How does the `renderFromText` function calculate the size of the tooltip text?
+- What is the role of the `cornerSize` variable in rendering the tooltip?
+- How does the `bound9SliceImage` function contribute to the rendering process?
+- What are the potential performance implications of recalculating line breaks for each tooltip render?
+- How does the code handle cases where the tooltip would extend beyond the window width or height?
+- What is the significance of the `offsetFromMouse` constant in positioning the tooltip?
 
 *Source: unknown | chunk_id: github_pr_3276_comment_3487928535*

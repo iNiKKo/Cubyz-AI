@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_sbb_child_black.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** texture mapping, asset paths, block customization, SBB blocks, black theme
-**Concepts:** block texturing
+**Keywords:** texture paths, block configuration, side textures, top texture, bottom texture
+**Concepts:** block rendering, texture mapping
 
 ## Summary
-Defines texture paths for a black-themed SBB child block.
+Defines texture paths for a specific block variant.
 
 ## Explanation
-This chunk specifies the file paths for different textures of a black-themed SBB (Space Building Blocks) child block. It includes the side, top, and bottom textures, each pointing to a specific image resource within the Cubyz asset structure.
+This chunk contains configuration data specifying the texture paths for different sides of a block variant. It defines three fields: `texture`, `texture_top`, and `texture_bottom`, each pointing to a specific texture file within the Cubyz asset system. These textures are used to render the block in the game, with separate textures for the side faces (`texture`), top face (`texture_top`), and bottom face (`texture_bottom`).
 
 ## Related Questions
-- What is the texture path for the side of the black SBB child block?
-- Which file contains the top texture for the black SBB child block?
-- How many different textures are defined for the black SBB child block?
-- What is the asset path for the bottom texture of the black SBB child block?
-- Are there any other colors available for SBB blocks besides black?
-- How does Cubyz handle multiple textures for a single block type?
+- What are the texture paths defined for this block variant?
+- Which field specifies the texture for the top face of the block?
+- How many different textures are specified for this block?
+- What is the path to the side texture for this block?
+- Is there a separate texture for the bottom face of the block?
+- What asset system does Cubyz use for managing block textures?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_sbb_child_black.zig.zon_chunk_0*

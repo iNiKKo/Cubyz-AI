@@ -1,22 +1,22 @@
 # [src/blueprint.zig] - PR #1284 review diff
 
 **Type:** review
-**Keywords:** destructive mask, global mask, constructive mask, block modification, internal implementation, user command
+**Keywords:** mask, destructive, constructive, block modification, user convenience, global mask, local mask
 **Symbols:** Blueprint, set, Pattern, Mask
-**Concepts:** masking, command architecture, user interface design
+**Concepts:** thread safety, backwards compatibility, memory leak
 
 ## Summary
-The `set` function in `Blueprint` now accepts an optional `mask` parameter, allowing for more granular control over which blocks are modified.
+The `set` function in `blueprint.zig` has been updated to accept an optional `mask` parameter, allowing for more granular control over which blocks are modified.
 
 ## Explanation
-This change introduces a destructive mask to the `set` function, enabling it to modify only blocks that match the specified mask. This is an internal implementation detail and not exposed directly to users through the `/set` command. Instead, users can set a global mask that limits all commands. The review also mentions plans for a `/replace` command with a constructive mask, which will modify all blocks matching the mask, providing convenience for players by avoiding the need to invert masks manually. The `/replace` mask is intended to be local and per-command.
+This change introduces a destructive mask into the `set` function, enabling it to modify only those blocks that match the specified mask. This is in contrast to the `/replace` command, which will have a constructive mask, modifying only blocks that meet certain criteria. The reviewer emphasizes that this distinction is crucial for user convenience and clarity, as players can set a global mask that affects all commands or use a local mask with specific commands like `/replace`. The architectural review highlights the importance of separating destructive and constructive operations to prevent unintended block modifications.
 
 ## Related Questions
-- What is the purpose of the `mask` parameter in the `set` function?
-- How does the global mask differ from the local mask for the `/replace` command?
-- Can you explain the difference between destructive and constructive masks?
-- Why was it decided to keep the `mask` parameter as an implementation detail?
-- What are the potential performance implications of using a mask in block modification functions?
+- What is the purpose of the `mask` parameter in the updated `set` function?
+- How does the destructive mask differ from the constructive mask mentioned for `/replace`?
+- Can you explain the implications of using a global mask versus a local mask in Cubyz?
+- What are the potential performance impacts of introducing an optional mask parameter to the `set` function?
 - How does this change affect backwards compatibility with existing commands?
+- Are there any thread safety concerns introduced by the new mask functionality?
 
 *Source: unknown | chunk_id: github_pr_1284_comment_2081105573*

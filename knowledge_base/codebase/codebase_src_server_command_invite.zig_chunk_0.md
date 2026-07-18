@@ -1,15 +1,15 @@
 # [easy/codebase_src_server_command_invite.zig] - Chunk 0
 
-**Type:** implementation
-**Keywords:** command, argument parsing, error handling, connection attempt, user invitation
+**Type:** api
+**Keywords:** server command, IP address, reference counting, error messages, user initialization
 **Symbols:** description, usage, Args, ArgParser, execute
-**Concepts:** command handling, argument parsing, error handling
+**Concepts:** command processing, argument parsing, user management, error handling, memory management
 
 ## Summary
-Handles player invitation command
+Handles the '/invite' command for inviting a player by IP address.
 
 ## Explanation
-This chunk defines the logic for handling the '/invite' command, which invites a player by IP address. It includes an argument parser to parse the command arguments and error handling for connection attempts.
+This chunk defines the logic for processing the '/invite' server command. It uses an argument parser to extract the IP address from the command input. If parsing fails, it sends an error message to the source user. If successful, it attempts to initialize a new user connection using the provided IP and handles any errors that occur during this process. The chunk also manages reference counting for user objects to ensure proper memory management.
 
 ## Code Example
 ```zig
@@ -33,17 +33,11 @@ pub fn execute(args: []const u8, source: *User) void {
 ```
 
 ## Related Questions
-- What is the purpose of the 'Args' union in this chunk?
-- How does the 'ArgParser' handle parsing errors and what message is sent to the user if an error occurs?
-- What is the role of 'main.server.User.initAndIncreaseRefCount' in this function?
-- In case of a connection failure, which log message is displayed to the user?
-- What happens if there's an error during user initialization and how is it handled?
-- How does the 'user.decreaseRefCount()' call fit into the overall logic of inviting a player?
-- What is the expected format for the '/invite' command arguments?
-- In what way does this chunk interact with the 'main.server.connectionManager' to establish a connection?
-- What happens if the user's reference count is decreased after the connection attempt?
-- How is the error message formatted and displayed when an error occurs during the connection process?
-- What is the purpose of the 'errorMessage' variable in this function?
-- In what way does this chunk handle errors related to user initialization?
+- What is the description of the '/invite' command?
+- How does the chunk parse arguments for the '/invite' command?
+- What happens if there is an error during argument parsing?
+- How does the chunk handle errors when initializing a new user connection?
+- What role does reference counting play in this chunk?
+- How are error messages communicated to the source user?
 
 *Source: unknown | chunk_id: codebase_src_server_command_invite.zig_chunk_0*

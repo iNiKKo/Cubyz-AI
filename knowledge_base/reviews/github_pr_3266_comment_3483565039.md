@@ -1,22 +1,22 @@
-# [build.zig] - PR #3266 review comment
+# [build.zig] - PR #3266 review diff
 
 **Type:** review
-**Keywords:** std.Io.Dir.walk, intermediate list, for loop, memory usage, performance, feature directory, .zig files, sorting paths, appending to feature list, separator comment
-**Symbols:** makeModFeature, featureDir, featureWalker, modFeatureList, featureEntry, modEntry
-**Concepts:** directory iteration, file filtering, memory allocation, sorting, string manipulation
+**Keywords:** refactoring, directory iteration, allocation optimization, sorting algorithm, Zig language
+**Symbols:** makeModFeature, std.Io.Dir.walk, modFeatureList, featureList, lessThanFn
+**Concepts:** directory traversal, memory management, sorting, string manipulation
 
 ## Summary
-The change refactors the feature directory iteration to use `std.Io.Dir.walk` and introduces an intermediate list to store feature paths, which is then sorted and appended to the main feature list.
+The change refactors the feature directory iteration to use `std.Io.Dir.walk` and sorts the features before appending them to the feature list. The reviewer suggests using a for loop instead of an intermediate allocation.
 
 ## Explanation
-The original code iterated over entries in a feature directory using `featureDir.iterate()`. The refactored code uses `std.Io.Dir.walk` for iteration, which provides more functionality. An intermediate list `modFeatureList` is used to store paths of `.zig` files. After collecting all valid file paths, the list is sorted and then appended to the main feature list with a separator comment indicating the module name. The reviewer suggests using a for loop instead of this intermediate allocation, implying potential performance concerns or memory usage issues.
+The original code iterated over the feature directory entries using `featureDir.iterate()`. The refactored code uses `std.Io.Dir.walk` to create a walker, which is more efficient for traversing directories. It collects feature entries in a `modFeatureList`, sorts them alphabetically, and then appends them to the main `featureList`. The reviewer's concern is about unnecessary memory allocation by using an intermediate list, suggesting a simpler loop approach might be preferable.
 
 ## Related Questions
-- Why was `std.Io.Dir.walk` chosen over the original iteration method?
-- What is the purpose of sorting the paths in `modFeatureList`?
-- How does the use of an intermediate list affect memory usage?
-- Could using a for loop instead of the intermediate list improve performance?
-- What are the potential implications of changing the file path handling from `featureEntry.name` to `featureEntry.path`?
-- How does the addition of the separator comment impact code readability and maintainability?
+- What is the purpose of using `std.Io.Dir.walk` instead of `featureDir.iterate()`?
+- How does sorting the feature entries affect the build process?
+- Why is the reviewer concerned about memory allocation in this context?
+- Can you explain the use of `modFeatureList` and its deinitialization?
+- What is the impact of using a for loop instead of an intermediate list?
+- How does the change improve the performance of directory traversal?
 
 *Source: unknown | chunk_id: github_pr_3266_comment_3483565039*

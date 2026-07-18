@@ -1,22 +1,22 @@
 # [src/blueprint.zig] - PR #1352 review diff
 
 **Type:** review
-**Keywords:** set function, variable pointer, cloning, unnecessary copies, masks implementation, old blocks preservation
-**Symbols:** Blueprint, NeverFailingAllocator, Pattern
-**Concepts:** thread safety, backwards compatibility, memory leak
+**Keywords:** set function, blueprint struct, variable pointer, cloning, masks, performance, flexibility
+**Symbols:** Blueprint, set, allocator, pattern
+**Concepts:** performance optimization, memory management, architectural design
 
 ## Summary
-The `set` function in the `Blueprint` struct has been modified to take a variable pointer instead of cloning the blueprint.
+The `set` function in the `Blueprint` struct has been modified to take a variable pointer instead of cloning the blueprint. The reviewer suggests this change to prevent unnecessary copying and to accommodate future features like masks.
 
 ## Explanation
-The reviewer pointed out that the caller should be responsible for copying, and suggested changing the `set` function to accept a variable pointer rather than cloning the blueprint. This change aims to prevent unnecessary copies, especially when the `set` function is applied to the clipboard. The reviewer also noted that cloning is not necessary in the current implementation because all values are overwritten, but this could change once masks are implemented, which might require preserving some or all of the old blocks.
+The original implementation of the `set` function cloned the entire blueprint, which could lead to performance issues if the blueprint is large. The reviewer points out that since all values are being overwritten, cloning is not necessary. Additionally, the reviewer anticipates that future changes might introduce masks, which could require preserving some old blocks, making the current implementation more flexible.
 
 ## Related Questions
-- What is the purpose of the `set` function in the `Blueprint` struct?
-- Why was the decision made to change the `set` function to accept a variable pointer?
-- How does this change impact memory usage and performance?
-- What are the potential implications of implementing masks in the future?
-- How can we ensure that the caller is always responsible for copying when using the `set` function?
-- What other architectural considerations should be taken into account when modifying the `Blueprint` struct?
+- What is the purpose of changing the `set` function to take a variable pointer?
+- How does this change impact performance when setting patterns in blueprints?
+- Why is cloning unnecessary in the current implementation of the `set` function?
+- What future changes are anticipated that might require preserving old blocks?
+- How does this modification affect memory usage in the application?
+- Can you explain the architectural reasoning behind this change?
 
 *Source: unknown | chunk_id: github_pr_1352_comment_2070415951*

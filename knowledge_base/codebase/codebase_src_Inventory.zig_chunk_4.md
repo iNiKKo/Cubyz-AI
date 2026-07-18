@@ -1,26 +1,29 @@
 # [hard/codebase_src_Inventory.zig] - Chunk 4
 
 **Type:** api
-**Keywords:** inventory, ItemStack, allocator, freeId, source, callbacks, union, enum, deinit, size, getItem, getStack, canHold, remainingAmount
-**Symbols:** Inventory, CanHoldReturn, _init, _deinit, size, getItem, getStack, getAmount, canHold
-**Concepts:** inventory management, item stack handling, client server ID allocation, memory allocation deallocation, capacity checking
+**Keywords:** inventory initialization, resource management, callback handling, binary serialization, slot referencing
+**Symbols:** Inventory, Inventory.id, Inventory._items, Inventory.source, Inventory.callbacks, Inventory._init, Inventory._deinit, Inventory.update, Inventory.size, Inventory.getItem, Inventory.getStack, Inventory.getAmount, Inventory.CanHoldReturn, Inventory.canHold, Inventory.toBytes, Inventory.fromBytes, Inventory.InventoryAndSlot, Inventory.InventoryAndSlot.inv, Inventory.InventoryAndSlot.slot, Inventory.InventoryAndSlot.ref, Inventory.InventoryAndSlot.write, Inventory.InventoryAndSlot.read
+**Concepts:** inventory management, item storage, serialization, deserialization
 
 ## Summary
-Inventory module defines the core inventory data structure and public API for depositing items, crafting, placing/breaking blocks, and querying stack contents.
+The Inventory module manages player and entity item storage, including initialization, deinitialization, updating, serialization, and deserialization.
 
 ## Explanation
-The chunk declares a top-level struct Inventory with fields id (InventoryId), _items ([]ItemStack), source (Source), and callbacks (Callbacks). It provides an initializer _init that allocates the item array via allocator.alloc(ItemStack, _size) and assigns an ID based on sync.Side (client.nextId() or server.nextId()). The deinitializer _deinit frees IDs back to client.freeId/server.freeId, calls deinit on each ItemStack, and releases the allocated array. Accessor methods size, getItem, getStack, and getAmount delegate to self._items.len and self._items[slot].item/amount respectively. A union CanHoldReturn is defined with variants yes (void) and remainingAmount (u16). The canHold function checks if sourceStack.amount == 0 returning .yes; otherwise it computes remaining amount by subtracting the inventory's current capacity from sourceStack.amount, clamping to zero if negative.
+This chunk defines the Inventory struct and its associated methods. The Inventory struct holds an array of ItemStacks, a unique ID, source information, and callbacks for various operations. Key functions include _init to initialize an inventory with a given size and allocator, _deinit to free resources, update to notify callbacks of changes, and methods like getItem, getStack, and getAmount to access items. The canHold function checks if the inventory can accommodate additional items. Serialization and deserialization are handled by toBytes and fromBytes, respectively. The InventoryAndSlot struct is used to reference specific slots within an inventory, with methods for writing to and reading from binary streams.
+
+## Code Example
+```zig
+pub fn size(self: Inventory) usize {
+	return self._items.len;
+}
+```
 
 ## Related Questions
-- What is the type of Inventory.id and how are client versus server IDs allocated?
-- How does _init allocate the internal item array and what happens to each ItemStack element after allocation?
-- What is the purpose of the callbacks field in Inventory and when is it invoked?
-- Describe the behavior of canHold when sourceStack.amount equals zero.
-- If sourceStack.amount exceeds remaining capacity, how is remainingAmount computed and clamped?
-- What does _deinit do for each item in self._items before freeing the array?
-- How are IDs freed back to the client or server during deinitialization?
-- Which accessor methods delegate directly to self._items without additional logic?
-- Is CanHoldReturn a public union and what variants does it expose?
-- What is the signature of Inventory.size and how does it relate to _items.len?
+- How is an inventory initialized?
+- What methods are available for accessing items in the inventory?
+- How does the inventory handle serialization and deserialization?
+- What is the purpose of the CanHoldReturn union?
+- How are specific slots within an inventory referenced?
+- What happens when an inventory is deinitialized?
 
 *Source: unknown | chunk_id: codebase_src_Inventory.zig_chunk_4*

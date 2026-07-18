@@ -1,26 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_forest_chopped.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** height range, spawn chance, ground structure, roughness, valid player spawn, parent biome, vegetation placement, flower patch, fallen tree
-**Symbols:** properties, tags, minHeight, maxHeight, minRadius, maxRadius, roughness, hills, chance, music, validPlayerSpawn, ground_structure, structures, parentBiomes
-**Concepts:** biome configuration, structure spawning, terrain generation parameters
+**Keywords:** biome properties, structure definitions, ground structures, vegetation, fallen trees, flower patches
+**Concepts:** biome configuration, world generation
 
 ## Summary
-Defines configuration data for the forest biome including height ranges, roughness settings, ground structure definitions, and a list of structures with spawn chances.
+Defines configuration for a chopped forest biome in Cubyz, including properties like height, radius, and structures.
 
 ## Explanation
-This chunk contains only static configuration data. It defines properties such as minHeight (22), maxHeight (40), minRadius (64), maxRadius (128), roughness (10), hills (10), and music (
+This chunk defines the configuration for a specific biome type in the Cubyz game engine. The biome is identified as a 'chopped forest' and includes various properties such as minimum and maximum heights, radii, roughness, hills, and spawn validity. It also specifies music associated with the biome and ground structures like grass and soil layers. The chunk lists several structures that can appear in this biome, including patches of vegetation, fallen trees, flower patches, and more. Additionally, it defines parent biomes from which this chopped forest biome can derive properties.
 
 ## Related Questions
-- What are the minimum and maximum height values defined for this forest biome?
-- Which tags are associated with this biome configuration?
-- What is the roughness value set for terrain generation in this chunk?
-- Does this biome allow valid player spawns according to its configuration?
-- What ground structure definitions are included in this biome's configuration?
-- List all structures defined under the structures field and their spawn chances.
-- Which parent biomes are referenced by this forest biome configuration?
-- How is the music asset specified for this biome?
-- What variation values are assigned to each structure definition?
-- Are there any structures with a zero chance of spawning in this configuration?
+- What is the minimum height of the chopped forest biome?
+- Which blocks are used for ground structures in this biome?
+- How many different types of flower patches are defined for this biome?
+- What is the chance of a birch tree appearing in this biome?
+- Which music file is associated with the chopped forest biome?
+- Can players spawn in this biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_forest_chopped.zig.zon_chunk_0*

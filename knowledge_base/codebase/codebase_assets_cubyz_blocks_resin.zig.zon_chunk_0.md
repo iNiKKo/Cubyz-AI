@@ -1,28 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_resin.zig.zon] - Chunk 0
 
-**Type:** implementation
-**Keywords:** health, drops, rotation, model, texture, item texture, durability, mass damage, hardness damage, swing speed, texture roughness, colors
-**Symbols:** resin, resin.png
-**Concepts:** block, material, item
+**Type:** configuration
+**Keywords:** choppable, block health, drops, rotation, model, texture, durability, mass damage, hardness damage, swing speed, texture roughness, colors
+**Concepts:** block configuration, item properties
 
 ## Summary
-Resin block definition
+Defines properties for the resin block in Cubyz.
 
 ## Explanation
-Defines a resin block with properties such as health, drops, rotation, model, texture, item texture, material durability and damage values, and colors.
+This chunk defines the configuration for a resin block in the Cubyz voxel engine. It specifies that the block is choppable, has a health of 1, and drops an item when broken. The rotation model is set to 'cubyz:ore', and the visual model is 'cubyz:cube' with the texture 'cubyz:resin'. The item associated with this block has its own texture 'resin.png' and material properties including durability, mass damage, hardness damage, swing speed, texture roughness, and a list of colors.
 
 ## Related Questions
-- What is the health of the resin block?
-- Which items can be dropped when breaking a resin block?
-- How does the resin block rotate?
-- What model is used for rendering the resin block?
-- What texture is applied to the resin block in-game?
-- What is the item texture for the resin block?
-- What material properties are associated with the resin block?
-- What durability value does the resin block have?
-- What mass damage does the resin block deal?
-- What hardness damage does the resin block deal?
-- What swing speed does the resin block have?
-- What texture roughness is applied to the resin block?
+- What are the tags associated with the resin block?
+- How much health does the resin block have?
+- What items does the resin block drop when broken?
+- Which rotation model is used for the resin block?
+- What visual model and texture are applied to the resin block?
+- What is the texture file for the item associated with the resin block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_resin.zig.zon_chunk_0*

@@ -1,22 +1,33 @@
 # [hard/codebase_src_graphics.zig] - Chunk 19
 
 **Type:** implementation
-**Keywords:** light allocation, shader uniforms, texture binding, drawing elements, frame buffer
-**Symbols:** lightStart, vertexStartOpaque, faceCountsByNormalOpaque, vertexStartTransparent, vertexCountTransparent, visibilityState, oldVisibilityState
-**Concepts:** chunk meshing, shader binding, texture management, OpenGL rendering
+**Keywords:** image initialization, file I/O, pixel manipulation, shader pipeline, texture binding
+**Symbols:** Image, Image.defaultImageData, Image.defaultImage, Image.emptyImageData, Image.emptyImage, Image.whiteImageData, Image.whiteEmptyImage, Image.width, Image.height, Image.imageData, Image.init, Image.deinit, Image.readFromFile, Image.exportToFile, Image.getRGB, Image.setRGB, Fog, Fog.fogColor, Fog.skyColor, Fog.density, Fog.fogLower, Fog.fogHigher, block_texture, block_texture.uniforms, block_texture.pipeline, block_texture.depthTexture, block_texture.textureSize, block_texture.init, block_texture.deinit
+**Concepts:** image handling, fog effects, rendering pipelines, texture management
 
 ## Summary
-Handles rendering of a chunk in the graphics pipeline, including setting up shaders, binding textures, and drawing elements.
+Defines image handling and fog structures with initialization, deinitialization, file I/O, and rendering utilities.
 
 ## Explanation
-This code snippet manages the rendering process for a single chunk. It initializes various properties related to lighting and visibility, then checks if the block is transparent to set appropriate blending functions and shaders. Textures are bound to different texture units, and drawing commands are issued using OpenGL functions like `glDrawElementsInstancedBaseVertexBaseInstance`. After rendering, the final frame buffer is processed, textures are updated, and the viewport is reset for further rendering.
+The chunk defines an `Image` struct for managing image data, including default images, initialization, deallocation, reading from files, exporting to files, and accessing pixel colors. It also includes a `Fog` struct for fog effects in the graphics engine. The `block_texture` struct initializes and deinitializes rendering pipelines and textures used for block texturing.
+
+## Code Example
+```zig
+pub fn init(allocator: NeverFailingAllocator, width: u31, height: u31) Image {
+	return Image{
+		.width = width,
+		.height = height,
+		.imageData = allocator.alloc(Color, width*height),
+	};
+}
+```
 
 ## Related Questions
-- What blending function is set for transparent blocks?
-- How are shaders bound in this chunk rendering process?
-- Which textures are bound to which texture units?
-- What OpenGL function is used to draw elements with instancing?
-- How is the final frame buffer initialized and updated?
-- What happens if a block is not transparent during rendering?
+- How does the `Image` struct initialize its image data?
+- What is the purpose of the `defaultImageData`, `emptyImageData`, and `whiteImageData` arrays in the `Image` struct?
+- How does the `readFromFile` function handle different orientations when loading an image?
+- What steps are involved in exporting an image to a file using the `exportToFile` method?
+- How is the `block_texture` pipeline initialized, and what parameters are set for the depth texture?
+- What is the role of the `deinit` methods in both the `Image` and `block_texture` structs?
 
 *Source: unknown | chunk_id: codebase_src_graphics.zig_chunk_19*

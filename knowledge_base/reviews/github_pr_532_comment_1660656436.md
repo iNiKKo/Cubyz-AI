@@ -1,22 +1,22 @@
 # [src/gui/windows/debug.zig] - PR #532 review diff
 
 **Type:** review
-**Keywords:** fpsCapText, allocPrint, defer, free, allocator, conditional string, memory leak prevention
-**Symbols:** draw, GuiWindow, main.lastFrameTime, main.settings.vsync, main.settings.fpsCap, std.fmt.allocPrint, main.stackAllocator.allocator
-**Concepts:** memory management, string formatting, conditional logic
+**Keywords:** fpsCap, allocPrint, stackAllocator, free, defer, memory leak, allocator interface, conditional allocation, string handling, performance optimization
+**Symbols:** window, render, draw.setColor, y, fpsCapText, main.lastFrameTime.load, main.settings.vsync, std.fmt.allocPrint, main.stackAllocator.allocator, defer main.stackAllocator.free
+**Concepts:** memory management, conditional logic, string formatting, thread safety
 
 ## Summary
-The code was modified to conditionally allocate and format a string for FPS limit display, with proper memory management using an allocator.
+The code was modified to conditionally allocate and format a string for FPS cap display, with proper memory management using an allocator.
 
 ## Explanation
-The reviewer suggests replacing the previous conditional string concatenation with a more robust approach that allocates memory only when necessary. By using `std.fmt.allocPrint`, the code dynamically creates a formatted string if an FPS cap is set. The reviewer emphasizes that freeing slices of zero length is allowed by the allocator interface, thus ensuring proper memory management. This change enhances the code's correctness and maintainability by avoiding unnecessary allocations and ensuring timely deallocation with `defer main.stackAllocator.free(fpsCapText)`.
+The change introduces conditional allocation of the FPS cap text string only when `main.settings.fpsCap` is set. This avoids unnecessary allocations when the FPS cap is not enabled. The reviewer suggests using `defer main.stackAllocator.free(fpsCapText)` to ensure that any allocated memory is freed after use, preventing potential memory leaks. The original code used an empty string in the else clause, which is allowed by the allocator interface but is now replaced with a more efficient approach.
 
 ## Related Questions
 - What is the purpose of using `std.fmt.allocPrint` in this code snippet?
-- How does the use of `defer main.stackAllocator.free(fpsCapText)` contribute to memory safety?
-- Why is it important to handle slices of zero length when freeing memory?
-- Can you explain the role of `main.settings.fpsCap` in this context?
-- What potential issues might arise if `std.fmt.allocPrint` fails and how are they handled?
-- How does this change improve the performance of the FPS display logic?
+- How does the use of `defer main.stackAllocator.free(fpsCapText)` prevent memory leaks?
+- Why was the original else clause with an empty string replaced?
+- What are the implications of freeing slices of length zero according to the allocator interface?
+- How does this change impact the performance of the FPS display in the debug window?
+- Can you explain the role of `main.stackAllocator` in this code modification?
 
 *Source: unknown | chunk_id: github_pr_532_comment_1660656436*

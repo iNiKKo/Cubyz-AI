@@ -1,22 +1,29 @@
 # [easy/codebase_src_gui_windows_clipboard_deleted.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** GuiWindow, closeWindowFromRef, setColor, restoreColor, print, durationTo, timestamp, relativePosition, contentSize, isHud
-**Symbols:** main.graphics, draw, Texture, Vec2f, TaskType, GuiWindow, GuiComponent
-**Concepts:** GUI window lifecycle, deferred cleanup, timestamp-based timeout
+**Keywords:** GUI window, timestamp, duration calculation, conditional rendering, window closing
+**Symbols:** window, time, GuiWindow.relativePosition, GuiWindow.contentSize, GuiWindow.isHud, GuiWindow.showTitleBar, GuiWindow.hasBackground, GuiWindow.hideIfMouseIsGrabbed, onOpen, render
+**Concepts:** GUI window management, clipboard interaction, time-based UI updates
 
 ## Summary
-This chunk defines a GUI window that displays the message 'Your clipboard was cleared.' for up to two seconds after opening, then closes itself; it imports core graphics and utility modules from main.
+Defines a GUI window that displays a message when the clipboard is cleared and closes after 2 seconds.
 
 ## Explanation
-The chunk declares several imported symbols: std (standard library), main.graphics (graphics module), draw (draw API), Texture (texture type), Vec2f (vector2f type), TaskType (thread pool task type). It also imports the gui module and re-exports GuiWindow and GuiComponent. A global var window is initialized as a GuiWindow with relativePosition set to two attachment points (middle/selfAttachmentPoint, lower/otherAttachmentPoint), contentSize 128x16, isHud false, showTitleBar false, hasBackground false, hideIfMouseIsGrabbed false. A time variable of type std.Io.Timestamp is declared and initialized undefined. The onOpen function sets time to the current timestamp via main.timestamp(). The render function computes duration since opening; if duration exceeds 2 seconds it calls gui.closeWindowFromRef(&window) and returns early. Otherwise it saves the old color by calling draw.setColor(0xffff8080), defers restoring that color, then prints 'Your clipboard was cleared.' at position (0,0) with size 16.
+This chunk defines a GUI window named 'window' with specific properties such as position, size, and appearance. The `onOpen` function records the current timestamp when the window opens. The `render` function calculates the duration since the window opened and closes it if more than 2 seconds have passed. It also renders a message indicating that the clipboard was cleared.
+
+## Code Example
+```zig
+pub fn onOpen() void {
+	time = main.timestamp();
+}
+```
 
 ## Related Questions
-- What is the default content size of the clipboard cleared window?
-- How does the render function decide when to close the window?
-- Which draw API call changes the color before printing the message?
-- What happens if the duration since onOpen exceeds two seconds?
-- Is the window marked as a HUD element in this chunk?
-- Does the window have a title bar or background by default here?
+- What is the purpose of the 'onOpen' function?
+- How does the window determine when to close?
+- What message is displayed in the GUI window?
+- How is the color set for rendering the message?
+- What are the properties of the 'window' variable?
+- How is the duration since the window opened calculated?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_clipboard_deleted.zig_chunk_0*

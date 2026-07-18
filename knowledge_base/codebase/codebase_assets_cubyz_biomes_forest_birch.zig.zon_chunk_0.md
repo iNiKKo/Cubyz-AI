@@ -1,22 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_forest_birch.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome, height limits, structure generation, block placement, chance, music
-**Symbols:** properties, tags, minHeightLimit, minHeight, maxHeight, maxHeightLimit, smoothBeaches, minRadius, maxRadius, roughness, hills, chance, music, validPlayerSpawn, ground_structure, structures
-**Concepts:** world_generation, configuration
+**Keywords:** height limits, terrain features, music configuration, ground structures, structures
+**Concepts:** biome configuration, terrain generation
 
 ## Summary
-Defines properties and structures for a birch forest biome in Cubyz.
+Defines configuration for the Birch forest biome in Cubyz, including height limits, terrain features, and music.
 
 ## Explanation
-This chunk contains configuration data for the birch forest biome, including its height limits, tags, ground structure, and various structures that can be generated within it. It specifies the types of blocks, their placement chances, and other properties like smoothness and priority.
+This chunk is a configuration file for the Birch forest biome in the Cubyz game engine. It specifies various properties such as height limits, beach smoothness, radius, roughness, hills, and spawn validity. The file also defines ground structures and structures like trees, fallen logs, and flower patches with their respective chances, sizes, and variations.
 
 ## Related Questions
-- What are the height limits for the birch forest biome?
-- Which tags are associated with the birch forest biome?
-- How often can a ground patch be generated in the birch forest?
-- What is the music track for the birch forest biome?
-- Can players spawn in the birch forest biome?
-- What structures are included in the birch forest biome?
+- What is the minimum height limit for the Birch forest biome?
+- Which music track is associated with the Birch forest biome?
+- How many different types of flower patches are defined in the Birch forest biome configuration?
+- What is the chance of a fallen tree spawning in the Birch forest biome?
+- What are the valid ground structures for the Birch forest biome?
+- How does the Birch forest biome define its hills and roughness?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_forest_birch.zig.zon_chunk_0*

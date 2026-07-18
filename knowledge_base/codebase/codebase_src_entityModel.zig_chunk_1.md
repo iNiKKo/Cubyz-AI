@@ -1,26 +1,75 @@
 # [medium/codebase_src_entityModel.zig] - Chunk 1
 
 **Type:** api
-**Keywords:** texture path, GLTF parse, cgltf_load_buffers, NodeRemap, depth sort, nodeIndexMap, vertex extraction, chunk_type
-**Symbols:** deinit, cloneMetaData, loadModelAndTexture
-**Concepts:** texture path resolution, GLTF parsing, hierarchy depth sorting, node index mapping, coordinate system conversion
+**Keywords:** struct, initialization, deinitialization, cloning, memory allocation, error handling, vertex format
+**Symbols:** EntityModel, EntityModel.height, EntityModel.texturePath, EntityModel.modelId, EntityModel.entityModelId, EntityModel.nodeIndexMap, EntityModel.nodes, EntityModel.nodeParents, EntityModel.nodePivots, EntityModel.vao, EntityModel.indexCount, EntityModel.defaultTexture, EntityModel.coordinateSystem, EntityModel.Node, EntityModel.Node.pos, EntityModel.Node.rot, EntityModel.Node.scale, EntityModel.Node.recalc, EntityModel.Vertex, EntityModel.Vertex.pos, EntityModel.Vertex.normal, EntityModel.Vertex.uv, EntityModel.Vertex.nodeId, EntityModel.Vertex.attributeDescriptions, EntityModel.init, EntityModel.deinit, EntityModel.cloneMetaData, EntityModel.loadModelAndTexture
+**Concepts:** entity ECS, model loading, texture handling
 
 ## Summary
-This chunk implements the EntityModel public API for texture path resolution and GLTF model loading. It defines deinit(), cloneMetaData(), loadModelAndTexture() with full parsing of cgltf data, hierarchy depth sorting, node index mapping, parent linking, coordinate system conversion, vertex/attribute extraction, and error handling.
+Defines the EntityModel struct and its associated methods for initialization, deinitialization, cloning metadata, and loading models and textures.
 
 ## Explanation
-The chunk begins by resolving the texture path: it splits the input string on ':' to obtain a module identifier and texture name, then attempts to load from main.worldArena.allocator using an assetFolder prefix; if that fails (caught), it falls back to a static assets/... path. The deinit() method cleans up self.defaultTexture and self.vao by calling their respective deinit methods. cloneMetaData() performs deep duplication of all owned fields: Node array, ?u16 nodeParents, Mat4f nodePivots, texturePath bytes, modelId bytes, entityModelId bytes; it leaves vao null, resets indexCount to 0, and copies coordinateSystem and clones nodeIndexMap. loadModelAndTexture() is the core implementation: after initializing self.defaultTexture from the resolved path, it checks that a modelId exists (otherwise returning error.NoModelSpecified). It reads the .glb asset via main.assets.readAsset into a stack-allocated buffer, then parses with c.cgltf_parse; on failure it logs and returns getGltfError(result). Buffers are loaded with c.cgltf_load_buffers(
+The EntityModel struct represents a model of an entity in the game, including properties like height, texture path, model ID, nodes, and coordinate system. It contains methods for initializing the model from a ZonElement, deinitializing resources, cloning metadata, and loading both the model and its associated texture. The Node struct within EntityModel handles transformations with position, rotation, and scale. The Vertex struct defines the vertex format used in rendering. The init function sets up the entity model based on data from a ZonElement, handling optional fields and allocating memory using the world arena allocator. The deinit function releases resources like textures and vertex arrays. The cloneMetaData function creates a deep copy of the entity model's metadata. The loadModelAndTexture function loads the texture and model file, with error handling for missing model specifications.
+
+## Code Example
+```zig
+pub fn init(assetFolder: []const u8, entityModelId: []const u8, index: EntityModelIndex, zon: ZonElement) EntityModel {
+	var self: EntityModel = undefined;
+	if (zon.get([]const u8, "model")) |modelId| {
+		self.modelId = main.worldArena.dupe(u8, modelId);
+	} else {
+		self.modelId = null;
+	}
+	self.entityModelId = main.worldArena.dupe(u8, entityModelId);
+	self.height = zon.get(f32, "height") orelse 1;
+	self.defaultTexture = null;
+	self.vao = null;
+	self.indexCount = 0;
+	self.coordinateSystem = zon.get(CoordinateSystem, "coordinateSystem") orelse .right_handed_z_up;
+
+	self.nodeIndexMap = .init(main.worldArena.allocator);
+	self.nodes = &.{};
+	self.nodeParents = &.{};
+	self.nodePivots = &.{};
+	self.nodeCount = 0;
+
+	var isPlayerModel = false;
+	const tags = main.Tag.loadTagsFromZon(main.worldArena, zon.getChild("tags"));
+	for (tags) |tag| {
+		if (tag == .playerModel) {
+			isPlayerModel = true;
+		}
+	}
+
+	if (isPlayerModel) {
+		playerEntityModels.append(main.worldArena, index);
+	}
+
+	// get TexturePath
+	{
+		self.texturePath = &.{};
+		const fileEnding = ".png";
+		if (zon.get([]const u8, "defaultTexture")) |texture| {
+			var split = std.mem.splitScalar(u8, texture, ':');
+			const mod = split.first();
+			const textureName = split.next().?;
+			self.texturePath = std.fmt.allocPrint(main.worldArena.allocator, "{s}/{s}/entity_models/textures/{s}{s}", .{assetFolder, mod, textureName, fileEnding}) catch unreachable;
+			main.files.cubyzDir().dir.access(main.io, self.texturePath, .{}) catch {
+				main.worldArena.free(self.texturePath);
+				self.texturePath = std.fmt.allocPrint(main.worldArena.allocator, "assets/{s}/entity_models/textures/{s}{s}", .{mod, textureName, fileEnding}) catch unreachable;
+			};
+		}
+	}
+	return self;
+}
+```
 
 ## Related Questions
-- What happens when the texture path resolution fails in loadModelAndTexture?
-- How does cloneMetaData handle duplication of owned fields versus borrowed references?
-- Which error is returned if a GLTF parse step fails and how is it reported to the caller?
-- In what order are nodes processed after cgltf_parse and why is depth sorting required?
-- What is the purpose of NodeRemap.compareDepth and how does it affect nodeIndexMap population?
-- How are vertex attributes extracted from a GLTF primitive in loadModelAndTexture?
-- What error is returned if a primitive type other than triangles is encountered?
-- Does cloneMetaData reset indexCount to zero, and why might that be necessary?
-- Where does the chunk allocate memory for nodes, nodeParents, and nodePivots?
-- How are parent relationships between GLTF nodes resolved after hierarchy sorting?
+- What is the purpose of the EntityModel struct?
+- How does the init function handle optional fields in the ZonElement?
+- What resources are released by the deinit function?
+- How is metadata cloned in the cloneMetaData function?
+- What steps are involved in loading a model and texture in the loadModelAndTexture function?
+- What transformations can be applied to nodes within an EntityModel?
 
 *Source: unknown | chunk_id: codebase_src_entityModel.zig_chunk_1*

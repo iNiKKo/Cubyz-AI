@@ -1,28 +1,27 @@
 # [easy/codebase_assets_cubyz_blocks_ivy.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** cuttable, sliceable, blockHealth, drops, toolEffective, replaceable, degradable, alwaysViewThrough, absorbedLight, lodReplacement
-**Symbols:** tags, blockHealth, drops, selectionCapabilities, replaceable, degradable, collide, alwaysViewThrough, absorbedLight, model, rotation, texture, item, lodReplacement
-**Concepts:** block configuration, tag metadata, drop generation, tool interaction, selection rules, light absorption, LOD replacement
+**Keywords:** block health, drop behavior, texture paths, view-through, LOD replacement
+**Concepts:** block configuration, item properties
 
 ## Summary
-Defines a configuration block for Ivy with cuttable/sliceable tags, low health, tool-specific drops, and texture/model references.
+Defines properties for the Ivy block in Cubyz, including tags, health, drops, selection capabilities, and visual attributes.
 
 ## Explanation
-This chunk declares a single configuration object containing tag metadata (.cuttable, .sliceable), numeric properties (blockHealth = 0.2, absorbedLight = 0x121012), boolean flags (replaceable, degradable, collide, alwaysViewThrough), and string references for model ('cubyz:plane'), rotation ('cubyz:carpet'), texture ('cubyz:ivy'), lodReplacement ('cubyz:air'). The drops field is an array with one entry specifying item type .auto and allowedToolTags restricted to .cuttable. SelectionCapabilities lists .toolEffective, indicating the block can be selected only when a tool is active.
+This chunk defines the configuration for the Ivy block in the Cubyz game engine. It specifies various properties such as tags (cuttable and sliceable), block health, drop behavior, tool effectiveness, replaceability, degradability, collision settings, light absorption, model and texture paths, and item-specific textures. The Ivy block is designed to be view-through and has a specific LOD replacement when viewed from a distance.
 
 ## Related Questions
-- What tags are assigned to the Ivy block configuration?
-- How is the health of the Ivy block defined in this chunk?
-- Which tool tag must be present for drops from Ivy to occur?
-- What item type does Ivy drop when harvested with a valid tool?
-- Under what condition can the Ivy block be selected by the player?
-- Does the Ivy block collide with other entities according to this config?
-- Is the Ivy block marked as degradable in this configuration?
-- Which model is referenced for rendering the Ivy block?
-- What rotation identifier is used for Ivy's visual orientation?
-- What texture file path is specified for Ivy's item representation?
-- To which LOD replacement does Ivy fall back when not visible?
-- What absorbedLight value is set for Ivy and how is it encoded?
+- What are the tags associated with the Ivy block?
+- How much health does the Ivy block have?
+- What items can be dropped from the Ivy block?
+- Is the Ivy block tool effective?
+- Can the Ivy block be replaced?
+- Does the Ivy block degrade over time?
+- Does the Ivy block collide with other objects?
+- Is the Ivy block always view-through?
+- How much light does the Ivy block absorb?
+- What is the model used for the Ivy block?
+- What is the rotation setting for the Ivy block?
+- What texture is applied to the Ivy block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_ivy.zig.zon_chunk_0*

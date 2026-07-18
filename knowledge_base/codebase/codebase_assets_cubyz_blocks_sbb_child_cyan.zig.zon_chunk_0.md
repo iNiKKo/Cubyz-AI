@@ -1,7 +1,7 @@
 # [easy/codebase_assets_cubyz_blocks_sbb_child_cyan.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** texture mapping, file paths, block assets, cyan color, side texture, top texture, bottom texture
+**Keywords:** texture paths, block assets, cyan color, side texture, top texture, bottom texture
 **Concepts:** block texture mapping
 
 ## Summary

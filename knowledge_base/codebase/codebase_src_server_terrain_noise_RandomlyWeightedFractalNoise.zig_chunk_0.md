@@ -1,15 +1,15 @@
 # [easy/codebase_src_server_terrain_noise_RandomlyWeightedFractalNoise.zig] - Chunk 0
 
-**Type:** implementation
-**Keywords:** terrain generation, noise, recursion, subdivision, interpolation, seed, randomness, heightmap, grid, fractal, reproducibility
+**Type:** world_generation
+**Keywords:** terrain generation, interpolation, randomness, height map, grid points
 **Symbols:** setSeed, generateFractalTerrain, generateInitializedFractalTerrain, generateSparseFractalTerrain
-**Concepts:** fractal terrain generation, randomly weighted noise, recursive subdivision, interpolation, coordinate-dependent seed, reproducibility
+**Concepts:** fractal terrain generation, randomly weighted interpolation
 
 ## Summary
-Generates fractal terrain using randomly weighted noise.
+This chunk implements fractal terrain generation using a randomly weighted interpolation method.
 
 ## Explanation
-The code generates fractal terrain by recursively subdividing a grid and interpolating heights at new points. It uses a coordinate-dependent seed for random values to ensure reproducibility. The `generateFractalTerrain` function initializes the corners of a large grid and then iteratively refines it, while `generateSparseFractalTerrain` reduces resolution.
+The chunk contains functions for generating fractal terrain. `generateFractalTerrain` initializes the terrain by setting seeds and generating corner points, then iteratively interpolates new points with random weights to create a smooth height map. `generateInitializedFractalTerrain` handles the iterative interpolation process, adjusting randomness scale to reduce noise. `generateSparseFractalTerrain` generates a lower resolution version of the terrain.
 
 ## Code Example
 ```zig
@@ -19,16 +19,11 @@ fn setSeed(x: i32, y: i32, offsetX: i32, offsetY: i32, seed: *u64, worldSeed: u6
 ```
 
 ## Related Questions
-- What does the `setSeed` function do?
-- How is the terrain generation algorithm implemented?
-- What is the purpose of the `generateInitializedFractalTerrain` function?
-- How does the `generateSparseFractalTerrain` function work?
-- What role does the coordinate-dependent seed play in the terrain generation process?
-- How does the code ensure reproducibility of the generated terrain?
-- What data structure is used to store the heightmap?
-- How does the algorithm handle different scales and resolutions?
-- What is the significance of the `maxResolution` parameter?
-- How does the interpolation work in the fractal terrain generation?
-- What is the purpose of the `randomnessScale` variable?
+- What is the purpose of the `setSeed` function?
+- How does `generateFractalTerrain` initialize the terrain?
+- What is the role of randomness in the fractal generation process?
+- How does `generateInitializedFractalTerrain` adjust the height map?
+- What is the difference between `generateFractalTerrain` and `generateSparseFractalTerrain`?
+- How is the grid size determined in the fractal terrain generation?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_noise_RandomlyWeightedFractalNoise.zig_chunk_0*

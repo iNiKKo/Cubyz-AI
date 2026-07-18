@@ -8,7 +8,7 @@
 Defines properties for the water block in Cubyz.
 
 ## Explanation
-This chunk defines a configuration structure for the water block in the Cubyz voxel engine. It specifies various properties such as tags, drops, selection capabilities, replaceability, degradability, transparency, back face visibility, collision behavior, light absorption, density, terminal velocity, mobility, model, and texture.
+This chunk defines a configuration object for the water block in the Cubyz voxel engine. It specifies various properties such as tags, drops, selection capabilities, replaceability, degradability, transparency, back face visibility, collision behavior, light absorption, density, terminal velocity, mobility, model, and texture.
 
 ## Related Questions
 - What tags are associated with the water block?

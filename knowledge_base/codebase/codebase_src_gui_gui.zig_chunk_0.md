@@ -1,26 +1,29 @@
 # [hard/codebase_src_gui_gui.zig] - Chunk 0
 
-**Type:** api
-**Keywords:** ConcurrentQueue, ListManaged, orderedRemove, appendAssumeCapacity, globalInit, onOpenFn, onCloseFn, updateWindowPositions, BagSlot
-**Symbols:** GuiCommandQueue, GuiCommandQueue.Action, GuiCommandQueue.Command, initWindowList, deinitWindowList, init, GuiWindow, tooltip, windowlist
-**Concepts:** window list management, command queue, GUI component initialization, callback registration, deferred position updates
+**Type:** implementation
+**Keywords:** window list, command execution, concurrent queue, initialization, deinitialization
+**Symbols:** windowList, hudWindows, openWindows, selectedWindow, selectedTextInput, hoveredAWindow, reorderWindows, hideGui, scale, hoveredItemSlot, GuiCommandQueue, GuiCommandQueue.Action, GuiCommandQueue.Command, GuiCommandQueue.init, GuiCommandQueue.deinit, GuiCommandQueue.scheduleCommand, GuiCommandQueue.executeCommands, GuiCommandQueue.executeOpenWindowCommand, GuiCommandQueue.executeCloseWindowCommand, initWindowList, deinitWindowList, GuiWindow, tooltip, windowlist
+**Concepts:** GUI window management, command queue, window lifecycle
 
 ## Summary
-This chunk defines the GUI subsystem's window list management, command queue for opening/closing windows, and initialization of all GUI components.
+Manages GUI windows and their lifecycle, including initialization, deinitialization, and command execution.
 
 ## Explanation
-The chunk declares a ListManaged(windowList) to hold GuiWindow pointers, plus separate hudWindows and openWindows lists. It exposes selectedWindow, selectedTextInput, hoveredAWindow, reorderWindows, hideGui, scale, and hoveredItemSlot as public or internal state. A GuiCommandQueue struct holds an enum Action {open, close} and a Command struct with window pointer and action; it uses main.utils.ConcurrentQueue for thread-safe command storage. The queue provides init(), deinit(), scheduleCommand() which pushes to the concurrent queue, and executeCommands() which drains the queue and dispatches open/close actions via executeOpenWindowCommand/executeCloseWindowCommand. Those functions update openWindows by orderedRemove or appendAssumeCapacity, call onOpenFn/onCloseFn callbacks, and defer updateWindowPositions(). initWindowList() initializes the command queue, creates the three window lists with main.globalAllocator, iterates over windowlist's struct declarations to set each windowStruct.window.id from the declaration name, calls addWindow(), and then maps function names (render, update, updateSelected, updateHovered, onOpen, onClose) onto their Fn fields if declared. deinitWindowList() clears and frees all lists and deinitializes the command queue. The init() function iterates over windowlist declarations again to call any init method present, then calls globalInit() for GuiWindow, GuiComponent.BagSlot, Button, CheckBox, ItemSlot, ScrollBar, ContinuousSlider, DiscreteSlider, and TextInput.
+This chunk defines the core logic for managing GUI windows in the Cubyz engine. It includes structures for window management, such as `GuiCommandQueue` which handles opening and closing commands through a concurrent queue. The `initWindowList` function initializes various lists and sets up window functions based on imported configurations. The `deinitWindowList` function cleans up resources when GUI components are no longer needed. Key functionalities include adding windows to the list, executing open and close commands, and updating window positions.
+
+## Code Example
+```zig
+fn init() void {
+		commands = .init(main.globalAllocator, 16);
+	}
+```
 
 ## Related Questions
-- How does the GUI subsystem handle opening a window that already exists in openWindows?
-- What is the purpose of the GuiCommandQueue and why use a ConcurrentQueue for commands?
-- Which functions are automatically wired to their Fn fields during initWindowList?
-- Does deinitWindowList free memory or just reset pointers, and what does clearAndFree do?
-- How are window IDs assigned in initWindowList and where is addWindow called?
-- What state variables control whether the GUI is hidden (hideGui) or reordered (reorderWindows)?
-- Where is updateWindowPositions deferred and why is it placed there?
-- Are any of the component globalInit calls optional or guarded by a flag?
-- How does selectedTextInput relate to openWindows and what happens when a text input is focused?
-- What is the relationship between hudWindows and openWindows in terms of lifecycle?
+- How are GUI windows initialized in the Cubyz engine?
+- What is the purpose of the `GuiCommandQueue` struct?
+- How does the engine handle opening and closing GUI windows?
+- What functions are responsible for updating window positions?
+- How are window functions set up during initialization?
+- What resources are cleaned up when deinitializing GUI components?
 
 *Source: unknown | chunk_id: codebase_src_gui_gui.zig_chunk_0*

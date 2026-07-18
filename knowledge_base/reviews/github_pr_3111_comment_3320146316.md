@@ -1,28 +1,22 @@
-# [src/blueprint.zig] - Chunk 3320146316
+# [src/blueprint.zig] - PR #3111 review diff
 
 **Type:** review
-**Keywords:** Blueprint, capture, Selection, minPos, maxPos, init, Vec3i, @min, @max, extent constructor, inclusive, exclusive
-**Symbols:** Blueprint, CaptureResult, Selection, init
-**Concepts:** API refactoring, inclusive/exclusive bounds, dead code elimination, code clarity
+**Keywords:** refactoring, struct, encapsulation, readability, maintenance, block selection, vector initialization
+**Symbols:** Blueprint, CaptureResult, Selection, init, minPos, maxPos
+**Concepts:** struct encapsulation, code readability, maintainability
 
 ## Summary
-Refactored the Blueprint struct by replacing the capture function with a new Selection struct and its init method, removing unnecessary min/max logic from the extent constructor.
+Refactored the `capture` function into a new `Selection` struct with an `init` method, simplifying the initialization of block selection boundaries.
 
 ## Explanation
-The original code used a capture function that computed start coordinates via @min on two positions. The reviewer realized this was redundant because the extent constructor already handles ordering correctly without explicit min/max calls. By introducing Selection with minPos (inclusive) and maxPos (exclusive), the API becomes clearer and more consistent with how extents are represented elsewhere in the codebase. This change eliminates dead computation, improves readability, and aligns the selection representation with existing conventions.
+The change introduces a new `Selection` struct to encapsulate the concept of a block selection area. This struct includes two fields: `minPos`, representing the minimal position of a block (inclusive), and `maxPos`, representing the maximal position of a block (exclusive). The `init` method simplifies the initialization process by calculating the minimum and maximum positions from two input vectors, ensuring that the boundaries are correctly set. This refactoring improves code readability and maintainability by clearly defining the selection area's properties and providing a structured way to initialize it.
 
 ## Related Questions
-- What is the purpose of the Selection struct in blueprint.zig?
-- How does the init method compute minPos and maxPos?
-- Why was the capture function replaced with a Selection struct?
-- What are the types of pos1Inclusive and pos2Exclusive in Selection.init?
-- Does the new Selection API maintain backwards compatibility with existing code?
-- Where else in the codebase is an extent represented using inclusive/exclusive bounds?
-- How does removing @min/@max from the extent constructor affect performance?
-- What constraints apply to Vec3i values passed to Selection.init?
-- Is there any documentation explaining the semantics of minPos being inclusive?
-- Could a user accidentally pass pos2Exclusive <= pos1Inclusive and what would happen?
-- How does this change impact error handling for invalid selections?
-- Are there any tests that need updating due to the removal of capture?
+- What is the purpose of the `Selection` struct in the blueprint.zig file?
+- How does the `init` method in the `Selection` struct determine the boundaries of a block selection?
+- Why was it necessary to refactor the `capture` function into a new `Selection` struct?
+- Can you explain the difference between `minPos` and `maxPos` in the `Selection` struct?
+- How does this refactoring improve code readability and maintainability?
+- What are the potential benefits of using a structured approach to define block selection areas?
 
 *Source: unknown | chunk_id: github_pr_3111_comment_3320146316*

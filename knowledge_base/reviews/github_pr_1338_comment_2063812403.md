@@ -1,22 +1,22 @@
 # [src/server/world.zig] - PR #1338 review diff
 
 **Type:** review
-**Keywords:** tickBlocksInChunk, tick, ServerWorld, chunk.ServerChunk, random tick, block ticking, thread safety, hashmap iteration, concurrent modification, undefined behavior
-**Symbols:** ServerWorld, tickBlocksInChunk, tick, chunk.ServerChunk, main.random.nextInt, main.seed, chunk.chunkShift2, chunk.chunkMask, ch.super.getBlock, block.tickEvents, event.tryRandomTick, ChunkManager.entityChunkHashMap.keyIterator
-**Concepts:** thread safety, iteration, hashmap, concurrent modification
+**Keywords:** tickBlocksInChunk, tick, ServerWorld, chunk, blockIndex, randomTick, thread safety, hashmap, iteration, data corruption
+**Symbols:** ServerWorld, tickBlocksInChunk, tick, ChunkManager, entityChunkHashMap
+**Concepts:** thread safety, hashmap iteration, block ticking
 
 ## Summary
-Added `tickBlocksInChunk` and `tick` functions to handle block ticking in chunks. The review highlights a critical thread safety issue with concurrent modification of the hashmap during iteration.
+Added `tickBlocksInChunk` and `tick` functions to ServerWorld for block ticking. Reviewer flagged potential thread safety issues with hashmap iteration.
 
 ## Explanation
-The changes introduce two new functions, `tickBlocksInChunk` and `tick`, to manage the ticking of blocks within chunks. The `tickBlocksInChunk` function iterates over a specified number of random block indices within a chunk, retrieves the block at each index, and triggers its tick events. The `tick` function then iterates over all chunks managed by the `ChunkManager` entity chunk hashmap to call `tickBlocksInChunk` on each. However, the review points out a significant architectural concern: the iteration over the hashmap is not thread-safe. This means that if another thread modifies the hashmap (e.g., adding or removing chunks) while the iteration is in progress, it could lead to undefined behavior, such as data corruption or crashes.
+The changes introduce two new functions, `tickBlocksInChunk` and `tick`, within the `ServerWorld` struct to handle block ticking in chunks. The `tickBlocksInChunk` function iterates over a specified number of blocks (`self.tickSpeed`) in a given chunk, selecting random blocks and triggering their tick events. The `tick` function then iterates over all chunks using an iterator from `ChunkManager.entityChunkHashMap`. However, the reviewer points out that this approach is not thread-safe because another thread could modify the hashmap while it is being iterated, leading to potential data corruption or undefined behavior.
 
 ## Related Questions
-- How can the thread safety issue with hashmap iteration be addressed?
-- What are the potential consequences of concurrent modification during hashmap iteration?
-- How can the `tickBlocksInChunk` function be optimized for performance?
-- Is there a need to synchronize access to the hashmap during iteration?
-- Can the current implementation lead to data corruption or crashes?
-- How should the architecture be modified to ensure thread safety in block ticking?
+- How can the iteration over `entityChunkHashMap` be made thread-safe?
+- What are the potential consequences of concurrent modifications to `entityChunkHashMap` during iteration?
+- Can you suggest a method to ensure that block ticking does not interfere with other operations on chunks?
+- Is there a way to implement a read-write lock for `entityChunkHashMap` to prevent concurrent modifications?
+- How can we verify the thread safety of the new block ticking functions in a multi-threaded environment?
+- What are the implications of using a random number generator (`main.random`) within a loop that could be executed concurrently?
 
 *Source: unknown | chunk_id: github_pr_1338_comment_2063812403*

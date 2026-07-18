@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_glow_crystal_dark_grey.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** emitted light, texture mapping, block properties, configuration file, dark grey
-**Concepts:** block configuration, lighting
+**Keywords:** emitted light, texture, block configuration, hexadecimal color, rendering
+**Concepts:** block properties, texture mapping
 
 ## Summary
 Defines properties for a dark grey glow crystal block.
 
 ## Explanation
-This chunk defines the configuration for a specific type of block in the Cubyz voxel engine. It sets the emitted light color to a light grey (0x414141) and specifies the texture file path as 'cubyz:glow_crystal/dark_grey'. This configuration is used by the engine to render the block with the appropriate visual and lighting properties.
+This chunk defines the configuration for a specific type of block in the Cubyz voxel engine, specifically a dark grey glow crystal. It sets the emitted light color to a hexadecimal value and specifies the texture file used for rendering the block.
 
 ## Related Questions
 - What is the emitted light color of the dark grey glow crystal block?
-- Which texture file is used for the dark grey glow crystal block?
-- How does this configuration affect the rendering of the block in the Cubyz engine?
-- Is there any other property defined for this block type in this chunk?
-- What is the purpose of the 'emittedLight' field in this configuration?
-- How might this block configuration be used in a world generation script?
+- Which texture file is used for rendering the dark grey glow crystal block?
+- How is the configuration for a block defined in this chunk?
+- What does the hexadecimal value 0x414141 represent in the context of this block?
+- Where is the texture file 'cubyz:glow_crystal/dark_grey' located in the Cubyz assets?
+- How might changes to the emitted light color affect the gameplay experience?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_glow_crystal_dark_grey.zig.zon_chunk_0*

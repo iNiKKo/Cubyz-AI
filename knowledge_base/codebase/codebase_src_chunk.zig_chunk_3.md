@@ -1,15 +1,15 @@
 # [hard/codebase_src_chunk.zig] - Chunk 3
 
 **Type:** implementation
-**Keywords:** reference counting, mutex locking, block entities, voxel data, position conversion
-**Symbols:** Chunk, Chunk.pos, Chunk.data, Chunk.width, Chunk.voxelSizeShift, Chunk.voxelSizeMask, Chunk.blockPosToEntityDataMap, Chunk.blockPosToEntityDataMapMutex, Chunk.init, Chunk.deinit, Chunk.deinitContent, Chunk.unloadBlockEntities, Chunk.updateBlock, Chunk.getBlock, Chunk.liesInChunk, Chunk.getLocalBlockPos, Chunk.localToGlobalPosition, ServerChunk, ServerChunk.super, ServerChunk.wasChanged, ServerChunk.generated, ServerChunk.wasStored, ServerChunk.shouldStoreNeighbors, ServerChunk.mutex, ServerChunk.refCount, ServerChunk.initAndIncreaseRefCount, ServerChunk.deinit, ServerChunk.setChanged
-**Concepts:** chunk meshing, entity ECS, world generation
+**Keywords:** memory pool, mutex locking, block update, position conversion, entity unloading
+**Symbols:** Chunk, Chunk.pos, Chunk.data, Chunk.width, Chunk.voxelSizeShift, Chunk.voxelSizeMask, Chunk.blockPosToEntityDataMap, Chunk.blockPosToEntityDataMapMutex, Chunk.init, Chunk.deinit, Chunk.deinitContent, Chunk.unloadBlockEntities, Chunk.updateBlock, Chunk.getBlock, Chunk.liesInChunk, Chunk.getLocalBlockPos, Chunk.localToGlobalPosition
+**Concepts:** chunk management, block entity handling, voxel data storage
 
 ## Summary
-Defines the `Chunk` and `ServerChunk` structures, managing voxel data and block entities within a cubic region of the world.
+The Chunk struct manages voxel data and block entities within a defined spatial region.
 
 ## Explanation
-The chunk module defines two main structures: `Chunk` and `ServerChunk`. The `Chunk` structure manages basic voxel data and block entities, including initialization, deinitialization, updating blocks, retrieving blocks, checking bounds, converting positions between local and global coordinates, and unloading block entities. The `ServerChunk` extends `Chunk` with additional server-specific functionality such as tracking changes, managing reference counts, saving modified chunks, and handling chunk updates. Both structures use mutexes for thread safety when accessing shared data.
+This chunk defines the `Chunk` struct, which represents a section of the world in the Cubyz engine. It includes methods for initializing and deinitializing the chunk, updating and retrieving blocks, checking if coordinates lie within the chunk bounds, converting between local and global positions, and unloading block entities based on the client or server side.
 
 ## Code Example
 ```zig
@@ -32,11 +32,11 @@ pub fn init(pos: ChunkPosition) *Chunk {
 ```
 
 ## Related Questions
-- What is the purpose of the `init` method in the `Chunk` struct?
-- How does the `ServerChunk` structure extend the functionality of the `Chunk` structure?
-- What role do mutexes play in the `Chunk` and `ServerChunk` structures?
-- How are block entities managed within a chunk?
-- What is the process for updating a block within a chunk?
-- How does the `ServerChunk` handle changes to its data?
+- What is the purpose of the `init` method in the Chunk struct?
+- How does the `deinitContent` function ensure proper cleanup?
+- What role does the `blockPosToEntityDataMapMutex` play in the Chunk struct?
+- How are blocks updated within a chunk using the `updateBlock` method?
+- What is the functionality of the `liesInChunk` method?
+- How does the Chunk struct handle converting between local and global positions?
 
 *Source: unknown | chunk_id: codebase_src_chunk.zig_chunk_3*

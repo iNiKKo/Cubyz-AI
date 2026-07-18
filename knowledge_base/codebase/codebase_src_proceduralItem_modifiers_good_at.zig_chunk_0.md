@@ -1,30 +1,33 @@
 # [easy/codebase_src_proceduralItem_modifiers_good_at.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** packed struct, hypot, tag matching, clamp to zero, default value
+**Keywords:** struct, function, modifier, tooltip, block damage
 **Symbols:** Data, priority, loadData, combineModifiers, changeBlockDamage, printTooltip
-**Concepts:** procedural item modifiers, damage scaling, tag-based filtering, tooltip rendering
+**Concepts:** data structure, modifiers, procedural items
 
 ## Summary
-Defines a procedural item modifier for 'Good at' that increases damage on specific block tags.
+Data structure and modifiers for procedural items
 
 ## Explanation
-The chunk declares a packed struct Data holding strength (f32), tag (main.Tag), and padding. loadData reads strength from the ZonElement, clamping to >=0, and resolves the tag name, defaulting to 'incorrect'. combineModifiers merges two modifiers only if their tags match; otherwise returns null, using hypot for combined strength. changeBlockDamage iterates over a block's tags and multiplies damage by (1 + data.strength) when a matching tag is found. printTooltip formats a tooltip string with the percentage increase and the block name.
+This chunk defines a `Data` struct with fields for strength and tag. It provides functions to load data from a ZonElement, combine modifiers based on tags, change block damage based on the item's tag, and print a tooltip.
 
 ## Code Example
 ```zig
-pub fn combineModifiers(data1: Data, data2: Data) ?Data {
-	if (data1.tag != data2.tag) return null;
-	return .{.strength = std.math.hypot(data1.strength, data2.strength), .tag = data1.tag};
-}
+pub fn loadData(zon: main.ZonElement) Data { return .{.strength = @max(0, zon.get(f32, "strength") orelse 0), .tag = .find(zon.get([]const u8, "tag") orelse "incorrect")}; }
 ```
 
 ## Related Questions
-- What is the default tag value when loadData cannot find a 'tag' field in the ZonElement?
-- How does combineModifiers handle mismatched tags between two modifiers?
-- Does changeBlockDamage modify damage for multiple matching block tags or only the first one encountered?
-- Is the strength field in Data signed or unsigned, and how is it used in calculations?
-- What happens to the padding field in the packed struct Data when loadData assigns values?
-- Can printTooltip be called with a null outString pointer without causing undefined behavior?
+- What is the purpose of the `Data` struct?
+- How does the `loadData` function work?
+- What is the `combineModifiers` function used for?
+- How does the `changeBlockDamage` function modify block damage based on item tags?
+- What information does the `printTooltip` function display?
+- What are the fields of the `Data` struct?
+- Which functions use the `Data` struct?
+- What is the priority of this chunk?
+- How is the strength value calculated in the `loadData` function?
+- What happens if the tag is not found in the ZonElement?
+- What is the purpose of the `find` function used in the `loadData` function?
+- How does the `combineModifiers` function handle different tags?
 
 *Source: unknown | chunk_id: codebase_src_proceduralItem_modifiers_good_at.zig_chunk_0*

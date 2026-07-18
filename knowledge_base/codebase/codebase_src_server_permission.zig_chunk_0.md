@@ -1,36 +1,31 @@
 # [hard/codebase_src_server_permission.zig] - Chunk 0
 
 **Type:** api
-**Keywords:** StringHashMapUnmanaged, getOrPut, keyIterator, dupe, remove, lastIndexOfScalar, NeverFailingArenaAllocator, threadContext, assertCorrectContext
-**Symbols:** PermissionMap, Permissions, Group
-**Concepts:** permission management, whitelist blacklist, serialization, ZonElement, thread context assertion, arena allocator, group membership
+**Keywords:** string hash map, ZonElement, thread context assertion, memory allocation, permission checking
+**Symbols:** PermissionMap, PermissionMap.map, PermissionMap.fromZon, PermissionMap.toZon, PermissionMap.put, Permissions, Permissions.ListType, Permissions.arena, Permissions.whitelist, Permissions.blacklist, Permissions.init, Permissions.deinit, Permissions.PermissionResult, Permissions.list, Permissions.fromZon, Permissions.toZon, Permissions.addPermission, Permissions.removePermission, Permissions.hasPermission
+**Concepts:** permission management, whitelist/blacklist, serialization/deserialization
 
 ## Summary
-Defines server-side permission management with PermissionMap (whitelist/blacklist) and Permissions structs that serialize to/from ZonElement, plus Group struct for user group membership.
+The chunk implements permission management for server operations, handling whitelist and blacklist permissions.
 
 ## Explanation
-The chunk declares PermissionMap as a struct containing an unmanaged StringHashMapUnmanaged(void). Its fromZon method iterates zon.toSlice(), converts each item to []const u8 (skipping nulls), and puts them into the map. The toZon method asserts server context, creates an array ZonElement, appends all keys via keyIterator, and returns it. PermissionMap.put uses getOrPut with a catch unreachable; if not found_existing it dupe the key into the map.
+This chunk defines a `PermissionMap` struct to manage individual permissions using a string hash map. It includes methods to convert between ZonElement format and the internal representation, as well as adding and removing permissions. The `Permissions` struct manages both whitelists and blacklists using `PermissionMap`, providing initialization, deinitialization, and methods to add/remove permissions, check permission status, and serialize/deserialize from/to ZonElement.
 
-Permissions is a struct holding an arena allocator, whitelist and blacklist PermissionMaps. Its init method returns a Permissions with an initialized NeverFailingArenaAllocator (the rest of fields default to empty maps). deinit asserts server context and calls self.arena.deinit().
-
-The list helper returns either &self.whitelist or &self.blacklist based on ListType enum (.white/.black). fromZon asserts server context, then calls self.list(.white).fromZon with zon.getChild("permissionWhitelist") and similarly for blacklist.
-toZon asserts server context, puts "permissionWhitelist" and "permissionBlacklist" into the provided ZonElement using self.list(...).toZon. addPermission asserts server context, gets the appropriate list via self.list(listType), then calls put with allocator.dupe of permissionPath. removePermission asserts server context, returns the result of map.remove on the selected list.
-
-hasPermission walks a permission path by repeatedly finding the last '/' (std.mem.lastIndexOfScalar). At each segment it checks blacklist.map.contains; if found returns .no, else whitelist.map.contains; if found returns .yes. It descends to the parent segment (permissionPath[0..nextPos]). If no slash remains and whitelist contains "/" it returns .yes, otherwise .neutral.
-
-Group is a struct with permissions field, an id u32, and name []const u8. The comment explains that each group must have a unique ID to avoid stale membership issues (User1 joins Group1, Group1 deleted while User1 offline, new Group1 created, User1 reconnects incorrectly treated as member of new Group1). init increments currentId, calls saveMetaData with error logging on failure, allocates Group via allocator.create, initializes permissions, sets id and name, then calls self.save. deinit asserts server context, calls self.permissions.deinit(), and destroys the group.
-
-fromZon creates a Group, initializes its permissions, sets id and name from parameters (the snippet cuts off before completing the struct initialization).
+## Code Example
+```zig
+pub fn init(allocator: NeverFailingAllocator) Permissions {
+	return .{
+		.arena = .init(allocator),
+	};
+}
+```
 
 ## Related Questions
-- How does PermissionMap.fromZon handle null items in zon.toSlice?
-- What happens inside PermissionMap.put when a key already exists?
-- Which fields are initialized by default in Permissions.init?
-- How does hasPermission descend through a permission path like 'admin/chat'?
-- Why is currentId incremented before creating a Group in init?
-- What error message is logged if saveMetaData fails during Group.init?
-- Does toZon write both whitelist and blacklist even if one is empty?
-- How does fromZon for Permissions extract child nodes named 'permissionWhitelist' and 'permissionBlacklist'?
-- Is the PermissionMap stored inside Permissions owned by the arena or unmanaged?
+- How does the `PermissionMap` struct handle memory allocation?
+- What is the purpose of the `fromZon` method in the `PermissionMap` struct?
+- How are permissions added to a `Permissions` instance?
+- What does the `hasPermission` method return if a permission path is not found in either list?
+- How is the thread context asserted in methods of the `Permissions` struct?
+- What data structure is used internally by `PermissionMap` to store permissions?
 
 *Source: unknown | chunk_id: codebase_src_server_permission.zig_chunk_0*

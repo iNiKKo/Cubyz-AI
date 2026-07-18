@@ -1,26 +1,21 @@
 # [easy/codebase_assets_cubyz_world_presets_structure_world.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** preset, configuration, generators, disabled, enabled, climate, wavelengths, biome, mapgen, cave, structure
-**Symbols:** climateGenerator, mapGenerator, generators, caveGenerators, structureMapGenerators, climateWavelengths
-**Concepts:** world preset configuration, generator state management, biome selection, map generation identifiers, climatic wavelength parameters
+**Keywords:** world generation, configuration, generators, climate, mapgen
+**Concepts:** world generation, climate settings, map generation
 
 ## Summary
-This chunk defines a world preset configuration containing climate generator settings, map generation identifiers, and lists of enabled/disabled ore, cave, and structure generators with their respective wavelength parameters.
+Defines configuration for world generation presets, including climate and map generators.
 
 ## Explanation
-The chunk declares a single top-level struct (unnamed in the provided snippet) that serves as a data container for world preset values. It contains fields: climateGenerator (a struct with id and biome), mapGenerator (struct with id), generators (map of ore generator identifiers to state enums), caveGenerators (map of cave generator identifiers to state enums), structureMapGenerators (map of structure generator identifiers to state enums), and climateWavelengths (struct holding numeric wavelength values for hot_cold, land_ocean, wet_dry, vegetation, mountain). All maps use string keys with the 'cubyz:' namespace prefix. The state field in each map entry is an enum variant either .disabled or .enabled. No executable logic is present; this chunk functions purely as configuration data.
+This chunk defines a JSON-like structure in Zig using the `.zon` format. It specifies various world generation settings such as climate generator, map generator, ore generators, cave generators, and structure map generators. Each generator has an ID and a state (enabled or disabled). The climate wavelengths define the scale of different environmental factors like temperature, humidity, and vegetation.
 
 ## Related Questions
-- What is the identifier assigned to the climate generator in this preset?
-- Which biome string is configured for the world preset?
-- How many ore generators are defined and what is their state?
-- List all cave generators present and indicate which ones are enabled.
-- Identify the structure map generators included and their enablement status.
-- What numeric value is assigned to the hot_cold wavelength parameter?
-- Retrieve the land_ocean wavelength setting from this configuration.
-- Which generator has its state set to .enabled in the caveGenerators map?
-- Are any ore generators currently enabled or are they all disabled?
-- Does the structureMapGenerators section contain any enabled entries besides the default?
+- What is the ID of the climate generator used in this preset?
+- Which map generator is specified for this world preset?
+- Are ore generators enabled or disabled by default in this preset?
+- How many different cave generators are defined in this configuration?
+- What is the wavelength value for hot-cold variations in the climate?
+- Is the simple structures generator enabled or disabled?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_world_presets_structure_world.zig.zon_chunk_0*

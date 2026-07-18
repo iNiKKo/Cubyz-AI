@@ -1,15 +1,15 @@
 # [easy/codebase_src_utils_Mutex.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** mutex, SRWLOCK, Windows, faster synchronization, condition support
-**Symbols:** Mutex, init, tryLock, lock, unlock
-**Concepts:** synchronization primitive, atomic access, critical section, thread blocking
+**Keywords:** mutex, locking, SRWLOCK, thread synchronization, Windows API
+**Symbols:** Mutex, Mutex.impl, Mutex.init, Mutex.tryLock, Mutex.lock, Mutex.unlock, Impl, WindowsImpl, WindowsImpl.srwlock, WindowsImpl.tryLock, WindowsImpl.lock, WindowsImpl.unlock, windows
+**Concepts:** synchronization primitive, critical section, SRWLOCK, thread safety
 
 ## Summary
-Mutex implementation for Windows
+Mutex is a synchronization primitive for enforcing atomic access to shared code regions, implemented using Windows SRWLOCK.
 
 ## Explanation
-Mutex is a synchronization primitive used to ensure atomic access to shared resources. It uses SRWLOCK on Windows, which is faster and implements efficient condition support.
+The Mutex struct provides methods for locking and unlocking a critical section of code. It uses the Windows SRWLOCK mechanism internally for efficient synchronization. The `tryLock` method attempts to acquire the mutex without blocking, returning false if it would block. The `lock` method acquires the mutex, blocking if necessary, and `unlock` releases it. The implementation is specific to Windows, leveraging the RtlTryAcquireSRWLockExclusive, RtlAcquireSRWLockExclusive, and RtlReleaseSRWLockExclusive functions from the ntdll library.
 
 ## Code Example
 ```zig
@@ -19,16 +19,11 @@ pub fn tryLock(self: *Mutex) bool {
 ```
 
 ## Related Questions
-- What is the purpose of Mutex in Cubyz?
-- How does WindowsImpl differ from Futex solution for mutexes?
-- What are the functions provided by the Mutex implementation?
-- What is the SRWLOCK on Windows used for?
-- Can you explain how Condition support is implemented with SRWLOCK?
-- What is the difference between tryLock and lock in Mutex implementation?
-- What happens if a thread tries to unlock a mutex it did not acquire?
-- How does the WindowsImpl struct initialize its SRWLOCK?
-- What are the functions that interact with the SRWLOCK in WindowsImpl?
-- Can you describe how RtlTryAcquireSRWLockExclusive and RtlReleaseSRWLockExclusive work in WindowsImpl?
-- What is the purpose of the windows module in std.os.windows used by WindowsImpl?
+- What is the purpose of the Mutex struct?
+- How does the Mutex implement locking and unlocking?
+- What method should be used to acquire the mutex without blocking?
+- What happens if a thread tries to lock an already held mutex?
+- Which Windows API functions are used for SRWLOCK operations?
+- Can the Mutex be used on non-Windows platforms?
 
 *Source: unknown | chunk_id: codebase_src_utils_Mutex.zig_chunk_0*

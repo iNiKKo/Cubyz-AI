@@ -1,22 +1,25 @@
 # [easy/codebase_assets_cubyz_biomes_volcano_slope6.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** mountain, radius, roughness, interpolation, ground_structure, stoneBlock, music, parentBiome
-**Symbols:** .mountain, .linear, cubyz:mrmayman/out_of_breath, cubyz:volcano/slope5
-**Concepts:** biome configuration, parent biome reference, terrain generation parameters
+**Keywords:** biome config, volcano slope, properties, interpolation, music
+**Symbols:** properties, radius, minHeight, maxHeight, roughness, mountains, interpolation, chance, music, parentBiomes, maxSubBiomeCount, ground_structure, stoneBlock
+**Concepts:** biome configuration, volcano slope biome, properties, interpolation method, music track
 
 ## Summary
-This chunk defines a volcano biome configuration with fixed height, linear interpolation, and a parent slope5 reference.
+Configuration for a volcano slope biome with specific properties and settings.
 
 ## Explanation
-The chunk declares a single struct instance (implicitly named by the file) containing biome properties: .mountain type, radius 80, minHeight and maxHeight both 640, roughness 20, mountains count 20, linear interpolation, zero chance for random features, music asset 'cubyz:mrmayman/out_of_breath', a parentBiome entry pointing to 'cubyz:volcano/slope5' with chance 1 and edge distance 16, maxSubBiomeCount set to 1, ground_structure specifying '10 to 12 cubyz:magma', and stoneBlock set to 'cubyz:basalt/smooth'. All fields are literal values or inline arrays; no executable logic is present.
+This chunk defines the configuration for a volcano slope biome in Cubyz. It includes properties such as mountain type, radius, minimum and maximum heights, roughness, and mountains count. The interpolation method is set to linear, and there's no chance associated with it. The music track is specified as 'cubyz:mrmayman/out_of_breath'. The biome has a parent biome of 'cubyz:volcano/slope5' with a chance of 1 and a parent edge distance of 16. The maximum number of subbiomes allowed is set to 1. The ground structure consists of magma blocks between 10 and 12 cubits, and the stone block used is basalt smooth.
 
 ## Related Questions
-- What is the radius of this volcano biome?
-- What interpolation method is used for terrain generation here?
-- Which music track is assigned to this biome?
-- What is the parent biome ID referenced in this configuration?
-- How many mountains are specified for this biome?
-- What ground structure materials are defined for this biome?
+- What is the name of the parent biome for this volcano slope biome?
+- How many mountains are allowed in this biome configuration?
+- What is the minimum height setting for this volcano slope biome?
+- What is the maximum height setting for this volcano slope biome?
+- What interpolation method is used in this biome configuration?
+- What is the music track associated with this volcano slope biome?
+- How many subbiomes are allowed in this biome configuration?
+- What ground structure is specified for this volcano slope biome?
+- What stone block is used for the ground structure in this biome configuration?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_volcano_slope6.zig.zon_chunk_0*

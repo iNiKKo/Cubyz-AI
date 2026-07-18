@@ -1,28 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_phantasmal_bubble_bubble.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprint, chance, generation, configurations, cubyz
-**Symbols:** blueprints
-**Concepts:** configuration, blueprint generation
+**Keywords:** blueprint, chance, generation, phantasmal bubble, world generation
+**Concepts:** world generation
 
 ## Summary
-Configuration for bubble blueprint generation
+This chunk defines a list of blueprints for phantasmal bubbles with associated chances.
 
 ## Explanation
-This chunk defines a set of blueprints for generating bubbles in the game, each with an associated chance of being selected.
+The chunk contains a single anonymous struct with a field `.blueprints` that holds an array of structs. Each inner struct represents a blueprint for a phantasmal bubble, identified by a unique ID and assigned a generation chance. The IDs are strings in the format 'cubyz:phantasmal/bubble/[variant]' or 'cubyz:phantasmal/bubble/[special]', and the chances are floating-point numbers representing the probability of each variant being generated.
 
 ## Related Questions
-- What are the IDs of the blueprints defined in this configuration?
-- How many blueprints are there in total?
+- What is the ID of the first phantasmal bubble blueprint?
 - What is the chance associated with the 'cubyz:phantasmal/bubble/0' blueprint?
-- Which blueprint has the highest chance?
-- What is the chance of selecting a 'broken_2' bubble?
-- How many blueprints have a chance greater than 0.5?
-- What are the IDs of the blueprints with a chance less than 0.1?
-- Which blueprint has the lowest chance?
-- How many blueprints have a chance between 0.3 and 0.7?
-- What is the sum of all chances associated with the blueprints?
-- Are there any blueprints with a chance of exactly 0.5?
-- What are the IDs of the blueprints that start with 'cubyz:phantasmal/bubble/'?
+- How many different phantasmal bubble blueprints are defined in this chunk?
+- What is the lowest generation chance for a phantasmal bubble?
+- Which phantasmal bubble blueprint has the highest chance of being generated?
+- Are there any special variants of phantasmal bubbles defined in this chunk?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_phantasmal_bubble_bubble.zig.zon_chunk_0*

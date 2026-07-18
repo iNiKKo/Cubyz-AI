@@ -1,0 +1,21 @@
+# [issues/issue_1323.md] - Issue #1323 discussion
+
+**Type:** review
+**Keywords:** Iron texture, Cast Iron, Titanium, color distinction, tools
+**Concepts:** texture modification, color differentiation, game asset
+
+## Summary
+Discussion about changing the texture of Iron to more resemble Cast Iron, with maintainer comments suggesting that the current colors are distinguishable but tools look almost identical.
+
+## Explanation
+The discussion revolves around modifying the texture of Iron in the Cubyz game to make it appear more like Cast Iron. Maintainers suggest that while the current color differentiation between Iron and Silver is acceptable, there is a lack of clear distinction when they are placed next to each other as tools. They propose considering darker colors or specific tints for Titanium (#1270) but ultimately decide to close the issue.
+
+## Related Questions
+- What is the current texture of Iron in Cubyz?
+- Why was the issue about changing Iron's texture to Cast Iron opened?
+- What are the maintainer's concerns regarding the current color differentiation between Iron and Silver?
+- How does the appearance of tools affect the perception of Iron and Silver textures?
+- What alternative colors or tints were suggested for Titanium?
+- Why was the issue ultimately closed?
+
+*Source: unknown | chunk_id: github_issue_1323_discussion*

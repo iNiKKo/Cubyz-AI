@@ -1,48 +1,46 @@
 # [easy/codebase_src_gui_windows_change_name.zig] - Chunk 0
 
-**Type:** api
-**Keywords:** GUI components, text input, button click, string validation, window lifecycle
-**Symbols:** window, textComponent, padding, apply, onOpen, onClose
-**Concepts:** GUI window management, player settings, input validation, UI component initialization
+**Type:** implementation
+**Keywords:** GUI window, name validation, warning display, help text, input handling
+**Symbols:** settings, Vec2f, GuiComponent, GuiWindow, window, textComponent, padding
+**Concepts:** GUI, player name change, validation logic
 
 ## Summary
-Handles the logic for a GUI window that allows changing the player's name, including input validation and UI component management.
+Handles window for changing player name in GUI
 
 ## Explanation
-This chunk defines a GUI window for changing the player's name. It includes functions to apply the new name with validation checks, initialize the window components on open, and deinitialize them on close. The window contains labels for instructions, a text input field for entering the name, and an apply button. It also handles UI layout and updates.
+Manages a window for changing the player's name, validating input length and updating settings. Includes logic for displaying warnings and help text.
 
 ## Code Example
 ```zig
-pub fn onOpen() void {
-	const list = VerticalList.init(.{padding, 16 + padding}, 300, 16);
-	const width = 420;
-	if (settings.playerName.len == 0) {
-		list.add(Label.init(.{0, 0}, width, "Please enter your name!", .center));
-		window.closeable = false;
-	} else {
-		list.add(Label.init(.{0, 0}, width, "#ff0000Warning: #ffff00__For worlds from versions 0.1.0 and earlier__. #ffffffYou may lose access to your inventory data when changing the name!", .center));
-		window.closeable = true;
+fn apply() void {
+	if (textComponent.currentString.items.len > 500 or main.graphics.TextBuffer.Parser.countVisibleCharacters(textComponent.currentString.items) > 50) {
+		std.log.err("Name is too long with {}/{} characters. Limits are 50/500", .{main.graphics.TextBuffer.Parser.countVisibleCharacters(textComponent.currentString.items), textComponent.currentString.items.len});
+		return;
 	}
-	list.add(Label.init(.{0, 0}, width, "Cubyz supports formatting your username using a markdown-like syntax:", .center));
-	list.add(Label.init(.{0, 0}, width, "\\**italic*\\* \\*\\***bold**\\*\\* \\_\\___underlined__\\_\\_ \\~\\~~~strike-through~~\\~\\~", .center));
-	list.add(Label.init(.{0, 0}, width, "Even colors are possible, using the hexadecimal color code:", .center));
-	list.add(Label.init(.{0, 0}, width, "\\##ff0000ff#ffffff00#ffffff00#ff0000red#ffffff \\##ff0000ff#00770077#ffffff00#ff7700orange#ffffff \\##ffffff00#00ff00ff#ffffff00#00ff00green#ffffff \\##ffffff00#ffffff00#0000ffff#0000ffblue", .center));
-	textComponent = TextInput.init(.{0, 0}, width, 32, if (settings.playerName.len == 0) "quanturmdoelvloper" else settings.playerName, .{.onNewline = .init(apply)});
-	list.add(textComponent);
-	list.add(Button.initText(.{0, 0}, 100, "Apply", .{.onAction = .init(apply)}));
-	list.finish(.center);
-	window.rootComponent = list.toComponent();
-	window.contentSize = window.rootComponent.?.pos() + window.rootComponent.?.size() + @as(Vec2f, @splat(padding));
-	gui.updateWindowPositions();
+	const oldName = settings.playerName;
+	main.globalAllocator.free(settings.playerName);
+	settings.playerName = main.globalAllocator.dupe(u8, textComponent.currentString.items);
+	settings.save();
+	gui.closeWindowFromRef(&window);
+	if (oldName.len == 0) {
+		gui.openWindow("main");
+	}
 }
 ```
 
 ## Related Questions
-- What is the purpose of the `apply` function?
-- How does the window handle input validation for the player's name?
-- What components are added to the GUI window when it opens?
-- What happens if the player's current name is empty when opening the window?
-- How is the layout of the GUI window managed?
-- What steps are taken when the window is closed?
+- What is the purpose of the `apply` function in this chunk?
+- How does the `apply` function validate the player's name input?
+- What happens if the player's name exceeds the character limit?
+- Where is the warning message displayed when the name is too long?
+- What is the initial text content of the `TextInput` component?
+- How is the `GuiWindow` initialized in this chunk?
+- What is the purpose of the `onOpen` function?
+- What components are added to the `VerticalList` in the `onOpen` function?
+- What is the purpose of the `onClose` function?
+- How does the `onClose` function handle the `GuiWindow`'s root component?
+- What is the purpose of the `apply` function's error logging statement?
+- Where is the player's name stored in the settings?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_change_name.zig_chunk_0*

@@ -1,50 +1,36 @@
 # [hard/codebase_src_itemdrop.zig] - Chunk 3
 
 **Type:** implementation
-**Keywords:** physics calculation, interpolation, rendering pipeline, entity collision, bobbing animation
-**Symbols:** ItemDropManager, ItemDropManager.size, ItemDropManager.indices, ItemDropManager.list, ItemDropManager.init, ItemDropManager.deinit, ItemDropManager.processChanges, ItemDropManager.directRemove, ClientItemDropManager, ClientItemDropManager.maxf64Capacity, ClientItemDropManager.super, ClientItemDropManager.lastTime, ClientItemDropManager.timeDifference, ClientItemDropManager.interpolation, ClientItemDropManager.instance, ClientItemDropManager.mutex, ClientItemDropManager.init, ClientItemDropManager.deinit, ClientItemDropManager.readPosition, ClientItemDropManager.updateInterpolationData, ClientItemDropManager.clientSideInternalAdd, ClientItemDropManager.remove, ClientItemDropManager.loadFrom, ClientItemDropManager.addFromZon, ItemDisplayManager, ItemDisplayManager.showItem, ItemDisplayManager.cameraFollow, ItemDisplayManager.cameraFollowVel, ItemDisplayManager.damping, ItemDisplayManager.update, ItemDropRenderer, ItemDropRenderer.itemPipeline, ItemDropRenderer.itemUniforms
-**Concepts:** item drop physics, client-side interpolation, item rendering, entity pickup detection
+**Keywords:** item drops, player inventory, physics calculations, mutex locking, change queue
+**Symbols:** ItemDropManager, ItemDropManager.updateData, ItemDropManager.userList, ItemDropManager.emptyMutex, ItemDropManager.changeQueue, ItemDropManager.world, ItemDropManager.list, ItemDropManager.indices, ItemDropManager.size, ItemDropManager.internalAdd, ItemDropManager.internalRemove, ItemDropManager.directRemove, ItemDropManager.updateEnt, ItemDropManager.checkEntity
+**Concepts:** item management, player interaction, physics simulation
 
 ## Summary
-Handles item drop physics, client-side interpolation, and rendering.
+The ItemDropManager handles the creation, removal, and updating of item drops in the game world. It manages a list of items, processes changes to this list, and sends updates to connected users.
 
 ## Explanation
-The chunk defines several structs related to item drops in the game. `ItemDropManager` manages server-side item drops, including calculating motion and checking for entity pickups. `ClientItemDropManager` handles client-side interpolation of item positions and velocities. `ItemDisplayManager` updates the display of items, including bobbing animations. `ItemDropRenderer` is responsible for rendering item drops using a graphics pipeline.
+The ItemDropManager is responsible for managing item drops within the game world. It maintains a list of items with their positions, velocities, and other properties. The manager handles adding new items (`internalAdd`), removing existing ones (`internalRemove`), and directly removing items without waiting for processing (`directRemove`). It also processes changes to the item list in batches (`processChanges`). The `updateEnt` function updates the physical properties of an item drop based on physics calculations, including collision detection and motion. The `checkEntity` method checks if a player is within pickup range of any item drops and attempts to collect them into the player's inventory.
 
 ## Code Example
 ```zig
-pub fn checkEntity(self: *ItemDropManager, user: *main.server.User) void {
-	var ii: u32 = 0;
-	while (ii < self.size) {
-		const i = self.indices[ii];
-		if (self.list.items(.pickupCooldown)[i] > 0) {
-			ii += 1;
-			continue;
-		}
-		const hitbox = main.game.Player.outerBoundingBox;
-		const min = user.player().pos + hitbox.min;
-		const max = user.player().pos + hitbox.max;
-		const itemPos = self.list.items(.pos)[i];
-		const dist = @max(min - itemPos, itemPos - max);
-		if (@reduce(.Max, dist) < radius + pickupRange) {
-			const itemStack = &self.list.items(.itemStack)[i];
-			main.items.Inventory.server.tryCollectingToPlayerInventory(user, itemStack);
-			if (itemStack.amount == 0) {
-				self.directRemove(i);
-				continue;
-			}
-		}
-		ii += 1;
+fn internalAdd(self: *ItemDropManager, i: u16, drop_: ItemDrop) void {
+	var drop = drop_;
+	if (self.world == null) {
+		ClientItemDropManager.clientSideInternalAdd(self, i, drop);
 	}
+	drop.reverseIndex = @intCast(self.size);
+	self.list.set(i, drop);
+	self.indices[self.size] = i;
+	self.size += 1;
 }
 ```
 
 ## Related Questions
-- What is the purpose of the `checkEntity` function in `ItemDropManager`?
-- How does `ClientItemDropManager` handle item position interpolation?
-- What role does `ItemDisplayManager` play in the game's rendering pipeline?
-- How are item drops managed on the server side according to `ItemDropManager`?
-- What is the significance of the `mutex` in `ClientItemDropManager`?
-- How does `ItemDropRenderer` initialize its graphics pipeline?
+- What is the purpose of the `internalAdd` function in the ItemDropManager?
+- How does the ItemDropManager handle item removal?
+- What role does the `updateEnt` function play in the ItemDropManager?
+- How are changes to the item list processed by the ItemDropManager?
+- What is the significance of the `emptyMutex` in the ItemDropManager?
+- How does the ItemDropManager check for player interactions with item drops?
 
 *Source: unknown | chunk_id: codebase_src_itemdrop.zig_chunk_3*

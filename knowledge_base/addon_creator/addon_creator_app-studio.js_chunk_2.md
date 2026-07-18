@@ -1,26 +1,26 @@
 # [hard/addon_creator_app-studio.js] - Chunk 2
 
 **Type:** ui
-**Keywords:** dynamic workspace, form population, event listeners, UI components, unsaved changes, dropdowns, tags, input validation, live preview, data binding
-**Symbols:** loadStudioPanel, populateBlockFormValues, populateItemFormValues, populateRecipeFormValues, populateBiomeFormValues, dynamicWorkspace, blockRotation, blockTagsContainer, tagTextInput, dropAuto, dropSearch, hasItemIcon, itemIconSearch, topSearch, frontSearch, leftSearch, rightSearch, upSearch, bottomSearch, logicTouchType, logicTouchMode, logicTouchTypeVariant, logicUpdateType, logicDecayReplacement, logicDecayPrevention, logicUpdateReplaceBlockSearch, logicTickType, logicDecayTickReplacement, logicDecayTickPrevention, logicTickReplaceBlockSearch, logicBreakType, logicBreakReplaceBlockSearch, logicInteractType, logicInteractWindowName, simpleTouchPresetSearch, simpleEnvPreset, simpleEnvPresetSearch, advTickReplaceWrapper, advBreakReplaceWrapper, advInteractWindowWrapper
-**Concepts:** data-binding, form validation, live preview, dynamic UI generation, event handling, state management
+**Keywords:** loadStudioPanel, unsaved changes, navigation buttons, dynamic content fetching, form initialization, dropdowns, tags, event listeners, block rotation, tag system
+**Symbols:** loadStudioPanel, window.showCustomConfirm, window.hasUnsavedChanges, window.currentPanelName, window.isInitializingPanel, fetch, document.getElementById, document.querySelectorAll, window.dropdownsGenerated, window.markFormAsDirty, window.rebuildDropdowns, window.initDynamicTagSystem, window.handleRotationChange, window.populateBlockFormValues, window.populateItemFormValues, window.projectData.blocks, window.projectData.items, setVal, setCheck
+**Concepts:** data-binding, form validation, live preview, dynamic content loading, event handling, UI component initialization
 
 ## Summary
-The chunk initializes a dynamic workspace for editing Cubyz addon elements like blocks, items, recipes, biomes, entities, and particles. It sets up event listeners, form population functions, and UI components specific to each element type.
+The `loadStudioPanel` function loads a specific panel in the Cubyz Addon Creator, handling navigation, dynamic content fetching, and form initialization. It also manages unsaved changes and updates UI components like dropdowns and tags.
 
 ## Explanation
-This chunk is responsible for dynamically loading and initializing the UI components of the Cubyz Addon Creator workspace. It handles various UI elements such as input fields, dropdowns, checkboxes, and tags. The code includes event listeners for input changes, form population functions for different types of addon elements (blocks, items, recipes, biomes, entities, particles), and utility functions like `initDynamicTagSystem` and `toggleDropInput`. It also manages the state of unsaved changes and initializes dropdowns based on the current panel name. The chunk ensures that the UI is responsive to user interactions and accurately reflects the data being edited.
+The `loadStudioPanel` function is responsible for loading different panels within the Cubyz Addon Creator application. It handles various tasks such as checking for unsaved changes, updating navigation buttons, fetching and rendering panel templates, initializing form elements, and managing dynamic UI components like dropdowns and tags. The function also sets up event listeners to mark forms as dirty when inputs change. Additionally, it initializes specific settings for different panels, such as handling block rotation and setting up tag systems. The `populateBlockFormValues` and `populateItemFormValues` functions are used to populate form fields with data from the project's blocks and items respectively.
 
 ## Related Questions
-- What is the purpose of the `loadStudioPanel` function?
-- How does the code handle input changes in the dynamic workspace?
-- What specific UI components are initialized for editing blocks?
-- How does the form population work for different types of addon elements?
-- What utility functions are used to manage tags and dropdowns in the UI?
-- How is the state of unsaved changes managed in this chunk?
-- What event handlers are attached to input fields and dropdowns?
-- How does the code ensure that the UI accurately reflects the data being edited?
-- What is the role of `initDynamicTagSystem` in the UI components?
-- How does the code handle errors when rendering panel views?
+- What happens if there are unsaved changes when switching panels?
+- How does the function handle dynamic content fetching for different panels?
+- What specific settings are initialized for the 'blocks' panel?
+- How are form fields populated with data from the project's blocks and items?
+- What role do event listeners play in marking forms as dirty?
+- How is the UI updated when switching between different panels?
+- What mechanisms ensure that dropdowns and tags are correctly managed?
+- How does the function handle errors during panel loading?
+- What specific functions are called for initializing dynamic tag systems?
+- How is block rotation handled in the 'blocks' panel?
 
 *Source: unknown | chunk_id: addon_creator_app-studio.js_chunk_2*

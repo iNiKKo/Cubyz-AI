@@ -1,28 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_branch_leafy_willow.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** block config, decay logic, drop items, texture setup, LOD replacement, opaque variant
-**Symbols:** LeafyWillowBlock
-**Concepts:** block configuration, decay behavior, drop items, texture settings, LOD replacement, opaque variant
+**Keywords:** block configuration, textures, drops, decay, cuttable tools
+**Concepts:** block properties, texture mapping, drop behavior
 
 ## Summary
-Leafy Willow Block Configuration
+Defines properties for the leafy willow block, including textures and drop behavior.
 
 ## Explanation
-This chunk defines the configuration for a Leafy Willow block in Cubyz. It specifies the block's behavior on update, including its decay type and drop items. The block also has drops for itself and leaves, with specific allowed tools for leaf drops. It sets textures for different states of the block and specifies LOD replacements and opaque variants.
+This chunk configures the leafy willow block with various textures for different LODs and states. It specifies that the block decays over time and drops willow branches when it does. Additionally, it defines what items are dropped when the block is broken using a cuttable tool.
 
 ## Related Questions
-- What is the block's decay behavior?
-- Which tools are allowed to drop leaves from this block?
-- What textures are set for different states of the block?
-- How does the block handle LOD replacement and opaque variants?
-- What items can be dropped when the block is updated?
-- What drops does the block have besides itself and leaves?
-- Which textures are used for the block's leafy appearance?
-- What textures are used for the block's branch appearance?
-- How many textures are set for this block?
-- What is the block's texture6?
-- What is the block's texture7?
-- What is the block's texture8?
+- What textures are defined for the leafy willow block?
+- How does the leafy willow block decay?
+- What items are dropped when the leafy willow block decays?
+- Which tool tags allow dropping willow leaves from the leafy willow block?
+- What is the opaque variant of the leafy willow block?
+- What LOD replacement is specified for the leafy willow block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_branch_leafy_willow.zig.zon_chunk_0*

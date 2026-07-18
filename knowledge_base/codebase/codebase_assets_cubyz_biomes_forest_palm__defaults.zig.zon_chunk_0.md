@@ -1,22 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_forest_palm__defaults.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome, configuration, fog, properties, vegetation, music
-**Symbols:** fogDensity, fogColor, properties, tags, minHeightLimit, minHeight, maxHeight, maxHeightLimit, smoothBeaches, minRadius, maxRadius, roughness, hills, music, validPlayerSpawn, stoneBlock, structures
-**Concepts:** configuration, biome generation, fog, terrain properties, vegetation, music
+**Keywords:** fog density, climate tags, height limits, structures, music
+**Concepts:** biome configuration, world generation
 
 ## Summary
-Defines default properties and structures for a palm forest biome in Cubyz.
+Defines default settings for a forest biome with palm trees.
 
 ## Explanation
-This chunk provides configuration data for a palm forest biome, including fog settings, terrain properties, vegetation, and music. It specifies the biome's appearance, behavior, and interactions with the player and environment.
+This chunk contains configuration data for a specific biome in the Cubyz game engine, detailing various properties such as fog density, color, climate tags, height limits, beach smoothness, radius, roughness, and hill count. It also specifies music associated with the biome, valid player spawn points, and stone block types. Additionally, it lists several structures that can appear within this biome, including flower patches and simple vegetation, each with specific probabilities, dimensions, and densities.
 
 ## Related Questions
-- What is the fog density for the palm forest biome?
-- How many different structures are defined in the palm forest biome?
-- What is the minimum height limit for the palm forest biome?
-- What is the music track associated with the palm forest biome?
-- What blocks can be found in the flower patches within the palm forest biome?
-- Is smooth beaches enabled in the palm forest biome?
+- What is the fog color for this biome?
+- Which structures are defined in this biome configuration?
+- What is the minimum height limit for this biome?
+- Is player spawning valid in this biome?
+- What is the roughness value for this biome?
+- What types of blocks can be found in flower patches within this biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_forest_palm__defaults.zig.zon_chunk_0*

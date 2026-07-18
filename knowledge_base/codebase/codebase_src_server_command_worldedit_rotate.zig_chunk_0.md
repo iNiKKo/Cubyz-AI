@@ -1,15 +1,15 @@
 # [easy/codebase_src_server_command_worldedit_rotate.zig] - Chunk 0
 
 **Type:** api
-**Keywords:** command parsing, angle conversion, error reporting, clipboard rotation, memory management
+**Keywords:** command execution, argument parsing, error handling, clipboard rotation, user feedback
 **Symbols:** description, usage, execute
-**Concepts:** command handling, user input, error handling, world editing, clipboard manipulation
+**Concepts:** world edit, clipboard manipulation, server command handling
 
 ## Summary
-Handles the 'rotate' command for world editing, rotating clipboard content around the Z axis.
+Handles the server command for rotating clipboard content around the Z axis.
 
 ## Explanation
-The function `execute` processes the 'rotate' command. It takes arguments and a user object as input. If no angle is provided, it defaults to 90 degrees. It checks if there is clipboard content; if not, it sends an error message. Otherwise, it rotates the clipboard content around the Z axis by the specified angle using the `rotateZ` method of the clipboard object.
+This chunk defines a server command that allows users to rotate the contents of their world edit clipboard. The `execute` function processes the command arguments, validates the rotation angle, checks if there is any clipboard content, and then performs the rotation using the specified angle. If the angle is invalid or no clipboard content exists, it sends an error message back to the user.
 
 ## Code Example
 ```zig
@@ -32,16 +32,11 @@ pub fn execute(args: []const u8, source: *User) void {
 ```
 
 ## Related Questions
-- What does the 'rotate' command do?
-- How is user input handled in this function?
-- What error messages are sent if invalid input is provided?
-- How is clipboard content rotated?
-- Who calls the `execute` function?
-- What happens if there is no clipboard content to rotate?
-- How does memory management work for clipboard objects?
-- What is the default rotation angle if none is specified?
-- How is the `rotateZ` method used in this function?
-- What type of data structure is used for storing clipboard content?
-- Who defines the `Degrees` enum?
+- What is the description of the rotate command?
+- How does the execute function handle invalid angles?
+- What error message is sent if there is no clipboard content?
+- Which allocator is used for rotating the clipboard content?
+- What are the valid rotation angles accepted by this command?
+- How is the clipboard content rotated in this chunk?
 
 *Source: unknown | chunk_id: codebase_src_server_command_worldedit_rotate.zig_chunk_0*

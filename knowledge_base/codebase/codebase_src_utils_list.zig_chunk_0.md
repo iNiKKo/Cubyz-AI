@@ -1,31 +1,33 @@
 # [hard/codebase_src_utils_list.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** dynamic allocation, array operations, memory safety, capacity management, element insertion
-**Symbols:** ListManaged, ListManaged.items, ListManaged.capacity, ListManaged.allocator, ListManaged.init, ListManaged.initCapacity, ListManaged.deinit, ListManaged.clearAndFree, ListManaged.clearRetainingCapacity, ListManaged.shrinkAndFree, ListManaged.toOwnedSlice, ListManaged.ensureCapacity, ListManaged.ensureFreeCapacity, ListManaged.resizeAssumeCapacity, ListManaged.resize, ListManaged.addOneAssumeCapacity, ListManaged.addOne, ListManaged.addManyAssumeCapacity, ListManaged.addMany, ListManaged.appendAssumeCapacity, ListManaged.append, ListManaged.appendNTimesAssumeCapacity, ListManaged.appendNTimes, ListManaged.appendSliceAssumeCapacity, ListManaged.appendSlice, ListManaged.insertAssumeCapacity, ListManaged.insert, ListManaged.insertSliceAssumeCapacity
-**Concepts:** dynamic array, memory management, capacity growth, element manipulation
+**Keywords:** capacity calculation, dynamic memory allocation, growth strategy, looping mechanism, minimum capacity
+**Symbols:** growCapacity
+**Concepts:** list management, dynamic array resizing
 
 ## Summary
-Defines a generic managed list type with dynamic capacity management and various operations for adding, removing, and manipulating elements.
+Defines a utility function for growing list capacity.
 
 ## Explanation
-The `ListManaged` struct template provides a flexible array-like container that manages its own memory allocation. It includes methods for initialization, deinitialization, clearing contents, resizing, and appending or inserting elements. The list automatically grows its capacity when needed using the `growCapacity` function to determine the new size. Memory management is handled through an allocator of type `NeverFailingAllocator`, ensuring that all operations are safe and do not fail due to memory allocation issues.
+This chunk contains a single function, `growCapacity`, which calculates the new capacity for a list when more space is needed. The function takes two parameters: `current`, the current capacity of the list, and `minimum`, the minimum required capacity. It uses a loop to incrementally increase the capacity until it meets or exceeds the minimum requirement. The growth strategy involves adding half of the current capacity plus 8 to itself in each iteration.
 
 ## Code Example
 ```zig
-pub fn init(allocator: NeverFailingAllocator) @This() {
-	return .{
-		.allocator = allocator,
-	};
+fn growCapacity(current: usize, minimum: usize) usize {
+	var new = current;
+	while (true) {
+		new +|= new/2 + 8;
+		if (new >= minimum) return new;
+	}
 }
 ```
 
 ## Related Questions
-- How does the `ListManaged` struct initialize its memory allocation?
-- What is the purpose of the `growCapacity` function in this code?
-- How does the `ListManaged` handle memory deallocation when it's no longer needed?
-- Can you explain how elements are added to a `ListManaged` instance?
-- What is the difference between `appendAssumeCapacity` and `append` methods?
-- How does the `ListManaged` ensure that there is enough capacity before adding new elements?
+- What is the purpose of the `growCapacity` function?
+- How does the `growCapacity` function determine the new capacity?
+- What parameters does the `growCapacity` function take?
+- What is the growth strategy used in the `growCapacity` function?
+- Can you explain the loop mechanism in the `growCapacity` function?
+- What is the minimum requirement for the new capacity in the `growCapacity` function?
 
 *Source: unknown | chunk_id: codebase_src_utils_list.zig_chunk_0*

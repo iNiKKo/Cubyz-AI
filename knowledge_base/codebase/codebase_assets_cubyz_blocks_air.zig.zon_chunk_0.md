@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_air.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** air block, transparency, collision, replaceable, configuration
-**Concepts:** block configuration
+**Keywords:** transparency, collision, configuration, properties, block
+**Concepts:** block configuration, air properties
 
 ## Summary
-Defines properties for the air block in Cubyz.
+Defines properties for the air block in Cubyz, including transparency and collision behavior.
 
 ## Explanation
-This chunk defines the configuration for the air block, setting various properties such as transparency, light absorption, and collision behavior. The air block is marked as transparent, non-collidable, and replaceable, with no item representation or drops. It does not have a model and cannot be selected.
+This chunk defines a configuration object for the air block in the Cubyz voxel engine. It specifies various properties such as transparency, light absorption, view-through capability, replaceability, rotation behavior, degradability, item association, and collision detection. The air block is configured to not drop any items, have no selection capabilities, and use no model.
 
 ## Related Questions
 - What is the transparency setting for the air block?
-- Is the air block collidable?
-- Does the air block have an item representation?
-- What is the rotation setting for the air block?
-- Can the air block be selected?
-- What are the drops associated with the air block?
+- Is the air block replaceable?
+- Does the air block have any collision capabilities?
+- What is the light absorption color of the air block?
+- Can items be dropped from the air block?
+- How does the air block handle rotation?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_air.zig.zon_chunk_0*

@@ -1,15 +1,15 @@
 # [easy/codebase_src_gui_gui_component.zig] - Chunk 0
 
-**Type:** implementation
-**Keywords:** union, pointer, switch, delegate, method, pointers, rectangle, boolean
-**Symbols:** GuiComponent, BagSlot, Button, CheckBox, HorizontalList, Icon, ItemSlot, Label, MutexComponent, ScrollBar, ContinuousSlider, DiscreteSlider, TextInput, VerticalList, GuiComponent.deinit, GuiComponent.mutPos, GuiComponent.mutSize, GuiComponent.pos, GuiComponent.size, GuiComponent.updateSelected, GuiComponent.updateHovered, GuiComponent.render, GuiComponent.mainButtonPressed, GuiComponent.mainButtonReleased, GuiComponent.contains
-**Concepts:** GUI components, deinitialization, position and size manipulation, event handling, rendering
+**Type:** api
+**Keywords:** union, method delegation, component-based architecture, switch statement, inline else, position and size handling, mouse interaction, rendering
+**Symbols:** GuiComponent, GuiComponent.BagSlot, GuiComponent.Button, GuiComponent.CheckBox, GuiComponent.HorizontalList, GuiComponent.Icon, GuiComponent.ItemSlot, GuiComponent.Label, GuiComponent.MutexComponent, GuiComponent.ScrollBar, GuiComponent.ContinuousSlider, GuiComponent.DiscreteSlider, GuiComponent.TextInput, GuiComponent.VerticalList, GuiComponent.bagSlot, GuiComponent.button, GuiComponent.checkBox, GuiComponent.horizontalList, GuiComponent.icon, GuiComponent.itemSlot, GuiComponent.label, GuiComponent.mutexComponent, GuiComponent.scrollBar, GuiComponent.continuousSlider, GuiComponent.discreteSlider, GuiComponent.textInput, GuiComponent.verticalList, GuiComponent.deinit, GuiComponent.mutPos, GuiComponent.mutSize, GuiComponent.pos, GuiComponent.size, GuiComponent.updateSelected, GuiComponent.updateHovered, GuiComponent.render, GuiComponent.mainButtonPressed, GuiComponent.mainButtonReleased, GuiComponent.contains, BagSlot, Button, CheckBox, HorizontalList, Icon, ItemSlot, Label, MutexComponent, ScrollBar, ContinuousSlider, DiscreteSlider, TextInput, VerticalList
+**Concepts:** GUI component management, polymorphic behavior through union, method delegation based on component type
 
 ## Summary
-Defines a union of different GUI component types with methods for deinitialization, position and size manipulation, updating selection and hover state, rendering, and handling mouse button events.
+Defines a union of GUI components with common methods for initialization, position, size, rendering, and interaction handling.
 
 ## Explanation
-The `GuiComponent` union in the Cubyz engine's GUI system represents various UI components such as buttons, labels, and sliders. Each variant of the union corresponds to a specific type of component, storing a pointer to an instance of that component. The union provides methods for common operations like deinitialization (`deinit`), updating selection (`updateSelected`), handling mouse hover events (`updateHovered`), rendering (`render`), and responding to mouse button presses (`mainButtonPressed` and `mainButtonReleased`). These methods delegate to the appropriate implementation based on the variant of the union. Additionally, there's a static method `contains` that checks if a point is within a given rectangle.
+The `GuiComponent` union in this chunk encapsulates various GUI components such as buttons, sliders, and text inputs. Each component type is imported from its respective file within the 'components' directory. The union provides a common interface for these components through methods like deinitialization (`deinit`), getting or setting position and size (`mutPos`, `mutSize`, `pos`, `size`), updating selection state (`updateSelected`), handling mouse hover events (`updateHovered`), rendering (`render`), and responding to button presses (`mainButtonPressed`, `mainButtonReleased`). The methods use a switch statement with an inline else clause to delegate calls to the appropriate component's method if it exists. Additionally, a static method `contains` is provided to check if a point lies within a given rectangle defined by position and size.
 
 ## Code Example
 ```zig
@@ -25,11 +25,11 @@ pub fn deinit(self: GuiComponent) void {
 ```
 
 ## Related Questions
-- What is the purpose of the `GuiComponent` union?
-- How are different GUI components handled within the `GuiComponent` union?
-- What methods are available for updating the state of a GUI component?
-- How does the `contains` method determine if a point is within a rectangle?
-- Which methods delegate to the appropriate implementation based on the variant of the union?
-- What happens when calling `deinit` on a `GuiComponent` that has a custom deinitialization method?
+- What are the different types of GUI components defined in this chunk?
+- How does the `GuiComponent` union handle method calls for each component type?
+- What is the purpose of the `deinit` method in the `GuiComponent` union?
+- How does the `contains` static method work in this chunk?
+- Which methods in the `GuiComponent` union are responsible for handling mouse interactions?
+- What is the role of the `switch` statement with an inline else clause in the methods of the `GuiComponent` union?
 
 *Source: unknown | chunk_id: codebase_src_gui_gui_component.zig_chunk_0*

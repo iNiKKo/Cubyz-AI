@@ -1,26 +1,26 @@
 # [medium/addon_creator_app-io.js] - Chunk 0
 
 **Type:** ui
-**Keywords:** importExistingAddon, JSZip, ZIP file, namespace name, project data, serverTextures, parseIntegerToHexColor, extractVal, extractMinMax, blocks, items, recipes, biomes, entities, particles
-**Symbols:** importExistingAddon, JSZip.loadAsync, document.getElementById, window.projectData.blocks, window.projectData.items, window.projectData.recipes, window.projectData.biomes, window.projectData.entities, window.projectData.particles, window.serverTextures, parseIntegerToHexColor, extractVal, extractMinMax
-**Concepts:** data-binding, file parsing, project data update, texture extraction, metadata parsing
+**Keywords:** ZIP file import, project data update, texture parsing, block properties, item properties, global project data
+**Symbols:** importExistingAddon, parseIntegerToHexColor, extractVal, extractMinMax
+**Concepts:** data-binding, file handling, resource extraction, project data update
 
 ## Summary
 Handles the import of existing addons by parsing a ZIP file and updating project data accordingly.
 
 ## Explanation
-The `importExistingAddon` function is responsible for importing an existing addon from a ZIP file. It processes the uploaded file, extracts relevant data, and updates the project's internal state. The function reads the ZIP file using JSZip, determines the namespace name based on the file structure, and initializes various arrays in `window.projectData` to store blocks, items, recipes, biomes, entities, and particles. It then iterates over the files in the ZIP, extracting textures and metadata for blocks, items, and other elements, updating the project data with this information. The function also includes helper functions like `parseIntegerToHexColor`, `extractVal`, and `extractMinMax` to parse specific values from file content.
+The function `importExistingAddon` is responsible for importing an existing addon from a ZIP file. It processes the file to extract various types of resources such as textures, blocks, items, recipes, biomes, entities, and particles. The function updates global project data structures like `window.projectData` and `window.serverTextures`. It also includes helper functions for parsing integer values to hex colors and extracting specific values from content strings.
 
 ## Related Questions
-- What is the purpose of the `importExistingAddon` function?
-- How does the function determine the namespace name from the ZIP file?
-- What data structures are updated in `window.projectData` during the import process?
-- How are textures extracted and stored from the ZIP file?
-- What helper functions are used to parse specific values from file content?
-- How is the project's internal state updated after importing an addon?
-- What types of files are processed during the import of an existing addon?
-- How does the function handle different categories like blocks, items, and recipes?
-- What validation or error handling is implemented in the `importExistingAddon` function?
-- How does the function ensure that textures are not duplicated in `window.serverTextures`?
+- What is the purpose of the `parseIntegerToHexColor` function?
+- How does the function handle missing or invalid texture files?
+- What types of resources are extracted from the ZIP file?
+- How are block properties parsed and stored in the project data?
+- What happens if a file with an unsupported extension is encountered?
+- How does the function update the global `window.projectData` object?
+- What role do helper functions like `extractVal` play in the import process?
+- How is the namespace name determined from the ZIP file?
+- What steps are taken to ensure that duplicate textures are not added to `serverTextures`?
+- How does the function handle different categories of resources within the ZIP file?
 
 *Source: unknown | chunk_id: addon_creator_app-io.js_chunk_0*

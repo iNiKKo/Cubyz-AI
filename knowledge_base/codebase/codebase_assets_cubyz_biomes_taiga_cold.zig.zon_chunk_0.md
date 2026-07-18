@@ -1,28 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_taiga_cold.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome configuration, height limits, fog density, ground structure, stone block, structures
-**Symbols:** TaigaCold
-**Concepts:** biome, configuration, height limits, fog settings, ground structure, stone block, structures
+**Keywords:** biome properties, ground structure, structures, fog density, temperature, humidity
+**Concepts:** biome configuration
 
 ## Summary
-Biome configuration for Taiga Cold
+Defines properties and structures for the Cold Taiga biome in Cubyz.
 
 ## Explanation
-Defines properties, tags, height limits, fog settings, ground structure, stone block, and structures for the Taiga Cold biome.
+This chunk configures the Cold Taiga biome, specifying its environmental properties such as temperature, humidity, fog density, and color. It also defines the ground structure, stone block type, and various structures that can appear within this biome, including trees, flower patches, ground patches, boulders, and other flora.
 
 ## Related Questions
-- What are the properties of the Taiga Cold biome?
-- Which tags are associated with the Taiga Cold biome?
-- What is the minimum height limit for the Taiga Cold biome?
-- What is the maximum height limit for the Taiga Cold biome?
-- What is the fog density for the Taiga Cold biome?
-- What is the fog color for the Taiga Cold biome?
-- What are the ground structures for the Taiga Cold biome?
-- What is the stone block used in the Taiga Cold biome?
-- How many structures are defined for the Taiga Cold biome?
-- Which structure has the ID 'cubyz:sbb' and what is its place mode?
-- What is the chance of placing a flower patch with blocks 'cubyz:bolete' in the Taiga Cold biome?
-- What is the width, variation, depth, and smoothness of the ground patch block 'cubyz:gravel' in the Taiga Cold biome?
+- What are the properties of the Cold Taiga biome?
+- Which structures can be found in the Cold Taiga biome?
+- What is the fog color and density for the Cold Taiga biome?
+- How does the ground structure in the Cold Taiga biome differ from other biomes?
+- What is the chance of finding a pine tree in the Cold Taiga biome?
+- Which blocks are used to create flower patches in the Cold Taiga biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_taiga_cold.zig.zon_chunk_0*

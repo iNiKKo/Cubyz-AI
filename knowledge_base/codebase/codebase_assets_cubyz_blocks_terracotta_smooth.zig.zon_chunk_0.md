@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_terracotta_smooth.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, block definition, texture assignment, model specification, ore generation
-**Concepts:** block properties, texture mapping
+**Keywords:** block configuration, texture mapping, model selection, ore placement, rotation model
+**Concepts:** block properties, terrain customization
 
 ## Summary
 Defines properties for a smooth terracotta block in Cubyz.
 
 ## Explanation
-This chunk specifies configuration settings for a smooth terracotta block. It sets the block to allow ores, uses a stairs rotation model, applies a cube model, and assigns a specific texture path.
+This chunk configures the properties of a specific block type in the Cubyz game engine. It specifies that the block allows ores to be placed on it, uses a stair-like rotation model, has a cube shape, and is textured with smooth terracotta.
 
 ## Related Questions
 - What texture is assigned to the smooth terracotta block?
-- Does this block allow ores?
-- Which model is used for the smooth terracotta block?
-- How is the rotation of the smooth terracotta block defined?
-- Is there any specific configuration related to lighting or shading for this block?
-- What other blocks might share similar configurations with the smooth terracotta block?
+- Does this block allow ores to be placed on it?
+- Which rotation model is used for the smooth terracotta block?
+- What shape does the smooth terracotta block have?
+- Is there any special behavior defined for this block in terms of ore placement?
+- How is the smooth terracotta block textured?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_terracotta_smooth.zig.zon_chunk_0*

@@ -1,22 +1,22 @@
 # [src/entityModel.zig] - PR #2680 review diff
 
 **Type:** review
-**Keywords:** lazy loading, immediate initialization, Vulkan synchronization, graphics resources, lag spikes
-**Symbols:** EntityModel, Vertex, vao, generateGraphics, bind
+**Keywords:** lazy loading, immediate generation, Vulkan integration, rendering synchronization, video memory allocation
+**Symbols:** EntityModel, Vertex, generateGraphics, bind
 **Concepts:** thread safety, backwards compatibility, memory leak
 
 ## Summary
 Refactored `EntityModel` initialization and added a `bind` method to ensure immediate graphics resource generation.
 
 ## Explanation
-The change refactors the `EntityModel` struct by moving the VAO initialization into a separate `generateGraphics` method. This ensures that all graphics resources are generated immediately upon object creation, avoiding lazy loading. The reviewer emphasizes that lazy loading can complicate the loading process and introduce unnecessary lag, particularly in Vulkan where synchronization with rendering and video memory allocation is crucial.
+The change refactors the `EntityModel` struct by moving the VAO initialization into a separate method, `generateGraphics`, which is now called within the `bind` method. This ensures that all graphics resources are generated immediately upon binding, rather than lazily. The reviewer emphasizes avoiding lazy loading to maintain control over the loading process and prevent potential lag spikes, especially when integrating with Vulkan where synchronization between rendering and video memory allocation becomes critical.
 
 ## Related Questions
 - What is the purpose of the `generateGraphics` method in the `EntityModel` struct?
-- Why was lazy loading removed from the `EntityModel` initialization process?
-- How does the addition of the `bind` method impact the performance and correctness of the graphics pipeline?
-- What are the potential implications of immediate resource generation on memory usage?
-- How might this change affect compatibility with future rendering APIs like Vulkan?
-- Can you explain the architectural reasoning behind avoiding lazy loading in this context?
+- Why was lazy loading avoided in this refactoring?
+- How does the `bind` method ensure that graphics resources are generated immediately?
+- What potential issues could arise from using lazy loading in a Vulkan context?
+- How does this change impact the performance of entity model rendering?
+- Is there any risk of introducing memory leaks with this refactoring?
 
 *Source: unknown | chunk_id: github_pr_2680_comment_3053074549*

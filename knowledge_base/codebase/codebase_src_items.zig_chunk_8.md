@@ -1,39 +1,34 @@
 # [hard/codebase_src_items.zig] - Chunk 8
 
 **Type:** api
-**Keywords:** cloning, binary serialization, texture retrieval, rendering, stack management
-**Symbols:** Item, Item.clone, Item.stackSize, Item.insertIntoZon, Item.fromBytes, Item.toBytes, Item.getTexture, Item.id, Item.getTooltip, Item.getImage, Item.hashCode, Item.render, ItemStack, ItemStack.item, ItemStack.amount, ItemStack.load
+**Keywords:** union, serialization, deserialization, rendering, cloning, resource management
+**Symbols:** Item, Item.baseItem, Item.proceduralItem, Item.null, Item.init, Item.deinit, Item.clone, Item.stackSize, Item.insertIntoZon, Item.fromBytes, Item.toBytes, Item.getTexture, Item.id, Item.getTooltip, Item.getImage, Item.hashCode, Item.render
 **Concepts:** item management, serialization, rendering
 
 ## Summary
-This chunk defines the `Item` and `ItemStack` structures, handling item cloning, serialization, texture retrieval, and rendering.
+The `Item` union represents different types of items in the game, including base items and procedural items. It provides methods for initialization, deinitialization, cloning, serialization, deserialization, and rendering.
 
 ## Explanation
-The `Item` struct represents different types of items in the game, including base items and procedural items. It provides methods for cloning, determining stack size, inserting into a Zon object, reading from and writing to binary formats, retrieving textures, IDs, tooltips, images, hash codes, and rendering. The `ItemStack` struct manages stacks of items, with methods for loading from a Zon element.
+The `Item` union is defined with three variants: `baseItem`, `proceduralItem`, and `null`. Each variant has associated functions that handle specific operations related to the item type. The `init` function initializes an item from a ZonElement, while `deinit` cleans up resources if necessary. The `clone` method creates a copy of the item. Serialization and deserialization are handled by `toBytes` and `fromBytes`, respectively. The `render` method draws the item on the screen, including its durability bar for procedural items.
 
 ## Code Example
 ```zig
-pub fn stackSize(self: Item) u16 {
+pub fn deinit(self: Item) void {
 	switch (self) {
-		.baseItem => |_baseItem| {
-			return _baseItem.stackSize();
-		},
-		.proceduralItem => {
-			return 1;
-		},
-		.null => {
-			return 0;
+		.baseItem, .null => {},
+		.proceduralItem => |_proceduralItem| {
+			_proceduralItem.deinit();
 		},
 	}
 }
 ```
 
 ## Related Questions
-- How does the `Item` struct handle cloning?
-- What methods are available for serializing and deserializing items?
-- How is the texture retrieved for an item?
-- What is the process for rendering an item with durability information?
-- How does the `ItemStack` struct manage item amounts?
-- What error handling is implemented when loading an `ItemStack`?
+- How is an `Item` initialized from a ZonElement?
+- What methods are available for cloning an `Item`?
+- How does the `Item` union handle serialization and deserialization?
+- What is the purpose of the `deinit` method in the `Item` union?
+- How is the durability bar rendered for procedural items?
+- What types of textures can be retrieved from an `Item`?
 
 *Source: unknown | chunk_id: codebase_src_items.zig_chunk_8*

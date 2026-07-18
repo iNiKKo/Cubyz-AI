@@ -1,26 +1,22 @@
-# [src/blocks.zig] - Chunk 3106666752
+# [src/blocks.zig] - PR #2886 review diff
 
 **Type:** review
-**Keywords:** rename, blockTags, tags, bulk replace, caution, redundant, variable, array, refactor, regression
-**Symbols:** _blockTags, _tags
-**Concepts:** bulk replacement, refactor caution, variable renaming, regression prevention, naming conventions
+**Keywords:** blockTags, tags, bulk replacements, renaming, global variables, simplification
+**Symbols:** _degradable, _viewThrough, _alwaysViewThrough, _hasBackFace, _tags, Tag
+**Concepts:** naming conventions, code readability
 
 ## Summary
-The diff renames the internal array `_blockTags` to `_tags`, removing the redundant 'block' prefix while preserving functionality.
+Renamed `_blockTags` array to `_tags` in `blocks.zig`, removing the redundant 'block' prefix.
 
 ## Explanation
-During a bulk replacement pass, the variable name `_blockTags` was inadvertently changed to `_tags`. The reviewer notes that this is not an error requiring a revert—since `block` is already redundant for blocks—the new name is acceptable. However, they caution against such bulk replacements because they can unintentionally alter identifiers that should remain unchanged (e.g., if the same substring appears in other contexts). This highlights the importance of targeted refactoring over global string substitution to avoid subtle regressions or unintended naming changes.
+The change involves renaming a global variable from `_blockTags` to `_tags`. The reviewer approves of this modification, as it simplifies the naming by removing the redundant 'block' prefix. However, the reviewer cautions about being careful with bulk replacements to avoid unintended changes in similar contexts.
 
 ## Related Questions
-- What is the purpose of the _tags array in blocks.zig?
-- How does renaming _blockTags to _tags affect block tagging logic?
-- Are there any other occurrences of 'blockTags' that should be considered during bulk replacements?
-- Why did the reviewer suggest caution with bulk replacements instead of reverting the change?
-- What naming convention is being applied to internal arrays in this module?
-- Does the removal of the 'block' prefix impact API compatibility or documentation?
-- How does this rename align with existing code that references _tags elsewhere?
-- Could this change introduce any memory layout differences between _blockTags and _tags?
-- What steps should be taken to verify correctness after renaming similar identifiers in other files?
-- Is there a pattern for handling redundant prefixes in variable names within the Cubyz codebase?
+- What is the purpose of the `_tags` array in `blocks.zig`?
+- How does removing the 'block' prefix from `_blockTags` improve code readability?
+- Are there any potential risks associated with bulk replacements in this context?
+- Can you provide examples of other similar global variables that might benefit from renaming?
+- What is the impact of this change on backward compatibility?
+- Is there a specific reason for choosing `_tags` as the new variable name?
 
 *Source: unknown | chunk_id: github_pr_2886_comment_3106666752*

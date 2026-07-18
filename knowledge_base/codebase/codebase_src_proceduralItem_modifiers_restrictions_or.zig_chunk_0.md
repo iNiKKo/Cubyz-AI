@@ -1,15 +1,15 @@
 # [easy/codebase_src_proceduralItem_modifiers_restrictions_or.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** modifier restrictions, satisfaction check, children array, tooltip formatting, ZON parsing
+**Keywords:** struct, method, iteration, allocation, tooltip generation
 **Symbols:** Or, Or.children, Or.satisfied, Or.loadFromZon, Or.printTooltip
-**Concepts:** procedural item modifiers, OR combination logic, tooltip generation, ZON data loading
+**Concepts:** procedural item modifiers, restriction logic, OR operation
 
 ## Summary
-This chunk defines the Or struct and its methods for representing an OR combination of modifier restrictions, including satisfaction checking, loading from ZON data, and tooltip printing.
+Defines the Or struct for handling procedural item modifier restrictions with an OR logical operation.
 
 ## Explanation
-The Or struct contains a children field holding a slice of ModifierRestriction. The satisfied method iterates over all children and returns true if any child is satisfied by the given procedural item at coordinates (x, y). The loadFromZon function allocates an Or instance, reads the 'children' array from the provided ZonElement using toSlice(), allocates the appropriate number of ModifierRestriction instances, and delegates loading each child via ModifierRestriction.loadFromZon. The printTooltip method appends parentheses around a space-separated list of children's tooltips, inserting ' or ' between them.
+The chunk defines a struct `Or` that represents a collection of `ModifierRestriction` objects. It includes methods to check if any child restriction is satisfied, load from ZonElement configuration, and print a tooltip string. The `satisfied` method iterates over its children and returns true if any child's `satisfied` method returns true. The `loadFromZon` method creates an instance of `Or`, allocates memory for its children, and loads each child from the ZonElement configuration. The `printTooltip` method constructs a tooltip string by appending the tooltips of its children with ' or ' in between.
 
 ## Code Example
 ```zig
@@ -22,11 +22,11 @@ pub fn satisfied(self: *const Or, proceduralItem: *const ProceduralItem, x: i32,
 ```
 
 ## Related Questions
-- How does the Or struct evaluate satisfaction across multiple modifier restrictions?
-- What is the exact sequence of operations in loadFromZon when parsing children from a ZON element?
-- Why does printTooltip insert ' or ' between child tooltips instead of commas?
-- Which function is responsible for allocating memory for the Or instance and its children array?
-- How are coordinates x and y used during satisfaction checks in the Or struct?
-- What happens if the children slice is empty when calling satisfied on an Or instance?
+- What is the purpose of the Or struct?
+- How does the satisfied method work in the Or struct?
+- What does the loadFromZon method do?
+- How is the tooltip printed for an Or instance?
+- What are the fields of the Or struct?
+- Which methods are defined for the Or struct?
 
 *Source: unknown | chunk_id: codebase_src_proceduralItem_modifiers_restrictions_or.zig_chunk_0*

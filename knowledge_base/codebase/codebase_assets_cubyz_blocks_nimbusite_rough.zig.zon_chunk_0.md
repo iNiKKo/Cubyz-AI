@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_nimbusite_rough.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, block settings, texture paths, model types, rotation behavior
-**Concepts:** block configuration, texture mapping, model assignment
+**Keywords:** configuration, block settings, texture application, model type, ore generation
+**Concepts:** block properties, texture mapping, model definition
 
 ## Summary
-Defines configuration for the Nimbusite Rough block, including texture and model settings.
+Defines properties for the Nimbusite Rough block, including texture and model.
 
 ## Explanation
-This chunk is a configuration file for the Nimbusite Rough block in the Cubyz voxel engine. It specifies that ores are allowed on this block type, sets its rotation behavior to stairs, assigns it a cube model, and applies a specific texture from the 'cubyz:nimbusite/rough' path.
+This chunk is a configuration file defining properties for a specific voxel block in the Cubyz game engine. It specifies that the block allows ores to be generated within it, uses a stair-like rotation model, has a cube shape, and applies a rough Nimbusite texture. The configuration is structured as a JSON-like object with key-value pairs representing different attributes of the block.
 
 ## Related Questions
-- What texture is assigned to the Nimbusite Rough block?
-- Is ore generation allowed on the Nimbusite Rough block?
-- Which model type is used for the Nimbusite Rough block?
-- How does the rotation behavior of the Nimbusite Rough block work?
-- Where is the texture file for the Nimbusite Rough block located?
-- Does this configuration allow for any special interactions with other blocks?
+- What texture is applied to the Nimbusite Rough block?
+- Does the Nimbusite Rough block allow ore generation?
+- Which model is used for the Nimbusite Rough block?
+- How is the rotation of the Nimbusite Rough block defined?
+- What are the key properties defined for the Nimbusite Rough block in this configuration file?
+- Is there any specific behavior or interaction associated with the Nimbusite Rough block as described in this chunk?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_nimbusite_rough.zig.zon_chunk_0*

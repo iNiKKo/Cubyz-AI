@@ -1,22 +1,24 @@
 # [src/server/server.zig] - PR #1474 review diff
 
 **Type:** review
-**Keywords:** ECS, architecture, separate PR, interpolation, player field, manual data copying
+**Keywords:** ECS, interpolation, architectural review, separate PR, manual data copying
 **Symbols:** User, Connection, Entity, utils.TimeDifference, utils.GenericInterpolation
-**Concepts:** Entity Component System (ECS), architectural integrity, separation of concerns
+**Concepts:** ECS architecture, thread safety, backwards compatibility
 
 ## Summary
-The review suggests separating changes related to ECS from other modifications, specifically regarding the removal of `player` and `interpolation` fields.
+The review comments suggest removing fields related to ECS from the User struct and recommends either separating this change into a different PR for closer examination or retaining the interpolation field.
 
 ## Explanation
-The reviewer is concerned about the architectural integrity of the codebase. They believe that changes affecting the Entity Component System (ECS) should be handled in a separate pull request to allow for thorough examination of their implications. The reviewer also suggests keeping the `interpolation` field and using a stable pointer to manually copy data over during each update, rather than removing it entirely.
+The reviewer points out that the changes made to the User struct are not aligned with the Entity Component System (ECS) architecture. They advise either isolating these changes in a separate pull request to thoroughly assess their impact or preserving the interpolation field, possibly by using a stable pointer and manually copying data during updates. This recommendation aims to maintain architectural integrity and prevent unintended side effects.
 
 ## Related Questions
-- What are the potential consequences of removing the `player` and `interpolation` fields from the `User` struct?
-- How does separating ECS-related changes into a separate PR benefit code review and maintenance?
-- Can you explain why manual data copying with a stable pointer is suggested instead of removing the `interpolation` field?
-- What are the implications of not following the reviewer's suggestion to handle ECS changes separately?
-- How might this change affect the performance or stability of the server component?
-- Is there any risk of introducing bugs by separating ECS-related changes into a different PR?
+- What are the potential consequences of removing the interpolation field from the User struct?
+- How does the ECS architecture impact the design decisions in this code change?
+- Why is it recommended to separate this change into a different PR?
+- Can you explain the purpose of the manual data copying approach mentioned by the reviewer?
+- What are the implications of modifying the User struct without considering the ECS framework?
+- How does the removal of the player field affect the overall functionality of the server.zig file?
+- What steps should be taken to ensure thread safety when making these changes?
+- How can we maintain backwards compatibility while implementing these architectural modifications?
 
 *Source: unknown | chunk_id: github_pr_1474_comment_2105056194*

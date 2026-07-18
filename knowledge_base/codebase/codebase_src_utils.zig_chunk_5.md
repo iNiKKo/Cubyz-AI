@@ -1,30 +1,31 @@
 # [hard/codebase_src_utils.zig] - Chunk 5
 
 **Type:** implementation
-**Keywords:** binary heap, thread safe, mutex, priority queue, dynamic resizing
-**Symbols:** ConcurrentMaxHeap, ConcurrentMaxHeap.initialSize, ConcurrentMaxHeap.size, ConcurrentMaxHeap.array, ConcurrentMaxHeap.mutex, ConcurrentMaxHeap.allocator, ConcurrentMaxHeap.init, ConcurrentMaxHeap.deinit, ConcurrentMaxHeap.siftDown, ConcurrentMaxHeap.siftUp, ConcurrentMaxHeap.updatePriority, ConcurrentMaxHeap.get, ConcurrentMaxHeap.add, ConcurrentMaxHeap.addMany, ConcurrentMaxHeap.removeIndex, ConcurrentMaxHeap.extractMax, ConcurrentMaxHeap.extractAny
-**Concepts:** binary heap, thread safety, mutex locking
+**Keywords:** mutex, thread-safe, queue, locking, synchronization
+**Symbols:** ConcurrentQueue, ConcurrentQueue.init, ConcurrentQueue.deinit, ConcurrentQueue.pushBack, ConcurrentQueue.popFront, ConcurrentQueue.isEmpty
+**Concepts:** thread safety, mutex locking, queue data structure
 
 ## Summary
-Defines a concurrent max heap with thread-safe operations for adding, removing, and accessing elements.
+Defines a thread-safe queue using a mutex for synchronization.
 
 ## Explanation
-This chunk defines a `ConcurrentMaxHeap` struct that implements a binary max heap with thread safety. It uses a mutex to ensure that all operations on the heap are atomic, preventing race conditions in a multi-threaded environment. The heap is initialized with an initial capacity and can dynamically increase its size when more elements are added. Key methods include `add`, `extractMax`, and `updatePriority`, each of which locks the mutex before performing their respective operations and unlocks it afterward. The `siftDown` and `siftUp` functions maintain the heap property by moving elements up or down the tree as needed.
+The code defines a generic ConcurrentQueue struct that wraps around a CircularBufferQueue, adding mutex locking to ensure thread safety. The ConcurrentQueue provides methods for initialization (init), deinitialization (deinit), pushing elements to the back of the queue (pushBack), popping elements from the front (popFront), and checking if the queue is empty (isEmpty). Each method locks the mutex before accessing the underlying CircularBufferQueue and unlocks it afterward, ensuring that only one thread can modify or access the queue at a time.
 
 ## Code Example
 ```zig
-pub fn deinit(self: *@This()) void {
-	self.allocator.free(self.array);
-	self.* = undefined;
+pub fn isEmpty(self: *Self) bool {
+	self.mutex.lock();
+	defer self.mutex.unlock();
+	return self.super.isEmpty();
 }
 ```
 
 ## Related Questions
-- How does the `ConcurrentMaxHeap` ensure thread safety?
-- What is the purpose of the `siftDown` function in the heap implementation?
-- How does the `addMany` method handle adding multiple elements to the heap?
-- What happens if an element's priority is updated after it has been added to the heap?
-- How does the `extractMax` method work, and what does it return if the heap is empty?
-- What is the role of the `mutex` in the `ConcurrentMaxHeap` struct?
+- How does the ConcurrentQueue ensure thread safety?
+- What methods are provided by the ConcurrentQueue struct?
+- What is the role of the mutex in the ConcurrentQueue implementation?
+- How do you initialize a ConcurrentQueue instance?
+- What happens when an element is pushed to the back of the queue?
+- How does the ConcurrentQueue handle concurrent access from multiple threads?
 
 *Source: unknown | chunk_id: codebase_src_utils.zig_chunk_5*

@@ -1,22 +1,22 @@
 # [src/main.zig] - PR #2172 review diff
 
 **Type:** review
-**Keywords:** refactoring, union, menu entries, keyboard bindings, gamepad inputs, comptime-known, tuples, architectural review, flexible representation
+**Keywords:** refactoring, menu entries, keyboard bindings, union, comptime-known, modularity, type safety
 **Symbols:** KeyBoard, Window.Key, MenuEntry, setHotbarSlot
-**Concepts:** type safety, performance, extensibility
+**Concepts:** union, comptime, type safety, modular design
 
 ## Summary
-Refactored the `KeyBoard` struct to use a union for more flexible key binding representation.
+Refactored the `KeyBoard` struct to use a union for menu entries, replacing the static array of keys with a more flexible structure.
 
 ## Explanation
-The change introduces a new `MenuEntry` union within the `KeyBoard` struct to handle different types of menu entries, such as headings and bindings. This refactoring aims to provide a more organized and extensible way to manage keyboard and gamepad inputs. The reviewer notes that there shouldn't be issues with differently sized arrays (tuples) as long as they are comptime-known, ensuring the change maintains type safety and performance.
+The change introduces a new `MenuEntry` union within the `KeyBoard` struct to handle different types of menu entries. This refactoring aims to provide a more modular and extensible way to manage keyboard bindings and menu headings. The reviewer notes that there shouldn't be issues with differently sized arrays as long as they are comptime-known, ensuring that the change maintains type safety and performance.
 
 ## Related Questions
-- What is the purpose of the `MenuEntry` union in the refactored code?
-- How does the introduction of the `MenuEntry` union affect the management of keyboard and gamepad inputs?
-- Why are differently sized arrays (tuples) acceptable as long as they are comptime-known?
-- Can you explain the benefits of using a union for menu entries in this context?
-- What potential issues might arise from refactoring the `KeyBoard` struct in this way?
-- How does this change impact the overall architecture and maintainability of the codebase?
+- What is the purpose of the `MenuEntry` union in the `KeyBoard` struct?
+- How does the use of a union improve the extensibility of keyboard bindings?
+- Are there any potential performance implications from using a union instead of a static array?
+- What are the benefits of making arrays comptime-known in this context?
+- How does this refactoring affect backward compatibility with existing code?
+- Can you explain the role of `setHotbarSlot` in the new key binding system?
 
 *Source: unknown | chunk_id: github_pr_2172_comment_2491229824*

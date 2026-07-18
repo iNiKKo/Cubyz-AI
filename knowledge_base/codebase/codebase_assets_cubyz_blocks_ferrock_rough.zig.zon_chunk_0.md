@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_ferrock_rough.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** block configuration, model assignment, rotation type, texture application, ore allowance
-**Concepts:** block properties, texture mapping
+**Keywords:** configuration, block definition, texture path, model type, rotation
+**Concepts:** block properties, texture mapping, model rendering
 
 ## Summary
-Defines configuration for the Ferrock Rough block, including model, rotation, and texture.
+Defines properties for the Ferrock Rough block in Cubyz.
 
 ## Explanation
-This chunk contains a single anonymous struct defining the properties of the Ferrock Rough block. It specifies that ores are allowed on this block type, sets its model to 'cubyz:cube', assigns it a stair-like rotation with 'cubyz:stairs', and applies the texture 'cubyz:ferrock/rough'. This configuration is used by the game engine to render and interact with the Ferrock Rough block in the world.
+This chunk is a configuration file that specifies various properties of the Ferrock Rough block. It sets the block to allow ores, uses a cube model, applies stairs rotation, and assigns a specific texture path. This configuration is used by the game engine to render and interact with the block in the world.
 
 ## Related Questions
-- What model is assigned to the Ferrock Rough block?
+- What is the model used for the Ferrock Rough block?
 - Does the Ferrock Rough block allow ores?
-- How is the rotation of the Ferrock Rough block defined?
-- Which texture is applied to the Ferrock Rough block?
-- Is there any additional configuration for the Ferrock Rough block beyond what's shown?
-- What are the possible values for the 'model' field in this block configuration?
+- What texture is assigned to the Ferrock Rough block?
+- How is the rotation applied to the Ferrock Rough block?
+- Where is the configuration file located in the codebase?
+- What properties are defined for the Ferrock Rough block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_ferrock_rough.zig.zon_chunk_0*

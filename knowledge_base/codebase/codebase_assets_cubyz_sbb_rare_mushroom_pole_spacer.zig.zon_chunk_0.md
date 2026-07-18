@@ -1,21 +1,28 @@
 # [easy/codebase_assets_cubyz_sbb_rare_mushroom_pole_spacer.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprints, children, configuration, asset management, hierarchy
-**Concepts:** asset configuration, blueprint management, component hierarchy
+**Keywords:** blueprint, child component, configuration data, rare mushroom pole spacer, spacers
+**Symbols:** blueprints, children
+**Concepts:** configuration
 
 ## Summary
-Defines blueprints and children for a rare mushroom pole spacer asset.
+Configuration data for rare mushroom pole spacer blueprints and children.
 
 ## Explanation
-This chunk defines the configuration for a rare mushroom pole spacer asset, including its blueprints with specific IDs and its child components categorized by color (green, crimson, dark grey). Each blueprint ID corresponds to a unique variant of the spacer, while the children represent different parts or optional elements associated with the spacer.
+This chunk defines configuration data for rare mushroom pole spacer blueprints and their associated children. It includes a list of blueprint IDs and a mapping of child components to their respective IDs.
 
 ## Related Questions
-- What are the IDs of the blueprints defined for the rare mushroom pole spacer?
-- Which components are listed as children of the rare mushroom pole spacer?
-- How many different variants of the rare mushroom pole spacer are defined?
-- What is the color category for each child component of the rare mushroom pole spacer?
-- Is there an optional component associated with the rare mushroom pole spacer?
-- What is the structure of the configuration data for the rare mushroom pole spacer?
+- What are the IDs of the blueprints for rare mushroom pole spacers?
+- How many rare mushroom pole spacer blueprints are defined?
+- Which child component is associated with the 'cubyz:rare/mushroom_pole/root' ID?
+- What are the IDs of the children components for each blueprint?
+- Can you provide a list of all the blueprint and child component IDs together?
+- How many different child components are used in these configurations?
+- Which blueprint has the 'cubyz:rare/mushroom_pole/optional' child component?
+- What is the total number of unique child component IDs across all blueprints?
+- Can you describe how the configuration data is structured for these rare mushroom pole spacers?
+- How many different configurations are defined in this chunk?
+- Which blueprint has the 'cubyz:rare/mushroom_pole/pole' child component?
+- What is the purpose of the 'children' field in this configuration?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_rare_mushroom_pole_spacer.zig.zon_chunk_0*

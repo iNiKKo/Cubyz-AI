@@ -1,22 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_grassland.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome, heights, structure, tags, spawn, music
-**Symbols:** grassland, properties, tags, oak, minHeightLimit, minHeight, maxHeight, maxHeightLimit, smoothBeaches, minRadius, maxRadius, roughness, hills, chance, music, validPlayerSpawn, ground_structure, structures
-**Concepts:** world_generation, configuration
+**Keywords:** height limits, beach smoothness, structures, spawn chances, music
+**Concepts:** biome configuration, world generation
 
 ## Summary
-Grassland biome configuration data.
+Defines configuration for the Grassland biome in Cubyz, including properties like height limits, beach smoothness, and various structures with spawn chances.
 
 ## Explanation
-This chunk defines the properties and structures of a grassland biome in the Cubyz game, including tags, height limits, ground structure, and various structures like boulders, fallen trees, and flower patches.
+This chunk is a configuration file defining the properties of the Grassland biome in the Cubyz game engine. It specifies parameters such as minimum and maximum heights, beach smoothness, radius limits, roughness, number of hills, and music associated with the biome. Additionally, it lists various structures that can spawn within this biome, each with its own chance of appearing, block types, sizes, and other attributes like height variation and density.
 
 ## Related Questions
-- What are the tags associated with the grassland biome?
-- What is the minimum and maximum height limit for the grassland biome?
-- How many hills can be generated in a grassland biome?
-- What structures are included in the grassland biome?
-- What is the chance of generating a fallen tree in the grassland biome?
-- What music plays in the grassland biome?
+- What is the minimum height limit for the Grassland biome?
+- Which structures can spawn in the Grassland biome and what are their spawn chances?
+- Is beach smoothness enabled for the Grassland biome?
+- What is the music associated with the Grassland biome?
+- How many different types of flower patches are defined for the Grassland biome?
+- What is the maximum radius limit for the Grassland biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_grassland.zig.zon_chunk_0*

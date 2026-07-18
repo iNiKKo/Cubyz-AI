@@ -1,26 +1,22 @@
 # [src/graphics/Window.zig] - PR #717 review diff
 
 **Type:** review
-**Keywords:** Gamepad, GLFW, input handling, deadzone, atomic operations, task scheduling, state management
+**Keywords:** GLFW, gamepad, deadzone, input, mapping, task scheduling, atomic, type safety, controller state, button events, axis events
 **Symbols:** Window.zig, Gamepad, applyDeadzone, update, isControllerConnected, controllerMappingsDownloading, ControllerMappingDownloadTask
-**Concepts:** Input Handling, State Management, Thread Safety, Atomic Operations
+**Concepts:** gamepad input handling, thread safety, atomic operations, input mapping, state management
 
 ## Summary
-The change introduces a `Gamepad` struct within the `Window.zig` file to handle gamepad input and state management.
+The `Window.zig` file has been significantly expanded to include gamepad support, including a new `Gamepad` struct and associated methods for handling gamepad state updates and input mapping. The review suggests simplifying task scheduling and using `std.atomic.Value` for atomic operations.
 
 ## Explanation
-The patch adds comprehensive support for gamepad input by introducing a `Gamepad` struct. This struct manages gamepad states, applies deadzones to axis inputs, and updates key states based on button and axis presses. The reviewer suggests simplifying task scheduling by avoiding duplicate tasks and recommends using `std.atomic.Value` for atomic operations to enhance type safety.
+The primary change in this diff is the addition of comprehensive gamepad support within the `Window.zig` file. A new `Gamepad` struct has been introduced, which includes methods for updating gamepad state, applying deadzones to axis inputs, and handling button and axis events. The struct maintains a map of gamepad states using `std.AutoHashMap`, allowing it to track multiple connected controllers. Additionally, the code handles key presses and releases based on both buttons and axes, executing associated actions when necessary. The review comments suggest simplifying task scheduling by avoiding duplicate tasks and recommends using `std.atomic.Value` for atomic operations to enhance type safety.
 
 ## Related Questions
-- How does the `applyDeadzone` function work in the context of gamepad input?
+- How does the `applyDeadzone` function handle deadzones for gamepad axes?
 - What is the purpose of the `ControllerMappingDownloadTask` struct?
-- Why was it recommended to use `std.atomic.Value` for atomic operations?
-- How does the `update` method handle changes in gamepad button and axis states?
-- What is the role of the `isFullscreen` variable in the original code?
-- How does the patch ensure that only one task is scheduled at a time?
-- What are the implications of using `std.atomic.Value` for atomic operations?
-- How does the patch handle gamepad disconnection and reconnection events?
-- What is the significance of the `lastUsedMouse` variable in the context of input handling?
-- How does the patch manage cursor visibility based on input states?
+- How does the code ensure that only one task is scheduled at a time?
+- What changes would be needed to use `std.atomic.Value` for atomic operations?
+- How does the `update` method handle gamepad state transitions and input actions?
+- What is the role of the `lastUsedMouse` variable in cursor visibility management?
 
 *Source: unknown | chunk_id: github_pr_717_comment_1769066127*

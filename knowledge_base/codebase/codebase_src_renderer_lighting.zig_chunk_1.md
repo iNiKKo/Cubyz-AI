@@ -1,38 +1,38 @@
 # [hard/codebase_src_renderer_lighting.zig] - Chunk 1
 
 **Type:** implementation
-**Keywords:** lighting, propagation, chunk, neighbors, mutex locking
-**Symbols:** addSelfToLightRefreshList, propagateDestructive, propagateFromNeighbor, propagateDestructiveFromNeighbor, propagateLights
-**Concepts:** lighting propagation, chunk lighting update, neighbor chunk interaction
+**Keywords:** mutex locking, light value propagation, occlusion calculation, chunk data management, thread safety
+**Symbols:** ChannelChunk, ChannelChunk.data, ChannelChunk.mutex, ChannelChunk.ch, ChannelChunk.isSun, ChannelChunk.init, ChannelChunk.deinit, ChannelChunk.Entry, ChannelChunk.Entry.pos, ChannelChunk.Entry.value, ChannelChunk.Entry.sourceDir, ChannelChunk.Entry.activeValue, ChannelChunk.ChunkEntries, ChannelChunk.ChunkEntries.mesh, ChannelChunk.ChunkEntries.entries, ChannelChunk.getValue, ChannelChunk.calculateIncomingOcclusion, ChannelChunk.calculateOutgoingOcclusion, ChannelChunk.propagateDirect, ChannelChunk.addSelfToLightRefreshList, ChannelChunk.propagateDestructive
+**Concepts:** lighting calculation, chunk management, occlusion handling, light propagation
 
 ## Summary
-Handles lighting propagation within a chunk and across neighboring chunks.
+The ChannelChunk struct manages lighting data for a chunk, including initialization, deinitialization, and propagation of light values.
 
 ## Explanation
-This chunk contains functions for propagating lighting data within a chunk and to neighboring chunks. It includes methods for adding self to the light refresh list, handling destructive propagation, and processing incoming lights from neighbors. The primary responsibility is managing the flow of light values between blocks and ensuring that changes are correctly propagated and optimized.
+The ChannelChunk struct is responsible for handling lighting calculations within a specific chunk. It includes methods for initializing and deinitializing the chunk's lighting data, as well as propagating direct and destructive light changes. The propagateDirect method updates light values based on incoming and outgoing occlusions, while the propagateDestructive method handles more complex light propagation scenarios involving block destruction.
 
 ## Code Example
 ```zig
-fn addSelfToLightRefreshList(self: *ChannelChunk, lightRefreshList: *main.ListManaged(chunk.ChunkPosition)) void {
-	for (lightRefreshList.items) |other| {
-		if (self.ch.pos.equals(other)) {
-			return;
-		}
-	}
-	lightRefreshList.append(self.ch.pos);
+pub fn init(ch: *chunk.Chunk, isSun: bool) *ChannelChunk {
+	const self = memoryPool.create();
+	self.mutex = .{};
+	self.ch = ch;
+	self.isSun = isSun;
+	self.data.init();
+	return self;
 }
 ```
 
 ## Related Questions
-- What is the purpose of the `addSelfToLightRefreshList` function?
-- How does the `propagateDestructive` method handle light value updates?
-- What role does the `mutex` play in these functions?
-- How are neighboring chunks involved in lighting propagation?
-- What conditions determine whether a light entry is appended to the `constructiveList`?
-- How is the `lightQueue` used in the propagation process?
-- What is the difference between `propagateFromNeighbor` and `propagateDestructiveFromNeighbor` methods?
-- How does the chunk ensure that lighting changes are correctly propagated to neighboring chunks?
-- What is the significance of the `activeValue` field in the `Entry` struct?
-- How does the function handle cases where no light value changes occur?
+- What is the purpose of the ChannelChunk struct?
+- How does the init method initialize a ChannelChunk instance?
+- What does the deinit method do in the ChannelChunk struct?
+- How are light values propagated directly within a chunk?
+- What role does the mutex play in the ChannelChunk operations?
+- How is occlusion calculated for incoming and outgoing light?
+- What is the purpose of the propagateDestructive method?
+- How does the addSelfToLightRefreshList function work?
+- What data structures are used to manage lighting entries within a chunk?
+- How is thread safety ensured in the ChannelChunk operations?
 
 *Source: unknown | chunk_id: codebase_src_renderer_lighting.zig_chunk_1*

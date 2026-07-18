@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_particles_poof.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** texture, density, rotation velocity, drag coefficient, configuration
+**Keywords:** texture, density, rotation, drag coefficient, configuration
 **Concepts:** particle effects
 
 ## Summary
-Defines configuration for the 'poof' particle effect.
+Defines configuration for a poof particle effect.
 
 ## Explanation
-This chunk contains a configuration object for a particle effect named 'poof'. It specifies properties such as texture, density, rotation velocity, and drag coefficient. These settings define how the particles will behave in the game environment.
+This chunk contains a configuration object for a poof particle effect in the Cubyz voxel engine. The configuration specifies the texture used for the particles, their density range, rotation velocity range, and drag coefficient range. These settings control how the particles appear, move, and interact with the environment.
 
 ## Related Questions
-- What is the texture used for the 'poof' particle effect?
-- What are the density values set for the 'poof' particles?
-- What is the rotation velocity range for the 'poof' particles?
-- What is the drag coefficient range for the 'poof' particles?
-- How does the configuration object define the behavior of the 'poof' particles?
-- What properties can be adjusted in the 'poof' particle effect configuration?
+- What texture is used for the poof particles?
+- What is the density range of the poof particles?
+- What is the rotation velocity range of the poof particles?
+- What is the drag coefficient range of the poof particles?
+- How does the configuration object define the appearance and behavior of the poof particles?
+- Is there any function or method defined in this chunk?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_particles_poof.zig.zon_chunk_0*

@@ -1,22 +1,28 @@
 # [easy/codebase_assets_cubyz_biomes_ocean_temperate_base.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** ocean biome, ground structure, beach smoothing, transition biomes, chance weighting, block layers, terrain height limits, river generation, music reference, radius constraint
-**Symbols:** properties, radius, minHeight, maxHeight, maxHeightLimit, smoothBeaches, roughness, hills, rivers, music, ground_structure, structures, transitionBiomes
-**Concepts:** biome configuration, terrain generation, structure placement, biome transitions
+**Keywords:** biome config, terrain gen, structure placement, ocean temperate base, cubyz biomes
+**Symbols:** ocean, radius, minHeight, maxHeight, maxHeightLimit, smoothBeaches, roughness, hills, rivers, music, ground_structure, structures, transitionBiomes
+**Concepts:** biome configuration, terrain generation, structure placement
 
 ## Summary
-Defines a temperate ocean biome configuration with terrain height constraints, beach smoothing, river generation, and ground structure patches.
+Ocean Temperate Base Biome Configuration
 
 ## Explanation
-This chunk declares a static biome configuration object containing properties for an ocean biome type, radius of 500, minHeight -100, maxHeight -22, maxHeightLimit 7, smoothBeaches enabled, roughness 15, hills 15, rivers enabled, and music reference. The ground_structure field specifies a single layer of gravel blocks with quantity range 2 to 3. The structures array defines two ground_patch instances: one using cubyz:moss:cubyz:slate/rough block with chance 0.032, width 6, variation 2, depth 2, smoothness 0.2; and another using cubyz:sand block with chance 0.064, width 10, variation 4, depth 2, smoothness 0.4. The transitionBiomes array lists three biome transitions: cubyz:beach/warm/wide (chance 0.2, width 2, properties land and inland), cubyz:beach/warm/base (chance 1, width 1, properties land and inland), and cubyz:ocean/temperate/shelf (chance 1, width 3, properties land and inland).
+This chunk defines the configuration for an ocean temperate base biome in Cubyz. It specifies properties such as radius, height limits, and structures like ground patches and rivers.
 
 ## Related Questions
-- What is the radius value defined for this ocean biome configuration?
-- Which ground structure layers are specified in the ground_structure field?
-- How many structures are defined within the structures array and what blocks do they use?
-- What are the transition biomes listed in transitionBiomes and their respective chances?
-- Is smoothBeaches enabled or disabled for this biome configuration?
-- What is the maxHeightLimit value set in this configuration object?
+- What is the radius of the ocean temperate base biome?
+- How many structures are defined for this biome?
+- What is the minimum height limit for the biome?
+- Which block is used for ground patches in this biome?
+- What is the chance of a ground patch being placed with moss slate rough?
+- What is the width of the transition between the warm beach and the temperate shelf biomes?
+- How many properties are associated with the ocean temperate base biome?
+- Which music track is used for this biome?
+- What is the height limit for the maximum height in the biome?
+- Is smooth beaches enabled for this biome?
+- What is the roughness value for the terrain generation?
+- What is the hills value for the terrain generation?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_ocean_temperate_base.zig.zon_chunk_0*

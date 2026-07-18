@@ -1,26 +1,22 @@
-# [src/gui/windows/save_selection.zig] - Chunk 2298352554
+# [src/gui/windows/save_selection.zig] - PR #1785 review diff
 
 **Type:** review
-**Keywords:** realpathAlloc, deprecation, std.fs.Path, openDirInWindow, cubyzDir, issue #1351, canonicalize, allocation, catch unreachable, symlink resolution
-**Symbols:** openFolder, main.files.openDirInWindow, main.files.cubyzDir, realpathAlloc
-**Concepts:** thread safety, backwards compatibility, memory leak prevention, standard library deprecation, path canonicalization
+**Keywords:** realpathAlloc, openDirInWindow, path resolution, deprecation, standard library, file system, architecture
+**Symbols:** openFolder, path, main.stackAllocator.allocator, worldList.items[index].fileName, main.files.openDirInWindow, globalPath, main.files.cubyzDir().dir.realpathAlloc
+**Concepts:** file path resolution, deprecation of standard library functions, architectural stability
 
 ## Summary
-The change replaces a direct call to main.files.openDirInWindow with a path resolution using realpathAlloc before opening the directory.
+The code replaces `openDirInWindow` with a call to `realpathAlloc`, which is intended to resolve file paths. However, this change introduces potential issues as `realpathAlloc` is scheduled for removal from the standard library.
 
 ## Explanation
-The reviewer flagged that realpathAlloc is problematic because it is slated for removal from Zig's standard library (see issue #1351). By inserting a realpathAlloc call, the code now attempts to resolve symlinks and canonicalize the path at runtime. This introduces several concerns: 1) It may break backwards compatibility if future versions of std.fs.Path.realpathAlloc change behavior or are removed entirely; 2) It adds an extra allocation step that could affect performance in tight loops; 3) If realpathAlloc fails, the catch unreachable assumes success, which is risky given the planned removal. The architectural reasoning suggests that relying on a function known to be deprecated is poor practice and should be refactored to use a more stable API or handle path resolution differently (e.g., using std.fs.path.join with explicit canonicalization later).
+The reviewer points out that using `realpathAlloc` can lead to various problems and is planned to be deprecated, as indicated by issue #1351. This suggests that relying on this function could cause maintenance issues in the future. The architectural concern here is the potential for introducing bugs or compatibility issues if the library changes or removes this functionality. The reviewer's comment highlights the need to consider alternative approaches to path resolution to ensure long-term stability and maintainability of the code.
 
 ## Related Questions
-- What is the current status of realpathAlloc in Zig's standard library?
-- Are there any alternative APIs recommended for path canonicalization before realpathAlloc removal?
-- How does main.files.cubyzDir() construct its base directory path?
-- What happens if realpathAlloc fails and the catch unreachable is hit?
-- Is openDirInWindow expected to handle relative or absolute paths differently?
-- Could replacing realpathAlloc with std.fs.path.join cause any regressions in existing tests?
-- Where is issue #1351 referenced, and what specific changes does it propose?
-- Does the codebase already have a custom path resolution utility that could replace realpathAlloc?
-- What performance impact might adding realpathAlloc have on save_folder operations?
-- Is there any documentation or comment in main.files explaining why openDirInWindow is used this way?
+- What are the potential issues with using `realpathAlloc` in this context?
+- How can we refactor the code to avoid relying on a deprecated function?
+- Are there alternative functions or methods available for resolving file paths in Zig?
+- What is the impact of removing `realpathAlloc` from the standard library on our project?
+- How can we ensure that our code remains compatible with future versions of the Zig standard library?
+- What are the benefits and drawbacks of using `realpathAlloc` compared to other path resolution methods?
 
 *Source: unknown | chunk_id: github_pr_1785_comment_2298352554*

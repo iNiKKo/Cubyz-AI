@@ -1,28 +1,36 @@
 # [hard/codebase_src_server_terrain_SurfaceMap.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** fractal noise, voxel grid, map fragment, neighbor flags, garbage collection, power of two, bitfield packing, binary reader, atomic bool, deferred free
-**Symbols:** map_generators, MapFragmentPosition, MapFragmentPosition.init, MapFragmentPosition.equals, MapFragmentPosition.hashCode, MapFragmentPosition.getMinDistanceSquared, MapFragmentPosition.getPriority, MapFragment, biomeShift, biomeSize, mapShift, mapMask, heightMap, biomeMap, caveBiomeOffsetMap, minHeight, maxHeight, pos, wasStored, privateDeinit, deferredDeinit, getBiome, getHeight, getCaveBiomeOffset, StorageHeader, NeighborInfo
-**Concepts:** terrain generation, biome mapping, cave offset computation, binary serialization, atomic state management, deferred deallocation, spatial hashing, coordinate alignment, noise fractal terrain
+**Keywords:** struct, methods, hash code, distance calculation, priority determination
+**Symbols:** MapFragmentPosition, MapFragmentPosition.wx, MapFragmentPosition.wy, MapFragmentPosition.voxelSize, MapFragmentPosition.voxelSizeShift, MapFragmentPosition.init, MapFragmentPosition.equals, MapFragmentPosition.hashCode, MapFragmentPosition.getMinDistanceSquared, MapFragmentPosition.getPriority, map_generators
+**Concepts:** chunk meshing, world generation, spatial partitioning
 
 ## Summary
-This chunk defines the MapFragment data structure and its associated map generators, handling terrain height maps, biome assignments, cave offsets, neighbor information, serialization via binary files, atomic state tracking, deferred memory deallocation, and coordinate alignment logic.
+Defines the MapFragmentPosition struct and its methods for initialization, equality check, hash code generation, distance calculation, and priority determination.
 
 ## Explanation
-The chunk declares a public const map_generators imported from an external list file. It defines MapFragmentPosition with fields wx, wy, voxelSize, voxelSizeShift; includes init (asserts power-of-two voxelSize and grid-aligned coordinates), equals, hashCode, getMinDistanceSquared, and getPriority methods for spatial queries. It defines MapFragment with static constants biomeShift, biomeSize, mapShift, mapSize, mapMask; fields heightMap, biomeMap, caveBiomeOffsetMap, minHeight, maxHeight, pos, wasStored (Atomic bool). init allocates a 2D f32 caveBiomeOffsetMap via main.utils.Array2D, calls terrain.noise.FractalNoise.generateSparseFractalTerrain with the world seed XORed by a constant, then floors values into self.caveBiomeOffsetMap. privateDeinit destroys self via memoryPool; deferredDeinit registers self for garbage collection using a cast function to opaque type. getBiome, getHeight, getCaveBiomeOffset compute indices by right-shifting wx/wy by voxelSizeShift and masking with mapMask, then return the corresponding array element. StorageHeader is a packed struct containing version (u8) and NeighborInfo; NeighborInfo is a packed u8 bitfield with flags @
+The chunk defines a `MapFragmentPosition` struct that represents a position in a map fragment. It includes fields for world coordinates (`wx`, `wy`) and voxel size parameters (`voxelSize`, `voxelSizeShift`). The struct provides methods for initialization, equality check, hash code generation, calculation of the minimum squared distance to a player's position, and determination of priority based on proximity and size.
+
+## Code Example
+```zig
+pub fn init(wx: i32, wy: i32, voxelSize: u31) MapFragmentPosition {
+	std.debug.assert(voxelSize - 1 & voxelSize == 0); // voxelSize must be a power of 2.
+	std.debug.assert(wx & voxelSize - 1 == 0 and wy & voxelSize - 1 == 0); // The coordinates are misaligned. They need to be aligned to the voxelSize grid.
+	return MapFragmentPosition{
+		.wx = wx,
+		.wy = wy,
+		.voxelSize = voxelSize,
+		.voxelSizeShift = @ctz(voxelSize),
+	};
+}
+```
 
 ## Related Questions
-- What assertions does MapFragmentPosition.init perform on voxelSize and coordinates?
-- How is the caveBiomeOffsetMap allocated and populated in MapFragment.init?
-- What seed transformation is applied to terrain.noise.FractalNoise.generateSparseFractalTerrain?
-- Which methods compute spatial queries for a player position relative to a map fragment?
-- How are biome, height, and cave offset indices derived from world coordinates in getBiome/getHeight/getCaveBiomeOffset?
-- What is the purpose of privateDeinit versus deferredDeinit on MapFragment?
-- Which flags does NeighborInfo expose via its packed bitfield definition?
-- How does StorageHeader encode version and neighbor information for binary serialization?
-- What role does wasStored play in managing the lifecycle of a map fragment?
-- Where is the serialized surface file path constructed from MapFragmentPosition fields?
-- How does hashCode combine wx, wy, and voxelSize to produce a u32 hash value?
-- What memory pool mechanism is used for destroying MapFragment instances?
+- What is the purpose of the `init` method in the `MapFragmentPosition` struct?
+- How does the `equals` method determine if two `MapFragmentPosition` instances are equal?
+- What does the `hashCode` method return and how is it calculated?
+- How is the minimum squared distance to a player's position calculated in the `getMinDistanceSquared` method?
+- What factors influence the priority calculation in the `getPriority` method?
+- What assertion checks are performed during the initialization of a `MapFragmentPosition` instance?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_SurfaceMap.zig_chunk_0*

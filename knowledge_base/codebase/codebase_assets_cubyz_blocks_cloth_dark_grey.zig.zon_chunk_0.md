@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_cloth_dark_grey.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** texture mapping, block definition, item properties, configuration file, Zigon format
-**Concepts:** block configuration, item representation
+**Keywords:** configuration, texture, item representation, block definition, Cubyz engine
+**Concepts:** block configuration, texture mapping
 
 ## Summary
 Defines configuration for a dark grey cloth block, including its texture and item representation.
 
 ## Explanation
-This chunk is a configuration file in the Zigon format (.zon) that specifies properties for a dark grey cloth block. It sets the texture used for rendering the block itself and defines an item associated with this block, specifying its texture as well.
+This chunk defines the configuration for a specific type of block in the Cubyz voxel engine. The block is identified as 'cloth/dark_grey' and has an associated texture file located at 'cubyz:cloth/dark_grey'. Additionally, it specifies an item representation with its own texture file 'cloth/dark_grey.png'. This configuration is used to render the block in the game world and to represent it when placed in the player's inventory.
 
 ## Related Questions
-- What is the texture used for the dark grey cloth block?
-- How is the item associated with the dark grey cloth block defined?
-- Where is the texture for the dark grey cloth item located?
-- Is there any additional configuration beyond the texture and item properties?
-- Can this configuration be modified to change the block's appearance?
-- What format is used for this block configuration file?
+- What is the texture file for the dark grey cloth block?
+- Where is the item texture file located for this block?
+- How is the dark grey cloth block identified in the configuration?
+- Does this chunk define any functions or methods?
+- What concepts are implemented by this chunk?
+- What keywords are associated with this chunk?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_cloth_dark_grey.zig.zon_chunk_0*

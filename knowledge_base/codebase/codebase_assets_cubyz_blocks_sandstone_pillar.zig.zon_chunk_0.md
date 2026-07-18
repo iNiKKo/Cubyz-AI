@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_sandstone_pillar.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** block properties, rotation, model, texture mapping, configuration file
-**Concepts:** block configuration
+**Keywords:** configuration, block properties, texture paths, model type, rotation system
+**Concepts:** block configuration, texture mapping
 
 ## Summary
-Defines configuration for the Sandstone Pillar block, including its rotation, model, and textures.
+Defines configuration for the sandstone pillar block, including rotation, model, and texture settings.
 
 ## Explanation
-This chunk contains a single JSON-like structure defining the properties of the Sandstone Pillar block. It specifies that the block uses the 'cubyz:direction' rotation, the 'cubyz:cube' model, and has textures for its sides ('cubyz:sandstone/pillar') and top/bottom ('cubyz:sandstone/pillar_top').
+This chunk is a configuration file defining properties of the sandstone pillar block in the Cubyz voxel engine. It specifies that the block uses the 'cubyz:direction' rotation system, the 'cubyz:cube' model, and has textures for all sides sourced from 'cubyz:sandstone/pillar'. The top and bottom faces use a specific texture 'cubyz:sandstone/pillar_top'. This configuration is used by the engine to render and interact with the sandstone pillar block in the game world.
 
 ## Related Questions
-- What is the rotation property of the Sandstone Pillar block?
-- Which model does the Sandstone Pillar block use?
-- What texture is applied to the sides of the Sandstone Pillar block?
-- Are there different textures for the top and bottom of the Sandstone Pillar block?
-- How many texture properties are defined for the Sandstone Pillar block?
-- What is the overall purpose of this configuration file?
+- What is the rotation system used for the sandstone pillar block?
+- Which model is assigned to the sandstone pillar block?
+- What texture is applied to the sides of the sandstone pillar block?
+- How are the top and bottom textures of the sandstone pillar block defined?
+- Is there any specific configuration for lighting or shading in this block definition?
+- Does this configuration file include any sound effects or particle effects?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_sandstone_pillar.zig.zon_chunk_0*

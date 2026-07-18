@@ -1,26 +1,66 @@
 # [medium/codebase_src_fmt.zig] - Chunk 0
 
-**Type:** serialization
-**Keywords:** union, fromAnytype, Placeholder, parse, alignment, width, precision, formatFunction, anyFormatFunction, specifierArg
-**Symbols:** FormatArg, Placeholder, FormatErrorTrace
-**Concepts:** formatting, type dispatch, placeholder parsing, alignment, width precision, custom format functions, error handling, pointer size analysis, null terminated strings
+**Type:** implementation
+**Keywords:** union, struct, type inference, string formatting, error handling
+**Symbols:** FormatArg, FormatArg.int, FormatArg.uint, FormatArg.f16, FormatArg.f32, FormatArg.f64, FormatArg.f80, FormatArg.f128, FormatArg.string, FormatArg.nullTerminatedString, FormatArg.formatFunction, FormatArg.err, FormatArg.anyFormatFunction, FormatArg.fromAnytype, Placeholder, Placeholder.specifierArg, Placeholder.fill, Placeholder.alignment, Placeholder.argPos, Placeholder.width, Placeholder.precision, Placeholder.parse
+**Concepts:** formatted string parsing, format argument handling
 
 ## Summary
-Defines a runtime format argument union and placeholder parser for formatting values with alignment, width, precision, and custom functions.
+Defines a union for format arguments and a struct for parsing placeholders in formatted strings.
 
 ## Explanation
-The chunk declares FormatArg as a union of int, uint, f16/f32/f64/f80/f128, string, nullTerminatedString, formatFunction, anyFormatFunction, and err. It provides fromAnytype to dispatch based on type info: comptime_int/float go directly; signedness is checked for unsigned ints; pointers are handled by size (one/slice/c) and child type (u8 arrays become strings, sentinel or c-arrays become nullTerminatedString), with a recursive fallback to fromAnytype for one-sized pointers. Structs/enums/unions/opaque types that have a format method are wrapped into a typeErasedFormat struct containing the original function casted via anyopaque; otherwise a genericFormat is used which prints "{any}". Errors are returned as .err. The Placeholder struct mirrors std.fmt.Placeholder with fields specifierArg, fill, alignment, argPos, width, precision and implements parse using std.fmt.Parser: it extracts argPos, consumes the specifier argument up to ':', validates that any following char is ':' or '}', logs an error for unexpected chars, then parses optional fill byte (only '<','^','>' are accepted), alignment ('<','^','>'), checks for leading zero in width when neither fill nor alignment present, reads width number, skips '.' if present and errors otherwise, reads precision number, and ensures no trailing characters. It returns a Placeholder with defaults: fill ' ' or '0', alignment .right, argPos null, width/precision as parsed values.
+The chunk defines two main components: `FormatArg` and `Placeholder`. `FormatArg` is a union that can hold various types of values such as integers, floats, strings, and custom formatting functions. It includes a method `fromAnytype` to convert any type into a `FormatArg` based on its type information. The `Placeholder` struct is used for parsing format specifiers in strings, extracting details like fill characters, alignment, width, and precision. It provides a static method `parse` to construct a `Placeholder` from a byte slice representing the format specifier.
+
+## Code Example
+```zig
+pub inline fn fromAnytype(T: type, val: *const T) FormatArg {
+		switch (@typeInfo(T)) {
+			.comptime_int => return .{.int = val.*},
+			.int => |int| {
+				if (int.signedness == .unsigned) {
+					return .{.uint = val.*};
+				}
+				return .{.int = val.*};
+			},
+			.comptime_float => return .{.f128 = val.*},
+			.float => return @unionInit(FormatArg, @typeName(T), val.*),
+			.pointer => |ptr| {
+				if (ptr.size == .one and @typeInfo(ptr.child) == .array and @typeInfo(ptr.child).array.child == u8) return .{.string = val.*};
+				if (ptr.size == .slice and ptr.child == u8) return .{.string = val.*};
+				if (((ptr.size == .many and ptr.sentinel() != null) or ptr.size == .c) and ptr.child == u8) return .{.nullTerminatedString = val.*};
+
+				if (ptr.size == .one) return .fromAnytype(ptr.child, val.*);
+			},
+			.@"struct", .@"enum", .@"union", .@"opaque" => {
+				if (@hasDecl(T, "format")) {
+					const typeErasedFormat = struct {
+						fn typeErasedFormat(ptr: *const anyopaque, writer: *std.Io.Writer) std.Io.Writer.Error!void {
+							return T.format(@as(*const T, @ptrCast(@alignCast(ptr))).*, writer);
+						}
+					}.typeErasedFormat;
+					return .{.formatFunction = .{.val = val, .function = typeErasedFormat}};
+				}
+			},
+			.error_set => return .{.err = val.*},
+			else => {},
+		}
+
+		// Not sure what to do with the rest, so I'll just assume 'any'.
+		const genericFormat = struct {
+			fn genericFormat(ptr: *const anyopaque, writer: *std.Io.Writer) std.Io.Writer.Error!void {
+				try writer.print("{any}", .{@as(*const T, @ptrCast(@alignCast(ptr))).*});
+			}
+		}.genericFormat;
+		return .{.anyFormatFunction = .{.val = @ptrCast(val), .function = genericFormat}};
+	}
+```
 
 ## Related Questions
-- How does fromAnytype handle a pointer to an array of u8?
-- What happens when a struct has a format method versus no format method?
-- Which alignment characters are accepted by Placeholder.parse and what do they map to?
-- How is the fill byte determined when width starts with zero?
-- What error is returned if an unexpected character appears after the specifier argument?
-- Does FormatArg include a variant for arbitrary user-defined format functions?
-- Is there support for null-terminated strings in FormatArg and how are they distinguished from regular slices?
-- How does the parser decide whether to treat width as having a leading zero or not?
-- What default values are assigned to fill and alignment when none are provided?
-- Can argPos be set by the caller or is it always derived from parsing?
+- What types of values can be stored in a FormatArg?
+- How does the fromAnytype function determine which variant of FormatArg to use?
+- What are the fields of the Placeholder struct?
+- How is the parse method of Placeholder used?
+- What happens if an unexpected character is found while parsing a placeholder?
+- Can you explain how the alignment and fill characters are parsed in the Placeholder struct?
 
 *Source: unknown | chunk_id: codebase_src_fmt.zig_chunk_0*

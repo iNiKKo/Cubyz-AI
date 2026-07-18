@@ -1,39 +1,33 @@
 # [easy/codebase_src_migrations.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** migration, asset mapping, circular dependency, hash map, string hash map
-**Symbols:** ZonElement, Palette, Assets, blockMigrations, itemMigrations, biomeMigrations, entityModelMigrations, entityComponentMigrations, MigrationType, registerAll, register, applySingle, apply, reset
-**Concepts:** migration registration, asset migration, circular dependencies
+**Keywords:** StringHashMapUnmanaged, migration registration, transitive chain, circular migration, palette application
+**Symbols:** blockMigrations, itemMigrations, biomeMigrations, entityModelMigrations, entityComponentMigrations, MigrationType, registerAll, register, applySingle, apply, reset
+**Concepts:** asset migration, palette management, transitive migrations, circular dependency detection
 
 ## Summary
-Registers and applies migration data for blocks, items, biomes, entity models, and components.
+Handles asset migrations for different types of assets in the Cubyz engine.
 
 ## Explanation
-This chunk defines functions to register, apply, and reset migrations for various asset types in the Cubyz voxel engine. It uses a string hash map to track old to new asset names and handles circular dependencies during migration registration.
+This chunk manages migration data for various asset types such as blocks, items, biomes, entity models, and entity components. It uses `std.StringHashMapUnmanaged` to store migration mappings. The `registerAll` function registers migrations from addon data, handling transitive migrations and checking for circular dependencies. The `register` function processes individual migration entries, ensuring they are valid and adding them to the appropriate collection. The `applySingle` function applies a single migration to an asset name, while the `apply` function applies all registered migrations to a palette of assets. The `reset` function clears all migration data.
 
 ## Code Example
 ```zig
-const MigrationType = enum {
-	block,
-	item,
-	biome,
-	entityModel,
-	entityComponent,
+pub fn reset() void {
+	biomeMigrations = .{};
+	blockMigrations = .{};
+	itemMigrations = .{};
+	entityModelMigrations = .{};
+	entityComponentMigrations = .{};
 }
 ```
 
 ## Related Questions
-- What is the purpose of the `blockMigrations` variable?
-- How does the `registerAll` function work?
-- What happens if a migration entry has an empty array or object?
-- What is the logic for handling circular dependencies in migrations?
-- How are asset names mapped during migration application?
-- What is the purpose of the `reset` function?
-- What is the difference between `registerAll` and `applySingle` functions?
-- How does the `apply` function handle palette updates after migration?
-- What is the role of the `Palette` struct in this codebase?
-- How are asset names retrieved from the hash maps during migration application?
-- What is the purpose of the `main.worldArena.allocator` in this codebase?
-- How does the `registerAll` function handle incomplete migration entries?
+- How are migrations registered for different asset types?
+- What happens if a migration data structure is empty or incorrect?
+- How does the system handle transitive migrations?
+- What is the process for applying a single migration to an asset name?
+- How are circular dependencies detected and handled in migrations?
+- What function resets all migration data?
 
 *Source: unknown | chunk_id: codebase_src_migrations.zig_chunk_0*

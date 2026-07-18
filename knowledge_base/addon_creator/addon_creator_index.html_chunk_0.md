@@ -1,26 +1,33 @@
 # [easy/addon_creator_index.html] - Chunk 0
 
 **Type:** ui
-**Keywords:** toolbar, sidebar, import, export, navigation, panels, blocks, items, recipes, biomes, entities, particles
-**Symbols:** addonName, importAddonFile, exportFullAddon(), toggleMetricsPanel(), folderStatus, sidebarBlocksTree, sidebarItemsTree, sidebarRecipesTree, sidebarBiomesTree, sidebarEntitiesTree, sidebarParticlesTree, loadStudioPanel()
-**Concepts:** data-binding, form-validation, live-preview, tree-navigation, addon-import-export
+**Keywords:** Cubyz Addon Creator, web interface, project explorer, dynamic workspace, addon creation, UI components, event handlers, validation, templates, bindings, engine mappings, configuration generation
+**Symbols:** addon_creator_index.html, style.css, app-core.js, app-studio.js, app-save.js, app-io.js
+**Concepts:** data-binding, form validation, live preview
 
 ## Summary
-The Cubyz Addon Creator index page provides the main navigation hub, displaying a toolbar with addon name input and import/export buttons, alongside a project explorer sidebar listing blocks, items, recipes, biomes, entities, and particles.
+A web-based interface for creating and managing Cubyz addons, including a toolbar with addon name input, import/export buttons, project explorer sidebar, and dynamic workspace.
 
 ## Explanation
-UI Controls: The page includes an editable text input for 'addonName' that auto-sanitizes to lowercase alphanumeric characters via oninput event. Two toolbar buttons are present: an import button wrapping a hidden file input (id='importAddonFile') triggered by onchange, and an export button invoking exportFullAddon(). A metrics panel with id='folderStatus' is clickable via onclick handler window.toggleMetricsPanel() showing a status pill labeled 'Connecting...'. The sidebar contains six collapsible tree sections: sidebarBlocksTree, sidebarItemsTree, sidebarRecipesTree, sidebarBiomesTree, sidebarEntitiesTree, and sidebarParticlesTree, each initially displaying placeholder text. Navigation buttons in the nav-bar (loadStudioPanel) switch between categories.
+The HTML file contains the main structure of the Cubyz Addon Creator application. It includes a header with the app title and version indicator, a toolbar for adding and importing addons, and a project explorer sidebar on the left. The right side displays a navigation bar with buttons to switch between different categories (blocks, items, recipes, biomes, entities, particles) and a dynamic workspace area where content is loaded based on the selected category. The file also includes scripts for app core, studio, save, and IO functionalities.
+
+## Code Example
+```zig
+<input type="text" id="addonName" value="" autocomplete="off" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9_]/g, '')">
+```
 
 ## Related Questions
-- What happens when the user types into the addonName field?
-- How does the import button trigger file selection without a visible input element?
-- Which function is called when the metrics panel is clicked?
-- Are there any validation rules applied to the addon name besides lowercasing?
-- How are unsaved changes communicated to the user before switching panels?
-- What placeholder text appears in each sidebar tree section initially?
-- Is there a way to programmatically load a specific studio panel from this index page?
-- Does the export button perform any pre-export validation or confirmation?
-- How does the nav-bar buttons interact with the dynamicWorkspace div?
-- Are any external scripts loaded that handle addon creation logic?
+- What is the purpose of the 'Project Explorer' sidebar?
+- How does the application handle unsaved changes before switching panels?
+- What are the default values for the addon name input field?
+- Explain how the import/export buttons work in the toolbar.
+- Describe the structure of the project explorer sidebar.
+- What is the purpose of the 'dynamicWorkspace' div?
+- How does the application handle user input validation for the addon name field?
+- What are the categories available in the navigation bar?
+- Explain how the application handles file uploads using the importAddonFile input element.
+- Describe the purpose of the customConfirmModal and its components.
+- What is the role of the 'status-pill' class in the toolbar?
+- How does the application handle database metrics display?
 
 *Source: unknown | chunk_id: addon_creator_index.html_chunk_0*

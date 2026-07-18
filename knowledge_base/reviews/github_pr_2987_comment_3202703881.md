@@ -1,26 +1,22 @@
-# [src/blocks.zig] - Chunk 3202703881
+# [src/blocks.zig] - PR #2987 review diff
 
 **Type:** review
-**Keywords:** SelectionCapabilities, alwaysSelectable, loadFromZon, allowsSelectionByItem, SelectionRule, enum, struct, refactor, redundancy, namespace
+**Keywords:** refactoring, selection capabilities, zon loading, item selection, block tags
 **Symbols:** SelectionCapabilities, alwaysSelectable, loadFromZon, allowsSelectionByItem, SelectionCapability
-**Concepts:** refactoring, namespace hygiene, struct composition, API surface reduction, type locality
+**Concepts:** encapsulation, modularity, selection logic
 
 ## Summary
-Refactored `SelectionRule` enum into a new `SelectionCapabilities` struct to consolidate selection logic and reduce redundancy.
+Refactored `SelectionRule` into a more flexible `SelectionCapabilities` struct with additional methods for loading from Zon and checking selection capabilities by item.
 
 ## Explanation
-The original code used an enum `SelectionRule` with values like `always`, `toolEffective`, and `never`. Reviewers noted that this enum is only consumed inside the newly introduced `SelectionCapabilities` struct, making its global scope unnecessary. By moving the definition into `SelectionCapabilities`, we eliminate redundant information in the struct name (no longer needing to repeat 'Rule' or similar qualifiers) and simplify the public API surface. The new struct provides a default `alwaysSelectable` variant where capabilities are null, and includes helper functions: `loadFromZon` parses capability zones from a ZON element into an unmanaged list, and `allowsSelectionByItem` implements the selection logic—checking base items (including the special 'cubyz:selection_wand'), handling fluid tags, and delegating to per-capability checks. This refactor improves modularity, reduces namespace pollution, and aligns with Zig best practices for grouping related types.
+The change introduces a new struct `SelectionCapabilities` that encapsulates the logic for determining if a block can be selected based on various capabilities. This refactoring allows for more complex selection rules, such as those dependent on specific items or tags. The reviewer suggests nesting `SelectionCapability` within `SelectionCapabilities` to reduce redundancy and improve encapsulation. The new methods `loadFromZon` and `allowsSelectionByItem` provide a structured way to handle selection logic, enhancing the modularity and maintainability of the code.
 
 ## Related Questions
-- What is the purpose of the `alwaysSelectable` variant in `SelectionCapabilities`?
-- How does `loadFromZon` handle invalid `SelectionCapability` entries from a ZON element?
-- In what order are checks performed inside `allowsSelectionByItem` before delegating to capabilities?
-- Why was the original `SelectionRule` enum moved into `SelectionCapabilities` instead of remaining global?
-- Does `loadFromZon` allocate memory for the capability list, and how does it ensure capacity?
-- What happens if a block has the `.fluid` tag when evaluating selection with an item that is not fluid-placeable?
-- How does the code treat the special base item ID 'cubyz:selection_wand' in `allowsSelectionByItem`?
-- Is there any scenario where `alwaysSelectable` would be preferred over a populated capabilities list?
-- What are the implications of using an unmanaged list for capabilities on memory management lifecycle?
-- Could `loadFromZon` be made to return a slice instead of an owned list, and what trade-offs would that entail?
+- What is the purpose of the `alwaysSelectable` constant in `SelectionCapabilities`?
+- How does the `loadFromZon` method handle invalid `SelectionCapability` entries?
+- Can you explain the logic behind the `allowsSelectionByItem` method?
+- Why was `SelectionRule` replaced with `SelectionCapabilities`?
+- What is the role of the `capabilities` field in `SelectionCapabilities`?
+- How does the refactoring impact backward compatibility with existing code?
 
 *Source: unknown | chunk_id: github_pr_2987_comment_3202703881*

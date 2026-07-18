@@ -1,31 +1,31 @@
 # [hard/codebase_src_server_server.zig] - Chunk 4
 
-**Type:** implementation
-**Keywords:** mutex locking, binary serialization, error handling, networking, player state update
-**Symbols:** User, User.update, User.receiveCommand, User.receiveData, User.sendMessage, User.sendRawMessage, User.hasPermission, User.getSpawnPos, User.format, updatesPerSec, updateTime, world, userMutex, users, userDeinitList, userConnectList, connectionManager, running, restart, lastTime, thread
-**Concepts:** user management, command processing, world interaction, server operations
+**Type:** api
+**Keywords:** job queue, mutex locking, binary serialization, inventory commands, network protocols, world saving, time synchronization
+**Symbols:** User, User.clearJobQueue, User.isNetworkQueueFull, User.scheduleJobQueue, User.update, User.receiveCommand, User.receiveData, User.sendMessage, User.sendRawMessage, User.hasPermission, User.getSpawnPos, User.format
+**Concepts:** user session management, command processing, network communication
 
 ## Summary
-Handles user updates, command processing, and world interactions in the server.
+Handles user session management, command processing, and network communication.
 
 ## Explanation
-This chunk defines the `User` struct with methods for updating user state, receiving commands and data, sending messages, checking permissions, getting spawn positions, and formatting user information. It also includes static variables for managing users, a connection manager, and a thread for server operations. The `init` function sets up the world, initializes various components, and starts the connection manager. The `deinit` function pauses operations, clears user lists, and unschedules players.
+This chunk defines the `User` struct with methods for managing user sessions, including clearing job queues, scheduling tasks, updating user state, receiving commands and data, sending messages, checking permissions, getting spawn positions, and formatting user information. It interacts with various components like inventory management, network protocols, world saving, and time synchronization.
 
 ## Code Example
 ```zig
-pub fn sendMessage(self: *User, comptime fmt: []const u8, args: anytype) void {
-	const msg = std.fmt.allocPrint(main.stackAllocator.allocator, fmt, args) catch unreachable;
-	defer main.stackAllocator.free(msg);
-	self.sendRawMessage(msg);
+pub fn clearJobQueue(self: *User) void {
+	while (self.jobQueue.extractAny()) |task| {
+		task.vtable.clean(task.self);
+	}
 }
 ```
 
 ## Related Questions
-- How does the `User` struct handle command data?
-- What is the purpose of the `receiveData` method in the `User` struct?
-- How does the server manage user permissions?
-- What happens if a world generation fails during server initialization?
-- How are users managed and tracked by the server?
-- What role does the `connectionManager` play in the server operations?
+- How does the `clearJobQueue` method work?
+- What is the purpose of the `isNetworkQueueFull` function?
+- How are user commands processed in the `update` method?
+- What happens when a user receives data through the `receiveData` method?
+- How does the `sendMessage` method format and send messages?
+- What role does the `hasPermission` function play in user management?
 
 *Source: unknown | chunk_id: codebase_src_server_server.zig_chunk_4*

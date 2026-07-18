@@ -1,28 +1,27 @@
 # [easy/codebase_assets_cubyz_biomes_forest_palm_base.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome structure, tree configuration, boulder configuration, chance, dimensions
+**Keywords:** biome, structure, chance, placement mode, ground structure
 **Symbols:** ground_structure, structures
 **Concepts:** biome generation, structure configuration
 
 ## Summary
-Biome structure configuration for palm base forest.
+Forest palm base biome configuration
 
 ## Explanation
-This chunk defines the ground structures and structures for a palm base forest biome. It includes configurations for grass, clay, trees (palm coconut, mahogany), ground patches, and boulders with specific properties such as IDs, placement modes, chances, and dimensions.
+This chunk defines the ground structure and structures for a forest palm base biome. It includes grass, clay, and various tree structures with specific placement modes, chances, and parameters.
 
 ## Related Questions
-- What are the ground structures for the palm base forest biome?
-- How many trees can be placed in a single chunk of this biome?
-- What is the chance of placing a boulder in a chunk of this biome?
-- What is the maximum size variation allowed for boulders in this biome?
-- What are the dimensions of ground patches in this biome?
-- What is the minimum width and depth allowed for ground patches in this biome?
-- What is the smoothness factor applied to ground patches in this biome?
-- How many different types of trees can be placed in a single chunk of this biome?
-- What are the IDs of the trees that can be placed in a single chunk of this biome?
-- What are the chances of placing each type of tree in a single chunk of this biome?
-- What is the height variation allowed for palm coconut trees in this biome?
-- What is the leaf elongation factor applied to mahogany leaves in this biome?
+- What is the ground structure for the forest palm base biome?
+- How many structures are defined in the forest palm base biome configuration?
+- What is the chance of placing a simple tree in the forest palm base biome?
+- What is the height variation of the palm tree structure in the forest palm base biome?
+- What is the leaf elongation of the mahogany leaves in the forest palm base biome?
+- What is the width of the ground patch structure in the forest palm base biome?
+- What is the size variance of the boulder structure in the forest palm base biome?
+- What is the depth of the ground patch structure in the forest palm base biome?
+- What is the smoothness of the ground patch structure in the forest palm base biome?
+- What is the block used for the ground patch structure in the forest palm base biome?
+- What is the chance of placing a boulder in the forest palm base biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_forest_palm_base.zig.zon_chunk_0*

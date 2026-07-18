@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_mushroom_big_bolete.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprint, chance, children, mushroom, configuration
-**Concepts:** world generation, asset configuration
+**Keywords:** configuration, blueprints, chance, children, assets
+**Concepts:** asset configuration, blueprint system
 
 ## Summary
-Defines blueprints and children for a big bolete mushroom asset.
+Defines configuration for a big bolete mushroom asset, including its blueprints and child components.
 
 ## Explanation
-This chunk defines the configuration for a specific type of mushroom in the Cubyz game. It specifies multiple blueprints with different IDs and chances, indicating the probability of each variant being generated. Additionally, it lists a child asset ID for the mushroom's cap.
+This chunk defines the configuration for a specific type of mushroom in the Cubyz game engine. It specifies the blueprints that can be used to generate different variants of the mushroom, each with an associated chance of being selected. Additionally, it lists a child component that represents the cap of the mushroom.
 
 ## Related Questions
-- What are the IDs of the blueprints defined for the big bolete mushroom?
-- What is the chance associated with each blueprint ID?
-- Which child asset is linked to the big bolete mushroom?
+- What are the blueprints defined for the big bolete mushroom?
+- What is the chance of selecting each blueprint for the big bolete mushroom?
+- Which child component is associated with the big bolete mushroom?
 - How many different base variants does the big bolete mushroom have?
-- What is the probability of generating the least common variant of the big bolete mushroom?
-- Is there a specific configuration for the cap of the big bolete mushroom in this chunk?
+- What is the configuration structure for the big bolete mushroom asset?
+- Are there any special conditions or rules for generating the big bolete mushroom?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_mushroom_big_bolete.zig.zon_chunk_0*

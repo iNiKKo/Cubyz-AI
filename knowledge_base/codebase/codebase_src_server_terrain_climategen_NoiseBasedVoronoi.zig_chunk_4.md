@@ -1,26 +1,54 @@
 # [hard/codebase_src_server_terrain_climategen_NoiseBasedVoronoi.zig] - Chunk 4
 
-**Type:** implementation
-**Keywords:** BiomeSample, BiomePoint, GenerationStructure, ClimateMapFragment, fillRecursively, addTransitionBiomes, addSubBiomesOf, stackAllocator, ListManaged, memcpy
-**Symbols:** toMap
-**Concepts:** biome generation, noise-based sampling, recursive map filling, sub-biome insertion, transition biomes, stack allocation with defer cleanup, list management, memory copying
+**Type:** world_generation
+**Keywords:** recursive filling, biome transitions, sub-biomes, map generation, neighbor data
+**Symbols:** margin, preMapSize, fillRecursively, toMap
+**Concepts:** world generation, biome generation, recursive subdivision
 
 ## Summary
-Implements the toMap method of GenerationStructure that populates a ClimateMapFragment by collecting biome candidates from chunks, recursively filling a pre-map with noise-based sampling, adding transition biomes, and then inserting sub-biomes and sub-sub-biomes before copying results into the final map.
+This chunk implements the recursive filling of a climate map with biomes, considering transition and sub-biome generation.
 
 ## Explanation
-The function begins by allocating a [preMapSize][preMapSize]BiomeSample array on the stack (preMap) initialized to undefined, and a main.List(*BiomePoint) named allCandidates with initial capacity 1024 using main.stackAllocator; both are deferred for cleanup. It then iterates over self.chunks.mem, and for each chunk iterates over chunk.biomesSortedByX, appending each candidate pointer into allCandidates via append(main.stackAllocator, ...). After the loop, it calls fillRecursively with map.pos.wx, map.pos.wy, &preMap, allCandidates.items, worldSeed, -margin, -margin, preMapSize, preMapSize. The result of fillRecursively is not captured; execution proceeds to addTransitionBiomes(&preMap). Next, a main.ListManaged(BiomePoint) named extraBiomes is allocated with default capacity using main.stackAllocator and deferred for deinit. It then loops again over self.chunks.mem and chunk.biomesSortedByX, calling addSubBiomesOf(biome, &preMap, &extraBiomes, map.pos.wx -% margin*terrain.SurfaceMap.MapFragment.biomeSize, map.pos.wy -% margin*terrain.SurfaceMap.MapFragment.biomeSize, preMapSize*terrain.SurfaceMap.MapFragment.biomeSize, preMapSize*terrain.SurfaceMap.MapFragment.biomeSize, worldSeed, .unknown). After that loop, a while loop consumes extraBiomes via popOrNull(), calling addSubBiomesOf(biomePoint, &preMap, &extraBiomes, map.pos.wx -% margin*terrain.SurfaceMap.MapFragment.biomeSize, map.pos.wy -% margin*terrain.SurfaceMap.MapFragment.biomeSize, preMapSize*terrain.SurfaceMap.MapFragment.biomeSize, preMapSize*terrain.SurfaceMap.MapFragment.biomeSize, worldSeed, .known) for each popped biomePoint. Finally, a for loop over 0..ClimateMapFragment.mapEntrysSize copies the relevant slice of preMap into map.map using @memcpy(&map.map[_x], preMap[_x + margin][margin..][0..ClimateMapFragment.mapEntrysSize]).
+The code defines methods for recursively filling a climate map with biomes, handling biome transitions, and adding sub-biomes. The `fillRecursively` function subdivides the map until it reaches a minimum size, then fills each segment with the closest biome candidate. The `addTransitionBiomes` function applies transition rules based on neighbor data to adjust biome properties. The `toMap` method orchestrates the entire process, initializing data structures, calling recursive filling, and copying results into the final map.
+
+## Code Example
+```zig
+pub fn toMap(self: GenerationStructure, map: *ClimateMapFragment, worldSeed: u64) void {
+		var preMap: [preMapSize][preMapSize]BiomeSample = undefined;
+		var allCandidates: main.List(*BiomePoint) = .initCapacity(main.stackAllocator, 1024);
+		defer allCandidates.deinit(main.stackAllocator);
+		for (self.chunks.mem) |chunk| {
+			for (chunk.biomesSortedByX) |*candidate| {
+				allCandidates.append(main.stackAllocator, candidate);
+			}
+		}
+		fillRecursively(map.pos.wx, map.pos.wy, &preMap, allCandidates.items, worldSeed, -margin, -margin, preMapSize, preMapSize);
+		addTransitionBiomes(&preMap);
+
+		// Add some sub-biomes:
+		var extraBiomes: main.ListManaged(BiomePoint) = .init(main.stackAllocator);
+		defer extraBiomes.deinit();
+		for (self.chunks.mem) |chunk| {
+			for (chunk.biomesSortedByX) |biome| {
+				addSubBiomesOf(biome, &preMap, &extraBiomes, map.pos.wx -% margin*terrain.SurfaceMap.MapFragment.biomeSize, map.pos.wy -% margin*terrain.SurfaceMap.MapFragment.biomeSize, preMapSize*terrain.SurfaceMap.MapFragment.biomeSize, preMapSize*terrain.SurfaceMap.MapFragment.biomeSize, worldSeed, .unknown);
+			}
+		}
+		// Add some sub-sub(-sub)*-biomes
+		while (extraBiomes.popOrNull()) |biomePoint| {
+			addSubBiomesOf(biomePoint, &preMap, &extraBiomes, map.pos.wx -% margin*terrain.SurfaceMap.MapFragment.biomeSize, map.pos.wy -% margin*terrain.SurfaceMap.MapFragment.biomeSize, preMapSize*terrain.SurfaceMap.MapFragment.biomeSize, preMapSize*terrain.SurfaceMap.MapFragment.biomeSize, worldSeed, .known);
+		}
+		for (0..ClimateMapFragment.mapEntrysSize) |_x| {
+			@memcpy(&map.map[_x], preMap[_x + margin][margin..][0..ClimateMapFragment.mapEntrysSize]);
+		}
+	}
+```
 
 ## Related Questions
-- What is the purpose of preMap in toMap and how is it sized?
-- How are candidates collected from self.chunks before fillRecursively is called?
-- What does addTransitionBiomes do to preMap after recursive filling?
-- Why is extraBiomes allocated as ListManaged rather than a plain List?
-- How does the while loop over extraBiomes differ from the first sub-biome insertion loop?
-- What are the margin calculations used when calling addSubBiomesOf for sub-sub-biomes?
-- How is the final map populated from preMap using memcpy in toMap?
-- Are any of the allocations in toMap heap-allocated or stack-allocated?
-- Does toMap modify self.chunks or only read them?
-- What biome seed value is passed into fillRecursively and addSubBiomesOf calls?
+- What is the purpose of the `fillRecursively` function?
+- How does the code handle biome transitions in the climate map?
+- What role does the `margin` constant play in the generation process?
+- Describe the functionality of the `toMap` method.
+- How are sub-biomes added to the climate map?
+- What is the significance of the `preMapSize` variable?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_climategen_NoiseBasedVoronoi.zig_chunk_4*

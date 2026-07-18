@@ -1,22 +1,22 @@
 # [src/items.zig] - PR #2381 review diff
 
 **Type:** review
-**Keywords:** complexity, blocks, zon elements, callbacks, temporary storage, architectural review
-**Symbols:** BaseItem, tooltip, self.onUse
-**Concepts:** architectural design, data structures, callback implementation
+**Keywords:** onUse, zon elements, blocks vs items, temporary storage, callback parsing
+**Symbols:** BaseItem, tooltip, self.tooltip, self.onUse
+**Concepts:** architectural complexity, callback handling
 
 ## Summary
-The review discusses the complexity of implementing item usage callbacks compared to blocks due to differences in data structures.
+The review discusses the complexity introduced by adding 'onUse' functionality to items compared to blocks, highlighting architectural challenges.
 
 ## Explanation
-The reviewer points out that items are more complex to handle than blocks because items do not have an array of zon elements, unlike blocks. The reviewer suggests storing the zon in the BaseItem temporarily until all components are finished and then parsing the callbacks as a potential solution, indicating concern over the architectural complexity and lack of elegant alternatives.
+The reviewer points out that implementing 'onUse' for items is more complex than for blocks due to differences in their structures. Blocks have an array of zon elements, whereas items do not. The reviewer suggests storing the zon in the BaseItem temporarily until all components are finalized and then parsing the callbacks. This approach is described as 'ugly,' indicating potential architectural issues or inefficiencies.
 
 ## Related Questions
-- What is the difference between items and blocks in terms of data structures?
-- Why is implementing item usage callbacks more complex than for blocks?
-- How does the reviewer suggest handling the zon elements temporarily?
-- What are the potential drawbacks of storing zon elements in BaseItem until everything is finished?
-- Are there any other architectural considerations mentioned in the review?
-- How might the implementation of callbacks be improved based on this review?
+- What is the purpose of the 'onUse' functionality being added to items?
+- How does the structure of blocks differ from that of items, and why does this affect callback implementation?
+- Why is storing zon elements temporarily in BaseItem considered an 'ugly' solution?
+- What are the potential architectural implications of implementing 'onUse' for items?
+- How might the temporary storage of zon elements impact performance or memory usage?
+- Are there any alternative approaches to handling callbacks for items that could be more efficient?
 
 *Source: unknown | chunk_id: github_pr_2381_comment_2632750016*

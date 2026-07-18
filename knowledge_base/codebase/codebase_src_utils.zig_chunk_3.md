@@ -1,30 +1,30 @@
 # [hard/codebase_src_utils.zig] - Chunk 3
 
 **Type:** implementation
-**Keywords:** circular buffer, queue, memory allocation, out-of-memory handling, element insertion, element removal
-**Symbols:** CircularBufferQueue, CircularBufferQueue.mem, CircularBufferQueue.mask, CircularBufferQueue.startIndex, CircularBufferQueue.len, CircularBufferQueue.allocator, CircularBufferQueue.init, CircularBufferQueue.deinit, CircularBufferQueue.reset, CircularBufferQueue.increaseCapacity, CircularBufferQueue.pushBack, CircularBufferQueue.forcePushBack, CircularBufferQueue.pushBackAssumeCapacity, CircularBufferQueue.pushFront, CircularBufferQueue.pushFrontAssumeCapacity, CircularBufferQueue.forcePushFront, CircularBufferQueue.pushBackSlice, CircularBufferQueue.insertSliceAtOffset, CircularBufferQueue.popBack, CircularBufferQueue.popFront, CircularBufferQueue.popSliceFront, CircularBufferQueue.discardElementsFront, CircularBufferQueue.getAtOffset
-**Concepts:** circular buffer, queue operations, memory management, capacity expansion
+**Keywords:** circular buffer, fixed size, bitwise operations, memory allocation, slice manipulation
+**Symbols:** FixedSizeCircularBuffer, FixedSizeCircularBuffer.mem, FixedSizeCircularBuffer.startIndex, FixedSizeCircularBuffer.len, FixedSizeCircularBuffer.init, FixedSizeCircularBuffer.deinit, FixedSizeCircularBuffer.peekBack, FixedSizeCircularBuffer.peekFront, FixedSizeCircularBuffer.pushBack, FixedSizeCircularBuffer.forcePushBack, FixedSizeCircularBuffer.pushBackAssumeCapacity, FixedSizeCircularBuffer.pushFront, FixedSizeCircularBuffer.pushFrontAssumeCapacity, FixedSizeCircularBuffer.forcePushFront, FixedSizeCircularBuffer.pushBackSlice, FixedSizeCircularBuffer.insertSliceAtOffset, FixedSizeCircularBuffer.popBack, FixedSizeCircularBuffer.popFront, FixedSizeCircularBuffer.popSliceFront, FixedSizeCircularBuffer.discardElementsFront, FixedSizeCircularBuffer.getAtOffset
+**Concepts:** circular buffer, memory management, dynamic array operations
 
 ## Summary
-This chunk defines a circular buffer queue with various operations for adding and removing elements, including handling memory capacity expansion.
+Defines a fixed-size circular buffer with methods for initialization, deinitialization, and various operations like push, pop, peek, and slice manipulation.
 
 ## Explanation
-The code defines a `CircularBufferQueue` struct that implements a circular buffer using a fixed-size array. It includes methods for pushing and popping elements from both ends of the queue, as well as inserting slices at specific offsets. The `init` method initializes the buffer with a specified capacity, and the `deinit` method frees the allocated memory. The `increaseCapacity` function doubles the buffer's size when it becomes full. The code handles out-of-memory conditions by returning errors where appropriate.
+The chunk defines a generic `FixedSizeCircularBuffer` type that manages a circular buffer of elements of type `T` with a fixed capacity. It includes methods for initializing and deinitializing the buffer, as well as operations to add (`pushBack`, `forcePushBack`, `pushFront`, `forcePushFront`) and remove (`popBack`, `popFront`, `popSliceFront`) elements. The buffer supports peeking at front or back elements without removing them (`peekFront`, `peekBack`). It also provides methods for inserting slices of elements at specific offsets (`insertSliceAtOffset`), pushing entire slices to the back (`pushBackSlice`), and accessing elements by offset (`getAtOffset`). Memory management is handled through an allocator, ensuring that the buffer can dynamically allocate and deallocate its storage. The implementation uses bitwise operations to efficiently manage indices within the circular buffer's bounds.
 
 ## Code Example
 ```zig
-pub fn pushBack(self: *Self, elem: T) !void {
-	if (self.len >= capacity) return error.OutOfMemory;
-	self.pushBackAssumeCapacity(elem);
+pub fn peekBack(self: Self) ?T {
+	if (self.len == 0) return null;
+	return self.mem[self.startIndex + self.len - 1 & mask];
 }
 ```
 
 ## Related Questions
-- How does the `CircularBufferQueue` handle out-of-memory conditions?
-- What is the purpose of the `increaseCapacity` method in the `CircularBufferQueue`?
-- How does the `pushBackSlice` method work in the `CircularBufferQueue`?
-- What is the role of the `mask` field in the `CircularBufferQueue` struct?
-- How do you initialize a `CircularBufferQueue` with a specific capacity?
-- What methods are available for adding elements to the front of the `CircularBufferQueue`?
+- How is the circular buffer initialized?
+- What happens if you try to push an element when the buffer is full?
+- How does the `peekFront` method work?
+- Can elements be inserted at a specific offset in the buffer?
+- What is the purpose of the `forcePushBack` method?
+- How are elements removed from the front of the buffer?
 
 *Source: unknown | chunk_id: codebase_src_utils.zig_chunk_3*

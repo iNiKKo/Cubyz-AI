@@ -15,7 +15,7 @@ This chunk defines a configuration object for the Aqua Glass block in Cubyz. It 
 - Which texture file is used for Aqua Glass?
 - How is the light absorption property defined in this configuration?
 - Where is the texture path specified for Aqua Glass?
-- What is the hexadecimal value for the absorbed light color of Aqua Glass?
-- Is there any function or method defined in this chunk?
+- Can you provide the hexadecimal value for the absorbed light color of Aqua Glass?
+- What does this chunk define in terms of block properties?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_glass_aqua.zig.zon_chunk_0*

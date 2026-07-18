@@ -1,167 +1,27 @@
 {
   "stats": {
-    "codebase_chunks": 455,
-    "codebase_pairs": 2001,
-    "docs_chunks": 30,
-    "docs_pairs": 121,
-    "reviews_chunks": 649,
-    "reviews_pairs": 599
+    "codebase_chunks": 452,
+    "codebase_pairs": 2170,
+    "docs_chunks": 34,
+    "docs_pairs": 151,
+    "reviews_chunks": 1707,
+    "reviews_pairs": 1450
   },
   "missing_source": [],
   "flagged": [
     {
-      "chunk_id": "codebase_src_utils.zig_chunk_10",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 1
-    },
-    {
-      "chunk_id": "codebase_src_network_protocols.zig_chunk_4",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 1
-    },
-    {
-      "chunk_id": "codebase_src_network.zig_chunk_4",
-      "source_type": "codebase",
-      "category": "numeric",
-      "detail": "ungrounded number '0'",
-      "pair_index": 0
-    },
-    {
-      "chunk_id": "codebase_src_network.zig_chunk_4",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 4
-    },
-    {
-      "chunk_id": "codebase_src_network.zig_chunk_11",
-      "source_type": "codebase",
-      "category": "numeric",
-      "detail": "ungrounded number '0'",
-      "pair_index": 2
-    },
-    {
-      "chunk_id": "codebase_src_assets.zig_chunk_1",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 3
-    },
-    {
-      "chunk_id": "codebase_src_gui_GuiWindow.zig_chunk_0",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 0
-    },
-    {
-      "chunk_id": "codebase_src_gui_GuiWindow.zig_chunk_0",
+      "chunk_id": "codebase_src_itemdrop.zig_chunk_4",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 2
     },
     {
-      "chunk_id": "codebase_src_graphics_pipelines.zig_chunk_2",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 3
-    },
-    {
-      "chunk_id": "codebase_src_renderer_chunk_meshing.zig_chunk_0",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 2
-    },
-    {
-      "chunk_id": "codebase_src_renderer_chunk_meshing.zig_chunk_0",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 4
-    },
-    {
-      "chunk_id": "codebase_src_renderer.zig_chunk_9",
-      "source_type": "codebase",
-      "category": "numeric",
-      "detail": "ungrounded number '128.0'",
-      "pair_index": 3
-    },
-    {
-      "chunk_id": "codebase_src_renderer.zig_chunk_9",
-      "source_type": "codebase",
-      "category": "numeric",
-      "detail": "ungrounded number '1.0'",
-      "pair_index": 3
-    },
-    {
-      "chunk_id": "codebase_src_blocks.zig_chunk_2",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 3
-    },
-    {
-      "chunk_id": "codebase_src_blocks.zig_chunk_2",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 4
-    },
-    {
-      "chunk_id": "codebase_src_server_terrain_simple_structures_FlowerPatch.zig_chunk_0",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 1
-    },
-    {
-      "chunk_id": "codebase_src_items.zig_chunk_0",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 5
-    },
-    {
-      "chunk_id": "codebase_src_items.zig_chunk_5",
+      "chunk_id": "codebase_src_network_protocols.zig_chunk_2",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 0
-    },
-    {
-      "chunk_id": "codebase_src_physics.zig_chunk_0",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 3
-    },
-    {
-      "chunk_id": "codebase_src_renderer_lighting.zig_chunk_4",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 0
-    },
-    {
-      "chunk_id": "codebase_src_network_protocols.zig_chunk_7",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 1
-    },
-    {
-      "chunk_id": "codebase_src_network_protocols.zig_chunk_7",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 3
     },
     {
       "chunk_id": "codebase_src_network_protocols.zig_chunk_8",
@@ -171,228 +31,543 @@
       "pair_index": 0
     },
     {
-      "chunk_id": "codebase_src_utils.zig_chunk_3",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 2
-    },
-    {
-      "chunk_id": "codebase_src_block_entity.zig_chunk_4",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 1
-    },
-    {
-      "chunk_id": "codebase_src_physics.zig_chunk_4",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 2
-    },
-    {
-      "chunk_id": "codebase_src_physics.zig_chunk_4",
+      "chunk_id": "codebase_src_network.zig_chunk_15",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 3
     },
     {
-      "chunk_id": "codebase_src_graphics_vulkan.zig_chunk_0",
+      "chunk_id": "codebase_src_graphics_vulkan.zig_chunk_1",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 2
     },
     {
-      "chunk_id": "codebase_src_network.zig_chunk_14",
+      "chunk_id": "codebase_src_graphics_vulkan.zig_chunk_1",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
-      "pair_index": 2
+      "pair_index": 3
     },
     {
-      "chunk_id": "codebase_src_network.zig_chunk_14",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 4
-    },
-    {
-      "chunk_id": "codebase_src_network.zig_chunk_14",
+      "chunk_id": "codebase_src_graphics_vulkan.zig_chunk_1",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 5
     },
     {
-      "chunk_id": "codebase_src_utils_heap.zig_chunk_5",
+      "chunk_id": "codebase_src_renderer.zig_chunk_9",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 3
     },
     {
-      "chunk_id": "codebase_src_zon.zig_chunk_1",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 3
-    },
-    {
-      "chunk_id": "codebase_src_renderer_mesh_storage.zig_chunk_6",
+      "chunk_id": "codebase_src_gui_GuiWindow.zig_chunk_2",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 1
     },
     {
-      "chunk_id": "codebase_src_graphics.zig_chunk_10",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 1
-    },
-    {
-      "chunk_id": "codebase_src_graphics.zig_chunk_10",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 3
-    },
-    {
-      "chunk_id": "codebase_src_graphics.zig_chunk_16",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 1
-    },
-    {
-      "chunk_id": "codebase_src_graphics.zig_chunk_16",
+      "chunk_id": "codebase_src_graphics_pipelines.zig_chunk_3",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 2
     },
     {
-      "chunk_id": "codebase_src_graphics.zig_chunk_16",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 3
-    },
-    {
-      "chunk_id": "codebase_src_graphics.zig_chunk_16",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 4
-    },
-    {
-      "chunk_id": "codebase_src_graphics.zig_chunk_16",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 5
-    },
-    {
-      "chunk_id": "codebase_src_sync.zig_chunk_5",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 1
-    },
-    {
-      "chunk_id": "codebase_src_sync.zig_chunk_5",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 3
-    },
-    {
-      "chunk_id": "codebase_src_utils_file_monitor.zig_chunk_1",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 1
-    },
-    {
-      "chunk_id": "codebase_src_utils_file_monitor.zig_chunk_1",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 3
-    },
-    {
-      "chunk_id": "codebase_src_utils_file_monitor.zig_chunk_1",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 4
-    },
-    {
-      "chunk_id": "codebase_src_files.zig_chunk_0",
+      "chunk_id": "codebase_src_Inventory.zig_chunk_1",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 2
+    },
+    {
+      "chunk_id": "codebase_src_graphics.zig_chunk_2",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 4
+    },
+    {
+      "chunk_id": "codebase_src_graphics.zig_chunk_19",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 2
+    },
+    {
+      "chunk_id": "codebase_src_graphics.zig_chunk_19",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
+    },
+    {
+      "chunk_id": "codebase_src_graphics.zig_chunk_19",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 4
+    },
+    {
+      "chunk_id": "codebase_src_sync.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 2
+    },
+    {
+      "chunk_id": "codebase_src_sync.zig_chunk_1",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 1
+    },
+    {
+      "chunk_id": "codebase_src_sync.zig_chunk_1",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
+    },
+    {
+      "chunk_id": "codebase_src_sync.zig_chunk_10",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
+    },
+    {
+      "chunk_id": "codebase_src_utils_file_monitor.zig_chunk_2",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
     },
     {
       "chunk_id": "codebase_src_vec.zig_chunk_0",
       "source_type": "codebase",
       "category": "numeric",
       "detail": "ungrounded number '1'",
-      "pair_index": 2
+      "pair_index": 3
     },
     {
-      "chunk_id": "codebase_src_gui_windows_save_creation.zig_chunk_0",
+      "chunk_id": "codebase_src_random.zig_chunk_1",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 2
     },
     {
-      "chunk_id": "codebase_src_gui_windows_save_creation.zig_chunk_0",
+      "chunk_id": "codebase_src_utils_Condition.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 5
+    },
+    {
+      "chunk_id": "codebase_src_rotation.zig_chunk_2",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 3
     },
     {
-      "chunk_id": "codebase_mods_cubyz_rotations_stairs.zig_chunk_2",
+      "chunk_id": "codebase_src_rotation.zig_chunk_2",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 4
+    },
+    {
+      "chunk_id": "codebase_src_argparse.zig_chunk_2",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
+    },
+    {
+      "chunk_id": "codebase_src_physics.zig_chunk_5",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 2
+    },
+    {
+      "chunk_id": "codebase_src_physics.zig_chunk_5",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 4
+    },
+    {
+      "chunk_id": "codebase_src_physics.zig_chunk_5",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 5
+    },
+    {
+      "chunk_id": "codebase_src_items.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
+    },
+    {
+      "chunk_id": "codebase_src_items.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 4
+    },
+    {
+      "chunk_id": "codebase_src_items.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 5
+    },
+    {
+      "chunk_id": "codebase_src_items.zig_chunk_2",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 2
+    },
+    {
+      "chunk_id": "codebase_src_items.zig_chunk_2",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
+    },
+    {
+      "chunk_id": "codebase_src_items.zig_chunk_5",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 5
+    },
+    {
+      "chunk_id": "codebase_src_block_entity.zig_chunk_3",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 2
+    },
+    {
+      "chunk_id": "codebase_src_block_entity.zig_chunk_5",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 1
     },
     {
-      "chunk_id": "codebase_src_server_terrain_sbb.zig_chunk_3",
+      "chunk_id": "codebase_src_block_entity.zig_chunk_5",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 2
     },
     {
-      "chunk_id": "codebase_src_server_terrain_structuremapgen_SimpleStructureGen.zig_chunk_0",
+      "chunk_id": "codebase_src_network_protocols.zig_chunk_4",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
+    },
+    {
+      "chunk_id": "codebase_src_network.zig_chunk_10",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 2
+    },
+    {
+      "chunk_id": "codebase_src_network.zig_chunk_10",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 4
+    },
+    {
+      "chunk_id": "codebase_src_server_terrain_climategen_NoiseBasedVoronoi.zig_chunk_3",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 1
+    },
+    {
+      "chunk_id": "codebase_src_server_terrain_climategen_NoiseBasedVoronoi.zig_chunk_3",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 2
+    },
+    {
+      "chunk_id": "codebase_src_utils_heap.zig_chunk_0",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 0
     },
     {
-      "chunk_id": "codebase_src_server_terrain_structuremapgen_SimpleStructureGen.zig_chunk_0",
+      "chunk_id": "codebase_src_particles.zig_chunk_4",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 1
+    },
+    {
+      "chunk_id": "codebase_src_chunk.zig_chunk_1",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "codebase_src_chunk.zig_chunk_1",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 2
     },
     {
-      "chunk_id": "codebase_src_gui_components_Button.zig_chunk_1",
+      "chunk_id": "codebase_src_chunk.zig_chunk_1",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
+    },
+    {
+      "chunk_id": "codebase_src_chunk.zig_chunk_1",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 5
+    },
+    {
+      "chunk_id": "codebase_src_assets.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
+    },
+    {
+      "chunk_id": "codebase_src_assets.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 4
+    },
+    {
+      "chunk_id": "codebase_src_assets.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 5
+    },
+    {
+      "chunk_id": "codebase_src_renderer.zig_chunk_0",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 2
+    },
+    {
+      "chunk_id": "codebase_src_renderer.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 5
+    },
+    {
+      "chunk_id": "codebase_src_graphics_pipelines.zig_chunk_2",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
+    },
+    {
+      "chunk_id": "codebase_src_renderer_chunk_meshing.zig_chunk_2",
+      "source_type": "codebase",
+      "category": "numeric",
+      "detail": "ungrounded number '14'",
+      "pair_index": 1
+    },
+    {
+      "chunk_id": "codebase_src_renderer_chunk_meshing.zig_chunk_3",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 1
+    },
+    {
+      "chunk_id": "codebase_src_renderer_chunk_meshing.zig_chunk_3",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
+    },
+    {
+      "chunk_id": "codebase_src_renderer_chunk_meshing.zig_chunk_8",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 2
+    },
+    {
+      "chunk_id": "codebase_src_renderer_chunk_meshing.zig_chunk_8",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 4
+    },
+    {
+      "chunk_id": "codebase_src_server_world.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 5
+    },
+    {
+      "chunk_id": "codebase_src_server_world.zig_chunk_7",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 4
+    },
+    {
+      "chunk_id": "codebase_src_zon.zig_chunk_8",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
+    },
+    {
+      "chunk_id": "codebase_src_graphics_Window.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "codebase_src_graphics_Window.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 5
+    },
+    {
+      "chunk_id": "codebase_src_renderer_mesh_storage.zig_chunk_3",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 2
+    },
+    {
+      "chunk_id": "codebase_src_Inventory.zig_chunk_3",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 2
+    },
+    {
+      "chunk_id": "codebase_src_gui_gui.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
+    },
+    {
+      "chunk_id": "codebase_src_gui_gui.zig_chunk_4",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 2
+    },
+    {
+      "chunk_id": "codebase_src_graphics.zig_chunk_14",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 1
+    },
+    {
+      "chunk_id": "codebase_src_blocks.zig_chunk_1",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 1
+    },
+    {
+      "chunk_id": "codebase_src_blocks.zig_chunk_2",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
+    },
+    {
+      "chunk_id": "codebase_src_sync.zig_chunk_3",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 2
+    },
+    {
+      "chunk_id": "codebase_src_sync.zig_chunk_7",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 1
+    },
+    {
+      "chunk_id": "codebase_src_server_terrain_CaveMap.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "codebase_src_server_terrain_CaveMap.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 4
+    },
+    {
+      "chunk_id": "codebase_src_network_authentication.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
+    },
+    {
+      "chunk_id": "codebase_src_network_authentication.zig_chunk_2",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 5
+    },
+    {
+      "chunk_id": "codebase_src_utils_file_monitor.zig_chunk_1",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
+    },
+    {
+      "chunk_id": "codebase_src_utils_Condition.zig_chunk_2",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
     },
     {
       "chunk_id": "codebase_src_server_terrain_chunkgen_CrystalGenerator.zig_chunk_0",
@@ -416,109 +591,347 @@
       "pair_index": 5
     },
     {
-      "chunk_id": "codebase_src_argparse.zig_chunk_0",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 4
-    },
-    {
-      "chunk_id": "codebase_src_gui_windows_chat.zig_chunk_2",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 1
-    },
-    {
-      "chunk_id": "codebase_src_entityModel.zig_chunk_3",
+      "chunk_id": "codebase_src_server_terrain_cavegen_FractalCaveGenerator.zig_chunk_0",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 0
     },
     {
-      "chunk_id": "codebase_src_server_command_worldedit_blueprint.zig_chunk_0",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 3
-    },
-    {
-      "chunk_id": "codebase_src_server_terrain_simple_structures_FallenTree.zig_chunk_0",
-      "source_type": "codebase",
-      "category": "hedge",
-      "detail": "hedge phrase detected",
-      "pair_index": 0
-    },
-    {
-      "chunk_id": "codebase_src_server_terrain_simple_structures_SbbGen.zig_chunk_0",
+      "chunk_id": "codebase_src_entityModel.zig_chunk_1",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 1
     },
     {
-      "chunk_id": "codebase_src_server_terrain_simple_structures_SbbGen.zig_chunk_0",
+      "chunk_id": "codebase_src_gui_components_DiscreteSlider.zig_chunk_1",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 2
+    },
+    {
+      "chunk_id": "codebase_src_gui_components_DiscreteSlider.zig_chunk_1",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 4
     },
     {
-      "chunk_id": "codebase_src_server_terrain_simple_structures_SbbGen.zig_chunk_0",
+      "chunk_id": "codebase_src_server_terrain_chunkgen_TerrainGenerator.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "codebase_src_server_terrain_chunkgen_TerrainGenerator.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 1
+    },
+    {
+      "chunk_id": "codebase_src_server_terrain_chunkgen_TerrainGenerator.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 4
+    },
+    {
+      "chunk_id": "codebase_src_server_terrain_chunkgen_TerrainGenerator.zig_chunk_0",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 5
     },
     {
-      "chunk_id": "codebase_src_network.zig_chunk_5",
+      "chunk_id": "codebase_src_server_terrain_chunkgen_StructureGenerator.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "codebase_src_server_terrain_chunkgen_StructureGenerator.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 1
+    },
+    {
+      "chunk_id": "codebase_src_server_terrain_chunkgen_StructureGenerator.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 4
+    },
+    {
+      "chunk_id": "codebase_src_server_terrain_chunkgen_StructureGenerator.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 5
+    },
+    {
+      "chunk_id": "codebase_src_server_terrain_cavegen_SurfaceGenerator.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "codebase_src_server_terrain_cavegen_SurfaceGenerator.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 1
+    },
+    {
+      "chunk_id": "codebase_src_server_terrain_cavegen_SurfaceGenerator.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 2
+    },
+    {
+      "chunk_id": "codebase_src_server_terrain_cavegen_SurfaceGenerator.zig_chunk_0",
       "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 3
     },
     {
-      "chunk_id": "docs_CONTRIBUTING.md_chunk_0",
-      "source_type": "docs",
+      "chunk_id": "codebase_src_server_terrain_cavegen_SurfaceGenerator.zig_chunk_0",
+      "source_type": "codebase",
       "category": "hedge",
       "detail": "hedge phrase detected",
-      "pair_index": 0
+      "pair_index": 5
     },
     {
-      "chunk_id": "docs_CONTRIBUTING.md_chunk_0",
+      "chunk_id": "codebase_src_server_terrain_sdf_models_partial_sphere.zig_chunk_0",
+      "source_type": "codebase",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 3
+    },
+    {
+      "chunk_id": "docs_docs_development_addons_biomes.md_chunk_0",
       "source_type": "docs",
       "category": "hedge",
       "detail": "hedge phrase detected",
       "pair_index": 2
     },
     {
-      "chunk_id": "docs_CONTRIBUTING.md_chunk_0",
+      "chunk_id": "docs_docs_development_addons_biomes.md_chunk_0",
       "source_type": "docs",
       "category": "hedge",
       "detail": "hedge phrase detected",
-      "pair_index": 3
+      "pair_index": 4
     },
     {
-      "chunk_id": "docs_docs_development_addons_blocks.md_chunk_0",
+      "chunk_id": "docs_workbench_crafting.md_chunk_0",
       "source_type": "docs",
       "category": "hedge",
       "detail": "hedge phrase detected",
-      "pair_index": 3
+      "pair_index": 2
     },
     {
-      "chunk_id": "github_pr_1630_comment_2500248580",
+      "chunk_id": "github_issue_3231_discussion",
       "source_type": "reviews",
-      "category": "stub-source",
-      "detail": "source core content only 117 chars but 1 pairs generated",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "github_issue_1460_discussion",
+      "source_type": "reviews",
+      "category": "numeric",
+      "detail": "ungrounded number '950'",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "github_issue_1344_discussion",
+      "source_type": "reviews",
+      "category": "numeric",
+      "detail": "ungrounded number '1298'",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "github_issue_1572_discussion",
+      "source_type": "reviews",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "github_issue_1961_discussion",
+      "source_type": "reviews",
+      "category": "numeric",
+      "detail": "ungrounded number '0.2'",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "github_issue_1397_discussion",
+      "source_type": "reviews",
+      "category": "numeric",
+      "detail": "ungrounded number '1383'",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "github_pr_2195_comment_2495446006",
+      "source_type": "reviews",
+      "category": "numeric",
+      "detail": "ungrounded number '0'",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "github_pr_2195_comment_2495537313",
+      "source_type": "reviews",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "github_pr_3313_comment_3560517031",
+      "source_type": "reviews",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "github_issue_1322_discussion",
+      "source_type": "reviews",
+      "category": "numeric",
+      "detail": "ungrounded number '11'",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "github_issue_342_discussion",
+      "source_type": "reviews",
+      "category": "numeric",
+      "detail": "ungrounded number '12'",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "github_pr_2511_comment_2848890228",
+      "source_type": "reviews",
+      "category": "hedge",
+      "detail": "hedge phrase detected",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "github_issue_73_discussion",
+      "source_type": "reviews",
+      "category": "shape",
+      "detail": "2 pairs (reviews should be 0 or 1)",
       "pair_index": null
     },
     {
-      "chunk_id": "github_pr_1338_comment_2056762354",
+      "chunk_id": "github_issue_228_discussion",
       "source_type": "reviews",
       "category": "numeric",
-      "detail": "ungrounded number '1'",
+      "detail": "ungrounded number '3.3'",
       "pair_index": 0
+    },
+    {
+      "chunk_id": "github_pr_3266_comment_3447478467",
+      "source_type": "reviews",
+      "category": "shape",
+      "detail": "2 pairs (reviews should be 0 or 1)",
+      "pair_index": null
+    },
+    {
+      "chunk_id": "github_pr_2063_comment_2443327768",
+      "source_type": "reviews",
+      "category": "shape",
+      "detail": "2 pairs (reviews should be 0 or 1)",
+      "pair_index": null
+    },
+    {
+      "chunk_id": "github_pr_1726_comment_2252313020",
+      "source_type": "reviews",
+      "category": "shape",
+      "detail": "2 pairs (reviews should be 0 or 1)",
+      "pair_index": null
+    },
+    {
+      "chunk_id": "github_pr_1179_comment_1986349544",
+      "source_type": "reviews",
+      "category": "shape",
+      "detail": "2 pairs (reviews should be 0 or 1)",
+      "pair_index": null
+    },
+    {
+      "chunk_id": "github_issue_2139_discussion",
+      "source_type": "reviews",
+      "category": "numeric",
+      "detail": "ungrounded number '51'",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "github_issue_2139_discussion",
+      "source_type": "reviews",
+      "category": "numeric",
+      "detail": "ungrounded number '50'",
+      "pair_index": 0
+    },
+    {
+      "chunk_id": "github_pr_3219_comment_3406736715",
+      "source_type": "reviews",
+      "category": "shape",
+      "detail": "2 pairs (reviews should be 0 or 1)",
+      "pair_index": null
+    },
+    {
+      "chunk_id": "github_pr_1478_comment_2133852848",
+      "source_type": "reviews",
+      "category": "shape",
+      "detail": "2 pairs (reviews should be 0 or 1)",
+      "pair_index": null
+    },
+    {
+      "chunk_id": "github_pr_1313_comment_2063839894",
+      "source_type": "reviews",
+      "category": "shape",
+      "detail": "2 pairs (reviews should be 0 or 1)",
+      "pair_index": null
+    },
+    {
+      "chunk_id": "github_pr_1726_comment_2238622273",
+      "source_type": "reviews",
+      "category": "shape",
+      "detail": "2 pairs (reviews should be 0 or 1)",
+      "pair_index": null
+    },
+    {
+      "chunk_id": "github_pr_2604_comment_2862596326",
+      "source_type": "reviews",
+      "category": "shape",
+      "detail": "2 pairs (reviews should be 0 or 1)",
+      "pair_index": null
+    },
+    {
+      "chunk_id": "github_pr_1446_comment_2101001844",
+      "source_type": "reviews",
+      "category": "shape",
+      "detail": "2 pairs (reviews should be 0 or 1)",
+      "pair_index": null
+    },
+    {
+      "chunk_id": "github_pr_1141_comment_1992122237",
+      "source_type": "reviews",
+      "category": "shape",
+      "detail": "3 pairs (reviews should be 0 or 1)",
+      "pair_index": null
+    },
+    {
+      "chunk_id": "github_issue_1518_discussion",
+      "source_type": "reviews",
+      "category": "shape",
+      "detail": "2 pairs (reviews should be 0 or 1)",
+      "pair_index": null
     }
   ]
 }

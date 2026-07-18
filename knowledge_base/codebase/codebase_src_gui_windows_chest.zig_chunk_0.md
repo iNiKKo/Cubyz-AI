@@ -1,45 +1,29 @@
 # [easy/codebase_src_gui_windows_chest.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** gui, inventory, layout, memory management, initialization, cleanup
-**Symbols:** window, padding, itemSlots, openInventory
-**Concepts:** GUI, inventory management, layout
+**Keywords:** GUI window, item slots, inventory management, deinitialization, component creation
+**Symbols:** window, padding, itemSlots, deinit, openInventory, setInventory, onOpen, onClose
+**Concepts:** GUI window management, inventory display, component initialization and deinitialization
 
 ## Summary
-Manages the GUI window for a chest inventory, including initialization, deinitialization, and updating the inventory display.
+Manages the GUI window for a chest inventory, initializing and deinitializing item slots and handling open/close events.
 
 ## Explanation
-This chunk manages the GUI window for a chest inventory. It initializes the window with a grid of item slots based on the selected inventory. The `onOpen` function sets up the layout, while `onClose` cleans up resources when the window is closed. The `deinit` function frees allocated memory.
+This chunk defines the logic for a GUI window that represents a chest inventory. It initializes the window's position, size, and scale. The `deinit` function clears and frees the memory used by item slots. The `setInventory` function sets the currently selected inventory. The `onOpen` function creates a vertical list of horizontal lists to display item slots based on the selected inventory. The `onClose` function deinitializes the open inventory, clears item slots while retaining capacity, and deinitializes the root component of the window.
 
 ## Code Example
 ```zig
-pub fn onOpen() void {
-	const list = VerticalList.init(.{padding, padding + 16}, 300, 0);
-
-	for (0..2) |y| {
-		const row = HorizontalList.init();
-		for (0..10) |x| {
-			const index: usize = y*10 + x;
-			const slot = ItemSlot.init(.{0, 0}, openInventory, @intCast(index), .default, .normal);
-			itemSlots.append(main.globalAllocator, slot);
-			row.add(slot);
-		}
-		list.add(row);
-	}
-	list.finish(.center);
-	window.shiftClickableInventory = openInventory;
-	window.rootComponent = list.toComponent();
-	window.contentSize = window.rootComponent.?.pos() + window.rootComponent.?.size() + @as(Vec2f, @splat(padding));
-	gui.updateWindowPositions();
+pub fn deinit() void {
+	itemSlots.clearAndFree(main.globalAllocator);
 }
 ```
 
 ## Related Questions
-- What function initializes the GUI window for a chest inventory?
-- How is the layout of item slots in the chest inventory set up?
-- What happens when the chest inventory window is closed?
-- Which memory management function is used to free allocated memory?
-- Who calls the `onOpen` function?
-- What data structure holds the item slots for the chest inventory?
+- How is the chest inventory window initialized?
+- What function sets the currently selected inventory?
+- How are item slots created when the inventory window opens?
+- What happens to the open inventory when the window closes?
+- How is memory managed for item slots in this module?
+- What is the role of the `padding` constant in the GUI layout?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_chest.zig_chunk_0*

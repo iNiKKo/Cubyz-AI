@@ -1,37 +1,31 @@
 # [hard/codebase_src_models.zig] - Chunk 3
 
 **Type:** implementation
-**Keywords:** OBJ file parsing, collision grid, floodfill algorithm, UV normalization, model initialization
-**Symbols:** collisionGridSize, CollisionGridInteger, Vec3i, Vec3f, Box, ModelIndex, QuadInfo, Triangle, Quad, allOnes, loadRawModelDataFromObj, loadModel, allTrue, disableAll, canExpand, addVert
-**Concepts:** model loading, collision detection, geometry processing
+**Keywords:** floodfill algorithm, collision grid, bit manipulation, model data processing, UV mapping
+**Symbols:** loadModel, loadRawModelDataFromObj, allTrue, disableAll, canExpand, addVert
+**Concepts:** model loading, collision detection, quad meshing, OBJ file parsing
 
 ## Summary
-This chunk handles model loading and collision grid processing.
+This chunk handles model loading and collision detection, including parsing OBJ data, rasterizing quads, and generating collision boxes.
 
 ## Explanation
-The chunk primarily processes model data from OBJ files. It includes functions for loading raw model data, initializing collision grids, and expanding collision boxes. The `loadModel` function loads model data, normalizes UV coordinates, and initializes a model index. The `loadRawModelDataFromObj` function parses OBJ file lines to extract vertices, normals, UVs, triangles, and quads. The collision grid processing involves floodfilling operations to determine collision boundaries and expanding these boundaries while ensuring all conditions are met.
+The chunk defines functions for loading models from OBJ files, processing vertex, normal, and UV data, and converting them into a list of quad information. It also includes methods for detecting collisions by creating a collision grid, using floodfill to propagate collision states, and expanding collision boxes while ensuring all bits in the grid are true within specified bounds.
 
 ## Code Example
 ```zig
-fn addVert(vert: Vec3f, vertList: *main.List(Vec3f)) usize {
-	const ind = for (vertList.*.items, 0..) |vertex, index| {
-		if (vertex == vert) break index;
-	} else vertList.*.items.len;
+const allOnes = ~@as(CollisionGridInteger, 0);
+var grid: [collisionGridSize][collisionGridSize]CollisionGridInteger = @splat(@splat(allOnes));
 
-	if (ind == vertList.*.items.len) {
-		vertList.*.append(vert);
-	}
-
-	return ind;
-}
+var floodfillQueue = main.utils.CircularBufferQueue(struct { x: usize, y: usize, val: CollisionGridInteger }).init(main.stackAllocator, 1024);
+defer floodfillQueue.deinit();
 ```
 
 ## Related Questions
-- How does the `loadModel` function normalize UV coordinates?
-- What is the purpose of the `allTrue` function in collision processing?
-- How does the `canExpand` function determine if a collision box can be expanded?
-- What role does the `floodfillQueue` play in collision grid initialization?
-- How are vertices parsed from an OBJ file line in the `loadRawModelDataFromObj` function?
-- What is the significance of the `allOnes` variable in collision mask operations?
+- How does the `loadModel` function process UV data?
+- What is the purpose of the `allTrue` function in collision detection?
+- How is the collision grid initialized in this chunk?
+- What algorithm is used to expand collision boxes?
+- How does the floodfill queue contribute to collision detection?
+- What is the role of the `addVert` function in model processing?
 
 *Source: unknown | chunk_id: codebase_src_models.zig_chunk_3*

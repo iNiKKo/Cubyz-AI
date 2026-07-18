@@ -1,23 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_branch_leafy_pine.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** decay, drops, cuttable, texture, lodReplacement, opaqueVariant, branch/pine, leaves/pine, tool tags, item drops
-**Symbols:** onUpdate, drops, texture, texture6, texture7, texture8, texture9, texture10, texture11, lodReplacement, opaqueVariant
-**Concepts:** block configuration, decay mechanics, item drops, tool tags, texture mapping
+**Keywords:** block properties, texture mapping, LOD replacement, decay effect, item drops
+**Concepts:** block configuration, drop behavior, texturing
 
 ## Summary
-Defines the leafy pine block configuration with decay behavior, drop items, and texture mappings.
+Defines properties for a leafy pine branch block, including its drop behavior, textures, and LOD replacement.
 
 ## Explanation
-This chunk declares a single object representing the leafy pine block. It sets onUpdate.type to .decay indicating the block decays over time; its drops array contains two entries: one dropping cubyz:branch/pine when decayed, and another dropping cubyz:leaves/pine only when hit with a tool tagged as cuttable. Texture fields map various face indices (texture through texture11) to specific pine branch/leaf textures, while lodReplacement and opaqueVariant both reference the opaque leaves texture for LOD handling.
+This chunk defines the configuration for a leafy pine branch block in the Cubyz voxel engine. It specifies that the block decays over time and drops pine branches when it does. The block also has multiple textures assigned to different faces (6-10) and a LOD replacement texture. Additionally, it specifies an opaque variant for rendering purposes.
 
 ## Related Questions
-- What items does the leafy pine block drop when it decays?
-- Under what condition does the leaves/pine item drop from the block?
-- Which texture is used for the LOD replacement of the leafy pine block?
-- How many texture fields are defined in this block configuration?
-- What tool tag is required to harvest leaves from the pine branch block?
-- Does the decay onUpdate have any additional parameters besides type and drops?
-- Are there any other blocks that share the same opaqueVariant texture as leafy pine?
+- What is the type of update for the leafy pine branch block?
+- What items does the leafy pine branch drop when it decays?
+- Which texture is used for the leafy pine branch block?
+- How many different textures are assigned to the leafy pine branch block?
+- What is the LOD replacement texture for the leafy pine branch block?
+- What is the opaque variant of the leafy pine branch block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_branch_leafy_pine.zig.zon_chunk_0*

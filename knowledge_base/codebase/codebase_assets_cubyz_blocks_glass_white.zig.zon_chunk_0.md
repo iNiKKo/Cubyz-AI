@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_glass_white.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** absorbed light, texture path, block definition, material properties, rendering
-**Concepts:** block properties, texture mapping
+**Keywords:** absorbedLight, texture, block definition, material properties, visual appearance
+**Concepts:** block properties, lighting
 
 ## Summary
-Defines properties for a white glass block.
+Defines properties for a white glass block in the Cubyz voxel engine.
 
 ## Explanation
-This chunk defines the properties of a white glass block in Cubyz. It specifies the absorbed light value and the texture file path. The absorbed light value is set to 0x0f0f0f, which represents a specific color or intensity level. The texture is linked to the 'cubyz:glass/white' resource, indicating that this block will use the white glass texture for rendering.
+This chunk specifies the visual and lighting properties of a white glass block. The `absorbedLight` field is set to `0x0f0f0f`, which likely represents the color or intensity of light absorbed by the block. The `texture` field points to the texture file 'cubyz:glass/white', indicating that this block uses a white glass texture.
 
 ## Related Questions
 - What is the absorbed light value for the white glass block?
-- Which texture file is associated with the white glass block?
-- How does the chunk define the material properties of the white glass block?
-- Is there any function or method defined in this chunk?
-- What concepts are implemented by this chunk?
-- What keywords are relevant to the content of this chunk?
+- Which texture file is used for the white glass block?
+- How does the absorbedLight value affect the block's appearance?
+- Where is the texture file for the white glass block located?
+- Can the absorbedLight value be changed to alter the block's behavior?
+- Is there a specific format for defining block properties in Cubyz?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_glass_white.zig.zon_chunk_0*

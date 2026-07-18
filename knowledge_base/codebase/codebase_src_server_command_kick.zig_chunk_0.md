@@ -1,15 +1,15 @@
 # [easy/codebase_src_server_command_kick.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** argument parsing, user management, connection disconnecting, message sending, error handling
+**Keywords:** argument parsing, connection management, user management, message sending, error handling
 **Symbols:** description, usage, Args, ArgParser, execute
-**Concepts:** command handling, player management, connection management
+**Concepts:** command handling, player management, networking
 
 ## Summary
 Handles kicking a player by index
 
 ## Explanation
-This function parses command arguments to kick a player by their index. It uses an argument parser to validate and extract the player index, then retrieves the target user using the index and source user's connection. The target user's connection is disconnected, and a message is sent to all users notifying them of the kicked player.
+This function parses command arguments to kick a player by their index. It uses an argument parser to validate and extract the player index, then retrieves the target user using the provided index and source user. The target's connection is disconnected, and a message is sent to all users notifying them of the kicked player.
 
 ## Code Example
 ```zig
@@ -30,17 +30,16 @@ pub fn execute(args: []const u8, source: *User) void {
 ```
 
 ## Related Questions
-- What is the purpose of the `execute` function in this chunk?
+- What is the purpose of the `Args` union in this code?
 - How does the function handle errors during argument parsing?
-- What data structures are used to manage users and their connections?
-- What is the role of the `ArgParser` struct in this codebase?
-- How is the target user's connection disconnected?
+- What is the role of the `ArgParser` struct in this code?
+- What data structure is used to store error messages?
+- How is the target user retrieved from the command index and source user?
+- What method is called on the target user's connection to disconnect them?
 - What message is sent to all users when a player is kicked?
-- What is the format of the error messages displayed to users?
-- How does the function handle invalid player indices?
-- What are the potential errors that can occur during command execution?
-- What is the role of the `errorMessage` variable in this codebase?
-- How is the `target` user's connection managed after kicking them?
-- What is the format of the messages sent to all users when a player is kicked?
+- What is the format of the error message displayed to the source user?
+- How does the function handle cases where the target user cannot be retrieved?
+- What is the purpose of the `defer` statement in this code?
+- What data structure is used to store the list of error messages?
 
 *Source: unknown | chunk_id: codebase_src_server_command_kick.zig_chunk_0*

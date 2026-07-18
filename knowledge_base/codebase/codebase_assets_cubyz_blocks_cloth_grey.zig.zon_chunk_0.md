@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_cloth_grey.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** texture mapping, block properties, item textures, configuration file, grey cloth
-**Concepts:** block definition, item configuration
+**Keywords:** configuration, texture, block definition, item properties, grey cloth
+**Concepts:** block configuration, texture mapping
 
 ## Summary
-Defines configuration for a grey cloth block, including its texture and item properties.
+Defines configuration for a grey cloth block in Cubyz.
 
 ## Explanation
-This chunk is a configuration file defining the appearance and properties of a grey cloth block in the Cubyz voxel engine. It specifies the texture used for rendering the block within the world and the texture for the corresponding item when it appears in the player's inventory or crafting interface.
+This chunk is a configuration file defining the properties of a grey cloth block. It specifies the texture used for rendering the block and the item associated with it, including its texture.
 
 ## Related Questions
-- What is the texture used for rendering the grey cloth block in the world?
-- What is the texture used for the grey cloth item in the inventory?
-- How does this configuration file define the appearance of the grey cloth block?
-- Where is the texture for the grey cloth block specified in this configuration?
-- What other properties could be defined for a block in a similar configuration file?
-- How might this configuration file interact with other parts of the Cubyz engine?
+- What is the texture used for rendering the grey cloth block?
+- Which file specifies the item texture for the grey cloth block?
+- How does this chunk define the appearance of the grey cloth block in Cubyz?
+- Is there any additional configuration for the grey cloth block beyond its textures?
+- What is the purpose of the 'item' field in this block's configuration?
+- Does this chunk include any dynamic behavior or logic?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_cloth_grey.zig.zon_chunk_0*

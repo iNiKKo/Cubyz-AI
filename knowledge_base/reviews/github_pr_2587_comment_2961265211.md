@@ -1,26 +1,27 @@
-# [src/server/world.zig] - Chunk 2961265211
+# [src/server/world.zig] - PR #2587 review diff
 
 **Type:** review
-**Keywords:** ServerWorld, loadPermissionGroups, groups.zig.zon, cubyzDir, writeZon, path, allocator, memory, file I/O, permission groups
-**Symbols:** ServerWorld, loadPermissionGroups, files.cubyzDir, writeZon, path, worldData, main.stackAllocator.allocator
-**Concepts:** file I/O, memory allocation, permission groups, server world state, data persistence, error handling with !void return type, string formatting for paths
+**Keywords:** ServerWorld, loadPermissionGroups, groups.zig.zon, memory, saves, permission groups, file reading, allocator, writeZon, allocPrint, stackAllocator
+**Symbols:** ServerWorld, loadPermissionGroups, files.cubyzDir().writeZon, std.fmt.allocPrint, main.stackAllocator.allocator
+**Concepts:** memory management, file I/O, data loading
 
 ## Summary
-Added a new `loadPermissionGroups` method to `ServerWorld` that loads permission groups from a `.zig.zon` file located in the save directory.
+Added a function to load permission groups from disk into memory.
 
 ## Explanation
-The diff introduces a function `loadPermissionGroups(self: *ServerWorld) !void` which constructs a path string using `std.fmt.allocPrint` with the allocator from `main.stackAllocator.allocator`. The target path is `
+The change introduces a new function `loadPermissionGroups` in the `ServerWorld` struct. This function reads permission group data from a file named 'groups.zig.zon' located in the server's save directory and loads it into memory. The reviewer suggests loading all permission groups into memory to simplify management, indicating that this approach is acceptable for current needs.
 
 ## Related Questions
-- What is the purpose of the `loadPermissionGroups` function in `ServerWorld`?
-- Where does the file path for permission groups come from in this implementation?
-- How are permission groups stored on disk according to the code diff?
-- Why is `main.stackAllocator.allocator` used instead of a local allocator?
-- What happens if `std.fmt.allocPrint` fails when constructing the path?
-- Is there any validation performed before writing the permission groups file?
-- How does this change affect the lifecycle management of `ServerWorld`?
-- Are permission groups loaded at server startup or on demand?
-- What format is expected for the `.zig.zon` file containing permission groups?
-- Does this method handle concurrent access to the world state during loading?
+- What is the purpose of the `loadPermissionGroups` function?
+- Where does the function read permission group data from?
+- How is memory allocated for storing the permission group data?
+- Why was it decided to load all permission groups into memory?
+- What potential issues could arise from loading all permission groups into memory?
+- Is there any error handling in the `loadPermissionGroups` function?
+- How does this change affect the overall architecture of the server world management?
+- Are there any performance implications of loading all permission groups into memory?
+- Can you explain the role of `main.stackAllocator.allocator` in this context?
+- What is the format of the 'groups.zig.zon' file?
+- How does this change impact backwards compatibility?
 
 *Source: unknown | chunk_id: github_pr_2587_comment_2961265211*

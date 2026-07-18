@@ -1,22 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_cave_slate_base.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome, structure, cave model, random offset, radius
-**Symbols:** ground_patch, stalagmite, cluster, partial_sphere
-**Concepts:** world_generation, configuration
+**Keywords:** configuration, cave generation, structures, models, randomization
+**Concepts:** world generation, cave formation
 
 ## Summary
-This chunk defines structures and cave models for the Slate base biome in Cubyz.
+Defines configuration for cave generation in the Cubyz game engine.
 
 ## Explanation
-The chunk contains two main sections: 'structures' and 'caveModels'. The 'structures' section lists various ground patches and stalagmites with their properties such as block type, chance of occurrence, dimensions, and smoothness. The 'caveModels' section defines cave models with IDs, minimum and maximum amounts, and children models like partial spheres with specific parameters.
+This chunk contains configuration data for generating caves within the Cubyz game world. It specifies structures like ground patches and stalagmites, each with properties such as block type, chance of occurrence, size, and variation. Additionally, it defines cave models using clusters and partial spheres to create complex cave formations.
 
 ## Related Questions
-- What structures are defined in the Slate base biome?
-- How often does a stalagmite appear in the Slate base biome?
-- What is the ID of the cluster cave model?
-- What is the minimum amount of partial spheres in a cluster cave model?
-- What is the maximum radius for a partial sphere in a cluster cave model?
-- Where can I find more information about the Slate base biome's structures and cave models?
+- What is the block type used for ground patches in cave generation?
+- How often do stalagmites appear in caves according to this configuration?
+- What are the minimum and maximum amounts of clusters defined in cave models?
+- What is the range of radius for partial spheres used in cave formations?
+- Can you list all the structures defined for cave generation?
+- What is the chance of a ground patch appearing in a cave?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_cave_slate_base.zig.zon_chunk_0*

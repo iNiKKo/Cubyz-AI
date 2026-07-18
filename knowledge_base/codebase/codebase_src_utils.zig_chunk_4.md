@@ -1,15 +1,15 @@
 # [hard/codebase_src_utils.zig] - Chunk 4
 
 **Type:** implementation
-**Keywords:** circular buffer, queue operations, memory management, mutex synchronization, thread-safe access
-**Symbols:** CircularBufferQueue, CircularBufferQueue.init, CircularBufferQueue.deinit, CircularBufferQueue.reset, CircularBufferQueue.increaseCapacity, CircularBufferQueue.pushBack, CircularBufferQueue.pushBackSlice, CircularBufferQueue.pushFront, CircularBufferQueue.popFront, CircularBufferQueue.popBack, CircularBufferQueue.discardFront, CircularBufferQueue.peekFront, CircularBufferQueue.getSliceAtOffset, CircularBufferQueue.getAtOffset, CircularBufferQueue.isEmpty, CircularBufferQueue.reachedCapacity, ConcurrentQueue, ConcurrentQueue.init, ConcurrentQueue.deinit, ConcurrentQueue.pushBack, ConcurrentQueue.popFront, ConcurrentQueue.isEmpty
-**Concepts:** circular buffer queue, thread safety, mutex locking
+**Keywords:** circular buffer, queue, dynamic capacity, memory allocation, element retrieval
+**Symbols:** CircularBufferQueue, CircularBufferQueue.mem, CircularBufferQueue.mask, CircularBufferQueue.startIndex, CircularBufferQueue.len, CircularBufferQueue.allocator, CircularBufferQueue.init, CircularBufferQueue.deinit, CircularBufferQueue.reset, CircularBufferQueue.increaseCapacity, CircularBufferQueue.pushBack, CircularBufferQueue.pushBackSlice, CircularBufferQueue.pushFront, CircularBufferQueue.popFront, CircularBufferQueue.popBack, CircularBufferQueue.discardFront, CircularBufferQueue.peekFront, CircularBufferQueue.getSliceAtOffset, CircularBufferQueue.getAtOffset, CircularBufferQueue.isEmpty, CircularBufferQueue.reachedCapacity
+**Concepts:** circular buffer, queue data structure
 
 ## Summary
-Defines a circular buffer queue and a concurrent queue with mutex locking.
+Defines a generic circular buffer queue with methods for initialization, deinitialization, and various operations like push, pop, peek, and slice retrieval.
 
 ## Explanation
-This chunk defines two main structures: CircularBufferQueue and ConcurrentQueue. The CircularBufferQueue is an implementation of a fixed-size, circular buffer-based queue that supports operations like pushBack, popFront, and peekFront. It manages memory allocation and resizing internally. The ConcurrentQueue wraps the CircularBufferQueue to provide thread-safe access using a mutex for synchronization.
+The chunk defines a `CircularBufferQueue` struct that implements a circular buffer using a fixed-size array. It includes methods for initializing and deinitializing the buffer, as well as adding and removing elements from both ends of the queue. The buffer automatically increases its capacity when full. Methods are provided to peek at elements, retrieve slices, and check if the buffer is empty or has reached its capacity.
 
 ## Code Example
 ```zig
@@ -19,15 +19,11 @@ pub fn isEmpty(self: *Self) bool {
 ```
 
 ## Related Questions
-- How does CircularBufferQueue handle memory allocation?
-- What operations are supported by CircularBufferQueue?
-- How is thread safety achieved in ConcurrentQueue?
-- What is the purpose of the mutex in ConcurrentQueue?
-- How does CircularBufferQueue manage resizing its internal buffer?
-- Can elements be added to the front of the queue in CircularBufferQueue?
-- What error handling is implemented for out-of-bounds access in CircularBufferQueue?
-- How does ConcurrentQueue ensure that only one thread can modify the queue at a time?
-- Is it possible to remove multiple elements from the front of the queue in CircularBufferQueue?
-- What are the differences between CircularBufferQueue and ConcurrentQueue?
+- How does the CircularBufferQueue handle memory allocation when it reaches capacity?
+- What is the purpose of the `mask` field in the CircularBufferQueue struct?
+- How does the `pushBackSlice` method ensure that elements are added without overwriting existing data?
+- Can you explain how the `popFront` and `popBack` methods work in the CircularBufferQueue?
+- What is the role of the `allocator` field in the CircularBufferQueue struct?
+- How does the `getAtOffset` method handle out-of-bounds errors?
 
 *Source: unknown | chunk_id: codebase_src_utils.zig_chunk_4*

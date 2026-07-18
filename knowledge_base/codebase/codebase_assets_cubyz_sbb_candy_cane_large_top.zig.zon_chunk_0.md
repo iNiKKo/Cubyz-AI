@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_candy_cane_large_top.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, blueprints, assets, identification, Cubyz namespace
+**Keywords:** configuration, blueprints, assets, identification, candy cane
 **Concepts:** asset management, blueprint definition
 
 ## Summary
 Defines blueprints for large candy cane top assets.
 
 ## Explanation
-This chunk contains a configuration structure defining three different blueprints for the top part of a large candy cane asset. Each blueprint is identified by a unique string ID within the Cubyz namespace.
+This chunk contains a configuration structure defining three different blueprints for the top part of a large candy cane asset. Each blueprint has a unique identifier (id) that specifies its type and variant within the Cubyz engine's asset system.
 
 ## Related Questions
-- What are the IDs of the large candy cane top blueprints defined in this chunk?
-- How many different blueprints for the large candy cane top are specified?
-- Is there any executable logic in this configuration file?
-- What is the purpose of the Cubyz namespace in these asset IDs?
-- Are there any dependencies on external modules or functions within this chunk?
-- Can this configuration be modified to add more candy cane top blueprints?
+- What are the identifiers for the large candy cane top assets?
+- How many different blueprints are defined for the large candy cane top?
+- Where is the configuration data for the large candy cane top assets located in the Cubyz codebase?
+- What does each blueprint entry contain in this configuration file?
+- Are there any specific naming conventions for the asset identifiers in this chunk?
+- How might these blueprints be used within the Cubyz engine's rendering or asset loading systems?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_candy_cane_large_top.zig.zon_chunk_0*

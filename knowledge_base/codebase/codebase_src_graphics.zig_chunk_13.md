@@ -1,30 +1,33 @@
 # [hard/codebase_src_graphics.zig] - Chunk 13
 
-**Type:** api
-**Keywords:** OpenGL, buffer management, frame buffer, shader storage buffer, memory allocation, resource cleanup
-**Symbols:** endRender, rawAlloc, finalFree, free, allocateAndMapRange, unmapRange, uploadData, FrameBuffer, FrameBuffer.frameBuffer, FrameBuffer.texture, FrameBuffer.hasDepthTexture, FrameBuffer.depthTexture, init, deinit
-**Concepts:** OpenGL resource management, buffer allocation, frame buffer creation, shader storage buffer
+**Type:** implementation
+**Keywords:** OpenGL, vertex arrays, shader storage buffers, buffer initialization, data binding
+**Symbols:** VertexArray, VertexArray.vao, VertexArray.vbo, VertexArray.ibo, VertexArray.EmptyVertex, VertexArray.init, VertexArray.deinit, VertexArray.bind, SSBO, SSBO.bufferID, SSBO.init, SSBO.initStatic, SSBO.initStaticSize, SSBO.deinit, SSBO.bind, SSBO.bufferData, SSBO.bufferSubData, SSBO.createDynamicBuffer, SubAllocation, SubAllocation.start, SubAllocation.len
+**Concepts:** OpenGL resource management, Vertex array objects (VAOs), Shader storage buffers (SSBOs)
 
 ## Summary
-This chunk defines functions for managing OpenGL resources such as frame buffers and shader storage buffers.
+Defines VertexArray and SSBO structures for managing OpenGL vertex arrays and shader storage buffers.
 
 ## Explanation
-The chunk contains several functions related to OpenGL resource management. `endRender` deletes a fence sync object and creates a new one. `rawAlloc` allocates memory from a buffer, resizing if necessary. `finalFree` merges freed allocations with adjacent free blocks. `free` adds an allocation to a fenced list for later processing. `allocateAndMapRange` allocates and maps a range of the buffer for writing. `unmapRange` unmaps a previously mapped buffer range. `uploadData` uploads data to a buffer, allocating space if needed. The `FrameBuffer` struct manages OpenGL frame buffers, including initialization and cleanup.
+The chunk defines two main structures, VertexArray and SSBO, which are used to manage OpenGL resources such as vertex arrays and shader storage buffers. The VertexArray struct includes methods for initialization (init), cleanup (deinit), and binding (bind). It handles the creation of vertex array objects (VAOs), vertex buffer objects (VBOs), and index buffer objects (IBOs) if indices are provided. The SSBO struct provides similar functionality for shader storage buffers, including static and dynamic buffer initialization, data binding, and sub-data updates. Both structures use OpenGL functions to interact with the graphics API.
 
 ## Code Example
 ```zig
-pub fn endRender(self: *Self) void {
-	c.glDeleteSync(self.fences[self.activeFence]);
-	self.fences[self.activeFence] = c.glFenceSync(c.GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
+pub fn deinit(self: VertexArray) void {
+	c.glDeleteVertexArrays(1, &self.vao);
+	c.glDeleteBuffers(1, &self.vbo);
+	if (self.ibo != null) {
+		c.glDeleteBuffers(1, &self.ibo.?);
+	}
 }
 ```
 
 ## Related Questions
-- How does the `endRender` function work?
-- What is the purpose of the `rawAlloc` function?
-- Describe the role of the `finalFree` function.
-- Explain how the `allocateAndMapRange` function works.
-- What steps are involved in initializing a frame buffer?
-- How does the `uploadData` function handle data upload to a buffer?
+- How do you initialize a VertexArray with indices?
+- What is the purpose of the EmptyVertex struct in VertexArray?
+- How does SSBO handle dynamic buffer creation?
+- What OpenGL functions are used to manage shader storage buffers in SSBO?
+- Can you explain how data is bound to an SSBO?
+- What steps are involved in deinitializing a VertexArray?
 
 *Source: unknown | chunk_id: codebase_src_graphics.zig_chunk_13*

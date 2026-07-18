@@ -1,26 +1,22 @@
-# [src/game.zig] - Chunk 1755254993
+# [src/game.zig] - PR #665 review diff
 
 **Type:** review
-**Keywords:** update, Player, bobVel, bobTime, bobMag, onGround, viewBobStrength, mutex, lerp, framerate
-**Symbols:** update, Player.selectedSlot, main.Window.scrollOffset, fac, targetBobVel, horizontalMovementSpeed, vec.length, vec.xy, Player.getVelBlocking, Player.bobVel, std.math.exp, std.math.pow, Player.onGround, Player.bobTime, Player.bobMag, @min, @sqrt, settings.viewBobStrength
-**Concepts:** thread safety, mutex locking, framerate independence, exponential damping, lerping, view bobbing, ground check, magnitude clamping, settings exposure
+**Keywords:** view bobbing, exponential smoothing, bobVel, bobTime, horizontalMovementSpeed, mutex, thread safety, interpolation, damping factor, Player struct
+**Symbols:** update, deltaTime, Player.selectedSlot, main.Window.scrollOffset, fac, targetBobVel, horizontalMovementSpeed, vec.length(vec.xy(Player.getVelBlocking())), Player.bobVel, settings.viewBobStrength, Player.onGround, Player.bobTime, Player.bobMag
+**Concepts:** thread safety, smoothing, interpolation, mutex
 
 ## Summary
-The change introduces a framerate-independent view bobbing system that lerps velocity toward a target based on horizontal movement speed, updates bob time only when the player is on ground, and caps bob magnitude by strength settings.
+Added view bobbing effect based on player movement speed and ground state.
 
 ## Explanation
-The original code had no view bobbing; this diff adds it. The reviewer flagged that all writes to Player fields (bobVel, bobTime, bobMag) must be protected by a mutex because they touch the Player struct concurrently with other threads. Architecturally, the implementation uses exponential damping (fac = 1 - exp(-15*delta)) to make velocity updates independent of frame rate, then derives targetBobVel from horizontal speed via sqrt(pow(speed/4,0.5)). The bobTime increment is scaled by pow(bobVel,0.9) and only applied when onGround, preventing air-bobbing. BobMag clamps the square root of bobVel against a maximum (1.2) multiplied by settings.viewBobStrength to keep visual jitter bounded. This refactor improves realism without breaking existing movement logic.
+The change introduces a new feature called 'view bobbing' which simulates the up-and-down motion of a camera when a player is walking. The implementation uses exponential smoothing to interpolate the bobbing velocity (`bobVel`) and time (`bobTime`). It calculates the target bobbing velocity based on the horizontal movement speed of the player, applying a damping factor to ensure smooth transitions. The reviewer points out that since this section modifies variables in the `Player` struct, it should be protected by locking the `Player` mutex to ensure thread safety.
 
 ## Related Questions
-- What is the purpose of the 'fac' variable in this diff?
-- How does the code ensure view bobbing only occurs when the player is on ground?
-- Which Player struct fields are modified by this new block and why must they be mutex-locked?
-- Explain how horizontalMovementSpeed is computed from Player.getVelBlocking().
-- What formula is used to derive targetBobVel and why is a square root applied?
-- How does the code prevent view bobbing in the air?
-- What role does settings.viewBobStrength play in determining final bob magnitude?
-- Why use std.math.exp with -15 * deltaTime instead of a simple linear decay?
-- Is there any existing usage of Player.bobVel before this diff that might conflict with the new lerping logic?
-- How would increasing viewBobStrength affect gameplay feel according to this implementation?
+- What is the purpose of the `fac` variable in the view bobbing implementation?
+- How does the code ensure that the view bobbing effect only occurs when the player is on the ground?
+- Why is it important to lock the `Player` mutex when modifying variables in this section?
+- Can you explain how the target bobbing velocity (`targetBobVel`) is calculated based on the player's movement speed?
+- What role does the damping factor play in the view bobbing effect?
+- How does the code prevent excessive bobbing motion when the player is moving quickly?
 
 *Source: unknown | chunk_id: github_pr_665_comment_1755254993*

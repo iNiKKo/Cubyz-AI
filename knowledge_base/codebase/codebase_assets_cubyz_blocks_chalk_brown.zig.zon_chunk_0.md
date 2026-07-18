@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_chalk_brown.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, texture mapping, block assets, rendering system, Cubyz engine
+**Keywords:** configuration, texture mapping, block assets, brown chalk, cubyz:chalk/brown
 **Concepts:** block textures
 
 ## Summary
 Defines configuration for the brown chalk block texture.
 
 ## Explanation
-This chunk is a simple configuration file that specifies the texture path for the brown chalk block in the Cubyz voxel engine. It uses a struct-like syntax to define a single field, `.texture`, which holds the string value "cubyz:chalk/brown". This configuration is likely used by the rendering system to map the correct texture to the brown chalk block when it is rendered in the game world.
+This chunk is a simple configuration file that specifies the texture path for a brown chalk block in the Cubyz voxel engine. The configuration uses a JSON-like structure to map the `.texture` key to the string value `
 
 ## Related Questions
 - What is the texture path for the brown chalk block?
-- Where is the configuration for the brown chalk block defined?
-- How does this chunk contribute to the rendering of blocks in Cubyz?
-- Is there any other configuration related to block textures in this file?
-- What is the purpose of the `.texture` field in this configuration?
-- Does this chunk define any functions or methods?
+- Is there any executable logic in this chunk?
+- How is the texture for the brown chalk block defined?
+- Does this chunk define any symbols or APIs?
+- What concepts does this chunk implement?
+- What keywords are associated with this chunk?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_chalk_brown.zig.zon_chunk_0*

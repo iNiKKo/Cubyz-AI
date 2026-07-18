@@ -1,26 +1,32 @@
 # [medium/codebase_src_callbacks_block_server_decay.zig] - Chunk 1
 
 **Type:** implementation
-**Keywords:** decayable, branch, placedByHuman, foundWayToLog, cmpxchgBlock, blockDrops, random chance, model bounds, upward bias
-**Symbols:** foundWayToLog, cmpxchgBlock, blockDrops
-**Concepts:** decay callback, rotation validation, branch data handling, proximity log detection, atomic block replacement, random drop generation, model bounds sampling, upward bias direction
+**Keywords:** decay callback, block replacement, log proximity check, random item drop, world modification
+**Symbols:** init, getIndexInCheckArray, preventsDecay, foundWayToLog, run
+**Concepts:** block decay, server world, breadth-first search
 
 ## Summary
-Implements the server-side decay callback for blocks, handling rotation checks (decayable/branch), proximity log detection via foundWayToLog, atomic block replacement with cmpxchgBlock, and random drop generation when a leaf is replaced.
+Handles block decay callbacks in the server world.
 
 ## Explanation
-The function first validates that the block's mode is either 'cubyz:decayable' or 'cubyz:branch'; for decayable it requires data == 0 (ignoring otherwise), for branch it reads BranchData and ignores if placedByHuman. If neither matches, an error log is emitted with the block ID. When a world exists, it queries the block at coordinates (wx, wy, wz) to obtain leaf; if found, it calls self.foundWayToLog(world, leaf, wx, wy, wz) to check for nearby logs and returns .ignored if true. If no log is nearby, it attempts an atomic compare-and-swap replacement of the block with self.decayReplacement via world.cmpxchgBlock; on success (non-null result), it iterates over self.blockDrops: for each drop whose chance condition is met (chance == 1 or random < drop.chance using main.random.nextFloat seeded by &main.seed), it clones each item stack and spawns a drop at a randomized position derived from the leaf's model bounds, with an upward bias added to the Y component of the direction vector. The spawn uses main.server.world.?.drop(stack.clone(), pos, dir, 1). If cmpxchgBlock fails (returns null) or no world exists, the function returns .ignored.
+This chunk defines a callback mechanism for handling block decay in the Cubyz server world. It includes functions to initialize decay settings, check for nearby logs that prevent decay, and execute the decay process if no such logs are found. The `init` function sets up decay parameters based on configuration data. The `foundWayToLog` function performs a breadth-first search to determine if any logs are within a specified range that would prevent decay. The `run` function checks block conditions, uses `foundWayToLog` to decide whether to proceed with decay, and handles the actual decay process by replacing the block and potentially dropping items.
+
+## Code Example
+```zig
+fn preventsDecay(self: *@This(), log: Block) bool {
+	for (self.prevention) |tag| {
+		if (log.hasTag(tag)) return true;
+	}
+	return false;
+}
+```
 
 ## Related Questions
-- What rotation modes are accepted for the decay callback and how is each validated?
-- How does the function decide whether to ignore a block based on its data field or BranchData.placedByHuman?
-- Describe the exact condition under which self.foundWayToLog causes the decay to be ignored.
-- What happens when world.cmpxchgBlock returns null versus a non-null value in this context?
-- How is the random drop chance evaluated for each entry in self.blockDrops?
-- Explain how the spawn position is computed from leaf.mode().model bounds and main.random.nextFloat.
-- What upward bias is applied to the direction vector before dropping items?
-- Which global seed variable is used by main.random.nextFloat and why is it passed as &main.seed?
-- How does the function handle the case where server.world is null or missing?
-- What error message is logged if neither decayable nor branch rotation matches?
+- What is the purpose of the `init` function in this chunk?
+- How does the `foundWayToLog` function determine if a log prevents decay?
+- What conditions must be met for a block to undergo decay according to the `run` function?
+- How are items dropped when a block decays?
+- What is the role of the `getIndexInCheckArray` function in this chunk?
+- How does the chunk handle blocks with the 'cubyz:branch' rotation differently from others?
 
 *Source: unknown | chunk_id: codebase_src_callbacks_block_server_decay.zig_chunk_1*

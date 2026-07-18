@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_cave_void_void_cavern.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome settings, fog properties, music association, stone block type, cave models
-**Concepts:** biome configuration, cave generation
+**Keywords:** void cavern, cave model, fog density, stone block, music track
+**Concepts:** world generation, biome configuration
 
 ## Summary
-Defines configuration for the Void Cavern biome in Cubyz, including cave generation parameters and visual properties.
+Defines configuration for a void cavern biome in Cubyz, including cave model parameters and visual properties.
 
 ## Explanation
-This chunk defines a configuration structure for the Void Cavern biome. It specifies that this is a cave biome with certain tags, generation chance, fog density and color, associated music, and stone block type. Additionally, it details models used for generating caves within this biome, including their IDs, minimum and maximum amounts, and radius ranges.
+This chunk defines the configuration for a specific biome type in the Cubyz game engine, focusing on a void cavern. It specifies various attributes such as whether it is a cave biome, tags associated with the biome, generation chance, fog density and color, music track, stone block used, and details of cave models including their IDs, minimum and maximum amounts, and radius ranges. This configuration is used by the world generation system to create instances of this biome in the game world.
 
 ## Related Questions
-- What is the chance of generating a Void Cavern biome?
-- What is the fog color for the Void Cavern biome?
-- Which music track is associated with the Void Cavern biome?
-- What type of stone block is used in the Void Cavern biome?
-- How many cave models are defined for the Void Cavern biome?
-- What is the range of radii for the cave models in the Void Cavern biome?
+- What is the chance of generating a void cavern biome?
+- Which music track is associated with the void cavern biome?
+- What is the fog color for the void cavern biome?
+- What stone block is used in the void cavern biome?
+- How many different cave models are defined for the void cavern biome?
+- What is the minimum radius of a cave model in the void cavern biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_cave_void_void_cavern.zig.zon_chunk_0*

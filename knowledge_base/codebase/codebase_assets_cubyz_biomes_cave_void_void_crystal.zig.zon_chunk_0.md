@@ -1,23 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_cave_void_void_crystal.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** cave biome, fog density, crystal count, boulder structure, stone block reference, generation chance, root layer tag, music reference, size variance
-**Symbols:** isCave, tags, fogDensity, fogColor, chance, caveRadiusFactor, crystals, music, stoneBlock, structures
-**Concepts:** biome configuration, fog rendering parameters, structure generation probabilities, resource block references
+**Keywords:** cave biome, configuration, fog density, structures, boulders
+**Concepts:** world_generation
 
 ## Summary
-Configuration data defining a cave biome with fog settings, crystal count, music reference, stone block type, and boulder structure definitions.
+Defines configuration for the Void Crystal cave biome in Cubyz.
 
 ## Explanation
-This chunk is a .zon configuration file containing static biome parameters. It defines the biome as a cave via the isCave flag set to true and tags it with root_layer. Fog properties are specified using fogDensity (10) and fogColor (0x272334). The chance field indicates 0.01 probability for generation. The caveRadiusFactor is -1, implying no radius scaling factor applies. Crystals count is set to 32. Music reference points to cubyz:totaldemented/root. Stone block type is cubyz:slate/smooth. Structures array contains two entries both referencing id cubyz:boulder with different chance values (0.016), block types (cubyz:slate/rough and cubyz:slate/smooth), sizes (5 and 4), and size_variance values (3 and 2).
+This chunk contains a JSON-like structure defining various properties of the Void Crystal cave biome. It specifies that it is a cave biome, has certain tags, fog density and color, generation chance, cave radius factor, number of crystals, music, stone block type, and structures like boulders with specific chances, blocks, sizes, and size variances.
 
 ## Related Questions
-- What is the fog color value for this cave biome configuration?
-- How many crystals are defined in this biome's structure data?
-- Which music track is referenced by this cave biome configuration?
-- What stone block type is specified as the primary material for this cave?
-- What is the generation chance probability for boulder structures in this biome?
-- Does this biome have a radius factor applied to its generation parameters?
-- How many distinct structure entries are defined within the structures array of this configuration?
+- What is the fog color of the Void Crystal cave biome?
+- How many crystals are generated in this biome?
+- What is the chance of generating a boulder with 'cubyz:slate/smooth' block?
+- Which music track is associated with this biome?
+- What is the root layer tag for this biome?
+- What is the cave radius factor for the Void Crystal cave biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_cave_void_void_crystal.zig.zon_chunk_0*

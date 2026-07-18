@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_nimbusite_smooth.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, block properties, texture paths, model types, rotation models
-**Concepts:** block configuration, texture mapping, model assignment
+**Keywords:** configuration, block settings, texture application, model type, ore generation
+**Concepts:** block properties, texture mapping, model definition
 
 ## Summary
-Defines configuration for the smooth Nimbusite block, including texture and model.
+Defines properties for the smooth Nimbusite block, including texture and model.
 
 ## Explanation
-This chunk is a configuration file in JSON-like format (ZON) that specifies properties of the smooth Nimbusite block. It sets the block to allow ores, uses a stairs rotation model, applies a cube model, and assigns a specific texture path. This configuration is used by the Cubyz engine to render and interact with the block in the game world.
+This chunk is a configuration file defining the properties of a specific block in the Cubyz voxel engine. It specifies that the block allows ores to be generated within it, uses a stair-like rotation model, has a cube shape, and applies a smooth Nimbusite texture. The configuration is structured as a JSON object with keys for each property.
 
 ## Related Questions
-- What texture is assigned to the smooth Nimbusite block?
-- Does the smooth Nimbusite block allow ores?
-- Which model type is used for the smooth Nimbusite block?
-- What rotation model is applied to the smooth Nimbusite block?
-- How is the smooth Nimbusite block configured in terms of allowing ores?
-- What is the texture path for the smooth Nimbusite block?
+- What texture is applied to the smooth Nimbusite block?
+- Does the smooth Nimbusite block allow ore generation?
+- Which model is used for the smooth Nimbusite block?
+- How is the rotation property set for the smooth Nimbusite block?
+- What are the keys defined in the configuration for the smooth Nimbusite block?
+- Is there any reference to lighting or shading properties in this chunk?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_nimbusite_smooth.zig.zon_chunk_0*

@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_cave_mushroom_toadstool_bolete.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** minimum height, generation chance, structures, toadstool, bolete
-**Concepts:** world_generation, biome configuration
+**Keywords:** biome configuration, structure generation, cave environment, mushroom distribution, block placement
+**Concepts:** world_generation
 
 ## Summary
 Defines configuration for cave mushroom biomes, including toadstool and bolete structures.
 
 ## Explanation
-This chunk defines a configuration structure for a cave biome in the Cubyz engine, specifically focusing on mushroom generation. It sets parameters such as minimum height, generation chance, and details of different mushroom structures like toadstools and boletes. Each structure has an ID, associated blocks, generation chance, width, variation, density, and priority.
+This chunk defines a configuration structure for a cave biome in the Cubyz engine. It specifies the minimum height at which this biome can generate (-1000), the overall chance of generating (0.3), and details about two types of structures that can appear within this biome: toadstools and boletes. Each structure type is defined with an ID, a list of blocks it contains, generation chance, width, variation, density, and priority.
 
 ## Related Questions
-- What is the minimum height for cave mushroom biomes?
-- What is the generation chance for toadstools in cave mushroom biomes?
-- How many different structures are defined for cave mushroom biomes?
-- What is the width of the flower patch for bolete mushrooms?
-- What is the density of mushroom patches in cave biomes?
-- What is the priority level for generating mushroom structures?
+- What is the minimum height for generating this cave mushroom biome?
+- What is the overall chance of generating this cave mushroom biome?
+- How many types of structures are defined in this cave mushroom biome configuration?
+- What blocks are included in the toadstool structure?
+- What is the generation chance for the bolete structure?
+- What is the width and variation for both the toadstool and bolete structures?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_cave_mushroom_toadstool_bolete.zig.zon_chunk_0*

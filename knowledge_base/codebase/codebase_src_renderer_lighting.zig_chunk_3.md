@@ -1,26 +1,60 @@
 # [hard/codebase_src_renderer_lighting.zig] - Chunk 3
 
 **Type:** implementation
-**Keywords:** propagateDestructive, textureOcclusionData, lightSampleListForAxisAlignedModels, alignedNormalDirection, hasOnlyCornerVertices, circular buffer queue, mutex locking, corner interpolation, packed light values
-**Symbols:** propagateLightsDestructive, LightVector, getValues, getLightAt, getCornerLight, getLightSampleAligned, packLightValues, getLight
-**Concepts:** light propagation, neighbor mesh fetching, texture occlusion data, corner interpolation, quad fast paths, mutex locking, destructive updates, ambient occlusion, packed light values
+**Keywords:** mutex locking, lighting data, neighbor chunks, circular buffer, destructive lighting
+**Symbols:** ChannelChunk, ChannelChunk.propagateDirect, ChannelChunk.propagateUniformSun, ChannelChunk.propagateLightsDestructive
+**Concepts:** lighting propagation, voxel engine, thread safety, circular buffer queue
 
 ## Summary
-Implements lighting propagation and sampling for chunk meshes, including destructive neighbor updates, corner interpolation, texture occlusion handling, and quad-specific fast paths.
+Handles lighting propagation within a chunk, including direct, uniform sun, and destructive light propagation.
 
 ## Explanation
-The chunk defines a public method propagateLightsDestructive that iterates over an input BlockPos slice, pushes entries into a circular buffer queue with sourceDir=6 and activeValue=0b111, then calls self.propagateDestructive to build constructiveEntries. For each entry it resolves the appropriate channelChunk (sun vs ambient), locks its mutex, reads blockLight from mesh.lightingData[0] or extracts color from ch.data if sun, computes value as elementwise max with light, skips all-black entries, writes .fromArray(.{0,0,0}) to channelChunk.data at entry.toIndex(), and pushes the resulting value back into the queue. After releasing the mutex it calls propagateDirect on the queue. The chunk also defines LightVector as @Vector(8, u16). getValues combines blockLight (mesh.lightingData[0]) and sunLight (mesh.lightingData[1]), asserts little-endian CPU, casts their raw() values to a 64-bit integer with sunLight in the high 32 bits, then bit-casts to @Vector(8, u8). getLightAt maps world coordinates into chunk-local BlockPos using chunkMask, checks for exact match and returns getValues(parent,pos), otherwise computes neighbor mesh offsets via parent.pos.wx/wy/wz plus voxelSize scaling, fetches the neighbor mesh from mesh_storage.getMesh with those coords (or returns @splat(0) if missing), and calls getValues on that neighbor. getCornerLight builds a float position by casting pos to Vec3f, adding normal scaled by 0.5, subtracting 0.5, floors to startPos, computes interp as the fractional part, then loops over dx/dy/dz in [0..1] with weights derived from interp (1-interp when dx==0 else interp), truncates weight*256 to u16 integerWeight, calls getLightAt for each corner offset, accumulates into val, and finally divides by @splat(256). getLightSampleAligned first calls getLightAt for the given pos, then if parent.pos.voxelSize==1 it fetches nextVal at pos+%direction.relX/Y/Z, computes diff as elementwise min of @splat(8) with lightVal-|nextVal, and adjusts lightVal by subtracting diff*@splat(5)/@splat(2). packLightValues takes [4]LightVector, initializes result:undefined, loops i over 0..3, shifts each component right by 3 bits and packs into a u32 with bit positions 25/20/15/10/5/0 (skipping index 3), returning the packed array. getLight is a public function that receives parent: *ChunkMesh, blockPos: Vec3i, textureIndex: u16, quadIndex: QuadIndex; it extracts normal from quadInfo and extraQuadInfo, checks if blocks.meshes.textureOcclusionData[textureIndex].load(.monotonic) fails (no ambient occlusion), in which case it calls getLightAt(parent, blockPos components) and packs the splatted result. If extraQuadInfo.alignedNormalDirection is present, it initializes lightValues: [4]LightVector to @splat(@splat(0)), iterates over extraQuadInfo.lightSampleListForAxisAlignedModels, calls getLightSampleAligned for each sample offset with dir, accumulates weighted contributions into lightValues[i], divides all by @splat(256), and packs. If extraQuadInfo.hasOnlyCornerVertices is true, it initializes rawVals: [4]LightVector to undefined, loops i over 0..3, reads quadInfo.corners[i] as Vec3f, computes fullPos = blockPos +%@trunc(vertexPos), calls getCornerLight(parent, fullPos, normal) into rawVals[i], and packs. Finally it initializes rawVals: [4]LightVector to undefined again (for the general case not shown in the snippet).
+This chunk contains methods for managing lighting in a voxel engine. The `propagateDirect` method processes individual light sources by calculating their effects on neighboring voxels and updating the light queue accordingly. The `propagateUniformSun` method fills the chunk with uniform sunlight, adjusting values based on voxel size and neighbor direction. The `propagateLightsDestructive` method handles destructive lighting propagation, where lights are removed from the scene and their effects recalculated. Each method uses mutexes for thread safety, circular buffer queues for managing light entries, and interacts with mesh storage to get neighboring chunks' lighting data.
+
+## Code Example
+```zig
+pub fn propagateLightsDestructive(self: *ChannelChunk, lights: []const BlockPos, lightRefreshList: *main.ListManaged(chunk.ChunkPosition)) void {
+		var lightQueue = main.utils.CircularBufferQueue(Entry).init(main.stackAllocator, 1 << 12);
+		defer lightQueue.deinit();
+		for (lights) |pos| {
+			lightQueue.pushBack(.{.pos = pos, .value = self.data.getValue(pos.toIndex()).toArray(), .sourceDir = 6, .activeValue = 0b111});
+		}
+		var constructiveEntries: main.List(ChunkEntries) = .empty;
+		defer constructiveEntries.deinit(main.stackAllocator);
+		constructiveEntries.append(main.stackAllocator, .{
+			.mesh = null,
+			.entries = self.propagateDestructive(&lightQueue, &constructiveEntries, true, lightRefreshList),
+		});
+		for (constructiveEntries.items) |entries| {
+			const mesh = entries.mesh;
+			var entryList = entries.entries;
+			defer entryList.deinit(main.stackAllocator);
+			const channelChunk = if (mesh) |_mesh| _mesh.lightingData[@intFromBool(self.isSun)] else self;
+			channelChunk.mutex.lock();
+			for (entryList.items) |entry| {
+				var value = channelChunk.data.getValue(entry.toIndex()).toArray();
+				const light = if (self.isSun) .{0, 0, 0} else extractColor(channelChunk.ch.data.getValue(entry.toIndex()).light());
+				value = .{
+					@max(value[0], light[0]),
+					@max(value[1], light[1]),
+					@max(value[2], light[2]),
+				};
+				if (value[0] == 0 and value[1] == 0 and value[2] == 0) continue;
+				channelChunk.data.setValue(entry.toIndex(), .fromArray(.{0, 0, 0}));
+				lightQueue.pushBack(.{.pos = entry, .value = value, .sourceDir = 6, .activeValue = 0b111});
+			}
+			channelChunk.mutex.unlock();
+			channelChunk.propagateDirect(&lightQueue, lightRefreshList);
+		}
+	}
+```
 
 ## Related Questions
-- How does propagateLightsDestructive handle sun versus ambient lighting channels?
-- What is the purpose of sourceDir=6 and activeValue=0b111 in the light queue entries?
-- Under what condition does getLight skip texture occlusion data entirely?
-- How are neighbor meshes fetched when a block lies outside the current chunk bounds?
-- What happens to rawVals when extraQuadInfo.hasOnlyCornerVertices is true?
-- Why is there an assertion on builtin.cpu.arch.endian() in getValues?
-- How does packLightValues arrange the 8 u16 components into four u32 values?
-- What is the effect of dividing lightValues by @splat(256) before packing?
-- Does getCornerLight perform any fallback when a neighbor mesh is missing?
-- How are vertex positions from quadInfo.corners[i] converted to integer block coordinates?
+- How does the `propagateDirect` method calculate light effects on neighboring voxels?
+- What is the purpose of the mutex in the `propagateUniformSun` method?
+- How does the `propagateLightsDestructive` method handle destructive lighting propagation?
+- What data structure is used to manage light entries in these methods?
+- How does the chunk interact with mesh storage for neighboring chunks' lighting data?
+- What conditions determine whether a light value is updated in the `propagateDirect` method?
 
 *Source: unknown | chunk_id: codebase_src_renderer_lighting.zig_chunk_3*

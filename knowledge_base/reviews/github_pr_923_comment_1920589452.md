@@ -1,22 +1,22 @@
 # [src/assets.zig] - PR #923 review diff
 
 **Type:** review
-**Keywords:** use-after-free, realpathAlloc, free, scope, allocation, de-allocation, arena allocator, ZonElement, parseFromString
-**Symbols:** readAllZonFilesInAddons, NeverFailingAllocator, addons, zon, defaults, defaultMap, getOrPut, path
-**Concepts:** use-after-free, memory management, allocator usage
+**Keywords:** use-after-free, realpathAlloc, free, arena allocator, duplication, string handling
+**Symbols:** readAllZonFilesInAddons, NeverFailingAllocator, addons, zon, defaultMap, defaultsArenaAllocator
+**Concepts:** use-after-free, memory management, arena allocator
 
 ## Summary
-The code introduces a potential use-after-free issue by freeing `path` after its last usage.
+The review identifies a potential use-after-free issue in the `readAllZonFilesInAddons` function due to premature deallocation of the `path` variable.
 
 ## Explanation
-The reviewer identified that the variable `path`, which is allocated using `realpathAlloc`, is being freed at the end of its scope. This could lead to a use-after-free error if `path` is accessed again after it has been freed, even though this might not manifest immediately due to reallocation in subsequent loops.
+The reviewer points out that the `path` variable, which is allocated using `realpathAlloc`, is freed at the end of its scope. This could lead to a use-after-free error if the `path` is accessed after it has been deallocated. The reviewer suggests fixing this by duplicating the `path` string into an arena allocator (`defaultsArenaAllocator`) before freeing it, ensuring that the path remains valid for any subsequent operations.
 
 ## Related Questions
-- What is the purpose of `realpathAlloc` in this context?
-- How does the use of `defer main.stackAllocator.free(path);` affect memory management?
-- Why is there a concern about subtle problems with reallocation?
-- What is the recommended fix for preventing the use-after-free issue?
-- How does the `defaultsArenaAllocator.dupe(u8, path)` function contribute to memory safety?
-- Can you explain the role of `NeverFailingAllocator` in this code snippet?
+- What is the purpose of the `defaultsArenaAllocator` in this code?
+- How does duplicating the `path` string into an arena allocator prevent use-after-free errors?
+- Can you explain why premature deallocation of `path` could lead to subtle problems?
+- What are the implications of not fixing this potential use-after-free issue?
+- How can we ensure that all allocated strings are safely managed in this function?
+- What other memory management issues might exist in similar functions?
 
 *Source: unknown | chunk_id: github_pr_923_comment_1920589452*

@@ -1,15 +1,15 @@
 # [easy/codebase_src_server_command_seed.zig] - Chunk 0
 
 **Type:** api
-**Keywords:** server command, argument validation, world settings, user messaging, error handling
+**Keywords:** command handler, argument validation, error handling, world configuration, user communication
 **Symbols:** description, usage, Args, ArgParser, execute
-**Concepts:** command handling, argument parsing, world seed retrieval, user communication
+**Concepts:** server command handling, argument parsing, world seed retrieval
 
 ## Summary
-Handles the '/seed' command to retrieve and display the world seed.
+Handles the '/seed' server command to retrieve and display the world seed.
 
 ## Explanation
-This chunk defines a server command handler for the '/seed' command. It uses an argument parser to validate the command input, retrieves the world seed from the server settings, and sends it back to the user. If there's an error in parsing the arguments, it sends an error message instead.
+This chunk defines a server command handler for the '/seed' command. It uses an argument parser to validate the command input, retrieves the world seed from the server's configuration, and sends it back to the user. If there is an error in parsing the arguments, it sends an error message to the user.
 
 ## Code Example
 ```zig
@@ -29,9 +29,9 @@ pub fn execute(args: []const u8, source: *User) void {
 ## Related Questions
 - What is the description of the '/seed' command?
 - How does the chunk handle argument parsing for the '/seed' command?
-- What happens if there's an error in parsing the arguments?
+- What happens if there is an error in parsing the arguments?
 - Where does the chunk retrieve the world seed from?
-- How does the chunk communicate the world seed back to the user?
-- What is the purpose of the 'errorMessage' variable in the execute function?
+- How does the chunk send a message to the user?
+- What is the purpose of the 'errorMessage' variable?
 
 *Source: unknown | chunk_id: codebase_src_server_command_seed.zig_chunk_0*

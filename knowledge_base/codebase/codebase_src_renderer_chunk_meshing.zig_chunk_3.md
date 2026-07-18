@@ -1,21 +1,15 @@
 # [hard/codebase_src_renderer_chunk_meshing.zig] - Chunk 3
 
 **Type:** implementation
-**Keywords:** primitive mesh, opaque transparent rendering, neighbor LOD state, sorting data, circular buffer queue, mutex protection, backface culling, light map insertion, quad corners, vertex count calculation
-**Symbols:** PrimitiveMesh, SortingData, ChunkMesh
-**Concepts:** chunk meshing, backface culling, LOD neighbor tracking, lighting data aggregation, GPU upload sorting
+**Keywords:** mesh rendering, face sorting, buffer allocation, lighting processing, culling optimization
+**Symbols:** PrimitiveMesh, PrimitiveMesh.completeList, PrimitiveMesh.bufferAllocation, PrimitiveMesh.vertexCount, PrimitiveMesh.byNormalCount, PrimitiveMesh.wasChanged, PrimitiveMesh.min, PrimitiveMesh.max, PrimitiveMesh.lod, PrimitiveMesh.deinit, PrimitiveMesh.replaceRange, PrimitiveMesh.finish, PrimitiveMesh.uploadData, SortingData, SortingData.face, SortingData.distance, SortingData.isBackFace, SortingData.shouldBeCulled, SortingData.update
+**Concepts:** chunk meshing, face data management, GPU buffer upload, lighting calculation, backface culling
 
 ## Summary
-ChunkMesh defines the meshing pipeline for a voxel chunk, managing opaque and transparent PrimitiveMesh instances, lighting data, neighbor LOD state, sorting/culling buffers, and provides methods to deinit, replace ranges, finish lighting, upload sorted face data, and update sorting metadata.
+Handles the creation and management of chunk meshes for rendering.
 
 ## Explanation
-The ChunkMesh struct holds two PrimitiveMesh pointers (opaqueMesh, transparentMesh) for rendering faces at different transparency levels. It contains lightingData: [2]*lighting.ChannelChunk for per-channel light information, a meshUploadMutex to protect concurrent uploads, blockUpdateQueue (CircularBufferQueue<Vec3i>) for deferred block updates, and neighbor LOD state arrays (lastNeighborsSameLod, lastNeighborsHigherLod, isNeighborLod) that track which neighboring chunks are at the same or higher level of detail. The struct also includes currentSorting: []SortingData and sortingOutputBuffer: []FaceData used to collect faces for backface culling, culledSortingCount tracks how many were culled, and lastTransparentUpdatePos remembers where transparent updates occurred.
-
-The deinit method frees faceBuffers[self.lod] via its free function and calls self.completeList.deinit(main.globalAllocator) to release the internal list of FaceData. replaceRange delegates to self.completeList.replaceRange with main.globalAllocator for a given FaceGroups, inserting new items into the complete list. finish initializes min/max bounds by splatting float extremes, then iterates over all faces in self.completeList.getEverything(). For each face it queries lighting via lighting.getLight(parent, position, texture, quadIndex) and inserts or retrieves the light index from lightMap; if a new light is found it appends to lightList. It also computes basePos by converting integer face coordinates to floats, then walks the four corners of the quad (via quadInfo().corners) updating min/max with @min/@max.
-
-uploadData prepares GPU data sorted by normal direction for backface culling. It first counts core and optional faces via getRange, then builds a list array where each entry is either self.completeList.getRange(.neighbor(...)) or .neighborLod(...) depending on the isNeighborLod flags. It allocates a fullBuffer from faceBuffers[self.lod] with allocateAndMapRange, deferring unmapping. The core and optional faces are placed into fullBuffer sequentially. Then for normals 0..6 it iterates coreList: if the quad's extraQuadInfo().alignedNormalDirection matches the current normal (or is null/edge case at normal==6) it copies the face; otherwise when normal<6 it uses @memcpy to copy neighbor faces from list[normalDir.reverse()].toInt() into fullBuffer, advancing i. After coreList it records self.byNormalCount[normal] = count and resets iStart. The same pattern repeats for optionalList but writes to indices offset by +7 in byNormalCount. Finally std.debug.assert ensures all allocated space is filled, sets vertexCount = 6*fullBuffer.len (each face contributes six vertices), and marks wasChanged.
-
-SortingData is a small struct holding a FaceData pointer, distance (u32), isBackFace bool, and shouldBeCulled bool. Its update method receives chunkDx/Dy/Dz offsets from the parent chunk. It extracts x/y/z from self.face.position, adds the offsets to get dx/dy/dz, copies isBackFace, reads quadIndex.quadInfo().normal as Vec3f, then computes dot(normalVector, Vec3i{dx,dy,dz}) and sets shouldBeCulled true if >0 (backface relative to view direction). It also computes fullDx/Dy/Dz by subtracting the integer component of the normal vector from the offset coordinates; these are used for distance calculation via @abs sum. The TODO comments indicate this logic is not yet adjusted for arbitrary voxel models, implying it currently assumes axis-aligned normals or a specific model class.
+The `PrimitiveMesh` struct manages the mesh data for a single LOD level, including face data storage, buffer allocation, and vertex count. It provides methods to deinitialize resources (`deinit`), replace face ranges (`replaceRange`), finalize mesh data by calculating lighting and bounding boxes (`finish`), and upload mesh data to GPU buffers (`uploadData`). The `SortingData` struct is used for sorting faces based on distance and culling criteria, with an `update` method that recalculates these properties.
 
 ## Code Example
 ```zig
@@ -26,17 +20,11 @@ fn deinit(self: *PrimitiveMesh) void {
 ```
 
 ## Related Questions
-- What happens to the face buffers when a ChunkMesh is deallocated?
-- How does finish populate lightList and compute min/max bounds for a PrimitiveMesh?
-- In uploadData, how are neighbor LOD faces selected versus same-LOD neighbors?
-- Why is there an assert after filling fullBuffer in uploadData?
-- What role does meshUploadMutex play in ChunkMesh operations?
-- How does SortingData.update determine whether a face should be culled?
-- Where are core and optional faces stored before being uploaded to the GPU?
-- What is the purpose of byNormalCount array entries at indices 0..6 versus 7..13?
-- Does finish iterate over all faces or only a subset, and how does it access them?
-- How does replaceRange insert new FaceData into the complete list without reallocating?
-- What information is required by lighting.getLight to resolve a face's light index?
-- Are there any public methods on ChunkMesh that expose its internal sorting buffers?
+- What is the purpose of the `deinit` method in the `PrimitiveMesh` struct?
+- How does the `replaceRange` method update the mesh data?
+- What steps are involved in finalizing a mesh with the `finish` method?
+- How is data uploaded to GPU buffers in the `uploadData` method?
+- What criteria are used for sorting faces in the `SortingData` struct?
+- How does the `update` method in `SortingData` calculate culling properties?
 
 *Source: unknown | chunk_id: codebase_src_renderer_chunk_meshing.zig_chunk_3*

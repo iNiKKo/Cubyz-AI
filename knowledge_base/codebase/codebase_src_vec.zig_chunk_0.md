@@ -1,15 +1,15 @@
 # [medium/codebase_src_vec.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** vector types, swizzling, normalization, rotation, coordinate systems
+**Keywords:** vector types, swizzling, dot product, normalization, rotation, coordinate systems
 **Symbols:** Vec2i, Vec2f, Vec2d, Vec3i, Vec3f, Vec3d, Vec4i, Vec4f, Vec4d, Vec4fComponent, swizzle, combine, xyz, xy, dot, lengthSquare, length, normalize, clampMag, cross, rotateX, rotateY, rotateZ, rotate2d, CoordinateSystem, CoordinateSystem.right_handed_z_up, CoordinateSystem.right_handed_y_up, CoordinateSystem.left_handed_z_up, CoordinateSystem.left_handed_y_up, CoordinateSystem.convertVec, CoordinateSystem.convertQuat, CoordinateSystem.convertScale
-**Concepts:** vector operations, coordinate system conversion, quaternion handling
+**Concepts:** vector operations, coordinate system conversion
 
 ## Summary
-Defines various vector types and operations for 2D and 3D vectors, including swizzling, normalization, rotation, and coordinate system conversion.
+This chunk defines various vector types and operations for 2D and 3D vectors, including swizzling, normalization, rotation, and coordinate system conversion.
 
 ## Explanation
-This chunk defines several vector types (`Vec2i`, `Vec2f`, `Vec2d`, `Vec3i`, `Vec3f`, `Vec3d`, `Vec4i`, `Vec4f`, `Vec4d`) using Zig's `@Vector` type. It also provides a set of functions for vector operations such as swizzling, combining, dot product, length calculation, normalization, clamping magnitude, cross product, and 2D/3D rotation. Additionally, it includes an enumeration `CoordinateSystem` with methods to convert vectors, quaternions, and scales between different coordinate systems.
+The code defines several vector types using Zig's `@Vector` type, supporting integer (`i32`) and floating-point (`f32`, `f64`) components in dimensions 2 through 4. It includes functions for common vector operations such as swizzling, dot product, length calculation, normalization, clamping magnitude, cross product, and rotation around axes. Additionally, it provides a coordinate system enum with methods to convert vectors, quaternions, and scales between different handedness and axis conventions.
 
 ## Code Example
 ```zig
@@ -27,9 +27,9 @@ pub inline fn swizzle(
 ## Related Questions
 - What are the different vector types defined in this chunk?
 - How does the `swizzle` function work?
-- What is the purpose of the `normalize` function?
-- How do you calculate the cross product of two vectors?
-- What coordinate systems are supported by the `CoordinateSystem` enum?
-- How can you convert a vector between different coordinate systems?
+- What operations are available for 3D vectors?
+- How is a vector normalized?
+- What is the purpose of the `CoordinateSystem` enum?
+- How do you rotate a 2D vector around a center point?
 
 *Source: unknown | chunk_id: codebase_src_vec.zig_chunk_0*

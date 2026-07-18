@@ -1,15 +1,15 @@
 # [easy/codebase_src_proceduralItem_modifiers_restrictions_and.zig] - Chunk 0
 
-**Type:** api
-**Keywords:** children array, satisfied check, recursive tooltip, zon child lookup, allocator create, toSlice conversion, public API surface, data structure definition, boolean short-circuiting, string concatenation
+**Type:** implementation
+**Keywords:** modifier restrictions, satisfaction check, zon configuration, tooltip printing, allocator usage
 **Symbols:** And, And.children, And.satisfied, And.loadFromZon, And.printTooltip
-**Concepts:** modifier restriction composition, AND logic gate, tooltip rendering, zon deserialization
+**Concepts:** item modifiers, logical AND operation, configuration loading, tooltip generation
 
 ## Summary
-Chunk defines the And struct for combining multiple modifier restrictions with a satisfied check, Zon loading, and tooltip printing.
+The chunk defines a logical AND operation for item modifiers, checking if all child restrictions are satisfied.
 
 ## Explanation
-The chunk declares an internal struct named And containing a children field of type []ModifierRestriction. It provides a public method satisfied that iterates over self.children and returns false if any child is not satisfied; otherwise it returns true. The loadFromZon function allocates an And instance, reads the 'children' child from the provided ZonElement via toSlice(), allocates an array of ModifierRestriction sized to the slice length, and populates each element by calling ModifierRestriction.loadFromZon on the corresponding child node. The printTooltip method appends '(' then iterates over children with index; for indices other than zero it appends ' and ', calls child.printTooltip recursively, and finally appends ')'. All functions are marked pub so they form part of the public API surface.
+This chunk implements the logic for combining multiple modifier restrictions using a logical AND. It includes methods to check satisfaction of the combined restriction, load from ZonElement configuration, and print a tooltip representation. The `And` struct holds an array of child `ModifierRestriction` instances. The `satisfied` method iterates over these children, returning false if any single child is not satisfied. The `loadFromZon` method creates an instance of `And`, allocates memory for its children, and loads each child from the provided ZonElement configuration. The `printTooltip` method constructs a string representation of the combined restrictions in tooltip format.
 
 ## Code Example
 ```zig
@@ -22,17 +22,11 @@ pub fn satisfied(self: *const And, proceduralItem: *const ProceduralItem, x: i32
 ```
 
 ## Related Questions
-- How does And.satisfied short-circuit when a child restriction fails?
-- What is the exact ZonElement path used to load children into an And instance?
-- Does And.printTooltip handle empty children arrays gracefully without crashing?
-- Is And.children allocated with the same capacity as the parsed Zon slice or exactly its length?
-- How does And.satisfied treat a proceduralItem that has no modifiers set at all?
-- What happens if a child restriction throws an error during loadFromZon inside And.loadFromZon?
-- Can And be used in a pub const declaration alongside other top-level types?
-- Does And.printTooltip assume the caller provides a ListManaged(u8) with sufficient capacity?
-- How does And.satisfied interact with the x and y coordinates passed to it?
-- What is the memory ownership contract for the result pointer returned by And.loadFromZon?
-- Is there any special handling required when children contains only one ModifierRestriction?
-- Does And.satisfied require proceduralItem to be non-null or does it handle null gracefully?
+- What is the purpose of the `And` struct?
+- How does the `satisfied` method work in the `And` struct?
+- What does the `loadFromZon` method do?
+- How is the tooltip printed for an `And` instance?
+- What type of allocator is used in this chunk?
+- Where are the child restrictions stored in the `And` struct?
 
 *Source: unknown | chunk_id: codebase_src_proceduralItem_modifiers_restrictions_and.zig_chunk_0*

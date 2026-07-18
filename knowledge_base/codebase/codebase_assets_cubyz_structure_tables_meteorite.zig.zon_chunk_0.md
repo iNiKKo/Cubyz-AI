@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_structure_tables_meteorite.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, structure generation, meteorites, chance, placement
-**Concepts:** world_generation
+**Keywords:** configuration, JSON-like structure, spawn chance, placement mode, asset paths
+**Concepts:** world generation, structure configuration
 
 ## Summary
 Defines configuration for meteorite structures in the Cubyz game.
 
 ## Explanation
-This chunk is a configuration file defining properties of meteorite structures. It specifies an ID, tags, generation chance, and details about the structure itself, including its placement mode and associated model path.
+This chunk contains a JSON-like structure defining metadata and properties for meteorite structures within the Cubyz game. It specifies an ID, tags, spawn chance, and details about the structures themselves, including their placement mode and associated asset paths.
 
 ## Related Questions
-- What is the ID of the meteorite structure?
-- What is the chance of generating a meteorite structure?
-- How many structures are defined in this configuration?
-- What is the placement mode for the meteorite structure?
-- Which model is associated with the meteorite structure?
-- Are there any tags defined for the meteorite structure?
+- What is the ID of the meteorite structure defined in this chunk?
+- What is the spawn chance for meteorite structures as specified in this configuration?
+- How many different structures are associated with the meteorite type in this configuration?
+- What is the placement mode for the structures listed in this configuration?
+- Which asset path is linked to the meteorite structure in this configuration?
+- Are there any tags defined for the meteorite structure in this chunk?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_structure_tables_meteorite.zig.zon_chunk_0*

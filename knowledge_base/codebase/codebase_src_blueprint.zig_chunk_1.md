@@ -1,27 +1,29 @@
 # [hard/codebase_src_blueprint.zig] - Chunk 1
 
-**Type:** serialization
-**Keywords:** binary serialization, paste mode, block updating, palette handling, version checking
-**Symbols:** Blueprint, Blueprint.PasteMode, Blueprint.pasteInGeneration, _pasteInGeneration, Blueprint.PasteFlags, Blueprint.paste, load, store, makeBlueprintIdToGameIdMap
-**Concepts:** blueprint loading, blueprint storing, block pasting
+**Type:** implementation
+**Keywords:** Array3D, NeverFailingAllocator, Vec3i, rotation, capture, paste, ServerChunk
+**Symbols:** Blueprint, Blueprint.blocks, Blueprint.init, Blueprint.deinit, Blueprint.extent, Blueprint.clone, Blueprint.rotateZ, Blueprint.CaptureResult, Blueprint.Selection, Blueprint.Selection.minPos, Blueprint.Selection.maxPos, Blueprint.Selection.initFromInclusive, Blueprint.Selection.initFromExtent, Blueprint.Selection.size, Blueprint.Selection.format, Blueprint.capture, Blueprint.PasteMode, Blueprint.pasteInGeneration, _pasteInGeneration, Blueprint.PasteFlags, Blueprint.paste
+**Concepts:** blueprint management, block manipulation, world interaction, 3D array operations
 
 ## Summary
-The chunk implements Blueprint loading, storing, and pasting functionality.
+The Blueprint struct manages a 3D array of blocks and provides methods for initialization, deinitialization, cloning, rotation, capturing from the world, and pasting into the world.
 
 ## Explanation
-This chunk defines the Blueprint struct with methods for loading from a buffer, storing to a buffer, and pasting into the world. It includes handling for different paste modes and flags. The load method deserializes blueprint data, while the store method serializes it. The pasteInGeneration method updates blocks in a ServerChunk based on the blueprint's content.
+The Blueprint struct encapsulates a 3D array of blocks using an Array3D type. It includes methods for initializing and deinitializing the blueprint, getting its extent, cloning itself, rotating around the Z-axis, and capturing a selection from the world. The capture method attempts to copy blocks from the main server's world into a new Blueprint instance, handling cases where chunks are not loaded. The paste method allows pasting the blueprint's blocks into the world at a specified position with optional flags for preserving void blocks. The pasteInGeneration method is used internally to handle different modes of pasting (all or degradable) and interacts with ServerChunk instances.
 
 ## Code Example
 ```zig
-pub const PasteMode = enum { all, degradable };
+pub fn init(allocator: NeverFailingAllocator) Blueprint {
+	return .{.blocks = .init(allocator, 0, 0, 0)};
+}
 ```
 
 ## Related Questions
-- What are the different paste modes available in Blueprint?
-- How does the Blueprint struct handle block pasting into the world?
-- What is the process for loading a blueprint from a buffer?
-- How does the Blueprint store its data to a buffer?
-- What version checking is performed during blueprint loading?
-- What methods are used to update blocks in a ServerChunk?
+- How does the Blueprint struct initialize its blocks?
+- What is the purpose of the rotateZ method in the Blueprint struct?
+- How does the capture method handle cases where chunks are not loaded?
+- What are the different modes available for pasting a blueprint into the world?
+- How does the pasteInGeneration method interact with ServerChunk instances?
+- What is the role of the PasteFlags struct in the paste method?
 
 *Source: unknown | chunk_id: codebase_src_blueprint.zig_chunk_1*

@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_mud.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, block definition, properties, attributes, JSON-like format
-**Concepts:** world generation, block properties
+**Keywords:** diggable, block health, drops, model, rotation, texture
+**Concepts:** block properties, asset configuration
 
 ## Summary
 Defines properties for the Mud block in Cubyz, including tags, health, drops, model, rotation, and texture.
 
 ## Explanation
-This chunk defines the configuration for a specific block type called 'Mud' within the Cubyz game engine. It specifies various attributes such as whether the block is diggable, its health points, what items it drops when broken, which model to use for rendering, how it should be rotated, and which texture to apply. The configuration uses a structured format typical of JSON-like configurations in Zig, with keys like '.tags', '.blockHealth', '.drops', '.model', '.rotation', and '.texture' each assigned specific values.
+This chunk defines a configuration for the Mud block within the Cubyz voxel engine. It specifies that the block is diggable, has a health value of 6.5, and drops items automatically when broken. The block uses a cube model and stairs rotation, with its texture set to 'cubyz:mud'. This configuration is part of the asset data for blocks in the game.
 
 ## Related Questions
-- What are the tags associated with the Mud block?
-- How much health does the Mud block have?
-- What items does the Mud block drop when broken?
-- Which model is used to render the Mud block?
-- How should the Mud block be rotated?
+- What tags are associated with the Mud block?
+- What is the health value of the Mud block?
+- Does the Mud block drop items when broken?
+- Which model is used for the Mud block?
+- How is the Mud block rotated?
 - What texture is applied to the Mud block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_mud.zig.zon_chunk_0*

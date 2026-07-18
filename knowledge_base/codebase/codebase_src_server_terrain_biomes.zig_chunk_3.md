@@ -1,29 +1,49 @@
 # [hard/codebase_src_server_terrain_biomes.zig] - Chunk 3
 
 **Type:** world_generation
-**Keywords:** Zon data processing, alias table, block stack initialization, subterranean block addition, tree node creation
-**Symbols:** Biome, Biome.getCheckSum, Biome.hasTag, BlockStructure, BlockStructure.BlockStack, BlockStructure.BlockStack.init, BlockStructure.init, BlockStructure.deinit, BlockStructure.addSubTerranian, TreeNode, TreeNode.leaf, TreeNode.branch, TreeNode.init
-**Concepts:** biome generation, vegetation handling, cave modeling, block structure management
+**Keywords:** block parsing, memory allocation, terrain addition, depth calculation, random number generation
+**Symbols:** BlockStructure, BlockStructure.BlockStack, BlockStructure.BlockStack.block, BlockStructure.BlockStack.min, BlockStructure.BlockStack.max, BlockStructure.BlockStack.init, BlockStructure.structure, BlockStructure.init, BlockStructure.deinit, BlockStructure.addSubTerranian
+**Concepts:** terrain generation, biome structure
 
 ## Summary
-This chunk defines the Biome struct and its associated methods for handling vegetation, caves, stripes, and block structures. It also includes a TreeNode union for managing biome generation.
+Defines the structure of a biome's vertical ground, including parsing from configuration and adding terrain to chunks.
 
 ## Explanation
-The Biome struct contains methods for processing vegetation models, cave SDFs, and stripes from Zon data. It normalizes the chances of vegetation models and duplicates them into the world arena. The hasTag method checks if a biome has a specific tag. The BlockStructure struct manages vertical ground structures with block stacks, initializing and deinitializing them, and adding subterranean blocks to chunks. The TreeNode union is used for creating a tree structure for biome generation, handling both leaf nodes (with alias tables) and branch nodes (with child nodes).
+The `BlockStructure` struct represents the vertical layers of blocks in a biome. It contains an array of `BlockStack`, each specifying a block type and its depth range. The `init` function parses a ZonElement into a BlockStructure, allocating memory for the structure array and initializing each BlockStack from string descriptions. The `deinit` function frees the allocated memory. The `addSubTerranian` method adds terrain to a chunk based on the biome's block structure, considering depth, slope, and soil creep.
 
 ## Code Example
 ```zig
-pub fn hasTag(self: Biome, tag: Tag) bool {
-	return std.mem.containsAtLeastScalar(Tag, self.tags, 1, tag);
-}
+fn init(self: *BlockStack, string: []const u8) !void {
+			var tokenIt = std.mem.tokenizeAny(u8, string, &std.ascii.whitespace);
+			const first = tokenIt.next() orelse return error.@"String is empty.";
+			var blockId: []const u8 = first;
+			if (tokenIt.next()) |second| {
+				self.min = try std.fmt.parseInt(u31, first, 0);
+				if (tokenIt.next()) |third| {
+					const fourth = tokenIt.next() orelse return error.@"Expected 1, 2 or 4 parameters, found 3.";
+					if (!std.mem.eql(u8, second, "to")) return error.@"Expected layout '<min> to <max> <block>'. Missing 'to'.";
+					self.max = try std.fmt.parseInt(u31, third, 0);
+					blockId = fourth;
+					if (tokenIt.next() != null) return error.@"Found too many parameters. Expected 1, 2 or 4.";
+					if (self.max < self.min) return error.@"The max value must be bigger than the min value.";
+				} else {
+					self.max = self.min;
+					blockId = second;
+				}
+			} else {
+				self.min = 1;
+				self.max = 1;
+			}
+			self.block = blocks.parseBlock(blockId);
+		}
 ```
 
 ## Related Questions
-- How does the Biome struct handle vegetation models?
-- What is the purpose of the TreeNode union in biome generation?
-- How are block stacks initialized and managed in BlockStructure?
-- What error handling is implemented for parsing blockStack descriptions?
-- How does the addSubTerranian method work in BlockStructure?
-- What is the role of alias tables in the Biome struct?
+- How is a BlockStructure initialized from a ZonElement?
+- What does the `addSubTerranian` method do in detail?
+- How are errors handled during the initialization of a BlockStack?
+- What is the purpose of the `remainingSkippedBlocks` variable in `addSubTerranian`?
+- How does the `BlockStructure` handle memory allocation and deallocation?
+- What types of parameters does the `init` method for BlockStack expect?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_biomes.zig_chunk_3*

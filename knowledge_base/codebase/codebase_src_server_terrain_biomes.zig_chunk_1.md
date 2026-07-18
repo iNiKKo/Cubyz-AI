@@ -1,29 +1,33 @@
 # [hard/codebase_src_server_terrain_biomes.zig] - Chunk 1
 
 **Type:** implementation
-**Keywords:** struct initialization, bit manipulation, color conversion, hashing algorithm, configuration data
-**Symbols:** Interpolation, u32ToVec3, Biome, Biome.GenerationProperties, Biome.fromZon, hashCombine, hashInt
-**Concepts:** terrain generation, biome properties, configuration parsing
+**Keywords:** bitwise operations, hash function, RGB conversion, enum, interpolation
+**Symbols:** hashInt, Interpolation, Interpolation.none, Interpolation.linear, Interpolation.square, u32ToVec3
+**Concepts:** integer hashing, color conversion
 
 ## Summary
-Defines biome properties and initialization logic for terrain generation.
+This chunk defines a hash function for integers and utility functions for color conversion.
 
 ## Explanation
-This chunk defines the `Biome` struct, which encapsulates various properties of a climate region in the game world. It includes nested structures like `GenerationProperties` for specific attributes such as temperature, humidity, and terrain type. The code also provides functions for hash combination (`hashCombine`) and integer hashing (`hashInt`). Additionally, there is a method to convert a 32-bit color value into a vector of three floating-point numbers (`u32ToVec3`). The `Biome` struct has numerous fields that describe the biome's characteristics, such as radius, height limits, interpolation methods, and visual properties like fog and sky colors. The `init` method initializes a `Biome` instance from configuration data provided in a `ZonElement`.
+The chunk contains a function `hashInt` which performs integer hashing using bitwise operations. It also includes an enum `Interpolation` with three variants: none, linear, and square. Additionally, there is a function `u32ToVec3` that converts a u32 color value into a Vec3f representing RGB values normalized between 0 and 1.
 
 ## Code Example
 ```zig
-fn hashCombine(left: u64, right: u64) u64 {
-	return left ^ (right +% 0x517cc1b727220a95 +% (left << 6) +% (left >> 2));
+fn hashInt(input: u64) u64 {
+	var x = input;
+	x = (x ^ (x >> 30))*%0xbf58476d1ce4e5b9;
+	x = (x ^ (x >> 27))*%0x94d049bb133111eb;
+	x = x ^ (x >> 31);
+	return x;
 }
 ```
 
 ## Related Questions
-- What is the purpose of the `hashCombine` function?
-- How does the `Biome` struct initialize its properties from a `ZonElement`?
-- What are the fields in the `GenerationProperties` nested struct?
-- How is a 32-bit color value converted to a vector of floating-point numbers?
-- What is the role of the `Interpolation` enum in the biome definition?
-- How does the code handle unsupported types during hash computation?
+- How does the hashInt function work?
+- What are the variants of the Interpolation enum?
+- How is a u32 color converted to Vec3f in this code?
+- Can you explain the bitwise operations used in hashInt?
+- What is the purpose of the Interpolation enum in this context?
+- How does the RGB conversion work in u32ToVec3?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_biomes.zig_chunk_1*

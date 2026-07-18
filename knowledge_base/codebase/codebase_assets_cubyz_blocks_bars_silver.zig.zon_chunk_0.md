@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_blocks_bars_silver.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** block resistance, block health, texture mapping, item texture, configuration data
-**Concepts:** block properties, item configuration
+**Keywords:** blockResistance, blockHealth, texture, item, configuration
+**Concepts:** block properties, item representation
 
 ## Summary
-Defines properties for a silver bar block, including resistance, health, texture, and item details.
+Defines properties for a silver bar block in Cubyz.
 
 ## Explanation
-This chunk defines the configuration for a specific type of block in the Cubyz voxel engine. It sets the block's resistance to damage (5), its health points (15), and specifies the texture file used for rendering ('cubyz:bars/silver'). Additionally, it includes details for the item representation of this block, such as the texture file for the item icon ('bars/silver.png'). This configuration is part of the assets system that defines how blocks behave and appear in the game.
+This chunk defines the configuration for a specific type of block in the Cubyz game engine, specifically a silver bar. It sets attributes such as resistance to damage, health points, texture paths for both the block and its corresponding item representation. The configuration is structured using Zig's comptime map syntax.
 
 ## Related Questions
 - What is the block resistance of the silver bar?
 - How much health does the silver bar have?
-- Which texture file is used for rendering the silver bar block?
-- What is the item texture for the silver bar?
-- Where is the configuration data for the silver bar stored?
-- How does this chunk contribute to the overall asset system?
+- What texture is used for the silver bar block?
+- Which texture file is associated with the silver bar item?
+- Where is the configuration for the silver bar defined in the codebase?
+- How are block properties and item representations linked in this configuration?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_bars_silver.zig.zon_chunk_0*

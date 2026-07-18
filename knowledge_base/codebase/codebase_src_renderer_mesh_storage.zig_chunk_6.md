@@ -1,35 +1,38 @@
 # [hard/codebase_src_renderer_mesh_storage.zig] - Chunk 6
 
 **Type:** implementation
-**Keywords:** mesh storage, thread synchronization, priority queue, block updates, animation frames
-**Symbols:** addToUpdateList, addMeshToStorage, finishMesh, updateBlock, updateLightMap, addBreakingAnimation, addBreakingAnimationFace
-**Concepts:** chunk meshing, block breaking animation, light map updates
+**Keywords:** mutex locking, face data, light index, quad iteration, block removal
+**Symbols:** addBreakingAnimationFace, removeBreakingAnimationFace, removeBreakingAnimation
+**Concepts:** breaking animation, block rendering, mesh management
 
 ## Summary
-Handles mesh storage, updates, and block breaking animations.
+Handles adding and removing breaking animation faces for blocks in the renderer.
 
 ## Explanation
-This chunk manages the lifecycle of meshes within the renderer. It includes functions to upload mesh data, add meshes to update lists, finish mesh processing, update blocks, and handle light maps. The code also handles block breaking animations by updating specific faces of blocks with animated textures based on the breaking progress.
+This chunk contains functions to manage breaking animations of block faces. `addBreakingAnimationFace` adds a breaking face by locking the mesh mutex, finding the light index, and appending the face data. `removeBreakingAnimationFace` removes a breaking face by iterating through the list and swapping removing the matching face. `removeBreakingAnimation` iterates over all quads of a block and its neighbors to remove their breaking faces.
 
 ## Code Example
 ```zig
-pub fn addToUpdateList(mesh: *chunk_meshing.ChunkMesh) void {
-	mutex.lock();
-	defer mutex.unlock();
-	if (mesh.finishedMeshing) {
-		priorityMeshUpdateList.pushBack(mesh.pos);
-		mesh.needsMeshUpdate = true;
+fn removeBreakingAnimationFace(pos: Vec3i, quadIndex: main.models.QuadIndex, neighbor: ?chunk.Neighbor) void {
+	const worldPos = pos +% if (neighbor) |n| n.relPos() else Vec3i{0, 0, 0};
+	const relPos = worldPos & @as(Vec3i, @splat(main.chunk.chunkMask));
+	const mesh = getMesh(.{.wx = worldPos[0], .wy = worldPos[1], .wz = worldPos[2], .voxelSize = 1}) orelse return;
+	for (mesh.blockBreakingFaces.items, 0..) |face, i| {
+		if (face.position.x == relPos[0] and face.position.y == relPos[1] and face.position.z == relPos[2] and face.blockAndQuad.quadIndex == quadIndex) {
+			_ = mesh.blockBreakingFaces.swapRemove(i);
+			mesh.blockBreakingFacesChanged = true;
+			break;
+		}
 	}
 }
 ```
 
 ## Related Questions
-- How does the mesh storage handle adding a mesh to the update list?
-- What error conditions can occur when adding a mesh to storage?
-- How is block breaking animation data structured and updated?
-- What synchronization mechanisms are used in this chunk?
-- How does the code determine which mesh to update next based on priority?
-- What happens if a block update occurs for a position without an existing mesh?
-- How are light map updates managed in this chunk?
+- How does the function `addBreakingAnimationFace` determine the world position of a block?
+- What is the purpose of locking and unlocking the mesh mutex in `addBreakingAnimationFace`?
+- How does `removeBreakingAnimationFace` handle removing a breaking face from the mesh?
+- What steps are involved in the `removeBreakingAnimation` function to remove all breaking animations for a block?
+- How does the code ensure that only the correct face is removed in `removeBreakingAnimationFace`?
+- What is the role of the `blockBreakingFacesChanged` flag in managing breaking animations?
 
 *Source: unknown | chunk_id: codebase_src_renderer_mesh_storage.zig_chunk_6*

@@ -1,26 +1,22 @@
-# [src/server/command/kill.zig] - Chunk 3288524109
+# [src/server/command/kill.zig] - PR #3107 review diff
 
 **Type:** review
-**Keywords:** kill.zig, usage, description, main.server.command, User, redundant information, architectural review, metadata, refactor, consistency
+**Keywords:** discrepancy, documentation, redundant information, user confusion, command usage
 **Symbols:** command, User, description, usage
-**Concepts:** redundant information, architectural consistency, metadata synchronization, regression prevention, code refactoring
+**Concepts:** documentation accuracy, user experience
 
 ## Summary
-The reviewer pointed out a missing update to the command description, noting that the `usage` field still contains stale or redundant information.
+The review points out a discrepancy between the command description and its usage, highlighting the issue of redundant or outdated documentation.
 
 ## Explanation
-In the Zig codebase for Cubyz, commands are defined with metadata including a `description` and a `usage` string. The diff shows that the file was modified to import the shared `command` module from `main.server.command`. However, the reviewer observed that the `usage` field was not updated accordingly, leading to redundant or outdated information being presented to users. This highlights an architectural concern: when refactoring command definitions to use a centralized module, all dependent metadata must be synchronized to avoid inconsistencies. The fix involves ensuring that any changes in the central command registry are reflected in individual command files like `kill.zig`, preventing regression where old usage strings persist after structural updates.
+The reviewer noticed that the `usage` string for the `/kill` command does not match the actual command syntax described in the `description`. This mismatch indicates potential confusion for users and suggests that the documentation should be updated to reflect the correct usage. The review emphasizes the importance of maintaining accurate and up-to-date documentation to prevent user misunderstandings.
 
 ## Related Questions
-- What is the current value of the `usage` field in `kill.zig` before the fix?
-- How does importing `command = main.server.command` affect command metadata handling?
-- Are there other commands that might have stale usage strings after this refactor?
-- What steps were taken to ensure no regression in command descriptions across the codebase?
-- Does the centralized `command` module enforce any schema for `usage` fields?
-- How is redundancy detected automatically in the review process?
-- What testing coverage exists for metadata updates after refactoring commands?
-- Is there a linting rule that flags mismatched usage/description pairs?
-- Could this change impact CLI help generation or documentation tools?
-- What version of Zig is required to support the new `command` import syntax used here?
+- What is the current implementation of the `/kill` command?
+- How does the `description` field for the `/kill` command differ from its actual usage?
+- Are there any other commands in the server that have similar documentation issues?
+- What steps should be taken to ensure all command descriptions and usages are consistent?
+- Is there a process in place to review and update command documentation regularly?
+- How can we prevent future discrepancies between command descriptions and their actual usage?
 
 *Source: unknown | chunk_id: github_pr_3107_comment_3288524109*

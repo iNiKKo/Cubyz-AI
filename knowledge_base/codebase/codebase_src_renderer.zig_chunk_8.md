@@ -1,28 +1,108 @@
 # [hard/codebase_src_renderer.zig] - Chunk 8
 
-**Type:** gameplay
-**Keywords:** collision detection, bounding box, inventory slot, neighbor block, replaceability, selection wand, swing animation, damage accumulation, mesh storage, network update, mutex locking, thread safety, block placement, world edit protocol, procedural item
-**Symbols:** canPlaceBlock, placeBlock, breakBlock, updateBlockAndSendUpdate, mesh_storage.getBlockFromRenderThread, blocks.Block.mode, rotationMode.generateData, rotationMode.modifyBlock, main.physics.collision.collideWithBlock, main.game.Player.getPosBlocking, main.game.Player.outerBoundingBox.center, main.game.Player.outerBoundingBox.extent, main.items.Inventory.ClientInventory.getItem, main.network.protocols.genericUpdate.sendWorldEditPos, game.Player.selectionPosition2, game.Player.selectionPosition1, main.sync.client.mutex.lock, main.sync.client.mutex.unlock, mesh_storage.removeBreakingAnimation, mesh_storage.addBreakingAnimation, stack.item.baseItem.id, stack.item.proceduralItem.getBlockDamage, block.blockResistance, block.hasTag, block.replaceable, blocks.Block.typ, blocks.Block.data, Vec3i, Vec3f, Vec3d, @floatCast, @as, @floatFromInt, @ceil, std.mem.eql, main.game.Player.isCreative, main.game.Player.defaultBlockDamage, currentSwingProgress, currentSwingTime, lastSelectedBlockPos, currentBlockProgress, posBeforeBlock, lastDir, neighborOfSelection, selectedBlockPos, inventory, slot, deltaTime, block, oldBlock, itemBlock, rotationMode, relPos, neighborPos, neighborDir, neighborBlock, damagePerSwing, swings, swingTime, isSelectionWand, isProceduralItem, holdingTargetedBlock, selectedPos, lastPos, game.Player, main.game.world, main.network.protocols.genericUpdate.conn, main.sync.client.mutex
-**Concepts:** block placement validation, collision detection with player bounding box, inventory slot handling, neighbor block generation and replaceability, selection wand world edit protocol, swing animation state machine, damage accumulation over time, mesh storage read/write operations, network update sending, mutex locking for thread safety
+**Type:** implementation
+**Keywords:** block placement, block breaking, inventory interaction, damage calculation, health update
+**Symbols:** selectedBlockPos, lastSelectedBlockPos, currentSwingProgress, currentSwingTime, currentBlockProgress, updateBlockAndSendUpdate
+**Concepts:** block placement, block breaking, player inventory interaction
 
 ## Summary
-Implements client-side block placement and breaking logic, including collision checks against the player bounding box, inventory slot handling for base items and procedural items, neighbor block generation/replaceability rules, selection wand world‑edit position updates via network protocol, swing animation state machine with damage accumulation over time, and mesh storage read/write operations.
+Handles block placement and breaking logic based on player interactions.
 
 ## Explanation
-The chunk defines canPlaceBlock(pos: Vec3i, block: main.blocks.Block) which queries main.physics.collision.collideWithBlock using the player's outerBoundingBox (center + extent) to reject placements that intersect the player; it also includes a TODO comment about checking other entities. placeBlock(inventory: main.items.Inventory.ClientInventory, slot: u32) reads selectedPos from a global selectedBlockPos guard, retrieves the old block via mesh_storage.getBlockFromRenderThread(selectedPos[0],selectedPos[1],selectedPos[2]) and returns if null; it then switches on inventory.getItem(slot). For .baseItem it extracts itemBlock = baseItem.block(), constructs rotationMode = blocks.Block.mode(.{.typ=itemBlock,.data=0}), initializes neighborDir as Vec3i{0,0,0}. If itemBlock == block.typ (same block type) it computes relPos: Vec3f = @floatCast(lastPos - @as(Vec3d,@floatFromInt(selectedPos))) and calls rotationMode.generateData(main.game.world.?,selectedPos,relPos,lastDir,neighborDir,null,&block,.{.typ=0,.data=0},false); if generateData returns true it checks canPlaceBlock again and then calls updateBlockAndSendUpdate(inventory,slot,selectedPos,oldBlock,block) before returning. If itemBlock != block.typ it attempts rotationMode.modifyBlock(&block,itemBlock); on success it also rechecks canPlaceBlock and updates via updateBlockAndSendUpdate. After handling same‑type or modifyBlock, the code checks the neighbor in front of the placed block: const neighborPos = posBeforeBlock; neighborDir = selectedPos - posBeforeBlock; relPos recomputed as @floatCast(lastPos - @as(Vec3d,@floatFromInt(neighborPos))); it fetches oldBlock from mesh_storage at neighborPos, then sets block = oldBlock. If block.typ == itemBlock it calls rotationMode.generateData with the same arguments but passes neighborOfSelection (set earlier in a different chunk) and neighborBlock; on success it again checks canPlaceBlock and updates via updateBlockAndSendUpdate. Otherwise if !block.replaceable() it returns early; else it sets block.typ = itemBlock, block.data = 0, and calls rotationMode.generateData with the final=true flag to indicate replaceability; on success it updates via updateBlockAndSendUpdate. For the special case std.mem.eql(u8,baseItem.id(),
+The code processes block placement when the player selects a block from their inventory. It checks if the selected item can be added to or replace the existing block, considering rotation modes and neighbor blocks. For breaking blocks, it calculates damage based on the tool used and updates the block's health. If the block is broken completely, it sends an update to the server.
+
+## Code Example
+```zig
+pub fn breakBlock(inventory: main.items.Inventory.ClientInventory, slot: u32, deltaTime: f64) void {
+		if (selectedBlockPos) |selectedPos| {
+			const stack = inventory.getStack(slot);
+			const isSelectionWand = stack.item == .baseItem and std.mem.eql(u8, stack.item.baseItem.id(), "cubyz:selection_wand");
+			if (isSelectionWand) {
+				game.Player.selectionPosition1 = selectedPos;
+				main.network.protocols.genericUpdate.sendWorldEditPos(main.game.world.?.conn, .selectedPos1, selectedPos);
+				return;
+			}
+
+			if (@reduce(.Or, lastSelectedBlockPos != selectedPos)) {
+				mesh_storage.removeBreakingAnimation(lastSelectedBlockPos);
+				currentSwingProgress = 0;
+				currentSwingTime = 0;
+				lastSelectedBlockPos = selectedPos;
+				currentBlockProgress = 0;
+			}
+			const block = mesh_storage.getBlockFromRenderThread(selectedPos[0], selectedPos[1], selectedPos[2]) orelse return;
+			const holdingTargetedBlock = stack.item == .baseItem and stack.item.baseItem.block() == block.typ;
+			if ((block.hasTag(.fluid) or block.hasTag(.air)) and !holdingTargetedBlock) return;
+
+			const relPos: Vec3f = @floatCast(lastPos - @as(Vec3d, @floatFromInt(selectedPos)));
+
+			main.sync.client.mutex.lock();
+			if (!game.Player.isCreative()) {
+				var damage: f32 = main.game.Player.defaultBlockDamage;
+				const isProceduralItem = stack.item == .proceduralItem;
+				if (isProceduralItem) {
+					damage = stack.item.proceduralItem.getBlockDamage(block);
+				}
+				damage -= block.blockResistance();
+				if (damage > 0) {
+					const swingTime = if (isProceduralItem and stack.item.proceduralItem.isEffectiveOn(block)) 1.0/stack.item.proceduralItem.getProperty(.swingSpeed) else 0.5;
+					if (currentSwingTime > swingTime) {
+						currentSwingProgress = 0;
+						currentSwingTime = 0;
+					}
+					if (currentSwingTime == 0) {
+						const swings = @ceil(block.blockHealth()/damage);
+						const damagePerSwing = block.blockHealth()/swings;
+						currentSwingTime = damagePerSwing/damage*swingTime;
+					}
+					currentSwingProgress += @floatCast(deltaTime);
+					while (currentSwingProgress > currentSwingTime) {
+						currentSwingProgress -= currentSwingTime;
+						currentBlockProgress += damage*currentSwingTime/swingTime/block.blockHealth();
+						if (currentBlockProgress > 0.9999) break;
+						const swings = @ceil(block.blockHealth()/damage);
+						const damagePerSwing = block.blockHealth()/swings;
+						currentSwingTime = damagePerSwing/damage*swingTime;
+					}
+					if (currentBlockProgress < 0.9999) {
+						mesh_storage.removeBreakingAnimation(lastSelectedBlockPos);
+						if (currentBlockProgress != 0) {
+							mesh_storage.addBreakingAnimation(lastSelectedBlockPos, currentBlockProgress);
+						}
+						main.sync.client.mutex.unlock();
+
+						return;
+					} else {
+						currentSwingProgress = 0;
+						mesh_storage.removeBreakingAnimation(lastSelectedBlockPos);
+						currentBlockProgress = 0;
+						currentSwingTime = 0;
+					}
+				} else {
+					main.sync.client.mutex.unlock();
+					return;
+				}
+			} else {
+				mesh_storage.removeBreakingAnimation(lastSelectedBlockPos);
+			}
+
+			var newBlock = block;
+			block.mode().onBlockBreaking(inventory.getStack(slot).item, relPos, lastDir, &newBlock);
+			main.sync.client.mutex.unlock();
+
+			if (newBlock != block) {
+				updateBlockAndSendUpdate(inventory, slot, selectedPos, block, newBlock);
+			}
+		}
+	}
+```
 
 ## Related Questions
-- How does canPlaceBlock determine if a block position is valid for the player?
-- What happens inside placeBlock when the selected inventory item is a baseItem of the same type as the existing block?
-- Under what conditions does rotationMode.modifyBlock get invoked in placeBlock?
-- How are neighbor blocks handled after placing a block at selectedPos?
-- What network protocol call is made when the selection wand is used, and what data is sent?
-- How does breakBlock detect that the player is holding the targeted block type?
-- Explain the swing animation state machine: how are currentSwingProgress and currentSwingTime updated over deltaTime?
-- When does breakBlock remove the breaking animation from mesh_storage?
-- What role does main.sync.client.mutex play in breakBlock, and when is it locked/unlocked?
-- How does breakBlock handle procedural items versus baseItem blocks during damage calculation?
-- Under what circumstances does breakBlock return early without modifying any block?
-- Where are the oldBlock values retrieved from mesh_storage for both selectedPos and neighborPos?
+- How does the code handle block placement when the player selects a block from their inventory?
+- What is the process for breaking blocks in the game engine?
+- How does the code calculate damage to a block based on the tool used?
+- What role does the `updateBlockAndSendUpdate` function play in the block interaction logic?
+- How does the code manage animations during the block breaking process?
+- What conditions are checked before allowing a block to be placed or broken?
 
 *Source: unknown | chunk_id: codebase_src_renderer.zig_chunk_8*

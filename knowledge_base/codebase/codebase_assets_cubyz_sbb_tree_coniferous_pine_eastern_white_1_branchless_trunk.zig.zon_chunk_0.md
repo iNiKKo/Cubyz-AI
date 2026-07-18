@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_sbb_tree_coniferous_pine_eastern_white_1_branchless_trunk.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprints, children, tree asset, configuration data, ID mapping
+**Keywords:** blueprint, children, tree generation, configuration data, voxel engine
 **Concepts:** world generation, asset configuration
 
 ## Summary
-Defines blueprints and children for a coniferous pine tree trunk asset.
+Defines blueprints and children for a specific tree type in the Cubyz voxel engine.
 
 ## Explanation
-This chunk defines the configuration for a specific type of coniferous pine tree trunk in the Cubyz voxel engine. It includes an array of blueprints, each identified by a unique string ID, which likely correspond to different stages or variations of the tree's stem extender. Additionally, it specifies children assets associated with this trunk, including another tree variant and a mushroom type.
+This chunk defines configuration data for a coniferous pine tree variant without branches. It specifies blueprints with unique IDs that likely correspond to different segments or parts of the tree trunk. Additionally, it lists children nodes associated with this tree type, including another tree variant and a mushroom type.
 
 ## Related Questions
-- What are the IDs of the blueprints defined for this coniferous pine tree trunk?
-- Which assets are listed as children for this tree trunk configuration?
-- How many different stem extenders are specified in the blueprints array?
-- What is the ID of the first blueprint in the blueprints array?
-- Which mushroom type is associated with this tree trunk configuration?
-- Is there a red variant of the tree trunk mentioned in the children list?
+- What are the blueprints defined for this tree type?
+- Which children nodes are associated with this coniferous pine tree variant?
+- How many different stem extenders are specified for this tree?
+- What is the ID of the first blueprint listed?
+- Is there a mushroom type included as a child node?
+- What is the configuration structure for this specific tree asset?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_tree_coniferous_pine_eastern_white_1_branchless_trunk.zig.zon_chunk_0*

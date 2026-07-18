@@ -1,23 +1,63 @@
 # [easy/codebase_src_server_command_worldedit_set.zig] - Chunk 0
 
-**Type:** gameplay
-**Keywords:** worldedit, selection capture, blueprint replace, undo history push, redo clear, mask region, preserve void, error message, defer cleanup, parse pattern string
-**Symbols:** execute, description, usage, Pattern, Block, Blueprint, Vec3i, User, main.server.command, main.blocks.Block, main.blueprint.Blueprint, main.blueprint.Pattern, main.stackAllocator, main.globalAllocator
-**Concepts:** worldedit command parsing, selection capture into blueprint, undo/redo history management, pattern replacement within mask, void preservation on paste
+**Type:** implementation
+**Keywords:** command execution, selection handling, blueprint capture, undo history, worldedit
+**Symbols:** description, usage, execute, server.command, Vec3i, User, Block, Blueprint, Pattern
+**Concepts:** WorldEdit, Command Execution, Selection Handling, Blueprint Capture, Undo/Redo History
 
 ## Summary
-Implements the /set worldedit command that parses a pattern string, captures the current selection into a blueprint, applies an undo history entry, and pastes the modified blueprint back to the world.
+Sets all blocks within a selection to a specified block pattern.
 
 ## Explanation
-The execute function first validates args.len > 0 and sends a red error message if missing. It obtains the current selection via command.getCurrentSelection(source) catch return; on failure it exits immediately. The pattern string is parsed with Pattern.initFromString(main.stackAllocator, args); any parse error triggers a red message containing @errorName(err). A defer ensures pattern.deinit(main.stackAllocator) runs regardless of success or failure. Blueprint.capture(main.globalAllocator, selection) returns a union { .success => |blueprint|, .failure => err }. On .success the code pushes an undoHistory entry initialized with the captured blueprint, selection.minPos, and action "set"; it clears redoHistory to maintain undo/redo invariants. A clone of the blueprint is created into main.stackAllocator (deferred deinit) so modifications do not affect the original capture result. The modifiedBlueprint.replace(null, source.worldEditData.mask, pattern) applies the pattern within the mask region, and modifiedBlueprint.paste(selection.minPos, .{.preserveVoid = true}) writes it back to the world at the selection's minimum position while preserving void blocks.
+The `execute` function handles the '/set' command in the WorldEdit feature. It first checks if the required <pattern> argument is provided. If not, it sends an error message and returns. The current selection is retrieved using `command.getCurrentSelection`. A Pattern object is initialized from the provided arguments. After capturing the selection into a Blueprint, the function pushes the change to the undo history and clears the redo history. It then clones the captured blueprint, replaces blocks based on the mask and pattern, and pastes them back into the world at the original selection position.
+
+## Code Example
+```zig
+pub fn execute(args: []const u8, source: *User) void {
+	if (args.len == 0) {
+		source.sendMessage("#ff0000Missing required <pattern> argument.", .{});
+		return;
+	}
+	const selection = command.getCurrentSelection(source) catch return;
+
+	const pattern = Pattern.initFromString(main.stackAllocator, args) catch |err| {
+		source.sendMessage("#ff0000Error parsing pattern: {s}", .{@errorName(err)});
+		return;
+	};
+	defer pattern.deinit(main.stackAllocator);
+
+	const result = Blueprint.capture(main.globalAllocator, selection);
+
+	switch (result) {
+		.success => |blueprint| {
+			source.worldEditData.undoHistory.push(.init(blueprint, selection.minPos, "set"));
+			source.worldEditData.redoHistory.clear();
+
+			var modifiedBlueprint = blueprint.clone(main.stackAllocator);
+			defer modifiedBlueprint.deinit(main.stackAllocator);
+
+			modifiedBlueprint.replace(null, source.worldEditData.mask, pattern);
+			modifiedBlueprint.paste(selection.minPos, .{.preserveVoid = true});
+		},
+		.failure => |err| {
+			source.sendMessage("#ff0000Error: Could not capture selection. (at {}, {s})", .{err.pos, err.message});
+		},
+	}
+}
+```
 
 ## Related Questions
-- What happens if the user provides an empty argument list to /set?
-- How does the function handle a failed Blueprint.capture result?
-- Why is redoHistory cleared after a successful set operation?
-- Where are the allocated buffers for the pattern and blueprint stored?
-- What does replace(null, source.worldEditData.mask, pattern) accomplish?
-- Does paste modify blocks outside the selection bounds?
-- Is the original captured blueprint retained after execution?
+- What is the purpose of the `execute` function in the WorldEdit command system?
+- How does the `execute` function handle errors when parsing the pattern argument?
+- What data structures are used to store and manipulate the selection and blueprint during the execution process?
+- Describe the steps involved in capturing a selection into a Blueprint.
+- What is the purpose of the undo/redo history system in this WorldEdit implementation?
+- How does the `execute` function handle errors related to capturing the selection?
+- What is the role of the mask and pattern in the block replacement process?
+- Describe how the modified blueprint is pasted back into the world.
+- What are the key data structures used to manage the WorldEdit command system's state?
+- How does the `execute` function interact with other parts of the server codebase?
+- What error messages are sent by the `execute` function when encountering issues during execution?
+- Describe the process of cloning and modifying a blueprint in the context of the WorldEdit command.
 
 *Source: unknown | chunk_id: codebase_src_server_command_worldedit_set.zig_chunk_0*

@@ -1,42 +1,31 @@
 # [medium/codebase_src_utils_file_monitor.zig] - Chunk 2
 
 **Type:** implementation
-**Keywords:** file system changes, Windows API, FindFirstChangeNotificationA, WaitForMultipleObjects, callback functions
-**Symbols:** mutex, justTheHandles, callbacks, notificationHandlers, listenToPath, removePath
-**Concepts:** file monitoring, Windows API, directory change notifications
+**Keywords:** Windows API, FindFirstChangeNotificationA, FindNextChangeNotification, StringHashMap, ListManaged, mutex locking
+**Symbols:** WindowsImpl, WindowsImpl.HANDLE, WindowsImpl.notificationHandlers, WindowsImpl.callbacks, WindowsImpl.justTheHandles, WindowsImpl.mutex, WindowsImpl.DirectoryInfo, WindowsImpl.DirectoryInfo.callback, WindowsImpl.DirectoryInfo.userData, WindowsImpl.DirectoryInfo.notificationHandler, WindowsImpl.DirectoryInfo.needsUpdate, WindowsImpl.DirectoryInfo.path, WindowsImpl.init, WindowsImpl.deinit, WindowsImpl.handleEvents, WindowsImpl.listenToPath, WindowsImpl.removePath
+**Concepts:** file system monitoring, directory change notifications
 
 ## Summary
-Monitors file system changes using Windows API.
+The WindowsImpl struct manages file system change notifications on Windows, using handles and callbacks.
 
 ## Explanation
-This chunk implements a file monitoring system that uses the Windows API to listen for changes in specified directories. It maintains a list of handles and callbacks associated with each directory being monitored. The `listenToPath` function sets up a notification handler for a given path, while `removePath` cleans up resources when a path is no longer needed. The main loop waits for file system changes using `WaitForMultipleObjects`, processes the results, and invokes the appropriate callback functions.
+The WindowsImpl struct provides functionality to monitor directories for changes on a Windows platform. It uses the Windows API functions like FindFirstChangeNotificationA and FindNextChangeNotification to set up and handle directory change notifications. The struct maintains several data structures: notificationHandlers (a StringHashMap mapping paths to DirectoryInfo), callbacks (a ListManaged of DirectoryInfo pointers), and justTheHandles (a ListManaged of HANDLEs). It also uses a mutex for thread safety when accessing these shared resources. The init function initializes these data structures, while deinit cleans them up. The handleEvents function waits for directory changes and invokes the appropriate callback when a change is detected. The listenToPath function adds a new path to be monitored, and removePath removes an existing path from monitoring.
 
 ## Code Example
 ```zig
-fn removePath(path: [:0]const u8) void {
-		mutex.lock();
-		defer mutex.unlock();
-		if (notificationHandlers.fetchRemove(path)) |kv| {
-			const index = std.mem.indexOfScalar(*DirectoryInfo, callbacks.items, kv.value).?;
-			_ = callbacks.swapRemove(index);
-			_ = justTheHandles.swapRemove(index);
-			if (c.FindCloseChangeNotification(kv.value.notificationHandler) == 0) {
-				std.log.err("Error while closing notification handler for path {s}: {}", .{path, std.os.windows.GetLastError()});
-			}
-			main.globalAllocator.free(kv.key);
-			main.globalAllocator.destroy(kv.value);
-		} else {
-			std.log.err("Tried to remove non-existent notification handler for path {s}", .{path});
-		}
-	}
+fn init() void {
+	notificationHandlers = .init(main.globalAllocator.allocator);
+	callbacks = .init(main.globalAllocator);
+	justTheHandles = .init(main.globalAllocator);
+}
 ```
 
 ## Related Questions
-- How does the file monitoring system handle multiple directories?
-- What happens if a duplicate notification handler is added for the same path?
-- How are errors logged in this chunk?
-- What Windows API functions are used to monitor directory changes?
-- How does the system ensure thread safety when managing resources?
-- What steps are taken to clean up resources when a path is removed?
+- How does WindowsImpl initialize its data structures?
+- What is the purpose of the mutex in WindowsImpl?
+- How does WindowsImpl handle directory change notifications?
+- What happens if a duplicate path is added to be monitored?
+- How are resources cleaned up when WindowsImpl deinitializes?
+- What error handling is implemented for Windows API calls?
 
 *Source: unknown | chunk_id: codebase_src_utils_file_monitor.zig_chunk_2*

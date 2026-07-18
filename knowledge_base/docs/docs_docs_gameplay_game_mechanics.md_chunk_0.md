@@ -1,28 +1,31 @@
 # [easy/docs_docs_gameplay_game_mechanics.md] - Chunk 0
 
 **Type:** gameplay
-**Keywords:** health, energy, movement, crouching, hotbar, inventory, right-click, left-click, block resistance, tools, pickaxes, shovels, axes, sickles, fall damage
-**Symbols:** E, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, -, =, right-click, left-click
-**Concepts:** Health system, Energy bars, Movement mechanics, Inventory management, Hotbar access, Building and destruction, Block resistance, Tool damage multipliers
+**Keywords:** health, energy, walking, sprinting, crouching, inventory, hotbar, crafting, building, destruction, tools, damage, resistance
+**Symbols:** health, energy, movement, inventory, hotbar, building, destruction
+**Concepts:** player mechanics, health system, energy system, movement controls, inventory management, block placement and destruction
 
 ## Summary
-The page describes player mechanics including health (8 hearts/16 HP), energy (8 bars with no gain/loss), movement options (walking, sprinting, crouching, jumping), inventory/hotbar layout and access keys, building/destruction rules involving block health/resistance and tool-specific damage multipliers.
+This page covers player mechanics in Cubyz, including health, energy, movement, inventory management, and building/destruction systems.
 
 ## Explanation
-Player starts with 8 hearts representing a total of 16 HP; health is lost via fall damage or hazardous blocks (cacti, lava, magma) and cannot be regained except by dying. Energy consists of 8 bars that do nothing and have no gain/loss mechanics. Movement includes walking/sprinting (identical except sprinting is faster), crouching (slowest speed, prevents falls unless on slippery blocks, allows fitting into 1.5-block tall spaces, enables stepping down from smaller blocks like stairs), and jumping (provides enough elevation to cross one whole block; mid-air directional control is weaker). The hotbar defaults to the bottom middle of the screen with 12 slots accessed via keys 1-9, 0, -, =; pressing E opens a 20-slot inventory where items must be left-clicked and dragged into the hotbar before use; each slot holds up to 120 stackable items. Building uses right-click to place blocks from the hotbar; destruction uses left-click on crosshair targets. Blocks have health (damage required to destroy) and resistance (reduces incoming damage); if a block's resistance exceeds player damage, it cannot be damaged at all. Tools apply specialized damage: pickaxes affect stone/metal/gem blocks, shovels affect soil blocks, axes affect wooden blocks, sickles affect plants/leaves/cloth and enable collection of plants/leaves not possible with bare hands; using a tool on an incompatible block type yields the same damage as bare hands.
+Health: the player has a total of 16 health points represented by 8 hearts. Health can be lost from fall damage or hazardous blocks (cacti, lava, magma), but there is currently no way to regain health other than dying. Energy: represented by 8 bars; currently does nothing -- there is no way to gain or lose energy. Movement: the player has 3 means of movement -- walking, sprinting (same as walking but faster), and crouching (slowest, but prevents falling off blocks unless the block is slippery; stepping down from smaller blocks like stairs is still possible while crouching). Crouching also lets the player fit into 1.5-block-tall spaces. The player can also jump, with enough elevation to cross exactly 1 whole block (this is a separate fact from the 1.5-block crouch-space number -- do not confuse the two). Directional control is much weaker while airborne mid-jump. Inventory and hotbar: the hotbar has 12 slots (see the Controls documentation for the exact key bound to each slot). Pressing E (by default) opens the separate inventory screen, which has 20 slots; items there must be left-click-dragged into the hotbar before they can be equipped. Both the hotbar and inventory can each stack up to 120 items per slot. Above the inventory is a crafting button (opens the crafting menu) and a bag slot, which can hold 120 stacks of items. Building and destruction: right-click (by default) places a block, left-click (by default) starts destroying the block on the crosshair. Blocks have health and resistance stats: health is how much damage is needed to destroy the block, and dealt damage is reduced by the block's resistance -- if resistance exceeds the damage you can deal, the block cannot be damaged at all. Tools are specialized per block type: pickaxes deal damage to stone, metal, and gem blocks; shovels (shovers) deal damage to soil blocks; axes deal damage to wooden blocks; sickles damage plants, leaves, and cloth, and are the only way to actually collect plants/leaves (not possible bare-handed). Using a tool on the wrong block type deals the same damage as bare hands -- no bonus, no penalty.
 
 ## Related Questions
-- How many hearts does the player have and what is their total health?
-- Can energy be gained or lost in Cubyz?
-- What happens when you crouch on a slippery block versus a normal block?
-- Which keys are used to access hotbar slots by default?
-- How do you move items from the inventory into the hotbar?
-- What is the maximum number of stackable items per inventory slot?
-- Does right-click place blocks or destroy them in Cubyz?
-- How does block resistance affect damage dealt to a block?
-- Which tool type deals damage specifically to stone, metal, and gem blocks?
-- Can you collect plants with your bare hands in Cubyz?
-- What elevation gain does a jump provide relative to block height?
-- Is there any way to regain health other than dying?
+- How many health points does the player have in Cubyz?
+- Can the player regain health in Cubyz?
+- What are the three means of movement available to the player?
+- How high can the player jump in Cubyz?
+- How many block-tall spaces can a crouching player fit into?
+- How do you open the inventory screen in Cubyz?
+- How many slots are in the hotbar by default?
+- What is the maximum number of items each slot in the inventory or hotbar can hold?
+- How many stacks can the bag slot hold?
+- How does crouching affect the player's ability to fall off blocks?
+- What tool is used to mine stone, metal, and gem blocks?
+- What tool is used to mine wooden blocks?
+- What tool is used to harvest plants, leaves, and cloth?
+- What happens if you use the wrong tool type on a block?
+- What determines the amount of damage needed to destroy a block?
 
 *Source: unknown | chunk_id: docs_docs_gameplay_game_mechanics.md_chunk_0*

@@ -1,26 +1,22 @@
-# [src/server/terrain/structure_building_blocks.zig] - Chunk 2495496504
+# [src/server/terrain/structure_building_blocks.zig] - PR #2195 review diff
 
 **Type:** review
-**Keywords:** structureList, resize, stage1Count, postResolutionChecks, ZonHashMap, childrenToResolve, refactor, capacity, memory, allocation
-**Symbols:** StructureBuildingBlock, registerSBB, structureList, Assets.ZonHashMap, childrenToResolve, stage1Count
-**Concepts:** staged memory allocation, capacity management, refactor motivation, architectural clarity, debug naming conventions
+**Keywords:** architecture, refactor, rename, staging, root cause, postResolutionChecks, structure registration
+**Symbols:** StructureBuildingBlock, registerSBB, structureList, structureMap, childrenToResolve, stage1Count
+**Concepts:** architectural review, refactoring, variable naming
 
 ## Summary
-Refactor of StructureBuildingBlock.registerSBB to introduce a staged resizing approach for structureList and add stage1Count tracking, with reviewer noting the original name was misleading due to experimental multi-stage sizing.
+Refactored the registration process for structure building blocks by introducing a staging variable and renaming an internal variable for clarity.
 
 ## Explanation
-The change replaces an immediate full resize of structureList with a two-phase strategy: first allocate enough space (stage1) then later filter via postResolutionChecks. The reviewer identified that the initial stage allocation was the root cause of memory inefficiency, and the filtering step turned out unnecessary for fixing it. Consequently, the code now tracks stage1Count to make the staged behavior explicit, allowing future renaming to reflect the true intent rather than the experimental placeholder name.
+The reviewer points out that the original code had a critical architectural issue where the `structureList` was being resized in stages, with the first stage being the root cause of a problem. The second stage involved filtering via the `postResolutionChecks` function, which turned out to be unnecessary after addressing the root cause. The reviewer suggests renaming the internal variable to make its purpose more apparent.
 
 ## Related Questions
-- What is the purpose of stage1Count in registerSBB?
-- How does the staged resize differ from a single large allocation?
-- Why was postResolutionChecks considered unnecessary for this fix?
-- What memory inefficiency did the initial stage cause?
-- Is structureList now guaranteed to be fully sized after registration?
-- Could childrenToResolve affect the staging logic?
-- How does ensuring total capacity interact with the staged approach?
-- What would happen if main.worldArena runs out during stage1?
-- Does this change impact any other parts of the terrain module?
-- Is there a risk of double-counting structures with the new stages?
+- What was the original purpose of the staging variable in the structure building block registration process?
+- How did the second stage filtering function contribute to solving the root cause issue?
+- Why was it necessary to rename the internal variable for clarity?
+- Can you explain the impact of removing the postResolutionChecks function on the overall structure registration process?
+- What architectural changes were made to improve the efficiency of the structure building block registration?
+- How does the renaming of the internal variable enhance code readability and maintainability?
 
 *Source: unknown | chunk_id: github_pr_2195_comment_2495496504*

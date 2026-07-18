@@ -1,30 +1,44 @@
 # [easy/codebase_src_gui_windows_authentication_encrypt_with_password.zig] - Chunk 0
 
 **Type:** implementation
-**Keywords:** GuiWindow, CheckBox, TextInput, HorizontalList, VerticalList, settings.save, deinit, onOpen, update, onClose
-**Symbols:** window, innerList, encryptWithPasswordCheckbox, passwordTextField, passwordRow, confirmButton, encryptAccountCode, padding, accountCode, setAccountCode, confirm, encryptAccountCodeCallback, refreshInner, back, onOpen, update, onClose
-**Concepts:** authentication UI, password encryption checkbox, settings persistence, memory cleanup on close, GUI component tree construction, window lifecycle callbacks
+**Keywords:** GUI window, account code encryption, password input, checkbox, button
+**Symbols:** settings, Vec2f, gui, GuiComponent, GuiWindow, Button, CheckBox, Label, HorizontalList, TextInput, VerticalList, window, innerList, encryptWithPasswordCheckbox, passwordTextField, passwordRow, confirmButton, encryptAccountCode, padding, accountCode, setAccountCode, confirm, encryptAccountCodeCallback, refreshInner, back, onOpen, update, onClose
+**Concepts:** GUI, authentication, encryption, password
 
 ## Summary
-This chunk implements the authentication window UI for storing and encrypting an account code, handling user input via checkboxes and text fields, persisting settings with optional password encryption, and cleaning up memory on close.
+GUI window for encrypting account code with password
 
 ## Explanation
-The chunk defines a GuiWindow named 'window' with fixed content size (128x256) that is non-closeable but closes when mouse is grabbed. It declares several uninitialized pointers: innerList (*VerticalList), encryptWithPasswordCheckbox (*CheckBox), passwordTextField (*TextInput), passwordRow (*HorizontalList), and confirmButton (*Button). A boolean 'encryptAccountCode' defaults to true, and a padding constant of 8f32 is used for layout spacing. The accountCode variable holds the current authentication code (type from main.network.authentication.AccountCode) and is initialized via setAccountCode(). The onOpen() function constructs the UI: it creates a VerticalList with padding, adds a Label explaining storage options, initializes innerList as an empty VerticalList, then adds a CheckBox labeled 'Encrypt it with a password...' bound to encryptWithPasswordCheckbox and wired to encryptAccountCodeCallback. If encryption is enabled, passwordRow (a HorizontalList) is added containing a Label 'Local Password:' and a TextInput for the password; otherwise passwordRow is omitted. A second VerticalList named list wraps innerList and button rows. The button row contains a 'Back' Button invoking back() and a 'Confirm' Button invoking confirm(). After building the component tree, window.rootComponent is set to list.toComponent(), contentSize is recomputed based on rootComponent position/size plus padding, and gui.updateWindowPositions() is called. The update() function disables confirmButton when encryption is enabled but the password field is empty (len == 0). back() closes this window, calls gui.windowlist.@
+This chunk defines a GUI window for encrypting an account code using a password. It includes components like checkboxes, text inputs, and buttons to allow the user to choose encryption method and enter a password. The window updates based on user input and handles actions such as confirming encryption and returning to previous screens.
 
 ## Code Example
 ```zig
-pub fn setAccountCode(accountCode_: main.network.authentication.AccountCode) void {
-	accountCode = accountCode_;
+fn confirm() void {
+    if (encryptAccountCode) {
+        settings.storedAccount.deinit(main.globalAllocator);
+        settings.storedAccount = .initFromPassword(main.globalAllocator, accountCode, passwordTextField.currentString.items);
+    } else {
+        settings.storedAccount.deinit(main.globalAllocator);
+        settings.storedAccount = .initUnencoded(main.globalAllocator, accountCode);
+    }
+    settings.save();
+    gui.closeWindowFromRef(&window);
+    gui.openWindow("multiplayer");
 }
 ```
 
 ## Related Questions
-- What is the default value of encryptAccountCode when the window opens?
-- How does confirm() handle the case where encryption is disabled versus enabled?
-- Which GUI component is used to capture the user-entered password string?
-- What happens to accountCode in onClose() regardless of encryption setting?
-- Does back() modify the stored account code before navigating away?
-- How is window.rootComponent assigned after building the UI tree?
-- Under what condition does confirmButton become disabled during update()?
+- What is the purpose of the `encryptAccountCode` variable?
+- How does the `confirm` function handle encryption and password input?
+- What components are added to the inner list when encrypting with a password?
+- What action does the back button perform?
+- Where is the account code stored in memory after encryption?
+- What happens if the user chooses not to encrypt the account code?
+- How is the window content size updated after changes?
+- What is the purpose of the `refreshInner` function?
+- What are the conditions under which the confirm button becomes disabled?
+- What actions does the `onClose` function perform?
+- Where is the password row stored in memory?
+- What happens if the user chooses not to encrypt with a password?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_authentication_encrypt_with_password.zig_chunk_0*

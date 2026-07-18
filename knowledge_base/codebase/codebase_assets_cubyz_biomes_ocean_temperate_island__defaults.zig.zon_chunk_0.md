@@ -1,21 +1,21 @@
 # [easy/codebase_assets_cubyz_biomes_ocean_temperate_island__defaults.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** biome configuration, ocean biome, music assignment, chance of occurrence, properties
-**Concepts:** world generation, biome settings
+**Keywords:** biome properties, ocean classification, music association, chance of occurrence, configuration file
+**Concepts:** world generation, biome configuration
 
 ## Summary
-Defines default settings for a temperate island biome in Cubyz.
+Defines default properties for a temperate island biome in Cubyz.
 
 ## Explanation
-This chunk specifies the configuration for a temperate island biome, including its chance of occurrence and associated properties. The biome is marked as an ocean type and has a specific music track assigned to it.
+This chunk defines the configuration for a specific biome type, a temperate island. It specifies that this biome has no chance of occurring naturally (chance = 0), is classified as an ocean biome, and associates it with a particular music track from the 'totaldemented' soundtrack.
 
 ## Related Questions
-- What is the chance of this temperate island biome occurring?
-- Which properties are associated with this biome?
-- What music track is assigned to this biome?
-- Is this biome classified as an ocean type?
-- How is the configuration for a biome defined in Cubyz?
-- What settings can be adjusted for different biomes in Cubyz?
+- What is the chance of this temperate island biome occurring naturally?
+- Which music track is associated with the temperate island biome?
+- Is the temperate island biome classified as an ocean biome?
+- How many properties are defined for the temperate island biome in this configuration?
+- What does the 'chance' property indicate in this biome configuration?
+- Which soundtrack file is referenced for the music of this biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_ocean_temperate_island__defaults.zig.zon_chunk_0*

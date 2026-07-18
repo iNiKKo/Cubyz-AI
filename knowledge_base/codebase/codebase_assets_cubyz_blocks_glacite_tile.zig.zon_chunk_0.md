@@ -1,21 +1,25 @@
 # [easy/codebase_assets_cubyz_blocks_glacite_tile.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** configuration, block definition, texture assignment, model specification, rotation behavior
+**Keywords:** configuration, block properties, texture mapping, model definition, rotation behavior
 **Concepts:** block configuration
 
 ## Summary
-Defines configuration for a glacite tile block.
+Defines configuration for the Glacite Tile block, specifying its rotation, model, and texture.
 
 ## Explanation
-This chunk defines the configuration for a glacite tile block in the Cubyz voxel engine. It specifies the rotation behavior using 'cubyz:stairs', sets the model to 'cubyz:cube', and assigns the texture 'cubyz:glacite/tile'.
+This chunk contains a single JSON-like object that defines the properties of the Glacite Tile block. The properties include:
+- `.rotation`: Specifies the rotation behavior as 'cubyz:stairs'.
+- `.model`: Defines the model type as 'cubyz:cube'.
+- `.texture`: Sets the texture to 'cubyz:glacite/tile'.
+This configuration is used to render and interact with the Glacite Tile block within the Cubyz voxel engine.
 
 ## Related Questions
-- What is the rotation behavior of the glacite tile block?
-- Which model is assigned to the glacite tile block?
-- What texture is used for the glacite tile block?
-- How is the glacite tile block configured in the Cubyz engine?
-- Where is the configuration for the glacite tile block defined?
-- What are the key attributes of the glacite tile block's configuration?
+- What is the rotation behavior of the Glacite Tile block?
+- Which model type is assigned to the Glacite Tile block?
+- What texture is used for the Glacite Tile block?
+- How is the Glacite Tile block configured in terms of its properties?
+- Where is the configuration for the Glacite Tile block defined?
+- What are the key properties specified for the Glacite Tile block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_glacite_tile.zig.zon_chunk_0*

@@ -1,26 +1,22 @@
 # [easy/docs_README_wiki.md] - Chunk 0
 
 **Type:** documentation
-**Keywords:** wiki, cloning, building documentation, serving locally, git, python, requirements
-**Symbols:** git, Cubyz-Wiki, .env, venv, pip, zensical
-**Concepts:** Wiki, Cloning, Building Documentation, Serving Locally
+**Keywords:** Git, Python, Virtual Environment, Requirements Installation, Building Documentation, Serving Locally
+**Symbols:** git, Cubyz-Wiki, python, venv, requirements.txt, zensical build --clean, zensical serve
+**Concepts:** Version Control, Local Development Environment Setup, Documentation Building
 
 ## Summary
-This repository contains source markdown files of Cubyz Wiki. It provides instructions for cloning and building the wiki.
+Instructions for cloning and building the Cubyz Wiki repository locally using Git and Python.
 
 ## Explanation
-The repository contains Markdown files for the Cubyz Wiki. To change the wiki, clone or download it, navigate to the directory, create a virtual environment with Python 3.10 or newer, install requirements using pip, build the documentation with `zensical build --clean`, and serve it locally with `zensical serve`.
+The document provides detailed steps to clone the Cubyz Wiki repository from GitHub either via Git commands or by downloading a ZIP archive. It instructs users to navigate to the cloned directory in their terminal, set up a virtual environment with Python 3.10 or newer, activate this environment, and install necessary requirements using pip. The document then explains how to build the Cubyz Wiki locally using the 'zensical build --clean' command and serve it for real-time updates with 'zensical serve'.
 
 ## Related Questions
-- What is the command to clone the Cubyz Wiki repository?
-- How do I create a virtual environment for building Cubyz Wiki?
-- Which Python version is recommended for building Cubyz Wiki?
-- What is the command to install requirements for building Cubyz Wiki?
-- How do I build the documentation using Zensical?
-- What command is used to serve the built documentation locally?
-- Where can I find the source markdown files of Cubyz Wiki?
-- What are the steps to change the wiki after cloning it?
-- Which version of Python is recommended for building Cubyz Wiki?
-- How do I install requirements using pip?
+- How do I clone the Cubyz Wiki repository?
+- What Python version is required to build the Cubyz Wiki?
+- How do I create a virtual environment for building the Cubyz Wiki?
+- How do I install the necessary requirements for building the Cubyz Wiki?
+- What command is used to build the Cubyz Wiki locally?
+- How can I serve the built Cubyz Wiki documentation locally?
 
 *Source: unknown | chunk_id: docs_README_wiki.md_chunk_0*

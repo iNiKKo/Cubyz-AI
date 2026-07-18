@@ -1,22 +1,28 @@
 # [easy/codebase_assets_cubyz_biomes_forest_palm_raised.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** minRadius, maxHeight, keepOriginalTerrain, soilCreep, ground_structure, structures, parentBiomes, degradable, chance
-**Symbols:** minRadius, maxRadius, minHeight, maxHeight, keepOriginalTerrain, chance, soilCreep, ground_structure, structures, parentBiomes
-**Concepts:** biome configuration, terrain bounds, structure placement, child biome references
+**Keywords:** biome config, tree placement, soil creep, structure chance, parent biomes
+**Symbols:** ForestBiomeConfig, minRadius, maxRadius, minHeight, maxHeight, keepOriginalTerrain, chance, soilCreep, ground_structure, structures, parentBiomes
+**Concepts:** biome configuration, forest biome, palm trees, simple trees, sbb structures
 
 ## Summary
-Defines configuration parameters for the raised palm forest biome including terrain bounds, soil creep settings, ground structure materials, and child biome references.
+Forest biome configuration with palm trees.
 
 ## Explanation
-This chunk is a .zon configuration file containing static data structures with no executable logic. It defines a top-level anonymous struct (or object) holding biome-specific constants: minRadius 16, maxRadius 32, minHeight 500, maxHeight 1500, keepOriginalTerrain probability 0.99, chance set to 0 indicating this biome does not randomly generate structures on its own, soilCreep value of 2, ground_structure array listing 'cubyz:grass/dew' and 'cubyz:clay', structures array containing two entries (id cubyz:sbb referencing structure cubyz:tree/palm/coconut with placeMode degradable and chance 0.05; id cubyz:simple_tree defining a round tree with leaves from cubyz:leaves/mahogany, log from cubyz:log/mahogany, height 1, leafRadius 2, leafElongation 0.8), parentBiomes array referencing one child biome cubyz:forest/palm/base with chance 4.
+This chunk defines a forest biome configuration for the Cubyz voxel engine. It specifies parameters like minimum and maximum radius, height, and soil creep. The biome includes structures such as simple trees and sbb (simple block structure) with specific placement modes and chances. It also references parent biomes.
 
 ## Related Questions
-- What is the minimum radius for the raised palm forest biome?
-- Which ground structure materials are defined in this configuration?
-- Does this biome generate structures randomly by default?
-- What is the soil creep value set for this biome?
-- How many parent biomes does this configuration reference?
-- What place mode is assigned to the cubyz:sbb structure entry?
+- What is the minimum and maximum radius of this forest biome?
+- How many structures are defined for this biome?
+- What is the chance of placing a simple tree structure?
+- Which parent biomes does this biome inherit from?
+- What are the soil creep values for this biome?
+- What are the ground structures included in this biome?
+- What are the IDs of the structures defined for this biome?
+- How many different types of trees can be placed in this biome?
+- What is the chance of placing a sbb structure?
+- What are the parameters for the simple tree structure?
+- What are the parent biomes that influence this biome's configuration?
+- What are the soil creep values used in this biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_forest_palm_raised.zig.zon_chunk_0*

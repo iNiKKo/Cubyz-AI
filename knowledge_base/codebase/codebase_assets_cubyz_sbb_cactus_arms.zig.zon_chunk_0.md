@@ -1,7 +1,7 @@
 # [easy/codebase_assets_cubyz_sbb_cactus_arms.zig.zon] - Chunk 0
 
 **Type:** configuration
-**Keywords:** blueprints, cactus arms, spawn chances, configuration data, null termination
+**Keywords:** blueprint, ID, spawn chance, cactus arms, configuration
 **Concepts:** world generation
 
 ## Summary
@@ -13,9 +13,9 @@ This chunk contains a configuration structure defining blueprints for different 
 ## Related Questions
 - What are the IDs of the cactus arm blueprints defined in this chunk?
 - How many different types of cactus arms are specified?
-- Which cactus arm blueprint has a spawn chance of 0.5?
-- What does a null ID signify at the end of the blueprints list?
+- Which blueprint has a spawn chance of 0.5?
+- What does a null ID signify at the end of the list?
 - Is there any function or method defined in this chunk?
-- Are there any other configuration settings besides IDs and chances?
+- Are there any other configuration settings besides IDs and spawn chances?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_cactus_arms.zig.zon_chunk_0*
