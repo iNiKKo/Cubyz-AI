@@ -1,6 +1,10 @@
 {
   "nick": {
-    "chunks_completed": 2346,
-    "pairs_generated": 5154
+    "chunks_completed": 2671,
+    "pairs_generated": 5391
+  },
+  "nickc": {
+    "chunks_completed": 71,
+    "pairs_generated": 71
   }
 }
