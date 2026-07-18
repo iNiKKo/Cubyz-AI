@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.12"
+VERSION = "1.1.13"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -151,7 +151,7 @@ def _https_context() -> ssl.SSLContext:
             return ssl.create_default_context(cafile=candidate)
     return ssl.create_default_context()
 
-def download_update(download_url: str) -> bool:
+def download_update(download_url: str, expected_version: str) -> bool:
     try:
         with urllib.request.urlopen(download_url, timeout=30, context=_https_context()) as res:
             new_content = res.read()
@@ -167,6 +167,23 @@ def download_update(download_url: str) -> bool:
             )
         else:
             print(f"{Colors.RED}[X] Update download failed: {e}{Colors.RESET}")
+        return False
+
+    # Confirm the downloaded content actually IS the version being advertised before installing
+    # it. raw.githubusercontent.com's CDN can keep serving a stale cached copy for a few minutes
+    # right after a push -- without this check, a client polling in exactly that window would
+    # "successfully" overwrite itself with content reporting the SAME old version, restart,
+    # immediately see the identical "update available" mismatch again, and loop forever
+    # (confirmed live: a node stuck re-downloading and restarting on repeat, never actually
+    # advancing past the version it already had).
+    match = re.search(rb'^VERSION\s*=\s*["\']([\d.]+)["\']', new_content, re.MULTILINE)
+    downloaded_version = match.group(1).decode() if match else None
+    if downloaded_version != expected_version:
+        print(
+            f"{Colors.YELLOW}[!] Downloaded update reports v{downloaded_version or '?'}, not the "
+            f"expected v{expected_version} -- likely a CDN caching delay right after a release. "
+            f"Skipping this restart; will check again next cycle.{Colors.RESET}"
+        )
         return False
 
     this_file = os.path.abspath(__file__)
@@ -199,7 +216,7 @@ def offer_update(status: str, info: dict, mandatory: bool):
             sys.exit(f"{Colors.RED}[X] Cannot continue on an unsupported client version. Re-run and accept the update, or update manually: {download_url}{Colors.RESET}")
         return
 
-    if download_update(download_url):
+    if download_update(download_url, latest_v):
         # Overwriting this file on disk doesn't change what's already loaded in this process --
         # os.execv replaces the running process image outright, so the new code actually takes
         # over immediately instead of leaving the volunteer to notice a message and restart it
