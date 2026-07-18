@@ -4,12 +4,26 @@ import json
 import time
 import shutil
 import hashlib
+import threading
 from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from typing import List, Optional, Literal
 
 app = FastAPI(title="Cubyz Distributed Dataset Coordinator")
+
+# FastAPI/Starlette runs synchronous "def" route handlers (every route in this file) in a thread
+# pool, so two requests genuinely can execute concurrently -- e.g. two lanes on the same dual-lane
+# client (see CUBYZ_FOLDING.py's crunch_lane()), or just two different volunteers, both hitting
+# /get_work or /submit_work at close to the same instant. Every one of those handlers does a
+# read-JSON -> mutate -> write-JSON cycle on lock_state.json; without serializing that whole
+# cycle, two concurrent requests can interleave their writes and either silently lose one
+# request's update or -- confirmed live under a synthetic concurrent-load test -- corrupt the
+# JSON file itself into something no longer parseable at all. One coarse global lock is
+# deliberately simple here: campaign state I/O is not a throughput bottleneck at this scale (a
+# handful of concurrent volunteers), so there's no reason to risk a more fine-grained scheme's
+# deadlock potential for a performance win nothing here needs.
+campaign_state_lock = threading.Lock()
 
 # ============================================================
 # This server used to be two separate processes (this file, RAG-only, and
@@ -80,7 +94,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.1.2"
-LATEST_CLIENT_VERSION = "1.1.5"
+LATEST_CLIENT_VERSION = "1.1.6"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:
@@ -817,11 +831,18 @@ def get_work(user_id: str, hardware_tier: str = "medium", model: str = "", clien
 
     online_clients[user_id.lower()] = {"timestamp": time.time(), "tier": hardware_tier}
 
-    if CURRENT_MODE == "rag":
-        return _get_rag_work(user_id, hardware_tier, model)
-    if CURRENT_MODE == "finetune":
-        return _get_finetune_work(user_id, hardware_tier)
-    return {"mode": "idle", "status": "idle"}
+    # The whole read-lock_state -> pick a task -> write-lock_state cycle inside _get_rag_work/
+    # _get_finetune_work has to be one atomic unit -- see campaign_state_lock's comment. Without
+    # this, two concurrent requests (e.g. a dual-lane client's two lanes, or two different
+    # volunteers) can both read the state before either writes, and then both dispatch the exact
+    # same chunk_id, or worse, interleave their writes and corrupt lock_state.json outright
+    # (confirmed live under a concurrent-load test).
+    with campaign_state_lock:
+        if CURRENT_MODE == "rag":
+            return _get_rag_work(user_id, hardware_tier, model)
+        if CURRENT_MODE == "finetune":
+            return _get_finetune_work(user_id, hardware_tier)
+        return {"mode": "idle", "status": "idle"}
 
 def _submit_rag_work(submission: UnifiedSubmission) -> dict:
     state = load_lock_state(RAG_LOCK_FILE)
@@ -929,9 +950,14 @@ def submit_work(submission: UnifiedSubmission):
 
     online_clients[submission.user_id.lower()] = {"timestamp": time.time(), "tier": "reporting"}
 
-    if submission.mode == "finetune":
-        return _submit_finetune_work(submission)
-    return _submit_rag_work(submission)
+    # Same reasoning as /get_work's campaign_state_lock use -- _submit_rag_work/
+    # _submit_finetune_work each do a read-modify-write on lock_state.json AND user_stats.json,
+    # both shared across every volunteer (and, for a dual-lane client, both lanes of the same
+    # machine too).
+    with campaign_state_lock:
+        if submission.mode == "finetune":
+            return _submit_finetune_work(submission)
+        return _submit_rag_work(submission)
 
 def _rag_leaderboard() -> dict:
     state = load_lock_state(RAG_LOCK_FILE)
@@ -1063,24 +1089,27 @@ def submit_diagnostics(payload: dict):
 
     if payload.get("event") == "task_gave_up" and payload.get("mode") == "rag":
         chunk_id = payload.get("chunk_id")
+        # See campaign_state_lock's comment -- same read-modify-write hazard on lock_state.json.
         if chunk_id:
-            state = load_lock_state(RAG_LOCK_FILE)
-            if chunk_id not in state["completed"]:
-                # Release the lock immediately (don't make the next node wait out the full
-                # TASK_TIMEOUT before they can even try) and count this as one independent
-                # give-up. Only after RAG_GIVE_UP_THRESHOLD separate nodes have all given up is
-                # the chunk marked permanently completed -- with no RAG output ever written for
-                # it, which is the accepted tradeoff (finetune's 0-pairs give-up path already
-                # accepts the same tradeoff) against the alternative of infinite wasted swarm
-                # compute on a chunk that's structurally never going to pass validation.
-                state["locked"].pop(chunk_id, None)
-                gave_up_counts = state.setdefault("gave_up_counts", {})
-                gave_up_counts[chunk_id] = gave_up_counts.get(chunk_id, 0) + 1
-                if gave_up_counts[chunk_id] >= RAG_GIVE_UP_THRESHOLD:
-                    state["completed"].append(chunk_id)
-                    gave_up_counts.pop(chunk_id, None)
-                    print(f"[RAG ⚠] '{chunk_id}' permanently given up after {RAG_GIVE_UP_THRESHOLD} independent failures -- marked done with no output.")
-                save_lock_state(RAG_LOCK_FILE, state)
+            with campaign_state_lock:
+                state = load_lock_state(RAG_LOCK_FILE)
+                if chunk_id not in state["completed"]:
+                    # Release the lock immediately (don't make the next node wait out the full
+                    # TASK_TIMEOUT before they can even try) and count this as one independent
+                    # give-up. Only after RAG_GIVE_UP_THRESHOLD separate nodes have all given up
+                    # is the chunk marked permanently completed -- with no RAG output ever
+                    # written for it, which is the accepted tradeoff (finetune's 0-pairs give-up
+                    # path already accepts the same tradeoff) against the alternative of infinite
+                    # wasted swarm compute on a chunk that's structurally never going to pass
+                    # validation.
+                    state["locked"].pop(chunk_id, None)
+                    gave_up_counts = state.setdefault("gave_up_counts", {})
+                    gave_up_counts[chunk_id] = gave_up_counts.get(chunk_id, 0) + 1
+                    if gave_up_counts[chunk_id] >= RAG_GIVE_UP_THRESHOLD:
+                        state["completed"].append(chunk_id)
+                        gave_up_counts.pop(chunk_id, None)
+                        print(f"[RAG ⚠] '{chunk_id}' permanently given up after {RAG_GIVE_UP_THRESHOLD} independent failures -- marked done with no output.")
+                    save_lock_state(RAG_LOCK_FILE, state)
 
     return {"status": "logged"}
 

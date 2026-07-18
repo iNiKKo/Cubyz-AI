@@ -10,6 +10,7 @@ import shutil
 import urllib.request
 import urllib.error
 import urllib.parse
+import threading
 
 if sys.platform.startswith("linux"):
     PLATFORM = "linux"
@@ -96,6 +97,12 @@ def mode_color(mode: str) -> str:
 # ============================================================
 
 SERVER_URL = "http://ashframe.net:7000"
+
+# Guards stdout when a second (dual-lane) crunch_lane() is running in a background thread
+# alongside the primary one in the main thread -- see run_dual_lane_if_capable(). Only ever
+# contended on machines with both a real GPU and enough spare RAM to run a second lane; a
+# solo-lane client never touches it under contention.
+print_lock = threading.Lock()
 OLLAMA_URL = "http://localhost:11434/api/generate"
 CONFIG_FILE = os.path.expanduser("~/.cubyz_node_config.json")
 DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
@@ -103,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.5"
+VERSION = "1.1.6"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -1179,7 +1186,7 @@ def validate_extraction(data: dict, raw_content: str, p_key: str) -> tuple:
 
     return True, ""
 
-def generate_rag_analysis(task: dict, chosen_model: str, max_threads, status_cb) -> tuple:
+def generate_rag_analysis(task: dict, chosen_model: str, max_threads, status_cb, force_cpu: bool = False) -> tuple:
     raw_content = task.get("raw_content", "")
     ctx_upper = task.get("directory_context", "").upper()
     if "DEFINITIVE_WIKI_DOCUMENTATION" in ctx_upper or "WIKI" in ctx_upper:
@@ -1196,7 +1203,15 @@ def generate_rag_analysis(task: dict, chosen_model: str, max_threads, status_cb)
         "prompt": f"Context Source File: {task['file_name']}\nRelative Path: {task['relative_path']}\nDirectory Module context: {task['directory_context']}\nChunk Index: {task['chunk_index']}\nRaw Content:\n```\n{raw_content}\n```\n",
         "system": RAG_PROMPTS[p_key] + (LOW_VRAM_REASONING_RULE if chosen_model in ["qwen2.5-coder:3b"] else ""),
         "think": False,
-        "stream": False, "format": RAG_JSON_SCHEMA, "options": {"temperature": temp, **({"num_thread": max_threads} if max_threads else {})}
+        "stream": False, "format": RAG_JSON_SCHEMA, "options": {
+            "temperature": temp,
+            **({"num_thread": max_threads} if max_threads else {}),
+            # num_gpu=0 tells Ollama to keep every layer on the CPU for this request specifically,
+            # regardless of what a concurrent GPU-backed request from the other lane is doing --
+            # this is what lets one machine run a GPU lane and a CPU lane against the same Ollama
+            # server at once (see run_dual_lane_if_capable()) without them fighting over VRAM.
+            **({"num_gpu": 0} if force_cpu else {}),
+        }
     }
 
     # Diagnostic logging here is deliberately scoped to retries/failures only -- a chunk that
@@ -1321,7 +1336,7 @@ def validate_pairs(pairs, grounding_text: str) -> tuple:
                 return False, f"'{name}' quoted in response but not found in source grounding text"
     return True, ""
 
-def generate_finetune_pairs(task: dict, chosen_model: str, status_cb) -> tuple:
+def generate_finetune_pairs(task: dict, chosen_model: str, status_cb, force_cpu: bool = False) -> tuple:
     source_type = task["source_type"]
     prompt_text = FINETUNE_RESTYLE_PROMPT if source_type in ("docs", "codebase") else FINETUNE_REVIEWS_PROMPT
     payload = {
@@ -1331,7 +1346,7 @@ def generate_finetune_pairs(task: dict, chosen_model: str, status_cb) -> tuple:
         "think": False,
         "stream": False,
         "format": FINETUNE_SCHEMA,
-        "options": {"temperature": 0.3},
+        "options": {"temperature": 0.3, **({"num_gpu": 0} if force_cpu else {})},
     }
 
     # Same scoping as generate_rag_analysis's _log_retry -- only retries/failures get logged, a
@@ -1602,6 +1617,292 @@ MODE_BANNERS = {
     "finetune": f"{Colors.MAGENTA}{Colors.BOLD}★ FINETUNE MODE ACTIVATED -- receiving training-pair generation tasks{Colors.RESET}",
 }
 
+# Minimum spare system RAM (beyond what the GPU lane's own host-side overhead needs) required
+# before a second, CPU-only lane is worth running alongside the GPU lane. Matches the existing
+# solo-CPU-node thresholds elsewhere in this file (8-11 GB) plus headroom, since this RAM has to
+# cover a full qwen2.5-coder:3b run *while* the GPU lane's own process is also live.
+DUAL_LANE_MIN_RAM_GB = 12.0
+
+def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: str, max_threads,
+                 cooldown: float, mode_desc: str, hardware_label: str, force_cpu: bool = False,
+                 fancy_ui: bool = True, pause_event: "threading.Event | None" = None):
+    """Runs the poll -> crunch -> submit cycle forever for one lane. A "lane" is one independent
+    identity polling /get_work and calling Ollama on its own -- there's normally just one (the
+    whole client, as before dual-lane support existed), but a machine with both a real GPU and
+    enough spare RAM (see run_dual_lane_if_capable()) runs two: this function unmodified in the
+    main thread for the GPU lane (fancy_ui=True, so Ctrl+C/the interrupt menu behave exactly as
+    they always have), and a second call in a background thread for the CPU lane (fancy_ui=False,
+    plain log lines instead of the redrawing status box -- two threads fighting over the same
+    cursor-position escape codes would corrupt each other's output; force_cpu=True routes that
+    lane's Ollama calls through num_gpu=0 so it never competes with the GPU lane for VRAM).
+
+    pause_event coordinates the two lanes without needing the background thread to handle Ctrl+C
+    itself (Python only ever delivers SIGINT/KeyboardInterrupt to the main thread, so a background
+    lane can't catch it directly regardless). The lane running in the main thread sets it right
+    before opening the interrupt menu and clears it on resume; both lanes check it at the top of
+    every cycle and idle without polling for new work while it's set. Solo (non-dual) runs never
+    pass an event here at all, so this is a no-op and behavior is identical to before dual-lane
+    support existed.
+    """
+
+    def safe_print(msg):
+        with print_lock:
+            print(msg)
+
+    def print_terminal_status(task_desc, step_msg, is_first, comp, tot, eta=None):
+        pct = (comp / tot * 100) if tot else 0.0
+        bar_len = 20
+        fill_len = max(0, min(bar_len, int(round(bar_len * comp / float(tot))))) if tot else 0
+        p_bar = '█' * fill_len + '░' * (bar_len - fill_len)
+
+        box_color = mode_color(current_mode)
+        if step_msg.startswith("✓"):
+            status_color = Colors.GREEN
+        elif step_msg.startswith("⚠"):
+            status_color = Colors.YELLOW
+        elif step_msg.startswith("✗"):
+            status_color = Colors.RED
+        else:
+            status_color = ""
+
+        with print_lock:
+            if not is_first:
+                sys.stdout.write("\033[F\033[K" * 7)
+            print(f"{box_color}─── [ {hardware_label} ] ──────────────────────────────────────────{Colors.RESET}")
+            print(f"  Current Task : {task_desc}")
+            print(f"  Configuration: Model: {chosen_model} • Profile: {mode_desc.split(' (')[0]}")
+            print(f"  Node Status  : {status_color}{step_msg}{Colors.RESET}")
+            print(f"  Global Progress: [{box_color}{p_bar}{Colors.RESET}] {format_count(comp)}/{format_count(tot)} ({pct:.2f}%)")
+            print(f"  Est. Time Left : {format_eta(eta)}")
+            print(f"{box_color}────────────────────────────────────────────────────────────────────────{Colors.RESET}")
+            sys.stdout.flush()
+
+    def report(task_desc, step_msg, is_first, comp, tot, eta):
+        if fancy_ui:
+            print_terminal_status(task_desc, step_msg, is_first, comp, tot, eta)
+        else:
+            safe_print(f"{Colors.GRAY}[{lane_tag}]{Colors.RESET} {task_desc}: {step_msg}")
+
+    current_mode = None
+    first_stat_print = True
+    # Set right before a task's heavy generation call, cleared right after -- lets the
+    # KeyboardInterrupt handler below know whether a task was actually in-flight when the
+    # interrupt landed, so a Ctrl+C mid-crunch can be reported as a cancelled task (chunk_id and
+    # all) instead of silently vanishing with no record anywhere of what was abandoned.
+    current_task_chunk_id = None
+    while True:
+        try:
+            if pause_event is not None and pause_event.is_set():
+                time.sleep(1)
+                continue
+
+            # Checked every cycle, not just at startup -- a new version can land while this
+            # client is mid-campaign. With auto-update ON, offer_update() below downloads and
+            # os.execv()'s immediately with no prompt (restarting re-enters main() from the top,
+            # which naturally resumes polling/crunching once it reaches this loop again). With
+            # auto-update OFF, it prints the notice and blocks on a real y/n prompt -- crunching
+            # is effectively stopped right here until answered, then resumes if declined
+            # (unless mandatory, which exits instead). Only the fancy_ui (main-thread) lane checks
+            # this -- a background lane restarting the whole process out from under the primary
+            # lane would be worse than just missing an update check on that one thread.
+            if fancy_ui:
+                update_status, update_info = check_for_update()
+                if update_status == "must_update":
+                    offer_update(update_status, update_info, mandatory=True)
+                elif update_status == "update_available":
+                    offer_update(update_status, update_info, mandatory=False)
+
+            work_package = make_request(f"{SERVER_URL}/get_work?user_id={user_id}&hardware_tier={hardware_tier}&model={urllib.parse.quote(chosen_model)}&client_version={VERSION}", timeout=10)
+
+            mode = work_package.get("mode", "rag")
+
+            if mode != current_mode:
+                first_stat_print = True
+                if mode == "idle":
+                    safe_print(f"{Colors.GRAY}[{lane_tag}] Server online -- no tasks available (idle mode).{Colors.RESET}")
+                else:
+                    safe_print(f"\n[{lane_tag}] [{MODE_BANNERS.get(mode, mode.upper() + ' MODE ACTIVATED')}]\n")
+                current_mode = mode
+
+            if mode == "idle":
+                time.sleep(30)
+                continue
+
+            if mode not in ("rag", "finetune"):
+                safe_print(f"{Colors.YELLOW}[{lane_tag}] [!] Unrecognized mode '{mode}' from server -- skipping this cycle.{Colors.RESET}")
+                time.sleep(5)
+                continue
+
+            total_chunks, completed_chunks = work_package.get("total_chunks", 0), work_package.get("completed_chunks", 0)
+            eta_seconds = work_package.get("eta_seconds")
+
+            if work_package.get("status") == "done":
+                # Doesn't exit -- the server can switch this client into a different mode (or back
+                # to idle) later, and it should just keep following along rather than requiring a
+                # manual restart every time one campaign's queue empties out.
+                safe_print(f"\n{mode_color(mode)}{Colors.BOLD}[{lane_tag}] [★] {mode.upper()} campaign complete -- all chunks processed. Waiting for the next campaign...{Colors.RESET}")
+                time.sleep(30)
+                continue
+            if work_package.get("status") == "waiting":
+                safe_print(f"{Colors.GRAY}[{lane_tag}] [~] Server online -- no matched tasks left for hardware tier '{hardware_tier}'. Sleeping...{Colors.RESET}")
+                time.sleep(30); continue
+
+            task = work_package["task"]
+
+            if mode == "rag":
+                task["lines"] = len(task.get('raw_content', '').splitlines())
+                task_desc = format_current_task_line(task)
+                report(task_desc, "Generating analysis...", first_stat_print, completed_chunks, total_chunks, eta_seconds)
+
+                current_task_chunk_id = task["chunk_id"]
+                parsed_data, last_failure_reason = generate_rag_analysis(
+                    task, chosen_model, max_threads,
+                    lambda msg: report(task_desc, msg, False, completed_chunks, total_chunks, eta_seconds),
+                    force_cpu,
+                )
+                current_task_chunk_id = None
+
+                if parsed_data is None:
+                    report(task_desc, f"✗ Skipped after 3 failed attempts ({last_failure_reason}). Releasing chunk for another node.", False, completed_chunks, total_chunks, eta_seconds)
+                    time.sleep(cooldown if cooldown > 0 else 1)
+                    continue
+
+                parsed_data.update({
+                    "chunk_id": task["chunk_id"],
+                    "title": f"[{task['relative_path']}] - {format_chunk_descriptor(task)}",
+                    "user_id": user_id,
+                    "lines_crunched": task["lines"],
+                    "mode": "rag",
+                    "client_version": VERSION,
+                })
+                report(task_desc, "Submitting analysis to master server...", False, completed_chunks, total_chunks, eta_seconds)
+                make_request(f"{SERVER_URL}/submit_work", parsed_data)
+
+                report(task_desc, "✓ Analysis uploaded successfully!", False, completed_chunks + 1, total_chunks, eta_seconds)
+
+            else:  # mode == "finetune"
+                task_desc = format_finetune_task_line(task)
+                report(task_desc, "Generating training pairs...", first_stat_print, completed_chunks, total_chunks, eta_seconds)
+
+                current_task_chunk_id = task["chunk_id"]
+                parsed, last_failure = generate_finetune_pairs(
+                    task, chosen_model,
+                    lambda msg: report(task_desc, msg, False, completed_chunks, total_chunks, eta_seconds),
+                    force_cpu,
+                )
+                current_task_chunk_id = None
+
+                if parsed is None:
+                    # Submit a 0-pairs result instead of just skipping past it: without this, the
+                    # chunk is never reported to the server, so its lock just expires and it gets
+                    # handed back out again -- forever, if the failure is deterministic.
+                    report(task_desc, f"✗ Skipped after 3 failed attempts ({last_failure}). Marking as done with 0 pairs.", False, completed_chunks, total_chunks, eta_seconds)
+                    try:
+                        make_request(f"{SERVER_URL}/submit_work", {
+                            "chunk_id": task["chunk_id"],
+                            "source_type": task["source_type"],
+                            "pairs": [],
+                            "user_id": user_id,
+                            "lines_crunched": 0,
+                            "mode": "finetune",
+                            "client_version": VERSION,
+                        })
+                    except Exception:
+                        pass
+                    time.sleep(1)
+                    continue
+
+                pairs_generated = len(parsed["pairs"])
+                submission = {
+                    "chunk_id": task["chunk_id"],
+                    "source_type": task["source_type"],
+                    "pairs": parsed["pairs"],
+                    "user_id": user_id,
+                    "lines_crunched": pairs_generated,
+                    "mode": "finetune",
+                    "client_version": VERSION,
+                }
+                report(task_desc, "Submitting pairs to master server...", False, completed_chunks, total_chunks, eta_seconds)
+                make_request(f"{SERVER_URL}/submit_work", submission)
+
+                report(task_desc, f"✓ Submitted {pairs_generated} training pairs!", False, completed_chunks + 1, total_chunks, eta_seconds)
+
+            first_stat_print = False
+            if cooldown > 0: time.sleep(cooldown)
+
+        except KeyboardInterrupt:
+            # Only the main-thread (fancy_ui) lane ever actually lands here -- Python only
+            # delivers SIGINT/KeyboardInterrupt to the main thread, so a background lane's own
+            # `try` never sees one regardless of what's happening in it at the time.
+            first_stat_print = True
+            if pause_event is not None:
+                pause_event.set()
+            if current_task_chunk_id is not None:
+                # A task was genuinely in-flight (mid-Ollama-call) when the interrupt landed, not
+                # just idle-polling or between tasks -- report it as cancelled so it isn't just
+                # silently abandoned with zero record of what got interrupted. The chunk itself
+                # isn't lost (its server-side lock just expires and it goes back in the pool for
+                # another pickup); this is purely about not losing visibility into why it didn't
+                # complete this time.
+                cancelled_event = {
+                    "event": "task_cancelled", "mode": current_mode, "chunk_id": current_task_chunk_id,
+                }
+                log_diagnostic(cancelled_event)
+                submit_diagnostic_to_server(cancelled_event)
+                current_task_chunk_id = None
+            handle_interrupt_menu()
+            if pause_event is not None:
+                pause_event.clear()
+        except urllib.error.HTTPError as he:
+            first_stat_print = True
+            if he.code == 426:
+                # The server raised its MIN_CLIENT_VERSION while this session was already
+                # running -- re-check /version for the real current requirement and prompt the
+                # same way the startup check does, rather than just retrying forever.
+                status, info = check_for_update()
+                if info is not None:
+                    offer_update(status, info, mandatory=True)
+                else:
+                    try:
+                        detail = json.loads(he.read().decode('utf-8'))
+                    except Exception:
+                        detail = he.reason
+                    sys.exit(f"\n{Colors.RED}[X] Server rejected this client as outdated (HTTP 426): {detail}{Colors.RESET}")
+            if he.code == 403:
+                sys.exit(f"\n{Colors.RED}[X] Username '{user_id}' already exists on the network.{Colors.RESET}")
+            elif he.code in (400, 422):
+                try:
+                    detail = json.loads(he.read().decode('utf-8'))
+                except Exception:
+                    detail = he.reason
+                sys.exit(
+                    f"\n{Colors.RED}[X] Server rejected the request as invalid (HTTP {he.code}): {detail}\n"
+                    f"    This is a data/config problem, not a network hiccup -- retrying won't fix it.\n"
+                    f"    Check your volunteer ID and, if this persists, report it as a bug.{Colors.RESET}"
+                )
+            safe_print(f"\n{Colors.YELLOW}[{lane_tag}] [Warning] Server error {he.code}. Retrying in 15 seconds...{Colors.RESET}"); interruptible_sleep(15)
+        except urllib.error.URLError:
+            current_mode = None
+            first_stat_print = True
+            safe_print(f"\n{Colors.RED}[{lane_tag}] [X] Server offline -- no tasks available. Retrying in 15 seconds...{Colors.RESET}"); interruptible_sleep(15)
+        except Exception as e:
+            first_stat_print = True
+            safe_print(f"\n{Colors.RED}[{lane_tag}] [Error] Failure path encounter: {e}. Retrying in 5 seconds...{Colors.RESET}"); interruptible_sleep(5)
+
+def _background_lane(**kwargs):
+    """Thread target for the secondary (CPU) lane. sys.exit() from a fatal, unrecoverable error
+    (e.g. HTTP 403/400/422 in crunch_lane's HTTPError handler) only kills the thread it's raised
+    in, not the whole process -- fine for the primary lane (that's the existing, unchanged
+    behavior), but left uncaught here it'd print a raw, alarming-looking traceback for what's
+    really just "the secondary lane stopped." Reported cleanly instead; the primary lane and the
+    process as a whole keep running either way.
+    """
+    try:
+        crunch_lane(**kwargs)
+    except SystemExit as se:
+        with print_lock:
+            print(f"\n{Colors.YELLOW}[{kwargs.get('lane_tag', 'CPU')}] Secondary lane stopped: {se}{Colors.RESET}")
+
 def main():
     print(f"{Colors.BOLD}=== CAFS -- Cubyz AI Folding System ==={Colors.RESET}")
 
@@ -1648,10 +1949,17 @@ def main():
     chosen_model, gpu_type, total_vram_gb = get_vram_and_choose_model()
     hardware_tier = "easy" if gpu_type == "cpu" or total_vram_gb <= 4.5 else ("medium" if total_vram_gb <= 8.5 else "hard")
 
+    system_ram_gb = get_system_ram_gb()
+    # Dual-lane needs a REAL GPU (a CPU-only machine has nothing extra to run a second lane on --
+    # it'd just be two lanes fighting over the same CPU cores) plus enough spare RAM that a full
+    # concurrent qwen2.5-coder:3b run doesn't starve the GPU lane's own host-side overhead.
+    dual_capable = gpu_type != "cpu" and system_ram_gb >= DUAL_LANE_MIN_RAM_GB
+
     log_diagnostic({
         "event": "session_start", "platform": PLATFORM, "gpu_type": gpu_type,
-        "total_vram_gb": round(total_vram_gb, 2), "system_ram_gb": round(get_system_ram_gb(), 2),
+        "total_vram_gb": round(total_vram_gb, 2), "system_ram_gb": round(system_ram_gb, 2),
         "chosen_model": chosen_model, "hardware_tier": hardware_tier, "client_version": VERSION,
+        "dual_lane": dual_capable,
     })
 
     if gpu_type != "cpu" and total_vram_gb > 8.0:
@@ -1666,242 +1974,53 @@ def main():
 
     ensure_ollama_installed(gpu_type)
     ensure_ollama_running_and_model_pulled(chosen_model)
+    if dual_capable:
+        # The secondary lane always runs the "easy" tier's own model -- the same
+        # qwen2.5-coder:3b a solo CPU-only volunteer would already be running -- so it needs no
+        # separate model pull/tier logic of its own.
+        ensure_ollama_running_and_model_pulled("qwen2.5-coder:3b")
 
     if server_reachable:
         print(f"{Colors.GREEN}[✓] Cluster connectivity established. Entering processing pipeline...{Colors.RESET}\n")
     else:
         print(f"{Colors.YELLOW}[!] Server unreachable -- entering offline-retry mode. Will connect once it's back.{Colors.RESET}\n")
 
-    def hardware_descriptor() -> str:
-        if gpu_type == "apple_silicon":
+    def hardware_label_for(gpu_type_val: str) -> str:
+        if gpu_type_val == "apple_silicon":
             return f"Apple Silicon ({total_vram_gb:.1f} GB effective unified memory)"
-        if gpu_type == "intel_dgpu":
+        if gpu_type_val == "intel_dgpu":
             return f"Intel Mac + Discrete GPU ({total_vram_gb:.1f} GB VRAM)"
-        if gpu_type == "cpu":
-            return f"CPU Engine ({get_system_ram_gb():.1f} GB RAM)"
-        return f"{gpu_type.upper()} ({total_vram_gb:.1f} GB VRAM)"
+        if gpu_type_val == "cpu":
+            return f"CPU Engine ({system_ram_gb:.1f} GB RAM)"
+        return f"{gpu_type_val.upper()} ({total_vram_gb:.1f} GB VRAM)"
 
-    def print_terminal_status(task_desc, step_msg, is_first, comp, tot, eta=None):
-        if not is_first:
-            sys.stdout.write("\033[F\033[K" * 7)
+    if dual_capable:
+        print(f"{Colors.CYAN}[✓] Dual-lane mode: GPU ({hardware_label_for(gpu_type)}) + a secondary CPU lane (qwen2.5-coder:3b, {system_ram_gb:.1f} GB RAM) will crunch two tasks at once.{Colors.RESET}\n")
+        pause_event = threading.Event()
+        # user_id is 3-9 alpha chars (enforced at login); truncating to 8 and appending "c" always
+        # differs from the primary lane's own id (even at the 9-char ceiling, where a bare
+        # suffix would otherwise just silently reproduce the original id) while staying within
+        # that same 3-9 range the server itself validates against.
+        cpu_user_id = user_id[:8] + "c"
+        cpu_thread = threading.Thread(
+            target=_background_lane,
+            kwargs=dict(
+                lane_tag="CPU", user_id=cpu_user_id, hardware_tier="easy", chosen_model="qwen2.5-coder:3b",
+                max_threads=2, cooldown=4.0, mode_desc="Eco Profile (Automated: Secondary CPU lane, running alongside the primary GPU lane)",
+                hardware_label=f"CPU Engine ({system_ram_gb:.1f} GB RAM, secondary lane)",
+                force_cpu=True, fancy_ui=False, pause_event=pause_event,
+            ),
+            daemon=True,
+        )
+        cpu_thread.start()
+    else:
+        pause_event = None
 
-        pct = (comp / tot * 100) if tot else 0.0
-        bar_len = 20
-        fill_len = max(0, min(bar_len, int(round(bar_len * comp / float(tot))))) if tot else 0
-        p_bar = '█' * fill_len + '░' * (bar_len - fill_len)
-
-        # current_mode is a closure read from the enclosing main() scope -- by the time this is
-        # actually called (from inside the main loop, after mode is set each cycle) it always
-        # reflects the campaign this task belongs to, so the whole box visually tracks RAG vs
-        # FINETUNE at a glance without needing to pass mode through every call site.
-        box_color = mode_color(current_mode)
-        if step_msg.startswith("✓"):
-            status_color = Colors.GREEN
-        elif step_msg.startswith("⚠"):
-            status_color = Colors.YELLOW
-        elif step_msg.startswith("✗"):
-            status_color = Colors.RED
-        else:
-            status_color = ""
-
-        print(f"{box_color}─── [ {hardware_descriptor()} ] ──────────────────────────────────────────{Colors.RESET}")
-        print(f"  Current Task : {task_desc}")
-        print(f"  Configuration: Model: {chosen_model} • Profile: {mode_desc.split(' (')[0]}")
-        print(f"  Node Status  : {status_color}{step_msg}{Colors.RESET}")
-        print(f"  Global Progress: [{box_color}{p_bar}{Colors.RESET}] {format_count(comp)}/{format_count(tot)} ({pct:.2f}%)")
-        print(f"  Est. Time Left : {format_eta(eta)}")
-        print(f"{box_color}────────────────────────────────────────────────────────────────────────{Colors.RESET}")
-        sys.stdout.flush()
-
-    current_mode = None
-    first_stat_print = True
-    # Set right before a task's heavy generation call, cleared right after -- lets the
-    # KeyboardInterrupt handler below know whether a task was actually in-flight when the
-    # interrupt landed, so a Ctrl+C mid-crunch can be reported as a cancelled task (chunk_id and
-    # all) instead of silently vanishing with no record anywhere of what was abandoned.
-    current_task_chunk_id = None
-    while True:
-        try:
-            # Checked every cycle, not just at startup -- a new version can land while this
-            # client is mid-campaign. With auto-update ON, offer_update() below downloads and
-            # os.execv()'s immediately with no prompt (restarting re-enters main() from the top,
-            # which naturally resumes polling/crunching once it reaches this loop again). With
-            # auto-update OFF, it prints the notice and blocks on a real y/n prompt -- crunching
-            # is effectively stopped right here until answered, then resumes if declined
-            # (unless mandatory, which exits instead).
-            update_status, update_info = check_for_update()
-            if update_status == "must_update":
-                offer_update(update_status, update_info, mandatory=True)
-            elif update_status == "update_available":
-                offer_update(update_status, update_info, mandatory=False)
-
-            work_package = make_request(f"{SERVER_URL}/get_work?user_id={user_id}&hardware_tier={hardware_tier}&model={urllib.parse.quote(chosen_model)}&client_version={VERSION}", timeout=10)
-
-            mode = work_package.get("mode", "rag")
-
-            if mode != current_mode:
-                first_stat_print = True
-                if mode == "idle":
-                    print(f"{Colors.GRAY}[~] Server online -- no tasks available (idle mode).{Colors.RESET}")
-                else:
-                    print(f"\n[{MODE_BANNERS.get(mode, mode.upper() + ' MODE ACTIVATED')}]\n")
-                current_mode = mode
-
-            if mode == "idle":
-                time.sleep(30)
-                continue
-
-            if mode not in ("rag", "finetune"):
-                print(f"{Colors.YELLOW}[!] Unrecognized mode '{mode}' from server -- skipping this cycle.{Colors.RESET}")
-                time.sleep(5)
-                continue
-
-            total_chunks, completed_chunks = work_package.get("total_chunks", 0), work_package.get("completed_chunks", 0)
-            eta_seconds = work_package.get("eta_seconds")
-
-            if work_package.get("status") == "done":
-                # Doesn't exit -- the server can switch this client into a different mode (or back
-                # to idle) later, and it should just keep following along rather than requiring a
-                # manual restart every time one campaign's queue empties out.
-                print(f"\n{mode_color(mode)}{Colors.BOLD}[★] {mode.upper()} campaign complete -- all chunks processed. Waiting for the next campaign...{Colors.RESET}")
-                time.sleep(30)
-                continue
-            if work_package.get("status") == "waiting":
-                print(f"{Colors.GRAY}[~] Server online -- no matched tasks left for hardware tier '{hardware_tier}'. Sleeping...{Colors.RESET}")
-                time.sleep(30); continue
-
-            task = work_package["task"]
-
-            if mode == "rag":
-                task["lines"] = len(task.get('raw_content', '').splitlines())
-                task_desc = format_current_task_line(task)
-                print_terminal_status(task_desc, "Generating analysis...", first_stat_print, completed_chunks, total_chunks, eta_seconds)
-
-                current_task_chunk_id = task["chunk_id"]
-                parsed_data, last_failure_reason = generate_rag_analysis(
-                    task, chosen_model, max_threads,
-                    lambda msg: print_terminal_status(task_desc, msg, False, completed_chunks, total_chunks, eta_seconds)
-                )
-                current_task_chunk_id = None
-
-                if parsed_data is None:
-                    print_terminal_status(task_desc, f"✗ Skipped after 3 failed attempts ({last_failure_reason}). Releasing chunk for another node.", False, completed_chunks, total_chunks, eta_seconds)
-                    time.sleep(cooldown if cooldown > 0 else 1)
-                    continue
-
-                parsed_data.update({
-                    "chunk_id": task["chunk_id"],
-                    "title": f"[{task['relative_path']}] - {format_chunk_descriptor(task)}",
-                    "user_id": user_id,
-                    "lines_crunched": task["lines"],
-                    "mode": "rag",
-                    "client_version": VERSION,
-                })
-                print_terminal_status(task_desc, "Submitting analysis to master server...", False, completed_chunks, total_chunks, eta_seconds)
-                make_request(f"{SERVER_URL}/submit_work", parsed_data)
-
-                print_terminal_status(task_desc, "✓ Analysis uploaded successfully!", False, completed_chunks + 1, total_chunks, eta_seconds)
-
-            else:  # mode == "finetune"
-                task_desc = format_finetune_task_line(task)
-                print_terminal_status(task_desc, "Generating training pairs...", first_stat_print, completed_chunks, total_chunks, eta_seconds)
-
-                current_task_chunk_id = task["chunk_id"]
-                parsed, last_failure = generate_finetune_pairs(
-                    task, chosen_model,
-                    lambda msg: print_terminal_status(task_desc, msg, False, completed_chunks, total_chunks, eta_seconds)
-                )
-                current_task_chunk_id = None
-
-                if parsed is None:
-                    # Submit a 0-pairs result instead of just skipping past it: without this, the
-                    # chunk is never reported to the server, so its lock just expires and it gets
-                    # handed back out again -- forever, if the failure is deterministic.
-                    print_terminal_status(task_desc, f"✗ Skipped after 3 failed attempts ({last_failure}). Marking as done with 0 pairs.", False, completed_chunks, total_chunks, eta_seconds)
-                    try:
-                        make_request(f"{SERVER_URL}/submit_work", {
-                            "chunk_id": task["chunk_id"],
-                            "source_type": task["source_type"],
-                            "pairs": [],
-                            "user_id": user_id,
-                            "lines_crunched": 0,
-                            "mode": "finetune",
-                            "client_version": VERSION,
-                        })
-                    except Exception:
-                        pass
-                    time.sleep(1)
-                    continue
-
-                pairs_generated = len(parsed["pairs"])
-                submission = {
-                    "chunk_id": task["chunk_id"],
-                    "source_type": task["source_type"],
-                    "pairs": parsed["pairs"],
-                    "user_id": user_id,
-                    "lines_crunched": pairs_generated,
-                    "mode": "finetune",
-                    "client_version": VERSION,
-                }
-                print_terminal_status(task_desc, "Submitting pairs to master server...", False, completed_chunks, total_chunks, eta_seconds)
-                make_request(f"{SERVER_URL}/submit_work", submission)
-
-                print_terminal_status(task_desc, f"✓ Submitted {pairs_generated} training pairs!", False, completed_chunks + 1, total_chunks, eta_seconds)
-
-            first_stat_print = False
-            if cooldown > 0: time.sleep(cooldown)
-
-        except KeyboardInterrupt:
-            first_stat_print = True
-            if current_task_chunk_id is not None:
-                # A task was genuinely in-flight (mid-Ollama-call) when the interrupt landed, not
-                # just idle-polling or between tasks -- report it as cancelled so it isn't just
-                # silently abandoned with zero record of what got interrupted. The chunk itself
-                # isn't lost (its server-side lock just expires and it goes back in the pool for
-                # another pickup); this is purely about not losing visibility into why it didn't
-                # complete this time.
-                cancelled_event = {
-                    "event": "task_cancelled", "mode": current_mode, "chunk_id": current_task_chunk_id,
-                }
-                log_diagnostic(cancelled_event)
-                submit_diagnostic_to_server(cancelled_event)
-                current_task_chunk_id = None
-            handle_interrupt_menu()
-        except urllib.error.HTTPError as he:
-            first_stat_print = True
-            if he.code == 426:
-                # The server raised its MIN_CLIENT_VERSION while this session was already
-                # running -- re-check /version for the real current requirement and prompt the
-                # same way the startup check does, rather than just retrying forever.
-                status, info = check_for_update()
-                if info is not None:
-                    offer_update(status, info, mandatory=True)
-                else:
-                    try:
-                        detail = json.loads(he.read().decode('utf-8'))
-                    except Exception:
-                        detail = he.reason
-                    sys.exit(f"\n{Colors.RED}[X] Server rejected this client as outdated (HTTP 426): {detail}{Colors.RESET}")
-            if he.code == 403:
-                sys.exit(f"\n{Colors.RED}[X] Username '{user_id}' already exists on the network.{Colors.RESET}")
-            elif he.code in (400, 422):
-                try:
-                    detail = json.loads(he.read().decode('utf-8'))
-                except Exception:
-                    detail = he.reason
-                sys.exit(
-                    f"\n{Colors.RED}[X] Server rejected the request as invalid (HTTP {he.code}): {detail}\n"
-                    f"    This is a data/config problem, not a network hiccup -- retrying won't fix it.\n"
-                    f"    Check your volunteer ID and, if this persists, report it as a bug.{Colors.RESET}"
-                )
-            print(f"\n{Colors.YELLOW}[Warning] Server error {he.code}. Retrying in 15 seconds...{Colors.RESET}"); interruptible_sleep(15)
-        except urllib.error.URLError:
-            current_mode = None
-            first_stat_print = True
-            print(f"\n{Colors.RED}[X] Server offline -- no tasks available. Retrying in 15 seconds...{Colors.RESET}"); interruptible_sleep(15)
-        except Exception as e:
-            first_stat_print = True
-            print(f"\n{Colors.RED}[Error] Failure path encounter: {e}. Retrying in 5 seconds...{Colors.RESET}"); interruptible_sleep(5)
+    crunch_lane(
+        lane_tag="GPU" if dual_capable else "MAIN", user_id=user_id, hardware_tier=hardware_tier,
+        chosen_model=chosen_model, max_threads=max_threads, cooldown=cooldown, mode_desc=mode_desc,
+        hardware_label=hardware_label_for(gpu_type), force_cpu=False, fancy_ui=True, pause_event=pause_event,
+    )
 
 if __name__ == "__main__":
     main()
