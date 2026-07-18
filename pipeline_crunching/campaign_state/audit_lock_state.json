@@ -1,32 +1,20 @@
 {
   "locked": {
-    "codebase_mods_cubyz_rotations_sign.zig_chunk_0": {
-      "user_id": "Nickc",
-      "timestamp": 1784404595.0593913
-    },
-    "github_issue_1115_discussion": {
-      "user_id": "Nick",
-      "timestamp": 1784404629.9123023
-    },
-    "github_issue_96_discussion": {
-      "user_id": "Caleb",
-      "timestamp": 1784404674.4850965
-    },
-    "codebase_src_gui_components_DiscreteSlider.zig_chunk_0": {
+    "codebase_src_gui_components_ContinuousSlider.zig_chunk_0": {
       "user_id": "NickSRVR",
-      "timestamp": 1784404839.3101263
+      "timestamp": 1784405249.8205898
     },
-    "github_issue_428_discussion": {
+    "github_issue_118_discussion": {
       "user_id": "Caleb",
-      "timestamp": 1784404857.1644275
+      "timestamp": 1784405272.711494
     },
-    "github_issue_311_discussion": {
-      "user_id": "Nick",
-      "timestamp": 1784404887.4666617
-    },
-    "codebase_src_gui_windows_controls.zig_chunk_0": {
+    "docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_0": {
       "user_id": "Nickc",
-      "timestamp": 1784404891.7469387
+      "timestamp": 1784405277.6393514
+    },
+    "docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_1": {
+      "user_id": "Nick",
+      "timestamp": 1784405281.469996
     }
   },
   "completed": [
@@ -1257,8 +1245,35 @@
     "codebase_mods_cubyz_rotations_log.zig_chunk_1",
     "codebase_mods_cubyz_rotations_log.zig_chunk_0",
     "github_issue_592_discussion",
-    "codebase_src_gui_components_DiscreteSlider.zig_chunk_1"
+    "codebase_src_gui_components_DiscreteSlider.zig_chunk_1",
+    "codebase_src_gui_components_DiscreteSlider.zig_chunk_0",
+    "codebase_src_gui_components_VerticalList.zig_chunk_0",
+    "codebase_mods_cubyz_rotations_sign.zig_chunk_0",
+    "github_issue_202_discussion",
+    "github_issue_198_discussion",
+    "github_issue_111_discussion",
+    "github_issue_101_discussion",
+    "addon_creator_app-io.js_chunk_1",
+    "addon_creator_app-io.js_chunk_0",
+    "addon_creator_app-io.js_chunk_2",
+    "codebase_src_server_command_worldedit_blueprint.zig_chunk_0",
+    "github_issue_305_discussion",
+    "addon_creator_app-io.js_chunk_3",
+    "github_issue_1771_discussion",
+    "codebase_src_gui_windows_inventory_crafting.zig_chunk_0",
+    "codebase_src_gui_windows_creative_inventory.zig_chunk_0",
+    "github_issue_1_discussion",
+    "codebase_src_server_terrain_chunkgen_TerrainGenerator.zig_chunk_0",
+    "codebase_src_gui_windows_inventory_crafting.zig_chunk_1",
+    "codebase_src_gui_windows_controls.zig_chunk_0",
+    "github_issue_17_discussion",
+    "github_issue_28_discussion",
+    "github_issue_37_discussion",
+    "github_issue_44_discussion",
+    "codebase_src_gui_windows_authentication_create_account_account_code.zig_chunk_0",
+    "github_issue_57_discussion",
+    "github_issue_109_discussion"
   ],
   "actions_baseline_completed": 543,
-  "actions_count": 2619
+  "actions_count": 2710
 }

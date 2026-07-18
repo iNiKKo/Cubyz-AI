@@ -9,7 +9,26 @@
 Handles the import of existing addons, extracting configuration values and updating UI components.
 
 ## Explanation
-This JavaScript code snippet is part of an Addon Creator application. It defines a function `importExistingAddon` that processes the content of an imported addon file. The function extracts various configuration values such as terrain limits, roughness, block types, cave settings, and more from the file content using the `extractVal` function. These extracted values are then used to update the UI components or other parts of the application. Additionally, it calls functions to update searchable items and the sidebar project tree if they exist in the global scope. If an error occurs during parsing, an alert is shown with the error message.
+**Explanation**
+This JavaScript code snippet is part of an Addon Creator application. It defines a function `importExistingAddon` that processes the content of an imported addon file. The function extracts various configuration values such as terrain limits, roughness, block types, cave settings, and more from the file content using the `extractVal` function. These extracted values include:
+- minHeightLimit: 7
+- maxHeightLimit: 50
+- roughness: 1.0
+- hills: 0.0
+- mountains: 0.0
+- soilCreep: 1.0
+- keepOriginalTerrain: 1.0
+- stoneBlock: cubyz:slate/base
+- caves: 1.0
+- caveRadiusFactor: 1.0
+- crystals: 0
+- music: cubyz:sunrise
+- fogDensity: 1.5
+- skyColorHex: #75b2ff
+- fogColorHex: #e2f2ff
+- skyColorVector: { 0.46, 0.70, 1.00 }
+- fogColorVector: { 0.89, 0.95, 1.00 }
+The extracted values are then used to update the UI components or other parts of the application. Additionally, it calls functions to update searchable items and the sidebar project tree if they exist in the global scope. If an error occurs during parsing, an alert is shown with the error message.
 
 ## Related Questions
 - What is the purpose of the `importExistingAddon` function?

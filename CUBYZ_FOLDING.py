@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.25"
+VERSION = "1.1.26"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -3003,13 +3003,19 @@ def main():
         and total_vram_gb >= DUAL_LANE_MIN_VRAM_GB
     )
 
-    log_diagnostic({
-        "event": "session_start", "platform": PLATFORM, "gpu_type": gpu_type,
+    session_start_event = {
+        "event": "session_start", "user_id": user_id, "platform": PLATFORM, "gpu_type": gpu_type,
         "total_vram_gb": round(total_vram_gb, 2), "system_ram_gb": round(system_ram_gb, 2),
         "chosen_model": chosen_model, "hardware_tier": hardware_tier, "client_version": VERSION,
         "dual_lane": dual_capable, "primary_is_gpu": primary_is_gpu,
         "benchmark_gpu_time": gpu_time, "benchmark_cpu_time": cpu_time,
-    })
+    }
+    log_diagnostic(session_start_event)
+    # This used to be logged locally only -- the operator's server had no OS/GPU-vendor/VRAM/RAM
+    # info for any volunteer at all, anywhere, confirmed live when trying to show it on the admin
+    # dashboard. Reuses the existing /diagnostics endpoint (already accepts a raw dict) rather than
+    # adding a new one.
+    submit_diagnostic_to_server(session_start_event)
 
     if server_reachable:
         print(f"{Colors.GREEN}[✓] Cluster connectivity established. Entering processing pipeline...{Colors.RESET}\n")

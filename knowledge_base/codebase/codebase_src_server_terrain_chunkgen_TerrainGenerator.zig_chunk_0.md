@@ -9,7 +9,7 @@
 The chunk initializes terrain generation parameters and block types.
 
 ## Explanation
-This chunk sets up the basic configuration for terrain generation in the Cubyz engine. It imports necessary modules and defines constants for generator ID, priority, and seed. The `init` function parses block types like air, stone, and water from string identifiers into their respective block structures. This initialization is crucial for setting up the environment before actual terrain generation begins.
+This chunk sets up the basic configuration for terrain generation in the Cubyz engine. It imports necessary modules and defines constants such as `id`, `priority`, `generatorSeed`, and `defaultState`. The constant `priority` is set to 1024, indicating that this generator has a high priority within Cubyz but allows other mods to potentially have higher priorities. The `generatorSeed` is defined with the value `0x65c7f9fdc0641f94`, which serves as the seed for random number generation in terrain creation. The `defaultState` is set to `.enabled`. Additionally, the `init` function parses block types like air, stone, and water from string identifiers into their respective block structures using `main.blocks.parseBlock()`. This initialization is crucial for setting up the environment before actual terrain generation begins.
 
 ## Code Example
 ```zig

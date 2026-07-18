@@ -91,6 +91,7 @@ if os.path.exists(USER_FIRST_SEEN_FILE):
 _user_last_status = {}   # user_id (lower) -> {"mode","symbol","symbol_color","message","timestamp"}
 _user_error_counts = {}  # user_id (lower) -> int, incremented for every RED-severity event
 _recent_events = deque(maxlen=10)  # rolling tail of (ts, mode, user_id, symbol, symbol_color, message)
+_user_hardware_info = {}  # user_id (lower) -> {"platform","gpu_type","total_vram_gb","system_ram_gb","dual_lane"}, from /diagnostics' session_start event -- see submit_diagnostics()
 _DASHBOARD_ACTIVE = False  # flipped true once the background render thread actually starts
 
 def log_event(mode: str, user_id: str, symbol: str, symbol_color: str, message: str):
@@ -129,6 +130,27 @@ def _relative_time(ago_seconds: float) -> str:
 
 def _mode_stats_file(mode: str):
     return {"rag": RAG_STATS_FILE, "finetune": FINETUNE_STATS_FILE, "audit": AUDIT_STATS_FILE}.get(mode)
+
+_PLATFORM_LABELS = {"win32": "Windows", "linux": "Linux", "darwin": "macOS"}
+_GPU_TYPE_LABELS = {
+    "nvidia": "NVIDIA GPU", "amd": "AMD GPU", "intel": "Intel GPU",
+    "apple_silicon": "Apple Silicon GPU", "intel_dgpu": "Intel iGPU (Mac)", "cpu": "CPU only (no GPU)",
+}
+
+def _format_hardware_info(hw: dict) -> str:
+    """hw comes from the session_start diagnostic event (see submit_diagnostics()) -- None until
+    that volunteer's client has actually reported it, which older (pre-1.1.25) clients never did
+    at all, since it used to only ever get logged to that machine's own local file."""
+    if not hw:
+        return f"{Colors.GRAY}(unknown -- pre-1.1.25 client, or hasn't reported yet){Colors.RESET}"
+    os_label = _PLATFORM_LABELS.get(hw.get("platform"), hw.get("platform") or "?")
+    gpu_label = _GPU_TYPE_LABELS.get(hw.get("gpu_type"), hw.get("gpu_type") or "?")
+    vram = hw.get("total_vram_gb")
+    vram_text = f" ({vram:.1f} GB VRAM)" if isinstance(vram, (int, float)) and vram > 0 else ""
+    ram = hw.get("system_ram_gb")
+    ram_text = f"{ram:.1f} GB RAM" if isinstance(ram, (int, float)) else "? GB RAM"
+    dual_text = f"  •  {Colors.CYAN}{Colors.BOLD}DUAL-LANE{Colors.RESET}" if hw.get("dual_lane") else ""
+    return f"{os_label}  •  {gpu_label}{vram_text}  •  {ram_text}{dual_text}"
 
 def _format_progress_line(mode: str, stats: dict) -> str:
     if mode == "audit":
@@ -207,12 +229,22 @@ def render_dashboard():
             model = info.get("model") or "-"
         lane = info.get("lane") or "-"
         lines.append(_truncate(f"  Hardware : {tier} tier  •  {model}  •  lane: {lane}", box_w))
+        # Not run through _truncate() -- unlike the other panel lines, this one has ANSI color
+        # codes already embedded in it (see _format_hardware_info), and truncating by raw
+        # character count risks cutting a line off mid-escape-sequence, corrupting the terminal's
+        # color state for everything printed after it. Its content is short and bounded enough
+        # (OS + GPU label + VRAM + RAM + an optional DUAL-LANE flag) that overflow in practice
+        # would only happen on an extremely narrow terminal, where it just wraps instead.
+        lines.append(f"  System   : {_format_hardware_info(_user_hardware_info.get(user_id))}")
 
         last = _user_last_status.get(user_id)
         prefix = "  Status   : "
         if last:
-            age = _relative_time(now - last["timestamp"])
-            suffix = f"  ({age})"
+            age_seconds = now - last["timestamp"]
+            # No "(just now)" -- that's true for nearly every line on a live, fast-moving
+            # campaign, so it was just noise repeated on almost every panel. The age is only
+            # actually informative once a status has sat for a while.
+            suffix = f"  ({_relative_time(age_seconds)})" if age_seconds >= 60 else ""
             msg = _truncate(last["message"], max(10, box_w - len(prefix) - 1 - len(suffix)))
             lines.append(f"{prefix}{last['symbol_color']}{last['symbol']}{Colors.RESET} {msg}{Colors.DIM}{suffix}{Colors.RESET}")
         else:
@@ -418,7 +450,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.1.2"
-LATEST_CLIENT_VERSION = "1.1.25"
+LATEST_CLIENT_VERSION = "1.1.26"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:
@@ -2160,11 +2192,22 @@ def get_version():
 def submit_diagnostics(payload: dict):
     # Deliberately a raw dict, not a Pydantic model -- this is observability data, not campaign
     # state, so it shouldn't need a schema migration every time a new diagnostic field is added
-    # client-side. Only task_gave_up/task_cancelled events land here (see
+    # client-side. task_gave_up/task_cancelled/session_start events land here (see
     # CUBYZ_FOLDING.py's submit_diagnostic_to_server()) -- the much chattier per-attempt
     # task_retry events stay purely local, so this endpoint doesn't get hit on every single retry.
     payload["received_at"] = time.time()
     append_jsonl(CLIENT_DIAGNOSTICS_FILE, payload, "client diagnostic")
+
+    if payload.get("event") == "session_start" and payload.get("user_id"):
+        # The admin dashboard used to have zero hardware info for any volunteer -- OS, GPU
+        # vendor, VRAM, system RAM -- confirmed live. This is the one place that information
+        # actually reaches the server at all, so it's captured into its own dict (not just left
+        # sitting in the append-only diagnostics log) for render_dashboard() to read directly.
+        _user_hardware_info[payload["user_id"].lower()] = {
+            "platform": payload.get("platform"), "gpu_type": payload.get("gpu_type"),
+            "total_vram_gb": payload.get("total_vram_gb"), "system_ram_gb": payload.get("system_ram_gb"),
+            "dual_lane": payload.get("dual_lane"),
+        }
 
     if payload.get("event") == "task_gave_up" and payload.get("mode") == "rag":
         chunk_id = payload.get("chunk_id")

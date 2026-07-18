@@ -6,10 +6,14 @@
 **Concepts:** GUI component, discrete value selection, user interaction, memory management
 
 ## Summary
-The DiscreteSlider component manages a slider UI element with discrete values, handling initialization, deinitialization, and interaction logic.
+The DiscreteSlider component manages a slider UI element with discrete values. It includes methods for initializing and deinitializing the slider, updating its state based on user interactions, and rendering it. The slider consists of a button that can be dragged along a bar to select different values from a predefined list. The component also handles memory allocation and deallocation for internal data structures such as text buffers and value lists.
 
 ## Explanation
-This chunk defines the DiscreteSlider struct, which represents a GUI component for selecting from a list of discrete values. It includes methods for initializing and deinitializing the slider, updating its state based on user interactions, and rendering it. The slider consists of a button that can be dragged along a bar to select different values. The component also manages memory allocation and deallocation for its internal data structures, such as text buffers and value lists.
+This chunk defines the DiscreteSlider struct, which represents a GUI component for selecting discrete values. It includes methods for initializing and deinitializing the slider, updating its state based on user interactions, and rendering it. The slider consists of a button that can be dragged along a bar to select different values from a predefined list. The component also manages memory allocation and deallocation for internal data structures such as text buffers and value lists.
+
+The DiscreteSlider struct has several fields including `border` (3), `fontSize` (16), `texture`, `pos`, `size`, `callback`, `currentSelection`, `text`, `currentText`, `values`, `label`, `button`, and `mouseAnchor`. The `globalInit()` method initializes the texture from a file, while `globalDeinit()` deinitializes it. The `init()` method sets up the slider with given parameters such as position, width, text, format string for values, initial value, and callback function. It also allocates memory for internal data structures like labels and buttons.
+
+The `deinit()` method frees allocated memory and destroys the DiscreteSlider instance. The `toComponent()` method converts the slider to a GUI component. Methods such as `setButtonPosFromValue()`, `updateLabel()`, `updateValueFromButtonPos()`, `updateHovered()`, `getBarPos()`, `getBarSize()`, and `mainButtonPressed()` handle updating the button position, label text based on selection, value updates from button positions, hover detection, bar positioning, bar sizing, and main button press events respectively.
 
 ## Code Example
 ```zig
@@ -19,11 +23,10 @@ pub fn globalInit() void {
 ```
 
 ## Related Questions
-- What is the purpose of the DiscreteSlider struct?
-- How does the DiscreteSlider initialize its texture?
-- What method handles updating the label text based on the current selection?
-- How is memory managed for the internal data structures in DiscreteSlider?
-- What conditions trigger the callback function in DiscreteSlider?
-- How does the slider handle mouse interactions outside of the button area?
+- What are the specific numerical constants used in DiscreteSlider (e.g., border width, font size)?
+- How does the `init()` method set up the slider with given parameters?
+- What is the exact process for updating the label text based on current selection?
+- How does memory management work for internal data structures like labels and buttons?
+- Under what conditions does the callback function get triggered in DiscreteSlider?
 
 *Source: unknown | chunk_id: codebase_src_gui_components_DiscreteSlider.zig_chunk_0*

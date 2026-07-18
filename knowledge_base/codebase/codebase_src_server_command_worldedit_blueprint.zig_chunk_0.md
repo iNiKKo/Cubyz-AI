@@ -6,10 +6,10 @@
 **Concepts:** command-line interface, file system operations, user feedback, error handling
 
 ## Summary
-Handles blueprint-related commands for saving, deleting, loading, and listing blueprints.
+Handles blueprint-related commands for saving, deleting, loading, and listing blueprints. The `execute` function parses input arguments using an argument parser and delegates to handler functions like `blueprintSave`, `blueprintDelete`, `blueprintLoad`, and `blueprintList`. These handlers perform file operations on the 'blueprints' directory and provide user feedback through messaging.
 
 ## Explanation
-This chunk defines a set of functions to manage blueprints through command-line inputs. It uses an argument parser to interpret user commands and performs corresponding file operations on the 'blueprints' directory. The `execute` function parses the input arguments and delegates to specific handler functions like `blueprintSave`, `blueprintDelete`, `blueprintLoad`, and `blueprintList`. Each handler function interacts with the filesystem, potentially sending messages back to the user through the `User` object. Error handling is centralized in helper functions like `sendWarningAndLog` and `sendInfoAndLog`, which log errors and send feedback to the user.
+This chunk defines a set of functions to manage blueprints via command-line inputs. The commands include `/blueprint save <filePath>`, `/blueprint delete <filePath>`, `/blueprint load <filePath>`, and `/blueprint list`. Each command is parsed by the `ArgParser` which maps to specific handler functions (`execute`). For example, `blueprintSave` saves the clipboard content to a specified file path in the 'blueprints' directory. If successful, it sends an info message back to the user; otherwise, it logs and sends a warning message. Similarly, `blueprintDelete` deletes a blueprint file from the 'blueprints' directory with appropriate error handling. The `blueprintList` function lists all blueprint files in the directory, sending their paths to the user. Error handling is centralized in helper functions like `sendWarningAndLog` and `sendInfoAndLog`, which log errors and send feedback messages.
 
 ## Code Example
 ```zig
@@ -21,11 +21,9 @@ fn deinit(self: Args, allocator: NeverFailingAllocator) void {
 ```
 
 ## Related Questions
-- What is the purpose of the `Args` union in this chunk?
-- How does the `execute` function handle different command inputs?
-- What error handling mechanisms are used in this chunk?
-- Which functions interact with the filesystem, and how do they manage errors?
-- How does the chunk send messages back to the user?
-- What is the role of the `openBlueprintsDir` function in this module?
+- What are the exact commands for saving, deleting, loading, and listing blueprints?
+- How does each command interact with the filesystem?
+- What specific error handling mechanisms are used in this chunk?
+- Which functions manage file operations and how do they handle errors?
 
 *Source: unknown | chunk_id: codebase_src_server_command_worldedit_blueprint.zig_chunk_0*
