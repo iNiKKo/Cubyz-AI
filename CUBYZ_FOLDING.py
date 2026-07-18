@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.15"
+VERSION = "1.1.16"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -800,6 +800,16 @@ def save_auto_update_preference(enabled: bool):
     config["auto_update"] = enabled
     save_config(config)
 
+def load_benchmark_result() -> dict:
+    """{} if never benchmarked (first boot) or the cached result no longer matches this
+    machine's current hardware fingerprint (see save_benchmark_result)."""
+    return load_config().get("benchmark_result", {})
+
+def save_benchmark_result(result: dict):
+    config = load_config()
+    config["benchmark_result"] = result
+    save_config(config)
+
 # ============================================================
 # OLLAMA SETUP -- unchanged from RAG_FOLDING.py.
 # ============================================================
@@ -982,6 +992,37 @@ def make_request(url, payload=None, timeout=180):
     # opposed to a fast "connection refused") could leave the client silently hung for up to 3
     # minutes with nothing on screen and no way out short of Ctrl+C.
     with urllib.request.urlopen(req, timeout=timeout) as res: return json.loads(res.read().decode('utf-8'))
+
+# Bounded generously, but a lane that can't finish a trivial 40-token generation within this long
+# isn't worth using at all -- treated the same as an outright failure, not just "slow."
+BENCHMARK_TIMEOUT = 45.0
+
+def benchmark_lane(model: str, force_cpu: bool):
+    """Times a small, fixed-size real Ollama generation to measure actual throughput -- run once
+    per machine (see main()'s use of load_benchmark_result()/save_benchmark_result()) to decide
+    which of CPU/GPU actually performs better HERE, rather than guessing from declared hardware
+    specs. VRAM detection in particular has repeatedly proven unreliable across GPU vendors and
+    driver/tooling states (see check_amd_gpu()'s history in this file) -- and even when the VRAM
+    number is accurate, a technically-present GPU can still be too weak, or too poorly supported
+    by whatever backend Ollama uses for it, to actually be worth using at all. Measuring real
+    throughput sidesteps needing to trust either signal.
+
+    Returns elapsed seconds (lower is better), or None if the lane failed outright or didn't
+    finish within BENCHMARK_TIMEOUT.
+    """
+    payload = {
+        "model": model,
+        "prompt": "Write a one-sentence description of what a stack data structure is.",
+        "stream": False,
+        "think": False,
+        "options": {"num_predict": 40, **({"num_gpu": 0} if force_cpu else {})},
+    }
+    start = time.time()
+    try:
+        make_request(OLLAMA_URL, payload, timeout=BENCHMARK_TIMEOUT)
+    except Exception:
+        return None
+    return time.time() - start
 
 # ============================================================
 # RAG MODE -- task processing (from pipeline_crunching/RAG_FOLDING.py)
@@ -2223,16 +2264,80 @@ def main():
         server_reachable = False
 
     chosen_model, gpu_type, total_vram_gb = get_vram_and_choose_model()
-    hardware_tier = "easy" if gpu_type == "cpu" or total_vram_gb <= 4.5 else ("medium" if total_vram_gb <= 8.5 else "hard")
-
     system_ram_gb = get_system_ram_gb()
-    # Dual-lane needs a REAL GPU (a CPU-only machine has nothing extra to run a second lane on --
-    # it'd just be two lanes fighting over the same CPU cores) with actual headroom to spare
-    # (DUAL_LANE_MIN_VRAM_GB -- see its comment; system RAM alone doesn't help if the GPU itself
-    # is already maxed out), plus enough spare RAM that a full concurrent qwen2.5-coder:3b run
-    # doesn't starve the GPU lane's own host-side overhead.
+
+    ensure_ollama_installed(gpu_type)
+    ensure_ollama_running_and_model_pulled(chosen_model)
+    if gpu_type != "cpu" and chosen_model != "qwen2.5-coder:3b":
+        # Needed for the CPU side of the benchmark below (and later, the dual-lane CPU lane
+        # itself) regardless of what tier this GPU's own VRAM picked.
+        ensure_ollama_running_and_model_pulled("qwen2.5-coder:3b")
+
+    # Declared hardware specs (VRAM detection especially -- see check_amd_gpu()'s history in this
+    # file) have repeatedly proven unreliable, and even an accurately-detected GPU can be too
+    # weak, or too poorly supported by whatever backend Ollama uses for it, to actually be worth
+    # using. So rather than assuming "any non-CPU gpu_type" means the GPU should be used,
+    # benchmark real throughput once per machine (cached in CONFIG_FILE, keyed on a hardware
+    # fingerprint so a real hardware change re-triggers it) and let the measured result decide.
+    primary_is_gpu = gpu_type != "cpu"
+    gpu_time = cpu_time = None
+    if gpu_type != "cpu":
+        fingerprint = f"{gpu_type}:{round(total_vram_gb, 1)}:{os.cpu_count()}:{chosen_model}"
+        cached = load_benchmark_result()
+        if cached.get("fingerprint") == fingerprint:
+            primary_is_gpu = cached["primary_is_gpu"]
+            gpu_time, cpu_time = cached.get("gpu_time"), cached.get("cpu_time")
+        else:
+            print(f"{Colors.CYAN}[~] First-time hardware benchmark: measuring real CPU vs. GPU throughput on this machine (one-time, well under a minute)...{Colors.RESET}")
+            gpu_time = benchmark_lane(chosen_model, force_cpu=False)
+            cpu_time = benchmark_lane("qwen2.5-coder:3b", force_cpu=True)
+            if gpu_time is None:
+                primary_is_gpu = False
+                print(f"{Colors.YELLOW}[!] GPU benchmark failed or timed out -- this GPU doesn't appear usable for inference here. Falling back to CPU.{Colors.RESET}")
+            elif cpu_time is not None and cpu_time < gpu_time:
+                primary_is_gpu = False
+                print(f"{Colors.YELLOW}[i] Benchmark: CPU ({cpu_time:.1f}s) outperformed GPU ({gpu_time:.1f}s) on this machine -- using CPU as the primary lane instead.{Colors.RESET}")
+            else:
+                primary_is_gpu = True
+                print(f"{Colors.GREEN}[✓] Benchmark: GPU ({gpu_time:.1f}s) vs. CPU ({f'{cpu_time:.1f}s' if cpu_time is not None else 'failed'}) -- using GPU as the primary lane.{Colors.RESET}")
+            save_benchmark_result({
+                "fingerprint": fingerprint, "primary_is_gpu": primary_is_gpu,
+                "gpu_time": gpu_time, "cpu_time": cpu_time,
+            })
+
+    if not primary_is_gpu:
+        # Whether because there was never a GPU at all, it benchmarked unusable, or the CPU
+        # simply won -- the primary lane runs on CPU with the same model/tier a solo CPU-only
+        # volunteer would already be using.
+        chosen_model = "qwen2.5-coder:3b"
+        hardware_tier = "easy"
+        mode_desc = "Eco Profile (Automated: CPU processing" + (", GPU benchmarked slower or unusable here" if gpu_type != "cpu" else " infrastructure fallback") + ")"
+        cooldown, max_threads = 4.0, 2
+        primary_hardware_label = f"CPU Engine ({system_ram_gb:.1f} GB RAM)"
+    else:
+        hardware_tier = "easy" if total_vram_gb <= 4.5 else ("medium" if total_vram_gb <= 8.5 else "hard")
+        if total_vram_gb > 8.0:
+            mode_desc = "Performance Profile (Automated: High-memory Apple Silicon or discrete GPU detected)" if PLATFORM == "darwin" else "Performance Profile (Automated: High VRAM GPU detected)"
+            cooldown, max_threads = 0.0, None
+        else:
+            mode_desc = "Balanced Profile (Automated: Standard Apple Silicon or discrete GPU detected)" if PLATFORM == "darwin" else "Balanced Profile (Automated: Standard GPU detected)"
+            cooldown, max_threads = 1.5, 4
+        if gpu_type == "apple_silicon":
+            primary_hardware_label = f"Apple Silicon ({total_vram_gb:.1f} GB effective unified memory)"
+        elif gpu_type == "intel_dgpu":
+            primary_hardware_label = f"Intel Mac + Discrete GPU ({total_vram_gb:.1f} GB VRAM)"
+        else:
+            primary_hardware_label = f"{gpu_type.upper()} ({total_vram_gb:.1f} GB VRAM)"
+
+    # Dual-lane needs the GPU to actually BE the primary lane (a benchmark-rejected or CPU-beaten
+    # GPU has nothing independent left to add -- see primary_is_gpu above), the CPU side of the
+    # same benchmark to have also succeeded (confirms it's independently viable, not just
+    # "unmeasured"), and both the RAM/VRAM headroom checks (see DUAL_LANE_MIN_RAM_GB/
+    # DUAL_LANE_MIN_VRAM_GB's comments -- system RAM alone doesn't help if the GPU itself is
+    # already maxed out).
     dual_capable = (
-        gpu_type != "cpu"
+        primary_is_gpu
+        and cpu_time is not None
         and system_ram_gb >= DUAL_LANE_MIN_RAM_GB
         and total_vram_gb >= DUAL_LANE_MIN_VRAM_GB
     )
@@ -2241,40 +2346,14 @@ def main():
         "event": "session_start", "platform": PLATFORM, "gpu_type": gpu_type,
         "total_vram_gb": round(total_vram_gb, 2), "system_ram_gb": round(system_ram_gb, 2),
         "chosen_model": chosen_model, "hardware_tier": hardware_tier, "client_version": VERSION,
-        "dual_lane": dual_capable,
+        "dual_lane": dual_capable, "primary_is_gpu": primary_is_gpu,
+        "benchmark_gpu_time": gpu_time, "benchmark_cpu_time": cpu_time,
     })
-
-    if gpu_type != "cpu" and total_vram_gb > 8.0:
-        mode_desc = "Performance Profile (Automated: High-memory Apple Silicon or discrete GPU detected)" if PLATFORM == "darwin" else "Performance Profile (Automated: High VRAM GPU detected)"
-        cooldown, max_threads = 0.0, None
-    elif gpu_type != "cpu" and total_vram_gb <= 8.0:
-        mode_desc = "Balanced Profile (Automated: Standard Apple Silicon or discrete GPU detected)" if PLATFORM == "darwin" else "Balanced Profile (Automated: Standard GPU detected)"
-        cooldown, max_threads = 1.5, 4
-    else:
-        mode_desc = "Eco Profile (Automated: CPU processing infrastructure fallback)"
-        cooldown, max_threads = 4.0, 2
-
-    ensure_ollama_installed(gpu_type)
-    ensure_ollama_running_and_model_pulled(chosen_model)
-    if dual_capable:
-        # The secondary lane always runs the "easy" tier's own model -- the same
-        # qwen2.5-coder:3b a solo CPU-only volunteer would already be running -- so it needs no
-        # separate model pull/tier logic of its own.
-        ensure_ollama_running_and_model_pulled("qwen2.5-coder:3b")
 
     if server_reachable:
         print(f"{Colors.GREEN}[✓] Cluster connectivity established. Entering processing pipeline...{Colors.RESET}\n")
     else:
         print(f"{Colors.YELLOW}[!] Server unreachable -- entering offline-retry mode. Will connect once it's back.{Colors.RESET}\n")
-
-    def hardware_label_for(gpu_type_val: str) -> str:
-        if gpu_type_val == "apple_silicon":
-            return f"Apple Silicon ({total_vram_gb:.1f} GB effective unified memory)"
-        if gpu_type_val == "intel_dgpu":
-            return f"Intel Mac + Discrete GPU ({total_vram_gb:.1f} GB VRAM)"
-        if gpu_type_val == "cpu":
-            return f"CPU Engine ({system_ram_gb:.1f} GB RAM)"
-        return f"{gpu_type_val.upper()} ({total_vram_gb:.1f} GB VRAM)"
 
     dual_controller = None
     if dual_capable:
@@ -2286,8 +2365,8 @@ def main():
         # utilization capped at "2" -- 2 threads on a 12-thread part).
         cpu_lane_threads = max(2, (os.cpu_count() or 4) - 2)
         cpu_hardware_label = f"{cpu_lane_threads} threads, {system_ram_gb:.1f} GB RAM"
-        print(f"{Colors.CYAN}[✓] Dual-lane mode: GPU ({hardware_label_for(gpu_type)}) + a secondary CPU lane (qwen2.5-coder:3b, {cpu_hardware_label}) will crunch two tasks at once. Toggle it off/on anytime from the pause menu.{Colors.RESET}\n")
-        board = DualStatusBoard(gpu_label=hardware_label_for(gpu_type), cpu_label=cpu_hardware_label)
+        print(f"{Colors.CYAN}[✓] Dual-lane mode: GPU ({primary_hardware_label}) + a secondary CPU lane (qwen2.5-coder:3b, {cpu_hardware_label}) will crunch two tasks at once. Toggle it off/on anytime from the pause menu.{Colors.RESET}\n")
+        board = DualStatusBoard(gpu_label=primary_hardware_label, cpu_label=cpu_hardware_label)
         # user_id is 3-9 alpha chars (enforced at login); truncating to 8 and appending "c" always
         # differs from the primary lane's own id (even at the 9-char ceiling, where a bare
         # suffix would otherwise just silently reproduce the original id) while staying within
@@ -2310,7 +2389,7 @@ def main():
         # correctly went away, but so did the box, leaving nothing but plain text.
         lane_tag="GPU" if dual_capable else "MAIN", user_id=user_id, hardware_tier=hardware_tier,
         chosen_model=chosen_model, max_threads=max_threads, cooldown=cooldown, mode_desc=mode_desc,
-        hardware_label=hardware_label_for(gpu_type), force_cpu=False, fancy_ui=True,
+        hardware_label=primary_hardware_label, force_cpu=not primary_is_gpu, fancy_ui=True,
         pause_event=dual_controller.pause_event if dual_controller is not None else None,
         dual_controller=dual_controller,
     )
