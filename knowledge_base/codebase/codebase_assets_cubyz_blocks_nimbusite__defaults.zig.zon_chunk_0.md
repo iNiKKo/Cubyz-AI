@@ -9,17 +9,6 @@
 Nimbusite block configuration
 
 ## Explanation
-# [easy/codebase_assets_cubyz_blocks_nimbusite__defaults.zig.zon] - Chunk 0
-
-**Type:** configuration
-**Keywords:** block config, item mat, durability, mass dmg, hard dmg, swing spd, tex rough, colors, mods, restricts
-**Symbols:** Nimbusite
-**Concepts:** block configuration, item material properties, durability, mass damage, hardness damage, swing speed, texture roughness, colors, modifiers, restrictions
-
-## Summary
-Nimbusite block configuration
-
-## Explanation
 This chunk defines the default settings for the Nimbusite block in Cubyz. It includes tags, health and resistance values, drop items, item material properties, durability, mass damage, hardness damage, swing speed, texture roughness, colors, modifiers, and restrictions.
 
 ### Item Material Properties

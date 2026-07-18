@@ -8,7 +8,7 @@
 Defines properties for a brown glow crystal block.
 
 ## Explanation
-This chunk defines the configuration for a specific type of block in the Cubyz voxel engine, specifically a brown glow crystal. It sets the emitted light color and texture path for this block type. The emitted light is specified using a hexadecimal color code, and the texture is referenced by its path within the asset system.
+This chunk defines the configuration for a brown glow crystal block in Cubyz. It specifies that the emitted light is set to `0x694227` and the texture is mapped to `cubyz:glow_crystal/brown`. The hexadecimal value `0x694227` specifies the emitted light color, while the texture path `cubyz:glow_crystal/brown` indicates where the block's visual representation can be found within the asset system.
 
 ## Related Questions
 - What is the emitted light color for the brown glow crystal block?

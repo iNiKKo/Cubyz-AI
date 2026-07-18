@@ -8,14 +8,10 @@
 Defines configuration for the Mahogany Sign block, including textures.
 
 ## Explanation
-This chunk is a configuration file defining properties of the Mahogany Sign block in the Cubyz voxel engine. It specifies the texture used for rendering the sign and the item texture associated with it. The structure follows a typical configuration format where each property is assigned a value directly.
+This chunk is a configuration file defining properties of the Mahogany Sign block in the Cubyz voxel engine. It specifies that the texture used for rendering the sign is 'cubyz:sign/mahogany' and the item texture associated with it is 'sign/mahogany.png'. The structure follows a typical configuration format where each property is assigned a value directly.
 
 ## Related Questions
-- What is the texture used for rendering the Mahogany Sign block?
-- Which file specifies the item texture for the Mahogany Sign block?
-- How many properties are defined for the Mahogany Sign block in this configuration?
-- Is there any mention of additional properties or behaviors for the Mahogany Sign block in this chunk?
-- What is the directory module context associated with this chunk?
-- Does this chunk define any functions or executable logic?
+- What is the exact texture path used for rendering the Mahogany Sign block?
+- What is the exact file name of the item texture for the Mahogany Sign block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_sign_mahogany.zig.zon_chunk_0*

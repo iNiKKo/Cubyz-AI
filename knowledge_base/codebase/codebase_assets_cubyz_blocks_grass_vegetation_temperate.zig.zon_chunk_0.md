@@ -8,7 +8,7 @@
 Defines configuration for grass vegetation in the temperate biome.
 
 ## Explanation
-This chunk contains a JSON-like configuration structure defining the texture paths for grass vegetation in the temperate biome. It specifies both the block texture and the item texture associated with this type of vegetation.
+This chunk contains a JSON-like configuration structure defining the texture paths for grass vegetation in the temperate biome. Specifically, it sets the `texture` field to `cubyz:grass/vegetation/temperate` for the block and `grass_vegetation/temperate.png` for the item. Both paths are relative to the asset directory.
 
 ## Related Questions
 - What is the texture path for grass vegetation in the temperate biome?

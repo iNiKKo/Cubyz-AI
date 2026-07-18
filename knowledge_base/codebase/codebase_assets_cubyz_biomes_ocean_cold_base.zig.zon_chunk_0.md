@@ -8,7 +8,7 @@
 Defines properties and characteristics of the Arctic Ocean biome in Cubyz.
 
 ## Explanation
-This chunk configures the Arctic Ocean biome, specifying its properties such as temperature, type, height ranges, beach smoothness, radius, roughness, hills, music, ground structures, and transition biomes. It uses a structured format to define various attributes like block types, chances, widths, variations, depths, and smoothness for different structures within the biome.
+This chunk configures the Arctic Ocean biome in Cubyz with specific properties such as type: arctic_ocean, minHeight: -100, maxHeight: -22, maxHeightLimit: 7, smoothBeaches: true, radius: 500, roughness: 20, hills: 10, music: cubyz:sinanimea/under_the_water_sky. It defines ground structures with the block type cubyz:slate/rough and specifies two types of ground patches: one with moss on slate (chance: 0.064, width: 6, variation: 2, depth: 2, smoothness: 0.2) and another with gravel (chance: 0.02, width: 10, variation: 5, depth: 2, smoothness: 0.4). Transition biomes include cold/wide beach (id: cubyz:beach/cold/wide, chance: 0.2, width: 2), cold/base beach (id: cubyz:beach/cold/base, chance: 1, width: 1), and cold/shelf ocean (id: cubyz:ocean/cold/shelf, chance: 1, width: 3).
 
 ## Related Questions
 - What is the type of the Arctic Ocean biome?

@@ -8,7 +8,7 @@
 Defines configuration for the Glacite Wall block in Cubyz.
 
 ## Explanation
-This chunk contains a JSON-like structure defining properties of the Glacite Wall block. It specifies the rotation, model, and textures used for different sides of the block. Additionally, it includes item-specific texture information.
+This chunk contains a JSON-like structure defining properties of the Glacite Wall block. It specifies that the rotation type is 'cubyz:fence', the model used is 'cubyz:wall'. The textures applied to the top and bottom sides are both 'cubyz:glacite/wall_top' while the texture for the wall itself is 'cubyz:glacite/wall'. Additionally, it includes item-specific texture information where the texture used for the item representation of the Glacite Wall block is 'wall/glacite.png'.
 
 ## Related Questions
 - What is the rotation type for the Glacite Wall block?

@@ -8,7 +8,7 @@
 Defines configuration for the Warm Archipelago biome in Cubyz.
 
 ## Explanation
-This chunk contains a JSON-like configuration structure defining properties of the Warm Archipelago biome. It specifies generation parameters such as chance, radius, height limits, and roughness. The configuration includes ground structures, stone blocks, and various structures like gravel patches. It also lists transition biomes with their respective chances and width.
+This chunk contains a JSON-like configuration structure defining properties of the Warm Archipelago biome. It specifies generation parameters including a chance of 0.1, a radius of 500 cubyz, height limits ranging from -15 to -10 with a maxHeightLimit of 7, and roughness set to 10. The hills property is set to 20. The configuration includes ground structures consisting of '2 to 4 cubyz:sand', and the stoneBlock is defined as 'cubyz:sandstone/rough'. It also lists transition biomes with their respective chances and width, such as a warm beach with a chance of 0.2 and width of 2, another warm beach with a chance of 1 and width of 1, and an ocean shelf with a chance of 1 and width of 3. Additionally, it specifies the music track 'cubyz:totaldemented/tides' for this biome.
 
 ## Related Questions
 - What is the chance of generating the Warm Archipelago biome?

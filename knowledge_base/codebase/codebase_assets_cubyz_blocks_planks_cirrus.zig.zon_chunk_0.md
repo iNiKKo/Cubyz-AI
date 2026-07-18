@@ -8,7 +8,7 @@
 Defines properties and texture for the Cirrus Planks block.
 
 ## Explanation
-This chunk defines the configuration for a specific type of block in the Cubyz game, known as 'Cirrus Planks'. It specifies various material properties such as durability, mass damage, hardness damage, swing speed, texture roughness, and color variations. Additionally, it includes a modifier that affects light strength. The texture file path is also specified.
+This chunk defines the configuration for a specific type of block in the Cubyz game, known as 'Cirrus Planks'. It specifies various material properties such as durability (40), mass damage (2.1), hardness damage (2.4), swing speed (4.8), texture roughness (0.7), and color variations (5 colors: 0xff506786, 0xff607d9c, 0xff6c91b1, 0xff7daacd, 0xff91c3ec). Additionally, it includes a modifier that affects light strength with an ID of 'light' and a strength of 0.1. The texture file path is specified as 'cubyz:planks/cirrus'.
 
 ## Related Questions
 - What is the durability of Cirrus Planks?

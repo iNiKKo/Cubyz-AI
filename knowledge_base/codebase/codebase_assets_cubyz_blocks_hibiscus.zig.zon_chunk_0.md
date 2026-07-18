@@ -9,7 +9,7 @@
 Defines a Hibiscus block with specific properties and behaviors.
 
 ## Explanation
-This chunk defines the Hibiscus block's attributes, including its health, drop items, selection capabilities, replaceability, degradation status, visibility through blocks, light absorption, collision behavior, model, rotation, textures, item texture, LOD replacement, and an update function that checks support blocks.
+This chunk defines the Hibiscus block's attributes with specific values. The block has a health of 0.2, drops an auto item when cuttable tools are used, has tool-effective selection capabilities, is replaceable and degradable, allows visibility through blocks, absorbs no light (absorbedLight = 0x000000), does not collide with other objects, uses the model 'cubyz:flower/height_8' with planar rotation, has textures 'cubyz:hibiscus', 'cubyz:hibiscus_top' for both top and bottom sides, an item texture of 'hibiscus.png', and a LOD replacement of 'cubyz:air'. Additionally, it includes an update function that checks support blocks.
 
 ## Related Questions
 - What are the tags associated with the Hibiscus block?

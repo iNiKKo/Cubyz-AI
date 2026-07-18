@@ -9,7 +9,7 @@
 Biome configuration for 'Peak' biome
 
 ## Explanation
-Defines properties, tags, height limits, fog settings, music, soil creep, ground structure, stone block, and structures for the 'Peak' biome.
+Defines the configuration for the 'Peak' biome with specific properties such as .properties = { .mountain, .cold, .barren, .wet }, tags = {.snowy}, minHeightLimit = 7, minHeight = 120, maxHeight = 256, smoothBeaches = true, fogDensity = 1.5, fogColor = 0xe2f2ff, mountains = 125, music = 'cubyz:totaldemented/frigid_feeling', soilCreep = 1.0, ground_structure = {"3 to 6 cubyz:snow", "1 to 3 cubyz:permafrost"}, stoneBlock = "cubyz:glacite/smooth", and structures = [{ .id = 'cubyz:stalagmite', .block = 'cubyz:ice', .chance = 0.08, .size = 3, .size_variation = 5 }].
 
 ## Related Questions
 - What are the tags associated with the 'Peak' biome?

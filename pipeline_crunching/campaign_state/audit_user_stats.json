@@ -1,26 +1,26 @@
 {
   "nick": {
-    "chunks_audited": 555,
-    "issues_found": 318,
-    "fixes_applied": 197,
-    "reviews_done": 66
+    "chunks_audited": 1084,
+    "issues_found": 671,
+    "fixes_applied": 439,
+    "reviews_done": 80
   },
   "nickc": {
     "chunks_audited": 4,
     "issues_found": 4,
     "fixes_applied": 0,
-    "reviews_done": 212
+    "reviews_done": 490
   },
   "nickmac": {
-    "chunks_audited": 64,
-    "issues_found": 57,
-    "fixes_applied": 7,
+    "chunks_audited": 79,
+    "issues_found": 71,
+    "fixes_applied": 8,
     "reviews_done": 64
   },
   "nicksrvr": {
     "chunks_audited": 1,
     "issues_found": 0,
     "fixes_applied": 0,
-    "reviews_done": 59
+    "reviews_done": 143
   }
 }

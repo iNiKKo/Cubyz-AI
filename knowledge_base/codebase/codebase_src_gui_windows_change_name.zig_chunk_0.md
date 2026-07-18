@@ -6,10 +6,10 @@
 **Concepts:** GUI, player name change, validation logic
 
 ## Summary
-Handles window for changing player name in GUI
+Handles window for changing player's name in GUI. Validates input length with strict character limits, displays warnings, and updates settings accordingly.
 
 ## Explanation
-Manages a window for changing the player's name, validating input length and updating settings. Includes logic for displaying warnings and help text.
+Manages a window for changing the player's name, validating input length against specific character limits (50 visible characters and 500 total characters), displaying warning messages when these limits are exceeded, updating settings, and handling GUI components. The `apply` function checks if the entered name exceeds the allowed lengths and logs an error message with exact counts. If valid, it updates the player's name in settings and saves changes. The window is closed after applying new name or showing a warning for existing names. On opening, the window displays help text about formatting options including markdown-like syntax for italic, bold, underlined, strike-through, and color codes. Initial text content of `TextInput` component defaults to 'quanturmdoelvloper' if no previous name exists.
 
 ## Code Example
 ```zig
@@ -30,17 +30,8 @@ fn apply() void {
 ```
 
 ## Related Questions
-- What is the purpose of the `apply` function in this chunk?
-- How does the `apply` function validate the player's name input?
-- What happens if the player's name exceeds the character limit?
-- Where is the warning message displayed when the name is too long?
-- What is the initial text content of the `TextInput` component?
-- How is the `GuiWindow` initialized in this chunk?
-- What is the purpose of the `onOpen` function?
-- What components are added to the `VerticalList` in the `onOpen` function?
-- What is the purpose of the `onClose` function?
-- How does the `onClose` function handle the `GuiWindow`'s root component?
-- What is the purpose of the `apply` function's error logging statement?
-- Where is the player's name stored in the settings?
+- What are the specific character limits for player's name input?
+- How is the warning message displayed when the name exceeds character limits?
+- What initial text content does the `TextInput` component have?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_change_name.zig_chunk_0*

@@ -8,7 +8,17 @@
 Defines properties for the oak log block in Cubyz.
 
 ## Explanation
-This chunk defines a configuration for the oak log block, specifying its tags, health, drop items, rotation behavior, model, textures, decay prohibition, and item status. The configuration is structured as a JSON-like object with various fields that describe the block's characteristics.
+This chunk defines a configuration for the oak log block in Cubyz. The properties include:
+- **Tags:** `.choppable`, `.wood`, `.log`
+- **Health:** `8` (blockHealth)
+- **Drops:** `{items: ['cubyz:log/oak']}`
+- **Rotation:** `cubyz:direction`
+- **Model:** `cubyz:cube`
+- **Texture:** `cubyz:oak_log`
+- **Texture Top:** `cubyz:oak_log_top`
+- **Texture Bottom:** `cubyz:oak_log_top`
+- **Decay Prohibitor:** `true` (decayProhibitor)
+- **Has Item:** `false` (hasItem)
 
 ## Related Questions
 - What are the tags associated with the oak log block?

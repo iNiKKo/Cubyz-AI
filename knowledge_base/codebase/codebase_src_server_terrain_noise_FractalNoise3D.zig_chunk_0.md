@@ -9,7 +9,19 @@
 This chunk implements the generation of fractal noise for 3D terrain.
 
 ## Explanation
-The code defines a `FractalNoise3D` struct with methods to generate aligned and initialized fractal terrain. The `generateAligned` function initializes an array and generates random values at specific intervals, while `generateInitializedFractalTerrain` refines the noise by averaging neighboring points and adding randomness.
+This chunk implements the generation of fractal noise for 3D terrain. The `FractalNoise3D` struct contains methods to generate aligned and initialized fractal terrain. The `generateAligned` function initializes an array and generates random values at specific intervals, while `generateInitializedFractalTerrain` refines the noise by averaging neighboring points and adding randomness.
+
+The `generateAligned` function performs several assertion checks:
+- Alignment: `wx & scale - 1 == 0`, `wy & scale - 1 == 0`, `wz & scale - 1 == 0`
+- Dimensions need to be of the form n*scale + 1 with n ∈ ℕ \∗ {0}: `width - 1 & scale/voxelSize - 1 == 0`, `height - 1 & scale/voxelSize - 1 == 0`, `depth - 1 & scale/voxelSize - 1 == 0`
+- Dimensions must be greater than 1: `width > 1`, `height > 1`, `depth > 1`
+The function initializes an array and generates random values at specific intervals, refining the noise by averaging neighboring points and adding randomness. The parameters required for generating fractal noise include:
+- `allocator`: Memory allocator
+- `wx`, `wy`, `wz`: World coordinates
+- `voxelSize`: Size of each voxel
+- `width`, `depth`, `height`: Dimensions of the terrain
+- `worldSeed`: Seed value for random number generation
+- `scale`: Scale factor for noise generation
 
 ## Code Example
 ```zig
@@ -40,11 +52,11 @@ pub fn generateAligned(allocator: NeverFailingAllocator, wx: i32, wy: i32, wz: i
 ```
 
 ## Related Questions
-- What is the purpose of the `generateAligned` function?
-- How does the `generateInitializedFractalTerrain` function work?
-- What data structure is used to store the noise values?
-- What are the parameters required for generating fractal noise?
-- How is randomness incorporated into the noise generation process?
-- What assertion checks are performed in the `generateAligned` function?
+- - What is the purpose of the `generateAligned` function?
+- - How does the `generateInitializedFractalTerrain` function work?
+- - What data structure is used to store the noise values?
+- - What are the parameters required for generating fractal noise?
+- - How is randomness incorporated into the noise generation process?
+- - What assertion checks are performed in the `generateAligned` function?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_noise_FractalNoise3D.zig_chunk_0*

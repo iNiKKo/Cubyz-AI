@@ -8,7 +8,7 @@
 Defines rare structure tables with specific placement modes and associated structures.
 
 ## Explanation
-This chunk defines a configuration for rare structures in the Cubyz voxel engine. It specifies an ID, tags, chance of occurrence, and a list of structures with their respective IDs, place modes, and paths to their structure files. The place mode determines where these structures can be placed (e.g., all locations or degradable areas).
+This chunk defines a configuration for rare structures in the Cubyz voxel engine. It specifies an ID of 'cubyz:rare', tags (empty), a chance of occurrence set to 0.000005, and a list of two structures with their respective IDs, place modes, and paths to their structure files. The first structure has an ID of 'cubyz:sbb' with a place mode of 'all' and the path to its structure file is 'cubyz:rare/triclops_statue/structure'. The second structure also has an ID of 'cubyz:sbb', but uses a place mode of 'degradable' and its structure file is located at 'cubyz:rare/mushroom_pole/base'.
 
 ## Related Questions
 - What is the ID of this rare structure table?

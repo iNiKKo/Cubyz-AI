@@ -6,16 +6,17 @@
 **Concepts:** data-binding, form validation, dropdown management, file handling, conditional display, configuration generation
 
 ## Summary
-The Particle Creator UI allows users to configure particle properties such as ID, texture, emission settings, and various physical attributes like speed, lifetime, and rotation.
+The Particle Creator UI allows users to configure particle properties such as ID, texture, emission settings, and various physical attributes like speed, lifetime, and rotation. It also includes dropdowns for spawn shape and direction modes with additional fields appearing based on user selections.
 
 ## Explanation
+**Summary**
 This HTML snippet defines a user interface for creating particles in the Cubyz Addon Studio. The UI includes several form groups for different particle properties:
 
 1. **Particle ID**: An input field where users can enter a unique identifier for the particle, with validation to ensure lowercase letters and numbers only.
 2. **Particle Texture**: A dropdown with search functionality that allows users to select a texture for the particle. It also includes an option to upload a custom PNG file.
 3. **Emission Texture**: A checkbox to enable emission textures, which are used for lighting effects.
 4. **Particle Settings (Min / Max)**: Multiple input fields for configuring various attributes like spawn speed, lifetime, density, rotation speed, and drag. Each attribute has both minimum and maximum values that can be set.
-5. **Spawn Shape & Direction**: Dropdowns to select the shape and direction of particle emission. Depending on the selected options, additional fields may appear to specify parameters for these shapes or directions.
+5. **Spawn Shape & Direction**: Dropdowns to select the shape and direction of particle emission. Depending on the selected options, additional fields may appear to specify parameters for these shapes or directions. For example, selecting 'Sphere' as a spawn shape will reveal input fields for radius and height, while choosing 'Fixed Direction' under Spawn Direction will display inputs for X, Y, Z coordinates.
 
 The UI also includes a 'Save Particle to Project' button that triggers a function to save the configured particle settings to the project.
 
@@ -30,6 +31,10 @@ The UI also includes a 'Save Particle to Project' button that triggers a functio
 **Bindings and Engine Mappings**: The UI controls are directly mapped to specific particle attributes. For example, `particleSpeedMin` and `particleSpeedMax` correspond to the minimum and maximum spawn speed of the particle.
 
 **Configuration Generation**: When the 'Save Particle to Project' button is clicked, the UI likely generates a configuration object based on the current state of the input fields and sends it to the engine for processing.
+
+**Conditional Display Logic**: The UI dynamically shows or hides additional form groups (`shapeParamWrapper` and `directionVectorWrapper`) depending on user selections from dropdowns. This logic is handled through JavaScript functions like `toggleParticleShapeFields()` and `toggleParticleDirectionFields()`, which update the visibility of these elements based on selected options.
+
+**Custom Textures**: Users can add custom textures by uploading PNG files, which are then made available in the texture selection dropdown.
 
 ## Related Questions
 - How does the UI handle input validation for the Particle ID?

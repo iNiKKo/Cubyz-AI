@@ -8,7 +8,7 @@
 Defines blueprints and children for an old growth oak tree in Cubyz.
 
 ## Explanation
-This chunk defines the structure of an old growth oak tree asset in the Cubyz game engine. It specifies a list of blueprints, each with a unique ID representing different parts of the trunk. Additionally, it lists various child components associated with the tree, such as roots, branches, top, decorations, and small branches, each identified by a color-based key.
+This chunk defines the structure of an old growth oak tree asset in the Cubyz game engine. It specifies a list of blueprints, each with a unique ID representing different parts of the trunk: 'cubyz:tree/oak/old_growth/trunk/0', 'cubyz:tree/oak/old_growth/trunk/1', 'cubyz:tree/oak/old_growth/trunk/2', 'cubyz:tree/oak/old_growth/trunk/3', and 'cubyz:tree/oak/old_growth/trunk/4'. Additionally, it lists various child components associated with the tree, each identified by a color-based key: brown for roots ('cubyz:tree/oak/old_growth/root'), green for branch extenders ('cubyz:tree/oak/old_growth/branch_extender'), lime for the top part of the tree ('cubyz:tree/oak/old_growth/top'), red for decorations ('cubyz:tree/oak/old_growth/deco'), and pink for small branches ('cubyz:tree/oak/old_growth/small_branch').
 
 ## Related Questions
 - What are the IDs of the blueprints for the old growth oak tree trunk?

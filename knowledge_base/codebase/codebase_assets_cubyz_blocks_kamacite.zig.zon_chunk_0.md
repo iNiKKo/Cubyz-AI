@@ -8,7 +8,7 @@
 Defines properties for the kamacite block in Cubyz, including tags, health, resistance, drops, and visual attributes.
 
 ## Explanation
-This chunk defines a configuration object for the kamacite block in the Cubyz game. It specifies various properties such as tags (stone and mineable), block health, block resistance, drop behavior, ore generation allowance, rotation model, and texture. The configuration is structured using a JSON-like syntax within Zig's comptime data structures.
+This chunk defines a configuration object for the kamacite block in the Cubyz game. It specifies various properties such as tags (stone, mineable), block health of 25, block resistance of 7, drop behavior with auto-drops, ore generation allowance set to true, rotation model 'cubyz:stairs', and texture 'cubyz:kamacite'. The configuration is structured using a JSON-like syntax within Zig's comptime data structures.
 
 ## Related Questions
 - What are the tags associated with the kamacite block?

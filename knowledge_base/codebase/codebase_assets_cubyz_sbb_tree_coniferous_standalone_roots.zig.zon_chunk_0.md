@@ -8,7 +8,7 @@
 Defines blueprints for standalone coniferous tree roots.
 
 ## Explanation
-This chunk contains a configuration structure defining four distinct blueprints for standalone coniferous tree roots. Each blueprint is identified by a unique string ID within the Cubyz namespace. These IDs are used to reference and manage different variations of coniferous tree root assets in the game engine.
+This chunk contains a configuration structure defining four distinct blueprints for standalone coniferous tree roots. Each blueprint is identified by a unique string ID within the Cubyz namespace: 'cubyz:tree/coniferous/roots/alone/0', 'cubyz:tree/coniferous/roots/alone/1', 'cubyz:tree/coniferous/roots/alone/2', and 'cubyz:tree/coniferous/roots/alone/3'. These IDs are used to reference and manage different variations of coniferous tree root assets in the game engine, allowing for varied and distinct standalone root structures within the world generation process.
 
 ## Related Questions
 - What are the IDs of the standalone coniferous tree root blueprints?
@@ -16,6 +16,5 @@ This chunk contains a configuration structure defining four distinct blueprints 
 - Where are these blueprints used within the Cubyz engine?
 - Can you list all the blueprint IDs for standalone coniferous roots?
 - What is the purpose of defining multiple blueprints for coniferous tree roots?
-- How might these blueprints be referenced in other parts of the Cubyz codebase?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_tree_coniferous_standalone_roots.zig.zon_chunk_0*

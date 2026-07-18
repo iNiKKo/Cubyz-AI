@@ -9,7 +9,7 @@
 Configuration data for large phantasmal pillars.
 
 ## Explanation
-This chunk defines the blueprint configuration for large phantasmal pillars in the game. It includes a list of blueprints with IDs and chances, as well as child components that can be attached to these pillars.
+This chunk defines the blueprint configuration for large phantasmal pillars in the game. It includes a list of six blueprints with specific IDs and associated probabilities: 'cubyz:phantasmal/pillar/large/0', 'cubyz:phantasmal/pillar/large/1', 'cubyz:phantasmal/pillar/large/2', 'cubyz:phantasmal/pillar/large/3', and 'cubyz:phantasmal/pillar/large/4' each with a chance of 1. Additionally, there is an entry with ID null and a chance of 0.3. The configuration also specifies child components that can be attached to these pillars: white offshoots are defined as 'cubyz:phantasmal/pillar/offshoot/offshoot', and purple tops are defined as 'cubyz:phantasmal/pillar/top/top'.
 
 ## Related Questions
 - What are the IDs of the blueprints for large phantasmal pillars?

@@ -5,10 +5,10 @@
 **Concepts:** world_generation, asset management
 
 ## Summary
-Defines blueprints for large mahogany and sapele tree branches.
+Defines blueprints for large mahogany and sapele tree branches with unique string IDs 'cubyz:tree/mahogany/sapele/large/branch/blue/0' and 'cubyz:tree/mahogany/sapele/large/branch/blue/1'.
 
 ## Explanation
-This chunk contains a configuration structure defining two blueprints for large mahogany and sapele tree branches. Each blueprint is identified by a unique string ID within the Cubyz asset system.
+This chunk contains a configuration structure defining two blueprints for large mahogany and sapele tree branches. The IDs of these blueprints are 'cubyz:tree/mahogany/sapele/large/branch/blue/0' and 'cubyz:tree/mahogany/sapele/large/branch/blue/1'. Each blueprint is identified by a unique string ID within the Cubyz asset system.
 
 ## Related Questions
 - What are the IDs of the blueprints defined in this chunk?

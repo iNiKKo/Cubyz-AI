@@ -8,7 +8,7 @@
 Defines texture paths for pine log blocks.
 
 ## Explanation
-This chunk contains a configuration object with six fields, each representing a different texture used for rendering pine log blocks in the Cubyz voxel engine. The textures are named according to their visual characteristics: dot, line, bend, intersection, cross, and top. These paths are likely used by the rendering engine to apply the correct texture to each face of the log block based on its orientation or neighboring blocks.
+This chunk contains a configuration object with six fields, each representing a different texture used for rendering pine log blocks in the Cubyz voxel engine. The textures are named according to their visual characteristics and have specific file paths: dot ("cubyz:log/pine/dot"), line ("cubyz:log/pine/line"), bend ("cubyz:log/pine/bend"), intersection ("cubyz:log/pine/intersection"), cross ("cubyz:log/pine/cross"), and top ("cubyz:log/pine/top"). These paths are used by the rendering engine to apply the correct texture to each face of the log block based on its orientation or neighboring blocks.
 
 ## Related Questions
 - What are the texture paths defined for pine log blocks?

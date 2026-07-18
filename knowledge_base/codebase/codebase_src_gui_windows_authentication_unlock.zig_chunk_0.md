@@ -9,7 +9,14 @@
 Handles the GUI logic for the authentication unlock window in Cubyz, including password input, error handling, and account decryption.
 
 ## Explanation
-This chunk defines the behavior of the authentication unlock window in the Cubyz game. It includes functions for applying the entered password to decrypt the account, showing/hiding the password text, logging out, updating text components, opening the window, and closing it securely. The window contains a vertical list with labels, a text input field for the password, a checkbox to show/hide the password, buttons for logout and decryption, and error handling for incorrect passwords or corrupted data.
+This chunk defines the behavior of the authentication unlock window in Cubyz. It includes functions for applying the entered password to decrypt the account, showing/hiding the password text, logging out, updating text components, opening the window, and closing it securely. The window contains a vertical list with labels, a text input field for the password, a checkbox to show/hide the password, buttons for logout and decryption, and error handling for incorrect passwords or corrupted data.
+
+Specifically:
+- `window.contentSize` is set to `{128, 256}`.
+- Padding value is defined as `const padding: f32 = 8;`.
+- The text input field (`textComponent`) has an obfuscated password entry and updates the `logoutButton.disabled` state based on its length. If the password input field is empty, the logout button becomes enabled; otherwise, it remains disabled.
+- Error handling includes displaying messages like "#ff0000Incorrect password." for authentication failure or a formatted error message for other errors, such as "#ff0000Authentication data is corrupted: {error_name}".
+- The window contains labels with specific text and dimensions, a text input field with an obfuscated password entry and show/hide checkbox, buttons for logout and decryption, and secure memory zeroing when the window closes.
 
 ## Code Example
 ```zig

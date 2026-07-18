@@ -8,7 +8,13 @@
 Defines blueprints for mushroom branches with specific chances.
 
 ## Explanation
-This chunk defines a configuration structure containing blueprints for different types of mushroom branches. Each blueprint has an ID and a chance associated with it, which likely determines the probability of that branch type being generated in the game world. The third entry has a null ID with a higher chance, possibly representing no branch or a default case.
+This chunk defines a configuration structure containing blueprints for different types of mushroom branches. Each blueprint has an ID and a chance associated with it, which determines the probability of that branch type being generated in the game world. The specific IDs and chances are as follows:
+
+1. `.id = "cubyz:mushroom/big/toadstool/branch/blue/0"` with `.chance = 0.125`
+2. `.id = "cubyz:mushroom/big/toadstool/branch/blue/1"` with `.chance = 0.125`
+3. `.id = null` with `.chance = 0.75`
+
+The third entry has a null ID and the highest chance, possibly representing no branch or a default case.
 
 ## Related Questions
 - What are the IDs and chances for the mushroom branches defined in this chunk?

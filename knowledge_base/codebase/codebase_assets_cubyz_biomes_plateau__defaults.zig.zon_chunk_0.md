@@ -9,7 +9,7 @@
 Biome defaults for Plateau biome
 
 ## Explanation
-Defines default settings for the Plateau biome, including interpolation, terrain properties, height limits, and structures.
+Defines default settings for the Plateau biome with specific values. Interpolation method is set to .none with an interpolation weight of 0.7. Terrain is kept original with a probability of 0.99. Height limits are defined as minHeightLimit = 7, minHeight = 2000, maxHeight = 2100, and maxHeightLimit = 80. Smooth beaches are enabled (smoothBeaches = true). The minimum radius for generating hills is 48, the maximum radius is 96, roughness is set to 1, and there are 2 hills generated with a chance of 0. Soil creep value is 1. Structures include boulders made of slate with a chance of 0.003 and flower patches for daisies and dandelions with specific dimensions and densities.
 
 ## Related Questions
 - What is the default interpolation method for the Plateau biome?

@@ -46,10 +46,10 @@ The cold plateau biome also has parent biomes with the following chances:
 - **Large Hills Cold:** Chance of `0.5`
 
 ## Related Questions
-- - What are the properties and tags associated with the cold plateau biome?
-- - Describe the ground structure composition of the cold plateau biome.
-- - List all structures present in the cold plateau biome along with their configurations.
-- - What is the music played in the cold plateau biome?
-- - Provide details on the chances for each parent biome of the cold plateau.
+- What are the properties and tags associated with the cold plateau biome?
+- Describe the ground structure composition of the cold plateau biome.
+- List all structures present in the cold plateau biome along with their configurations.
+- What is the music played in the cold plateau biome?
+- Provide details on the chances for each parent biome of the cold plateau.
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_plateau_cold.zig.zon_chunk_0*

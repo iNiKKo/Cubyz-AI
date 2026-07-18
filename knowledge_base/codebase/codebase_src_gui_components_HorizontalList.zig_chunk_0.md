@@ -9,7 +9,17 @@
 The HorizontalList component manages a horizontal layout of GUI components, handling initialization, deinitialization, adding children, finishing layout, updating selection and hover states, rendering, and button interactions.
 
 ## Explanation
-This chunk defines the HorizontalList struct, which is responsible for managing a collection of GUI components arranged horizontally. It includes methods for initializing and deinitializing the list, adding child components, finalizing the layout with position and alignment, updating selection and hover states, rendering the list, and handling button press events. The component uses global memory allocation and maintains a list of child GuiComponent instances. It ensures that child components are properly positioned and interacted with based on their order in the list.
+This chunk defines the HorizontalList struct, which is responsible for managing a collection of GUI components arranged horizontally. It includes methods for initializing and deinitializing the list, adding child components, finalizing the layout with position and alignment, updating selection and hover states, rendering the list, and handling button press events. The component uses global memory allocation via `main.globalAllocator` and maintains a list of child GuiComponent instances using `ListManaged`. It ensures that child components are properly positioned based on their order in the list and handles mouse interactions accordingly.
+
+- **Initialization (`init`)**: Allocates memory for a new HorizontalList instance, initializes its children with an empty ListManaged initialized via global allocator, sets initial position to (0, 0) and size to (0, 0).
+- **Deinitialization (`deinit`)**: Frees all child components and the list itself.
+- **Adding Children (`add`)**: Adds a new GuiComponent to the children list. Adjusts the HorizontalList's width based on the added component's position and size. Updates the overall size of the HorizontalList accordingly.
+- **Finalizing Layout (`finish`)**: Sets the final position for the HorizontalList, aligns child components vertically according to specified alignment (left, center, right), and shrinks the children list to fit only necessary elements.
+- **Updating Selection (`updateSelected`)**: Iterates through all child components and updates their selection state.
+- **Handling Hover Events (`updateHovered`)**: Checks if a mouse position intersects with any child component's bounding box. If so, it calls `updateHovered` on the intersecting component to handle hover events.
+- **Rendering (`render`)**: Sets translation for rendering based on HorizontalList's position, iterates through all children and renders them in order, then restores original translation state.
+- **Button Press Handling (`mainButtonPressed`)**: Iterates through child components in reverse order (last rendered first) to handle button press events. Returns `.handled` if any component handles the event.
+- **Button Release Handling (`mainButtonReleased`)**: Calls `mainButtonReleased` on all child components.
 
 ## Code Example
 ```zig

@@ -9,7 +9,7 @@
 Inventory window initialization and management
 
 ## Explanation
-This chunk initializes the inventory window, including its layout with a hotbar reference, content size, scale, and HUD status. It also manages item slots and buttons for crafting and other items. The inventory is populated with a bag slot and a crafting icon button.
+This chunk initializes the inventory window, including its layout with a hotbar reference, content size, scale, and HUD status. It also manages item slots and buttons for crafting and other items. The `window` variable is defined with relative position attached to the hotbar window's middle point, content size of 640x192 pixels, scale of 0.75, and it is marked as a HUD element that cannot be closed. The inventory window initializes item slots using a vertical list structure with padding of 8 units. It includes a bag slot and a crafting icon button linked to the 'inventory_crafting' window. The `init` function loads the crafting icon texture from 'assets/cubyz/ui/inventory/crafting_icon.png'. The `deinit` function deinitializes the crafting icon texture.
 
 ## Code Example
 ```zig
@@ -26,10 +26,5 @@ pub fn init() void {
 - What is the function responsible for deinitializing the crafting icon?
 - What is the purpose of the `itemSlots` array in this chunk?
 - How does the inventory window handle bag slots and crafting buttons?
-- What is the layout structure used to populate the inventory window?
-- What is the function responsible for initializing the inventory window on open?
-- What is the function responsible for deinitializing the inventory window on close?
-- What are the dependencies of this chunk?
-- How does the inventory window update its positions?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_inventory.zig_chunk_0*

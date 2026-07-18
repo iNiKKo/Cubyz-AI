@@ -5,16 +5,6 @@
 **Concepts:** world generation, cave formation
 
 ## Summary
-Defines configuration for cave generation in the Cubyz game engine.
-
-## Explanation
-# [easy/codebase_assets_cubyz_biomes_cave_slate_base.zig.zon] - Chunk 0
-
-**Type:** configuration
-**Keywords:** configuration, cave generation, structures, models, randomization
-**Concepts:** world generation, cave formation
-
-## Summary
 Defines configuration for generating caves within the Cubyz game world. It specifies detailed properties of various structures like ground patches and stalagmites, including their block types, chances of occurrence, sizes, variations, and cave models using clusters and partial spheres to create complex formations.
 
 ## Explanation
@@ -47,8 +37,6 @@ This chunk contains configuration data for generating caves within the Cubyz gam
     - **Minimum Radius:** 8 blocks
     - **Maximum Radius:** 16 blocks
     - **Random Offset:** (25, 25, 20)
-
-*Source: unknown | chunk_id: codebase_assets_cubyz_biomes_cave_slate_base.zig.zon_chunk_0*
 
 ## Related Questions
 - What is the block type used for ground patches in cave generation?

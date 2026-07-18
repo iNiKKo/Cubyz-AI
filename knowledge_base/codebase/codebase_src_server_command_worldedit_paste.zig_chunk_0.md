@@ -9,7 +9,7 @@
 Handles the '/paste' command in WorldEdit, pasting clipboard content to the current player's position.
 
 ## Explanation
-The 'execute' function parses command-line arguments for the '/paste' command. It checks if there is a clipboard available and captures its undo history before pasting it to the player's position. The 'preserveVoid' flag is used to determine whether void blocks should be preserved during the paste operation.
+Handles the '/paste' command in WorldEdit, pasting clipboard content to the current player's position. The 'execute' function parses command-line arguments for the '/paste' command using the ArgParser struct. It checks if there is a clipboard available and captures its undo history before pasting it to the player's position. By default, void blocks are not preserved during the paste operation unless the '-v' or '--keep-void' argument is provided. The 'preserveVoid' flag in the 'clipboard.paste(pos, .{.preserveVoid = result.@"/paste [-v|--keep-void]".void != null});' method call determines whether void blocks should be preserved based on the presence of the '-v' or '--keep-void' argument.
 
 ## Code Example
 ```zig

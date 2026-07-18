@@ -9,7 +9,7 @@
 The ScrollBar component handles the creation, initialization, deinitialization, and rendering of a scroll bar GUI element.
 
 ## Explanation
-This chunk defines the ScrollBar struct and its associated methods. The ScrollBar is initialized with a position, size, initial state, and a button. It manages the texture for the scrollbar's appearance, updates the button's position based on the current state, and handles mouse interactions to adjust the scroll bar's value. The render method draws the scrollbar and its button, ensuring that the button follows the mouse when pressed.
+The ScrollBar component handles the creation, initialization, deinitialization, and rendering of a scroll bar GUI element. It is defined with several properties including `pos`, `size`, `currentState`, `button`, and `mouseAnchor`. The texture for the scrollbar's appearance is initialized from a file named 'assets/cubyz/ui/scrollbar.png' during global initialization (`globalInit`). The ScrollBar manages the button's position based on the current state, updates this position when the mouse interacts with it, and handles mouse events to adjust the scroll bar's value. Specifically, `setButtonPosFromValue` calculates the range of movement for the button within the scrollbar using the formula: `const range = self.size[1] - self.button.size[1]; self.button.pos[1] = range * self.currentState`. The render method binds the texture and draws the scrollbar, ensuring that the button follows the mouse when pressed. Additionally, the font size is set to 16.
 
 ## Code Example
 ```zig

@@ -9,7 +9,7 @@
 Cactus Flower Block Configuration
 
 ## Explanation
-This chunk defines the configuration for a Cactus Flower block in Cubyz. It specifies properties such as health, drop items, selection capabilities, replaceability, degradation, collision behavior, visibility through blocks, absorbed light, model, rotation, textures, item texture, LOD replacement, touch events, and update events.
+This chunk defines the configuration for a Cactus Flower block in Cubyz. It specifies properties such as tags (cuttable, sliceable), health (0.2), drop items (.auto with allowed tool tag cuttable), selection capabilities (toolEffective), replaceability (true), degradation (true), collision behavior (false), visibility through blocks (alwaysViewThrough true), absorbed light (0x121012), model (cubyz:cactus_flower), rotation (cubyz:direction), textures (texture, texture_top, texture_bottom all set to cubyz:cactus_flower_top), item texture (cactus_flower.png), LOD replacement (cubyz:air), touch events (type hurt with dps 0.2 and damageType spiky), and update events (type check_support_blocks).
 
 ## Related Questions
 - What are the tags associated with the Cactus Flower block?

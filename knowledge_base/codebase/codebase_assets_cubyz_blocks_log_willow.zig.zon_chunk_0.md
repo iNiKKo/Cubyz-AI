@@ -8,7 +8,14 @@
 Defines texture paths for the willow log block.
 
 ## Explanation
-This chunk contains a configuration object with six fields, each representing a different texture used for rendering various parts of the willow log block. The textures are specified as strings pointing to resource paths within the Cubyz asset system.
+This chunk contains a configuration object with six fields, each representing a different texture used for rendering various parts of the willow log block. The textures are specified as strings pointing to resource paths within the Cubyz asset system:
+
+- `texture0` = "cubyz:log/willow/dot"
+- `texture1` = "cubyz:log/willow/line"
+- `texture2` = "cubyz:log/willow/bend"
+- `texture3` = "cubyz:log/willow/intersection"
+- `texture4` = "cubyz:log/willow/cross"
+- `texture5` = "cubyz:log/willow/top"
 
 ## Related Questions
 - What are the texture paths defined for the willow log block?

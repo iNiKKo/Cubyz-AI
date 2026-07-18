@@ -8,7 +8,7 @@
 Defines configuration for the pine fence block, including textures and item properties.
 
 ## Explanation
-This chunk is a configuration file defining the visual and item properties of a pine fence block in the Cubyz voxel engine. It specifies the texture paths for different sides of the fence, including the top and bottom, which use the same texture. Additionally, it defines the item texture used when the fence block is held or placed in the inventory.
+This chunk is a configuration file defining the visual and item properties of a pine fence block in the Cubyz voxel engine. It specifies the texture paths for different sides of the fence: 'cubyz:fence/pine' for all sides except top and bottom, which use the same specific texture path 'cubyz:fence/top/pine'. The texture used for the item representation when held or placed in the inventory is 'fence/pine.png'.
 
 ## Related Questions
 - What is the texture used for the top of the pine fence block?

@@ -8,7 +8,7 @@
 Defines properties for the birch branch block in Cubyz, including textures, health, and decay behavior.
 
 ## Explanation
-This chunk defines the configuration for the birch branch block in the Cubyz game engine. It specifies various properties such as tags (choppable, wood, branch), onUpdate behavior (decay), block health, and multiple texture paths for different orientations of the branch. The item properties include material attributes like durability, mass damage, swing speed, and colors. Additionally, it sets decayProhibitor to true, indicating that this block does not decay over time.
+This chunk defines the configuration for the birch branch block in the Cubyz game engine. It specifies various properties such as tags (choppable, wood, branch), onUpdate behavior (decay), block health of 4, and multiple texture paths for different orientations of the branch: dot, half_line, line, bend, intersection, and cross. The item properties include material attributes like durability of 32, mass damage of 1.2, hardness damage of 0.65, swing speed of 4.1, density of 0.3, elasticity of 3.5, hardness of 1.25, texture roughness of 0.7, and colors with hex values: #b8aa9e, #d0c2b5, #eedfd0, #fff6ed, #eedfd0. Additionally, it sets decayProhibitor to true, indicating that this block does not decay over time.
 
 ## Related Questions
 - What are the tags associated with the birch branch block?

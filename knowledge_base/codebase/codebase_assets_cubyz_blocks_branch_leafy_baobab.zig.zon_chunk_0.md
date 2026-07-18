@@ -9,7 +9,7 @@
 Leafy Baobab block configuration
 
 ## Explanation
-This chunk defines the Leafy Baobab block's properties, including its update behavior, drop items, textures, LOD replacement, and opaque variant.
+This chunk defines the Leafy Baobab block's properties. The update behavior is of type .decay with drops including cubyz:branch/baobab. When broken, it drops cubyz:branch/baobab and cubyz:leaves/baobab if cuttable tool tags are used. Textures include 'cubyz:leaves/baobab', 'cubyz:branch/baobab/dot', 'cubyz:branch/baobab/half_line', 'cubyz:branch/baobab/line', 'cubyz:branch/baobab/bend', 'cubyz:branch/baobab/intersection', and 'cubyz:branch/baobab/cross'. The LOD replacement is cubyz:leaves/opaque/baobab, and the opaque variant is also cubyz:leaves/opaque/baobab.
 
 ## Related Questions
 - What is the block's update behavior?

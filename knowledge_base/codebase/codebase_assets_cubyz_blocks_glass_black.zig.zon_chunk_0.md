@@ -8,7 +8,7 @@
 Defines properties for a black glass block in Cubyz.
 
 ## Explanation
-This chunk defines the properties of a black glass block, including its light absorption and texture path. The `absorbedLight` field specifies the color value that represents how much light the block absorbs, while the `texture` field provides the path to the texture file used for rendering the block.
+This chunk defines the properties of a black glass block in Cubyz. The `absorbedLight` field is set to `0xe6e6e6`, representing the color value that indicates how much light the block absorbs. The `texture` field specifies the path to the texture file used for rendering the block, which is `cubyz:glass/black`. These properties are crucial for defining the visual and functional characteristics of the black glass block within the game.
 
 ## Related Questions
 - What is the light absorption value for the black glass block?

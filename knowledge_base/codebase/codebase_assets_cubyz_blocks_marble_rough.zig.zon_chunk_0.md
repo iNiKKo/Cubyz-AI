@@ -8,7 +8,7 @@
 Defines configuration for a rough marble block in Cubyz.
 
 ## Explanation
-This chunk contains a configuration object for a specific type of block in the Cubyz game engine. The block is identified as 'rough marble' and includes properties such as allowing ores, specifying its rotation model, defining its visual model, and assigning a texture file path. These settings are used to render and interact with the block within the game environment.
+This chunk contains a configuration object for a rough marble block in Cubyz. The block is identified with the following properties: `allowOres = true`, `rotation = "cubyz:stairs"`, `model = "cubyz:cube"`, and `texture = "cubyz:marble/rough"`. These settings are used to render and interact with the rough marble block within the game environment.
 
 ## Related Questions
 - What texture is assigned to the rough marble block?

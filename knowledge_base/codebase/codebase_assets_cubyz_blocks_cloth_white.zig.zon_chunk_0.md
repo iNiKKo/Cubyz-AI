@@ -8,7 +8,7 @@
 Defines configuration for a white cloth block, including its texture and item representation.
 
 ## Explanation
-This chunk is a configuration file in the Cubyz voxel engine that specifies properties for a white cloth block. It defines the texture used for rendering the block in the world and the texture for the corresponding item in the player's inventory. The configuration uses a structured format to map these properties, ensuring consistency across different parts of the game where this block is used.
+This chunk is a configuration file in the Cubyz voxel engine that specifies properties for a white cloth block. It defines the texture `cubyz:cloth/white` used for rendering the block in the world and the item representation with the texture `cloth/white.png`. The configuration uses a structured format to map these properties, ensuring consistency across different parts of the game where this block is used.
 
 ## Related Questions
 - What is the texture used for rendering the white cloth block in the world?

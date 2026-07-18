@@ -9,7 +9,7 @@
 Jungle biome configuration with height limits and structure placement rules.
 
 ## Explanation
-Defines the jungle biome's minimum and maximum heights, hills count, radius, and beach smoothing settings. Specifies ground structures and various structures to place within the biome, including tree types and ground/flower patches. Defines transition biomes for the jungle biome.
+Defines the jungle biome's height limits with a minimum height of 30 cubyz and a maximum height of 50 cubyz. The minHeightLimit is set to 7, and maxHeightLimit is set to 60. The radius for the biome is 160 cubyz, and smoothBeaches are enabled. Ground structures include 'cubyz:grass/lush' with a layer of 3-4 'cubyz:mud'. Various tree structures such as mahogany trees (khaya ivorensis medium, khaya ivorensis small, sapele ancient short, sapele ancient tall, sapele large, sapele medium, and sapele small) are placed with a degradable mode. Flower patches include 'cubyz:grass/vegetation/lush', 'cubyz:monstera', and a combination of 'cubyz:grass/vegetation/lush', 'cubyz:hibiscus', and 'cubyz:fern'. Transition biomes are defined with an ID of 'cubyz:jungle/sparse' having a width of 3 cubyz, properties including barren and balanced.
 
 ## Related Questions
 - What is the minimum height limit for the jungle biome?

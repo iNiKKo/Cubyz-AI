@@ -8,7 +8,7 @@
 Defines blueprints for rare Triclops statue lights with varying chances.
 
 ## Explanation
-This chunk defines a configuration structure containing blueprints for different light entities associated with the rare Triclops statue in Cubyz. Each blueprint has an ID and an optional chance value, which determines the probability of that light being generated. The default chance is implicitly 1 if not specified.
+This chunk defines a configuration structure containing blueprints for different light entities associated with the rare Triclops statue in Cubyz. Each blueprint has an ID and an optional chance value which determines the probability of that light being generated. The specific IDs are 'cubyz:rare/triclops_statue/light/0', 'cubyz:rare/triclops_statue/light/1', 'cubyz:rare/triclops_statue/light/2'. Additionally, 'cubyz:rare/triclops_statue/light/3' and 'cubyz:rare/triclops_statue/light/4' have a chance value of 0.1 each. The default chance for blueprints without an explicitly specified chance is implicitly 1.
 
 ## Related Questions
 - What are the IDs of the light blueprints for the rare Triclops statue?

@@ -9,7 +9,15 @@
 Cave biome configuration with structures and cave models
 
 ## Explanation
-This chunk defines a cave biome with specific settings for fog density, chance of occurrence, music, and structures. It includes details on the structure types and their placement modes, as well as cave model configurations.
+This chunk defines a cave biome with specific settings including fog density, chance of occurrence, music, and structures. The biome is identified by `isCave = true` and has tags `.cave_layer`. It has a maximum height of -512. The fog density is set to 2, and the chance of occurrence for the cave biome is 0.01. The music associated with this biome is 'cubyz:ikabod/live'.
+
+The structures defined include:
+- A structure with id `cubyz:sbb` using the template 'cubyz:tree/curl' and place mode `.degradable`, with a chance of 0.15.
+- A ground patch structure with id `cubyz:ground_patch` that places gravel blocks, has a chance of 0.064, width of 5, variation of 5, depth of 3, and smoothness of 0.1.
+- Two boulder structures both with id `cubyz:boulder`, one placing 'cubyz:slate/rough' blocks with a size of 4 and variance of 3, the other placing 'cubyz:slate/smooth' blocks with a size of 4 and variance of 4.
+
+Cave model configurations include:
+- A partial sphere cave model with id `cubyz:partial_sphere`, having a minimum amount of 10, maximum amount of 30, minimum radius of 10, and maximum radius of 20.
 
 ## Related Questions
 - What is the fog density of this cave biome?

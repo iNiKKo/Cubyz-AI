@@ -9,7 +9,19 @@
 Grass block defaults configuration
 
 ## Explanation
-This chunk defines the default properties for a grass block in Cubyz. It specifies tags, health, drops, selection capabilities, replaceability, degradability, view-through behavior, absorbed light, collision settings, model, LOD replacement, update function, and other technical details.
+This chunk defines the default properties for a grass block in Cubyz. It specifies that the grass block has the following attributes: 
+- Tags: .cuttable and .sliceable
+- Block health: 0.2
+- Drops: auto items when broken with tools tagged as .cuttable
+- Selection capabilities: toolEffective
+- Replaceability: true
+- Degradability: true
+- View-through behavior: true
+- Absorbed light: 0x000000 (no color)
+- Collision settings: false
+- Model: cubyz:cross
+- LOD replacement: cubyz:air
+- Update function: check_support_blocks
 
 ## Related Questions
 - What are the tags associated with the grass block?

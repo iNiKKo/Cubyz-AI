@@ -11,6 +11,98 @@ Configuration data for sword tool effects
 ## Explanation
 This chunk defines configuration data for sword tool effects, including parameters that modify the damage and swing speed of a sword based on its mass, hardness, durability, and swing speed. The data is structured as an array of effect configurations, each specifying a source attribute, destination attribute, matrix coefficients, factor, and method.
 
+- **Effect Configuration 1:**
+  - Source: `massDamage`
+  - Destination: `damage`
+  - Matrix Coefficients:
+    ```
+    3.0, 2.5, 2.0, 0x0, 0x0,
+    2.5, 0.5, 1.0, 1.5, 0.1,
+    2.0, 1.0, 0.1, 0.1, 0.1,
+    0x0, 1.5, 0.1, 0.1, 0x0,
+    0x0, 0.1, 0.1, 0x0, 0.1
+    ```
+  - Factor: `0.4`
+  - Method: `.sum`
+- **Effect Configuration 2:**
+  - Source: `massDamage`
+  - Destination: `damage`
+  - Matrix Coefficients:
+    ```
+    3.0, 2.5, 2.5, 0x0, 0x0,
+    2.5, 0.5, 1.0, 2.0, 0.1,
+    2.5, 1.0, 0.1, 0.1, 0.1,
+    0x0, 2.0, 0.1, 0.1, 0x0,
+    0x0, 0.1, 0.1, 0x0, 0.1
+    ```
+  - Factor: `0.6`
+  - Method: `.average`
+- **Effect Configuration 3:**
+  - Source: `hardnessDamage`
+  - Destination: `damage`
+  - Matrix Coefficients:
+    ```
+    3.0, 2.5, 2.0, 0x0, 0x0,
+    2.5, 0.5, 1.0, 1.5, 0.1,
+    2.0, 1.0, 0.1, 0.1, 0.1,
+    0x0, 1.5, 0.1, 0.1, 0x0,
+    0x0, 0.1, 0.1, 0x0, 0.1
+    ```
+  - Factor: `1.0`
+  - Method: `.average`
+- **Effect Configuration 4:**
+  - Source: `durability`
+  - Destination: `maxDurability`
+  - Matrix Coefficients:
+    ```
+    0.5, 1.0, 1.0, 0x0, 0x0,
+    1.0, 2.5, 1.0, 1.0, 0.1,
+    1.0, 1.0, 1.5, 0.5, 0.1,
+    0x0, 1.0, 0.5, 0.1, 0x0,
+    0x0, 0.1, 0.1, 0x0, 0.1
+    ```
+  - Factor: `0.2`
+  - Method: `.sum`
+- **Effect Configuration 5:**
+  - Source: `durability`
+  - Destination: `maxDurability`
+  - Matrix Coefficients:
+    ```
+    0.5, 1.0, 1.0, 0x0, 0x0,
+    1.0, 2.5, 1.0, 1.0, 0.1,
+    1.0, 1.0, 1.5, 0.5, 0.1,
+    0x0, 1.0, 0.5, 0.1, 0x0,
+    0x0, 0.1, 0.1, 0x0, 0.1
+    ```
+  - Factor: `0.8`
+  - Method: `.average`
+- **Effect Configuration 6:**
+  - Source: `swingSpeed`
+  - Destination: `swingSpeed`
+  - Matrix Coefficients:
+    ```
+    3.0, 2.5, 2.5, 0x0, 0x0,
+    2.5, 0.5, 1.0, 2.0, 0.1,
+    2.5, 1.0, 0.2, 0.5, 0.1,
+    0x0, 2.0, 0.5, 0.1, 0x0,
+    0x0, 0.1, 0.1, 0x0, 0.1
+    ```
+  - Factor: `-0.5`
+  - Method: `.sum`
+- **Effect Configuration 7:**
+  - Source: `swingSpeed`
+  - Destination: `swingSpeed`
+  - Matrix Coefficients:
+    ```
+    3.0, 2.5, 2.5, 0x0, 0x0,
+    2.5, 0.5, 1.0, 2.0, 0.1,
+    2.5, 1.0, 0.2, 0.5, 0.1,
+    0x0, 2.0, 0.5, 0.1, 0x0,
+    0x0, 0.1, 0.1, 0x0, 0.1
+    ```
+  - Factor: `0.6`
+  - Method: `.average`
+
 ## Related Questions
 - What are the source and destination attributes for each effect configuration?
 - How many different methods are used to calculate the factor values?

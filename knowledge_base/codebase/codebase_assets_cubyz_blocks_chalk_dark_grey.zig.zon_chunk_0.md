@@ -8,7 +8,7 @@
 Defines configuration for the dark grey chalk block texture.
 
 ## Explanation
-This chunk is a simple configuration file that specifies the texture path for the dark grey chalk block. It does not contain any executable logic, just a static assignment of the texture property to a string value representing the path to the texture image.
+This chunk is a simple configuration file that specifies the texture path for the dark grey chalk block. The exact texture property assignment is `.texture = "cubyz:chalk/dark_grey"`. It does not contain any executable logic, just a static assignment of the texture property to a string value representing the path to the texture image.
 
 ## Related Questions
 - What is the texture path for the dark grey chalk block?

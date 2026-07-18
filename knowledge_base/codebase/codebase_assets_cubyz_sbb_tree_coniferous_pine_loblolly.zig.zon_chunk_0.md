@@ -8,7 +8,7 @@
 Defines a configuration for a coniferous pine loblolly tree, specifying its blueprints and child components.
 
 ## Explanation
-This chunk defines the structure of a coniferous pine loblolly tree in the Cubyz voxel engine. It specifies the blueprints that make up the core of the tree and lists its child components, including a branchless trunk and roots. The configuration is structured as a JSON-like object with keys for 'blueprints' and 'children', each containing arrays or strings that reference other assets within the engine.
+This chunk defines the structure of a coniferous pine loblolly tree in the Cubyz voxel engine. It specifies the blueprint with ID 'cubyz:tree/coniferous/core' for the core of the tree and lists its child components, including the white component as 'cubyz:tree/coniferous/pine/loblolly/1_branchless_trunk' and the black component as 'cubyz:tree/coniferous/tree_roots'. The configuration is structured as a JSON-like object with keys for 'blueprints', which contains an array of blueprint IDs, and 'children', which lists specific asset references.
 
 ## Related Questions
 - What is the ID of the blueprint for the core of the coniferous pine loblolly tree?

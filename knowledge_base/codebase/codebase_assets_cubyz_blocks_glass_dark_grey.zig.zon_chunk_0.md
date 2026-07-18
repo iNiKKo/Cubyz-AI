@@ -8,7 +8,7 @@
 Defines properties for a dark grey glass block.
 
 ## Explanation
-This chunk defines the properties of a dark grey glass block in Cubyz. It specifies the absorbed light color and the texture file path.
+This chunk defines the properties of a dark grey glass block in Cubyz. It specifies that the absorbed light color is `0xacacac` and the texture file path is `cubyz:glass/dark_grey`. The configuration ensures that the material properties are correctly mapped to these values.
 
 ## Related Questions
 - What is the absorbed light color of the dark grey glass block?

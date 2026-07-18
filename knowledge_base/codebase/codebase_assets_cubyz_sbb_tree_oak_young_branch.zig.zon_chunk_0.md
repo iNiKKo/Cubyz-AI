@@ -9,7 +9,18 @@
 Tree branch blueprint configuration
 
 ## Explanation
-This chunk defines a set of tree branch blueprints with their respective IDs and chances for generation in the game world.
+This chunk defines a set of tree branch blueprints with their respective IDs and generation chances. The blueprints are:
+
+1. `cubyz:tree/oak/young/branch/0` with a chance of 0.15
+2. `cubyz:tree/oak/young/branch/1` with a chance of 0.15
+3. `cubyz:tree/oak/young/branch/2` with a chance of 0.25
+4. `cubyz:tree/oak/young/branch/3` with a chance of 0.25
+5. `cubyz:tree/oak/young/branch/4` with a chance of 0.25
+6. `cubyz:tree/oak/young/branch/5` with a chance of 0.15
+7. `cubyz:tree/oak/young/branch/6` with a chance of 0.25
+8. `cubyz:tree/oak/young/branch/7` with a chance of 0.25
+9. `cubyz:deco/bolete_side` with a chance of 0.3
+10. A blueprint with null ID
 
 ## Related Questions
 - What are the IDs of the tree branch blueprints defined in this configuration?

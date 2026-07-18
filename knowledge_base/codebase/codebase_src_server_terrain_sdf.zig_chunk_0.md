@@ -9,7 +9,7 @@
 SDF model and instance generation logic
 
 ## Explanation
-This chunk defines the `SdfModel` struct for representing different types of SDF (Signed Distance Function) models used in terrain generation. It includes methods to initialize a model, generate it into a 3D array, and instantiate an SdfInstance for further processing.
+This chunk defines the `SdfModel` struct for representing different types of SDF (Signed Distance Function) models used in terrain generation. The `initModel` function initializes an `SdfModel` using specific parameters such as `maxBiomeCenterDistance`, which is clamped to a range between 0 and half of `terrain.CaveBiomeMap.CaveBiomeMapFragment.caveBiomeSize`. If the parameter for `minAmount` or `maxAmount` is missing, default values are used: `minAmount` defaults to 1, and `maxAmount` defaults to the value of `minAmount`, also defaulting to 1 if neither is provided. The `generate` method generates SDF instances into a 3D array based on these parameters. Additionally, it includes methods to instantiate an `SdfInstance` for further processing and functions such as `smoothUnion` and `intersection` for handling distance calculations.
 
 ## Code Example
 ```zig
@@ -17,17 +17,7 @@ pub fn initModel(parameters: ZonElement) ?struct { model: SdfModel, maxExtend: v
 ```
 
 ## Related Questions
-- What is the purpose of the `initModel` function?
-- How does the `generate` method work in relation to SDF models and terrain generation?
-- What are the parameters for the `instantiate` method?
-- Explain how the `smoothUnion` function calculates the union of two distances.
-- Describe the logic behind the `intersection` function.
-- What is the role of the `modelRegistry` in this chunk?
-- How does the `generate` method handle the generation of SDF instances into a 3D array?
-- What are the conditions under which the `generate` method skips certain positions in the 3D array?
-- Explain how the `centerPosOffset` field is used in the `SdfInstance` struct.
-- How does the `smoothUnion` function handle cases where the distances are equal?
-- Describe the logic behind the `intersection` function when one distance is greater than the other.
-- What is the purpose of the `voxelSizeShift` parameter in the `generate` method?
+- What is the purpose of the `maxBiomeCenterDistance` parameter in the `initModel` function?
+- How does the `minAmount` and `maxAmount` parameters default if not provided in the `initModel` function?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_sdf.zig_chunk_0*

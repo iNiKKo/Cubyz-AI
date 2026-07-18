@@ -8,7 +8,7 @@
 Defines configuration for a red cloth block, including its texture and item properties.
 
 ## Explanation
-This chunk is a configuration file in the Cubyz voxel engine that specifies the visual and item-related properties of a red cloth block. It sets the texture path for both the block itself and its corresponding item representation. The configuration uses a structured format to map these properties, ensuring that the game can correctly render and handle the red cloth block within its asset system.
+This chunk is a configuration file in the Cubyz voxel engine that specifies the visual and item-related properties of a red cloth block. It sets the texture path for both the block itself to `cubyz:cloth/red` and its corresponding item representation to `cloth/red.png`. The configuration uses a structured format to map these properties, ensuring that the game can correctly render and handle the red cloth block within its asset system.
 
 ## Related Questions
 - What is the texture path for the red cloth block?

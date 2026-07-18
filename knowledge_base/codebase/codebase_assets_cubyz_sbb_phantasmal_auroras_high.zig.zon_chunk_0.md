@@ -9,7 +9,20 @@
 Configuration data for aurora blueprint generation
 
 ## Explanation
-This chunk defines a configuration structure for generating aurora blueprints in the Cubyz voxel engine. It contains an array of blueprint entries, each with an ID and a chance value.
+This chunk defines a configuration structure for generating aurora blueprints in the Cubyz voxel engine. It contains an array of blueprint entries with specific IDs and chance values as follows:
+
+- ID: cubyz:phantasmal/auroras/high/0, Chance: 1
+- ID: cubyz:phantasmal/auroras/high/1, Chance: 1
+- ID: cubyz:phantasmal/auroras/high/2, Chance: 1
+- ID: cubyz:phantasmal/auroras/high/3, Chance: 1
+- ID: cubyz:phantasmal/auroras/high/4, Chance: 1
+- ID: cubyz:phantasmal/auroras/high/5, Chance: 1
+- ID: cubyz:phantasmal/auroras/high/6, Chance: 1
+- ID: cubyz:phantasmal/auroras/high/7, Chance: 1
+- ID: cubyz:phantasmal/auroras/high/8, Chance: 1
+- ID: cubyz:phantasmal/auroras/high/broken_0, Chance: 0.5
+- ID: cubyz:phantasmal/auroras/high/broken_1, Chance: 0.5
+- ID: cubyz:phantasmal/auroras/high/broken_2, Chance: 0.5
 
 ## Related Questions
 - What is the purpose of this configuration structure?

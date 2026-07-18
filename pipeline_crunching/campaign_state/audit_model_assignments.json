@@ -1,22 +1,17 @@
 {
-  "nickc": {
-    "model": "qwen2.5:7b",
+  "nicksrvr": {
+    "model": "llama3.1:8b",
     "tier": "medium",
-    "last_seen": 1784393334.4845917
+    "last_seen": 1784397827.695688
   },
   "nick": {
     "model": "qwen2.5:14b",
     "tier": "hard",
-    "last_seen": 1784393348.6648426
+    "last_seen": 1784397828.3206236
   },
-  "nicksrvr": {
-    "model": "llama3.1:8b",
+  "nickc": {
+    "model": "qwen2.5:7b",
     "tier": "medium",
-    "last_seen": 1784393319.4085455
-  },
-  "nickmac": {
-    "model": "qwen2.5:3b",
-    "tier": "easy",
-    "last_seen": 1784393322.1208186
+    "last_seen": 1784397828.0261555
   }
 }

@@ -8,7 +8,7 @@
 Defines properties for the dandelion block in Cubyz, including tags, health, drops, selection capabilities, and textures.
 
 ## Explanation
-This chunk defines a configuration for the dandelion block in the Cubyz voxel engine. It specifies various properties such as tags (cuttable and sliceable), block health, drop behavior, tool effectiveness, replaceability, degradability, collision settings, light absorption, model and rotation types, update behavior, texture, item texture, and LOD replacement.
+This chunk defines a configuration for the dandelion block in the Cubyz voxel engine. It specifies various concrete properties including tags (cuttable and sliceable), block health of 0.2, drop behavior allowing automatic drops with allowed tool tags being cuttable, selection capabilities indicating tool effectiveness, replaceability set to true, degradability also set to true, collision settings disabled (collide = false), always view through enabled (alwaysViewThrough = true), absorbed light value of 0x121012, model type 'cubyz:plane', rotation type 'cubyz:carpet', update behavior with check_support_blocks type, texture set to 'cubyz:dandelions', item texture 'dandelions.png', and LOD replacement as 'cubyz:air'.
 
 ## Related Questions
 - What are the tags associated with the dandelion block?

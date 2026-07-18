@@ -6,10 +6,10 @@
 **Concepts:** biome configuration, forest biome, palm trees, simple trees, sbb structures
 
 ## Summary
-Forest biome configuration with palm trees.
+Forest biome configuration with palm trees. This biome has a minimum radius of 16, maximum radius of 32, minimum height of 500, maximum height of 1500, keepOriginalTerrain value of 0.99, soilCreep value of 2, and specific structures including simple mahogany trees and coconut palm sbb structures.
 
 ## Explanation
-This chunk defines a forest biome configuration for the Cubyz voxel engine. It specifies parameters like minimum and maximum radius, height, and soil creep. The biome includes structures such as simple trees and sbb (simple block structure) with specific placement modes and chances. It also references parent biomes.
+This chunk defines a forest biome configuration for the Cubyz voxel engine with specific parameters: minimum radius (16), maximum radius (32), minimum height (500), maximum height (1500), keepOriginalTerrain value (0.99), soilCreep value (2). The biome includes ground structures such as 'cubyz:grass/dew' and 'cubyz:clay'. It also defines two types of structures: a simple mahogany tree with leaves ('cubyz:leaves/mahogany') and logs ('cubyz:log/mahogany'), placed with a chance of 0.03, and an sbb structure (coconut palm) with a placement mode of degradable and a chance of 0.05. The biome inherits from the parent biome 'cubyz:forest/palm/base' with a chance of 4.
 
 ## Related Questions
 - What is the minimum and maximum radius of this forest biome?

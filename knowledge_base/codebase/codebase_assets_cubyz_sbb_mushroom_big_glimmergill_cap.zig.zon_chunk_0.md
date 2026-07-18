@@ -8,7 +8,7 @@
 Defines blueprints for different variants of a big glimmergill mushroom cap.
 
 ## Explanation
-This chunk contains configuration data for various blueprints related to a specific type of mushroom cap in the Cubyz game. Each blueprint is identified by a unique string ID, which follows a consistent naming pattern indicating its origin and variant within the game's asset system.
+This chunk contains configuration data for various blueprints related to a specific type of mushroom cap in the Cubyz game. Each blueprint is identified by a unique string ID, which follows a consistent naming pattern indicating its origin and variant within the game's asset system. The IDs are as follows: cubyz:mushroom/big/glimmergill/cap/0, cubyz:mushroom/big/glimmergill/cap/1, cubyz:mushroom/big/glimmergill/cap/2, cubyz:mushroom/big/glimmergill/cap/3, cubyz:mushroom/big/glimmergill/cap/4, cubyz:mushroom/big/glimmergill/cap/5, and cubyz:mushroom/big/glimmergill/cap/6.
 
 ## Related Questions
 - What are the IDs of the different variants of the big glimmergill mushroom cap?

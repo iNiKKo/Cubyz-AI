@@ -8,7 +8,7 @@
 This chunk defines configuration for phantasmal pillars, including blueprints with chances and children mappings.
 
 ## Explanation
-The chunk contains a configuration structure for phantasmal pillars. It includes an array of blueprints, each with an ID and a chance value. Additionally, it maps color names to specific pillar types under the 'children' field. This configuration is likely used in world generation or asset management within the Cubyz engine.
+This chunk defines configuration for phantasmal pillars, including an array of blueprints with IDs and associated chances. The blueprints include small bases (IDs: 'cubyz:phantasmal/base/small/0' to 'cubyz:phantasmal/base/small/5', each with a chance of 1), medium-sized bases ('cubyz:phantasmal/base/medium/0' to 'cubyz:phantasmal/base/medium/3', each with a chance of 0.3), and large bases ('cubyz:phantasmal/base/large/0' to 'cubyz:phantasmal/base/large/2', each with a chance of 0.1). Additionally, the configuration maps color names to specific pillar types under the 'children' field: black is mapped to 'cubyz:phantasmal/pillar/large/large', dark_grey to 'cubyz:phantasmal/pillar/medium/medium', and grey to 'cubyz:phantasmal/pillar/small/small'. This configuration is used in world generation or asset management within the Cubyz engine.
 
 ## Related Questions
 - What are the IDs of the small phantasmal base blueprints?

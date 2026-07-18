@@ -8,7 +8,7 @@
 Defines configuration for the Sandstone Wall block in Cubyz.
 
 ## Explanation
-This chunk contains a JSON-like configuration object defining properties of the Sandstone Wall block. It specifies the rotation behavior, model, textures for different sides, and item texture. The configuration is structured to match typical asset definitions in the Cubyz engine, focusing on visual and behavioral aspects of the block.
+This chunk contains a JSON-like configuration object defining properties of the Sandstone Wall block. It specifies that the rotation behavior is set to 'cubyz:fence', the model assigned is 'cubyz:wall'. The texture for different sides includes 'cubyz:sandstone/wall' for the main side, and 'cubyz:sandstone/wall_top' for both top and bottom. Additionally, the item representation uses a texture defined as 'wall/sandstone.png'.
 
 ## Related Questions
 - What is the rotation behavior of the Sandstone Wall block?

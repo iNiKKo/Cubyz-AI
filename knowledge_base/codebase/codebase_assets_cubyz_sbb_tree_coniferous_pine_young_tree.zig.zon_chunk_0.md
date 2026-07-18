@@ -8,7 +8,7 @@
 Defines blueprints for young coniferous pine saplings.
 
 ## Explanation
-This chunk contains a configuration structure defining multiple blueprints, each with an unique ID representing different stages or variations of a young coniferous pine sapling. These IDs are used to identify and manage the sapling assets within the Cubyz engine's asset system.
+This chunk contains a configuration structure defining multiple blueprints, each with unique IDs representing different stages or variations of young coniferous pine saplings. Specifically, it lists five unique IDs: 'cubyz:tree/coniferous/sapling/0', 'cubyz:tree/coniferous/sapling/1', 'cubyz:tree/coniferous/sapling/2', 'cubyz:tree/coniferous/sapling/3', and 'cubyz:tree/coniferous/sapling/4'. These IDs are used to identify and manage the sapling assets within the Cubyz engine's asset system.
 
 ## Related Questions
 - What are the IDs defined for young coniferous pine saplings?

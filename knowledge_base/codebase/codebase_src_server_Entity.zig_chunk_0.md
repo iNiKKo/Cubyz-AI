@@ -9,7 +9,7 @@
 Entity management and serialization
 
 ## Explanation
-This chunk defines the Entity struct, which represents a game entity with position, velocity, rotation, health, energy, name, and ID. It provides functions to load, clone, save, and deinitialize entities from and to ZonElement format, handling component loading and saving, as well as memory management for names.
+This chunk defines the Entity struct, which represents a game entity with position (Vec3d), velocity (Vec3d), rotation (Vec3f), health (8.0 f32), maxHealth (8.0 f32), energy (8.0 f32), maxEnergy (8.0 f32), name (?[]const u8), and ID (main.entity.Entity). It provides functions to load, clone, save, and deinitialize entities from and to ZonElement format, handling component loading and saving, as well as memory management for names. The `loadFrom` function initializes the entity's attributes based on data provided in a ZonElement object or default values if not present. The `clone` function creates an exact copy of an existing entity while preserving its ID. The `save` function serializes the entity into a ZonElement format, including position, velocity, rotation, health, energy, and components. The `deinit` function releases memory allocated for names and removes components based on the side (client or server).
 
 ## Code Example
 ```zig

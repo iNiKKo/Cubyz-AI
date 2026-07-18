@@ -6,10 +6,10 @@
 **Concepts:** world_generation
 
 ## Summary
-Loads a pre-seeded noise map for world generation.
+Loads a pre-seeded noise map for world generation using a grid-based approach with specific parameters such as size shift (7), feature shift (2), distance square limit (8), repetitions (4), and iterations (16).
 
 ## Explanation
-The `load` function initializes the `pattern` array with random values to create a simple square grid used for world generation. It uses a basic grid-based approach where each point is moved randomly to ensure the grid remains valid in each step, repeated multiple times for optimal results. The `sample` function retrieves a value from the `pattern` array based on given coordinates. The `getRegionData` function extracts a subregion of the noise map and returns it as an array of 32-bit integers representing the coordinates relative to the compressed input coordinates.
+The `load` function initializes the `pattern` array with random values to create a simple square grid used for world generation. It uses a basic grid-based approach where each point is moved randomly to ensure the grid remains valid in each step, repeated multiple times for optimal results. The size of the pattern grid is determined by `sizeShift`, which is currently set to 7 (resulting in a grid size of 128x128). Each feature within the grid has a size defined by `featureShift` (which is 4), resulting in features that are 16 units wide. The function uses constants such as `distSquareLimit` (set to 8) and `repetitions` (set to 4) for ensuring optimal results, with each repetition involving `iterations` of 16 steps. The `sample` function retrieves a value from the `pattern` array based on given coordinates. The `getRegionData` function extracts a subregion of the noise map and returns it as an array of 32-bit integers representing the coordinates relative to the compressed input coordinates.
 
 ## Code Example
 ```zig
@@ -57,15 +57,8 @@ pub fn load() void { // TODO: Do this at compile time once the caching is good e
 ## Related Questions
 - What is the purpose of the `load` function?
 - How does the `load` function initialize the `pattern` array?
-- What are the parameters of the `getRegionData` function?
+- What are the parameters used in the `load` function such as sizeShift, featureShift, distSquareLimit, repetitions, and iterations?
 - What is the logic behind the `sample` function?
 - How is the subregion extracted from the noise map in the `getRegionData` function?
-- Why is the `@setRuntimeSafety(false)` line used in the `load` function?
-- What are the constants used in the `load` function?
-- What is the purpose of the outer loop in the `load` function?
-- How does the `load` function ensure that the grid remains valid in each step?
-- What is the purpose of the inner loop in the `load` function?
-- What are the conditions for moving a point randomly in the `load` function?
-- How many times is the grid repeated to ensure optimal results?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_noise_BlueNoise.zig_chunk_0*

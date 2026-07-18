@@ -9,20 +9,18 @@
 Configuration for Tall Mountain Slope7 biome in Cubyz.
 
 ## Explanation
-This chunk defines the configuration settings for the Tall Mountain Slope7 biome, including properties, tags, height range, smooth beaches setting, radius, mountain count, chance of structures, maximum subbiome count, stone block type, valid player spawn status, music track, ground structure, structures to place, and parent biomes.
+This chunk defines the configuration settings for the Tall Mountain Slope7 biome in Cubyz. The properties include .mountain, tags are pine and snowy, minHeight is 898, maxHeight is 898, smoothBeaches is true, radius is 60, mountains count is 60, chance of structures being placed is 0, maximum subbiome count is 1, stoneBlock type is cubyz:glacite/smooth, valid player spawn status is false, music track is cubyz:mrmayman/out_of_breath. Ground structure consists of 3 to 5 layers of snow and 1 to 3 layers of permafrost. Structures include boulders made of snow with a chance of 0.01 and size variance of 1, boulders made of slate/smooth with a chance of 0.016 and size variance of 5, and young pine trees with a chance of 0.01. Parent biome is Tall Mountain Slope6.
 
 ## Related Questions
-- What are the properties of the Tall Mountain Slope7 biome?
-- Which tags are associated with this biome configuration?
-- What is the minimum and maximum height range for this biome?
-- Is smooth beaches enabled for this biome?
-- What is the radius setting for this biome?
+- What are the specific properties and tags associated with this biome?
+- What are the exact minimum and maximum height ranges for this biome?
+- Is smooth beaches enabled, and what is its radius setting?
 - How many mountains are generated in this biome?
 - What is the chance of structures being placed in this biome?
-- What is the maximum number of subbiomes allowed in this biome?
-- Which block type is used for stone blocks in this biome?
-- Is it valid for players to spawn in this biome?
-- What music track is set for this biome?
-- What are the ground structures defined for this biome?
+- Which block type is used for stone blocks?
+- Can players spawn in this biome?
+- What music track plays in this biome?
+- What ground structure layers are defined for this biome?
+- What specific boulder and tree structures are included, with their placement chances?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_tall_mountain_slope7.zig.zon_chunk_0*

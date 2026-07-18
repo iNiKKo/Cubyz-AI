@@ -8,7 +8,7 @@
 Defines configuration for cave void biomes, including structures and cave models.
 
 ## Explanation
-This chunk defines the configuration for a specific biome in Cubyz, focusing on cave voids. It specifies structures that can appear within these caves, such as 'cubyz:phantasmal/star/stars', with a chance of 0.05. Additionally, it outlines cave models like 'cubyz:partial_sphere' with defined parameters for the number and size of these models.
+This chunk defines configuration settings for cave void biomes in Cubyz. It specifies a structure with ID 'cubyz:sbb', which is 'cubyz:phantasmal/star/stars', appearing with a chance of 0.05. Additionally, it outlines the parameters for the 'partial_sphere' cave model, including a minimum amount of 4 and maximum amount of 6 instances, as well as a radius range from 30 to 40 units.
 
 ## Related Questions
 - What is the chance of the 'cubyz:phantasmal/star/stars' structure appearing in cave void biomes?
@@ -17,5 +17,6 @@ This chunk defines the configuration for a specific biome in Cubyz, focusing on 
 - What is the range of radii for the 'partial_sphere' cave model?
 - Can you list all the IDs of structures and cave models defined in this chunk?
 - What is the minimum amount of 'partial_sphere' cave models that can appear?
+- What is the maximum amount of 'partial_sphere' cave models that can appear?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_cave_void_rare_phantasmal_starlight.zig.zon_chunk_0*

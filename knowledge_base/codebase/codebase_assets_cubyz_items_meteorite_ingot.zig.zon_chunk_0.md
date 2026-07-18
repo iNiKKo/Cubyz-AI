@@ -8,7 +8,7 @@
 Defines properties for a meteorite ingot item.
 
 ## Explanation
-This chunk defines the configuration for a meteorite ingot item in the Cubyz voxel engine. It specifies tags, texture, and material properties such as durability, mass damage, hardness damage, swing speed, texture roughness, and color gradients. The configuration is structured using nested fields to organize different attributes of the item.
+This chunk defines the configuration for a meteorite ingot item in the Cubyz voxel engine. It specifies tags, texture, and material properties such as durability (1700), mass damage (2.0), hardness damage (5.0), swing speed (7.8), texture roughness (0.2), and color gradients (0xff5c403e, 0xff6c4c46, 0xff7d5654, 0xff8e615f, 0xffa67670). The configuration is structured using nested fields to organize different attributes of the item.
 
 ## Related Questions
 - What tags are associated with the meteorite ingot item?

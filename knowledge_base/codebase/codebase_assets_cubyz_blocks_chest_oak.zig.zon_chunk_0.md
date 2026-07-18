@@ -8,7 +8,13 @@
 Defines texture paths for an oak chest block.
 
 ## Explanation
-This chunk specifies the file paths for various textures associated with an oak chest block in the Cubyz voxel engine. Each field corresponds to a different face of the block (back, front, left, right, top, bottom), mapping them to their respective texture images located within the 'cubyz:chest/oak' directory.
+This chunk specifies the file paths for various textures associated with an oak chest block in the Cubyz voxel engine. Each field corresponds to a different face of the block (back, front, left, right, top, bottom), mapping them to their respective texture images located within the 'cubyz:chest/oak' directory as follows:
+- `texture`: "cubyz:chest/oak/back"
+- `texture_front`: "cubyz:chest/oak/front"
+- `texture_left`: "cubyz:chest/oak/side"
+- `texture_right`: "cubyz:chest/oak/side"
+- `texture_top`: "cubyz:chest/oak/top"
+- `texture_bottom`: "cubyz:chest/oak/bottom"
 
 ## Related Questions
 - What is the texture file for the front of the oak chest block?

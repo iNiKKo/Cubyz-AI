@@ -9,7 +9,7 @@
 Label component for GUI rendering
 
 ## Explanation
-This chunk defines a `Label` struct and its associated functions for initializing, updating, and rendering text labels in the GUI. It uses a `TextBuffer` to handle text layout and rendering.
+This chunk defines a `Label` struct and its associated functions for initializing, updating, and rendering text labels in the GUI. It uses a `TextBuffer` to handle text layout and rendering. The default font size is set to 16. The `alpha` field defaults to 1, indicating full opacity. The `init` function initializes the label with given position, maximum width, text content, and alignment. The `deinit` function deinitializes the label by freeing its resources. The `toComponent` function converts a `Label` instance into a `GuiComponent`. The `updateText` function updates the label's text and recalculates its size based on the new text content. The `render` function renders the label with the specified position, font size, and alpha value.
 
 ## Code Example
 ```zig
@@ -36,7 +36,5 @@ pub fn init(pos: Vec2f, maxWidth: f32, text: []const u8, alignment: TextBuffer.A
 - In which file are the `GuiComponent` and `TextBuffer` types defined?
 - What is the purpose of the `toComponent` function?
 - How does the `Label` struct calculate its size based on the text and maximum width?
-- What is the default value for the `alpha` field in the `Label` struct?
-- In which file are the `Vec2f` type and its methods defined?
 
 *Source: unknown | chunk_id: codebase_src_gui_components_Label.zig_chunk_0*

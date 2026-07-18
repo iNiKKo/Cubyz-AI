@@ -8,14 +8,10 @@
 Defines blueprints and children for a rare Triclops statue structure.
 
 ## Explanation
-This chunk defines the configuration for a rare Triclops statue structure in Cubyz. It specifies multiple blueprints with different IDs and chances, indicating the probability of each blueprint being selected. Additionally, it lists two child structures: one red and one white, which are referenced by their respective IDs.
+This chunk defines the configuration for a rare Triclops statue structure in Cubyz. It specifies five blueprints with different IDs and associated probabilities: 'cubyz:rare/triclops_statue/base/0' (chance = 3), 'cubyz:rare/triclops_statue/base/1' (chance = 5), 'cubyz:rare/triclops_statue/base/2' (chance = 4), 'cubyz:rare/triclops_statue/base/3' (chance = 3), and 'cubyz:rare/triclops_statue/base/4' (chance = 3). Additionally, it lists two child structures: one red with the ID 'cubyz:rare/triclops_statue/root/base', and one white with the ID 'cubyz:rare/triclops_statue/head'.
 
 ## Related Questions
 - What are the IDs and chances for the blueprints of the Triclops statue?
 - Which child structures does the Triclops statue have, and what are their IDs?
-- How many different base blueprints are defined for the Triclops statue?
-- What is the chance of selecting the blueprint with ID 'cubyz:rare/triclops_statue/base/1'?
-- Are there any other child structures besides red and white listed in this configuration?
-- How does the chance distribution among the blueprints affect the generation of the Triclops statue?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_rare_triclops_statue_structure.zig.zon_chunk_0*

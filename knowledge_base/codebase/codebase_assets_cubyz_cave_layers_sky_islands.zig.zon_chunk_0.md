@@ -8,7 +8,12 @@
 Defines configuration for sky island layers in the Cubyz game.
 
 ## Explanation
-This chunk contains a configuration object with settings specific to sky island layers. It includes tags, layer height, depth hint, and cave density parameters that influence the generation of these islands within the game world.
+This chunk contains a configuration object with settings specific to sky island layers. The configuration includes:
+- `tags`: `.sky_island_layer`
+- `layerHeight`: 10000
+- `depthHint`: 10000
+- `caveDensity`: 0.005
+These parameters influence the generation of these islands within the game world.
 
 ## Related Questions
 - What is the layer height for sky island layers?

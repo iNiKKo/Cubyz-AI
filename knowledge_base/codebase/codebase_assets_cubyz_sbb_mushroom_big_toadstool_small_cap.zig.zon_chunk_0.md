@@ -8,7 +8,7 @@
 Defines blueprints for small mushroom caps.
 
 ## Explanation
-This chunk contains a configuration structure defining three different blueprints for small mushroom caps. Each blueprint is identified by a unique string ID within the Cubyz asset system. The IDs are used to reference these specific mushroom cap models or assets in the game engine, allowing for variety and differentiation among similar objects.
+This chunk contains a configuration structure defining three different blueprints for small toadstool caps. Each blueprint is identified by a unique string ID within the Cubyz asset system: 'cubyz:mushroom/big/toadstool/small_cap/0', 'cubyz:mushroom/big/toadstool/small_cap/1', and 'cubyz:mushroom/big/toadstool/small_cap/2'. These IDs are used to reference these specific mushroom cap models or assets in the game engine, allowing for variety and differentiation among similar objects.
 
 ## Related Questions
 - What are the unique identifiers for the small mushroom cap blueprints?

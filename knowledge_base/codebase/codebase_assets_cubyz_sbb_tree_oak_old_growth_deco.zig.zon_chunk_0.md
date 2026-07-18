@@ -8,7 +8,13 @@
 Defines blueprints for oak old growth tree decorations with associated chances.
 
 ## Explanation
-This chunk defines a configuration structure containing blueprints for various oak old growth tree decorations. Each blueprint has an ID and a chance value, which determines the probability of that decoration appearing on the tree. The blueprints are stored in an array within a larger anonymous struct.
+This chunk defines a configuration structure containing blueprints for various oak old growth tree decorations. Each blueprint has an ID and a chance value which determines the probability of that decoration appearing on the tree. The specific blueprints are as follows:
+
+- `null` (ID: null, Chance: 0)
+- Bolete Side (`cubyz:deco/bolete_side`, Chance: 0.07)
+- Toadstool Side (`cubyz:deco/toadstool_side`, Chance: 0.02)
+- Ivy Side with Two Leaves (`cubyz:deco/ivy_side_2`, Chance: 0.02)
+- Ivy Side with Three Leaves (`cubyz:deco/ivy_side_3`, Chance: 0.02)
 
 ## Related Questions
 - What is the chance of a toadstool decoration appearing on an oak old growth tree?

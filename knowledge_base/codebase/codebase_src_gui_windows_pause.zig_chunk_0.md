@@ -9,7 +9,7 @@
 Defines the Pause menu window for the GUI, including its layout and button actions.
 
 ## Explanation
-This chunk defines a Pause menu window within the game's graphical user interface (GUI). It initializes a `GuiWindow` with specific content size and behavior. The `onOpen` function sets up the window's root component as a `VerticalList`, adding several buttons for different actions like opening player, invite, settings, reordering HUD, and exiting the world. Each button is conditionally enabled or disabled based on game state. The `onClose` function deinitializes the window's components when it closes.
+This chunk defines the Pause menu window within the game's graphical user interface (GUI). It initializes a `GuiWindow` with a content size of `{128, 256}` and sets `closeIfMouseIsGrabbed` to true. The `onOpen` function sets up the window's root component as a `VerticalList`, adding several buttons for different actions like opening player, invite, settings, reordering HUD, and exiting the world. Each button is conditionally enabled or disabled based on game state: 'Players' and 'Invite Player' are only available in singleplayer mode if the server world exists. The exact padding value used is `8`. The `onClose` function deinitializes the window's components when it closes.
 
 ## Code Example
 ```zig

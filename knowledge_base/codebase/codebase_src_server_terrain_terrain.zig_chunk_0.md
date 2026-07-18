@@ -9,7 +9,7 @@
 Terrain generation and biome initialization logic
 
 ## Explanation
-This chunk defines the terrain generation profile, initializes various maps and biomes, and loads blue noise. It also includes functions for global initialization and deinitialization.
+This chunk defines the terrain generation profile, initializes various maps and biomes, and loads blue noise. It includes detailed information about `BlockGenerator` struct which contains initialization function (`init`), generation function (`generate`), priority level (`priority`), generator-specific seed (`generatorSeed`), and default state (`defaultState`). Generators are prioritized based on their `priority` value with higher values indicating higher priority. The default state for a generator is defined in the `BlockGenerator` struct as either `enabled` or `disabled`. It also includes functions for global initialization and deinitialization, and lists all supported block generators through `generatorRegistry`. Climate wavelengths affect terrain generation by influencing various aspects such as temperature, humidity, vegetation density, and elevation.
 
 ## Code Example
 ```zig
@@ -22,6 +22,5 @@ pub const GeneratorState = enum { enabled, disabled }
 - What is the default state for a generator?
 - Where can I find the list of all supported block generators?
 - How do climate wavelengths affect terrain generation?
-- What is the global initialization function for terrain generation?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_terrain.zig_chunk_0*

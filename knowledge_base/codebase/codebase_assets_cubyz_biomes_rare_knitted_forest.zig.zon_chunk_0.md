@@ -9,7 +9,7 @@
 Biome configuration for rare knitted forest
 
 ## Explanation
-Defines properties and structures for a rare knitted forest biome, including height limits, smooth beaches, radius, roughness, hills, structure generation, and specific block configurations.
+Defines properties and structures for a rare knitted forest biome, including height limits (minHeightLimit: 7, minHeight: 22, maxHeight: 40, maxHeightLimit: 50), smooth beaches (smoothBeaches: true), radius (minRadius: 256, maxRadius: 320), roughness (roughness: 1), hills (hills: 8), structure generation chances and configurations, and specific block configurations. The stoneBlock is defined as 'cubyz:cloth/block/grey'. Ground structures include 2 to 3 blocks of 'cubyz:cloth/block/brown'. Structures generated in this biome are boulders with a chance of 0.01, flower patches with green flowers (chance: 0.5, width: 10, variation: 6, density: 10, priority: 0.1) and yellow flowers (chance: 0.02, width: 10, variation: 5, density: 0.2, priority: 0.2), and simple trees with leaves of 'cubyz:cloth/block/green', 'cubyz:cloth/block/lime', 'cubyz:cloth/block/viridian' (chance: 0.03 each) and a unique tree with white leaves on air logs (chance: 0.05, height: 25, variation: 10, leafRadius: 5, leafRadius_variation: 2, leafElongation: 0.4, deltaLeafElongation: 0.15).
 
 ## Related Questions
 - What is the minimum height limit for this biome?

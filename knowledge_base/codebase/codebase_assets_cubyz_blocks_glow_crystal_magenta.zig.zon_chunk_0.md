@@ -8,7 +8,7 @@
 Defines properties for a magenta glow crystal block.
 
 ## Explanation
-This chunk defines the configuration for a specific type of block in the Cubyz voxel engine, namely a magenta glow crystal. It specifies two key properties: `emittedLight`, which is set to a hexadecimal color value representing the light emitted by the block, and `texture`, which points to the texture file used to render the block's appearance.
+This chunk defines the configuration for a specific type of block in the Cubyz voxel engine, namely a magenta glow crystal. It specifies two key properties: `emittedLight`, which is set to the hexadecimal color value `0xf260ca` representing the light emitted by the block, and `texture`, which points to the texture file `cubyz:glow_crystal/magenta` used to render the block's appearance.
 
 ## Related Questions
 - What is the emitted light color of the magenta glow crystal block?

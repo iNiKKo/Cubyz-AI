@@ -8,7 +8,7 @@
 Defines properties for the violet glow crystal block.
 
 ## Explanation
-This chunk specifies the emitted light color and texture path for a specific type of block in the Cubyz voxel engine. The `emittedLight` field is set to a hexadecimal color value, representing the light that the block emits. The `texture` field points to the image file used to render the block's appearance.
+This chunk specifies properties for the violet glow crystal block in Cubyz. The `emittedLight` field is set to `0xb93cba`, representing the light that the block emits. The `texture` field points to the image file at path `cubyz:glow_crystal/violet`. These properties define how the block emits light and its visual appearance.
 
 ## Related Questions
 - What is the emitted light color of the violet glow crystal block?

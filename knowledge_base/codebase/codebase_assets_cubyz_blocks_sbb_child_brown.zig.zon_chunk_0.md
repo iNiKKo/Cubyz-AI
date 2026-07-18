@@ -8,7 +8,7 @@
 Defines texture paths for a brown SBB child block.
 
 ## Explanation
-This chunk specifies the file paths for different textures of a brown SBB (Smooth Block Builder) child block. It includes the side, top, and bottom textures, each pointing to a specific image resource within the Cubyz asset system.
+This chunk specifies the exact file paths for different textures of a brown SBB (Smooth Block Builder) child block. The side texture is defined as `cubyz:sbb/child/side/brown`, the top texture as `cubyz:sbb/child/top/brown`, and the bottom texture as `cubyz:sbb/child/bottom/brown`. These paths are used within the Cubyz asset system to render the block correctly.
 
 ## Related Questions
 - What is the side texture path for the brown SBB child block?

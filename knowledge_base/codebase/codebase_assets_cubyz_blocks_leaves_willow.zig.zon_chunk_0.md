@@ -8,7 +8,7 @@
 Defines configuration for willow leaves block.
 
 ## Explanation
-This chunk contains a single anonymous struct with fields specifying the texture, LOD replacement, and opaque variant for the willow leaves block. The texture field points to the visual appearance of the leaves, while lodReplacement and opaqueVariant specify alternative models used under certain conditions (Level of Detail replacement and when the block is treated as opaque).
+This chunk contains a single anonymous struct with fields specifying the configuration details for willow leaves. The `texture` field is set to "cubyz:leaves/willow", the `lodReplacement` field is set to "cubyz:leaves/opaque/willow", and the `opaqueVariant` field is also set to "cubyz:leaves/opaque/willow". These fields define the visual appearance of the leaves, specify alternative models used under certain conditions (Level of Detail replacement and when the block is treated as opaque), respectively.
 
 ## Related Questions
 - What is the texture file for willow leaves?

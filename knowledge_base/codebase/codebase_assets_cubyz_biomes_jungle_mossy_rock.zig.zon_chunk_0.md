@@ -8,7 +8,7 @@
 Defines configuration for the 'jungle/mossy_rock' biome in Cubyz, including terrain generation parameters and structures.
 
 ## Explanation
-This chunk is a configuration file defining the properties of the 'jungle/mossy_rock' biome. It specifies various parameters such as generation chance, radius, height range, terrain roughness, and structure types. The biome includes ground patches with different moss textures and stalagmites made of slate. It also lists parent biomes with their respective chances of transitioning into this biome.
+This chunk is a configuration file defining the properties of the 'jungle/mossy_rock' biome in Cubyz. It specifies various parameters such as generation chance (0), radius (20), height range (minHeight: 1500, maxHeight: 3000), terrain roughness (1), and structure types. The biome includes ground patches with different moss textures ('cubyz:moss:cubyz:slate/rough' with a chance of 0.2, width of 5, variation of 6, depth of 2, smoothness of 0.6; 'cubyz:moss:cubyz:slate/smooth' with a chance of 0.1, width of 5, variation of 4, depth of 1, smoothness of 0.6) and stalagmites made of slate ('cubyz:slate/smooth' with a chance of 0.1, size of 4, size_variation of 3). It also lists parent biomes with their respective chances of transitioning into this biome (jungle/sparse with a chance of 5%, jungle/base with a chance of 4%).
 
 ## Related Questions
 - What is the chance of generating the 'jungle/mossy_rock' biome?

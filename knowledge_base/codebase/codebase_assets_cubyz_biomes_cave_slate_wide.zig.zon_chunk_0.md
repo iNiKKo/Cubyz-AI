@@ -8,7 +8,7 @@
 Defines configuration for the 'cave_slate_wide' biome in Cubyz, including generation structures and cave models.
 
 ## Explanation
-This chunk configures the 'cave_slate_wide' biome with specific probabilities, maximum heights, and structures. It includes ground patches made of gravel and stalagmites made of smooth slate. Additionally, it defines cave models using cylinders with specified dimensions and quantities.
+This chunk configures the 'cave_slate_wide' biome with a probability of 0.8, a maximum height of -100, and includes specific generation structures and cave models. Ground patches are made of gravel with an ID of 'cubyz:ground_patch', a chance of 0.064, width of 5 blocks, variation of 5, depth of 3 blocks, and smoothness of 0.1. Stalagmites are made of smooth slate with an ID of 'cubyz:stalagmite', a chance of 0.15, size of 3 blocks, and size variation of 6 blocks. Cave models use cylinders with IDs of 'cubyz:cylinder', minimum amount of 10, maximum amount of 16, minimum radius of 16 blocks, maximum radius of 24 blocks, minimum height of 4 blocks, and maximum height of 6 blocks.
 
 ## Related Questions
 - What is the chance of generating a ground patch in the 'cave_slate_wide' biome?

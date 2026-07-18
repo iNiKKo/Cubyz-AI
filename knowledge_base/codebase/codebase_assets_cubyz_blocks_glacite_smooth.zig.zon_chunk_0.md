@@ -21,9 +21,9 @@ This chunk defines configuration settings for a specific block type, 'smooth gla
 The configuration specifies that this block allows ore generation (`allowOres = true`), uses a stair-like rotation model (`rotation = "cubyz:stairs"`), has a cube shape (`model = "cubyz:cube"`), and is textured with the 'cubyz:glacite/smooth' texture (`texture = "cubyz:glacite/smooth"`).
 
 ## Related Questions
-- - What texture is assigned to the smooth glacite block?
-- - Does the smooth glacite block allow ore generation?
-- - Which rotation model is used for the smooth glacite block?
-- - What shape does the smooth glacite block have?
+- What texture is assigned to the smooth glacite block?
+- Does the smooth glacite block allow ore generation?
+- Which rotation model is used for the smooth glacite block?
+- What shape does the smooth glacite block have?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_glacite_smooth.zig.zon_chunk_0*

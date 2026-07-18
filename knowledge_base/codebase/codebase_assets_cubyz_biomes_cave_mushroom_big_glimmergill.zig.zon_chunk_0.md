@@ -9,7 +9,14 @@
 Biome configuration for a cave with glimmergill structures and vegetation.
 
 ## Explanation
-This chunk defines the biome configuration for a cave environment, specifying various structures and vegetation to be placed within it. It includes details such as structure IDs, placement modes, chances, block lists, widths, variations, densities, priorities, generation modes, heights, height variations, and probabilities.
+This chunk defines the biome configuration for a cave environment with glimmergill structures and vegetation. It includes details such as structure IDs, placement modes, chances, block lists, widths, variations, densities, priorities, generation modes, heights, height variations, and probabilities.
+
+Specifically:
+- The chance of placing a large glimmergill mushroom structure (cubyz:mushroom/big/glimmergill) is 0.15 with the place mode set to degradable.
+- The chance of placing a small glimmergill mushroom structure (cubyz:mushroom/small/glimmergill) is 0.2 with the place mode set to degradable.
+- A flower patch can be placed with a density of 0.15, width of 8 blocks, variation of 4, and priority of 0.1 containing glimmergill blocks (cubyz:glimmergill).
+- Vines with glimmerworms (cubyz:vine/glimmer_worms) can grow on the ceiling with a chance of 0.4 and height range from 9 to 16 blocks.
+- Another set of vines with glimmerworms can grow on the ceiling with a chance of 0.2 and height range from 15 to 23 blocks.
 
 ## Related Questions
 - What is the chance of placing a glimmergill structure in this cave biome?

@@ -9,7 +9,27 @@
 Cave Mushroom Glimmergill Biome Configuration
 
 ## Explanation
-This chunk defines the configuration for a cave mushroom glimmergill biome. It specifies the maximum height, chance of occurrence, and structures that can be generated within this biome.
+This chunk defines the configuration for a cave mushroom glimmergill biome. It specifies that the maximum height is -200, the overall chance of occurrence is 0.05, and includes three structures with detailed configurations:
+
+1. **Structure ID:** `cubyz:flower_patch`
+   - **Block:** `cubyz:glimmergill`
+   - **Chance:** 0.35
+   - **Width:** 8
+   - **Variation:** 4
+   - **Density:** 0.06
+   - **Priority:** 0.1
+2. **Structure ID:** `cubyz:simple_vegetation`
+   - **Block:** `cubyz:vine/glimmer_worms`
+   - **Generation Mode:** ceiling
+   - **Chance:** 0.5
+   - **Height:** 3
+   - **Height Variation:** 2
+3. **Structure ID:** `cubyz:simple_vegetation`
+   - **Block:** `cubyz:vine/glimmer_worms`
+   - **Generation Mode:** ceiling
+   - **Chance:** 0.1
+   - **Height:** 9
+   - **Height Variation:** 7
 
 ## Related Questions
 - What is the maximum height of the cave mushroom glimmergill biome?

@@ -6,10 +6,20 @@
 **Concepts:** GUI window management, crafting system, procedural item creation, inventory interaction
 
 ## Summary
-Manages the workbench GUI window for crafting items.
+Manages the workbench GUI window for crafting procedural items. It initializes a grid-based inventory system with specific slot configurations, updates the crafting result based on item properties like durability and damage, and displays these properties in the GUI.
 
 ## Explanation
-This chunk defines the logic for a workbench GUI window in the Cubyz engine. It handles the initialization, updating, rendering, and closing of the workbench window. The workbench allows players to craft procedural items using a grid-based inventory system. Key functionalities include toggling between different procedural item types, updating the crafting result based on the grid contents, and displaying properties of the crafted item. The chunk uses various GUI components like buttons, lists, and item slots to create an interactive interface.
+This chunk defines the logic for managing the workbench GUI window in Cubyz, which allows players to craft procedural items using a grid-based inventory system. Key functionalities include toggling between different procedural item types, updating the crafting result based on the grid contents, and displaying properties of the crafted item such as durability and damage.
+
+The `window` variable is initialized with specific dimensions and positioning relative to other windows. The `craftingGridInv` and `craftingResultInv` variables represent client-side inventories for the workbench grid and result slots respectively. These inventories are updated based on player actions and procedural item types.
+
+The `toggleProceduralItem` function increments the current procedural item type index, updates the button label to reflect the new item type ID, and triggers an update of the crafting grid and results.
+
+The `updateResult` function deinitializes and reinitializes the result inventory based on the contents of the workbench grid. It calculates the crafted item using the `ProceduralItem.initFromInventory` method and updates the display accordingly.
+
+GUI components such as buttons, lists, and item slots are used to create an interactive interface for the crafting process. The durability and damage properties of the crafted item are displayed in the GUI with specific text formatting based on their values.
+
+When the workbench window is opened or closed, it initializes or deinitializes the inventories and updates the GUI components accordingly.
 
 ## Code Example
 ```zig

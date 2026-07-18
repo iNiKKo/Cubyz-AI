@@ -8,7 +8,7 @@
 Defines properties for a desert oasis pond biome.
 
 ## Explanation
-This chunk configures the properties of a desert oasis pond biome, including its height range, radius, and parent biomes. It specifies that player spawning is not valid within this biome and lists the properties it possesses, such as being wet. The configuration also details the number of hills and the chance of generating from a specific base biome.
+This chunk configures the properties of a desert oasis pond biome. It specifies that player spawning is not valid within this biome (validPlayerSpawn = false). The biome possesses the property 'wet'. The height range for the biome is from -5 to -1, with a maxHeightLimit of -1. The radius range is 30 to 45 blocks. Additionally, it can generate up to 5 hills. The base biome that this desert oasis pond extends from is 'cubyz:desert/oasis/base' with a generation chance of 1.
 
 ## Related Questions
 - What are the height limits for the desert oasis pond biome?

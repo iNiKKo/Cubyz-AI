@@ -8,7 +8,7 @@
 Defines properties for a tall mountain summit biome in Cubyz.
 
 ## Explanation
-This chunk defines the configuration for a specific biome in the Cubyz game engine, focusing on its terrain characteristics, climate, and potential structures. The biome is identified as a snowy mountain summit with a defined height range, smooth beaches, and a specific radius. It includes ground structures composed of snow and permafrost layers. The biome also specifies valid player spawn conditions, music, and parent biomes from which it can inherit properties. Structures like boulders made of snow are randomly placed within the biome.
+This chunk defines the configuration for a snowy mountain summit biome in Cubyz. The biome has a height range from 925 to 955 cubyz, smooth beaches enabled, and a radius of 35 cubyz. It includes ground structures composed of 5 to 11 layers of snow and 1 to 3 layers of permafrost. Player spawning is not allowed in this biome, and the associated music is 'cubyz:mischol/sunshower'. The parent biomes include a slope7 variant with a chance of 100%. Structures like boulders made of snow are randomly placed within the biome, with each boulder having a size between 6 to 8 cubyz and a placement probability of 2%.
 
 ## Related Questions
 - What is the height range of the tall mountain summit biome?

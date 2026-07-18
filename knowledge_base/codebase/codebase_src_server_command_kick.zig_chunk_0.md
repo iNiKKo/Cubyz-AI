@@ -6,10 +6,10 @@
 **Concepts:** command handling, player management, networking
 
 ## Summary
-Handles kicking a player by index
+Handles kicking a player by index using the '/kick @<playerIndex>' command. It includes argument parsing, error handling, user management, and message sending.
 
 ## Explanation
-This function parses command arguments to kick a player by their index. It uses an argument parser to validate and extract the player index, then retrieves the target user using the provided index and source user. The target's connection is disconnected, and a message is sent to all users notifying them of the kicked player.
+This function handles the '/kick @<playerIndex>' command to kick a player by their index. The `description` constant is set to 'Kicks a player', and the `usage` constant specifies the format as '/kick @<playerIndex>'. It uses an argument parser (`Args`) to validate and extract the player index, then retrieves the target user using the provided index and source user. If there are errors during parsing, it sends an error message in red color ('#ff0000') to the source user. The target's connection is disconnected, and a notification message is sent to all users indicating that '{target.user.name}§#ffff00 has been kicked from the server'.
 
 ## Code Example
 ```zig

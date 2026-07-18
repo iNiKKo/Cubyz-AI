@@ -6,10 +6,25 @@
 **Concepts:** block configuration, decay behavior, item material
 
 ## Summary
-Block configuration for a pine branch.
+Block configuration for a pine branch including its tags, decay behavior, health value, textures, item material properties, and prohibition on decay.
 
 ## Explanation
-This chunk defines the properties of a pine branch block, including its tags, update behavior, health, textures, item material, and decay prohibition settings. It specifies that the block can be chopped, is wood, and is a branch type.
+This chunk defines the properties of a pine branch block. The block has the following attributes: 
+- Tags: choppable, wood, branch
+- Update type: decay
+- Block health: 4
+- Textures: dot, half_line, line, bend, intersection, cross (corresponding to texture indices 0 through 5)
+- Item material properties:
+  - Durability: 28
+  - Mass damage: 1.1
+  - Hardness damage: 0.46
+  - Swing speed: 4.75
+  - Texture roughness: 0.7
+  - Colors: #ff312a1e, #ff3c3324, #ff4a3c28, #ff614e33, #ff4a3c28
+  - Modifiers:
+    - ID: durable
+    - Strength: 0.45
+- Decay prohibition: true
 
 ## Related Questions
 - What are the tags associated with this pine branch block?

@@ -8,7 +8,7 @@
 Defines blueprints for small mahogany and sapele trees.
 
 ## Explanation
-This chunk contains a configuration structure defining multiple blueprints, each with an unique ID. These IDs are used to identify different variants of small mahogany and sapele trees within the Cubyz voxel engine. The blueprints are stored in an array under the `.blueprints` key.
+This chunk contains a configuration structure defining multiple blueprints for small mahogany and sapele trees. The `.blueprints` array includes five unique IDs: `cubyz:tree/mahogany/sapele/small/1`, `cubyz:tree/mahogany/sapele/small/2`, `cubyz:tree/mahogany/sapele/small/3`, `cubyz:tree/mahogany/sapele/small/4`, and `cubyz:tree/mahogany/sapele/small/5`. These IDs are used to identify different variants of small mahogany and sapele trees within the Cubyz voxel engine. The blueprints are stored in an array under the `.blueprints` key.
 
 ## Related Questions
 - What are the IDs of the small mahogany and sapele tree blueprints?

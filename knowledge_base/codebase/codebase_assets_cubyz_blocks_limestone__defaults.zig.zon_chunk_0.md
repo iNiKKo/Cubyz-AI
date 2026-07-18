@@ -9,7 +9,7 @@
 Limestone block configuration
 
 ## Explanation
-This chunk defines the default properties and behavior of a limestone block in the Cubyz voxel engine. It includes tags, health, resistance, drop items, item material properties, durability, mass damage, hardness damage, swing speed, texture roughness, colors, modifiers for good_at strength, and restriction.
+This chunk defines the default properties and behavior of a limestone block in the Cubyz voxel engine. The tags associated with the limestone block are stone, mineable, and limestone. The block has a health value of 27.5 and resistance of 1. When mining the limestone block, it drops an auto item. The material properties for the item include durability of 50, mass damage of 1.0, hardness damage of 3.4, swing speed of 2.6, texture roughness of 0.5, and colors: #ff70583E, #ff886D52, #ffAB8D6A, #ffC09B6E, #ffCCA780. The item has a modifier with an ID 'good_at', strength of 0.5 for the limestone tag, and a restriction that requires two encased precious items.
 
 ## Related Questions
 - What are the tags associated with the limestone block?

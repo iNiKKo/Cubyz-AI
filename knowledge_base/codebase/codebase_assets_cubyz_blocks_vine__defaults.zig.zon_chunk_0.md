@@ -9,7 +9,7 @@
 Vine block configuration
 
 ## Explanation
-Defines the properties and behavior of a vine block in Cubyz, including its health, update logic, drop items, selection capabilities, replaceability, degradation status, view-through property, absorbed light level, collision settings, model details, rotation, and LOD replacement.
+Defines the properties and behavior of a vine block in Cubyz. The block has tags .cuttable and .sliceable, a health value of 0.3, an update logic type of vine_decay, drops items with tag auto when broken by tools with cuttable tag, is replaceable, degradable, view-through property set to true, absorbed light level of 0x000000, does not collide with other blocks, uses models 'cubyz:cross' for top and 'cubyz:cross_with_texture_1' for bottom, applies rotation type cubyz:hanging, and has LOD replacement as 'cubyz:air'.
 
 ## Related Questions
 - What are the tags associated with this vine block?
@@ -24,5 +24,6 @@ Defines the properties and behavior of a vine block in Cubyz, including its heal
 - Does the vine block collide with other blocks?
 - What model is used for the top and bottom parts of the vine block?
 - What rotation is applied to the vine block when placed in the world?
+- What is the LOD replacement for the vine block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_vine__defaults.zig.zon_chunk_0*

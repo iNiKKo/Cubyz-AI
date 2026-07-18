@@ -8,7 +8,7 @@
 Defines configuration for a chopped forest biome in Cubyz, including properties like height, radius, and structures.
 
 ## Explanation
-This chunk defines the configuration for a specific biome type in the Cubyz game engine. The biome is identified as a 'chopped forest' and includes various properties such as minimum and maximum heights, radii, roughness, hills, and spawn validity. It also specifies music associated with the biome and ground structures like grass and soil layers. The chunk lists several structures that can appear in this biome, including patches of vegetation, fallen trees, flower patches, and more. Additionally, it defines parent biomes from which this chopped forest biome can derive properties.
+This chunk defines the configuration for a chopped forest biome in Cubyz, including properties such as minimum height (22), maximum height (40), minimum radius (64), maximum radius (128), roughness (10), hills (10), and spawn validity (true). The music associated with this biome is 'cubyz:totaldemented/leaves'. Ground structures include grass layers ('cubyz:grass/temperate') and soil layers ('2 to 3 cubyz:soil'). Structures defined for the biome include ground patches, simple vegetation of oak and birch logs, fallen trees with specific log types, and various flower patches with different block types and chances. Parent biomes are also specified, including a mixed forest biome with an associated chance (0.01).
 
 ## Related Questions
 - What is the minimum height of the chopped forest biome?

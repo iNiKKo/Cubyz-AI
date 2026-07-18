@@ -9,7 +9,23 @@
 Glimmergill block configuration
 
 ## Explanation
-Defines the Glimmergill block's properties including health, drops, selection capabilities, replaceability, degradation, view-through status, light absorption and emission, collision behavior, rotation model, update function, model details, textures, item texture, and LOD replacement.
+Defines the Glimmergill block's properties including:
+- **Tags:** .cuttable, .sliceable, .mushroom
+- **Health:** 0.2
+- **Drops:** { .items = .{.auto}, .allowedToolTags = .{.cuttable} }
+- **Selection Capabilities:** toolEffective
+- **Replaceability:** true
+- **Degradation:** true
+- **View Through:** true
+- **Light Absorption:** 0x010101 (RGB: 1, 1, 1)
+- **Emission Light:** 0x392862 (RGB: 57, 40, 98)
+- **Collision Behavior:** false
+- **Rotation Model:** cubyz:torch
+- **Update Function:** check_support_blocks
+- **Model Details:** base = "cubyz:glimmergill/floor", side = "cubyz:glimmergill/shelf"
+- **Textures:** texture = "cubyz:glimmergill_side", texture_top = "cubyz:glimmergill_top", texture_bottom = "cubyz:glimmergill_bottom"
+- **Item Texture:** glimmergill.png
+- **LOD Replacement:** cubyz:air
 
 ## Related Questions
 - What are the tags associated with the Glimmergill block?

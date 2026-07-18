@@ -8,7 +8,7 @@
 Defines properties for the uranium glass block.
 
 ## Explanation
-This chunk defines a configuration object for a specific type of block in the Cubyz voxel engine, namely uranium glass. The properties include the amount of light absorbed by the block, the amount of light emitted by the block, and the texture file associated with it.
+This chunk defines a configuration object for uranium glass block properties. The properties include an absorbed light value of `0x4001ff`, an emitted light value of `0x214200`, and the texture file associated with it is `cubyz:glass/uranium`.
 
 ## Related Questions
 - What is the absorbed light value for uranium glass?

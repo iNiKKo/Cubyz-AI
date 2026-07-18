@@ -8,13 +8,13 @@
 Defines configuration for oak wood structures in the Cubyz game.
 
 ## Explanation
-This chunk contains a JSON-like structure defining properties of oak wood structures. It specifies an ID, tags, and details about possible structures that can be placed. The primary responsibility is to configure the placement and behavior of oak trees within the game world.
+This chunk contains a JSON-like configuration defining properties of oak wood structures in Cubyz. It specifies an ID (`cubyz:oak`), associated tags (`.oak`), and details about possible structures that can be placed, including the chance and placement mode for one specific structure. The primary responsibility is to configure the placement and behavior of old growth oak trees within the game world. Specifically, it defines a structure with ID `cubyz:sbb`, which has a placement chance of 0.0001, is degradable (`placeMode = .degradable`), and uses the model `cubyz:tree/oak/old_growth`. The tags associated with this oak wood structure include `.oak`.
 
 ## Related Questions
 - What is the ID of the oak wood structure?
 - What tags are associated with the oak wood structure?
 - How many different structures are defined for oak wood?
-- What is the chance of placing an oak tree in the world?
+- What is the chance of placing an old growth oak tree in the world?
 - Is the oak tree structure degradable?
 - Which specific model is used for the oak tree structure?
 

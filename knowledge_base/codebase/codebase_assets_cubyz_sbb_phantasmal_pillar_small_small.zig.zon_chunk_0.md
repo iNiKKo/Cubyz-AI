@@ -8,7 +8,7 @@
 Defines blueprints and children for a small phantasmal pillar asset.
 
 ## Explanation
-This chunk defines the configuration for a small phantasmal pillar asset in Cubyz. It specifies a list of blueprints, each with an ID and a chance value. The blueprints represent different variations of the pillar. Additionally, it lists children assets that can be associated with this pillar, categorized by color (white and purple).
+This chunk defines the configuration for a small phantasmal pillar asset in Cubyz. It specifies ten different variations of the pillar as blueprints with IDs 'cubyz:phantasmal/pillar/small/0' to 'cubyz:phantasmal/pillar/small/9', each having a chance value of 1, except for the last blueprint which has an ID of null and a chance value of 2.3. The configuration also lists children assets that can be associated with this pillar, categorized by color (white and purple). Specifically, the white child asset ID is 'cubyz:phantasmal/pillar/offshoot/offshoot' and the purple child asset ID is 'cubyz:phantasmal/pillar/top/top'.
 
 ## Related Questions
 - What are the IDs of the blueprints for the small phantasmal pillar?

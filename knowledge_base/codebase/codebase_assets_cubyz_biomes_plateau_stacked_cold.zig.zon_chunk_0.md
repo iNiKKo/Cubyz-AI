@@ -8,7 +8,7 @@
 Defines properties and structures for a cold plateau biome with pine trees.
 
 ## Explanation
-This chunk defines the configuration for a specific biome in the Cubyz game engine, focusing on its environmental properties, musical theme, ground structure, and various structures that can appear within it. The biome is characterized as 'cold' and tagged with 'pine'. It includes a ground layer of grass and soil, and sets a particular music track. Structures such as fallen trees, flower patches, simple vegetation, and specific types of pine trees are defined with their respective probabilities and characteristics. Additionally, the biome specifies its parent biome, which influences how it is generated in relation to other biomes.
+This chunk defines the configuration for a cold plateau biome in Cubyz with specific properties and structures. The biome is characterized as 'cold' and tagged with 'pine'. It includes a ground layer of grass and soil, specifically 'cubyz:grass/cold' with 1 to 2 cubyz:soil layers. The music track set for this biome is 'cubyz:totaldemented/hypoxia'. Structures such as fallen trees (with pine logs, height range from 6 to 9 blocks, and a chance of 0.002), flower patches (using 'cubyz:grass/vegetation/cold' with a width of 5, variation of 8, density of 0.5, and priority of 0.2), simple vegetation ('cubyz:grass/vegetation/cold', height of 1 block, chance of 0.4), and specific types of pine trees (eastern white and young tree with degradable placement mode) are defined with their respective probabilities and characteristics. Additionally, the biome specifies its parent biome as 'cubyz:plateau/cold' with a chance of 0.06.
 
 ## Related Questions
 - What is the musical theme for this cold plateau biome?

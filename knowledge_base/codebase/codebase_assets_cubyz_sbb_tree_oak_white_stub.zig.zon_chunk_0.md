@@ -19,9 +19,9 @@ This chunk defines a configuration structure containing blueprints for different
 The IDs represent specific oak tree stub models, while the chances determine their relative likelihood of appearing in the game world.
 
 ## Related Questions
-- - What are the IDs of the oak tree stub blueprints defined in this chunk?
-- - What is the chance associated with each oak tree stub blueprint?
-- - How many different oak tree stub blueprints are defined here?
-- - What does the last entry in the blueprints array represent?
+- What are the IDs of the oak tree stub blueprints defined in this chunk?
+- What is the chance associated with each oak tree stub blueprint?
+- How many different oak tree stub blueprints are defined here?
+- What does the last entry in the blueprints array represent?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_tree_oak_white_stub.zig.zon_chunk_0*

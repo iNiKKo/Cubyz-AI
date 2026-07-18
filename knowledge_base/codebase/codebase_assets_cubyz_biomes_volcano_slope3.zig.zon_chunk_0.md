@@ -8,14 +8,22 @@
 Defines properties for a volcano slope biome in Cubyz.
 
 ## Explanation
-This chunk defines the configuration for a specific biome type in the Cubyz game engine, focusing on a volcano slope. It sets various properties such as radius, height range, roughness, and music associated with the biome. The biome also specifies its parent biomes and the maximum number of sub-biomes it can have. The stone block used in this biome is specified as 'cubyz:basalt/smooth'.
+This chunk defines the configuration for a specific biome type in the Cubyz game engine, focusing on a volcano slope. The properties include:
+- `.properties = .{.mountain}`
+- `radius = 180`
+- `minHeight = 480`
+- `maxHeight = 480`
+- `roughness = 50`
+- `mountains = 50`
+- `interpolation = .linear`
+- `chance = 0`
+- `music = "cubyz:mrmayman/out_of_breath"`
+The biome also specifies its parent biomes and the maximum number of sub-biomes it can have. The stone block used in this biome is specified as 'cubyz:basalt/smooth'.
 
 ## Related Questions
-- What is the radius of the volcano slope biome?
-- Which music track is associated with the volcano slope biome?
-- How many parent biomes does the volcano slope biome have?
-- What is the maximum number of sub-biomes allowed in the volcano slope biome?
-- Which stone block is used in the volcano slope biome?
-- What is the interpolation method used for the volcano slope biome?
+- What value does .properties have?
+- What are the minHeight and maxHeight values for the volcano slope biome?
+- What is the roughness value for the volcano slope biome?
+- What is the mountains value for the volcano slope biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_volcano_slope3.zig.zon_chunk_0*

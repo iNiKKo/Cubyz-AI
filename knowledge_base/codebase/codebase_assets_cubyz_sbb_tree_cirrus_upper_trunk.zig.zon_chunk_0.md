@@ -8,7 +8,7 @@
 Defines blueprints and children for the upper trunk of a cirrus tree in Cubyz.
 
 ## Explanation
-This chunk defines the structure of the upper trunk of a cirrus tree, including its blueprints and child components. The blueprints specify different parts of the upper trunk with optional chances for certain variations. The children define additional components like rings and vines that are associated with the upper trunk.
+This chunk defines the structure of the upper trunk of a cirrus tree in Cubyz. The blueprints include 'cubyz:tree/cirrus/upper_trunk/0' and 'cubyz:tree/cirrus/upper_trunk/1'. Additionally, there are two canopy variations with IDs 'cubyz:tree/cirrus/canopy/0' and 'cubyz:tree/cirrus/canopy/1', each having a chance of 0.3. The children define additional components such as rings ('white': 'cubyz:tree/cirrus/rings/bottom', 'aqua': 'cubyz:tree/cirrus/rings/middle') and vines ('blue': 'cubyz:tree/cirrus/vine').
 
 ## Related Questions
 - What are the blueprints defined for the upper trunk of a cirrus tree?

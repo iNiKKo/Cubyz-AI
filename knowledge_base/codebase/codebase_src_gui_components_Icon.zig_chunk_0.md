@@ -9,7 +9,7 @@
 The Icon component handles rendering and updating textures for GUI elements.
 
 ## Explanation
-This chunk defines the Icon component, which is responsible for managing and displaying textures in a graphical user interface. It includes methods for initialization, deinitialization, converting to a generic GuiComponent, updating the texture, and rendering the icon. The Icon struct holds position, size, and texture data. Memory allocation and deallocation are managed using the global allocator.
+This chunk defines the Icon component, responsible for managing and displaying textures in a graphical user interface. The Icon struct holds position data (`pos`), size data (`size`), and texture data (`texture`). Memory allocation and deallocation are managed using the global allocator. Initialization of an Icon instance is done via the `init` method which takes `pos`, `size`, and `texture` as parameters. Deinitialization is handled by the `deinit` method. The updateTexture method allows updating the texture with a new one. Rendering is performed using the render method which calls `self.texture.render(self.pos, self.size)`. Additionally, the Icon struct includes a constant `fontSize` set to 16.
 
 ## Code Example
 ```zig

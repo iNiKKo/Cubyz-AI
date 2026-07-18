@@ -6,10 +6,10 @@
 **Concepts:** server-side event handling, block replacement
 
 ## Summary
-Handles server-side block replacement events.
+Handles server-side block replacement events by initializing with a specified block type from configuration and replacing blocks in the world based on provided parameters. Includes detailed error handling for missing 'block' field and uses atomic operations for block replacement.
 
 ## Explanation
-This chunk defines a callback for handling server-side block replacement events. It includes an `init` function that initializes the callback with data from a configuration element, and a `run` function that executes the block replacement logic based on provided parameters.
+This chunk defines a callback for handling server-side block replacement events. It includes an `init` function that initializes the callback with data from a configuration element, specifically parsing the block type specified in the configuration. If the required "block" field is missing, it logs an error and returns null. The `run` function calculates world coordinates based on chunk position and block position parameters, then uses atomic operations to replace blocks in the main server world.
 
 ## Code Example
 ```zig
@@ -26,11 +26,8 @@ pub fn init(zon: main.ZonElement, _: main.callbacks.Creator) ?*@This() {
 ```
 
 ## Related Questions
-- What is the purpose of the `init` function in this chunk?
-- How does the `run` function calculate the world coordinates for block replacement?
-- What error handling is implemented in the `init` function?
-- What method is used to replace blocks in the `run` function?
-- What type of data structure is used to store the block information in this chunk?
-- How does this chunk interact with the main server world?
+- What specific error handling mechanism is implemented in the `init` function?
+- How does the `run` function calculate the exact world coordinates for block replacement?
+- What method is used to perform the actual block replacement in the `run` function?
 
 *Source: unknown | chunk_id: codebase_src_callbacks_block_server_replace_block.zig_chunk_0*

@@ -18,11 +18,11 @@ This chunk contains a configuration structure defining various decoration bluepr
 The sum of all chances equals 1, ensuring a valid probability distribution.
 
 ## Related Questions
-- - What is the total probability of selecting a decoration blueprint in this configuration?
-- - Which blueprint has the highest chance of being selected?
-- - How many different blueprints are defined in this configuration?
-- - What is the purpose of the 'null' entry in the blueprints list?
-- - Can you provide the ID and chance for each decoration blueprint defined here?
-- - How does the sum of all chances ensure a valid probability distribution?
+- What is the total probability of selecting a decoration blueprint in this configuration?
+- Which blueprint has the highest chance of being selected?
+- How many different blueprints are defined in this configuration?
+- What is the purpose of the 'null' entry in the blueprints list?
+- Can you provide the ID and chance for each decoration blueprint defined here?
+- How does the sum of all chances ensure a valid probability distribution?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_deco_side.zig.zon_chunk_0*

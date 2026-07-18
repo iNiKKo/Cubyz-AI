@@ -8,7 +8,7 @@
 Defines configuration for a pink cloth block.
 
 ## Explanation
-This chunk contains a single configuration entry for a pink cloth block, specifying its texture path.
+This chunk contains a single configuration entry for a pink cloth block, specifying its texture path as `cubyz:cloth/pink`.
 
 ## Related Questions
 - What is the texture path for the pink cloth block?

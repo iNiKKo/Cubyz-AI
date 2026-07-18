@@ -8,7 +8,7 @@
 Defines properties for the ice block in Cubyz, including tags, health, drops, transparency, model, texture, and friction.
 
 ## Explanation
-This chunk defines a configuration for an ice block in the Cubyz game engine. It specifies various properties such as tags (mineable and cold), block health, drop behavior, transparency settings, model type, texture, and friction coefficient. The configuration is structured as a JSON-like object with key-value pairs representing each property.
+This chunk defines a configuration for an ice block in the Cubyz game engine. It specifies various properties including tags (mineable and cold), block health of 7, drop behavior with auto items, transparency set to true, hasBackFace also set to true, absorbed light value of 0xb15635, model type as 'cubyz:cube', texture as 'cubyz:ice', and friction coefficient of 1.
 
 ## Related Questions
 - What are the tags associated with the ice block?

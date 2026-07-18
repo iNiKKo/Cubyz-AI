@@ -8,7 +8,13 @@
 This chunk defines the texture paths for a birch chest block in Cubyz.
 
 ## Explanation
-The chunk contains a single anonymous struct with fields specifying the texture paths for different sides of a birch chest block. Each field corresponds to a specific face of the block (back, front, left, right, top, bottom) and assigns it a texture path within the Cubyz asset system.
+This chunk defines the specific texture paths for a birch chest block in Cubyz. The struct contains six fields: `texture`, `texture_front`, `texture_left`, `texture_right`, `texture_top`, and `texture_bottom`. Each field specifies the corresponding texture path as follows:
+- `texture` (back): `cubyz:chest/birch/back`
+- `texture_front`: `cubyz:chest/birch/front`
+- `texture_left`: `cubyz:chest/birch/side`
+- `texture_right`: `cubyz:chest/birch/side`
+- `texture_top`: `cubyz:chest/birch/top`
+- `texture_bottom`: `cubyz:chest/birch/bottom`
 
 ## Related Questions
 - What is the texture path for the front of the birch chest block?

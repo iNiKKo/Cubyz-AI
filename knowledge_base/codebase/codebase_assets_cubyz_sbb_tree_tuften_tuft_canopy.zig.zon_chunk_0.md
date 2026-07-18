@@ -9,7 +9,26 @@
 Tree blueprint configurations
 
 ## Explanation
-This chunk defines a set of tree blueprint configurations for different sizes and colors, each with an ID representing the type of tree.
+This chunk defines a set of tree blueprint configurations for different sizes and colors, each with an ID representing the type of tree. The following are the IDs defined:
+
+- Small trees (size 0):
+  - Violet: cubyz:tree/tuften/tufts/small/0/violet
+  - Pink: cubyz:tree/tuften/tufts/small/0/pink
+  - Red: cubyz:tree/tuften/tufts/small/0/red
+  - Orange: cubyz:tree/tuften/tufts/small/0/orange
+  - Yellow: cubyz:tree/tuften/tufts/small/0/yellow
+- Small trees (size 1):
+  - Violet: cubyz:tree/tuften/tufts/small/1/violet
+  - Pink: cubyz:tree/tuften/tufts/small/1/pink
+  - Red: cubyz:tree/tuften/tufts/small/1/red
+  - Orange: cubyz:tree/tuften/tufts/small/1/orange
+  - Yellow: cubyz:tree/tuften/tufts/small/1/yellow
+- Big trees:
+  - Violet: cubyz:tree/tuften/tufts/big/violet
+  - Pink: cubyz:tree/tuften/tufts/big/pink
+  - Red: cubyz:tree/tuften/tufts/big/red
+  - Orange: cubyz:tree/tuften/tufts/big/orange
+  - Yellow: cubyz:tree/tuften/tufts/big/yellow
 
 ## Related Questions
 - What are the IDs of the tree blueprints defined in this chunk?

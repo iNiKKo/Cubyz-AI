@@ -5,10 +5,10 @@
 **Concepts:** block texturing
 
 ## Summary
-Defines texture paths for the Indigo block variant.
+Defines specific texture paths for the Indigo block variant including 'cubyz:sbb/child/side/indigo', 'cubyz:sbb/child/top/indigo', and 'cubyz:sbb/child/bottom/indigo'.
 
 ## Explanation
-This chunk specifies the texture files used for different sides of the Indigo block variant. It includes paths for the side, top, and bottom textures, which are referenced by their respective keys in a configuration structure.
+This chunk specifies the exact texture files used for different sides of the Indigo block variant. The side texture is defined as `cubyz:sbb/child/side/indigo`, the top texture as `cubyz:sbb/child/top/indigo`, and the bottom texture as `cubyz:sbb/child/bottom/indigo`. These paths are referenced by their respective keys in a configuration structure.
 
 ## Related Questions
 - What is the texture path for the side of the Indigo block?

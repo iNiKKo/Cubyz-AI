@@ -6,10 +6,10 @@
 **Concepts:** GUI settings window, button components, vertical list layout
 
 ## Summary
-Defines the Settings window GUI for Cubyz, including button components and layout logic.
+Defines the Settings window GUI for Cubyz, including button components with specific actions linked to open various settings sub-windows when clicked. It initializes a vertical list of buttons and handles layout calculation and deinitialization logic.
 
 ## Explanation
-This chunk defines a GUI settings window with buttons for various settings categories. It initializes a vertical list of buttons, each linked to open a specific settings sub-window when clicked. The `onOpen` function sets up the window's content size and positions based on the root component's dimensions. The `onClose` function deinitializes the root component when the window is closed.
+This chunk defines the GUI settings window in Cubyz, which includes a vertical list of buttons each linked to open a specific settings sub-window upon click. The `onOpen` function initializes this list with five buttons: 'Graphics', 'Sound', 'Controls', 'Advanced Controls', and 'Social'. Each button is associated with an action that opens the corresponding sub-window using the `gui.openWindowCallback` method. For example, clicking the 'Graphics' button triggers opening the graphics settings window. The function also sets up the window's content size based on the root component's dimensions plus padding. The `onClose` function deinitializes the root component when the window is closed.
 
 ## Code Example
 ```zig

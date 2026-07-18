@@ -8,7 +8,7 @@
 Defines a blueprint for a birch silver leaf in the Cubyz voxel engine.
 
 ## Explanation
-This chunk defines a configuration for a specific type of tree leaf, specifically a birch silver leaf. It includes a blueprint with an ID and specifies its child asset, which is another type of birch leaf decoration.
+This chunk defines a configuration for a specific type of tree leaf, specifically a birch silver leaf. It includes a blueprint with an ID of 'cubyz:tree/birch/leaf/1' and specifies its child asset as 'cubyz:deco/birch_leaf'.
 
 ## Related Questions
 - What is the ID of the birch silver leaf blueprint?

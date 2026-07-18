@@ -8,7 +8,13 @@
 Defines texture paths for the Mahogany Chest block.
 
 ## Explanation
-This chunk specifies the file paths for various textures associated with the Mahogany Chest block. Each field corresponds to a different face of the chest, such as front, back, left, right, top, and bottom. The values are strings representing the resource identifiers for these textures within the Cubyz asset system.
+This chunk specifies the file paths for various textures associated with the Mahogany Chest block. Each field corresponds to a different face of the chest and uses resource identifiers within the Cubyz asset system. The specific texture paths are as follows:
+- `texture`: cubyz:chest/mahogany/back
+- `texture_front`: cubyz:chest/mahogany/front
+- `texture_left`: cubyz:chest/mahogany/side
+- `texture_right`: cubyz:chest/mahogany/side
+- `texture_top`: cubyz:chest/mahogany/top
+- `texture_bottom`: cubyz:chest/mahogany/bottom
 
 ## Related Questions
 - What is the texture path for the front of the Mahogany Chest?

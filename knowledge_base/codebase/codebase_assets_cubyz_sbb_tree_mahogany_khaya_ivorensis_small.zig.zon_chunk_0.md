@@ -8,7 +8,7 @@
 Defines a blueprint for a small mahogany tree.
 
 ## Explanation
-This chunk defines a configuration for a specific type of tree in the Cubyz game engine. It specifies a single blueprint with an ID that uniquely identifies the small mahogany tree variant 'khaya_ivorensis'. This configuration is likely used by the world generation or asset management systems to instantiate and render this particular tree model within the game environment.
+This chunk defines a configuration for a specific type of tree in the Cubyz game engine. It specifies a single blueprint with an ID of 'cubyz:tree/mahogany/khaya_ivorensis/small/1' that uniquely identifies the small mahogany tree variant 'khaya_ivorensis'. This configuration is likely used by the world generation or asset management systems to instantiate and render this particular tree model within the game environment.
 
 ## Related Questions
 - What is the ID of the small mahogany tree blueprint?

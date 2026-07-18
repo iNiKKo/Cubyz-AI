@@ -9,7 +9,7 @@
 This chunk manages GPU performance measurement for various rendering stages in the Cubyz engine.
 
 ## Explanation
-The chunk defines an enumeration `Samples` listing different rendering samples to measure. It initializes OpenGL query objects to track time elapsed for each sample. Functions `startQuery` and `stopQuery` manage starting and stopping these measurements. The `render` function updates a GUI window displaying the measured times for each sample, cycling through multiple buffers to average results over time.
+This chunk manages GPU performance measurement for various rendering stages in the Cubyz engine. It defines an enumeration `Samples` with specific values representing different rendering stages: screenbuffer clear, clear, skybox, pre-processing block animations, chunk rendering preparation, chunk rendering, entity rendering, block entity rendering, particle rendering, transparent rendering preparation, transparent rendering, bloom extract downsample, bloom first pass, bloom second pass, copy to screen, and GUI rendering. The chunk initializes OpenGL query objects for each sample using `init` function which generates 4 buffers of query objects. Functions `startQuery` and `stopQuery` manage starting and stopping these measurements by asserting that only one measurement can be active at a time. The `render` function updates a GUI window displaying the measured times for each sample, cycling through multiple buffers to average results over time.
 
 ## Code Example
 ```zig
@@ -30,6 +30,5 @@ pub fn init() void {
 - What function initializes OpenGL query objects?
 - How does the chunk manage starting and stopping performance measurements?
 - What GUI window is updated with the measured times?
-- How are the measured times displayed in the GUI window?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_gpu_performance_measuring.zig_chunk_0*

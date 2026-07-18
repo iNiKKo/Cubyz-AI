@@ -9,7 +9,7 @@
 Configuration for flat world presets
 
 ## Explanation
-This chunk defines configuration settings for generating flat worlds in Cubyz, including climate generator, map generator, generators, cave generators, and climate wavelengths.
+This chunk defines configuration settings for generating flat worlds in Cubyz. The climate generator is set to 'cubyz:single_biome' with a biome of 'cubyz:development/flat'. The map generator is defined as 'cubyz:mapgen_v1'. There is one generator ('cubyz:ore') which is disabled. Two cave generators ('cubyz:fractal_cave' and 'cubyz:sdf_cave') are also disabled. Climate wavelengths include hot-cold (2400), land-ocean (3200), wet-dry (1800), vegetation (1600), and mountain (512).
 
 ## Related Questions
 - What is the ID of the climate generator for flat worlds?

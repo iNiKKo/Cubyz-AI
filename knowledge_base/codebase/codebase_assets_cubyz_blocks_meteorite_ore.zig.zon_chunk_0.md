@@ -8,7 +8,7 @@
 Defines properties for the Meteorite Ore block in Cubyz.
 
 ## Explanation
-This chunk specifies configuration data for a block named 'Meteorite Ore'. It includes tags like 'stone' and 'mineable', sets health and resistance values, defines drop behavior, assigns rotation and model types, and specifies textures for both the block and its item form. The data is structured in a JSON-like format typical of Cubyz's configuration files.
+This chunk specifies configuration data for a Meteorite Ore block. It includes tags such as 'stone' and 'mineable', sets the health value to 30, resistance to 7, defines drop behavior with automatic item drops, assigns rotation type 'cubyz:ore', model type 'cubyz:cube', and specifies textures for both the block ('cubyz:meteorite_ore') and its item form ('raw_meteorite.png'). The data is structured in a JSON-like format typical of Cubyz's configuration files.
 
 ## Related Questions
 - What are the tags assigned to the Meteorite Ore block?

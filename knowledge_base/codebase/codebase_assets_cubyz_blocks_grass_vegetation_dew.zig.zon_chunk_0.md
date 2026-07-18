@@ -8,7 +8,7 @@
 Defines texture and item properties for grass dew.
 
 ## Explanation
-This chunk defines the configuration for a grass dew block in Cubyz. It specifies the texture used for rendering the block in the game world and the texture for its corresponding item representation. The textures are paths to image files that will be loaded by the engine to display the visual appearance of the dew on grass.
+This chunk defines the configuration for a grass dew block in Cubyz. It specifies the texture path `cubyz:grass/vegetation/dew` used for rendering the block in the game world and the item texture path `grass_vegetation/dew.png`. These textures are paths to image files that will be loaded by the engine to display the visual appearance of the dew on grass. The configuration includes a nested structure where `.item.texture` refers to the texture file for the corresponding item representation.
 
 ## Related Questions
 - What is the texture path for the grass dew block?

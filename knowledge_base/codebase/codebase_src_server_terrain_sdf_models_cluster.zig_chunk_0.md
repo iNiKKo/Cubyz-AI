@@ -9,7 +9,11 @@
 Cluster SDF Model Initialization and Instantiation
 
 ## Explanation
-This chunk defines a cluster of SDF models for terrain generation. It initializes the cluster by parsing a ZonElement, calculating the maximum extend, and creating instances of each child model. The instantiate function creates multiple instances of each child model based on their minAmount and random offsets, then combines them into a single instance with smooth union operations.
+This chunk defines a cluster of SDF models for terrain generation. It initializes the cluster by parsing a ZonElement, calculating the maximum extend based on child model extents and offsets, and creating instances of each child model. The `initAndGetExtend` function parses the children from the ZonElement, calculates their position offsets and random offsets, and determines the overall bounding box for the cluster using precise calculations involving `maxExtend.min` and `maxExtend.max`. If no children are found, it logs an error and returns null. It also sets a default smoothness value to 4 if not specified in the ZonElement.
+
+The `instantiate` function creates multiple instances of each child model based on their minAmount and random offsets, then combines them into a single instance with smooth union operations. The exact logic for determining `minPos` and `maxPos` involves iterating over each child's position offset and random offset to calculate the bounding box for the combined cluster.
+
+The `generate` function calculates the SDF values for the combined cluster using these instances and the smoothness value to blend them together.
 
 ## Code Example
 ```zig

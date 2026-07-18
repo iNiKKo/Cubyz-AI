@@ -8,7 +8,7 @@
 Defines a blueprint for a medium-sized mahogany and sapele tree.
 
 ## Explanation
-This chunk defines a configuration for a specific type of tree in the Cubyz game. It specifies a single blueprint with an ID that uniquely identifies this particular tree variant within the game's asset system. The blueprint is part of the 'cubyz:tree/mahogany/sapele/medium' category, indicating its size and wood types.
+This configuration file defines a single blueprint for a medium-sized mahogany and sapele tree variant. The blueprint has an ID of 'cubyz:tree/mahogany/sapele/medium/1', which uniquely identifies this specific tree within the game's asset system. This blueprint is part of the 'cubyz:tree/mahogany/sapele/medium' category, indicating its size and wood types. The chunk specifies exactly one blueprint.
 
 ## Related Questions
 - What is the ID of the defined tree blueprint?

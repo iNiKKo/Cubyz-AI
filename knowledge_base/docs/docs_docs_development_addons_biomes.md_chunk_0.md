@@ -19,7 +19,8 @@ The table lists various properties like `isCave`, `radius`, `minHeight`, `maxHei
 - `smoothBeaches`: Enables smooth beach generation. Default: false
 - `interpolation`: Border interpolation method (`none`, `linear`, or `square`). Default: square
 - `roughness`: Applies terrain roughness by scattering blocks. Default: —
-- `hills`: Controls rolling hill generation. Default: —\n- `mountains`: Controls spiky mountain generation. Default: —
+- `hills`: Controls rolling hill generation. Default: —
+- `mountains`: Controls spiky mountain generation. Default: —
 - `stoneBlock`: Base block the biome is constructed from (e.g., slate). Default: slate
 - `fogColor`: Fog color in RGB format. Default: —
 - `skyColor`: Sky color in RGB format. Default: {0.46, 0.7, 1.0}

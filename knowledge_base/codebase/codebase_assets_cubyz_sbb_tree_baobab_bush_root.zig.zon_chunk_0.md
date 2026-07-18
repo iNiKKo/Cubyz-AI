@@ -8,20 +8,7 @@
 Defines blueprints for baobab bush root assets.
 
 ## Explanation
-# [easy/codebase_assets_cubyz_sbb_tree_baobab_bush_root.zig.zon] - Chunk 0
-
-**Type:** configuration
-**Keywords:** blueprint, configuration, asset ID, baobab bush root, Cubyz engine
-**Concepts:** asset management, blueprint definition
-
-## Summary
-Defines blueprints for baobab bush root assets.
-
-## Explanation
 This chunk contains a configuration structure defining two blueprints for baobab bush root assets. Each blueprint has an 'id' field that uniquely identifies the asset within the Cubyz engine's asset system. The specific IDs of these blueprints are `cubyz:tree/baobab/bush/root/0` and `cubyz:tree/baobab/bush/root/1`. These IDs are essential for referencing and managing the assets in the game.
-
-## Related Questions
-- What are the IDs of the baobab bush root blueprints defined in this chunk?
 
 ## Related Questions
 - What are the IDs of the baobab bush root blueprints defined in this chunk?

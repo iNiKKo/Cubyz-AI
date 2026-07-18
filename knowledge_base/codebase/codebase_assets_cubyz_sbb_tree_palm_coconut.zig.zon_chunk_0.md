@@ -9,7 +9,13 @@
 Configuration data for palm coconut tree trunk blueprints.
 
 ## Explanation
-This chunk defines configuration data for various palm coconut tree trunk blueprints, including their IDs and associated child resources. It is used to manage the blueprint definitions in the game's asset system.
+This chunk defines configuration data for various palm coconut tree trunk blueprints, including their IDs and associated child resources. The blueprint IDs are:
+
+- Straight trunks: cubyz:tree/palm/coconut/trunk/straight/6, cubyz:tree/palm/coconut/trunk/straight/6a, cubyz:tree/palm/coconut/trunk/straight/7, cubyz:tree/palm/coconut/trunk/straight/8, cubyz:tree/palm/coconut/trunk/straight/8a, cubyz:tree/palm/coconut/trunk/straight/9, cubyz:tree/palm/coconut/trunk/straight/10, cubyz:tree/palm/coconut/trunk/straight/11
+- Tilt trunks: cubyz:tree/palm/coconut/trunk/tilt/6, cubyz:tree/palm/coconut/trunk/tilt/6a, cubyz:tree/palm/coconut/trunk/tilt/7, cubyz:tree/palm/coconut/trunk/tilt/7a, cubyz:tree/palm/coconut/trunk/tilt/8, cubyz:tree/palm/coconut/trunk/tilt/9, cubyz:tree/palm/coconut/trunk/tilt/10, cubyz:tree/palm/coconut/trunk/tilt/11, cubyz:tree/palm/coconut/trunk/tilt/12
+- Leaning trunks: cubyz:tree/palm/coconut/trunk/leaning/7, cubyz:tree/palm/coconut/trunk/leaning/8, cubyz:tree/palm/coconut/trunk/leaning/9, cubyz:tree/palm/coconut/trunk/leaning/10, cubyz:tree/palm/coconut/trunk/leaning/11, cubyz:tree/palm/coconut/trunk/leaning/12
+
+The child resource associated with each palm coconut tree trunk blueprint is 'cubyz:tree/palm/coconut/fronds'.
 
 ## Related Questions
 - What are the IDs of the palm coconut tree trunk blueprints?

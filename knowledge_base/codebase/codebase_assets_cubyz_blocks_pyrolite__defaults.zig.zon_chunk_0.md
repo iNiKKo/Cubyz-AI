@@ -9,7 +9,7 @@
 Pyrolite block configuration
 
 ## Explanation
-This chunk defines the default properties and behavior of the Pyrolite block in Cubyz. It includes mineability tags, health, resistance, drop items, item material properties such as durability, mass damage, hardness damage, swing speed, texture roughness, colors, modifiers for good_at tag with specific restrictions.
+This chunk defines the default properties and behavior of the Pyrolite block in Cubyz. It includes mineability tags (mineable), health (40), resistance (25), drop items (auto), item material properties such as durability (300), mass damage (4.0), hardness damage (6.0), swing speed (5.0), texture roughness (1.0), colors (0xff3a1c1c, 0xff492023, 0xff582a2b, 0xff612f2f, 0xff6c3633), and modifiers for good_at tag with specific restrictions (id: 'good_at', strength: 0.5, tag: pyrolite, restriction: { id: encased, tag: precious, amount: 2 }).
 
 ## Related Questions
 - What are the mineability tags for the Pyrolite block?

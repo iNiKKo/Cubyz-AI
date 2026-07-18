@@ -9,7 +9,7 @@
 Tall Mountain Summit biome configuration
 
 ## Explanation
-This chunk defines the Tall Mountain Summit biome with properties such as mountain, snowy tags, minimum and maximum heights, smooth beaches, radius, mountains, hills, chance, stone block, valid player spawn, music, ground structure, structures, and parent biomes.
+This chunk defines the Tall Mountain Summit biome with properties such as mountain, snowy tags, minimum height of 825 cubyz, maximum height of 860 cubyz, smooth beaches enabled, radius of 60 cubyz, mountains and hills both set to 10, chance for structures is 0%, stone block used is 'cubyz:glacite/smooth', valid player spawn is false, music played is 'cubyz:mischol/sunshower', ground structure consists of 6 to 9 cubyz:snow and 2 to 3 cubyz:permafrost layers, and parent biomes include 'cubyz:tall_mountain/slope6' with a chance of 1.
 
 ## Related Questions
 - What are the properties of the Tall Mountain Summit biome?

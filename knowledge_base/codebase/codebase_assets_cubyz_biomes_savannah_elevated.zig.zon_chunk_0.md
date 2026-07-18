@@ -9,7 +9,7 @@
 Savannah Biome Configuration
 
 ## Explanation
-This chunk defines the configuration for a savannah biome in Cubyz. It specifies properties like hot and dry, tags such as baobab and cactus, minimum and maximum heights, radius, roughness, chance of occurrence, hills count, valid player spawn, ground structure block, stone block, structures with their IDs, blocks, chances, widths, variations, densities, priorities, parent biomes, and place modes for structures.
+This chunk defines the configuration for a savannah biome in Cubyz. It specifies properties such as hot, dry, baobab, cactus, minHeight (64), maxHeight (65), minRadius (80), maxRadius (128), roughness (15), chance (0), hills count (2), valid player spawn (true). The ground structure block is 'cubyz:grass/temperate', and the stone block is 'cubyz:limestone/smooth'. Structures include IDs like 'flower_patch' with blocks 'cubyz:grass/vegetation/dry', chance 0.05, width 5, variation 8, density 0.1, priority 0.1; 'simple_vegetation' with block 'cubyz:cactus', chance 0.01, height 1, height_variation 3; two instances of 'ground_patch' with block 'cubyz:dirt' and 'cubyz:grass/dry', each having chance 0.33, width 5, variation 4, depth 1, smoothness 0.1; another 'flower_patch' with blocks 'cubyz:marigold', chance 0.03, width 5, variation 3, density 0.2, priority 0.1; and two instances of 'sbb' with structures 'cubyz:tree/baobab/young' and 'cubyz:tree/baobab/grandidieri', each having placeMode degradable, chance 0.035 for young and 0.015 for grandidieri. The parent biome is 'savannah/base' with a chance of 8.
 
 ## Related Questions
 - What are the minimum and maximum heights for this savannah biome?

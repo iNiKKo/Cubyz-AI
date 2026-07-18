@@ -8,7 +8,48 @@
 Defines configuration for a temperate island biome in the Cubyz game.
 
 ## Explanation
-This chunk contains a JSON-like structure defining various properties of a temperate island biome. It specifies the minimum and maximum height, radius, soil creep, number of hills, tags, ground structures, and structures (including trees and flower patches) that can be generated within this biome. Additionally, it lists parent biomes with their respective chances and edge distances.
+This chunk contains a JSON-like structure defining various properties of a temperate island biome in the Cubyz game. It specifies the following details:
+
+- **Minimum Height:** 5
+- **Maximum Height:** 6
+- **Radius:** 32
+- **Soil Creep:** 1
+- **Number of Hills:** 4
+- **Tags:** oak
+- **Ground Structures:**
+  - Cubyz:grass/temperate
+  - 1 to 2 cubyz:soil
+- **Structures:**
+  - Simple Tree:
+    - ID: `cubyz:simple_tree`
+    - Leaves: `cubyz:leaves/oak`
+    - Log: `cubyz:log/oak`
+    - Chance: 0.016
+    - Type: round
+    - Height: 12
+    - Height Variation: 10
+    - Leaf Radius: 5
+    - Leaf Radius Variation: 6
+  - Flower Patch (Grass Vegetation):
+    - ID: `cubyz:flower_patch`
+    - Blocks: `cubyz:grass/vegetation/temperate`
+    - Chance: 0.08
+    - Width: 3
+    - Variation: 2
+    - Density: 0.5
+    - Priority: 0.2
+  - Flower Patch (Hibiscus):
+    - ID: `cubyz:flower_patch`
+    - Blocks: `cubyz:hibiscus:0`, `cubyz:hibiscus:1`, `cubyz:hibiscus:2`, `cubyz:hibiscus:3`
+    - Chance: 0.03
+    - Width: 3
+    - Variation: 2
+    - Density: 0.3
+    - Priority: 0.2
+- **Parent Biomes:**
+  - ID: `cubyz:ocean/temperate/island/shelf`
+  - Chance: 1
+  - Parent Edge Distance: 37
 
 ## Related Questions
 - What is the minimum height of the temperate island biome?

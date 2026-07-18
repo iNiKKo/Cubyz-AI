@@ -8,7 +8,7 @@
 Defines texture and item properties for grass vegetation sky block.
 
 ## Explanation
-This chunk defines the configuration for a specific block type in the Cubyz voxel engine, focusing on its visual appearance. The `.texture` field specifies the main texture used for rendering the block within the game world. Additionally, the `.item` field contains nested properties, including a texture path for the item representation of this block when it is held or placed in an inventory.
+This chunk defines the configuration for a specific block type in the Cubyz voxel engine, focusing on its visual appearance. The `.texture` field specifies the main texture used for rendering the block within the game world. Additionally, the `.item` field contains nested properties, including a texture path for the item representation of this block when it is held or placed in an inventory (`grass_vegetation/sky.png`). This configuration file defines the appearance of the block in the game world by specifying these exact paths.
 
 ## Related Questions
 - What is the main texture used for rendering the grass vegetation sky block?

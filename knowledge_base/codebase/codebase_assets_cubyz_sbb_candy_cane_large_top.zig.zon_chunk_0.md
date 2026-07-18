@@ -8,7 +8,11 @@
 Defines blueprints for large candy cane top assets.
 
 ## Explanation
-This chunk contains a configuration structure defining three different blueprints for the top part of a large candy cane asset. Each blueprint has a unique identifier (id) that specifies its type and variant within the Cubyz engine's asset system.
+This chunk contains a configuration structure defining three different blueprints for the top part of a large candy cane asset. Each blueprint has a unique identifier (id) that specifies its type and variant within the Cubyz engine's asset system. The identifiers are as follows:
+
+1. `cubyz:candy_cane/large/top/0`
+2. `cubyz:candy_cane/large/top/1`
+3. `cubyz:candy_cane/large/top/2`
 
 ## Related Questions
 - What are the identifiers for the large candy cane top assets?

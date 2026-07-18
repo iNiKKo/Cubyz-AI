@@ -9,7 +9,7 @@
 Hills biome configuration
 
 ## Explanation
-This chunk defines the hills biome with various parameters including minimum and maximum heights, smooth beaches setting, radius limits, roughness, hill and mountain counts, soil creep rate, spawn chance, valid player spawn flag, and structures. Structures include boulders and flower patches.
+This chunk defines the Hills biome with specific parameters including a minimum height limit of 16, a minimum height of 30, a maximum height of 90, a maximum height limit of 100, smooth beaches set to true, a minimum radius of 128, a maximum radius of 256, roughness set to 3, hills count at 40, mountains count at 10, soil creep rate at 1.5, spawn chance at 0.4, and valid player spawn flag set to true. Structures include boulders with a chance of 0.005, made from slate blocks, and flower patches for daisies and dandelions with specific dimensions and probabilities.
 
 ## Related Questions
 - What is the minimum height limit for the hills biome?

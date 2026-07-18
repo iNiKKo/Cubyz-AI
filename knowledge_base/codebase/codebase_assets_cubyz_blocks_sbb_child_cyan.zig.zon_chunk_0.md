@@ -8,7 +8,7 @@
 Defines texture paths for a cyan-colored block variant.
 
 ## Explanation
-This chunk specifies the file paths for different textures of a cyan-colored block variant. It includes the side, top, and bottom textures, each pointing to a specific image file within the Cubyz asset structure.
+This chunk specifies the file paths for different textures of a cyan-colored block variant. The side texture is defined as 'cubyz:sbb/child/side/cyan', the top texture as 'cubyz:sbb/child/top/cyan', and the bottom texture as 'cubyz:sbb/child/bottom/cyan'.
 
 ## Related Questions
 - What is the file path for the side texture of the cyan block?

@@ -9,7 +9,21 @@
 Defines client and server-specific logic for an entity component system, including loading, saving, initialization, and deinitialization methods.
 
 ## Explanation
-This chunk defines the structure and behavior of an entity component system tailored for both client and server environments. The `client` struct contains methods for loading, unloading, initializing, deinitializing, and clearing components specific to the client side. The `server` struct includes a nested `ExampleComponent` with methods for saving, initialization, deinitialization, retrieving, loading from data, and unloading components specific to the server side. Each method currently has placeholder implementations that ignore their parameters.
+This chunk defines the structure and behavior of an entity component system tailored for both client and server environments. It includes specific variables such as `entityComponentID` which is undefined, and `entityComponentVersion` set to 0. The `client` struct contains methods like `load`, `unload`, `init`, `deinit`, and `clear`. For example, the `load` method in the client ignores its parameters and returns void. Similarly, the `server` struct includes a nested `ExampleComponent` with methods such as `save`, `get`, `loadFromData`, and `unload`. The `save` method of `ExampleComponent` also ignores its parameters and always returns `.save`. Each method currently has placeholder implementations that ignore their parameters. Here are the specific details:
+
+- **entityComponentID**: This variable is undefined.
+- **entityComponentVersion**: Set to 0.
+- **client.load(entity: Entity, reader: *utils.BinaryReader, version: u32)**: Ignores its parameters and returns void.
+- **client.unload(entity: Entity)**: Ignores the parameter and does nothing.
+- **client.init()**: Does nothing.
+- **client.deinit()**: Does nothing.
+- **client.clear()**: Does nothing.
+- **server.ExampleComponent.save(self: ExampleComponent, writer: *utils.BinaryWriter, audience: main.entity.AudienceInfo)**: Ignores its parameters and always returns `.save`.
+- **server.init()**: Does nothing.
+- **server.deinit()**: Does nothing.
+- **server.get(entity: Entity) ?ExampleComponent**: Returns null.
+- **server.loadFromData(entity: Entity, reader: *utils.BinaryReader, version: u32)**: Ignores its parameters and returns void.
+- **server.unload(entity: Entity)**: Ignores the parameter and does nothing.
 
 ## Code Example
 ```zig

@@ -8,7 +8,7 @@
 Defines blueprints and children for a birch tree variant in Cubyz.
 
 ## Explanation
-This chunk defines the structure of a specific birch tree variant in the Cubyz game. It includes an array of blueprints, each with a unique ID representing different parts of the trunk. Additionally, it specifies various child components associated with the tree, such as branches, leaves, roots, stubs, and decorative sides.
+This chunk defines the structure of a specific birch tree variant in the Cubyz game. It includes an array of blueprints with unique IDs representing different parts of the trunk: 'cubyz:tree/birch/trunk/1', 'cubyz:tree/birch/trunk/2', and 'cubyz:tree/birch/trunk/3'. Additionally, it specifies various child components associated with the tree, such as branches ('cubyz:tree/birch/silver/branch'), leaves ('cubyz:tree/birch/silver/leaf'), roots ('cubyz:tree/birch/silver/root'), stubs ('cubyz:tree/birch/silver/stub'), and decorative sides ('cubyz:deco/side').
 
 ## Related Questions
 - What are the IDs of the blueprints defined for this birch tree variant?

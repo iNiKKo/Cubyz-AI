@@ -9,7 +9,7 @@
 Biome configuration for Prairie Dry Spell Dead biome.
 
 ## Explanation
-Defines the biomes properties including minimum and maximum radius, keeping original terrain, parent biomes, structures with their respective IDs, chances, block types, sizes, variations, densities, priorities, and width. Structures include boulders, flower patches, simple trees, and fallen trees.
+Defines the biome properties including minimum radius of 16, maximum radius of 24, keeping original terrain as true (value = 1), parent biomes with ID 'cubyz:prairie/dry_spell/base' and chance of 2. Structures include boulders with ID 'cubyz:boulder', block type 'cubyz:leaves/dead', size of 3, size variance of 3, and chance of 0.02; flower patches with IDs 'cubyz:flower_patch', blocks 'cubyz:dead_leaf_pile:1' and 'cubyz:dead_leaf_pile:0', width of 4, variation of 3, density of 0.6, priority of 0.2, and chance of 0.02 for the first patch and 0.03 for the second; simple trees with ID 'cubyz:simple_tree', leaves type 'cubyz:air', log type 'cubyz:log/oak', height of 3, height variation of 3, and chance of 0.01; fallen trees with ID 'cubyz:fallen_tree', log type 'cubyz:log/oak', height of 5, height variation of 1, and chance of 0.025.
 
 ## Related Questions
 - What is the minimum radius of the Prairie Dry Spell Dead biome?

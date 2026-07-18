@@ -8,7 +8,13 @@
 Defines texture paths for the Baobab chest block.
 
 ## Explanation
-This chunk contains a configuration object that specifies the texture paths for different sides of the Baobab chest block in the Cubyz voxel engine. Each field corresponds to a specific face of the block (back, front, left, right, top, bottom) and maps it to its respective texture file path within the 'cubyz:chest/baobab' directory.
+This chunk contains a configuration object that specifies the texture paths for different sides of the Baobab chest block in the Cubyz voxel engine. Each field corresponds to a specific face of the block and maps it to its respective texture file path within the 'cubyz:chest/baobab' directory as follows:
+- `texture`: "cubyz:chest/baobab/back"
+- `texture_front`: "cubyz:chest/baobab/front"
+- `texture_left`: "cubyz:chest/baobab/side"
+- `texture_right`: "cubyz:chest/baobab/side"
+- `texture_top`: "cubyz:chest/baobab/top"
+- `texture_bottom`: "cubyz:chest/baobab/bottom"
 
 ## Related Questions
 - What is the texture file path for the front face of the Baobab chest block?

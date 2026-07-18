@@ -9,7 +9,7 @@
 Data structure and modifiers for procedural items in Cubyz
 
 ## Explanation
-This chunk defines a `Data` struct for storing procedural item properties such as strength and tag. It also includes functions to load data from a ZonElement, combine modifiers based on tags, change block damage based on the item's tag, and print a tooltip.
+This chunk defines a `Data` struct for storing procedural item properties including strength (a floating-point value between 0 and 1) and tag. It includes functions to load data from a ZonElement by clamping the strength within [0, 1] range and setting the tag based on provided values or defaulting to 'incorrect'. The `combineModifiers` function calculates combined strength for items with matching tags using a specific formula involving hyperbolic tangent (hypot). The `changeBlockDamage` function reduces damage by multiplying it with `(1 - data.strength)` if the block's tag matches the item's tag. The `printTooltip` function formats and prints a tooltip string indicating the percentage of damage reduction and the affected block type.
 
 ## Code Example
 ```zig

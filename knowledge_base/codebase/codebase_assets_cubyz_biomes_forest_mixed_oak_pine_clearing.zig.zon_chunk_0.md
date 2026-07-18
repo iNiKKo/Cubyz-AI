@@ -9,7 +9,7 @@
 Forest biome configuration with mixed oak and pine trees.
 
 ## Explanation
-This chunk defines a forest biome with specific properties, tags, and structures. It specifies the chance of spawning, minimum and maximum height, valid player spawn, ground structure, and various structures that can be placed within the biome. The biome includes oak and pine trees, boulders, fallen trees, simple vegetation, flower patches, and ground patches.
+This chunk defines a forest biome with mixed oak and pine trees. The biome has a spawn chance of 0%, keeps original terrain intact, and spans from a minimum height of 22 to a maximum height of 45. Valid player spawns are allowed in this biome. The ground structure consists of 'cubyz:grass/temperate' with 2-3 layers of 'cubyz:soil'. The biome includes several structures such as oak and pine trees, boulders made of smooth slate, fallen trees, simple vegetation, flower patches, and ground patches. Specific chances for spawning these structures are provided, including a chance of 0.4% for oak white tree, 0.1% for oak young tree, 0.1% each for different pine trees, 0.5% for boulders, 2% for fallen oak trees, and 1% for fallen pine trees. Flower patches include daisies with a chance of 0.8%, daffodils at 1%, and trumpet lilies at 0.6%. The ground patch has a width of 5 cubyz with a variation of 4 cubyz and a depth of 2 cubyz.
 
 ## Related Questions
 - What is the minimum height of this forest biome?

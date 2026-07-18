@@ -225,10 +225,6 @@ ETA_WINDOW_SECONDS = 600  # only the last 10 minutes of completions count toward
 ETA_MIN_SAMPLES = 3       # below this many recent completions, the rate is too noisy to trust
 rag_completion_log = []
 finetune_completion_log = []
-audit_actions_count = 0  # every accepted propose/review/revise submission (audit mode only) --
-                          # used below to derive an actions-per-completed-chunk ratio, since a
-                          # resolved audit chunk usually costs more than one submission (a
-                          # propose plus at least one independent review).
 
 
 class RAGNode(BaseModel):
@@ -398,16 +394,27 @@ def _eta_seconds(completion_log: list, remaining_units: float, avg_actions_per_u
         return capacity_eta
     return _estimate_eta_seconds(completion_log, remaining_units)
 
-def _audit_avg_actions_per_chunk(completed_chunks: int) -> float:
+def _audit_avg_actions_per_chunk(actions_count: int, completed_since_tracking: int) -> float:
     """A resolved audit chunk usually costs more than one submission (a propose plus at least one
     independent review, sometimes a revise round or a second docs approval), so a raw actions/sec
     capacity overstates how fast chunks actually resolve unless converted through this ratio.
-    Derived empirically from the campaign's own history so far rather than guessed; 2.0 (propose +
-    one review, the most common real shape) is used as a reasonable prior before enough chunks
-    have resolved to trust the observed ratio."""
-    if completed_chunks < 5:
+
+    Both arguments are measured from the SAME starting point -- see "actions_count" and
+    "actions_baseline_completed" in AUDIT_LOCK_FILE's schema, both persisted (not bare in-memory
+    globals) so this survives a restart. actions_baseline_completed snapshots how many chunks were
+    already completed the moment tracking started, so completed_since_tracking is a delta measured
+    from that same zero point as actions_count -- NOT the campaign's full historical completed
+    count. Dividing actions_count by the full historical total instead (either mismatch -- a fresh
+    in-memory counter against a persisted historical total, or a fresh persisted counter still
+    divided by the un-baselined total) collapses the ratio toward the 1.0 floor for a long time
+    after every restart or deploy, since the numerator starts at/near 0 while the denominator is
+    already large -- confirmed live, this made a freshly-restarted server's ETA come out 2.5-3x too
+    optimistic (looked like every chunk only ever needed one action). 2.0 (propose + one review,
+    the most common real shape) is used as a prior until enough real samples exist to trust the
+    observed ratio."""
+    if actions_count < 10 or completed_since_tracking <= 0:
         return 2.0
-    return max(1.0, audit_actions_count / completed_chunks)
+    return max(1.0, actions_count / completed_since_tracking)
 
 # ============================================================
 # RAG CAMPAIGN -- chunk ingestion, hard reset (unchanged logic from the pre-merge server.py,
@@ -935,12 +942,22 @@ def audit_initialize_chunks():
         except Exception:
             continue
 
+        # Counted toward the true campaign size here, BEFORE the unchanged-skip check below --
+        # same pattern as rag_total_chunks/finetune_total_chunks (see their shared comment). Audit
+        # mode had regressed to the bug that pattern already fixed: only incrementing the total
+        # for chunks that make it into audit_chunk_queue undercounts it, since every chunk already
+        # resolved with a matching cached hash (a real "no issue found" or "escalated to human"
+        # verdict from a prior pass) drops out of the queue but was never actually removed from the
+        # campaign -- confirmed live, this made "total_chunks_due" visibly shrink after every
+        # restart (3,247 -> 3,171 -> 2,972 over three restarts) even though no chunks left the
+        # campaign, which also meant global_percentage was computed against a moving denominator.
+        audit_total_chunks += 1
+
         current_hash = _combined_audit_hash(entry["raw_content"], kb_content)
         if chunk_id in completed_chunks and audit_hashes.get(chunk_id) == current_hash:
             skipped_unchanged += 1
             continue  # already audited, and neither side has changed since
 
-        audit_total_chunks += 1
         audit_chunk_queue.append({
             "chunk_id": chunk_id,
             "collection": collection,
@@ -983,6 +1000,22 @@ def _apply_audit_fix(chunk_id: str, collection: str, corrected_summary, correcte
     kb_path = os.path.join(KNOWLEDGE_DIR, collection, f"{chunk_id}.md")
     if not os.path.exists(kb_path):
         return False
+
+    # A model occasionally writes an entire replacement document (header/Type/Keywords/Concepts,
+    # then its OWN "## Summary"/"## Explanation"/"## Related Questions") into a single field
+    # instead of just that field's prose -- confirmed live, this produced 9 real applied fixes with
+    # visibly duplicated/nested section headings (e.g. a "## Summary" section whose body contained
+    # an entire second copy of the chunk, including a second "## Explanation"). _replace_kb_section
+    # has no way to tell a legitimate multi-paragraph explanation from an accidentally-embedded
+    # whole document, so this is caught here instead: refuse to apply and let the chunk go back
+    # into the pool for another attempt, rather than writing structurally corrupted content.
+    for field in (corrected_summary, corrected_explanation):
+        if field and re.search(r"^##\s+(Summary|Explanation|Related Questions)\s*$", field, re.M):
+            print(f"[AUDIT X] '{chunk_id}': a corrected field contains an embedded '## ' section "
+                  f"heading (looks like a whole replacement document, not one section) -- refusing "
+                  f"to apply, chunk stays open for another attempt.")
+            return False
+
     with open(kb_path, encoding="utf-8") as f:
         text = f.read()
 
@@ -991,7 +1024,12 @@ def _apply_audit_fix(chunk_id: str, collection: str, corrected_summary, correcte
     if corrected_explanation:
         text = _replace_kb_section(text, "Explanation", corrected_explanation)
     if corrected_related_questions:
-        rq_body = "\n".join(f"- {q}" for q in corrected_related_questions)
+        # Strip any leading "- " the model already included (it sometimes echoes questions back
+        # with the bullet marker still attached, e.g. after reading them out of kb_content's own
+        # markdown) before adding our own -- otherwise this produces a literal "- - question"
+        # double bullet. Confirmed live: 34 of 35 knowledge_base chunks with this exact glitch
+        # were audit-mode applied fixes, none from the original crunching campaign.
+        rq_body = "\n".join(f"- {re.sub(r'^[\\s-]+', '', q)}" for q in corrected_related_questions)
         text = _replace_kb_section(text, "Related Questions", rq_body)
 
     with open(kb_path, "w", encoding="utf-8") as f:
@@ -1007,7 +1045,7 @@ def _get_audit_work(user_id: str, hardware_tier: str, client_local_models: set =
     pending = read_json_file(AUDIT_PENDING_FILE, {})
     assigned_model = _assign_audit_model(user_id, hardware_tier, client_local_models)
 
-    total_chunks = len(audit_chunk_queue)
+    total_chunks = audit_total_chunks  # true campaign size -- see audit_initialize_chunks's comment
     completed_chunks = len(state["completed"])
 
     # Three kinds of work can exist for a given chunk right now: a fresh chunk nobody's looked at
@@ -1040,8 +1078,9 @@ def _get_audit_work(user_id: str, hardware_tier: str, client_local_models: set =
     # Global remaining count (matches /leaderboard's definition), not len(candidates) -- the
     # candidate list is just what THIS caller can currently pick from, not the campaign's real
     # remaining size, so it made the live status ETA inconsistent with the leaderboard's.
+    completed_since_tracking = completed_chunks - state.get("actions_baseline_completed", completed_chunks)
     eta_seconds = _eta_seconds(audit_completion_log, total_chunks - completed_chunks,
-                                _audit_avg_actions_per_chunk(completed_chunks))
+                                _audit_avg_actions_per_chunk(state.get("actions_count", 0), completed_since_tracking))
 
     if not candidates:
         if state_modified:
@@ -1080,7 +1119,6 @@ def _get_audit_work(user_id: str, hardware_tier: str, client_local_models: set =
             "completed_chunks": completed_chunks, "eta_seconds": eta_seconds, "audit_model": assigned_model}
 
 def _submit_audit_work(submission: UnifiedSubmission) -> dict:
-    global audit_actions_count
     state = load_lock_state(AUDIT_LOCK_FILE)
     state["locked"].pop(submission.chunk_id, None)
 
@@ -1089,8 +1127,15 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
         return {"status": "ignored"}
 
     # Counts every real propose/review/revise submission accepted past this point, regardless of
-    # whether it ends up resolving the chunk -- see _audit_avg_actions_per_chunk's comment.
-    audit_actions_count += 1
+    # whether it ends up resolving the chunk -- see _audit_avg_actions_per_chunk's comment. Stored
+    # in the same persisted file as "completed" (not a bare in-memory global) specifically so it
+    # survives a server restart instead of resetting to 0 while "completed" stays at its full
+    # campaign total. actions_baseline_completed snapshots "completed" the first time this ever
+    # runs, so the ratio is always measured from a matching zero point for both numerator and
+    # denominator -- see _audit_avg_actions_per_chunk's comment.
+    if "actions_baseline_completed" not in state:
+        state["actions_baseline_completed"] = len(state["completed"])
+    state["actions_count"] = state.get("actions_count", 0) + 1
 
     original_task = next((t for t in audit_chunk_queue if t["chunk_id"] == submission.chunk_id), None)
     collection = (original_task or {}).get("collection", "docs")
@@ -1735,7 +1780,7 @@ def _finetune_leaderboard() -> dict:
 def _audit_leaderboard() -> dict:
     state = load_lock_state(AUDIT_LOCK_FILE)
     user_stats = load_user_stats(AUDIT_STATS_FILE)
-    total_chunks = len(audit_chunk_queue)
+    total_chunks = audit_total_chunks  # true campaign size -- see audit_initialize_chunks's comment
     completed_chunks = len(state["completed"])
     global_pct = (completed_chunks / total_chunks * 100) if total_chunks > 0 else 0.0
 
@@ -1757,13 +1802,14 @@ def _audit_leaderboard() -> dict:
         entry["rank"] = i
 
     pending = read_json_file(AUDIT_PENDING_FILE, {})
+    completed_since_tracking = completed_chunks - state.get("actions_baseline_completed", completed_chunks)
     return {
         "total_chunks_due": total_chunks,
         "total_chunks_completed": completed_chunks,
         "global_percentage": round(global_pct, 2),
         "in_flight_conversations": len(pending),
         "eta_seconds": _eta_seconds(audit_completion_log, total_chunks - completed_chunks,
-                                     _audit_avg_actions_per_chunk(completed_chunks)),
+                                     _audit_avg_actions_per_chunk(state.get("actions_count", 0), completed_since_tracking)),
         "rankings": rankings,
     }
 

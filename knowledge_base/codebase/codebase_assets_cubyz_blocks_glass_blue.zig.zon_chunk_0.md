@@ -8,7 +8,7 @@
 Defines properties for a blue glass block in the Cubyz voxel engine.
 
 ## Explanation
-This chunk defines a configuration structure for a blue glass block, specifying its light absorption and texture path. The `absorbedLight` field is set to a hexadecimal color value, indicating how much light the block absorbs. The `texture` field specifies the file path to the block's texture image within the Cubyz asset system.
+This chunk defines a configuration structure for a blue glass block, specifying its light absorption and texture path. The `absorbedLight` field is set to 0xdc923c, indicating how much light the block absorbs. The `texture` field specifies the file path to the block's texture image within the Cubyz asset system.
 
 ## Related Questions
 - What is the light absorption value for the blue glass block?

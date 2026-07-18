@@ -8,7 +8,7 @@
 Defines configuration for oak leaves block.
 
 ## Explanation
-This chunk contains a single anonymous struct that defines the configuration for an oak leaves block in the Cubyz voxel engine. The configuration specifies the texture, LOD (Level of Detail) replacement, and opaque variant for the oak leaves block.
+This chunk contains a single anonymous struct that defines the configuration for an oak leaves block in the Cubyz voxel engine. The configuration specifies the following properties: texture = "cubyz:leaves/oak", LOD replacement = "cubyz:leaves/opaque/oak", and opaque variant = "cubyz:leaves/opaque/oak".
 
 ## Related Questions
 - What is the texture for the oak leaves block?

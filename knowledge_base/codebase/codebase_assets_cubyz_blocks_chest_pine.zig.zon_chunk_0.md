@@ -8,7 +8,13 @@
 Defines texture paths for a pine chest block.
 
 ## Explanation
-This chunk contains configuration data specifying the texture paths for different sides of a pine chest block in the Cubyz voxel engine. Each field corresponds to a specific face of the block (back, front, left, right, top, bottom) and maps it to its respective texture file path within the 'cubyz:chest/pine' directory.
+This chunk contains configuration data specifying the exact texture file paths for different sides of a pine chest block in the Cubyz voxel engine. Each field corresponds to a specific face of the block and maps it to its respective texture file path within the 'cubyz:chest/pine' directory as follows:
+- `texture`: cubyz:chest/pine/back
+- `texture_front`: cubyz:chest/pine/front
+- `texture_left`: cubyz:chest/pine/side
+- `texture_right`: cubyz:chest/pine/side
+- `texture_top`: cubyz:chest/pine/top
+- `texture_bottom`: cubyz:chest/pine/bottom
 
 ## Related Questions
 - What is the texture file path for the front face of the pine chest block?

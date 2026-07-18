@@ -8,7 +8,7 @@
 Defines properties for a silver bar block in Cubyz.
 
 ## Explanation
-This chunk defines the configuration for a specific type of block in the Cubyz game engine, specifically a silver bar. It sets attributes such as resistance to damage, health points, texture paths for both the block and its corresponding item representation. The configuration is structured using Zig's comptime map syntax.
+This chunk defines the configuration for a silver bar block in Cubyz. It sets `blockResistance` to 5, `blockHealth` to 15, and assigns textures as follows: `texture = "cubyz:bars/silver"` for the block and `texture = "bars/silver.png"` for the item representation. The configuration is structured using Zig's comptime map syntax.
 
 ## Related Questions
 - What is the block resistance of the silver bar?

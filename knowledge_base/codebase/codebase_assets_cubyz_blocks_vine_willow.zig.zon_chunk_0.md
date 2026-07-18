@@ -8,7 +8,11 @@
 Defines textures and item properties for the willow vine block.
 
 ## Explanation
-This chunk specifies the texture paths for different sides of the willow vine block, including top, bottom, and item representation. It does not contain any executable logic but rather static configuration data used by other parts of the engine to render and handle the block.
+This chunk specifies the texture paths for different sides of the willow vine block, including top, bottom, and item representation. The specific texture paths are:
+- `texture0` (top): `cubyz:vine/willow/top`
+- `texture1` (bottom): `cubyz:vine/willow/bottom`
+- Item texture: `vine/willow.png`
+The chunk does not contain any executable logic but rather static configuration data used by other parts of the engine to render and handle the block. The willow vine block has distinct textures for its top, bottom, and item representation.
 
 ## Related Questions
 - What is the texture path for the top of the willow vine block?

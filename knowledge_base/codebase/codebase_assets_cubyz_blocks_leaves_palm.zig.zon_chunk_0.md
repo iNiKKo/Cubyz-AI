@@ -8,7 +8,15 @@
 Defines configuration for palm leaves block model and textures.
 
 ## Explanation
-This chunk contains a single anonymous struct that defines the configuration for a palm leaves block in the Cubyz voxel engine. It specifies the model, texture, and LOD (Level of Detail) replacement settings. The `model` field indicates the geometric representation, while `texture` and `texture12` specify different textures for various orientations. The `lodReplacement` and `opaqueVariant` fields define alternative block types used at lower detail levels or when the block is opaque.
+This chunk contains a single anonymous struct that defines the configuration for a palm leaves block in the Cubyz voxel engine. It specifies the model, texture, and LOD (Level of Detail) replacement settings as follows:
+
+- `model`: "cubyz:cube_hanging_planes"
+- `texture`: "cubyz:leaves/palm"
+- `texture12`: "cubyz:leaves/palm_hanging"
+- `lodReplacement`: "cubyz:leaves/opaque/palm"
+- `opaqueVariant`: "cubyz:leaves/opaque/palm"
+
+The `model` field indicates the geometric representation, while `texture` and `texture12` specify different textures for various orientations. The `lodReplacement` and `opaqueVariant` fields define alternative block types used at lower detail levels or when the block is opaque.
 
 ## Related Questions
 - What is the model used for palm leaves in Cubyz?

@@ -8,7 +8,7 @@
 Defines properties and characteristics of a volcano peak biome.
 
 ## Explanation
-This chunk configures the properties of a volcano peak biome, including its radius, height range, interpolation method, music, parent biomes, maximum sub-biome count, ground structure, and stone block type. It specifies that this biome has no chance of occurring naturally but can be generated as a child of another biome with specific parameters.
+This chunk configures the properties of a volcano peak biome with a radius of 40 cubyz. The biome has a fixed height range from 600 to 600 cubyz. It uses smooth interpolation and plays the music track 'cubyz:mrmayman/out_of_breath'. The volcano peak biome is generated as a child of the 'volcano/slope6' biome with a chance of 1, and it has a parent edge distance of 16 cubyz. The maximum sub-biome count for this biome is set to 1. The ground structure consists of 10 to 12 blocks each of lava ('cubyz:lava') and magma ('cubyz:magma'). The stone block type used in the volcano peak biome is 'cubyz:basalt/smooth'.
 
 ## Related Questions
 - What is the radius of the volcano peak biome?

@@ -9,7 +9,7 @@
 Handles the general information window for creating an account in the GUI.
 
 ## Explanation
-The chunk defines a GUI window that displays instructions and a button to continue. The button is initially disabled and becomes enabled after 8 seconds, updating its text accordingly. The window updates its size based on its root component's position and size.
+The chunk defines a GUI window that displays instructions and a button to continue. The button is initially disabled and becomes enabled after exactly 8 seconds, updating its text accordingly. Specifically, the `enableTime` variable stores the timestamp when the timer starts, and the remaining time in seconds is calculated using `std.math.divCeil`. This value is used to update the button's label from 'Continue (n)' to 'Continue' as it counts down from 8 seconds. The window updates its size based on its root component's position and size plus padding of 8 units. Additionally, the function `next()` is called when the button is clicked.
 
 ## Code Example
 ```zig

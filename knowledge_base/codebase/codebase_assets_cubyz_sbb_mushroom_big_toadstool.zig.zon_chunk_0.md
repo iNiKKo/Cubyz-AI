@@ -9,7 +9,22 @@
 Configuration data for mushroom base blocks.
 
 ## Explanation
-This chunk defines configuration data for various mushroom base blocks in the Cubyz voxel engine. It includes a list of blueprint IDs and their corresponding child block IDs.
+This chunk defines configuration data for mushroom base blocks in the Cubyz voxel engine. Specifically, it includes a list of six blueprint IDs and their corresponding child block IDs:
+
+Blueprint IDs:
+- cubyz:mushroom/big/toadstool/base/0
+- cubyz:mushroom/big/toadstool/base/1
+- cubyz:mushroom/big/toadstool/base/2
+- cubyz:mushroom/big/toadstool/base/3
+- cubyz:mushroom/big/toadstool/base/4
+- cubyz:mushroom/big/toadstool/base/5
+
+Child block IDs:
+- white: cubyz:mushroom/big/toadstool/large_cap
+- grey: cubyz:mushroom/big/toadstool/small_cap
+- crimson: cubyz:mushroom/big/toadstool/branch/red
+- green: cubyz:mushroom/big/toadstool/branch/green
+- blue: cubyz:mushroom/big/toadstool/branch/blue
 
 ## Related Questions
 - What are the blueprint IDs for the mushroom base blocks?

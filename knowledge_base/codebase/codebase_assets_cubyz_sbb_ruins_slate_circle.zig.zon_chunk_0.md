@@ -8,7 +8,7 @@
 Defines blueprints and children for a slate circle structure in the Cubyz game.
 
 ## Explanation
-This chunk is a configuration file that specifies the blueprints and child components of a slate circle structure within the Cubyz game. The blueprints are identified by unique IDs, and the children are categorized by color names ('grey' and 'lime'), each associated with a specific component type.
+This chunk is a configuration file that specifies the blueprints and child components of a slate circle structure within the Cubyz game. The blueprints are identified by unique IDs: 'cubyz:ruins/slate/circle/base/0' and 'cubyz:ruins/slate/circle/base/1'. The children are categorized by color names ('grey' and 'lime'), each associated with a specific component type: 'grey' is linked to 'cubyz:ruins/slate/circle/rock', and 'lime' is linked to 'cubyz:ruins/slate/circle/treasure_spacer'.
 
 ## Related Questions
 - What are the IDs of the blueprints defined for the slate circle structure?

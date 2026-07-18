@@ -23,11 +23,11 @@ This chunk defines the configuration settings for a cave mantle lava pool biome 
   - Smoothness: 0.9
 
 ## Related Questions
-- - What is the chance of this cave mantle lava pool biome occurring?
-- - How deep are the caves in this biome configured to be?
-- - What types of blocks make up the ground structure in this biome?
-- - What additional structures are defined for this biome?
-- - What is the width and depth of the ground patches specified in this biome configuration?
-- - How does soil creep behave in this cave mantle lava pool biome?
+- What is the chance of this cave mantle lava pool biome occurring?
+- How deep are the caves in this biome configured to be?
+- What types of blocks make up the ground structure in this biome?
+- What additional structures are defined for this biome?
+- What is the width and depth of the ground patches specified in this biome configuration?
+- How does soil creep behave in this cave mantle lava pool biome?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_cave_mantle_lava_pool.zig.zon_chunk_0*

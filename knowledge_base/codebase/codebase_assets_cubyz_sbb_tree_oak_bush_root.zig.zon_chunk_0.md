@@ -8,7 +8,7 @@
 Defines blueprints for oak bush root assets.
 
 ## Explanation
-This chunk contains a configuration structure defining two blueprints for oak bush root assets. Each blueprint has an 'id' field that uniquely identifies the asset version.
+This chunk contains a configuration structure defining **two** blueprints for oak bush root assets. The specific asset IDs are 'cubyz:tree/oak/bush/root/0' and 'cubyz:tree/oak/bush/root/1'. Each blueprint has an 'id' field that uniquely identifies the asset version.
 
 ## Related Questions
 - What are the IDs of the oak bush root blueprints defined in this chunk?

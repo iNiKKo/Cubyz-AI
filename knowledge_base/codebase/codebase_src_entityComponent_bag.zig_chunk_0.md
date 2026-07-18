@@ -108,7 +108,8 @@ This chunk defines the entity component for managing player bags. It includes cl
   ```zig
   pub fn unload(entity: Entity) void {
     const bag = components.fetchRemove(entity) catch return;
-    bag.bag.deinit();\n  }
+    bag.bag.deinit();
+  }
   ```
 
 ## Code Example

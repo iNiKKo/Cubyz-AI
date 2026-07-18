@@ -8,7 +8,13 @@
 This chunk defines texture paths for a specific type of chest block in the Cubyz voxel engine.
 
 ## Explanation
-The chunk contains configuration data specifying the texture files used for different sides and faces of a 'cirrus' themed chest block. Each field (e.g., .texture, .texture_front) maps to a string representing the path to the corresponding texture image within the Cubyz asset system.
+This chunk defines specific texture paths for a 'cirrus' themed chest block within the Cubyz voxel engine. The configuration data includes six fields: .texture, .texture_front, .texture_left, .texture_right, .texture_top, and .texture_bottom. Each field maps to a string representing the path to the corresponding texture image within the Cubyz asset system as follows:
+- .texture = "cubyz:chest/cirrus/back"
+- .texture_front = "cubyz:chest/cirrus/front"
+- .texture_left = "cubyz:chest/cirrus/side"
+- .texture_right = "cubyz:chest/cirrus/side"
+- .texture_top = "cubyz:chest/cirrus/top"
+- .texture_bottom = "cubyz:chest/cirrus/bottom"
 
 ## Related Questions
 - What is the texture path for the front of the cirrus chest block?

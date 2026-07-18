@@ -9,7 +9,7 @@
 Handles tooltip rendering in the GUI system.
 
 ## Explanation
-This chunk manages the initialization and deinitialization of a tooltip texture, as well as rendering tooltips based on either a pre-existing GUI component or text input. It calculates positions to ensure tooltips do not go off-screen and uses a 9-slice image technique for rendering the background. The `renderFromText` function creates a temporary label component from text input to render the tooltip.
+This chunk manages the initialization and deinitialization of a tooltip texture, as well as rendering tooltips based on either a pre-existing GUI component or text input. The `fontSize` is set to 16 pixels, and the `offsetFromMouse` is set to 4 pixels from the mouse position. It calculates positions to ensure tooltips do not go off-screen by adjusting their placement relative to the window size using screen bounds checking logic within the `render` function. Specifically, if the tooltip's calculated position would cause it to exceed the window dimensions, its position is adjusted accordingly. The `cornerSize` is calculated as half of the difference between the texture's dimensions minus one pixel in each direction divided by two, ensuring smooth corners for the tooltip background. The exact calculation for `cornerSize` is given by: `(@as(Vec2f, @floatFromInt(tooltipTexture.size())) - Vec2f{1, 1})/Vec2f{2, 2}`.
 
 ## Code Example
 ```zig

@@ -9,7 +9,7 @@
 The CheckBox component handles rendering and interaction for a checkbox GUI element.
 
 ## Explanation
-This chunk defines the CheckBox struct, which represents a checkbox in the GUI. It includes methods for initialization, deinitialization, updating hover state, handling button presses and releases, and rendering. The CheckBox uses textures to display different states (normal, hovered, pressed) of both checked and unchecked boxes. It also manages a label component that displays text alongside the checkbox. The globalInit and globalDeinit functions handle loading and unloading of textures used by all CheckBox instances.
+This chunk defines the CheckBox struct, which represents a checkbox in the GUI. It includes methods for initialization, deinitialization, updating hover state, handling button presses and releases, and rendering. The CheckBox uses textures to display different states (normal, hovered, pressed) of both checked and unchecked boxes. Specifically, it loads the following textures during globalInit: 'assets/cubyz/ui/checked_box.png', 'assets/cubyz/ui/checked_box_hovered.png', 'assets/cubyz/ui/checked_box_pressed.png' for the checked state; and 'assets/cubyz/ui/box.png', 'assets/cubyz/ui/box_hovered.png', 'assets/cubyz/ui/box_pressed.png' for the unchecked state. The CheckBox also manages a label component that displays text alongside the checkbox, with dimensions calculated based on the width of the label and the size of the box (16x16 pixels). The globalInit function handles loading these textures used by all CheckBox instances, while globalDeinit unloads them.
 
 ## Code Example
 ```zig
@@ -29,6 +29,5 @@ pub fn globalInit() void {
 - What method is used to initialize a new CheckBox instance?
 - How does the CheckBox manage its label component?
 - What textures are loaded by the globalInit function and what do they represent?
-- How does the CheckBox respond to mouse button presses and releases?
 
 *Source: unknown | chunk_id: codebase_src_gui_components_CheckBox.zig_chunk_0*
