@@ -98,6 +98,13 @@ CLIENT_DIAGNOSTICS_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "client_
 
 rag_chunk_queue = []
 finetune_chunk_queue = []
+# True campaign size, including chunks skipped from the queues above because they're already
+# fully completed and unchanged (see rag_initialize_chunks()/finetune_initialize_chunks()) --
+# *_chunk_queue only holds chunks still available to hand out, so once enough of a campaign is
+# done that some source files become fully-skippable on a restart, len(*_chunk_queue) alone
+# undercounts the real total and the reported percentage can exceed 100%.
+rag_total_chunks = 0
+finetune_total_chunks = 0
 online_clients = {}  # unified roster -- one client identity now, regardless of which mode it's working in
 
 
@@ -345,8 +352,10 @@ def _structural_chunks(lines: list, target: int = 150, max_size: int = 300, over
     return ["".join(lines[s:e]) for s, e in chunk_spans]
 
 def rag_initialize_chunks():
+    global rag_total_chunks
     chunk_size, overlap = 150, 30
     step = chunk_size - overlap
+    rag_total_chunks = 0
 
     if not os.path.exists(RAG_SOURCE_DIR):
         print(f"[X] Error: Organized source workspace not found at '{RAG_SOURCE_DIR}'!")
@@ -393,6 +402,7 @@ def rag_initialize_chunks():
                             "requires_strong_model": len(review_raw_content) < THIN_CONTENT_CHAR_THRESHOLD
                         })
 
+                    rag_total_chunks += len(file_chunks)
                     if _is_chunk_set_unchanged(file_chunks, file, f_hash, old_hashes, completed_chunks):
                         skipped_unchanged_count += 1
                         continue
@@ -418,6 +428,7 @@ def rag_initialize_chunks():
                             "requires_strong_model": len(chunk_raw_content) < THIN_CONTENT_CHAR_THRESHOLD
                         })
 
+                    rag_total_chunks += len(file_chunks)
                     if _is_chunk_set_unchanged(file_chunks, file, f_hash, old_hashes, completed_chunks):
                         skipped_unchanged_count += 1
                         continue
@@ -436,6 +447,7 @@ def rag_initialize_chunks():
     print(f" 📂 Total Workspace Files Found:  {total_scanned_files}")
     print(f" ⏭️ Bypassed (Fully Completed):   {skipped_unchanged_count}")
     print(f" 🔥 Active Task Targets Queued:   {len(rag_chunk_queue)}")
+    print(f" 🎯 True Campaign Total:          {rag_total_chunks}")
     print("─"*55 + "\n")
 
 # ============================================================
@@ -505,6 +517,8 @@ def load_deduped_jsonl(paths):
     return entries
 
 def finetune_initialize_chunks():
+    global finetune_total_chunks
+    finetune_total_chunks = 0
     if not os.path.exists(FINETUNE_CODEBASE_SUBSET_FILE):
         print(f"[X] {FINETUNE_CODEBASE_SUBSET_FILE} not found. Run filter_codebase_subset.py first.")
         sys.exit(1)
@@ -527,6 +541,7 @@ def finetune_initialize_chunks():
         for entry in entries:
             content_hash = calculate_content_hash(entry)
             current_hashes[entry["chunk_id"]] = content_hash
+            finetune_total_chunks += 1
 
             if (entry["chunk_id"] in completed_chunks and
                     old_hashes.get(entry["chunk_id"]) == content_hash):
@@ -553,9 +568,13 @@ def finetune_initialize_chunks():
     print("─"*55 + "\n")
 
 def _rag_campaign_complete() -> bool:
-    # An empty queue (RAG source not configured/scanned) counts as "complete" -- nothing to
-    # block on. Real incompleteness is completed < total with a nonzero total.
-    total = len(rag_chunk_queue)
+    # An empty total (RAG source not configured/scanned) counts as "complete" -- nothing to
+    # block on. Real incompleteness is completed < total with a nonzero total. Uses
+    # rag_total_chunks (true campaign size), not len(rag_chunk_queue) -- the queue only holds
+    # chunks still available to hand out, so once enough of the campaign is done that some source
+    # files become fully-skippable on a restart, the queue length alone would make this return
+    # True (campaign "complete") well before the real total is actually reached.
+    total = rag_total_chunks
     if total == 0:
         return True
     state = load_lock_state(RAG_LOCK_FILE)
@@ -678,7 +697,12 @@ def _get_rag_work(user_id: str, hardware_tier: str, model: str) -> dict:
         and (not t.get("requires_strong_model") or client_model_rank >= THIN_CHUNK_MIN_TIER)
     ]
 
-    total_chunks = len(rag_chunk_queue)
+    # rag_total_chunks (the true campaign size), not len(rag_chunk_queue) (only chunks still
+    # available to hand out) -- using the queue length here undercounts once enough of the
+    # campaign is done that some source files become fully-skippable on a restart, which doesn't
+    # just make the reported percentage wrong: completed_chunks < total_chunks below could go
+    # false prematurely, reporting "done" while real unprocessed work still remains queued.
+    total_chunks = rag_total_chunks
     completed_chunks = len(state["completed"])
 
     if not available_tasks:
@@ -707,7 +731,7 @@ def _get_finetune_work(user_id: str, hardware_tier: str) -> dict:
     state = load_lock_state(FINETUNE_LOCK_FILE)
     state_modified = prune_stale_locks(state)
 
-    total_chunks = len(finetune_chunk_queue)
+    total_chunks = finetune_total_chunks  # true campaign size -- see _get_rag_work's comment
     completed_chunks = len(state["completed"])
 
     # Fine-tune generation needs stronger instruction-following than RAG extraction (natural
@@ -864,7 +888,7 @@ def _rag_leaderboard() -> dict:
     state = load_lock_state(RAG_LOCK_FILE)
     user_stats = load_user_stats(RAG_STATS_FILE)
 
-    total_chunks = len(rag_chunk_queue)
+    total_chunks = rag_total_chunks  # true campaign size -- see _get_rag_work's comment
     completed_chunks = len(state["completed"])
     global_pct = (completed_chunks / total_chunks * 100) if total_chunks > 0 else 0.0
 
@@ -901,7 +925,7 @@ def _rag_leaderboard() -> dict:
 def _finetune_leaderboard() -> dict:
     state = load_lock_state(FINETUNE_LOCK_FILE)
     user_stats = load_user_stats(FINETUNE_STATS_FILE)
-    total_chunks = len(finetune_chunk_queue)
+    total_chunks = finetune_total_chunks  # true campaign size -- see _get_rag_work's comment
     completed_chunks = len(state["completed"])
     global_pct = (completed_chunks / total_chunks * 100) if total_chunks > 0 else 0.0
 
