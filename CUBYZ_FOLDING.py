@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.7"
+VERSION = "1.1.8"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -1630,11 +1630,13 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
     identity polling /get_work and calling Ollama on its own -- there's normally just one (the
     whole client, as before dual-lane support existed), but a machine with both a real GPU and
     enough spare RAM (see run_dual_lane_if_capable()) runs two: this function unmodified in the
-    main thread for the GPU lane (fancy_ui=True, so Ctrl+C/the interrupt menu behave exactly as
-    they always have), and a second call in a background thread for the CPU lane (fancy_ui=False,
-    plain log lines instead of the redrawing status box -- two threads fighting over the same
-    cursor-position escape codes would corrupt each other's output; force_cpu=True routes that
-    lane's Ollama calls through num_gpu=0 so it never competes with the GPU lane for VRAM).
+    main thread for the GPU lane (Ctrl+C/the interrupt menu behave exactly as they always have),
+    and a second call in a background thread for the CPU lane (force_cpu=True routes that lane's
+    Ollama calls through num_gpu=0 so it never competes with the GPU lane for VRAM). fancy_ui is
+    only ever True for a solo lane -- the redrawing status box assumes it's the only thing
+    touching the terminal, which a second lane's log lines would break no matter how printing
+    itself is locked, so dual-lane mode runs both lanes with fancy_ui=False (plain tagged log
+    lines) instead.
 
     pause_event coordinates the two lanes without needing the background thread to handle Ctrl+C
     itself (Python only ever delivers SIGINT/KeyboardInterrupt to the main thread, so a background
@@ -1648,6 +1650,22 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
     def safe_print(msg):
         with print_lock:
             print(msg)
+
+    # Rolling window of this lane's own last few *successful* task times (dispatch -> confirmed
+    # submitted) -- retried/abandoned attempts don't count, they'd skew this toward "how slow is
+    # a bad chunk" instead of "how fast is this lane" (what the number's actually for).
+    task_durations = []
+    MAX_DURATION_SAMPLES = 10
+
+    def record_duration(seconds):
+        task_durations.append(seconds)
+        del task_durations[:-MAX_DURATION_SAMPLES]
+
+    def speed_str():
+        if not task_durations:
+            return "calculating..."
+        avg = sum(task_durations) / len(task_durations)
+        return f"{avg:.1f}s/chunk avg (last {len(task_durations)})"
 
     def print_terminal_status(task_desc, step_msg, is_first, comp, tot, eta=None):
         pct = (comp / tot * 100) if tot else 0.0
@@ -1667,11 +1685,12 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
 
         with print_lock:
             if not is_first:
-                sys.stdout.write("\033[F\033[K" * 7)
+                sys.stdout.write("\033[F\033[K" * 8)
             print(f"{box_color}─── [ {hardware_label} ] ──────────────────────────────────────────{Colors.RESET}")
             print(f"  Current Task : {task_desc}")
             print(f"  Configuration: Model: {chosen_model} • Profile: {mode_desc.split(' (')[0]}")
             print(f"  Node Status  : {status_color}{step_msg}{Colors.RESET}")
+            print(f"  Lane Speed   : {speed_str()}")
             print(f"  Global Progress: [{box_color}{p_bar}{Colors.RESET}] {format_count(comp)}/{format_count(tot)} ({pct:.2f}%)")
             print(f"  Est. Time Left : {format_eta(eta)}")
             print(f"{box_color}────────────────────────────────────────────────────────────────────────{Colors.RESET}")
@@ -1681,7 +1700,11 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
         if fancy_ui:
             print_terminal_status(task_desc, step_msg, is_first, comp, tot, eta)
         else:
-            safe_print(f"{Colors.GRAY}[{lane_tag}]{Colors.RESET} {task_desc}: {step_msg}")
+            # fancy_ui's box has a dedicated "Lane Speed" row that's always current; the simple
+            # log has no persistent line to put that in, so it rides along on each completed-task
+            # line instead (the only message shape a fresh speed reading is actually relevant on).
+            suffix = f" ({speed_str()})" if step_msg.startswith("✓") else ""
+            safe_print(f"{Colors.GRAY}[{lane_tag}]{Colors.RESET} {task_desc}: {step_msg}{suffix}")
 
     current_mode = None
     first_stat_print = True
@@ -1748,6 +1771,7 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
                 time.sleep(30); continue
 
             task = work_package["task"]
+            task_start_time = time.time()
 
             if mode == "rag":
                 task["lines"] = len(task.get('raw_content', '').splitlines())
@@ -1778,6 +1802,7 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
                 report(task_desc, "Submitting analysis to master server...", False, completed_chunks, total_chunks, eta_seconds)
                 make_request(f"{SERVER_URL}/submit_work", parsed_data)
 
+                record_duration(time.time() - task_start_time)
                 report(task_desc, "✓ Analysis uploaded successfully!", False, completed_chunks + 1, total_chunks, eta_seconds)
 
             else:  # mode == "finetune"
@@ -1825,6 +1850,7 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
                 report(task_desc, "Submitting pairs to master server...", False, completed_chunks, total_chunks, eta_seconds)
                 make_request(f"{SERVER_URL}/submit_work", submission)
 
+                record_duration(time.time() - task_start_time)
                 report(task_desc, f"✓ Submitted {pairs_generated} training pairs!", False, completed_chunks + 1, total_chunks, eta_seconds)
 
             first_stat_print = False
@@ -2024,9 +2050,16 @@ def main():
         pause_event = None
 
     crunch_lane(
+        # fancy_ui's cursor-redraw box assumes it's the only thing touching the terminal -- true
+        # for a solo lane, but in dual-lane mode the CPU lane's own log lines land in between
+        # redraws and throw off the "move up N lines" math no matter how the printing itself is
+        # locked (a lock only stops characters from interleaving, not extra lines from shifting
+        # where the cursor already is). Confirmed live: the box visibly tore/stacked instead of
+        # redrawing cleanly. Both lanes fall back to plain tagged log lines in dual mode instead
+        # -- solo runs (the common case) are completely unaffected.
         lane_tag="GPU" if dual_capable else "MAIN", user_id=user_id, hardware_tier=hardware_tier,
         chosen_model=chosen_model, max_threads=max_threads, cooldown=cooldown, mode_desc=mode_desc,
-        hardware_label=hardware_label_for(gpu_type), force_cpu=False, fancy_ui=True, pause_event=pause_event,
+        hardware_label=hardware_label_for(gpu_type), force_cpu=False, fancy_ui=not dual_capable, pause_event=pause_event,
     )
 
 if __name__ == "__main__":
