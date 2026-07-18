@@ -8,14 +8,11 @@
 The game experiences lag when flying at high speeds with large render distances due to significant memory fragmentation and performance issues caused by frequent chunk freeing.
 
 ## Explanation
-The issue arises from high memory fragmentation of ChunkMesh memory when moving quickly in the game, leading to a performance hit. The maintainer notes that this is expected behavior for any allocator that cannot free pages, resulting in fragmentation when large portions of memory are freed at once. Additionally, the current GPU allocator's performance could be improved by optimizing its allocation and deallocation processes. The maintainer suggests exploring alternative memory allocation strategies, such as using a red-black tree to implement a free list allocator, while ensuring that all allocation data structures reside outside the GPU buffer to avoid reading back from it.
+The game experiences lag when flying at high speeds with large render distances due to significant memory fragmentation of ChunkMesh memory and a performance hit caused by frequent chunk freeing. The maintainer notes that this is expected behavior for any allocator that cannot free pages, resulting in fragmentation when large portions of memory are freed at once. Specifically, the reproduction sequence involves joining the world, moving with hyper speed (~30 seconds), waiting for the Queue size to go to 0, and repeating this process. This results in a ~50fps drop on an RTX 3080 and approximately 1GB of fragmentation reported by F3 debug info. The maintainer suggests that it is possible to improve the performance of the GPU allocator by optimizing its allocation and deallocation processes, such as using a red-black tree or another type of tree structure to implement a free list allocator. Additionally, all allocation data structures must exist outside the memory itself to avoid reading back from the GPU buffer.
 
 ## Related Questions
-- What is the current performance of the GPU allocator when dealing with frequent chunk freeing?
-- How can the allocation and deallocation processes of the GPU allocator be optimized to improve performance?
-- Can using a red-black tree for a free list allocator help reduce memory fragmentation in Cubyz?
-- Why must all allocation data structures exist outside the GPU buffer?
-- What are the potential benefits of disabling vsync for testing high frame rates in Cubyz?
-- How does the game's performance compare with different render distances and movement speeds?
+- What is the exact frame rate drop observed when flying at high speeds with large render distances?
+- How much memory fragmentation occurs during this process and what does it look like in F3 debug info?
+- Can using a red-black tree for a free list allocator help reduce memory fragmentation in Cubyz, and how would this be implemented?
 
 *Source: unknown | chunk_id: github_issue_1416_discussion*

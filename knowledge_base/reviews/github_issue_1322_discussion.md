@@ -6,10 +6,26 @@
 **Concepts:** thread safety, networking, error handling
 
 ## Summary
-A delay was added in the `disconnect` function of `network.zig` to prevent a 'ConnectionResetByPeer' error on Windows 11.
+A delay was added in the `disconnect` function of `network.zig` to prevent a 'ConnectionResetByPeer' error on Windows 11. The maintainer introduced a sleep duration of 10 milliseconds (10,000,000 nanoseconds) after sending the disconnect signal.
 
 ## Explanation
-The issue occurred when leaving a local world, causing an operating system cleanup of the network connection before the other side received the disconnect signal. The maintainer introduced a delay of 10 milliseconds in the `disconnect` function to address this problem. After implementing this change, the error was no longer reproducible.
+The issue occurred when leaving a local world, causing an operating system cleanup of the network connection before the other side received the disconnect signal. The maintainer introduced a delay of 10 milliseconds (10,000,000 nanoseconds) in the `disconnect` function to address this problem by adding the following code snippet:
+
+```diff
+--- a/src/network.zig
++++ b/src/network.zig
+@@ -2079,6 +2079,9 @@ pub const Connection = struct { // MARK: Connection
+        pub fn disconnect(self: *Connection) void {
+                self.manager.send(&.{@intFromEnum(ChannelId.disconnect)}, self.remoteAddress, null);
+                self.connectionState.store(.disconnectDesired, .unordered);
++               if(builtin.os.tag == .windows and !self.isServerSide() and main.server.world != null) {
++                       std.time.sleep(10000000); // 10 milliseconds
++               }
+                self.manager.removeConnection(self);
+                if(self.user) |user| {
+                        main.server.disconnect(user);
+```
+After implementing this change, the error was no longer reproducible.
 
 ## Related Questions
 - What is the purpose of adding a delay in the disconnect function?

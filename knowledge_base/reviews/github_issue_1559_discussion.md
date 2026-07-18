@@ -8,7 +8,7 @@
 Discussion about implementing a critical damage mechanic for tools when they reach their last durability point.
 
 ## Explanation
-The issue proposes adding a 'Breath of the Wild'-style mechanic where tools deal critical damage upon breaking. The discussion revolves around the magnitude of this critical damage and potential game balance implications, such as creating a meta where players intentionally use almost-broken weapons for an advantage in player-versus-player (PvP) scenarios.
+The issue proposes adding a 'Breath of the Wild'-style mechanic where tools deal critical damage upon breaking. Specifically, on the last point of durability, your tool performs critical damage before breaking, allowing you to break the block you were mining without needing to switch tools. This encourages players to use their tools until they break and makes the `single_use` modifier more useful. The discussion revolves around the magnitude of this critical damage and potential game balance implications, such as creating a meta where players intentionally use almost-broken weapons for an advantage in player-versus-player (PvP) scenarios. The maintainer asked how big the critical damage should be, and one user suggested that a 2x multiplier against players could lead to a PvP meta with players running around with almost-broken weapons.
 
 ## Related Questions
 - What is the proposed critical damage multiplier for tools?
@@ -16,6 +16,5 @@ The issue proposes adding a 'Breath of the Wild'-style mechanic where tools deal
 - Are there any potential exploits or unintended consequences of this mechanic?
 - How will the critical damage mechanic be implemented in the codebase?
 - What feedback has been received from other players regarding this feature?
-- Is there a plan to adjust the critical damage multiplier for different types of tools?
 
 *Source: unknown | chunk_id: github_issue_1559_discussion*

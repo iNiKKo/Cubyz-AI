@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.35"
+VERSION = "1.1.37"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -2294,18 +2294,75 @@ def run_live_gpu_diagnostic():
         # almost always states outright whether it found/rejected a GPU (e.g. "no compatible
         # amdgpu found", or a specific ROCm initialization error), which is the most direct answer
         # available without any extra tooling. On Linux, Ollama is commonly a systemd service.
-        if PLATFORM == "linux" and shutil.which('journalctl'):
-            print(f"  {Colors.CYAN}Checking Ollama's own service log for GPU-related lines (journalctl -u ollama)...{Colors.RESET}")
+        # This project's own installer runs Ollama inside Docker on Linux by default (see
+        # install_ollama_container -- correctly passes --device /dev/kfd --device /dev/dri and
+        # uses the ollama/ollama:rocm image for AMD), NOT as a systemd service -- so journalctl -u
+        # ollama was checking a unit that plausibly never existed for this deployment at all.
+        # Worse: ensure_ollama_installed() skips setup entirely the moment ANY container named
+        # "ollama" already exists, regardless of whether THAT container actually has correct GPU
+        # device passthrough -- a container created before this logic existed, or by hand, or any
+        # other way, could be silently missing --device the whole time and this script would never
+        # know or fix it. Checked directly via `docker inspect` instead of guessing from logs.
+        docker_container = None
+        if shutil.which('docker'):
             try:
-                res = subprocess.run(['journalctl', '-u', 'ollama', '-n', '200', '--no-pager'], capture_output=True, text=True, timeout=15)
+                names_res = subprocess.run(['docker', 'ps', '-a', '--filter', 'name=ollama', '--format', '{{.Names}}'], capture_output=True, text=True, timeout=10)
+                docker_container = names_res.stdout.strip().splitlines()[0] if names_res.stdout.strip() else None
+            except Exception:
+                pass
+
+        if docker_container:
+            print(f"  {Colors.CYAN}Ollama is running in Docker (container '{docker_container}') -- inspecting its real GPU config...{Colors.RESET}")
+            try:
+                inspect_res = subprocess.run(['docker', 'inspect', docker_container], capture_output=True, text=True, timeout=10)
+                info = json.loads(inspect_res.stdout)[0]
+                image = info.get('Config', {}).get('Image', '?')
+                devices = info.get('HostConfig', {}).get('Devices') or []
+                device_paths = [d.get('PathOnHost') for d in devices]
+                print(f"  Image: {image}")
+                if device_paths:
+                    print(f"  {Colors.GREEN}GPU devices passed through: {', '.join(device_paths)}{Colors.RESET}")
+                else:
+                    print(f"  {Colors.RED}✗ NO devices passed through to this container at all.{Colors.RESET}")
+                    print(f"    --device /dev/kfd --device /dev/dri was never given when this container was created, so it has")
+                    print(f"    ZERO access to the GPU no matter what the host's permissions look like -- this is very likely the")
+                    print(f"    real root cause. Fix: docker rm -f {docker_container}, then restart this client and let it")
+                    print(f"    recreate the container correctly (or add the devices to the existing one by hand).")
+                if 'rocm' not in image.lower():
+                    print(f"  {Colors.RED}✗ This image doesn't look like the ROCm-enabled build (expected 'ollama/ollama:rocm', got '{image}').")
+                    print(f"    A plain 'ollama/ollama' image has no ROCm runtime at all and can never use an AMD GPU, regardless of")
+                    print(f"    device passthrough.{Colors.RESET}")
+            except Exception as e:
+                print(f"  {Colors.YELLOW}⚠ Could not inspect the Docker container: {e}{Colors.RESET}")
+            print(f"  {Colors.CYAN}Recent container log lines mentioning GPU/ROCm (docker logs {docker_container}):{Colors.RESET}")
+            try:
+                logs_res = subprocess.run(['docker', 'logs', '--tail', '500', docker_container], capture_output=True, text=True, timeout=15)
+                combined = (logs_res.stdout + logs_res.stderr).splitlines()
+                gpu_lines = [l for l in combined if re.search(r'gpu|rocm|amdgpu|hip|cuda', l, re.I)]
+                if gpu_lines:
+                    for line in gpu_lines[-20:]:
+                        print(f"  {line}")
+                else:
+                    print(f"  {Colors.YELLOW}⚠ No GPU/ROCm-related lines in the container's log either.{Colors.RESET}")
+            except Exception as e:
+                print(f"  {Colors.YELLOW}⚠ Could not read the container's logs: {e}{Colors.RESET}")
+        elif PLATFORM == "linux" and shutil.which('journalctl'):
+            print(f"  {Colors.CYAN}No Docker container found -- checking Ollama's systemd service log instead...{Colors.RESET}")
+            try:
+                since_res = subprocess.run(['systemctl', 'show', 'ollama', '--property=ActiveEnterTimestamp', '--value'], capture_output=True, text=True, timeout=10)
+                since = since_res.stdout.strip()
+                cmd = ['journalctl', '-u', 'ollama', '--no-pager']
+                cmd += (['--since', since] if since else ['-n', '500'])
+                res = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
                 gpu_lines = [l for l in res.stdout.splitlines() if re.search(r'gpu|rocm|amdgpu|hip|cuda', l, re.I)]
                 if gpu_lines:
-                    for line in gpu_lines[-15:]:
+                    for line in gpu_lines[-20:]:
                         print(f"  {line}")
                 elif res.returncode != 0:
                     print(f"  {Colors.YELLOW}⚠ Could not read the ollama service log (not running as a systemd service under this name, or needs elevated permissions).{Colors.RESET}")
                 else:
-                    print(f"  {Colors.YELLOW}⚠ No GPU/ROCm-related lines found in the last 200 log lines.{Colors.RESET}")
+                    scope = f"since it last started ({since})" if since else "in the last 500 lines"
+                    print(f"  {Colors.YELLOW}⚠ No GPU/ROCm-related lines found {scope}.{Colors.RESET}")
             except Exception as e:
                 print(f"  {Colors.YELLOW}⚠ Could not check the Ollama service log: {e}{Colors.RESET}")
 

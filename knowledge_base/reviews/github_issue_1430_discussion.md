@@ -9,14 +9,14 @@
 The discussion revolves around rebalancing tools in Cubyz, focusing on swing speed, damage distribution, and tool specialization. Maintainers propose adding slow-swinging tools and considering drills as mid-game items powered by magic.
 
 ## Explanation
-The issue centers on the need to rebalance tools in Cubyz to improve gameplay mechanics. The main points of discussion include making over-damaging distribute damage to perpendicular blocks, introducing crouching for precise block breaking, and revisiting the old algorithm for tool behavior. Maintainers suggest adding hammers and chipping hammers as specialized tools while considering drills with high swing speed and low damage. They also propose balancing tools by adjusting swing speeds and ensuring that tools have distinct properties based on mass. The discussion highlights the importance of maintaining a balance between usability, precision, and power in tool design to enhance player experience.
+The discussion revolves around rebalancing tools in Cubyz to improve gameplay mechanics. The main points include making over-damaging distribute damage to perpendicular blocks, introducing crouching for precise block breaking (crouching breaks only one block at a time), and revisiting the old algorithm for tool behavior. Maintainers suggest adding hammers as specialized tools with high mass and slow swing speed, while chipping hammers are proposed as an alternative to drills due to balancing issues. Drills would use energy during use as a source of spinning power but do not fix existing material balance problems. The discussion highlights the importance of maintaining a balance between usability, precision, and power in tool design to enhance player experience. Specific proposals include making swing speeds more reasonable, distributing block damage overflow into adjacent blocks when broken, and ensuring tools have distinct properties based on mass.
 
 ## Related Questions
 - What are the proposed changes to tool swing speeds and damage distribution?
 - How does the discussion suggest addressing the issue of over-damaging tools?
 - What is the role of crouching in the proposed tool rebalancing?
-- Why are hammers and chipping hammers being considered as specialized tools?
-- How do drills fit into the proposed tool system, and what are their intended uses?
+- Why are hammers being considered as specialized tools?
+- How do chipping hammers fit into the proposed tool system, and what are their intended uses?
 - What are the main concerns regarding the current tool balancing in Cubyz?
 
 *Source: unknown | chunk_id: github_issue_1430_discussion*

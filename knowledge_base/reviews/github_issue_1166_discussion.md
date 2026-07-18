@@ -8,14 +8,11 @@
 Discussion about implementing a 'Hammer' tool that reverts broken blocks to their original form.
 
 ## Explanation
-The discussion revolves around the concept of a 'Hammer' tool in Cubyz, which is intended to revert blocks back to their original state when broken. The maintainers are concerned about defining what constitutes the 'original form' and how the tool should determine this. There's also a suggestion that the tool could be configured to allow different block drops based on the tools used.
+The discussion centers around the implementation of a 'Hammer' tool in Cubyz that reverts blocks to their original form when broken. The maintainers are concerned about defining what constitutes the 'original form' and how the tool should determine this. For example, breaking stone bricks with a hammer would revert them back to stone. There is also a suggestion that the tool could be configured to allow different block drops based on the tools used, specifically for stone blocks. The maintainers are considering whether the hammer can convert planks back to wood logs and how it should determine the original form of each block.
 
 ## Related Questions
-- How does the Hammer tool determine the original form of a block?
-- Can the Hammer tool be configured to revert different blocks to specific forms?
+- How does the Hammer tool revert stone bricks back to stone?
+- Can the Hammer tool be configured to revert different types of blocks (e.g., stone, wood) to their specific forms?
 - What are the potential implications of allowing configurable block drops based on tools used?
-- How would the Hammer tool interact with existing crafting mechanics in Cubyz?
-- Are there any performance considerations when implementing the Hammer tool's functionality?
-- How can the 'original form' be consistently defined across different types of blocks?
 
 *Source: unknown | chunk_id: github_issue_1166_discussion*

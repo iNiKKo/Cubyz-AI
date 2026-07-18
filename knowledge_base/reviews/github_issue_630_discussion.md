@@ -8,7 +8,7 @@
 The maintainer does not believe handling out of memory by freeing memory from caches is worth the effort due to potential complications with future optimizations.
 
 ## Explanation
-The maintainer argues that implementing a mechanism to handle out of memory situations by freeing memory from caches is not worthwhile. This decision is based on the belief that such an implementation could complicate future optimization efforts, particularly those related to issue #1413. The maintainer's concern is primarily about maintaining simplicity and avoiding unnecessary complexity in the codebase.
+The maintainer believes that handling out of memory by freeing memory from caches is not worthwhile due to potential complications with future optimization efforts. Specifically, such an implementation could make certain optimizations more difficult, as noted in issue #1413. The decision aims to maintain simplicity and avoid unnecessary complexity in the codebase.
 
 ## Related Questions
 - What are the potential complications with future optimizations if memory is freed from caches?

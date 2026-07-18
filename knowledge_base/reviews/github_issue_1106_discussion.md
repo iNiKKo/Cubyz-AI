@@ -8,7 +8,7 @@
 The issue discusses the challenge of navigating caves made of large cubes in Cubyz.
 
 ## Explanation
-The discussion revolves around a reported issue where caves composed of large cubic structures are difficult to navigate. The maintainer initially marked it as a bug but later clarified that it was intended as a feature or design choice rather than an error.
+The issue discusses the challenge of navigating caves made of large cubes in Cubyz. The original report humorously notes that such caves would be difficult to navigate and includes an image for reference. A maintainer comment clarifies that the issue was initially marked as a bug but was actually intended as a feature or design choice, not an error.
 
 ## Related Questions
 - What was the original intention behind marking this as a bug?

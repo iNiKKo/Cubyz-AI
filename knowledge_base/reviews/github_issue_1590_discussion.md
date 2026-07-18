@@ -8,7 +8,7 @@
 The discussion revolves around implementing visual damage numbers when hitting blocks, with concerns about UI clutter, performance, and practicality.
 
 ## Explanation
-The maintainers and user discuss the feasibility of displaying damage numbers as particles versus UI elements. They debate the necessity of such a feature, considering it potentially cosmetic rather than functional. The discussion touches on alternatives like a DPS meter or tooltips for exact damage values. There's also consideration for the impact on performance and player experience.
+The discussion revolves around implementing visual damage numbers when hitting blocks in Cubyz. Users and maintainers debate whether this feature should be displayed as particles or as a UI element, considering its potential impact on performance and player experience. A user suggests using the command `/countdamage` to enable damage numbers in chat logs during testing, but maintainers argue that this feature is more useful alongside other random numbered damages or as an extended tooltip showing exact damage values when breaking blocks. They note that after issue #1656, the crafting grid DPS system is now accurate except for resistance, making the proposed damage number feature less necessary. The maintainers conclude that implementing visual damage numbers would be purely cosmetic and could clutter the UI without providing significant utility to players.
 
 ## Related Questions
 - What are the potential performance impacts of implementing damage number particles?

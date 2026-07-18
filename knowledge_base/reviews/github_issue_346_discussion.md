@@ -8,7 +8,7 @@
 Discussion about adding support for modern mesh formats like glTF, .m3d, Alembic, and COLLADA.
 
 ## Explanation
-The issue proposes adding support for various modern mesh formats such as glTF, .m3d, Alembic, and COLLADA. The maintainer suggests keeping dependencies low and initially focusing on a simple, human-readable format like OBJ. There is an acknowledgment that other formats might be considered in the future.
+Discussion about adding support for modern mesh formats such as glTF, .m3d, Alembic, and COLLADA. The issue proposes evaluating these formats based on their overhead and suitability. The maintainer suggests keeping dependencies low and initially focusing on a simple, human-readable format like OBJ. There is an acknowledgment that other formats might be considered in the future.
 
 ## Related Questions
 - What are the advantages of using glTF over other formats?

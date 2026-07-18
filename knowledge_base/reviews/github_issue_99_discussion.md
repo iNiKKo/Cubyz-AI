@@ -8,7 +8,7 @@
 Discussion on implementing resolution up-/downscaling in Cubyz, focusing on shader handling and sampling techniques.
 
 ## Explanation
-The discussion revolves around adding a resolution scaling feature to Cubyz, allowing users to adjust the game's rendering scale. The maintainers suggest using a resolution scale from 25% (downscaling) to 200% (upscaling). They propose that fog calculations should be done before downscaling and that a new shader might be needed for manual sampling and interpolation during downscaling. The maintainers also emphasize the use of nearest-neighbor sampling for upscaling, as they prefer it over linear sampling due to its sharpness. Additionally, there's a consideration to limit the scaling factors to powers of 2 (1/4, 1/2, 1, 2) for simplicity and performance reasons.
+Discussion on implementing resolution up-/downscaling in Cubyz, focusing on shader handling and sampling techniques. The maintainers suggest using a resolution scale from 25% (downscaling) to 200% (upscaling). For downscaling, the viewport size is adjusted proportionally; for example, if the window size is 800x600, a 75% downscale would result in a viewport size of 600x450. Fog calculations should be done before downscaling to avoid issues with linear interpolation. A new shader might be needed for manual sampling and interpolation during downscaling due to the complexity of fog calculations. The maintainers emphasize using nearest-neighbor sampling for upscaling, as they prefer it over linear sampling because it looks sharper. They also consider limiting scaling factors to powers of 2 (1/4, 1/2, 1, 2) for simplicity and performance reasons.
 
 ## Related Questions
 - What are the potential performance implications of implementing resolution scaling in Cubyz?

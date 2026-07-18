@@ -5189,41 +5189,6 @@
     ],
     "review_feedback": "The proposed explanation correctly addresses the maintainer's clarification but omits that the feature was implemented without testing with the provided carpet model. This detail must be kept to accurately reflect the current state of the implementation."
   },
-  "github_issue_380_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions specific dimensions but does not state them explicitly, and it omits the maintainer's comments on layout issues with two attached windows.",
-    "corrected_summary": null,
-    "corrected_explanation": "Discussion on improving UI vignette appearance by replacing gradients with solid-colored borders or adjusting layout. The issue revolves around a high-resolution gradient overlaying pixel art in Cubyz's user interface, which looks inconsistent and strange. The maintainer proposes alternatives such as using a solid-colored border or reducing the gradient resolution. The user prefers a solid border that does not obstruct icons and suggests specific dimensions: icons are 7x7 pixels (with a 1-pixel center) and the window title is 9 pixels tall. Additionally, the maintainer notes that placing the border on the outside of the window makes it look weird when two windows are attached to each other. The discussion aims to find a visually appealing solution that maintains the aesthetic of pixel art while enhancing usability.",
-    "corrected_related_questions": [
-      "What are the proposed solutions for improving the UI vignette appearance?",
-      "Why is a solid-colored border preferred over a gradient in this context?",
-      "What specific dimensions were suggested for the icons and window title?",
-      "How does the maintainer propose to address the issue of two windows being attached together?",
-      "Can you provide examples of how the UI vignette looks with different proposed solutions?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404268.1573496,
-        "reason": "The kb_content mentions specific dimensions but does not state them explicitly, and it omits the maintainer's comments on layout issues with two attached windows.",
-        "corrected_summary": null,
-        "corrected_explanation": "Discussion on improving UI vignette appearance by replacing gradients with solid-colored borders or adjusting layout. The issue revolves around a high-resolution gradient overlaying pixel art in Cubyz's user interface, which looks inconsistent and strange. The maintainer proposes alternatives such as using a solid-colored border or reducing the gradient resolution. The user prefers a solid border that does not obstruct icons and suggests specific dimensions: icons are 7x7 pixels (with a 1-pixel center) and the window title is 9 pixels tall. Additionally, the maintainer notes that placing the border on the outside of the window makes it look weird when two windows are attached to each other. The discussion aims to find a visually appealing solution that maintains the aesthetic of pixel art while enhancing usability.",
-        "corrected_related_questions": [
-          "What are the proposed solutions for improving the UI vignette appearance?",
-          "Why is a solid-colored border preferred over a gradient in this context?",
-          "What specific dimensions were suggested for the icons and window title?",
-          "How does the maintainer propose to address the issue of two windows being attached together?",
-          "Can you provide examples of how the UI vignette looks with different proposed solutions?"
-        ]
-      }
-    ]
-  },
   "github_issue_578_discussion": {
     "stage": "revise_requested",
     "collection": "reviews",
@@ -5304,41 +5269,6 @@
     ],
     "review_feedback": "The proposed explanation removes important details that were correctly stated in the current kb_content. Specifically, it omits mentioning why odd-numbered pixel dimensions cause distortions and how using a 4x4 pixel size addresses this issue. The fix should retain these points while incorporating the maintainer's adjustment to the window size."
   },
-  "github_issue_1706_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions 'swimming in the air' and non-directional ground friction but does not specify that this is fixed. It also omits the exact steps to reproduce and observed behavior.",
-    "corrected_summary": "The issue of velocity and eye velocity flutters when climbing up a block is caused by the player attempting to 'swim' in the air due to non-directional ground friction, which has been resolved.",
-    "corrected_explanation": "The problem arises because the game's physics engine does not correctly handle directional friction, allowing the player to move upward even when grounded. This unintended behavior leads to velocity and eye velocity fluctuations during climbing. The maintainer notes that this issue is fixed. The steps to reproduce involve attempting to climb up a block while still connected to the ground, which causes the player to 'swim' in the air due to non-directional friction.",
-    "corrected_related_questions": [
-      "What is the cause of the player's ability to 'swim' in the air?",
-      "How does the ground friction contribute to this issue?",
-      "Is there a specific part of the code that handles directional friction?",
-      "How was this issue resolved?",
-      "Are there any other areas in the physics engine that might need similar adjustments?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404344.0825043,
-        "reason": "The kb_content mentions 'swimming in the air' and non-directional ground friction but does not specify that this is fixed. It also omits the exact steps to reproduce and observed behavior.",
-        "corrected_summary": "The issue of velocity and eye velocity flutters when climbing up a block is caused by the player attempting to 'swim' in the air due to non-directional ground friction, which has been resolved.",
-        "corrected_explanation": "The problem arises because the game's physics engine does not correctly handle directional friction, allowing the player to move upward even when grounded. This unintended behavior leads to velocity and eye velocity fluctuations during climbing. The maintainer notes that this issue is fixed. The steps to reproduce involve attempting to climb up a block while still connected to the ground, which causes the player to 'swim' in the air due to non-directional friction.",
-        "corrected_related_questions": [
-          "What is the cause of the player's ability to 'swim' in the air?",
-          "How does the ground friction contribute to this issue?",
-          "Is there a specific part of the code that handles directional friction?",
-          "How was this issue resolved?",
-          "Are there any other areas in the physics engine that might need similar adjustments?"
-        ]
-      }
-    ]
-  },
   "github_issue_1786_discussion": {
     "stage": "revise_requested",
     "collection": "reviews",
@@ -5374,173 +5304,6 @@
     ],
     "review_feedback": "The proposed explanation removes the specific mention of touching all file read/write locations to ensure comprehensive migration, which was a correct fact in the current kb_content. This information must be kept as it accurately reflects part of the discussion."
   },
-  "github_issue_99_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions several concepts but omits specific values and details from the raw_content, such as exact viewport size calculations for downscaling, shader reuse specifics, and limitations on scaling factors.",
-    "corrected_summary": null,
-    "corrected_explanation": "Discussion on implementing resolution up-/downscaling in Cubyz, focusing on shader handling and sampling techniques. The maintainers suggest using a resolution scale from 25% (downscaling) to 200% (upscaling). For downscaling, the viewport size is adjusted proportionally; for example, if the window size is 800x600, a 75% downscale would result in a viewport size of 600x450. Fog calculations should be done before downscaling to avoid issues with linear interpolation. A new shader might be needed for manual sampling and interpolation during downscaling due to the complexity of fog calculations. The maintainers emphasize using nearest-neighbor sampling for upscaling, as they prefer it over linear sampling because it looks sharper. They also consider limiting scaling factors to powers of 2 (1/4, 1/2, 1, 2) for simplicity and performance reasons.",
-    "corrected_related_questions": [],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404368.6571488,
-        "reason": "The kb_content mentions several concepts but omits specific values and details from the raw_content, such as exact viewport size calculations for downscaling, shader reuse specifics, and limitations on scaling factors.",
-        "corrected_summary": null,
-        "corrected_explanation": "Discussion on implementing resolution up-/downscaling in Cubyz, focusing on shader handling and sampling techniques. The maintainers suggest using a resolution scale from 25% (downscaling) to 200% (upscaling). For downscaling, the viewport size is adjusted proportionally; for example, if the window size is 800x600, a 75% downscale would result in a viewport size of 600x450. Fog calculations should be done before downscaling to avoid issues with linear interpolation. A new shader might be needed for manual sampling and interpolation during downscaling due to the complexity of fog calculations. The maintainers emphasize using nearest-neighbor sampling for upscaling, as they prefer it over linear sampling because it looks sharper. They also consider limiting scaling factors to powers of 2 (1/4, 1/2, 1, 2) for simplicity and performance reasons.",
-        "corrected_related_questions": []
-      }
-    ]
-  },
-  "github_issue_642_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions glTF and COLLADA but does not specify that the maintainer considers them 'more complicated' or prefers to avoid supporting them unless there is a specific need. The kb_content also omits the maintainer's preference for OBJ being human-readable.",
-    "corrected_summary": null,
-    "corrected_explanation": "The discussion revolves around adding support for modern mesh formats such as glTF and COLLADA, alongside the existing OBJ format. The maintainer acknowledges the request but prioritizes simplicity and minimal dependencies. They suggest that support for other formats should be considered only if there is a specific need from artists or popular addons. Specifically, the maintainer prefers to keep dependencies low by sticking to simpler formats like OBJ due to its human-readable nature. They do not consider supporting more complex formats unless explicitly requested.",
-    "corrected_related_questions": [
-      "What are the current supported mesh formats in Cubyz?",
-      "Why does the maintainer prefer OBJ over other formats like glTF or COLLADA?",
-      "Under what conditions would the maintainer consider adding support for more complex mesh formats?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404472.8860104,
-        "reason": "The kb_content mentions glTF and COLLADA but does not specify that the maintainer considers them 'more complicated' or prefers to avoid supporting them unless there is a specific need. The kb_content also omits the maintainer's preference for OBJ being human-readable.",
-        "corrected_summary": null,
-        "corrected_explanation": "The discussion revolves around adding support for modern mesh formats such as glTF and COLLADA, alongside the existing OBJ format. The maintainer acknowledges the request but prioritizes simplicity and minimal dependencies. They suggest that support for other formats should be considered only if there is a specific need from artists or popular addons. Specifically, the maintainer prefers to keep dependencies low by sticking to simpler formats like OBJ due to its human-readable nature. They do not consider supporting more complex formats unless explicitly requested.",
-        "corrected_related_questions": [
-          "What are the current supported mesh formats in Cubyz?",
-          "Why does the maintainer prefer OBJ over other formats like glTF or COLLADA?",
-          "Under what conditions would the maintainer consider adding support for more complex mesh formats?"
-        ]
-      }
-    ]
-  },
-  "github_issue_630_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions potential complications but does not provide specific details from raw_content, which only states it is 'not really worth the effort' and makes other optimizations harder.",
-    "corrected_summary": null,
-    "corrected_explanation": "The maintainer believes that handling out of memory by freeing memory from caches is not worthwhile due to potential complications with future optimization efforts. Specifically, such an implementation could make certain optimizations more difficult, as noted in issue #1413. The decision aims to maintain simplicity and avoid unnecessary complexity in the codebase.",
-    "corrected_related_questions": [],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404476.2910924,
-        "reason": "The kb_content mentions potential complications but does not provide specific details from raw_content, which only states it is 'not really worth the effort' and makes other optimizations harder.",
-        "corrected_summary": null,
-        "corrected_explanation": "The maintainer believes that handling out of memory by freeing memory from caches is not worthwhile due to potential complications with future optimization efforts. Specifically, such an implementation could make certain optimizations more difficult, as noted in issue #1413. The decision aims to maintain simplicity and avoid unnecessary complexity in the codebase.",
-        "corrected_related_questions": []
-      }
-    ]
-  },
-  "github_issue_346_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The explanation mentions 'various modern mesh formats' but does not list them explicitly as stated in the raw_content. It also omits specific details about the maintainer's recommendation for OBJ format.",
-    "corrected_summary": null,
-    "corrected_explanation": "Discussion about adding support for modern mesh formats such as glTF, .m3d, Alembic, and COLLADA. The issue proposes evaluating these formats based on their overhead and suitability. The maintainer suggests keeping dependencies low and initially focusing on a simple, human-readable format like OBJ. There is an acknowledgment that other formats might be considered in the future.",
-    "corrected_related_questions": [
-      "What are the advantages of using glTF over other formats?",
-      "Why did the maintainer suggest keeping dependencies low?",
-      "How might adding support for multiple formats impact performance?",
-      "Are there any potential compatibility issues with existing tools?",
-      "What is the current status of OBJ format support in Cubyz?",
-      "How could future considerations for other formats be integrated?",
-      "What are the benefits of using a human-readable format like OBJ?",
-      "How might adding new formats affect the overall architecture of Cubyz?",
-      "Are there any specific use cases where glTF would be particularly beneficial?",
-      "What steps should be taken to evaluate the overhead of supporting new formats?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404483.1110032,
-        "reason": "The explanation mentions 'various modern mesh formats' but does not list them explicitly as stated in the raw_content. It also omits specific details about the maintainer's recommendation for OBJ format.",
-        "corrected_summary": null,
-        "corrected_explanation": "Discussion about adding support for modern mesh formats such as glTF, .m3d, Alembic, and COLLADA. The issue proposes evaluating these formats based on their overhead and suitability. The maintainer suggests keeping dependencies low and initially focusing on a simple, human-readable format like OBJ. There is an acknowledgment that other formats might be considered in the future.",
-        "corrected_related_questions": [
-          "What are the advantages of using glTF over other formats?",
-          "Why did the maintainer suggest keeping dependencies low?",
-          "How might adding support for multiple formats impact performance?",
-          "Are there any potential compatibility issues with existing tools?",
-          "What is the current status of OBJ format support in Cubyz?",
-          "How could future considerations for other formats be integrated?",
-          "What are the benefits of using a human-readable format like OBJ?",
-          "How might adding new formats affect the overall architecture of Cubyz?",
-          "Are there any specific use cases where glTF would be particularly beneficial?",
-          "What steps should be taken to evaluate the overhead of supporting new formats?"
-        ]
-      }
-    ]
-  },
-  "github_issue_55_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions that the maintainer doubts PostmarketOS can run Cubyz without trying it, but does not include this specific statement from raw_content. Additionally, the kb_content omits the maintainer's final decision against Android support and the exact reasons provided.",
-    "corrected_summary": null,
-    "corrected_explanation": "The maintainer has decided against adding Android support to Cubyz due to several factors: the game is not yet fully developed with many features still missing, ongoing issues with Java (particularly garbage collector-induced lag spikes), which might lead to a language switch, and the complexity of maintaining compatibility across different platforms. The maintainer also highlights that supporting Android would require adapting new graphics features for both OpenGL and OpenGL ES, adding an extra maintenance burden. Despite these challenges, the open-source nature of Cubyz allows third-party developers to create an Android version independently. Additionally, the maintainer doubts PostmarketOS can run Cubyz without actually trying it.",
-    "corrected_related_questions": [
-      "What are the current issues with Java in Cubyz?",
-      "How does the maintainer plan to handle platform-specific graphics features?",
-      "Why did the maintainer decide against supporting Android?",
-      "Can third-party developers create an Android version of Cubyz?",
-      "What is the current state of Cubyz development?",
-      "How might a language switch affect existing platforms?",
-      "What are the potential maintenance challenges of supporting multiple platforms?",
-      "Is there any plan to revisit Android support in the future?",
-      "Does PostmarketOS run Cubyz without trying it?",
-      "How does PostmarketOS relate to running Cubyz on mobile devices?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404500.2282152,
-        "reason": "The kb_content mentions that the maintainer doubts PostmarketOS can run Cubyz without trying it, but does not include this specific statement from raw_content. Additionally, the kb_content omits the maintainer's final decision against Android support and the exact reasons provided.",
-        "corrected_summary": null,
-        "corrected_explanation": "The maintainer has decided against adding Android support to Cubyz due to several factors: the game is not yet fully developed with many features still missing, ongoing issues with Java (particularly garbage collector-induced lag spikes), which might lead to a language switch, and the complexity of maintaining compatibility across different platforms. The maintainer also highlights that supporting Android would require adapting new graphics features for both OpenGL and OpenGL ES, adding an extra maintenance burden. Despite these challenges, the open-source nature of Cubyz allows third-party developers to create an Android version independently. Additionally, the maintainer doubts PostmarketOS can run Cubyz without actually trying it.",
-        "corrected_related_questions": [
-          "What are the current issues with Java in Cubyz?",
-          "How does the maintainer plan to handle platform-specific graphics features?",
-          "Why did the maintainer decide against supporting Android?",
-          "Can third-party developers create an Android version of Cubyz?",
-          "What is the current state of Cubyz development?",
-          "How might a language switch affect existing platforms?",
-          "What are the potential maintenance challenges of supporting multiple platforms?",
-          "Is there any plan to revisit Android support in the future?",
-          "Does PostmarketOS run Cubyz without trying it?",
-          "How does PostmarketOS relate to running Cubyz on mobile devices?"
-        ]
-      }
-    ]
-  },
   "github_issue_228_discussion": {
     "stage": "revise_requested",
     "collection": "reviews",
@@ -5573,15 +5336,15 @@
     "review_feedback": "The proposed explanation omits the maintainer's specific mention of needing compute shaders and shader storage buffers, which are key reasons for not supporting older OpenGL versions. These details must be retained to accurately reflect the raw_content."
   },
   "github_issue_1622_discussion": {
-    "stage": "proposed",
+    "stage": "revise_requested",
     "collection": "reviews",
     "proposer": "Nick",
     "reason": "The kb_content mentions specific concerns and examples but does not provide concrete details such as the exact keybindings, holster layout, or maintainer's detailed arguments against the feature.",
     "corrected_summary": null,
     "corrected_explanation": "# [issues/issue_1622.md] - Issue #1622 discussion\n**Type:** review\n**Keywords:** two-handed layout, secondary hand, keybindings, UI complexity, dedicated slots, shields, torches\n**Concepts:** user interface, game mechanics, player experience\n\n## Summary\nThe discussion revolves around implementing a two-handed layout feature in Cubyz, where players can use both hands for different items. The maintainer argues that the feature might be unnecessary and could complicate the UI, while the user emphasizes the need for secondary hand functionality for specific actions like using shields or torches.\n\n## Explanation\nThe discussion centers around adding a two-handed layout feature to Cubyz, allowing players to use both hands for different items. The maintainer raises concerns about the complexity and potential redundancy of this feature, suggesting that it might not be necessary given existing mechanics. They also point out that implementing such a feature could complicate the user interface and require new keybindings.\n\nThe proposed layout includes:\n- Main hand item use - left click\n- Main hand item alternative use - right click\n- Secondary hand use - hold alt + left\n- Secondary hand alt use - hold alt + right\n\nHolsters provide two additional slots to switch with when pressing tab. The layout is as follows:\n1[pickaxe]\n2 [torch]\nt1[sword]\nt2 [_]\nAfter pressing tab, the layout changes to:\n1[sword]\n2 [_]\nt1[pickaxe]\nt2 [torch]\n\nThe maintainer also mentions that if a player never used secondary hand functionality in games, they likely don't care. However, for those who did use it actively, this is an extra degree of freedom they may not want to let go easily.\n\nAdditionally, the maintainer suggests adding dedicated slots for items like shields rather than implementing a full two-handed system. They argue that such a feature could be redundant and complicate the UI with new keybindings.\n\n## Related Questions\n- What are the potential benefits and drawbacks of implementing a two-handed layout in Cubyz?\n- How might the addition of a secondary hand affect gameplay balance and player experience?\n- What alternative solutions could be considered for providing specific actions like using shields or torches?\n- How would the implementation of a two-handed system impact modding capabilities in Cubyz?\n- What are the potential usability issues with adding new keybindings for a two-handed layout?\n- How might the current UI design accommodate additional features like a secondary hand?",
     "corrected_related_questions": [],
-    "attempts": 1,
-    "last_reviewer": null,
+    "attempts": 2,
+    "last_reviewer": "Nickc",
     "approvals": [],
     "history": [
       {
@@ -5592,45 +5355,16 @@
         "corrected_summary": null,
         "corrected_explanation": "# [issues/issue_1622.md] - Issue #1622 discussion\n**Type:** review\n**Keywords:** two-handed layout, secondary hand, keybindings, UI complexity, dedicated slots, shields, torches\n**Concepts:** user interface, game mechanics, player experience\n\n## Summary\nThe discussion revolves around implementing a two-handed layout feature in Cubyz, where players can use both hands for different items. The maintainer argues that the feature might be unnecessary and could complicate the UI, while the user emphasizes the need for secondary hand functionality for specific actions like using shields or torches.\n\n## Explanation\nThe discussion centers around adding a two-handed layout feature to Cubyz, allowing players to use both hands for different items. The maintainer raises concerns about the complexity and potential redundancy of this feature, suggesting that it might not be necessary given existing mechanics. They also point out that implementing such a feature could complicate the user interface and require new keybindings.\n\nThe proposed layout includes:\n- Main hand item use - left click\n- Main hand item alternative use - right click\n- Secondary hand use - hold alt + left\n- Secondary hand alt use - hold alt + right\n\nHolsters provide two additional slots to switch with when pressing tab. The layout is as follows:\n1[pickaxe]\n2 [torch]\nt1[sword]\nt2 [_]\nAfter pressing tab, the layout changes to:\n1[sword]\n2 [_]\nt1[pickaxe]\nt2 [torch]\n\nThe maintainer also mentions that if a player never used secondary hand functionality in games, they likely don't care. However, for those who did use it actively, this is an extra degree of freedom they may not want to let go easily.\n\nAdditionally, the maintainer suggests adding dedicated slots for items like shields rather than implementing a full two-handed system. They argue that such a feature could be redundant and complicate the UI with new keybindings.\n\n## Related Questions\n- What are the potential benefits and drawbacks of implementing a two-handed layout in Cubyz?\n- How might the addition of a secondary hand affect gameplay balance and player experience?\n- What alternative solutions could be considered for providing specific actions like using shields or torches?\n- How would the implementation of a two-handed system impact modding capabilities in Cubyz?\n- What are the potential usability issues with adding new keybindings for a two-handed layout?\n- How might the current UI design accommodate additional features like a secondary hand?",
         "corrected_related_questions": []
-      }
-    ]
-  },
-  "github_issue_1590_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions several concrete facts from raw_content but does not state the actual values or specific details. For example, it fails to mention the exact command for enabling damage numbers in chat and omits the maintainers' comments about the purpose of damage numbers.",
-    "corrected_summary": "The discussion revolves around implementing visual damage numbers when hitting blocks, with concerns about UI clutter, performance, practicality, and whether such a feature is cosmetic or functional. The maintainers suggest alternatives like tooltips for exact damage values and discuss the impact on player experience.",
-    "corrected_explanation": "The maintainers and users discuss the feasibility of displaying damage numbers as particles versus UI elements when hitting blocks. They debate the necessity of such a feature, considering it potentially cosmetic rather than functional. The discussion touches on alternatives like tooltips for exact damage values and a DPS meter. There's also consideration for the impact on performance and player experience.\n\nA user suggests using the command `/countdamage` to enable damage numbers in chat logs during testing. However, maintainers argue that this feature is more useful alongside other random numbered damages or as an extended tooltip showing exact damage values when breaking blocks. They note that after issue #1656, the crafting grid DPS system is now accurate except for resistance, making the proposed damage number feature less necessary.\n\nThe maintainers conclude that implementing visual damage numbers would be purely cosmetic and could clutter the UI without providing significant utility to players.",
-    "corrected_related_questions": [
-      "What are the potential performance impacts of implementing damage number particles?",
-      "How can we ensure that damage numbers do not clutter the UI?",
-      "Are there any existing systems in Cubyz that could be adapted for displaying damage numbers?",
-      "What is the purpose of showing damage numbers to players?",
-      "Can the `/countdamage` command enable damage numbers during testing?",
-      "How does the current crafting grid DPS system compare to the proposed damage number feature?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
+      },
       {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404534.584945,
-        "reason": "The kb_content mentions several concrete facts from raw_content but does not state the actual values or specific details. For example, it fails to mention the exact command for enabling damage numbers in chat and omits the maintainers' comments about the purpose of damage numbers.",
-        "corrected_summary": "The discussion revolves around implementing visual damage numbers when hitting blocks, with concerns about UI clutter, performance, practicality, and whether such a feature is cosmetic or functional. The maintainers suggest alternatives like tooltips for exact damage values and discuss the impact on player experience.",
-        "corrected_explanation": "The maintainers and users discuss the feasibility of displaying damage numbers as particles versus UI elements when hitting blocks. They debate the necessity of such a feature, considering it potentially cosmetic rather than functional. The discussion touches on alternatives like tooltips for exact damage values and a DPS meter. There's also consideration for the impact on performance and player experience.\n\nA user suggests using the command `/countdamage` to enable damage numbers in chat logs during testing. However, maintainers argue that this feature is more useful alongside other random numbered damages or as an extended tooltip showing exact damage values when breaking blocks. They note that after issue #1656, the crafting grid DPS system is now accurate except for resistance, making the proposed damage number feature less necessary.\n\nThe maintainers conclude that implementing visual damage numbers would be purely cosmetic and could clutter the UI without providing significant utility to players.",
-        "corrected_related_questions": [
-          "What are the potential performance impacts of implementing damage number particles?",
-          "How can we ensure that damage numbers do not clutter the UI?",
-          "Are there any existing systems in Cubyz that could be adapted for displaying damage numbers?",
-          "What is the purpose of showing damage numbers to players?",
-          "Can the `/countdamage` command enable damage numbers during testing?",
-          "How does the current crafting grid DPS system compare to the proposed damage number feature?"
-        ]
+        "stage": "reviewed",
+        "user_id": "Nickc",
+        "verdict": "approve",
+        "feedback": "",
+        "timestamp": 1784411266.462828
       }
-    ]
+    ],
+    "review_feedback": "The approved fix could not be applied -- it likely contains a whole replacement document (its own '## Summary'/'## Explanation'/'## Related Questions' headings) instead of clean text for just one section. Write a corrected field containing ONLY that section's prose, with no '## ' headings inside it."
   },
   "github_issue_1571_discussion": {
     "stage": "proposed",
@@ -5708,178 +5442,6 @@
     ],
     "review_feedback": "The proposed explanation contradicts raw_content by stating that a bloom filter is not worth implementing due to small dataset size, which aligns with kb_content but misses the point that raw_content suggests it could be beneficial for future growth of the tag list. Additionally, the proposal does not include the maintainer's reasoning about the current linear search being sufficient and the potential increase in code complexity. The proposed explanation should reflect both the maintainer's decision against using a bloom filter due to small dataset size and the suggestion that SIMD operations could be used for performance improvements."
   },
-  "github_issue_1559_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "kb_content mentions 'critical damage' but does not specify the exact multiplier or any concrete values discussed in raw_content.",
-    "corrected_summary": null,
-    "corrected_explanation": "The issue proposes adding a 'Breath of the Wild'-style mechanic where tools deal critical damage upon breaking. Specifically, on the last point of durability, your tool performs critical damage before breaking, allowing you to break the block you were mining without needing to switch tools. This encourages players to use their tools until they break and makes the `single_use` modifier more useful. The discussion revolves around the magnitude of this critical damage and potential game balance implications, such as creating a meta where players intentionally use almost-broken weapons for an advantage in player-versus-player (PvP) scenarios. The maintainer asked how big the critical damage should be, and one user suggested that a 2x multiplier against players could lead to a PvP meta with players running around with almost-broken weapons.",
-    "corrected_related_questions": [
-      "What is the proposed critical damage multiplier for tools?",
-      "How does the critical damage mechanic affect gameplay balance?",
-      "Are there any potential exploits or unintended consequences of this mechanic?",
-      "How will the critical damage mechanic be implemented in the codebase?",
-      "What feedback has been received from other players regarding this feature?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404553.972387,
-        "reason": "kb_content mentions 'critical damage' but does not specify the exact multiplier or any concrete values discussed in raw_content.",
-        "corrected_summary": null,
-        "corrected_explanation": "The issue proposes adding a 'Breath of the Wild'-style mechanic where tools deal critical damage upon breaking. Specifically, on the last point of durability, your tool performs critical damage before breaking, allowing you to break the block you were mining without needing to switch tools. This encourages players to use their tools until they break and makes the `single_use` modifier more useful. The discussion revolves around the magnitude of this critical damage and potential game balance implications, such as creating a meta where players intentionally use almost-broken weapons for an advantage in player-versus-player (PvP) scenarios. The maintainer asked how big the critical damage should be, and one user suggested that a 2x multiplier against players could lead to a PvP meta with players running around with almost-broken weapons.",
-        "corrected_related_questions": [
-          "What is the proposed critical damage multiplier for tools?",
-          "How does the critical damage mechanic affect gameplay balance?",
-          "Are there any potential exploits or unintended consequences of this mechanic?",
-          "How will the critical damage mechanic be implemented in the codebase?",
-          "What feedback has been received from other players regarding this feature?"
-        ]
-      }
-    ]
-  },
-  "github_issue_1430_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The explanation does not provide specific details about swing speeds, damage distribution, and exact proposed changes such as crouching mechanics or the specifics of hammer and drill implementations.",
-    "corrected_summary": null,
-    "corrected_explanation": "The discussion revolves around rebalancing tools in Cubyz to improve gameplay mechanics. The main points include making over-damaging distribute damage to perpendicular blocks, introducing crouching for precise block breaking (crouching breaks only one block at a time), and revisiting the old algorithm for tool behavior. Maintainers suggest adding hammers as specialized tools with high mass and slow swing speed, while chipping hammers are proposed as an alternative to drills due to balancing issues. Drills would use energy during use as a source of spinning power but do not fix existing material balance problems. The discussion highlights the importance of maintaining a balance between usability, precision, and power in tool design to enhance player experience. Specific proposals include making swing speeds more reasonable, distributing block damage overflow into adjacent blocks when broken, and ensuring tools have distinct properties based on mass.",
-    "corrected_related_questions": [
-      "What are the proposed changes to tool swing speeds and damage distribution?",
-      "How does the discussion suggest addressing the issue of over-damaging tools?",
-      "What is the role of crouching in the proposed tool rebalancing?",
-      "Why are hammers being considered as specialized tools?",
-      "How do chipping hammers fit into the proposed tool system, and what are their intended uses?",
-      "What are the main concerns regarding the current tool balancing in Cubyz?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404567.5237923,
-        "reason": "The explanation does not provide specific details about swing speeds, damage distribution, and exact proposed changes such as crouching mechanics or the specifics of hammer and drill implementations.",
-        "corrected_summary": null,
-        "corrected_explanation": "The discussion revolves around rebalancing tools in Cubyz to improve gameplay mechanics. The main points include making over-damaging distribute damage to perpendicular blocks, introducing crouching for precise block breaking (crouching breaks only one block at a time), and revisiting the old algorithm for tool behavior. Maintainers suggest adding hammers as specialized tools with high mass and slow swing speed, while chipping hammers are proposed as an alternative to drills due to balancing issues. Drills would use energy during use as a source of spinning power but do not fix existing material balance problems. The discussion highlights the importance of maintaining a balance between usability, precision, and power in tool design to enhance player experience. Specific proposals include making swing speeds more reasonable, distributing block damage overflow into adjacent blocks when broken, and ensuring tools have distinct properties based on mass.",
-        "corrected_related_questions": [
-          "What are the proposed changes to tool swing speeds and damage distribution?",
-          "How does the discussion suggest addressing the issue of over-damaging tools?",
-          "What is the role of crouching in the proposed tool rebalancing?",
-          "Why are hammers being considered as specialized tools?",
-          "How do chipping hammers fit into the proposed tool system, and what are their intended uses?",
-          "What are the main concerns regarding the current tool balancing in Cubyz?"
-        ]
-      }
-    ]
-  },
-  "github_issue_1416_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions specific issues but omits concrete details such as the exact frame rate drop, memory fragmentation amount, and the maintainer's comments on potential improvements. It also does not include the specific performance outcome with vsync disabled.",
-    "corrected_summary": null,
-    "corrected_explanation": "The game experiences lag when flying at high speeds with large render distances due to significant memory fragmentation of ChunkMesh memory and a performance hit caused by frequent chunk freeing. The maintainer notes that this is expected behavior for any allocator that cannot free pages, resulting in fragmentation when large portions of memory are freed at once. Specifically, the reproduction sequence involves joining the world, moving with hyper speed (~30 seconds), waiting for the Queue size to go to 0, and repeating this process. This results in a ~50fps drop on an RTX 3080 and approximately 1GB of fragmentation reported by F3 debug info. The maintainer suggests that it is possible to improve the performance of the GPU allocator by optimizing its allocation and deallocation processes, such as using a red-black tree or another type of tree structure to implement a free list allocator. Additionally, all allocation data structures must exist outside the memory itself to avoid reading back from the GPU buffer.",
-    "corrected_related_questions": [
-      "What is the exact frame rate drop observed when flying at high speeds with large render distances?",
-      "How much memory fragmentation occurs during this process and what does it look like in F3 debug info?",
-      "Can using a red-black tree for a free list allocator help reduce memory fragmentation in Cubyz, and how would this be implemented?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404576.0950103,
-        "reason": "The kb_content mentions specific issues but omits concrete details such as the exact frame rate drop, memory fragmentation amount, and the maintainer's comments on potential improvements. It also does not include the specific performance outcome with vsync disabled.",
-        "corrected_summary": null,
-        "corrected_explanation": "The game experiences lag when flying at high speeds with large render distances due to significant memory fragmentation of ChunkMesh memory and a performance hit caused by frequent chunk freeing. The maintainer notes that this is expected behavior for any allocator that cannot free pages, resulting in fragmentation when large portions of memory are freed at once. Specifically, the reproduction sequence involves joining the world, moving with hyper speed (~30 seconds), waiting for the Queue size to go to 0, and repeating this process. This results in a ~50fps drop on an RTX 3080 and approximately 1GB of fragmentation reported by F3 debug info. The maintainer suggests that it is possible to improve the performance of the GPU allocator by optimizing its allocation and deallocation processes, such as using a red-black tree or another type of tree structure to implement a free list allocator. Additionally, all allocation data structures must exist outside the memory itself to avoid reading back from the GPU buffer.",
-        "corrected_related_questions": [
-          "What is the exact frame rate drop observed when flying at high speeds with large render distances?",
-          "How much memory fragmentation occurs during this process and what does it look like in F3 debug info?",
-          "Can using a red-black tree for a free list allocator help reduce memory fragmentation in Cubyz, and how would this be implemented?"
-        ]
-      }
-    ]
-  },
-  "github_issue_1330_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions 'while wet' modifier but omits specific details such as the exact command or config syntax, and does not include concrete values like Mohs hardness and density.",
-    "corrected_summary": null,
-    "corrected_explanation": "Discussion about the 'Aquamarine' gem's unique property of increasing damage while the player is wet. The physical properties of Aquamarine are as follows: Mohs hardness - 7.5, density - 2.5. The in-game behavior is similar to other gemstones. The maintainer points out that this feature is unreliable, similar to Minecraft's Trident Riptide enchantment, which fails when needed. To improve reliability, suggestions include making the wet status persist for a short time after leaving water and providing players with a way to make themselves wet on demand, such as using a water bottle. The maintainer also considers extending this effect to armor modifiers, allowing players to stay underwater longer.",
-    "corrected_related_questions": [],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404581.576223,
-        "reason": "The kb_content mentions 'while wet' modifier but omits specific details such as the exact command or config syntax, and does not include concrete values like Mohs hardness and density.",
-        "corrected_summary": null,
-        "corrected_explanation": "Discussion about the 'Aquamarine' gem's unique property of increasing damage while the player is wet. The physical properties of Aquamarine are as follows: Mohs hardness - 7.5, density - 2.5. The in-game behavior is similar to other gemstones. The maintainer points out that this feature is unreliable, similar to Minecraft's Trident Riptide enchantment, which fails when needed. To improve reliability, suggestions include making the wet status persist for a short time after leaving water and providing players with a way to make themselves wet on demand, such as using a water bottle. The maintainer also considers extending this effect to armor modifiers, allowing players to stay underwater longer.",
-        "corrected_related_questions": []
-      }
-    ]
-  },
-  "github_issue_1323_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions maintainer comments about color differentiation and tool appearance but does not include specific details such as the blue-red-yellow tint suggestion for Titanium or the exact nature of the lack of distinction between Iron and Silver on tools.",
-    "corrected_summary": null,
-    "corrected_explanation": "Discussion about changing the texture of Iron in Cubyz to more closely resemble Cast Iron. Maintainers suggest that while the current color differentiation between Iron and Silver is acceptable, there is a lack of clear distinction when they are placed next to each other as tools. They propose considering darker colors or specific tints for Titanium (#1270), such as a blue-red-yellow tint (just a bit of each). However, maintainers ultimately decide to close the issue due to the current acceptable color differentiation.",
-    "corrected_related_questions": [],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404586.2102065,
-        "reason": "The kb_content mentions maintainer comments about color differentiation and tool appearance but does not include specific details such as the blue-red-yellow tint suggestion for Titanium or the exact nature of the lack of distinction between Iron and Silver on tools.",
-        "corrected_summary": null,
-        "corrected_explanation": "Discussion about changing the texture of Iron in Cubyz to more closely resemble Cast Iron. Maintainers suggest that while the current color differentiation between Iron and Silver is acceptable, there is a lack of clear distinction when they are placed next to each other as tools. They propose considering darker colors or specific tints for Titanium (#1270), such as a blue-red-yellow tint (just a bit of each). However, maintainers ultimately decide to close the issue due to the current acceptable color differentiation.",
-        "corrected_related_questions": []
-      }
-    ]
-  },
-  "github_issue_1322_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions a delay of 10 milliseconds but raw_content specifies the actual sleep duration as 10,000,000 nanoseconds (10 milliseconds). Additionally, the summary and explanation are vague about the exact nature of the issue and the fix.",
-    "corrected_summary": "A delay was added in the `disconnect` function of `network.zig` to prevent a 'ConnectionResetByPeer' error on Windows 11. The maintainer introduced a sleep duration of 10 milliseconds (10,000,000 nanoseconds) after sending the disconnect signal.",
-    "corrected_explanation": "The issue occurred when leaving a local world, causing an operating system cleanup of the network connection before the other side received the disconnect signal. The maintainer introduced a delay of 10 milliseconds (10,000,000 nanoseconds) in the `disconnect` function to address this problem by adding the following code snippet:\n\n```diff\n--- a/src/network.zig\n+++ b/src/network.zig\n@@ -2079,6 +2079,9 @@ pub const Connection = struct { // MARK: Connection\n        pub fn disconnect(self: *Connection) void {\n                self.manager.send(&.{@intFromEnum(ChannelId.disconnect)}, self.remoteAddress, null);\n                self.connectionState.store(.disconnectDesired, .unordered);\n+               if(builtin.os.tag == .windows and !self.isServerSide() and main.server.world != null) {\n+                       std.time.sleep(10000000); // 10 milliseconds\n+               }\n                self.manager.removeConnection(self);\n                if(self.user) |user| {\n                        main.server.disconnect(user);\n```\nAfter implementing this change, the error was no longer reproducible.",
-    "corrected_related_questions": [],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404595.9787374,
-        "reason": "The kb_content mentions a delay of 10 milliseconds but raw_content specifies the actual sleep duration as 10,000,000 nanoseconds (10 milliseconds). Additionally, the summary and explanation are vague about the exact nature of the issue and the fix.",
-        "corrected_summary": "A delay was added in the `disconnect` function of `network.zig` to prevent a 'ConnectionResetByPeer' error on Windows 11. The maintainer introduced a sleep duration of 10 milliseconds (10,000,000 nanoseconds) after sending the disconnect signal.",
-        "corrected_explanation": "The issue occurred when leaving a local world, causing an operating system cleanup of the network connection before the other side received the disconnect signal. The maintainer introduced a delay of 10 milliseconds (10,000,000 nanoseconds) in the `disconnect` function to address this problem by adding the following code snippet:\n\n```diff\n--- a/src/network.zig\n+++ b/src/network.zig\n@@ -2079,6 +2079,9 @@ pub const Connection = struct { // MARK: Connection\n        pub fn disconnect(self: *Connection) void {\n                self.manager.send(&.{@intFromEnum(ChannelId.disconnect)}, self.remoteAddress, null);\n                self.connectionState.store(.disconnectDesired, .unordered);\n+               if(builtin.os.tag == .windows and !self.isServerSide() and main.server.world != null) {\n+                       std.time.sleep(10000000); // 10 milliseconds\n+               }\n                self.manager.removeConnection(self);\n                if(self.user) |user| {\n                        main.server.disconnect(user);\n```\nAfter implementing this change, the error was no longer reproducible.",
-        "corrected_related_questions": []
-      }
-    ]
-  },
   "github_issue_1482_discussion": {
     "stage": "revise_requested",
     "collection": "reviews",
@@ -5915,146 +5477,16 @@
     ],
     "review_feedback": "The proposed explanation incorrectly attributes the statement about the pawn not having eyes on the back to the maintainer. The note about the pawn needing to be looking at you to spot you is part of the original issue report, not a comment from the maintainer. This change contradicts a fact that was previously correct in kb_content."
   },
-  "github_issue_1300_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "kb_content mentions several specific facts generically without stating their exact values or details from raw_content, such as the physical properties of white opal and the exact modifiers proposed.",
-    "corrected_summary": null,
-    "corrected_explanation": "The proposal discusses adding a new gemstone called **white opal** with specific physical and in-game properties. The physical properties include:\n- Hardness: ~6 on Mohs scale\n- Density: 2 g/cm3 at 20\u00b0C\nIn the game, white opal provides special effects instead of stats. Initially proposed modifiers included a chance to do double damage or increase drop chances, but maintainers expressed concerns about these being overpowered (OP). The suggestion was made to rename it to **Critstone** and adjust its behavior to reduce tool durability slightly while retaining the double damage effect. Maintainers also argued against stacking additional penalties on gems due to the opportunity cost of replacing high-durability metal with low-durability gemstones, emphasizing that gems should have diverse uses for gameplay variety. The discussion highlights balance considerations in game design, focusing on small impact modifiers that can be creatively combined.",
-    "corrected_related_questions": [
-      "What are the proposed physical properties of white opal?",
-      "How does the in-game behavior of white opal differ from other gemstones?",
-      "Why is there a suggestion to rename white opal to Critstone?",
-      "What concerns do maintainers have about the modifiers proposed for white opal?",
-      "What alternative uses are suggested for gems in the game design?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404614.5752993,
-        "reason": "kb_content mentions several specific facts generically without stating their exact values or details from raw_content, such as the physical properties of white opal and the exact modifiers proposed.",
-        "corrected_summary": null,
-        "corrected_explanation": "The proposal discusses adding a new gemstone called **white opal** with specific physical and in-game properties. The physical properties include:\n- Hardness: ~6 on Mohs scale\n- Density: 2 g/cm3 at 20\u00b0C\nIn the game, white opal provides special effects instead of stats. Initially proposed modifiers included a chance to do double damage or increase drop chances, but maintainers expressed concerns about these being overpowered (OP). The suggestion was made to rename it to **Critstone** and adjust its behavior to reduce tool durability slightly while retaining the double damage effect. Maintainers also argued against stacking additional penalties on gems due to the opportunity cost of replacing high-durability metal with low-durability gemstones, emphasizing that gems should have diverse uses for gameplay variety. The discussion highlights balance considerations in game design, focusing on small impact modifiers that can be creatively combined.",
-        "corrected_related_questions": [
-          "What are the proposed physical properties of white opal?",
-          "How does the in-game behavior of white opal differ from other gemstones?",
-          "Why is there a suggestion to rename white opal to Critstone?",
-          "What concerns do maintainers have about the modifiers proposed for white opal?",
-          "What alternative uses are suggested for gems in the game design?"
-        ]
-      }
-    ]
-  },
-  "github_issue_1205_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The explanation does not provide specific details about the `common*` variables and their refactoring into a struct, nor does it mention exact names or types of these variables. It also omits concrete examples from raw_content.",
-    "corrected_summary": null,
-    "corrected_explanation": "The current implementation of asset handling in Cubyz uses multiple global variables to store different types of assets such as blocks, block migrations, items, tools, biomes, biome migrations, recipes, and models. These variables are defined as `std.StringHashMap(ZonElement)` for most types except `commonModels`, which is a `std.StringHashMap([]const u8)`. The refactoring involves moving these global variables into a struct to improve code organization and maintainability. Additionally, the inclusion of the `clone` function ensures that each asset type can be independently cloned with its own allocator, crucial for memory management in Zig. This change aligns with the broader goal of improving asset loading and management in Cubyz by reducing code duplication and enhancing maintenance practices.",
-    "corrected_related_questions": [
-      "What are the specific types and names of the `common*` variables being refactored?",
-      "How does the inclusion of the `clone` function improve memory management for each asset type?",
-      "Can you provide an example of how these global variables will be moved into a struct?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404621.9799721,
-        "reason": "The explanation does not provide specific details about the `common*` variables and their refactoring into a struct, nor does it mention exact names or types of these variables. It also omits concrete examples from raw_content.",
-        "corrected_summary": null,
-        "corrected_explanation": "The current implementation of asset handling in Cubyz uses multiple global variables to store different types of assets such as blocks, block migrations, items, tools, biomes, biome migrations, recipes, and models. These variables are defined as `std.StringHashMap(ZonElement)` for most types except `commonModels`, which is a `std.StringHashMap([]const u8)`. The refactoring involves moving these global variables into a struct to improve code organization and maintainability. Additionally, the inclusion of the `clone` function ensures that each asset type can be independently cloned with its own allocator, crucial for memory management in Zig. This change aligns with the broader goal of improving asset loading and management in Cubyz by reducing code duplication and enhancing maintenance practices.",
-        "corrected_related_questions": [
-          "What are the specific types and names of the `common*` variables being refactored?",
-          "How does the inclusion of the `clone` function improve memory management for each asset type?",
-          "Can you provide an example of how these global variables will be moved into a struct?"
-        ]
-      }
-    ]
-  },
-  "github_issue_1166_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "kb_content mentions that the hammer reverts blocks to their original form but does not specify any concrete examples or details about how it works, such as reverting stone bricks back to stone. Additionally, kb_content does not provide specific answers to direct questions raised in raw_content.",
-    "corrected_summary": null,
-    "corrected_explanation": "The discussion centers around the implementation of a 'Hammer' tool in Cubyz that reverts blocks to their original form when broken. The maintainers are concerned about defining what constitutes the 'original form' and how the tool should determine this. For example, breaking stone bricks with a hammer would revert them back to stone. There is also a suggestion that the tool could be configured to allow different block drops based on the tools used, specifically for stone blocks. The maintainers are considering whether the hammer can convert planks back to wood logs and how it should determine the original form of each block.",
-    "corrected_related_questions": [
-      "How does the Hammer tool revert stone bricks back to stone?",
-      "Can the Hammer tool be configured to revert different types of blocks (e.g., stone, wood) to their specific forms?",
-      "What are the potential implications of allowing configurable block drops based on tools used?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404629.8634245,
-        "reason": "kb_content mentions that the hammer reverts blocks to their original form but does not specify any concrete examples or details about how it works, such as reverting stone bricks back to stone. Additionally, kb_content does not provide specific answers to direct questions raised in raw_content.",
-        "corrected_summary": null,
-        "corrected_explanation": "The discussion centers around the implementation of a 'Hammer' tool in Cubyz that reverts blocks to their original form when broken. The maintainers are concerned about defining what constitutes the 'original form' and how the tool should determine this. For example, breaking stone bricks with a hammer would revert them back to stone. There is also a suggestion that the tool could be configured to allow different block drops based on the tools used, specifically for stone blocks. The maintainers are considering whether the hammer can convert planks back to wood logs and how it should determine the original form of each block.",
-        "corrected_related_questions": [
-          "How does the Hammer tool revert stone bricks back to stone?",
-          "Can the Hammer tool be configured to revert different types of blocks (e.g., stone, wood) to their specific forms?",
-          "What are the potential implications of allowing configurable block drops based on tools used?"
-        ]
-      }
-    ]
-  },
-  "github_issue_1111_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions the relevance of issue #473 but does not provide details about what changes were made in that issue. Additionally, it omits specific maintainer comments regarding the awkwardness of block textures and the plan to fix them alongside other issues.",
-    "corrected_summary": null,
-    "corrected_explanation": "The discussion centers around adding item sprites for water and lava blocks. A user questions the relevance of this feature due to a previous change (#473) which makes obtaining these blocks in survival mode impossible, and notes that full cubes generally do not use item textures. The maintainer acknowledges these points but emphasizes that the block textures for water and lava currently look awkward and suggests addressing both texture issues and obtainability concerns as part of a larger fix.",
-    "corrected_related_questions": [
-      "What changes were made in issue #473 to affect the obtainability of water blocks?",
-      "Why are full cubes not typically given item textures?",
-      "How do the current block textures for water and lava appear awkward?",
-      "Is there a plan to address both texture issues and obtainability concerns in one fix?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404658.2704194,
-        "reason": "The kb_content mentions the relevance of issue #473 but does not provide details about what changes were made in that issue. Additionally, it omits specific maintainer comments regarding the awkwardness of block textures and the plan to fix them alongside other issues.",
-        "corrected_summary": null,
-        "corrected_explanation": "The discussion centers around adding item sprites for water and lava blocks. A user questions the relevance of this feature due to a previous change (#473) which makes obtaining these blocks in survival mode impossible, and notes that full cubes generally do not use item textures. The maintainer acknowledges these points but emphasizes that the block textures for water and lava currently look awkward and suggests addressing both texture issues and obtainability concerns as part of a larger fix.",
-        "corrected_related_questions": [
-          "What changes were made in issue #473 to affect the obtainability of water blocks?",
-          "Why are full cubes not typically given item textures?",
-          "How do the current block textures for water and lava appear awkward?",
-          "Is there a plan to address both texture issues and obtainability concerns in one fix?"
-        ]
-      }
-    ]
-  },
   "github_issue_1107_discussion": {
     "stage": "proposed",
     "collection": "reviews",
     "proposer": "Nick",
     "reason": "The kb_content mentions a maintainer comment about not finding an existing issue but does not include the actual image or quote from the maintainer's discussion.",
     "corrected_summary": null,
-    "corrected_explanation": "# [issues/issue_1107.md] - Issue #1107 discussion\n**Type:** review\n**Keywords:** randomized transitions, issue, maintainer, duplicates, effort\n**Concepts:** backwards compatibility, feature removal\n\n## Summary\nThe maintainer discusses the removal of randomized transitions in Cubyz and mentions an image indicating a previous discussion or issue about it.\n\n## Explanation\nThe maintainer comments that they could swear they already made an issue about removing randomized transitions but cannot find anything. The exact details of the previous conversation are not provided, but the maintainer is looking for it to avoid duplicating effort. An image ![Image](https://github.com/user-attachments/assets/bb13b49b-6895-421b-89e6-fe60fa5243a1) is included in the discussion.\n\n## Related Questions\n- What is the previous issue about randomized transitions?\n- Why is the maintainer looking for the previous issue?\n- Are there any potential backwards compatibility concerns with removing randomized transitions?\n- How does the removal of randomized transitions affect user experience?\n- Is there a plan to replace the functionality provided by randomized transitions?\n- What are the benefits of removing randomized transitions from Cubyz?",
+    "corrected_explanation": "The maintainer comments that they could swear they already made an issue about removing randomized transitions but cannot find anything. The exact details of the previous conversation are not provided, but the maintainer is looking for it to avoid duplicating effort. An image ![Image](https://github.com/user-attachments/assets/bb13b49b-6895-421b-89e6-fe60fa5243a1) is included in the discussion.",
     "corrected_related_questions": [],
-    "attempts": 1,
-    "last_reviewer": null,
+    "attempts": 2,
+    "last_reviewer": "Nickc",
     "approvals": [],
     "history": [
       {
@@ -6065,8 +5497,24 @@
         "corrected_summary": null,
         "corrected_explanation": "# [issues/issue_1107.md] - Issue #1107 discussion\n**Type:** review\n**Keywords:** randomized transitions, issue, maintainer, duplicates, effort\n**Concepts:** backwards compatibility, feature removal\n\n## Summary\nThe maintainer discusses the removal of randomized transitions in Cubyz and mentions an image indicating a previous discussion or issue about it.\n\n## Explanation\nThe maintainer comments that they could swear they already made an issue about removing randomized transitions but cannot find anything. The exact details of the previous conversation are not provided, but the maintainer is looking for it to avoid duplicating effort. An image ![Image](https://github.com/user-attachments/assets/bb13b49b-6895-421b-89e6-fe60fa5243a1) is included in the discussion.\n\n## Related Questions\n- What is the previous issue about randomized transitions?\n- Why is the maintainer looking for the previous issue?\n- Are there any potential backwards compatibility concerns with removing randomized transitions?\n- How does the removal of randomized transitions affect user experience?\n- Is there a plan to replace the functionality provided by randomized transitions?\n- What are the benefits of removing randomized transitions from Cubyz?",
         "corrected_related_questions": []
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nickc",
+        "verdict": "approve",
+        "feedback": "",
+        "timestamp": 1784411202.6105924
+      },
+      {
+        "stage": "revised",
+        "user_id": "Nick",
+        "timestamp": 1784411208.2348845,
+        "corrected_summary": null,
+        "corrected_explanation": "The maintainer comments that they could swear they already made an issue about removing randomized transitions but cannot find anything. The exact details of the previous conversation are not provided, but the maintainer is looking for it to avoid duplicating effort. An image ![Image](https://github.com/user-attachments/assets/bb13b49b-6895-421b-89e6-fe60fa5243a1) is included in the discussion.",
+        "corrected_related_questions": []
       }
-    ]
+    ],
+    "review_feedback": "The approved fix could not be applied -- it likely contains a whole replacement document (its own '## Summary'/'## Explanation'/'## Related Questions' headings) instead of clean text for just one section. Write a corrected field containing ONLY that section's prose, with no '## ' headings inside it."
   },
   "github_issue_1212_discussion": {
     "stage": "revise_requested",
@@ -6110,43 +5558,6 @@
       }
     ],
     "review_feedback": "The proposed explanation incorrectly includes mid-air selection as a current feature or implemented functionality, when raw_content only mentions it as an optional future enhancement. The sentence should be revised to reflect that mid-air selection is not currently part of the basic implementation but could be considered for future enhancements."
-  },
-  "github_issue_1106_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions that the maintainer marked it as a bug but later clarified it was not, without including the exact clarification text from raw_content.",
-    "corrected_summary": null,
-    "corrected_explanation": "The issue discusses the challenge of navigating caves made of large cubes in Cubyz. The original report humorously notes that such caves would be difficult to navigate and includes an image for reference. A maintainer comment clarifies that the issue was initially marked as a bug but was actually intended as a feature or design choice, not an error.",
-    "corrected_related_questions": [
-      "What was the original intention behind marking this as a bug?",
-      "How does the design of large cubic caves impact player navigation?",
-      "Are there any plans to address the navigational challenges in future updates?",
-      "Can you provide more details on how the cave generation algorithm works with large cubes?",
-      "Is there a way to optimize the player's movement within these large cube caves?",
-      "How does this issue affect the overall gameplay experience of Cubyz?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404671.2501605,
-        "reason": "The kb_content mentions that the maintainer marked it as a bug but later clarified it was not, without including the exact clarification text from raw_content.",
-        "corrected_summary": null,
-        "corrected_explanation": "The issue discusses the challenge of navigating caves made of large cubes in Cubyz. The original report humorously notes that such caves would be difficult to navigate and includes an image for reference. A maintainer comment clarifies that the issue was initially marked as a bug but was actually intended as a feature or design choice, not an error.",
-        "corrected_related_questions": [
-          "What was the original intention behind marking this as a bug?",
-          "How does the design of large cubic caves impact player navigation?",
-          "Are there any plans to address the navigational challenges in future updates?",
-          "Can you provide more details on how the cave generation algorithm works with large cubes?",
-          "Is there a way to optimize the player's movement within these large cube caves?",
-          "How does this issue affect the overall gameplay experience of Cubyz?"
-        ]
-      }
-    ]
   },
   "github_issue_1092_discussion": {
     "stage": "proposed",
@@ -6930,43 +6341,6 @@
           "What is the proposed relationship between sleep quality and stamina recovery in Cubyz?",
           "How could simulating muscle growth impact the game's balance and player progression?",
           "What are the potential challenges of ensuring all nutrients are accessible in most surface biomes?"
-        ]
-      }
-    ]
-  },
-  "github_issue_1115_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions several specific facts generically without stating their actual values or details, such as niche effects and block mining speed boosts.",
-    "corrected_summary": null,
-    "corrected_explanation": "Discussion on adding copper, tin, and bronze to enhance the gameplay experience by providing more progression steps. The maintainer notes that these metals should have less abundance and niche effects rather than following a linear ore progression similar to Minecraft mods. Specific suggestions include making copper useful for engineering tasks such as crafting bellows, chests, and circuits/mechanics; using it in tools; and having specific block mining speed boosts (e.g., faster mining of certain blocks). The discussion concludes with the addition of copper but rejection of alloys like bronze and iron anvil requirements. Plans to slow down further metal additions are also mentioned.",
-    "corrected_related_questions": [
-      "What are the proposed uses for copper in the game?",
-      "How does the addition of copper affect the gameplay progression?",
-      "Why was the linear ore progression rejected in favor of niche effects?",
-      "What specific block mining speed boosts are suggested for copper?",
-      "How does the maintainer propose to make copper useful for players at all stages of gameplay?",
-      "What is the current status of adding alloys and new metals to the game?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404945.8771856,
-        "reason": "The kb_content mentions several specific facts generically without stating their actual values or details, such as niche effects and block mining speed boosts.",
-        "corrected_summary": null,
-        "corrected_explanation": "Discussion on adding copper, tin, and bronze to enhance the gameplay experience by providing more progression steps. The maintainer notes that these metals should have less abundance and niche effects rather than following a linear ore progression similar to Minecraft mods. Specific suggestions include making copper useful for engineering tasks such as crafting bellows, chests, and circuits/mechanics; using it in tools; and having specific block mining speed boosts (e.g., faster mining of certain blocks). The discussion concludes with the addition of copper but rejection of alloys like bronze and iron anvil requirements. Plans to slow down further metal additions are also mentioned.",
-        "corrected_related_questions": [
-          "What are the proposed uses for copper in the game?",
-          "How does the addition of copper affect the gameplay progression?",
-          "Why was the linear ore progression rejected in favor of niche effects?",
-          "What specific block mining speed boosts are suggested for copper?",
-          "How does the maintainer propose to make copper useful for players at all stages of gameplay?",
-          "What is the current status of adding alloys and new metals to the game?"
         ]
       }
     ]
@@ -23852,6 +23226,655 @@
           "- What is the purpose of the `solveDepth` function in the context of triangle rasterization? It solves the depth of a point on a plane defined by a normal vector and a point (`v0`).",
           "- How does the `rasterize` function update the collision grid with triangle information? It converts triangle vertices to grid coordinates, calculates edge intersections, and updates the grid based on the triangle's normal."
         ]
+      }
+    ]
+  },
+  "codebase_src_models.zig_chunk_2": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about how the `rasterize` function determines which voxels are occupied by a triangle, nor does it explain the exact process of refining the collision grid in `generateCollision`. Additionally, the explanation omits the role of the `edgeInterp` function and the significance of the floodfill queue.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk contains functions for initializing models, rasterizing triangles into a collision grid, and generating collision data from quad information. The `init` function initializes a model with collision data by calling `initWithCollisionModel` with the provided quad information and a null parameter. The `rasterize` function projects a triangle onto a grid and marks voxels as occupied based on the triangle's normal vector. It first determines the major axis of the normal vector to decide which axes to use for rasterization. Then, it calculates the minimum and maximum bounds of the triangle in voxel space and iterates over the y-axis range. For each y-value, it interpolates the x-values where the edges of the triangle intersect the scan line. It then determines the start and end x-values for the current scan line and iterates over the x-axis range. For each x-value, it calculates the depth (z-value) using the `solveDepth` function and marks the corresponding voxel as occupied in the collision grid if the z-value is valid. The `generateCollision` function processes each quad of the model, rasterizes its triangles, and applies a floodfill algorithm to refine the collision grid. It first initializes a hollow grid with all voxels unoccupied and then iterates over each quad, shifting it slightly based on its normal vector to avoid edge cases. It rasterizes both triangles of the quad into the hollow grid. After rasterizing all quads, it initializes a full grid where all voxels are initially marked as occupied. It then uses a floodfill queue to propagate the collision information from the edges inward, ensuring that only connected components of the model are considered in the final collision grid.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784410896.2615888,
+        "reason": "The explanation does not provide specific details about how the `rasterize` function determines which voxels are occupied by a triangle, nor does it explain the exact process of refining the collision grid in `generateCollision`. Additionally, the explanation omits the role of the `edgeInterp` function and the significance of the floodfill queue.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk contains functions for initializing models, rasterizing triangles into a collision grid, and generating collision data from quad information. The `init` function initializes a model with collision data by calling `initWithCollisionModel` with the provided quad information and a null parameter. The `rasterize` function projects a triangle onto a grid and marks voxels as occupied based on the triangle's normal vector. It first determines the major axis of the normal vector to decide which axes to use for rasterization. Then, it calculates the minimum and maximum bounds of the triangle in voxel space and iterates over the y-axis range. For each y-value, it interpolates the x-values where the edges of the triangle intersect the scan line. It then determines the start and end x-values for the current scan line and iterates over the x-axis range. For each x-value, it calculates the depth (z-value) using the `solveDepth` function and marks the corresponding voxel as occupied in the collision grid if the z-value is valid. The `generateCollision` function processes each quad of the model, rasterizes its triangles, and applies a floodfill algorithm to refine the collision grid. It first initializes a hollow grid with all voxels unoccupied and then iterates over each quad, shifting it slightly based on its normal vector to avoid edge cases. It rasterizes both triangles of the quad into the hollow grid. After rasterizing all quads, it initializes a full grid where all voxels are initially marked as occupied. It then uses a floodfill queue to propagate the collision information from the edges inward, ensuring that only connected components of the model are considered in the final collision grid.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_models.zig_chunk_3": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the floodfill algorithm, collision grid initialization, expansion of collision boxes, and other concrete facts mentioned in raw_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk handles model loading and collision detection, including parsing OBJ data, rasterizing quads, and generating collision boxes. The `loadModel` function processes vertex, normal, and UV data from OBJ files and converts them into a list of quad information. The `loadRawModelDataFromObj` function parses the OBJ file format to extract vertices, normals, UVs, and triangles, which are then used to create quads.\n\nCollision detection is implemented using a collision grid initialized with all bits set to 1. A floodfill algorithm is employed to propagate collision states across the grid. The `allTrue` function checks if all bits in a specified area of the grid are true within given bounds, while the `disableAll` function clears specific bits in the grid. The `canExpand` function determines if a collision box can be expanded in a particular direction without violating collision constraints.\n\nThe floodfill queue is used to manage the propagation of collision states during the floodfill process. Each element in the queue contains coordinates and a value representing the collision state. The `addVert` function ensures that vertices are unique by checking if they already exist in the vertex list before adding them.\n\nCollision boxes are generated by iterating over the grid, identifying contiguous regions with true bits, and expanding these regions while ensuring all bits remain true within specified bounds. The final collision boxes are stored as a list of `Box` structures.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784410906.2416122,
+        "reason": "The explanation does not provide specific details about the floodfill algorithm, collision grid initialization, expansion of collision boxes, and other concrete facts mentioned in raw_content.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk handles model loading and collision detection, including parsing OBJ data, rasterizing quads, and generating collision boxes. The `loadModel` function processes vertex, normal, and UV data from OBJ files and converts them into a list of quad information. The `loadRawModelDataFromObj` function parses the OBJ file format to extract vertices, normals, UVs, and triangles, which are then used to create quads.\n\nCollision detection is implemented using a collision grid initialized with all bits set to 1. A floodfill algorithm is employed to propagate collision states across the grid. The `allTrue` function checks if all bits in a specified area of the grid are true within given bounds, while the `disableAll` function clears specific bits in the grid. The `canExpand` function determines if a collision box can be expanded in a particular direction without violating collision constraints.\n\nThe floodfill queue is used to manage the propagation of collision states during the floodfill process. Each element in the queue contains coordinates and a value representing the collision state. The `addVert` function ensures that vertices are unique by checking if they already exist in the vertex list before adding them.\n\nCollision boxes are generated by iterating over the grid, identifying contiguous regions with true bits, and expanding these regions while ensuring all bits remain true within specified bounds. The final collision boxes are stored as a list of `Box` structures.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_models.zig_chunk_4": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation omits specific details about how vertices, normals, UVs, and faces are parsed from the input data. It also fails to mention the exact structure of the QuadInfo and Triangle structures.",
+    "corrected_summary": null,
+    "corrected_explanation": "The chunk defines functions to load and process OBJ model data. It includes parsing vertices, normals, UVs, and faces from the input data. Triangular faces are converted into quads by duplicating one vertex. The function handles errors during parsing and logs them using `std.log.err`. It uses Zig's standard library for string manipulation and memory management.\n\n**Parsing Process:**\n- **Vertices (`v`):** Each line starting with 'v' contains three floating-point numbers representing the x, y, and z coordinates of a vertex. These are converted into `Vec3f` using the provided coordinate system.\n- **Normals (`vn`):** Each line starting with 'vn' contains three floating-point numbers representing the normal vector's x, y, and z components. These are also converted into `Vec3f`.\n- **UVs (`vt`):** Each line starting with 'vt' contains two floating-point numbers representing the texture coordinates (u, v). These are stored as `Vec2f`.\n- **Faces (`f`):** Each line starting with 'f' describes a face using vertex/uv/normal indices. The function checks for exactly three or four vertices per face and logs an error if more are found. Triangular faces are directly converted into `Triangle`, while quadrilateral faces are split into two triangles by duplicating one vertex.\n\n**QuadInfo Structure:**\n- **Normal (`Vec3f`):** The normal vector of the quad.\n- **Corners (`[4]Vec3f`):** The four corner vertices of the quad.\n- **CornerUV (`[4]Vec2f`):** The UV coordinates for each corner vertex.\n- **TextureSlot (`usize`):** The texture slot index, initialized to 0.\n\n**Triangle Structure:**\n- **Vertex (`[3]usize`):** Indices of the three vertices forming the triangle.\n- **UVs (`[3]usize`):** Indices of the UV coordinates for each vertex.\n- **Normal (`usize`):** Index of the normal vector.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784410919.5389879,
+        "reason": "The explanation omits specific details about how vertices, normals, UVs, and faces are parsed from the input data. It also fails to mention the exact structure of the QuadInfo and Triangle structures.",
+        "corrected_summary": null,
+        "corrected_explanation": "The chunk defines functions to load and process OBJ model data. It includes parsing vertices, normals, UVs, and faces from the input data. Triangular faces are converted into quads by duplicating one vertex. The function handles errors during parsing and logs them using `std.log.err`. It uses Zig's standard library for string manipulation and memory management.\n\n**Parsing Process:**\n- **Vertices (`v`):** Each line starting with 'v' contains three floating-point numbers representing the x, y, and z coordinates of a vertex. These are converted into `Vec3f` using the provided coordinate system.\n- **Normals (`vn`):** Each line starting with 'vn' contains three floating-point numbers representing the normal vector's x, y, and z components. These are also converted into `Vec3f`.\n- **UVs (`vt`):** Each line starting with 'vt' contains two floating-point numbers representing the texture coordinates (u, v). These are stored as `Vec2f`.\n- **Faces (`f`):** Each line starting with 'f' describes a face using vertex/uv/normal indices. The function checks for exactly three or four vertices per face and logs an error if more are found. Triangular faces are directly converted into `Triangle`, while quadrilateral faces are split into two triangles by duplicating one vertex.\n\n**QuadInfo Structure:**\n- **Normal (`Vec3f`):** The normal vector of the quad.\n- **Corners (`[4]Vec3f`):** The four corner vertices of the quad.\n- **CornerUV (`[4]Vec2f`):** The UV coordinates for each corner vertex.\n- **TextureSlot (`usize`):** The texture slot index, initialized to 0.\n\n**Triangle Structure:**\n- **Vertex (`[3]usize`):** Indices of the three vertices forming the triangle.\n- **UVs (`[3]usize`):** Indices of the UV coordinates for each vertex.\n- **Normal (`usize`):** Index of the normal vector.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_models.zig_chunk_5": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about how the `Model` struct initializes its quad information, which is covered in the related questions.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines the `Model` struct with methods for managing its internal quad information. It includes functions for initializing (`init`) and deinitializing (`deinit`) models, retrieving raw faces (`getRawFaces`), merging multiple models into one (`mergeModels`), transforming a model using a provided function (`transformModel`), and appending quads to lists (`appendQuadsToList`, `appendInternalQuadsToList`, `appendNeighborFacingQuadsToList`). The chunk also contains utility functions for processing vertices, normals, UVs, and texture slots. It manages memory allocation and deallocation using the global allocator.\n\nThe `init` function initializes the `Model` struct by setting up its internal quad information based on the provided vertices, normals, uvs, and faces. The `deinit` function frees all allocated memory for the model's quads and collision data. The `getRawFaces` function retrieves raw face data from the model, including both internal and neighbor-facing quads. The `mergeModels` function combines multiple models into a single model by appending their quad information to a list. The `transformModel` function applies a transformation function to each quad in the model. The `appendQuadsToList`, `appendInternalQuadsToList`, and `appendNeighborFacingQuadsToList` functions append quads to a list, with specific handling for internal and neighbor-facing quads.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784410941.0026422,
+        "reason": "The explanation does not provide specific details about how the `Model` struct initializes its quad information, which is covered in the related questions.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines the `Model` struct with methods for managing its internal quad information. It includes functions for initializing (`init`) and deinitializing (`deinit`) models, retrieving raw faces (`getRawFaces`), merging multiple models into one (`mergeModels`), transforming a model using a provided function (`transformModel`), and appending quads to lists (`appendQuadsToList`, `appendInternalQuadsToList`, `appendNeighborFacingQuadsToList`). The chunk also contains utility functions for processing vertices, normals, UVs, and texture slots. It manages memory allocation and deallocation using the global allocator.\n\nThe `init` function initializes the `Model` struct by setting up its internal quad information based on the provided vertices, normals, uvs, and faces. The `deinit` function frees all allocated memory for the model's quads and collision data. The `getRawFaces` function retrieves raw face data from the model, including both internal and neighbor-facing quads. The `mergeModels` function combines multiple models into a single model by appending their quad information to a list. The `transformModel` function applies a transformation function to each quad in the model. The `appendQuadsToList`, `appendInternalQuadsToList`, and `appendNeighborFacingQuadsToList` functions append quads to a list, with specific handling for internal and neighbor-facing quads.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_models.zig_chunk_6": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the deduplication process, degeneracy check, light sampling calculations, and the role of `extraQuadInfos`. It also omits concrete values and commands from the raw content.",
+    "corrected_summary": null,
+    "corrected_explanation": "**Explanation**\n\nThis chunk manages models and their associated quads within the Cubyz voxel engine. It includes functions for retrieving model indices by name, adding quads with deduplication checks, and handling light sampling for aligned normal directions.\n\n- **`nameToIndex`:** A `std.StringHashMap(ModelIndex)` that maps string names to model indices.\n- **`getModelIndex(string: []const u8) ModelIndex`:** Retrieves a model index using a string name. If the model is not found, it logs an error and returns `@enumFromInt(0)`.\n\n```zig\npub fn getModelIndex(string: []const u8) ModelIndex {\n    return nameToIndex.get(string) orelse {\n        std.log.err(\"Couldn't find voxelModel with name: {s}.\", .{string});\n        return @enumFromInt(0);\n    };\n}\n```\n\n- **`quads`:** A `main.List(QuadInfo)` that stores quad information.\n- **`extraQuadInfos`:** A `main.List(ExtraQuadInfo)` that stores additional information about quads, such as face neighbors and light samples.\n- **`models`:** A `main.utils.VirtualList(Model, 1 << 20)` that manages model data.\n\n```zig\nvar quads: main.List(QuadInfo) = .empty;\nvar extraQuadInfos: main.List(ExtraQuadInfo) = .empty;\nvar models: main.utils.VirtualList(Model, 1 << 20) = undefined;\n```\n\n- **`quadDeduplication`:** A `std.AutoHashMap([@sizeOf(QuadInfo)]u8, QuadIndex)` that ensures quads are not duplicated.\n\n```zig\nvar quadDeduplication: std.AutoHashMap([@sizeOf(QuadInfo)]u8, QuadIndex) = undefined;\n```\n\n- **`addQuad(info_: QuadInfo) error{Degenerate}!QuadIndex`:** Adds a quad to the list after checking for degeneracy and performing various calculations related to face neighbors and light samples.\n\n```zig\nfn addQuad(info_: QuadInfo) error{Degenerate}!QuadIndex {\n    var info = info_;\n    if (quadDeduplication.get(std.mem.toBytes(info))) |id| {\n        return id;\n    }\n    // Check if it's degenerate:\n    var cornerEqualities: u32 = 0;\n    for (0..4) |i| {\n        for (i + 1..4) |j| {\n            if (@reduce(.And, @as(Vec3f, info.corners[i]) == @as(Vec3f, info.corners[j]))) cornerEqualities += 1;\n        }\n    }\n    if (cornerEqualities >= 2) return error.Degenerate; // One corner equality is fine, since then the quad degenerates to a triangle, which has a non-zero area.\n    const index: QuadIndex = @enumFromInt(quads.items.len);\n    if (info.opaqueInLod == 2) {\n        info.opaqueInLod = 0;\n    } else {\n        info.opaqueInLod = @intFromBool(Model.getFaceNeighbor(&info) != null);\n    }\n    quads.append(main.globalAllocator, info);\n    quadDeduplication.put(std.mem.toBytes(info), index) catch unreachable;\n\n    var extraQuadInfo: ExtraQuadInfo = undefined;\n    extraQuadInfo.faceNeighbor = Model.getFaceNeighbor(&info);\n    extraQuadInfo.isFullQuad = Model.fullyOccludesNeighbor(&info);\n    {\n        var zeroes: @Vector(3, u32) = .{0, 0, 0};\n        var ones: @Vector(3, u32) = .{0, 0, 0};\n        for (info.corners) |corner| {\n            zeroes += @select(u32, corner == @as(Vec3f, @splat(0)), .{1, 1, 1}, .{0, 0, 0});\n            ones += @select(u32, corner == @as(Vec3f, @splat(1)), .{1, 1, 1}, .{0, 0, 0});\n        }\n        extraQuadInfo.zeroes = zeroes;\n        extraQuadInfo.ones = ones;\n    }\n\n    if (extraQuadInfo.faceNeighbor != null) {\n        var lightSamples: main.List(LightSample) = .{};\n        for (info.corners) |corner| {\n            addCornerLightSamples(&lightSamples, corner.pos, extraQuadInfo.faceNeighbor.?, corner.weights);\n        }\n\n        std.sort.insertion(LightSample, lightSamples.items, {}, struct {\n            fn lessThan(_: void, a: LightSample, b: LightSample) bool {\n                if (a.offset[0] < b.offset[0]) return true;\n                if (a.offset[0] > b.offset[0]) return false;\n                if (a.offset[1] < b.offset[1]) return true;\n                if (a.offset[1] > b.offset[1]) return false;\n                if (a.offset[2] < b.offset[2]) return true;\n                return false;\n            }\n        }.lessThan);\n\n        var deduplicatedList: main.List(LightSample) = .{};\n        for (lightSamples.items) |sample| {\n            if (deduplicatedList.items.len != 0 and @reduce(.And, deduplicatedList.items[deduplicatedList.items.len - 1].offset == sample.offset)) {\n                for (0..4) |i| {\n                    deduplicatedList.items[deduplicatedList.items.len - 1].weights[i] += sample.weights[i];\n                }\n            } else {\n                deduplicatedList.appendAssumeCapacity(sample);\n            }\n        }\n\n        extraQuadInfo.lightSampleListForAxisAlignedModels = main.globalArena.dupe(LightSample, deduplicatedList.items);\n    }\n    extraQuadInfos.append(main.globalAllocator, extraQuadInfo);\n\n    return index;\n}\n```\n\n- **`addCornerLightSamples(lightSamples: *main.List(LightSample), pos: Vec3i, direction: chunk.Neighbor, weights: [4]u16) void`:** Calculates light samples for each corner of a quad.\n\n```zig\nfn addCornerLightSamples(lightSamples: *main.List(LightSample), pos: Vec3i, direction: chunk.Neighbor, weights: [4]u16) void {\n    const normal: Vec3f = @floatFromInt(Vec3i{direction.relX(), direction.relY(), direction.relZ()});\n    const lightPos = @as(Vec3f, @floatFromInt(pos)) + normal*@as(Vec3f, @splat(0.5)) - @as(Vec3f, @splat(0.5));\n    const startPos: Vec3i = @floor(lightPos);\n    var dx: i32 = 0;\n    while (dx <= 1) : (dx += 1) {\n        var dy: i32 = 0;\n        while (dy <= 1) : (dy += 1) {\n            const finalPos = startPos +% @as(Vec3i, @intCast(@abs(direction.textureX())))*@as(Vec3i, @splat(dx)) +% @as(Vec3i, @intCast(@abs(direction.textureY()*@as(Vec3i, @splat(dy)))));\n            lightSamples.appendAssumeCapacity(.{.offset = finalPos, .weights = weights});\n        }\n    }\n}\n```\n\nThe chunk manages model indices and quads by using a hashmap to store model names and their corresponding indices, ensuring that quads are not duplicated through a deduplication process, and handling light sampling for aligned normal directions.",
+    "corrected_related_questions": [
+      "- How does the `getModelIndex` function retrieve a model index?",
+      "- What is the purpose of the `quadDeduplication` hashmap?",
+      "- How are degenerate quads handled in the `addQuad` function?",
+      "- What calculations are performed for light samples in the `addCornerLightSamples` function?",
+      "- How does the chunk manage model indices and quads?",
+      "- What is the role of the `extraQuadInfos` list in this chunk?"
+    ],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784410986.863913,
+        "reason": "The explanation does not provide specific details about the deduplication process, degeneracy check, light sampling calculations, and the role of `extraQuadInfos`. It also omits concrete values and commands from the raw content.",
+        "corrected_summary": null,
+        "corrected_explanation": "**Explanation**\n\nThis chunk manages models and their associated quads within the Cubyz voxel engine. It includes functions for retrieving model indices by name, adding quads with deduplication checks, and handling light sampling for aligned normal directions.\n\n- **`nameToIndex`:** A `std.StringHashMap(ModelIndex)` that maps string names to model indices.\n- **`getModelIndex(string: []const u8) ModelIndex`:** Retrieves a model index using a string name. If the model is not found, it logs an error and returns `@enumFromInt(0)`.\n\n```zig\npub fn getModelIndex(string: []const u8) ModelIndex {\n    return nameToIndex.get(string) orelse {\n        std.log.err(\"Couldn't find voxelModel with name: {s}.\", .{string});\n        return @enumFromInt(0);\n    };\n}\n```\n\n- **`quads`:** A `main.List(QuadInfo)` that stores quad information.\n- **`extraQuadInfos`:** A `main.List(ExtraQuadInfo)` that stores additional information about quads, such as face neighbors and light samples.\n- **`models`:** A `main.utils.VirtualList(Model, 1 << 20)` that manages model data.\n\n```zig\nvar quads: main.List(QuadInfo) = .empty;\nvar extraQuadInfos: main.List(ExtraQuadInfo) = .empty;\nvar models: main.utils.VirtualList(Model, 1 << 20) = undefined;\n```\n\n- **`quadDeduplication`:** A `std.AutoHashMap([@sizeOf(QuadInfo)]u8, QuadIndex)` that ensures quads are not duplicated.\n\n```zig\nvar quadDeduplication: std.AutoHashMap([@sizeOf(QuadInfo)]u8, QuadIndex) = undefined;\n```\n\n- **`addQuad(info_: QuadInfo) error{Degenerate}!QuadIndex`:** Adds a quad to the list after checking for degeneracy and performing various calculations related to face neighbors and light samples.\n\n```zig\nfn addQuad(info_: QuadInfo) error{Degenerate}!QuadIndex {\n    var info = info_;\n    if (quadDeduplication.get(std.mem.toBytes(info))) |id| {\n        return id;\n    }\n    // Check if it's degenerate:\n    var cornerEqualities: u32 = 0;\n    for (0..4) |i| {\n        for (i + 1..4) |j| {\n            if (@reduce(.And, @as(Vec3f, info.corners[i]) == @as(Vec3f, info.corners[j]))) cornerEqualities += 1;\n        }\n    }\n    if (cornerEqualities >= 2) return error.Degenerate; // One corner equality is fine, since then the quad degenerates to a triangle, which has a non-zero area.\n    const index: QuadIndex = @enumFromInt(quads.items.len);\n    if (info.opaqueInLod == 2) {\n        info.opaqueInLod = 0;\n    } else {\n        info.opaqueInLod = @intFromBool(Model.getFaceNeighbor(&info) != null);\n    }\n    quads.append(main.globalAllocator, info);\n    quadDeduplication.put(std.mem.toBytes(info), index) catch unreachable;\n\n    var extraQuadInfo: ExtraQuadInfo = undefined;\n    extraQuadInfo.faceNeighbor = Model.getFaceNeighbor(&info);\n    extraQuadInfo.isFullQuad = Model.fullyOccludesNeighbor(&info);\n    {\n        var zeroes: @Vector(3, u32) = .{0, 0, 0};\n        var ones: @Vector(3, u32) = .{0, 0, 0};\n        for (info.corners) |corner| {\n            zeroes += @select(u32, corner == @as(Vec3f, @splat(0)), .{1, 1, 1}, .{0, 0, 0});\n            ones += @select(u32, corner == @as(Vec3f, @splat(1)), .{1, 1, 1}, .{0, 0, 0});\n        }\n        extraQuadInfo.zeroes = zeroes;\n        extraQuadInfo.ones = ones;\n    }\n\n    if (extraQuadInfo.faceNeighbor != null) {\n        var lightSamples: main.List(LightSample) = .{};\n        for (info.corners) |corner| {\n            addCornerLightSamples(&lightSamples, corner.pos, extraQuadInfo.faceNeighbor.?, corner.weights);\n        }\n\n        std.sort.insertion(LightSample, lightSamples.items, {}, struct {\n            fn lessThan(_: void, a: LightSample, b: LightSample) bool {\n                if (a.offset[0] < b.offset[0]) return true;\n                if (a.offset[0] > b.offset[0]) return false;\n                if (a.offset[1] < b.offset[1]) return true;\n                if (a.offset[1] > b.offset[1]) return false;\n                if (a.offset[2] < b.offset[2]) return true;\n                return false;\n            }\n        }.lessThan);\n\n        var deduplicatedList: main.List(LightSample) = .{};\n        for (lightSamples.items) |sample| {\n            if (deduplicatedList.items.len != 0 and @reduce(.And, deduplicatedList.items[deduplicatedList.items.len - 1].offset == sample.offset)) {\n                for (0..4) |i| {\n                    deduplicatedList.items[deduplicatedList.items.len - 1].weights[i] += sample.weights[i];\n                }\n            } else {\n                deduplicatedList.appendAssumeCapacity(sample);\n            }\n        }\n\n        extraQuadInfo.lightSampleListForAxisAlignedModels = main.globalArena.dupe(LightSample, deduplicatedList.items);\n    }\n    extraQuadInfos.append(main.globalAllocator, extraQuadInfo);\n\n    return index;\n}\n```\n\n- **`addCornerLightSamples(lightSamples: *main.List(LightSample), pos: Vec3i, direction: chunk.Neighbor, weights: [4]u16) void`:** Calculates light samples for each corner of a quad.\n\n```zig\nfn addCornerLightSamples(lightSamples: *main.List(LightSample), pos: Vec3i, direction: chunk.Neighbor, weights: [4]u16) void {\n    const normal: Vec3f = @floatFromInt(Vec3i{direction.relX(), direction.relY(), direction.relZ()});\n    const lightPos = @as(Vec3f, @floatFromInt(pos)) + normal*@as(Vec3f, @splat(0.5)) - @as(Vec3f, @splat(0.5));\n    const startPos: Vec3i = @floor(lightPos);\n    var dx: i32 = 0;\n    while (dx <= 1) : (dx += 1) {\n        var dy: i32 = 0;\n        while (dy <= 1) : (dy += 1) {\n            const finalPos = startPos +% @as(Vec3i, @intCast(@abs(direction.textureX())))*@as(Vec3i, @splat(dx)) +% @as(Vec3i, @intCast(@abs(direction.textureY()*@as(Vec3i, @splat(dy)))));\n            lightSamples.appendAssumeCapacity(.{.offset = finalPos, .weights = weights});\n        }\n    }\n}\n```\n\nThe chunk manages model indices and quads by using a hashmap to store model names and their corresponding indices, ensuring that quads are not duplicated through a deduplication process, and handling light sampling for aligned normal directions.",
+        "corrected_related_questions": [
+          "- How does the `getModelIndex` function retrieve a model index?",
+          "- What is the purpose of the `quadDeduplication` hashmap?",
+          "- How are degenerate quads handled in the `addQuad` function?",
+          "- What calculations are performed for light samples in the `addCornerLightSamples` function?",
+          "- How does the chunk manage model indices and quads?",
+          "- What is the role of the `extraQuadInfos` list in this chunk?"
+        ]
+      }
+    ]
+  },
+  "codebase_src_models.zig_chunk_7": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the parameters, return types, or internal logic of the functions. It also omits information about the `openBox` function and the handling of the coordinate system in `registerModel`. Additionally, it fails to mention the exact steps involved in initializing, resetting, and deinitializing the model management system.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines functions for creating and managing voxel models, including box and open box generation, model registration, initialization, reset, deinitialization, and uploading to GPU. The `box` function generates six quads representing a closed box with specified minimum (`min`) and maximum (`max`) corners and UV offset (`uvOffset`). Each quad has a normal vector, corner positions, UV coordinates, and a texture slot corresponding to the direction of the face (negative X, positive X, negative Y, positive Y, negative Z, positive Z). The `openBox` function creates a box with one side removed based on the `openSide` parameter, which can be `x`, `y`, or `z`. The `registerModel` function loads a model from data, associates it with an ID, and stores it in a map. It also checks for a coordinate system specified in the ZonElement; if not provided, it defaults to right-handed Z-up. The `init` function initializes various resources, including models, quad deduplication, and name-to-index mapping. The `reset` function restores the model system to its default state by deinitializing all models and resetting internal storage structures. The `deinit` function completely deinitializes the model management system, freeing up allocated resources such as GPU buffers and maps. The `uploadModels` function uploads the quad information to a GPU buffer for rendering.",
+    "corrected_related_questions": [
+      "- How does the `box` function generate quads for a closed box?",
+      "- What is the purpose of the `openBox` function and how does it differ from `box`?",
+      "- How are models registered in the system using the `registerModel` function?",
+      "- What steps are involved in initializing the model management system with `init`?",
+      "- How does the `reset` function restore the model system to its default state?",
+      "- What resources are deinitialized by the `deinit` function and how is it done?"
+    ],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411007.3557096,
+        "reason": "The explanation does not provide specific details about the parameters, return types, or internal logic of the functions. It also omits information about the `openBox` function and the handling of the coordinate system in `registerModel`. Additionally, it fails to mention the exact steps involved in initializing, resetting, and deinitializing the model management system.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines functions for creating and managing voxel models, including box and open box generation, model registration, initialization, reset, deinitialization, and uploading to GPU. The `box` function generates six quads representing a closed box with specified minimum (`min`) and maximum (`max`) corners and UV offset (`uvOffset`). Each quad has a normal vector, corner positions, UV coordinates, and a texture slot corresponding to the direction of the face (negative X, positive X, negative Y, positive Y, negative Z, positive Z). The `openBox` function creates a box with one side removed based on the `openSide` parameter, which can be `x`, `y`, or `z`. The `registerModel` function loads a model from data, associates it with an ID, and stores it in a map. It also checks for a coordinate system specified in the ZonElement; if not provided, it defaults to right-handed Z-up. The `init` function initializes various resources, including models, quad deduplication, and name-to-index mapping. The `reset` function restores the model system to its default state by deinitializing all models and resetting internal storage structures. The `deinit` function completely deinitializes the model management system, freeing up allocated resources such as GPU buffers and maps. The `uploadModels` function uploads the quad information to a GPU buffer for rendering.",
+        "corrected_related_questions": [
+          "- How does the `box` function generate quads for a closed box?",
+          "- What is the purpose of the `openBox` function and how does it differ from `box`?",
+          "- How are models registered in the system using the `registerModel` function?",
+          "- What steps are involved in initializing the model management system with `init`?",
+          "- How does the `reset` function restore the model system to its default state?",
+          "- What resources are deinitialized by the `deinit` function and how is it done?"
+        ]
+      }
+    ]
+  },
+  "codebase_src_blueprint.zig_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation omits the specific value of `voidType` and does not provide a comprehensive list of types imported from the `main` module.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk declares various constants and types used in the blueprint system of the Cubyz engine. It imports necessary modules such as `std`, `main`, `Compression`, `ZonElement`, `vec`, `Vec3i`, `Array3D`, `Block`, `NeverFailingAllocator`, `User`, `ServerChunk`, `Degrees`, `Tag`, `BinaryWriter`, `BinaryReader`, `AliasTable`, and `List`. It defines enums, structs, and type aliases related to blueprint storage, compression, and versioning. The `blueprintVersion` constant specifies the current version of blueprints as 1, while the `BlueprintCompression` enum lists supported compression methods like 'deflate'. The `voidType` variable is defined as an optional u16 with a value of null.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411013.0052414,
+        "reason": "The explanation omits the specific value of `voidType` and does not provide a comprehensive list of types imported from the `main` module.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk declares various constants and types used in the blueprint system of the Cubyz engine. It imports necessary modules such as `std`, `main`, `Compression`, `ZonElement`, `vec`, `Vec3i`, `Array3D`, `Block`, `NeverFailingAllocator`, `User`, `ServerChunk`, `Degrees`, `Tag`, `BinaryWriter`, `BinaryReader`, `AliasTable`, and `List`. It defines enums, structs, and type aliases related to blueprint storage, compression, and versioning. The `blueprintVersion` constant specifies the current version of blueprints as 1, while the `BlueprintCompression` enum lists supported compression methods like 'deflate'. The `voidType` variable is defined as an optional u16 with a value of null.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_blueprint.zig_chunk_1": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the rotation angles and their corresponding block positions, which are explicitly stated in the raw content. Additionally, it omits the exact implementation of the capture method's failure handling.",
+    "corrected_summary": null,
+    "corrected_explanation": "The Blueprint struct manages a 3D array of blocks using an Array3D type. It includes methods for initializing and deinitializing the blueprint, getting its extent, cloning itself, rotating around the Z-axis, capturing a selection from the world, and pasting into the world. The rotateZ method rotates the blueprint around the Z-axis by specified angles (0, 90, 180, 270 degrees) and adjusts the block positions accordingly. For example, a 90-degree rotation swaps the width and depth dimensions and repositions the blocks to maintain their orientation. The capture method attempts to copy blocks from the main server's world into a new Blueprint instance, handling cases where chunks are not loaded by returning a failure message with the position of the unhandled block. The paste method allows pasting the blueprint's blocks into the world at a specified position with optional flags for preserving void blocks. The pasteInGeneration method is used internally to handle different modes of pasting (all or degradable) and interacts with ServerChunk instances by updating blocks in the chunk based on the mode.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411021.407351,
+        "reason": "The explanation does not provide specific details about the rotation angles and their corresponding block positions, which are explicitly stated in the raw content. Additionally, it omits the exact implementation of the capture method's failure handling.",
+        "corrected_summary": null,
+        "corrected_explanation": "The Blueprint struct manages a 3D array of blocks using an Array3D type. It includes methods for initializing and deinitializing the blueprint, getting its extent, cloning itself, rotating around the Z-axis, capturing a selection from the world, and pasting into the world. The rotateZ method rotates the blueprint around the Z-axis by specified angles (0, 90, 180, 270 degrees) and adjusts the block positions accordingly. For example, a 90-degree rotation swaps the width and depth dimensions and repositions the blocks to maintain their orientation. The capture method attempts to copy blocks from the main server's world into a new Blueprint instance, handling cases where chunks are not loaded by returning a failure message with the position of the unhandled block. The paste method allows pasting the blueprint's blocks into the world at a specified position with optional flags for preserving void blocks. The pasteInGeneration method is used internally to handle different modes of pasting (all or degradable) and interacts with ServerChunk instances by updating blocks in the chunk based on the mode.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_blueprint.zig_chunk_2": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the different modes of block updating, the purpose of the PasteFlags struct, or how the `load` and `store` methods work in detail. It also omits information about the exact structure and usage of the Blueprint struct's fields.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines the Blueprint struct and its associated methods for loading, storing, and pasting blueprints. The `load` method reads a compressed blueprint from a buffer, decompresses it, and reconstructs the blueprint's blocks using a block palette. The `store` method converts the blueprint's blocks into a compressed format suitable for storage or transmission. The `paste` method places the blueprint's blocks into the world at a specified position, optionally preserving void blocks. Helper functions like `makeBlueprintIdToGameIdMap`, `makeGameIdToBlueprintIdMap`, `loadBlockPalette`, and `storeBlockPalette` manage block mappings and palette serialization.\n\nThe Blueprint struct contains fields such as `blocks`, which is a 3D array of blocks, and methods for handling blueprint operations. The `paste` method iterates over the blueprint's blocks and updates the world with these blocks at the specified position. The `load` method reads a compressed buffer, decompresses it, and reconstructs the blueprint using a block palette. The `store` method compresses the blueprint's blocks into a format suitable for storage or transmission.\n\nThe PasteFlags struct contains a boolean field `preserveVoid`, which determines whether void blocks should be preserved during pasting. The `load` method handles different versions of blueprints, checking if the version is supported and reading the appropriate data. The `store` method creates a block palette and compresses the blueprint's blocks into a format suitable for storage or transmission.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411032.038039,
+        "reason": "The explanation does not provide specific details about the different modes of block updating, the purpose of the PasteFlags struct, or how the `load` and `store` methods work in detail. It also omits information about the exact structure and usage of the Blueprint struct's fields.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines the Blueprint struct and its associated methods for loading, storing, and pasting blueprints. The `load` method reads a compressed blueprint from a buffer, decompresses it, and reconstructs the blueprint's blocks using a block palette. The `store` method converts the blueprint's blocks into a compressed format suitable for storage or transmission. The `paste` method places the blueprint's blocks into the world at a specified position, optionally preserving void blocks. Helper functions like `makeBlueprintIdToGameIdMap`, `makeGameIdToBlueprintIdMap`, `loadBlockPalette`, and `storeBlockPalette` manage block mappings and palette serialization.\n\nThe Blueprint struct contains fields such as `blocks`, which is a 3D array of blocks, and methods for handling blueprint operations. The `paste` method iterates over the blueprint's blocks and updates the world with these blocks at the specified position. The `load` method reads a compressed buffer, decompresses it, and reconstructs the blueprint using a block palette. The `store` method compresses the blueprint's blocks into a format suitable for storage or transmission.\n\nThe PasteFlags struct contains a boolean field `preserveVoid`, which determines whether void blocks should be preserved during pasting. The `load` method handles different versions of blueprints, checking if the version is supported and reading the appropriate data. The `store` method creates a block palette and compresses the blueprint's blocks into a format suitable for storage or transmission.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_blueprint.zig_chunk_3": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the binary reading and writing processes, the exact compression algorithm used, or the block replacement conditions. It also omits the detailed steps of the `decompressBuffer` and `compressOutputBuffer` functions.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines several functions for managing game blueprints, including creating a map from game IDs to blueprint IDs, loading and storing block palettes, decompressing and compressing data buffers, replacing blocks based on conditions, and applying transformations to all blocks. The `makeGameIdToBlueprintIdMap` function creates a map using an allocator by iterating over the blocks and assigning unique IDs. The `loadBlockPalette` function reads block names from a binary reader into a palette array by reading the size of each block name followed by the name itself. The `storeBlockPalette` function writes the block palette to a binary writer, logging each entry by converting the block ID and data to a string. The `decompressBuffer` function decompresses data using the deflate algorithm, ensuring the decompressed size matches the expected size. The `compressOutputBuffer` function compresses a buffer using the deflate algorithm. The public methods `replace` and `apply` modify the blueprint's blocks based on given conditions or transformations.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411039.82327,
+        "reason": "The explanation does not provide specific details about the binary reading and writing processes, the exact compression algorithm used, or the block replacement conditions. It also omits the detailed steps of the `decompressBuffer` and `compressOutputBuffer` functions.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines several functions for managing game blueprints, including creating a map from game IDs to blueprint IDs, loading and storing block palettes, decompressing and compressing data buffers, replacing blocks based on conditions, and applying transformations to all blocks. The `makeGameIdToBlueprintIdMap` function creates a map using an allocator by iterating over the blocks and assigning unique IDs. The `loadBlockPalette` function reads block names from a binary reader into a palette array by reading the size of each block name followed by the name itself. The `storeBlockPalette` function writes the block palette to a binary writer, logging each entry by converting the block ID and data to a string. The `decompressBuffer` function decompresses data using the deflate algorithm, ensuring the decompressed size matches the expected size. The `compressOutputBuffer` function compresses a buffer using the deflate algorithm. The public methods `replace` and `apply` modify the blueprint's blocks based on given conditions or transformations.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_blueprint.zig_chunk_4": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about how weights are assigned to blocks during initialization, what error handling is implemented in the `initFromString` method, and what data structure is used to store block entries in the `Pattern` struct.",
+    "corrected_summary": null,
+    "corrected_explanation": "The `Pattern` struct defines a blueprint for generating blocks with weighted chances, initializing from a string and deinitializing properly. The initialization process parses a string, splits it into specifiers based on separators (`weightSeparator` and `expressionSeparator`), and assigns weights to blocks. If the weight is not a valid number or less than or equal to zero, an error is returned. The deinitialization method ensures that all allocated resources are properly released by calling `deinit` on the `blocks` table and freeing its items.\n\nThe `Pattern` struct includes methods to initialize the pattern from a string representation and to deinitialize it when no longer needed. The initialization process involves parsing a string, splitting it into specifiers based on separators (`weightSeparator` and `expressionSeparator`), and assigning weights to blocks. If the weight is not a valid number or less than or equal to zero, an error is returned.\n\nThe data structure used to store block entries in the `Pattern` struct is an `AliasTable(Entry)`, where each entry contains a `block` of type `Block` and a `chance` of type `f32`. The `initFromString` method returns an error if the block ID is not found or if the weight is not a valid number or less than or equal to zero.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411052.7950504,
+        "reason": "The explanation does not provide specific details about how weights are assigned to blocks during initialization, what error handling is implemented in the `initFromString` method, and what data structure is used to store block entries in the `Pattern` struct.",
+        "corrected_summary": null,
+        "corrected_explanation": "The `Pattern` struct defines a blueprint for generating blocks with weighted chances, initializing from a string and deinitializing properly. The initialization process parses a string, splits it into specifiers based on separators (`weightSeparator` and `expressionSeparator`), and assigns weights to blocks. If the weight is not a valid number or less than or equal to zero, an error is returned. The deinitialization method ensures that all allocated resources are properly released by calling `deinit` on the `blocks` table and freeing its items.\n\nThe `Pattern` struct includes methods to initialize the pattern from a string representation and to deinitialize it when no longer needed. The initialization process involves parsing a string, splitting it into specifiers based on separators (`weightSeparator` and `expressionSeparator`), and assigning weights to blocks. If the weight is not a valid number or less than or equal to zero, an error is returned.\n\nThe data structure used to store block entries in the `Pattern` struct is an `AliasTable(Entry)`, where each entry contains a `block` of type `Block` and a `chance` of type `f32`. The `initFromString` method returns an error if the block ID is not found or if the weight is not a valid number or less than or equal to zero.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_blueprint.zig_chunk_5": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation omits specific details about the constants and methods, such as the exact values of `or_`, `and_`, `inverse`, `tag`, `property`, and the detailed behavior of `initFromString` and `match` methods.",
+    "corrected_summary": null,
+    "corrected_explanation": "The Mask struct defines a complex filtering mechanism for blocks based on various criteria like type, tag, and properties. It includes nested structures like AndList and OrList to manage these combinations. The Entry struct represents individual filter criteria, which can be inverted using the '!' operator. The Inner union within Entry handles different types of block properties such as type, tag, and specific property checks.\n\nThe Mask struct uses constants for logical operations: `or_` is '|', `and_` is '&', `inverse` is '!', `tag` is '$', and `property` is '@'. The `initFromString` method parses string specifications into Mask instances, handling different types of block properties. The `match` methods evaluate whether a given block meets the specified conditions. The deinit method ensures proper memory cleanup, and clone creates a deep copy of the Mask instance.\n\nThe Entry struct includes an inner union that can represent block type, block tag, or specific property checks. The `initFromString` method in Entry parses string specifications into individual entries, handling inversion with '!' and different types of properties. The `match` method evaluates whether a block matches the specified criteria.\n\nThe Mask struct's methods include `initFromString`, which parses a string into a Mask instance, and `deinit`, which cleans up memory. The `clone` method creates a deep copy of the Mask instance. The `match` method evaluates whether a given block meets the specified conditions.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411062.68568,
+        "reason": "The explanation omits specific details about the constants and methods, such as the exact values of `or_`, `and_`, `inverse`, `tag`, `property`, and the detailed behavior of `initFromString` and `match` methods.",
+        "corrected_summary": null,
+        "corrected_explanation": "The Mask struct defines a complex filtering mechanism for blocks based on various criteria like type, tag, and properties. It includes nested structures like AndList and OrList to manage these combinations. The Entry struct represents individual filter criteria, which can be inverted using the '!' operator. The Inner union within Entry handles different types of block properties such as type, tag, and specific property checks.\n\nThe Mask struct uses constants for logical operations: `or_` is '|', `and_` is '&', `inverse` is '!', `tag` is '$', and `property` is '@'. The `initFromString` method parses string specifications into Mask instances, handling different types of block properties. The `match` methods evaluate whether a given block meets the specified conditions. The deinit method ensures proper memory cleanup, and clone creates a deep copy of the Mask instance.\n\nThe Entry struct includes an inner union that can represent block type, block tag, or specific property checks. The `initFromString` method in Entry parses string specifications into individual entries, handling inversion with '!' and different types of properties. The `match` method evaluates whether a block matches the specified criteria.\n\nThe Mask struct's methods include `initFromString`, which parses a string into a Mask instance, and `deinit`, which cleans up memory. The `clone` method creates a deep copy of the Mask instance. The `match` method evaluates whether a given block meets the specified conditions.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_blueprint.zig_chunk_6": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the parsing functions and their behaviors, nor does it cover all the test cases mentioned in the raw content.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines a `Test` struct with various parsing functions and tests for the Mask system, including registration and retrieval of a 'void' block type. The `defaultParseBlockLike` function is unreachable by default, serving as a placeholder. Other methods like `parseBlockLike 1 null`, `parseBlockLike 1 1`, and `parseBlockLike foo or bar` handle specific parsing scenarios based on input strings. For example, `parseBlockLike 1 null` returns a block type of 1 with no data, while `parseBlockLike 1 1` returns a block type of 1 with data 1. The `parseBlockLike foo or bar` function checks if the input string is 'addon:foo' or 'addon:bar' and returns corresponding block types.\n\nThe chunk also includes multiple tests for the Mask system, covering various cases such as matching block types with any data, handling empty or malformed masks, and using inverse matches. For instance, the test `Mask match block type with any data` checks if a mask initialized from 'addon:dummy' matches blocks of type 1 with any data. The test `Mask empty negative case` ensures that an error is thrown when initializing a mask from an empty string.\n\nAdditionally, it provides functions to register and retrieve a 'void' block type. The `registerVoidBlock` function sets the voidType variable to the type of the provided block, ensuring it's not zero. The `getVoidBlock` function returns a Block with the type set to voidType and data 0.\n\nThe explanation now includes specific details about the parsing functions and their behaviors, as well as all the test cases mentioned in the raw content.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411077.8827689,
+        "reason": "The explanation does not provide specific details about the parsing functions and their behaviors, nor does it cover all the test cases mentioned in the raw content.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines a `Test` struct with various parsing functions and tests for the Mask system, including registration and retrieval of a 'void' block type. The `defaultParseBlockLike` function is unreachable by default, serving as a placeholder. Other methods like `parseBlockLike 1 null`, `parseBlockLike 1 1`, and `parseBlockLike foo or bar` handle specific parsing scenarios based on input strings. For example, `parseBlockLike 1 null` returns a block type of 1 with no data, while `parseBlockLike 1 1` returns a block type of 1 with data 1. The `parseBlockLike foo or bar` function checks if the input string is 'addon:foo' or 'addon:bar' and returns corresponding block types.\n\nThe chunk also includes multiple tests for the Mask system, covering various cases such as matching block types with any data, handling empty or malformed masks, and using inverse matches. For instance, the test `Mask match block type with any data` checks if a mask initialized from 'addon:dummy' matches blocks of type 1 with any data. The test `Mask empty negative case` ensures that an error is thrown when initializing a mask from an empty string.\n\nAdditionally, it provides functions to register and retrieve a 'void' block type. The `registerVoidBlock` function sets the voidType variable to the type of the provided block, ensuring it's not zero. The `getVoidBlock` function returns a Block with the type set to voidType and data 0.\n\nThe explanation now includes specific details about the parsing functions and their behaviors, as well as all the test cases mentioned in the raw content.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_server_terrain_biomes.zig_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation omits specific details about the Stripe struct's fields and their initialization logic, as well as the exact types that can be hashed by the hashGeneric function.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines the Stripe struct and a generic hashing function. The Stripe struct represents a stripe in terrain generation with properties like direction (a Vec3d), block type (a Block), distance (minDistance and maxDistance as f64), offset (minOffset and maxOffset as f64), and width (minWidth and maxWidth as f64). The Stripe struct includes an `init` method that initializes a Stripe instance from a ZonElement configuration. This method parses the direction, block type, distance, offset, and width from the ZonElement parameters, handling default values where necessary. Additionally, the chunk provides a generic hashing function `hashGeneric` that can hash various types, including integers, floats, structs, optionals, pointers, slices, arrays, and vectors. This function uses a switch statement to handle different type categories and employs a helper function `hashCombine` to combine hashes. The `blocks.parseBlock` function is used in Stripe initialization to convert a block name from a string to a Block instance.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411085.5786095,
+        "reason": "The explanation omits specific details about the Stripe struct's fields and their initialization logic, as well as the exact types that can be hashed by the hashGeneric function.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines the Stripe struct and a generic hashing function. The Stripe struct represents a stripe in terrain generation with properties like direction (a Vec3d), block type (a Block), distance (minDistance and maxDistance as f64), offset (minOffset and maxOffset as f64), and width (minWidth and maxWidth as f64). The Stripe struct includes an `init` method that initializes a Stripe instance from a ZonElement configuration. This method parses the direction, block type, distance, offset, and width from the ZonElement parameters, handling default values where necessary. Additionally, the chunk provides a generic hashing function `hashGeneric` that can hash various types, including integers, floats, structs, optionals, pointers, slices, arrays, and vectors. This function uses a switch statement to handle different type categories and employs a helper function `hashCombine` to combine hashes. The `blocks.parseBlock` function is used in Stripe initialization to convert a block name from a string to a Block instance.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_server_terrain_biomes.zig_chunk_3": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation omits specific details about the structure of a BlockStack, such as the block type and its depth range. It also fails to provide concrete examples or values for the parameters expected by the `init` method.",
+    "corrected_summary": null,
+    "corrected_explanation": "The `BlockStructure` struct represents the vertical layers of blocks in a biome. Each layer is defined by a `BlockStack`, which includes a block type and its depth range specified by `min` and `max`. The `init` function parses a ZonElement into a BlockStructure, allocating memory for the structure array and initializing each BlockStack from string descriptions. The `deinit` function frees the allocated memory. The `addSubTerranian` method adds terrain to a chunk based on the biome's block structure, considering depth, slope, and soil creep. The `BlockStack.init` method expects a string in the format '<blockId> [min] [to max]', where `min` and `max` are optional parameters specifying the range of blocks. If only `min` is provided, it defaults to 1. If no depth range is specified, both `min` and `max` default to 1. The method handles errors such as empty strings, incorrect parameter counts, missing 'to' keyword, and invalid block IDs by returning specific error codes.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411099.446286,
+        "reason": "The explanation omits specific details about the structure of a BlockStack, such as the block type and its depth range. It also fails to provide concrete examples or values for the parameters expected by the `init` method.",
+        "corrected_summary": null,
+        "corrected_explanation": "The `BlockStructure` struct represents the vertical layers of blocks in a biome. Each layer is defined by a `BlockStack`, which includes a block type and its depth range specified by `min` and `max`. The `init` function parses a ZonElement into a BlockStructure, allocating memory for the structure array and initializing each BlockStack from string descriptions. The `deinit` function frees the allocated memory. The `addSubTerranian` method adds terrain to a chunk based on the biome's block structure, considering depth, slope, and soil creep. The `BlockStack.init` method expects a string in the format '<blockId> [min] [to max]', where `min` and `max` are optional parameters specifying the range of blocks. If only `min` is provided, it defaults to 1. If no depth range is specified, both `min` and `max` default to 1. The method handles errors such as empty strings, incorrect parameter counts, missing 'to' keyword, and invalid block IDs by returning specific error codes.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_server_terrain_biomes.zig_chunk_4": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the initialization process, noise-based selection, or global state management as mentioned in the raw content. It also omits concrete values and specific questions from the related questions section.",
+    "corrected_summary": null,
+    "corrected_explanation": "The chunk defines a `TreeNode` union for biome generation, including initialization and retrieval methods. It also manages global lists and maps of biomes.\n\n## Explanation\nThe `TreeNode` union represents either a leaf or branch node in a decision tree used to select biomes based on noise values. The `init` method constructs the tree recursively by partitioning biome slices into lower, middle, and upper categories based on properties. Specifically, it uses bit shifting and masking to categorize biomes into three groups: lower, middle, and upper. The `getBiome` method traverses the tree to select a biome using noise sampling. Global variables manage lists and maps of biomes, including unfinished sub-biomes and transitions. The `reset` function initializes these global states.\n\n## Code Example\n```zig\npub fn reset() void {\n    finishedLoading = false;\n    biomes = .empty;\n    caveBiomes = .empty;\n    biomesById = .{};\n    biomesByIndex = .empty;\n    byTypeBiomes = undefined;\n}\n```\n\n## Related Questions\n- What is the purpose of the `TreeNode` union?\n- How does the `init` method partition biome slices? (Answer: It uses bit shifting and masking to categorize biomes into lower, middle, and upper groups.)\n- What does the `getBiome` method do in the `TreeNode` struct? (Answer: It traverses the tree to select a biome using noise sampling.)\n- What global variables are used to manage biomes? (Answer: `finishedLoading`, `biomes`, `caveBiomes`, `biomesById`, `biomesByIndex`, `byTypeBiomes`)\n- How is the `reset` function structured? (Answer: It sets `finishedLoading` to false and initializes all global lists and maps to empty states.)\n- What types of data structures are used for sub-biomes and transitions? (Answer: `SubBiomeData`, `UnfinishedSubBiomeData`, `TransitionBiome`, `UnfinishedTransitionBiomeData`)\n\n*Source: unknown | chunk_id: codebase_src_server_terrain_biomes.zig_chunk_4*",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411113.5714142,
+        "reason": "The explanation does not provide specific details about the initialization process, noise-based selection, or global state management as mentioned in the raw content. It also omits concrete values and specific questions from the related questions section.",
+        "corrected_summary": null,
+        "corrected_explanation": "The chunk defines a `TreeNode` union for biome generation, including initialization and retrieval methods. It also manages global lists and maps of biomes.\n\n## Explanation\nThe `TreeNode` union represents either a leaf or branch node in a decision tree used to select biomes based on noise values. The `init` method constructs the tree recursively by partitioning biome slices into lower, middle, and upper categories based on properties. Specifically, it uses bit shifting and masking to categorize biomes into three groups: lower, middle, and upper. The `getBiome` method traverses the tree to select a biome using noise sampling. Global variables manage lists and maps of biomes, including unfinished sub-biomes and transitions. The `reset` function initializes these global states.\n\n## Code Example\n```zig\npub fn reset() void {\n    finishedLoading = false;\n    biomes = .empty;\n    caveBiomes = .empty;\n    biomesById = .{};\n    biomesByIndex = .empty;\n    byTypeBiomes = undefined;\n}\n```\n\n## Related Questions\n- What is the purpose of the `TreeNode` union?\n- How does the `init` method partition biome slices? (Answer: It uses bit shifting and masking to categorize biomes into lower, middle, and upper groups.)\n- What does the `getBiome` method do in the `TreeNode` struct? (Answer: It traverses the tree to select a biome using noise sampling.)\n- What global variables are used to manage biomes? (Answer: `finishedLoading`, `biomes`, `caveBiomes`, `biomesById`, `biomesByIndex`, `byTypeBiomes`)\n- How is the `reset` function structured? (Answer: It sets `finishedLoading` to false and initializes all global lists and maps to empty states.)\n- What types of data structures are used for sub-biomes and transitions? (Answer: `SubBiomeData`, `UnfinishedSubBiomeData`, `TransitionBiome`, `UnfinishedTransitionBiomeData`)\n\n*Source: unknown | chunk_id: codebase_src_server_terrain_biomes.zig_chunk_4*",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_server_terrain_biomes.zig_chunk_5": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the registration process, such as how biomes are initialized or appended to lists. It also omits information about the `finishLoading` function's detailed steps and the structure of transition and sub-biome relationships.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk contains functions for registering biomes with an ID, palette ID, and configuration data. The `register` function initializes a biome and appends it to either the surface or cave biomes list based on whether the biome is a cave. The `finishLoading` function processes registered biomes by removing those with zero chance, organizing them by type, and setting up transition and sub-biome relationships. It also ensures that all biomes are indexed correctly and handles any errors related to missing parent biomes or overlapping generation properties in transition biomes. Functions like `hasRegistered`, `getById`, `getByIdOptional`, `getByIndex`, and `getPlaceholderBiome` provide ways to query biomes by various identifiers. The `getCaveBiomes` function returns all cave biomes, and `getBiomeCheckSum` provides a checksum for detecting changes in biome configurations.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411121.1497402,
+        "reason": "The explanation does not provide specific details about the registration process, such as how biomes are initialized or appended to lists. It also omits information about the `finishLoading` function's detailed steps and the structure of transition and sub-biome relationships.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk contains functions for registering biomes with an ID, palette ID, and configuration data. The `register` function initializes a biome and appends it to either the surface or cave biomes list based on whether the biome is a cave. The `finishLoading` function processes registered biomes by removing those with zero chance, organizing them by type, and setting up transition and sub-biome relationships. It also ensures that all biomes are indexed correctly and handles any errors related to missing parent biomes or overlapping generation properties in transition biomes. Functions like `hasRegistered`, `getById`, `getByIdOptional`, `getByIndex`, and `getPlaceholderBiome` provide ways to query biomes by various identifiers. The `getCaveBiomes` function returns all cave biomes, and `getBiomeCheckSum` provides a checksum for detecting changes in biome configurations.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_assets.zig_chunk_1": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the types of assets managed by the Assets struct, such as blocks, items, biomes, recipes, etc. It also omits information about how invalid addon names are handled in the discoverAll method.",
+    "corrected_summary": null,
+    "corrected_explanation": "The Assets struct in the codebase_src_assets.zig file is responsible for managing various types of game assets such as blocks, items, biomes, recipes, and more. It uses hash maps to store these assets efficiently. The struct provides methods for initializing (init), deinitializing (deinit), cloning (clone), reading from directories (read), and logging asset information (log). The init method initializes all the hash maps with empty values. The deinit method deinitializes them using a provided allocator. The clone method creates a deep copy of the Assets instance, handling potential errors with unreachable. The read method populates the assets by iterating over discovered addons in a specified directory, reading various types of asset files into their respective hash maps. The log method outputs information about the number of each type of asset loaded. Invalid addon names are handled by logging an error message and skipping the invalid addon.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411130.7304587,
+        "reason": "The explanation does not provide specific details about the types of assets managed by the Assets struct, such as blocks, items, biomes, recipes, etc. It also omits information about how invalid addon names are handled in the discoverAll method.",
+        "corrected_summary": null,
+        "corrected_explanation": "The Assets struct in the codebase_src_assets.zig file is responsible for managing various types of game assets such as blocks, items, biomes, recipes, and more. It uses hash maps to store these assets efficiently. The struct provides methods for initializing (init), deinitializing (deinit), cloning (clone), reading from directories (read), and logging asset information (log). The init method initializes all the hash maps with empty values. The deinit method deinitializes them using a provided allocator. The clone method creates a deep copy of the Assets instance, handling potential errors with unreachable. The read method populates the assets by iterating over discovered addons in a specified directory, reading various types of asset files into their respective hash maps. The log method outputs information about the number of each type of asset loaded. Invalid addon names are handled by logging an error message and skipping the invalid addon.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_assets.zig_chunk_2": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the number of blocks, items, procedural items, biomes, cave layers, structure tables, recipes, structure building blocks, blueprints, particles, world presets, block models, and block model ZONs that are read. It also omits the exact command/config syntax for reading assets and does not provide a comprehensive list of all asset types handled by the `Addon` struct.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines the `Addon` struct responsible for managing assets within an addon directory. It includes methods to discover all addons in a given path, read ZON files with optional default merging, and read blueprint files. The `Defaults` nested struct manages default asset configurations, reading from `_defaults.zig.zon` or `_defaults.zon` files. Error handling is implemented throughout for file operations, logging errors when assets cannot be opened or processed.\n\nThe `Addon` struct has the following fields:\n- `name`: A string representing the name of the addon.\n- `dir`: A directory object representing the addon's directory.\n\nThe `Addon` struct provides the following methods:\n- `discoverAll(allocator: NeverFailingAllocator, assetDir: main.files.Dir, path: []const u8) []Addon`: Discovers all addons in a given path. It checks for valid addon names and logs errors if an invalid name is found.\n- `deinit(self: *Addon, allocator: NeverFailingAllocator) void`: Deinitializes the addon by closing the directory and freeing the name.\n\nThe `Defaults` nested struct has the following fields:\n- `localArena`: A never-failing arena allocator.\n- `localAllocator`: A never-failing allocator.\n- `defaults`: A string hash map unmanaged for storing default Zon elements.\n\nThe `Defaults` nested struct provides the following methods:\n- `init(self: *Defaults, allocator: NeverFailingAllocator) void`: Initializes the defaults by setting up the local arena and allocator.\n- `deinit(self: *Defaults) void`: Deinitializes the defaults by deinitializing the local arena.\n- `get(self: *Defaults, dir: main.files.Dir, dirPath: []const u8) ZonElement`: Retrieves a default Zon element for a given directory path. If the element is not found, it reads the default file and stores it in the hash map.\n- `read(self: *Defaults, dir: main.files.Dir) !ZonElement`: Reads a default ZON file from the given directory. It first tries to read `_defaults.zig.zon` and then `_defaults.zon`, returning `.null` if both files are not found.\n\nThe `Addon` struct also provides the following methods:\n- `readAllZon(addon: Addon, allocator: NeverFailingAllocator, assetType: []const u8, hasDefaults: bool, output: *ZonHashMap, _migrations: ?*AddonNameToZonMap) void`: Reads all ZON files for a given asset type. It handles default merging if specified and logs errors for file operations.\n- `readAllBlueprints(addon: Addon, allocator: NeverFailingAllocator, subPath: []const u8, output: *BytesHashMap) void`: Reads all blueprint files in a given subpath and stores them in the output hash map. It logs errors for file operations.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411149.3233142,
+        "reason": "The explanation does not provide specific details about the number of blocks, items, procedural items, biomes, cave layers, structure tables, recipes, structure building blocks, blueprints, particles, world presets, block models, and block model ZONs that are read. It also omits the exact command/config syntax for reading assets and does not provide a comprehensive list of all asset types handled by the `Addon` struct.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines the `Addon` struct responsible for managing assets within an addon directory. It includes methods to discover all addons in a given path, read ZON files with optional default merging, and read blueprint files. The `Defaults` nested struct manages default asset configurations, reading from `_defaults.zig.zon` or `_defaults.zon` files. Error handling is implemented throughout for file operations, logging errors when assets cannot be opened or processed.\n\nThe `Addon` struct has the following fields:\n- `name`: A string representing the name of the addon.\n- `dir`: A directory object representing the addon's directory.\n\nThe `Addon` struct provides the following methods:\n- `discoverAll(allocator: NeverFailingAllocator, assetDir: main.files.Dir, path: []const u8) []Addon`: Discovers all addons in a given path. It checks for valid addon names and logs errors if an invalid name is found.\n- `deinit(self: *Addon, allocator: NeverFailingAllocator) void`: Deinitializes the addon by closing the directory and freeing the name.\n\nThe `Defaults` nested struct has the following fields:\n- `localArena`: A never-failing arena allocator.\n- `localAllocator`: A never-failing allocator.\n- `defaults`: A string hash map unmanaged for storing default Zon elements.\n\nThe `Defaults` nested struct provides the following methods:\n- `init(self: *Defaults, allocator: NeverFailingAllocator) void`: Initializes the defaults by setting up the local arena and allocator.\n- `deinit(self: *Defaults) void`: Deinitializes the defaults by deinitializing the local arena.\n- `get(self: *Defaults, dir: main.files.Dir, dirPath: []const u8) ZonElement`: Retrieves a default Zon element for a given directory path. If the element is not found, it reads the default file and stores it in the hash map.\n- `read(self: *Defaults, dir: main.files.Dir) !ZonElement`: Reads a default ZON file from the given directory. It first tries to read `_defaults.zig.zon` and then `_defaults.zon`, returning `.null` if both files are not found.\n\nThe `Addon` struct also provides the following methods:\n- `readAllZon(addon: Addon, allocator: NeverFailingAllocator, assetType: []const u8, hasDefaults: bool, output: *ZonHashMap, _migrations: ?*AddonNameToZonMap) void`: Reads all ZON files for a given asset type. It handles default merging if specified and logs errors for file operations.\n- `readAllBlueprints(addon: Addon, allocator: NeverFailingAllocator, subPath: []const u8, output: *BytesHashMap) void`: Reads all blueprint files in a given subpath and stores them in the output hash map. It logs errors for file operations.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_assets.zig_chunk_3": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide concrete details about the readAllAssets function, how migration files are handled, and specific file endings processed by readAllModels.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk handles reading assets from addon directories and storing them in a BytesHashMap. It contains three public functions: `readAllAssets`, `readAllBlueprints`, and `readAllModels`. Each function reads files from specified subdirectories of an addon, processes them, and stores the results in a BytesHashMap. The `readAllAssets` function also handles migration files separately. Error handling is included for file operations, with appropriate logging on failure.\n\nThe `readAllAssets` function iterates over entries in the assets directory, skipping `_migrations.zig.zon` files. It creates an asset ID using `createAssetStringID`, reads the ZON file into a `zon` object, and merges it with default settings if available. The resulting `zon` object is then stored in the output map.\n\nThe `readAllBlueprints` function reads blueprint files (`.blp`) from the specified subdirectory, skipping `_defaults` and `_migrations` prefixed files. It creates an asset ID using `createAssetStringID`, reads the file data, and stores it in the output map.\n\nThe `readAllModels` function reads model files with a specific ending (e.g., `.obj`) from the specified subdirectory. It creates an asset ID using `createAssetStringID`, reads the file data, and stores it in the output map.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411166.322158,
+        "reason": "The explanation does not provide concrete details about the readAllAssets function, how migration files are handled, and specific file endings processed by readAllModels.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk handles reading assets from addon directories and storing them in a BytesHashMap. It contains three public functions: `readAllAssets`, `readAllBlueprints`, and `readAllModels`. Each function reads files from specified subdirectories of an addon, processes them, and stores the results in a BytesHashMap. The `readAllAssets` function also handles migration files separately. Error handling is included for file operations, with appropriate logging on failure.\n\nThe `readAllAssets` function iterates over entries in the assets directory, skipping `_migrations.zig.zon` files. It creates an asset ID using `createAssetStringID`, reads the ZON file into a `zon` object, and merges it with default settings if available. The resulting `zon` object is then stored in the output map.\n\nThe `readAllBlueprints` function reads blueprint files (`.blp`) from the specified subdirectory, skipping `_defaults` and `_migrations` prefixed files. It creates an asset ID using `createAssetStringID`, reads the file data, and stores it in the output map.\n\nThe `readAllModels` function reads model files with a specific ending (e.g., `.obj`) from the specified subdirectory. It creates an asset ID using `createAssetStringID`, reads the file data, and stores it in the output map.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_assets.zig_chunk_4": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the asset ID creation process, error handling for invalid asset IDs, or the steps taken to register different types of assets. It also omits information about how procedural items differ from regular items and how recipes are registered from zon files.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk contains functions responsible for creating unique asset IDs based on addon names, file paths, and types. The `createAssetStringID` function generates an asset ID by combining the addon name, asset type, and relative file path, ensuring that the file name does not start with an underscore and that the asset name only contains lowercase letters, numbers, underscores, and path separators. If the file extension is '.zig.zon', it removes this extension before processing. The function also converts Windows-style path separators to Unix-style separators. Error handling is implemented to log errors if the asset ID or configuration is invalid.\n\nThe `init` function initializes the common asset handling system by reading assets from the 'assets/' directory and logging the initialization process.\n\nThe `registerItem` function registers an item by extracting the module name from the asset ID, constructing texture paths, and registering the item with the necessary details. The `registerProceduralItem` function registers procedural items similarly to regular items but uses a different registration method.\n\nThe `registerBlock` function registers a block by checking if the configuration is valid and then registering the block and its mesh. The `assignBlockItem` function assigns a block to an item based on their string IDs.\n\nThe `registerBiome` function registers a biome, logging an error if the configuration is missing and replacing it with a default biome. The `registerRecipesFromZon` function registers recipes from zon files using the items' registration method.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411176.4071825,
+        "reason": "The explanation does not provide specific details about the asset ID creation process, error handling for invalid asset IDs, or the steps taken to register different types of assets. It also omits information about how procedural items differ from regular items and how recipes are registered from zon files.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk contains functions responsible for creating unique asset IDs based on addon names, file paths, and types. The `createAssetStringID` function generates an asset ID by combining the addon name, asset type, and relative file path, ensuring that the file name does not start with an underscore and that the asset name only contains lowercase letters, numbers, underscores, and path separators. If the file extension is '.zig.zon', it removes this extension before processing. The function also converts Windows-style path separators to Unix-style separators. Error handling is implemented to log errors if the asset ID or configuration is invalid.\n\nThe `init` function initializes the common asset handling system by reading assets from the 'assets/' directory and logging the initialization process.\n\nThe `registerItem` function registers an item by extracting the module name from the asset ID, constructing texture paths, and registering the item with the necessary details. The `registerProceduralItem` function registers procedural items similarly to regular items but uses a different registration method.\n\nThe `registerBlock` function registers a block by checking if the configuration is valid and then registering the block and its mesh. The `assignBlockItem` function assigns a block to an item based on their string IDs.\n\nThe `registerBiome` function registers a biome, logging an error if the configuration is missing and replacing it with a default biome. The `registerRecipesFromZon` function registers recipes from zon files using the items' registration method.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_assets.zig_chunk_5": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about how the Palette struct initializes from a ZonElement, what error occurs if the first element of the palette doesn't match, and how the refCount variable is used. Additionally, the related questions are not fully answered in the explanation.",
+    "corrected_summary": null,
+    "corrected_explanation": "The Palette struct handles loading and storing color palettes from ZonElement data structures, managing memory allocation and deallocation for palette entries. It provides methods to initialize a palette from ZonElement data, either in legacy object format or array format. The `init` function checks the type of ZonElement and calls `loadFromZonLegacy` or `loadFromZon` accordingly. If the first element is provided and does not match the first item in the palette, it returns an error (`FistItemMismatch`). The `loadFromZon` function loads elements from a Zon array into the palette, while `loadFromZonLegacy` handles legacy object format by mapping numeric IDs to names. The struct also includes functions to add new entries (`add`), replace existing ones (`replaceEntry`), and store the current state back into a ZonElement (`storeToZon`). The struct manages memory for its internal list of palette items using an allocator, and the `deinit` function frees all allocated memory. Error handling is implemented for invalid formats and mismatched first elements. The global variables `worldAssetFolder` and `refCount` are declared but not used within this chunk.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411185.0742886,
+        "reason": "The explanation does not provide specific details about how the Palette struct initializes from a ZonElement, what error occurs if the first element of the palette doesn't match, and how the refCount variable is used. Additionally, the related questions are not fully answered in the explanation.",
+        "corrected_summary": null,
+        "corrected_explanation": "The Palette struct handles loading and storing color palettes from ZonElement data structures, managing memory allocation and deallocation for palette entries. It provides methods to initialize a palette from ZonElement data, either in legacy object format or array format. The `init` function checks the type of ZonElement and calls `loadFromZonLegacy` or `loadFromZon` accordingly. If the first element is provided and does not match the first item in the palette, it returns an error (`FistItemMismatch`). The `loadFromZon` function loads elements from a Zon array into the palette, while `loadFromZonLegacy` handles legacy object format by mapping numeric IDs to names. The struct also includes functions to add new entries (`add`), replace existing ones (`replaceEntry`), and store the current state back into a ZonElement (`storeToZon`). The struct manages memory for its internal list of palette items using an allocator, and the `deinit` function frees all allocated memory. Error handling is implemented for invalid formats and mismatched first elements. The global variables `worldAssetFolder` and `refCount` are declared but not used within this chunk.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_assets.zig_chunk_7": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation omits specific details about the `readAsset` function, such as how it constructs file paths and handles errors. It also omits the exact components deinitialized in the `unloadAssets` function.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk contains functions for managing assets, including unloading them when they are no longer needed and reading specific assets from the file system. The `unloadAssets` function decrements a reference count and deinitializes various components if the count reaches zero. These components include `main.entity`, `sbb`, `blocks`, `items`, `migrations`, `biomes`, `main.server.terrain.cave_layers`, `main.server.terrain.structures`, `main.models`, `main.particles.ParticleManager`, `main.rotation`, and `main.Tag`. It also removes paths from asset hot reloading by iterating over the `assets` directory and removing paths for directories that contain block textures. The `readAsset` function constructs a path based on given parameters (`subPath`, `id`, and `fileEnding`). If the file does not exist in the first constructed path, it tries another path. It reads the contents of the file and returns them. The `worldPresets` function returns a pointer to a world presets map.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411215.6324875,
+        "reason": "The explanation omits specific details about the `readAsset` function, such as how it constructs file paths and handles errors. It also omits the exact components deinitialized in the `unloadAssets` function.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk contains functions for managing assets, including unloading them when they are no longer needed and reading specific assets from the file system. The `unloadAssets` function decrements a reference count and deinitializes various components if the count reaches zero. These components include `main.entity`, `sbb`, `blocks`, `items`, `migrations`, `biomes`, `main.server.terrain.cave_layers`, `main.server.terrain.structures`, `main.models`, `main.particles.ParticleManager`, `main.rotation`, and `main.Tag`. It also removes paths from asset hot reloading by iterating over the `assets` directory and removing paths for directories that contain block textures. The `readAsset` function constructs a path based on given parameters (`subPath`, `id`, and `fileEnding`). If the file does not exist in the first constructed path, it tries another path. It reads the contents of the file and returns them. The `worldPresets` function returns a pointer to a world presets map.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "github_pr_3345_comment_3560827677": {
+    "stage": "proposed",
+    "collection": "reviews",
+    "proposer": "Nick",
+    "reason": "The explanation omits specific details about the `success` state case, such as what it originally did and how its removal impacts the code. It also fails to address the role of `connectFuture`, the significance of `state.load(.acquire)`, and other concrete facts from raw_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "# [src/gui/windows/connecting.zig] - PR #3345 review diff\n\n**Type:** review\n**Keywords:** GuiWindow, Button, Label, VerticalList, State, connectionManager, ip, connectFuture, handshakeZon, state, errorMessage, statusLabel, connectFromNewThread, start, cancel\n**Symbols:** window, GuiWindow, Button, Label, VerticalList, State, connectionManager, ip, connectFuture, handshakeZon, state, errorMessage, statusLabel, connectFromNewThread, start, cancel, onOpen, onClose, update\n**Concepts:** thread safety, performance optimization, state management, error handling\n\n## Summary\nThe `success` state case was removed to reduce wait time by one frame and avoid potential edge cases.\n\n## Explanation\nThe reviewer suggests removing the `success` state case from the `update` function in the `connecting.zig` file. This change aims to improve performance by reducing the wait time by one frame and prevent edge cases where the button might be clicked during that extra frame. The removal of this case is considered a critical architectural review as it impacts the flow and responsiveness of the connection process.\n\nThe original `success` state case likely handled finalizing the connection and updating the UI. By removing it, the code avoids an unnecessary frame delay, which can improve user experience by making the connection process feel faster and more responsive.\n\nThe `connectFuture` variable is used to manage the asynchronous connection task. It holds a reference to the future that represents the ongoing connection attempt. If the connection fails or is canceled, `connectFuture` is set to null to indicate that the task has completed.\n\nThe `state.load(.acquire)` call in the `update` function is used to safely read the current state of the connection process. The `.acquire` memory ordering ensures that the most recent value of the state is read, which is crucial for maintaining correct behavior in a multi-threaded environment.\n\nRemoving the `success` state case simplifies the code by reducing the number of states and transitions. This can make the code easier to understand and maintain while still achieving the desired performance improvements.\n\n## Related Questions\n- What is the purpose of removing the `success` state case?\n- How does this change impact the connection process flow?\n- What potential edge cases are avoided by this modification?\n- Is there any risk associated with reducing wait time by one frame?\n- How does this change affect thread safety in the connection process?\n- Can you explain the role of `connectFuture` in this code snippet?\n- What is the significance of the `state.load(.acquire)` call in the `update` function?\n- How does the removal of the `success` state case improve performance?\n- Are there any other potential optimizations that can be made to this code?\n- What impact does this change have on error handling during the connection process?\n\n*Source: unknown | chunk_id: github_pr_3345_comment_3560827677*\n",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411233.2382767,
+        "reason": "The explanation omits specific details about the `success` state case, such as what it originally did and how its removal impacts the code. It also fails to address the role of `connectFuture`, the significance of `state.load(.acquire)`, and other concrete facts from raw_content.",
+        "corrected_summary": null,
+        "corrected_explanation": "# [src/gui/windows/connecting.zig] - PR #3345 review diff\n\n**Type:** review\n**Keywords:** GuiWindow, Button, Label, VerticalList, State, connectionManager, ip, connectFuture, handshakeZon, state, errorMessage, statusLabel, connectFromNewThread, start, cancel\n**Symbols:** window, GuiWindow, Button, Label, VerticalList, State, connectionManager, ip, connectFuture, handshakeZon, state, errorMessage, statusLabel, connectFromNewThread, start, cancel, onOpen, onClose, update\n**Concepts:** thread safety, performance optimization, state management, error handling\n\n## Summary\nThe `success` state case was removed to reduce wait time by one frame and avoid potential edge cases.\n\n## Explanation\nThe reviewer suggests removing the `success` state case from the `update` function in the `connecting.zig` file. This change aims to improve performance by reducing the wait time by one frame and prevent edge cases where the button might be clicked during that extra frame. The removal of this case is considered a critical architectural review as it impacts the flow and responsiveness of the connection process.\n\nThe original `success` state case likely handled finalizing the connection and updating the UI. By removing it, the code avoids an unnecessary frame delay, which can improve user experience by making the connection process feel faster and more responsive.\n\nThe `connectFuture` variable is used to manage the asynchronous connection task. It holds a reference to the future that represents the ongoing connection attempt. If the connection fails or is canceled, `connectFuture` is set to null to indicate that the task has completed.\n\nThe `state.load(.acquire)` call in the `update` function is used to safely read the current state of the connection process. The `.acquire` memory ordering ensures that the most recent value of the state is read, which is crucial for maintaining correct behavior in a multi-threaded environment.\n\nRemoving the `success` state case simplifies the code by reducing the number of states and transitions. This can make the code easier to understand and maintain while still achieving the desired performance improvements.\n\n## Related Questions\n- What is the purpose of removing the `success` state case?\n- How does this change impact the connection process flow?\n- What potential edge cases are avoided by this modification?\n- Is there any risk associated with reducing wait time by one frame?\n- How does this change affect thread safety in the connection process?\n- Can you explain the role of `connectFuture` in this code snippet?\n- What is the significance of the `state.load(.acquire)` call in the `update` function?\n- How does the removal of the `success` state case improve performance?\n- Are there any other potential optimizations that can be made to this code?\n- What impact does this change have on error handling during the connection process?\n\n*Source: unknown | chunk_id: github_pr_3345_comment_3560827677*\n",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "github_pr_3345_comment_3566597237": {
+    "stage": "proposed",
+    "collection": "reviews",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the properties of the `GuiWindow`, the exact states in the `State` enum, or the components that make up the connecting window GUI. It also omits the concrete values for padding and width.",
+    "corrected_summary": null,
+    "corrected_explanation": "The review introduces a new file `connecting.zig` that defines a GUI window for managing network connections. The code initializes a `GuiWindow` with specific properties such as `contentSize = Vec2f{128, 64}`, `hasBackground = true`, `closeable = false`, and `modal = true`. It also sets up state management using an enum `State` with values `.connecting`, `.connected`, `.failed`, and `.cancelled`. The code includes functions like `connectFromNewThread` to handle connection logic in a separate thread, ensuring proper initialization and cleanup of thread-local storage. The reviewer notes that the use of `@errorName` for error messages is efficient since it returns strings from the read-only section of the executable, thus avoiding unnecessary memory allocation.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411239.589329,
+        "reason": "The explanation does not provide specific details about the properties of the `GuiWindow`, the exact states in the `State` enum, or the components that make up the connecting window GUI. It also omits the concrete values for padding and width.",
+        "corrected_summary": null,
+        "corrected_explanation": "The review introduces a new file `connecting.zig` that defines a GUI window for managing network connections. The code initializes a `GuiWindow` with specific properties such as `contentSize = Vec2f{128, 64}`, `hasBackground = true`, `closeable = false`, and `modal = true`. It also sets up state management using an enum `State` with values `.connecting`, `.connected`, `.failed`, and `.cancelled`. The code includes functions like `connectFromNewThread` to handle connection logic in a separate thread, ensuring proper initialization and cleanup of thread-local storage. The reviewer notes that the use of `@errorName` for error messages is efficient since it returns strings from the read-only section of the executable, thus avoiding unnecessary memory allocation.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "github_pr_3278_comment_3484044409": {
+    "stage": "proposed",
+    "collection": "reviews",
+    "proposer": "Nick",
+    "reason": "The explanation does not mention that the fields are initialized to zero, nor does it provide the exact size increase of 12 bytes.",
+    "corrected_summary": null,
+    "corrected_explanation": "# [src/network.zig] - PR #3278 review diff\n\n**Type:** review\n**Keywords:** struct, fields, size, performance, cache line, optimization\n**Symbols:** Connection, restartChannelCounter, restartCounter\n**Concepts:** thread safety, memory layout, cache optimization\n\n## Summary\nAdded `restartChannelCounter` and `restartCounter` fields to the `Connection` struct.\n\n## Explanation\nThe reviewer suggests adding two new fields, `restartChannelCounter` and `restartCounter`, to the `Connection` struct. These fields are initialized to zero and increase the size of the struct by 12 bytes. The reviewer emphasizes that while this may seem like a minor concern, it could potentially degrade performance due to cache line alignment issues. The reviewer advises against optimizing for space at the cost of potentially degrading performance.\n\n## Related Questions\n- What is the impact of adding these fields on memory usage?\n- How does this change affect cache performance?\n- Are there any potential thread safety concerns with these new fields?\n- Can you provide a benchmark to measure the performance difference before and after this change?\n- Is there a way to optimize the struct layout further without increasing its size?\n- What are the implications of using overflow arithmetic in these counters?\n- How does this change affect backwards compatibility?\n- Are there any potential regression risks associated with this modification?\n- Can you explain why the reviewer suggests not shortening variable types for space optimization?\n- What is the expected impact on the overall system performance due to this change?",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411248.823805,
+        "reason": "The explanation does not mention that the fields are initialized to zero, nor does it provide the exact size increase of 12 bytes.",
+        "corrected_summary": null,
+        "corrected_explanation": "# [src/network.zig] - PR #3278 review diff\n\n**Type:** review\n**Keywords:** struct, fields, size, performance, cache line, optimization\n**Symbols:** Connection, restartChannelCounter, restartCounter\n**Concepts:** thread safety, memory layout, cache optimization\n\n## Summary\nAdded `restartChannelCounter` and `restartCounter` fields to the `Connection` struct.\n\n## Explanation\nThe reviewer suggests adding two new fields, `restartChannelCounter` and `restartCounter`, to the `Connection` struct. These fields are initialized to zero and increase the size of the struct by 12 bytes. The reviewer emphasizes that while this may seem like a minor concern, it could potentially degrade performance due to cache line alignment issues. The reviewer advises against optimizing for space at the cost of potentially degrading performance.\n\n## Related Questions\n- What is the impact of adding these fields on memory usage?\n- How does this change affect cache performance?\n- Are there any potential thread safety concerns with these new fields?\n- Can you provide a benchmark to measure the performance difference before and after this change?\n- Is there a way to optimize the struct layout further without increasing its size?\n- What are the implications of using overflow arithmetic in these counters?\n- How does this change affect backwards compatibility?\n- Are there any potential regression risks associated with this modification?\n- Can you explain why the reviewer suggests not shortening variable types for space optimization?\n- What is the expected impact on the overall system performance due to this change?",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "github_pr_3350_comment_3564327946": {
+    "stage": "proposed",
+    "collection": "reviews",
+    "proposer": "Nick",
+    "reason": "The explanation does not mention the specific suggestion to replace `if (itemSlot.inventory.super.id == main.game.Player.inventory.super.id)` with `blk: { if (itemSlot.inventory.super.id == main.game.Player.inventory.super.id) { ... } break :blk; }` and does not address how this change would affect the code's behavior or performance.",
+    "corrected_summary": null,
+    "corrected_explanation": "# [src/gui/gui.zig] - PR #3350 review diff\n\n**Type:** review\n**Keywords:** quantum, labeled block, blk, deposited, if condition, architectural review\n**Symbols:** inventory, mainGuiButton, itemSlot, main.game.Player.inventory\n**Concepts:** code clarity, maintainability, conditional logic\n\n## Summary\nThe reviewer suggests using a labeled block (`blk`) to handle the condition and potentially break out of it, improving code clarity and reducing redundancy.\n\n## Explanation\nThe reviewer points out that by using a labeled block (`blk`), the code can more clearly express the intention of breaking out of the conditional logic. This approach can help prevent potential bugs related to missing or incorrect handling of the `deposited` variable, which was previously used in an `if(!deposited)` condition. The architectural review aims to enhance code readability and maintainability by avoiding unnecessary checks.\n\nThe reviewer suggests replacing the existing condition with a labeled block as follows:\n```zig\nif (itemSlot.inventory.super.id == main.game.Player.inventory.super.id) blk: {\n    // Existing logic here\n    break :blk;\n}\n```\nThis change allows for more explicit control over the flow of execution and can make the code easier to understand and maintain. By using a labeled block, the reviewer aims to improve the overall clarity and robustness of the inventory handling logic.\n\n## Related Questions\n- What is the purpose of using a labeled block (`blk`) in this code snippet?\n- How does the use of a labeled block improve code clarity and maintainability?\n- Can you explain the potential benefits of avoiding unnecessary checks like `if(!deposited)`?\n- What are the implications of this change on the overall architecture of the GUI module?\n- How might this modification affect the performance or correctness of the inventory handling logic?\n- Is there a risk of introducing new bugs with this refactoring, and if so, how can they be mitigated?",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784411260.7846751,
+        "reason": "The explanation does not mention the specific suggestion to replace `if (itemSlot.inventory.super.id == main.game.Player.inventory.super.id)` with `blk: { if (itemSlot.inventory.super.id == main.game.Player.inventory.super.id) { ... } break :blk; }` and does not address how this change would affect the code's behavior or performance.",
+        "corrected_summary": null,
+        "corrected_explanation": "# [src/gui/gui.zig] - PR #3350 review diff\n\n**Type:** review\n**Keywords:** quantum, labeled block, blk, deposited, if condition, architectural review\n**Symbols:** inventory, mainGuiButton, itemSlot, main.game.Player.inventory\n**Concepts:** code clarity, maintainability, conditional logic\n\n## Summary\nThe reviewer suggests using a labeled block (`blk`) to handle the condition and potentially break out of it, improving code clarity and reducing redundancy.\n\n## Explanation\nThe reviewer points out that by using a labeled block (`blk`), the code can more clearly express the intention of breaking out of the conditional logic. This approach can help prevent potential bugs related to missing or incorrect handling of the `deposited` variable, which was previously used in an `if(!deposited)` condition. The architectural review aims to enhance code readability and maintainability by avoiding unnecessary checks.\n\nThe reviewer suggests replacing the existing condition with a labeled block as follows:\n```zig\nif (itemSlot.inventory.super.id == main.game.Player.inventory.super.id) blk: {\n    // Existing logic here\n    break :blk;\n}\n```\nThis change allows for more explicit control over the flow of execution and can make the code easier to understand and maintain. By using a labeled block, the reviewer aims to improve the overall clarity and robustness of the inventory handling logic.\n\n## Related Questions\n- What is the purpose of using a labeled block (`blk`) in this code snippet?\n- How does the use of a labeled block improve code clarity and maintainability?\n- Can you explain the potential benefits of avoiding unnecessary checks like `if(!deposited)`?\n- What are the implications of this change on the overall architecture of the GUI module?\n- How might this modification affect the performance or correctness of the inventory handling logic?\n- Is there a risk of introducing new bugs with this refactoring, and if so, how can they be mitigated?",
+        "corrected_related_questions": []
       }
     ]
   }

@@ -1,24 +1,8 @@
 {
   "locked": {
-    "github_issue_380_discussion": {
-      "user_id": "NickSRVR",
-      "timestamp": 1784410598.020419
-    },
-    "github_issue_1706_discussion": {
-      "user_id": "Nickc",
-      "timestamp": 1784410731.8227324
-    },
-    "github_issue_99_discussion": {
-      "user_id": "NickSRVR",
-      "timestamp": 1784410752.500926
-    },
-    "github_issue_642_discussion": {
-      "user_id": "Nickc",
-      "timestamp": 1784410881.931917
-    },
-    "codebase_src_models.zig_chunk_2": {
+    "github_pr_3297_comment_3560914855": {
       "user_id": "Nick",
-      "timestamp": 1784410884.4508328
+      "timestamp": 1784411260.8547573
     }
   },
   "completed": [
@@ -1698,8 +1682,32 @@
     "github_issue_1235_discussion",
     "github_issue_1192_discussion",
     "github_issue_1138_discussion",
-    "github_issue_1019_discussion"
+    "github_issue_1019_discussion",
+    "github_issue_642_discussion",
+    "github_issue_630_discussion",
+    "github_issue_380_discussion",
+    "github_issue_1559_discussion",
+    "github_issue_1430_discussion",
+    "github_issue_1590_discussion",
+    "github_issue_1416_discussion",
+    "github_issue_1330_discussion",
+    "github_issue_99_discussion",
+    "github_issue_1706_discussion",
+    "codebase_src_server_terrain_biomes.zig_chunk_1",
+    "github_issue_1323_discussion",
+    "codebase_src_server_terrain_biomes.zig_chunk_2",
+    "github_issue_1322_discussion",
+    "codebase_src_assets.zig_chunk_0",
+    "github_issue_1300_discussion",
+    "github_issue_1166_discussion",
+    "github_issue_1205_discussion",
+    "github_issue_1115_discussion",
+    "github_issue_1111_discussion",
+    "codebase_src_assets.zig_chunk_6",
+    "github_issue_1106_discussion",
+    "github_issue_346_discussion",
+    "github_issue_55_discussion"
   ],
   "actions_baseline_completed": 543,
-  "actions_count": 3883
+  "actions_count": 3945
 }

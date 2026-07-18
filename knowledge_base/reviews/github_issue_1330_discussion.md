@@ -8,7 +8,7 @@
 Discussion about the 'Aquamarine' gem's 'while wet' modifier, focusing on reliability and balance.
 
 ## Explanation
-The discussion revolves around the 'Aquamarine' gem's unique property of increasing damage while the player is wet. The maintainer points out that this feature is unreliable, similar to Minecraft's Trident Riptide enchantment, which fails when needed. To improve reliability, suggestions include making the wet status persist for a short time after leaving water and providing players with a way to make themselves wet on demand, such as using a water bottle. The maintainer also considers extending this effect to armor modifiers, allowing players to stay underwater longer.
+Discussion about the 'Aquamarine' gem's unique property of increasing damage while the player is wet. The physical properties of Aquamarine are as follows: Mohs hardness - 7.5, density - 2.5. The in-game behavior is similar to other gemstones. The maintainer points out that this feature is unreliable, similar to Minecraft's Trident Riptide enchantment, which fails when needed. To improve reliability, suggestions include making the wet status persist for a short time after leaving water and providing players with a way to make themselves wet on demand, such as using a water bottle. The maintainer also considers extending this effect to armor modifiers, allowing players to stay underwater longer.
 
 ## Related Questions
 - What is the current implementation of the 'while wet' modifier for Aquamarine?
