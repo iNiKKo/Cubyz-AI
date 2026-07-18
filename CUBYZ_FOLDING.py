@@ -103,7 +103,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.1"
+VERSION = "1.1.3"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -683,16 +683,30 @@ def get_vram_and_choose_model() -> tuple:
     return model, gpu_type, total_vram_gb
 
 def log_diagnostic(event: dict):
-    """Appends one line to the local diagnostic log -- never submitted anywhere, purely for the
-    volunteer (or whoever's debugging their machine) to look back at afterward. Best-effort: a
-    failure to write a diagnostic line should never interrupt real crunching. Logged at task
-    START (before the heavy Ollama call) as well as at completion, specifically so that if the
-    process dies mid-task (crash, OOM, thermal shutdown) the log still shows which chunk was
-    in-flight when it happened, not just the tasks that finished cleanly."""
+    """Appends one line to the LOCAL diagnostic log (this machine only -- see
+    submit_diagnostic_to_server() for the subset that also goes to the operator). Best-effort: a
+    failure to write a diagnostic line should never interrupt real crunching. Covers every
+    retry/failure, not just the final outcome, so if the process dies mid-task (crash, OOM,
+    thermal shutdown) the log still shows which chunk was in-flight when it happened."""
     event["timestamp"] = time.time()
     try:
         with open(DIAGNOSTICS_FILE, "a") as f:
             f.write(json.dumps(event) + "\n")
+    except Exception:
+        pass
+
+def submit_diagnostic_to_server(event: dict):
+    """Sends a diagnostic event to the operator's server (POST /diagnostics), in addition to the
+    always-local log_diagnostic() write above -- this is what lets the operator see every
+    volunteer's stuck/cancelled chunks in one place instead of only ever seeing their own
+    machine's local file. Deliberately called only for a task's terminal outcome (gave up after
+    all retries, or cancelled mid-task), not every individual retry attempt, so a chunk that needs
+    a couple of retries before succeeding doesn't spam the server. Best-effort and silent: a
+    diagnostic never being allowed to interrupt or slow down real crunching applies just as much
+    to network calls as to local disk writes -- if the server's unreachable, the event is simply
+    lost server-side (it's still in the local log either way)."""
+    try:
+        make_request(f"{SERVER_URL}/diagnostics", event, timeout=10)
     except Exception:
         pass
 
@@ -1123,7 +1137,21 @@ def validate_extraction(data: dict, raw_content: str, p_key: str) -> tuple:
         # contiguous identifier with no spaces, so require that to avoid false positives.
         qualified = [s for s in symbols if "." in s and " " not in s]
         if qualified:
-            orphaned = [s for s in qualified if s.split(".")[0] not in symbol_set]
+            # A qualified symbol's root being absent from the model's own reported symbol list
+            # doesn't mean it's fabricated -- orchestration/entry-point code (main.zig's entry
+            # point, in particular) is naturally full of calls into imported modules
+            # (heap.allocators.deinit, std.log.err) whose root is an import alias the chunk
+            # uses, not something the chunk itself declares. Requiring "the root is ALSO in
+            # symbol_set" made every genuinely call-heavy chunk fail every single attempt
+            # forever (confirmed live: codebase_src_main.zig_chunk_3 hit this 191 times across
+            # the diagnostic log before ever being traced to this check). What actually matters
+            # is grounding -- does the root token appear anywhere in the chunk's real source at
+            # all? A genuinely fabricated dotted reference wouldn't.
+            orphaned = [
+                s for s in qualified
+                if s.split(".")[0] not in symbol_set
+                and not re.search(r'\b' + re.escape(s.split(".")[0]) + r'\b', raw_content)
+            ]
             if len(orphaned) / len(qualified) > 0.5:
                 return False, f"most qualified symbols look like call-chains, not declarations (e.g. {orphaned[0]!r})"
 
@@ -1164,11 +1192,21 @@ def generate_rag_analysis(task: dict, chosen_model: str, max_threads, status_cb)
     # Diagnostic logging here is deliberately scoped to retries/failures only -- a chunk that
     # succeeds on attempt 1 (the normal case) logs nothing at all. The point is "why did this
     # chunk need to be redone," not a full audit trail of routine work.
-    def _log_retry(attempt_num, reason):
-        log_diagnostic({
+    #
+    # `extra` carries whatever's actually available at each failure point -- the raw unparsed
+    # model output on a JSON parse error, or the parsed-but-rejected candidate dict on a
+    # self-check failure -- so a later investigation doesn't have to re-simulate the exact
+    # request just to see what the model actually produced (this gap is exactly what made
+    # diagnosing the "code_example doesn't look like a function/struct/enum body" failures slow
+    # to trace live). Capped in size since some raw model output can be large.
+    def _log_retry(attempt_num, reason, extra=None):
+        event = {
             "event": "task_retry", "mode": "rag", "chunk_id": task.get("chunk_id"),
             "attempt": attempt_num + 1, "reason": reason,
-        })
+        }
+        if extra:
+            event.update({k: (v[:2000] if isinstance(v, str) else v) for k, v in extra.items()})
+        log_diagnostic(event)
 
     parsed_data = None
     last_failure_reason = "no attempts made"
@@ -1203,7 +1241,7 @@ def generate_rag_analysis(task: dict, chosen_model: str, max_threads, status_cb)
         except Exception as e:
             last_failure_reason = f"JSON parse error: {e}"
             status_cb(f"⚠ Attempt {attempt+1}: {last_failure_reason}. Retrying...")
-            _log_retry(attempt, last_failure_reason)
+            _log_retry(attempt, last_failure_reason, {"raw_response": json_string})
             continue
 
         candidate = sanitize_extraction(candidate, raw_content, p_key)
@@ -1214,13 +1252,15 @@ def generate_rag_analysis(task: dict, chosen_model: str, max_threads, status_cb)
             break
         last_failure_reason = f"Self-check failed: {validation_reason}"
         status_cb(f"⚠ Attempt {attempt+1}: {last_failure_reason}. Retrying...")
-        _log_retry(attempt, last_failure_reason)
+        _log_retry(attempt, last_failure_reason, {"candidate": candidate})
 
     if parsed_data is None:
-        log_diagnostic({
+        gave_up_event = {
             "event": "task_gave_up", "mode": "rag", "chunk_id": task.get("chunk_id"),
             "final_reason": last_failure_reason,
-        })
+        }
+        log_diagnostic(gave_up_event)
+        submit_diagnostic_to_server(gave_up_event)
 
     return parsed_data, last_failure_reason
 
@@ -1285,12 +1325,16 @@ def generate_finetune_pairs(task: dict, chosen_model: str, status_cb) -> tuple:
     }
 
     # Same scoping as generate_rag_analysis's _log_retry -- only retries/failures get logged, a
-    # clean first-attempt success logs nothing.
-    def _log_retry(attempt_num, reason):
-        log_diagnostic({
+    # clean first-attempt success logs nothing. `extra` captures whatever's actually available at
+    # each failure point (see generate_rag_analysis's _log_retry for the full reasoning).
+    def _log_retry(attempt_num, reason, extra=None):
+        event = {
             "event": "task_retry", "mode": "finetune", "chunk_id": task.get("chunk_id"),
             "attempt": attempt_num + 1, "reason": reason,
-        })
+        }
+        if extra:
+            event.update({k: (v[:2000] if isinstance(v, str) else v) for k, v in extra.items()})
+        log_diagnostic(event)
 
     grounding_text = grounding_text_for(task)
     parsed = None
@@ -1318,7 +1362,7 @@ def generate_finetune_pairs(task: dict, chosen_model: str, status_cb) -> tuple:
         except Exception as e:
             last_failure = f"JSON parse error: {e}"
             status_cb(f"⚠ Attempt {attempt+1}: {last_failure}. Retrying...")
-            _log_retry(attempt, last_failure)
+            _log_retry(attempt, last_failure, {"raw_response": raw})
             continue
 
         ok, reason = validate_pairs(candidate.get("pairs", []), grounding_text)
@@ -1327,13 +1371,15 @@ def generate_finetune_pairs(task: dict, chosen_model: str, status_cb) -> tuple:
             break
         last_failure = f"Self-check failed: {reason}"
         status_cb(f"⚠ Attempt {attempt+1}: {last_failure}. Retrying...")
-        _log_retry(attempt, last_failure)
+        _log_retry(attempt, last_failure, {"candidate": candidate})
 
     if parsed is None:
-        log_diagnostic({
+        gave_up_event = {
             "event": "task_gave_up", "mode": "finetune", "chunk_id": task.get("chunk_id"),
             "final_reason": last_failure,
-        })
+        }
+        log_diagnostic(gave_up_event)
+        submit_diagnostic_to_server(gave_up_event)
 
     return parsed, last_failure
 
@@ -1640,6 +1686,11 @@ def main():
 
     current_mode = None
     first_stat_print = True
+    # Set right before a task's heavy generation call, cleared right after -- lets the
+    # KeyboardInterrupt handler below know whether a task was actually in-flight when the
+    # interrupt landed, so a Ctrl+C mid-crunch can be reported as a cancelled task (chunk_id and
+    # all) instead of silently vanishing with no record anywhere of what was abandoned.
+    current_task_chunk_id = None
     while True:
         try:
             # Checked every cycle, not just at startup -- a new version can land while this
@@ -1696,10 +1747,12 @@ def main():
                 task_desc = format_current_task_line(task)
                 print_terminal_status(task_desc, "Generating analysis...", first_stat_print, completed_chunks, total_chunks)
 
+                current_task_chunk_id = task["chunk_id"]
                 parsed_data, last_failure_reason = generate_rag_analysis(
                     task, chosen_model, max_threads,
                     lambda msg: print_terminal_status(task_desc, msg, False, completed_chunks, total_chunks)
                 )
+                current_task_chunk_id = None
 
                 if parsed_data is None:
                     print_terminal_status(task_desc, f"✗ Skipped after 3 failed attempts ({last_failure_reason}). Releasing chunk for another node.", False, completed_chunks, total_chunks)
@@ -1723,10 +1776,12 @@ def main():
                 task_desc = format_finetune_task_line(task)
                 print_terminal_status(task_desc, "Generating training pairs...", first_stat_print, completed_chunks, total_chunks)
 
+                current_task_chunk_id = task["chunk_id"]
                 parsed, last_failure = generate_finetune_pairs(
                     task, chosen_model,
                     lambda msg: print_terminal_status(task_desc, msg, False, completed_chunks, total_chunks)
                 )
+                current_task_chunk_id = None
 
                 if parsed is None:
                     # Submit a 0-pairs result instead of just skipping past it: without this, the
@@ -1767,7 +1822,21 @@ def main():
             if cooldown > 0: time.sleep(cooldown)
 
         except KeyboardInterrupt:
-            first_stat_print = True; handle_interrupt_menu()
+            first_stat_print = True
+            if current_task_chunk_id is not None:
+                # A task was genuinely in-flight (mid-Ollama-call) when the interrupt landed, not
+                # just idle-polling or between tasks -- report it as cancelled so it isn't just
+                # silently abandoned with zero record of what got interrupted. The chunk itself
+                # isn't lost (its server-side lock just expires and it goes back in the pool for
+                # another pickup); this is purely about not losing visibility into why it didn't
+                # complete this time.
+                cancelled_event = {
+                    "event": "task_cancelled", "mode": current_mode, "chunk_id": current_task_chunk_id,
+                }
+                log_diagnostic(cancelled_event)
+                submit_diagnostic_to_server(cancelled_event)
+                current_task_chunk_id = None
+            handle_interrupt_menu()
         except urllib.error.HTTPError as he:
             first_stat_print = True
             if he.code == 426:

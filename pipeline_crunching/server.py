@@ -69,8 +69,8 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # get_work/submit_work reject anything below MIN_CLIENT_VERSION with HTTP 426 and a message
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
-MIN_CLIENT_VERSION = "1.0.0"
-LATEST_CLIENT_VERSION = "1.1.1"
+MIN_CLIENT_VERSION = "1.1.2"
+LATEST_CLIENT_VERSION = "1.1.3"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:
@@ -89,6 +89,12 @@ def _version_rejection_message(client_version: str) -> str:
 # switchable afterward without restarting via POST /admin/mode?mode=idle|rag|finetune.
 CURRENT_MODE = "idle"
 SERVER_STATE_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "server_mode_state.json")
+# Central collection point for client-side diagnostics (task_gave_up / task_cancelled events only
+# -- see CUBYZ_FOLDING.py's log_diagnostic()/submit_diagnostic_to_server()). Every volunteer's
+# local ~/.cubyz_node_diagnostics.jsonl stays on their own machine; this is the aggregated view
+# across all of them, since the operator otherwise has no way to see any machine's data but their
+# own.
+CLIENT_DIAGNOSTICS_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "client_diagnostics.jsonl")
 
 rag_chunk_queue = []
 finetune_chunk_queue = []
@@ -158,6 +164,14 @@ def write_json_file(path: str, data, label: str = "file"):
             json.dump(data, f, indent=2)
     except Exception as e:
         print(f"[X] Failed to write {label} to disk: {e}")
+
+def append_jsonl(path: str, record: dict, label: str = "record"):
+    try:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "a", encoding="utf-8") as f:
+            f.write(json.dumps(record) + "\n")
+    except Exception as e:
+        print(f"[X] Failed to append {label} to disk: {e}")
 
 def load_lock_state(path: str) -> dict:
     return read_json_file(path, {"locked": {}, "completed": []})
@@ -954,6 +968,17 @@ def get_version():
         "latest_client_version": LATEST_CLIENT_VERSION,
         "download_url": CLIENT_DOWNLOAD_URL,
     }
+
+@app.post("/diagnostics")
+def submit_diagnostics(payload: dict):
+    # Deliberately a raw dict, not a Pydantic model -- this is observability data, not campaign
+    # state, so it shouldn't need a schema migration every time a new diagnostic field is added
+    # client-side. Only task_gave_up/task_cancelled events land here (see
+    # CUBYZ_FOLDING.py's submit_diagnostic_to_server()) -- the much chattier per-attempt
+    # task_retry events stay purely local, so this endpoint doesn't get hit on every single retry.
+    payload["received_at"] = time.time()
+    append_jsonl(CLIENT_DIAGNOSTICS_FILE, payload, "client diagnostic")
+    return {"status": "logged"}
 
 if __name__ == "__main__":
     import uvicorn
