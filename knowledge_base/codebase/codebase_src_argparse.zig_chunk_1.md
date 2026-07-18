@@ -9,7 +9,7 @@
 Defines a generic command-line argument parser for Zig types.
 
 ## Explanation
-The `Parser` function generates a type that can parse command-line arguments into a specified struct or union type. It supports parsing and autocomplete modes. The `parse` method processes the input string, handling different field types like strings, numbers, enums, structs, and unions. Error messages are accumulated in a provided list. The implementation uses Zig's reflection capabilities to handle various data types dynamically.
+Defines a generic command-line argument parser for Zig types, supporting parsing and autocomplete modes. The `Parser` function generates a type that can parse command-line arguments into a specified struct or union type. It handles different field types including strings, numbers (floats and integers), enums, structs, and unions. Error messages are accumulated in a provided list (`errorMessage`). The implementation uses Zig's reflection capabilities to handle various data types dynamically. For parsing, the `resolveArgument` function processes each argument according to its type, providing specific error handling for missing or incorrect arguments. Autocomplete functionality is supported through the `autocompleteUnion` method which provides suggestions based on union fields.
 
 ## Code Example
 ```zig

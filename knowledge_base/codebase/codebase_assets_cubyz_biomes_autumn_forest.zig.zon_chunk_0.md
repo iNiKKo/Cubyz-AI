@@ -8,7 +8,7 @@
 Defines properties and structures for the Autumn Forest biome in Cubyz.
 
 ## Explanation
-This chunk configures the Autumn Forest biome, specifying its properties such as temperature, tags, generation chances, height limits, beach smoothness, radius, roughness, hills, music, player spawn validity, ground structure, and various structures like trees and vegetation. Each structure entry includes details like type, log, leaves, chance of appearance, height, leaf radius, and other variations.
+This chunk configures the Autumn Forest biome, specifying its properties such as temperature (cold), tags (birch, oak), generation chance (0.5), height limits (minHeightLimit = 7, minHeight = 25, maxHeight = 45, maxHeightLimit = 60), beach smoothness (true), radius (minRadius = 256, maxRadius = 320), roughness (10), hills (10), music ('cubyz:totaldemented/leaves'), player spawn validity (validPlayerSpawn = true), and ground structure ('cubyz:grass/temperate', '2 to 3 cubyz:soil'). The biome includes various structures like simple trees, fallen trees, and flower patches. Simple tree configurations include oak and birch logs with different leaf types and chances of appearance. Fallen trees have specific log types and generation probabilities. Flower patches contain red and yellow leaf piles with varying widths, variations, densities, and priorities.
 
 ## Related Questions
 - What are the tags associated with the Autumn Forest biome?

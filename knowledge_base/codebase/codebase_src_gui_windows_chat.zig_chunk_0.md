@@ -9,7 +9,7 @@
 Defines the chat window GUI component, including message history management and input handling.
 
 ## Explanation
-This chunk defines a chat window GUI component for a game or application. It includes structures for managing message history, such as `History` with circular buffers for up and down navigation of messages. The code handles initialization, deinitialization, clearing the chat, and managing message expiration times. It also provides functions to cycle through message history and check for duplicate messages.
+This chunk defines a chat window GUI component for a game or application. It includes several concrete values and structures: `window` with relative position, scale, content size, showTitleBar, hasBackground, isHud, hideIfMouseIsGrabbed, closeable; `padding` set to 8; `messageTimeout` set to 10000; `reusableHistoryMaxSize` set to 8192. The code also initializes and manages message history using the `History` struct with circular buffers for up and down navigation of messages. It handles initialization, deinitialization, clearing the chat, managing message expiration times, checking for duplicate messages, cycling through message history, and memory management for messages.
 
 ## Code Example
 ```zig

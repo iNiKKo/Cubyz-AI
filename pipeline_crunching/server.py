@@ -6,6 +6,7 @@ import time
 import shutil
 import hashlib
 import threading
+from collections import deque
 from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
@@ -60,16 +61,180 @@ _MODE_BADGES = {  # (color, label) -- RAG/finetune colors match CUBYZ_FOLDING.py
     "admin": (Colors.GRAY, "ADMIN"),
 }
 
+# Persisted across restarts (unlike online_clients, which is a fresh in-memory dict every process
+# start) so the admin dashboard's "joined" column reflects how long a volunteer has actually been
+# part of the project, not just this particular server process's uptime. Computed independently of
+# PIPELINE_ROOT (defined much later in this file, alongside the other campaign_state/* paths) since
+# this needs to exist this early, before any of that.
+USER_FIRST_SEEN_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "campaign_state", "user_first_seen.json")
+_user_first_seen = {}  # user_id (lower) -> unix timestamp, persisted -- see USER_FIRST_SEEN_FILE
+
+def _touch_first_seen(user_id: str):
+    key = user_id.lower()
+    if key in _user_first_seen:
+        return
+    _user_first_seen[key] = time.time()
+    try:
+        with open(USER_FIRST_SEEN_FILE, "w", encoding="utf-8") as f:
+            json.dump(_user_first_seen, f, indent=2)
+    except Exception:
+        pass
+
+if os.path.exists(USER_FIRST_SEEN_FILE):
+    try:
+        with open(USER_FIRST_SEEN_FILE, encoding="utf-8") as f:
+            _user_first_seen.update(json.load(f))
+    except Exception:
+        pass
+
+# ---- Live admin dashboard state (see render_dashboard()) --------------------------------------
+_user_last_status = {}   # user_id (lower) -> {"mode","symbol","symbol_color","message","timestamp"}
+_user_error_counts = {}  # user_id (lower) -> int, incremented for every RED-severity event
+_recent_events = deque(maxlen=10)  # rolling tail of (ts, mode, user_id, symbol, symbol_color, message)
+_DASHBOARD_ACTIVE = False  # flipped true once the background render thread actually starts
+
 def log_event(mode: str, user_id: str, symbol: str, symbol_color: str, message: str):
-    """The one place every campaign console line goes through. mode picks the badge color/label
-    (see _MODE_BADGES); user_id gets its own stable color (see _user_color) in a fixed-width field
-    so it lines up in a column across every log line; symbol/symbol_color carries the severity
-    (checkmark/green for success, X/red for failure, tilde/yellow for in-progress, etc.)."""
+    """The one place every campaign event flows through. Always updates the live dashboard state
+    (last status per user, rolling recent-events tail, red-severity error counts) regardless of
+    display mode. When the dashboard is actively rendering (_DASHBOARD_ACTIVE, a real terminal),
+    this does NOT print a line itself -- the dashboard's own per-user panels are the display, and
+    printing here too would just scroll them out of view. Falls back to plain sequential lines
+    (original behavior) when there's no dashboard, e.g. output piped to a log file."""
+    now = time.time()
+    if user_id:
+        _user_last_status[user_id.lower()] = {"mode": mode, "symbol": symbol, "symbol_color": symbol_color, "message": message, "timestamp": now}
+        if symbol_color == Colors.RED:
+            _user_error_counts[user_id.lower()] = _user_error_counts.get(user_id.lower(), 0) + 1
+    _recent_events.append((now, mode, user_id, symbol, symbol_color, message))
+
+    if _DASHBOARD_ACTIVE:
+        return
     mode_color, mode_label = _MODE_BADGES.get(mode, (Colors.WHITE, mode.upper()))
     ts = f"{Colors.DIM}{datetime.now().strftime('%H:%M:%S')}{Colors.RESET}"
     u_color = _user_color(user_id)
     user_field = f"{u_color}{user_id:<10}{Colors.RESET}" if user_id else " " * 10
     print(f"{ts} {mode_color}[{mode_label:<8}]{Colors.RESET} {user_field} {symbol_color}{symbol}{Colors.RESET} {message}")
+
+def _relative_time(ago_seconds: float) -> str:
+    if ago_seconds < 60:
+        return "just now"
+    minutes = int(ago_seconds // 60)
+    if minutes < 60:
+        return f"{minutes}m ago"
+    hours, minutes = divmod(minutes, 60)
+    if hours < 24:
+        return f"{hours}h {minutes}m ago"
+    days, hours = divmod(hours, 24)
+    return f"{days}d {hours}h ago"
+
+def _mode_stats_file(mode: str):
+    return {"rag": RAG_STATS_FILE, "finetune": FINETUNE_STATS_FILE, "audit": AUDIT_STATS_FILE}.get(mode)
+
+def _format_progress_line(mode: str, stats: dict) -> str:
+    if mode == "audit":
+        return (f"{stats.get('chunks_audited', 0)} audited  •  {stats.get('issues_found', 0)} issues found  •  "
+                f"{stats.get('reviews_done', 0)} reviewed  •  {stats.get('fixes_applied', 0)} fixes applied")
+    if mode == "finetune":
+        return f"{stats.get('chunks_completed', 0)} chunks  •  {stats.get('pairs_generated', 0)} pairs generated"
+    return f"{stats.get('chunks_completed', 0)} chunks  •  {stats.get('lines_crunched', 0)} lines crunched"
+
+def render_dashboard():
+    """Redraws the whole admin console as a set of per-user panels (status/hardware/lane/joined/
+    progress/errors) instead of an ever-scrolling line-per-event log -- the old format made it
+    genuinely hard to answer "what is THIS specific user doing right now" at a glance on a live
+    multi-node campaign, since their last line could be scrolled dozens of lines up by the time you
+    looked. A compact "recent events" tail is kept at the bottom so individual applies/rejections/
+    escalations are still visible, just no longer the ONLY view."""
+    mode = CURRENT_MODE
+    stats_file = _mode_stats_file(mode)
+    user_stats = read_json_file(stats_file, {}) if stats_file else {}
+
+    now = time.time()
+    known = set(online_clients.keys()) | set(user_stats.keys())
+    online = sorted(u for u in known if u in online_clients and now - online_clients[u]["timestamp"] < ONLINE_STALE_SECONDS)
+    offline = sorted(known - set(online))
+
+    lines = []
+    lines.append("\033[2J\033[H")  # clear screen, cursor home
+    mode_color, mode_label = _MODE_BADGES.get(mode, (Colors.WHITE, mode.upper()))
+    header = f" CUBYZ DISTRIBUTED SERVER {Colors.DIM}·{Colors.RESET} {mode_color}{Colors.BOLD}{mode_label} MODE{Colors.RESET} {Colors.DIM}·{Colors.RESET} {datetime.now().strftime('%H:%M:%S')} "
+    lines.append(f"{mode_color}{'═' * 78}{Colors.RESET}")
+    lines.append(header)
+    lines.append(f"{mode_color}{'═' * 78}{Colors.RESET}")
+    lines.append(f"  {Colors.GREEN}{len(online)} online{Colors.RESET}  •  {Colors.GRAY}{len(offline)} offline{Colors.RESET}  •  {len(known)} known volunteers")
+    lines.append("")
+
+    for user_id in online + offline:
+        is_online = user_id in online
+        info = online_clients.get(user_id, {})
+        u_color = _user_color(user_id)
+        status_word = f"{Colors.GREEN}ONLINE{Colors.RESET}" if is_online else f"{Colors.GRAY}OFFLINE{Colors.RESET}"
+        lines.append(f"{u_color}┌─ {Colors.BOLD}{user_id}{Colors.RESET}{u_color} {'─' * max(1, 55 - len(user_id))} {status_word} {u_color}─┐{Colors.RESET}")
+
+        tier = info.get("tier", "?")
+        model = info.get("model") or "-"
+        lane = info.get("lane") or "-"
+        lines.append(f"  Hardware : {tier} tier  •  {model}  •  lane: {Colors.BOLD}{lane}{Colors.RESET}")
+
+        last = _user_last_status.get(user_id)
+        if last:
+            age = _relative_time(now - last["timestamp"])
+            lines.append(f"  Status   : {last['symbol_color']}{last['symbol']}{Colors.RESET} {last['message'][:90]}  {Colors.DIM}({age}){Colors.RESET}")
+        else:
+            lines.append(f"  Status   : {Colors.GRAY}(no activity yet this session){Colors.RESET}")
+
+        joined = _user_first_seen.get(user_id)
+        joined_text = _relative_time(now - joined) if joined else "unknown"
+        lines.append(f"  Joined   : {joined_text}")
+
+        lines.append(f"  Progress : {_format_progress_line(mode, user_stats.get(user_id, {}))}")
+
+        speed = info.get("speed")
+        speed_text = f"{speed:.1f}s/task avg" if isinstance(speed, (int, float)) else "calculating..."
+        errors = _user_error_counts.get(user_id, 0)
+        errors_text = f"{Colors.RED}{errors} error{'s' if errors != 1 else ''}{Colors.RESET}" if errors else f"{Colors.GRAY}0 errors{Colors.RESET}"
+        lines.append(f"  Speed    : {speed_text}  •  Errors: {errors_text}")
+
+        lines.append(f"{u_color}└{'─' * 68}┘{Colors.RESET}")
+        lines.append("")
+
+    if not known:
+        lines.append(f"  {Colors.GRAY}No volunteers have connected yet.{Colors.RESET}")
+        lines.append("")
+
+    lines.append(f"{Colors.DIM}{'─' * 78}{Colors.RESET}")
+    lines.append(f" {Colors.BOLD}Recent Events{Colors.RESET}")
+    if not _recent_events:
+        lines.append(f"  {Colors.GRAY}(none yet){Colors.RESET}")
+    for ts, ev_mode, ev_user, symbol, symbol_color, message in list(_recent_events)[::-1]:
+        ev_mode_color, _ = _MODE_BADGES.get(ev_mode, (Colors.WHITE, ev_mode.upper()))
+        u_color = _user_color(ev_user)
+        user_field = f"{u_color}{ev_user:<10}{Colors.RESET}" if ev_user else " " * 10
+        ts_text = f"{Colors.DIM}{datetime.fromtimestamp(ts).strftime('%H:%M:%S')}{Colors.RESET}"
+        lines.append(f"  {ts_text} {user_field} {symbol_color}{symbol}{Colors.RESET} {message[:80]}")
+
+    sys.stdout.write("\n".join(lines) + "\n")
+    sys.stdout.flush()
+
+def _dashboard_loop():
+    global _DASHBOARD_ACTIVE
+    _DASHBOARD_ACTIVE = True
+    while True:
+        try:
+            render_dashboard()
+        except Exception as e:
+            # Never let a rendering bug take down the actual server -- fall back to one plain
+            # line and try again next cycle.
+            print(f"[X] Dashboard render error: {e}")
+        time.sleep(2)
+
+def start_dashboard_if_tty():
+    """Only worth running against a real terminal -- a piped/redirected stdout (log file, systemd
+    journal) should keep getting plain sequential log_event() lines instead of repeated full-screen
+    clears, which would make a log file unreadable."""
+    if not _TTY:
+        return
+    threading.Thread(target=_dashboard_loop, daemon=True).start()
 
 app = FastAPI(title="Cubyz Distributed Dataset Coordinator")
 
@@ -215,7 +380,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.1.2"
-LATEST_CLIENT_VERSION = "1.1.23"
+LATEST_CLIENT_VERSION = "1.1.24"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:
@@ -1628,19 +1793,21 @@ def _get_finetune_work(user_id: str, hardware_tier: str) -> dict:
     return {"mode": "finetune", "status": "active", "task": assigned_task, "total_chunks": total_chunks, "completed_chunks": completed_chunks, "eta_seconds": eta_seconds}
 
 @app.get("/get_work")
-def get_work(user_id: str, hardware_tier: str = "medium", model: str = "", client_version: str = "", available_models: str = "", avg_task_seconds: float = None):
+def get_work(user_id: str, hardware_tier: str = "medium", model: str = "", client_version: str = "", available_models: str = "", avg_task_seconds: float = None, lane: str = ""):
     if not user_id.isalpha() or not (3 <= len(user_id) <= 9):
         raise HTTPException(status_code=400, detail="Invalid ID layout.")
 
     if _parse_version(client_version) < _parse_version(MIN_CLIENT_VERSION):
         raise HTTPException(status_code=426, detail=_version_rejection_message(client_version))
 
-    # avg_task_seconds is omitted by a client with no completed tasks yet (nothing to average) and
-    # by any pre-1.1.22 client that doesn't send it at all -- keep whatever speed we last heard
-    # from this user_id rather than blanking it out on every single poll.
+    # avg_task_seconds/lane are omitted by a client with nothing to report yet (no completed tasks,
+    # or a pre-1.1.23 client that doesn't send lane at all) -- keep whatever we last heard from this
+    # user_id rather than blanking it out on every single poll.
+    _touch_first_seen(user_id)
     prior = online_clients.get(user_id.lower(), {})
     online_clients[user_id.lower()] = {
-        "timestamp": time.time(), "tier": hardware_tier,
+        "timestamp": time.time(), "tier": hardware_tier, "model": model or prior.get("model"),
+        "lane": lane or prior.get("lane"),
         "speed": avg_task_seconds if avg_task_seconds is not None else prior.get("speed"),
     }
     client_local_models = {m for m in available_models.split(",") if m}
@@ -1764,12 +1931,14 @@ def submit_work(submission: UnifiedSubmission):
     if _parse_version(submission.client_version) < _parse_version(MIN_CLIENT_VERSION):
         raise HTTPException(status_code=426, detail=_version_rejection_message(submission.client_version))
 
-    # Preserve whatever tier/speed the last /get_work poll reported instead of clobbering it --
-    # this endpoint doesn't receive either, and online_clients is the shared roster both /get_work
-    # and the capacity-based ETA (_capacity_based_eta) read from.
+    # Preserve whatever tier/model/lane/speed the last /get_work poll reported instead of
+    # clobbering it -- this endpoint doesn't receive any of them, and online_clients is the shared
+    # roster both /get_work and the capacity-based ETA (_capacity_based_eta) read from.
+    _touch_first_seen(submission.user_id)
     prior = online_clients.get(submission.user_id.lower(), {})
     online_clients[submission.user_id.lower()] = {
-        "timestamp": time.time(), "tier": prior.get("tier", "reporting"), "speed": prior.get("speed"),
+        "timestamp": time.time(), "tier": prior.get("tier", "reporting"),
+        "model": prior.get("model"), "lane": prior.get("lane"), "speed": prior.get("speed"),
     }
 
     # Same reasoning as /get_work's campaign_state_lock use -- _submit_rag_work/
@@ -1997,8 +2166,19 @@ if __name__ == "__main__":
     # Dirty the persisted state the moment we're about to actually start serving -- only the
     # finally block below (a real clean stop) clears it back to True.
     save_server_mode_state(CURRENT_MODE, clean_shutdown=False)
+    # Started after server_startup_gate()'s interactive menu, not before -- the dashboard's
+    # periodic full-screen clears would otherwise fight with (and erase) that menu's own output.
+    start_dashboard_if_tty()
     try:
-        uvicorn.run(app, host="0.0.0.0", port=7000)
+        # access_log=False turns off uvicorn's own per-request "INFO: <ip> - "GET ... HTTP/1.1"
+        # 200 OK" line -- every request already gets a real, readable log_event() line above when
+        # something meaningful actually happens (a task dispatched, a fix applied, etc), so the
+        # raw access log was pure noise on top of that: one line per poll (including /version
+        # heartbeat checks and get_work's full query string, dumped in blue and wrapping across
+        # multiple terminal lines), confirmed live to visually drown out the real log_event()
+        # lines it was supposed to complement. Startup messages and real errors (5xx, exceptions
+        # inside a route) still print via uvicorn's separate error logger, unaffected by this.
+        uvicorn.run(app, host="0.0.0.0", port=7000, access_log=False)
     except KeyboardInterrupt:
         pass
     finally:

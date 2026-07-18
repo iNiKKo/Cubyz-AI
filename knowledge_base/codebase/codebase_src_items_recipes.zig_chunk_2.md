@@ -8,7 +8,7 @@
 This chunk contains a test function for pattern matching with keys in item recipes.
 
 ## Explanation
-The chunk defines a test case that uses the `parsePattern` and `matchWithKeys` functions to match a string against a pattern containing keys. It initializes a pattern from a string, creates a map of keys, matches the input string against the pattern, and checks if the resulting keys match the expected values.
+This chunk contains a test function for pattern matching with keys in item recipes. The test initializes a pattern from the string 'foo:{bar}/{baz}' using the `parsePattern` function and creates a map of keys where 'bar' is set to '1/2'. It then matches the input string 'foo:1/2/3' against this pattern, expecting the output to be a single key set with 'bar' mapped to '1/2' and 'baz' mapped to '3'. The test checks if these values match the expected results using `std.testing.expectEqualStrings`. After completing the test, all allocated memory is freed.
 
 ## Related Questions
 - What is the purpose of the `parsePattern` function in this chunk?

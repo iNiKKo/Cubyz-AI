@@ -9,7 +9,7 @@
 This chunk implements condition variable logic for Windows using the ntdll API.
 
 ## Explanation
-The chunk defines a `WindowsImpl` struct that encapsulates Windows-specific condition variable functionality. It uses the `ntdll` library to call functions like `RtlWakeConditionVariable` and `RtlWakeAllConditionVariable`. The `wait` method allows waiting on a condition with an optional timeout, handling overflow scenarios by adjusting the timeout value. The `wake` method wakes up one or all waiting threads based on the `notify` parameter.
+The chunk defines a `WindowsImpl` struct that encapsulates Windows-specific condition variable functionality. It uses the `ntdll` library to call functions like `RtlWakeConditionVariable` and `RtlWakeAllConditionVariable`. The `wait` method allows waiting on a condition with an optional timeout, handling overflow scenarios by adjusting the timeout value. Specifically, if no timeout is provided, `timeout_ms` is set to `c.INFINITE`, which represents an infinite wait. If a timeout is provided, it rounds the nanoseconds to the nearest millisecond and saturating casts it to `os.windows.DWORD`. If this cast results in `std.math.maxInt(os.windows.DWORD)`, indicating overflow into `INFINITE`, it sets `timeout_ms` to `std.math.maxInt(os.windows.DWORD) - 1` to avoid infinite waits. After calling `SleepConditionVariableSRW`, the function checks if the timeout elapsed correctly by asserting that `os.windows.GetLastError()` is `.TIMEOUT`. If no overflow occurred and the wait timed out, it returns an error of type `error{Timeout}`.
 
 ## Code Example
 ```zig

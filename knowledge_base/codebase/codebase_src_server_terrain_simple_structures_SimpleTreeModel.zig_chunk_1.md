@@ -9,7 +9,7 @@
 Generates a simple tree model in a server chunk based on given parameters and random factors.
 
 ## Explanation
-The `generate` function is responsible for creating a simple tree model within a server chunk. It calculates the height, leaf radius, and elongation of the tree using random factors. The function checks if there is enough space for the tree to grow based on the cave map. If the conditions are met, it updates the blocks in the chunk to form the stem and leaves according to the specified tree type (pyramid or round). The `generateStem` method is called to create the trunk of the tree. For pyramid-shaped trees, it fills a conical area with leaf blocks. For round-shaped trees, it calculates a spherical area based on the leaf radius and elongation, updating blocks within this area to form the leaves.
+The `generate` function is responsible for creating a simple tree model within a server chunk. It calculates the height, leaf radius, and elongation of the tree using random factors. The function checks if there is enough space for the tree to grow based on the cave map. If the conditions are met, it updates the blocks in the chunk to form the stem and leaves according to the specified tree type (pyramid or round). The `generateStem` method is called to create the trunk of the tree. For pyramid-shaped trees, it fills a conical area with leaf blocks. For round-shaped trees, it calculates a spherical area based on the leaf radius and elongation using specific formulas: `ceilZRadius = @ceil(leafRadius * leafElongation)`, `ceilRadius = @ceil(leafRadius)`, `radiusSqr = leafRadius * leafRadius`, and `randomRadiusSqr = (leafRadius - 0.25) * (leafRadius - 0.25)`. The function also checks if the distance squared from the center is less than `radiusSqr` and uses a random factor to determine whether to place leaves: `if (distSqr < radiusSqr and (distSqr < randomRadiusSqr or random.nextInt(u1, seed) != 0)) { chunk.updateBlockIfDegradable(px, py, pz, self.leavesBlock); }`.
 
 ## Code Example
 ```zig
@@ -80,15 +80,7 @@ pub fn generate(self: *SimpleTreeModel, _: GenerationMode, x: i32, y: i32, z: i3
 ```
 
 ## Related Questions
-- What is the purpose of the `generate` function in this chunk?
-- How does the function determine the height and leaf properties of the tree?
-- What conditions are checked before generating a tree?
-- How are leaves placed for pyramid-shaped trees?
-- How are leaves placed for round-shaped trees?
-- What is the role of the `generateStem` method in this chunk?
-- How does the function ensure that some leaves are rendered even at lower resolutions?
-- What is the significance of the `leavesBlock` variable in the tree generation process?
-- How does the function handle random factors in generating the tree?
-- What is the purpose of the `ceilZRadius` and `ceilRadius` variables in the round-shaped tree generation?
+- What are the specific formulas used to calculate `ceilZRadius`, `ceilRadius`, `radiusSqr`, and `randomRadiusSqr` for round-shaped trees?
+- How does the function handle random factors in determining whether to place leaves?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_simple_structures_SimpleTreeModel.zig_chunk_1*

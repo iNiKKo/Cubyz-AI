@@ -58,3 +58,8 @@
 {"event": "task_cancelled", "mode": "audit", "chunk_id": "github_issue_2612_discussion", "timestamp": 1784401317.8557436, "received_at": 1784401317.8601403}
 {"event": "task_cancelled", "mode": "audit", "chunk_id": "github_issue_2601_discussion", "timestamp": 1784402594.5931866, "received_at": 1784402594.5962908}
 {"event": "task_cancelled", "mode": "audit", "chunk_id": "codebase_src_server_terrain_mapgen_MapGenV1.zig_chunk_1", "timestamp": 1784402904.0257335, "received_at": 1784402904.0294552}
+{"event": "task_cancelled", "mode": "audit", "chunk_id": "codebase_src_gui_components_Button.zig_chunk_0", "timestamp": 1784403551.2751358, "received_at": 1784403551.2798913}
+{"event": "task_gave_up", "mode": "audit", "chunk_id": "github_issue_1971_discussion", "final_reason": "Self-check failed: verdict is needs_fix but corrected_explanation is empty", "timestamp": 1784403569.2251353, "received_at": 1784403569.7016501}
+{"event": "task_cancelled", "mode": "audit", "chunk_id": "github_issue_733_discussion", "timestamp": 1784404055.042151, "received_at": 1784404055.2147985}
+{"event": "task_cancelled", "mode": "audit", "chunk_id": "codebase_src_rotation.zig_chunk_1", "timestamp": 1784404099.7938178, "received_at": 1784404099.8080268}
+{"event": "task_cancelled", "mode": "audit", "chunk_id": "github_issue_639_discussion", "timestamp": 1784404101.5266957, "received_at": 1784404102.0104125}

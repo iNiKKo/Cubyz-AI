@@ -8,7 +8,37 @@
 This chunk contains unit tests for an argument parsing library, verifying various scenarios including optional arguments, union types, subcommands, and error handling.
 
 ## Explanation
-The chunk defines several test cases using the Zig testing framework to validate the behavior of an argument parser. Each test checks different aspects such as parsing with optional arguments, handling union types where one field or another is required, processing subcommands with varying numbers of arguments, and managing errors when inputs are incorrect. The tests use a custom `Parser` struct and various configurations to simulate command-line input scenarios. They assert expected outcomes for parsed results and error messages.
+This chunk contains unit tests for an argument parsing library in Zig. The tests cover various scenarios including optional arguments, union types, subcommands, and error handling. Specific test cases include:
+
+1. **Test `optional inbetween`**
+   - Configures a parser with optional float arguments (`y: ?f32`) and checks that the parser correctly handles both presence and absence of these arguments.
+   - Expected results: `x = .foo`, `y = null`, `z = .bar`
+
+2. **Test `x or xy case x`**
+   - Tests parsing a union type with one field (`x`) when only that field is provided.
+   - Expected result: `result.x.x = 0.9`
+
+3. **Test `x or xy case xy`**
+   - Tests parsing the same union type but this time providing both fields (`xy`).
+   - Expected results: `result.xy.x = 0.9`, `result.xy.y = 1.0`
+
+4. **Test `x or xy negative empty`**
+   - Checks error handling when no arguments are provided for the union type.
+   - Expected error message: Missing argument at position <x>
+
+5. **Test `x or xy negative too many args`**
+   - Verifies that providing too many arguments results in an appropriate error.
+   - Expected error messages:
+     - For 'x': Too many arguments for command, expected 1
+     - For 'xy': Too many arguments for command, expected 2
+
+6. **Test `subCommands foo`**
+   - Tests parsing a subcommand with one argument (`foo`).
+   - Expected results: `result.foo.cmd = .foo`, `result.foo.x = 1.0`
+
+7. **Test `subCommands bar`**
+   - Tests parsing another subcommand with two arguments (`bar`).
+   - Expected results: `result.bar.cmd = .bar`, `result.bar.x = 2.0`, `result.bar.y = 3.0`
 
 ## Related Questions
 - What are the test cases for optional arguments in the argument parser?

@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.23"
+VERSION = "1.1.24"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -2552,7 +2552,10 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
             # speed it last heard from this user_id rather than treating a missing value as "0".
             speed = avg_task_seconds()
             speed_param = f"&avg_task_seconds={speed}" if speed is not None else ""
-            work_package = make_request(f"{SERVER_URL}/get_work?user_id={user_id}&hardware_tier={hardware_tier}&model={urllib.parse.quote(chosen_model)}&client_version={VERSION}&available_models={available_models_param}{speed_param}", timeout=10)
+            # lane_tag ("GPU"/"CPU"/"MAIN") lets the server's admin dashboard show which physical
+            # lane a given user_id actually is -- previously invisible server-side; an admin could
+            # only infer dual-lane setups from volunteers' own user_id naming conventions.
+            work_package = make_request(f"{SERVER_URL}/get_work?user_id={user_id}&hardware_tier={hardware_tier}&model={urllib.parse.quote(chosen_model)}&client_version={VERSION}&available_models={available_models_param}{speed_param}&lane={lane_tag}", timeout=10)
 
             mode = work_package.get("mode", "rag")
 

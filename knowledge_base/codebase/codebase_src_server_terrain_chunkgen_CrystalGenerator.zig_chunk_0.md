@@ -9,7 +9,7 @@
 The CrystalGenerator module is responsible for generating glow crystals within cave structures in the Cubyz voxel engine.
 
 ## Explanation
-This chunk defines a CrystalGenerator that generates glow crystals inside caves. It initializes by mapping crystal colors to their corresponding block IDs. The `generate` function iterates over nearby chunks, considering each coordinate to place crystals based on random parameters and proximity to cave walls. The `considerCrystal` function handles the detailed placement of individual crystals, including their size, shape, and orientation.
+This chunk defines a CrystalGenerator that generates glow crystals inside caves. It initializes by mapping crystal colors to their corresponding block IDs using an array `crystalColor` which contains 12 different colors: 'red', 'orange', 'yellow', 'lime', 'green', 'cyan', 'aqua', 'blue', 'pink', 'magenta', 'violet', 'crimson', 'viridian', 'indigo', 'purple', 'brown', 'white', 'grey', 'dark_grey', and 'black'. The `init` function maps each color to its corresponding block ID. The `generate` function iterates over nearby chunks, considering each coordinate to place crystals based on random parameters and proximity to cave walls using a surface distance of 2 units from the wall. The `considerCrystal` function handles the detailed placement of individual crystals, including their size, shape, and orientation by generating crystal spikes in random directions with varying lengths.
 
 ## Code Example
 ```zig
