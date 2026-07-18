@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.14"
+VERSION = "1.1.15"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -1688,6 +1688,17 @@ MODE_BANNERS = {
 # cover a full qwen2.5-coder:3b run *while* the GPU lane's own process is also live.
 DUAL_LANE_MIN_RAM_GB = 12.0
 
+# Minimum GPU VRAM required before dual-lane is even offered -- not about system RAM at all, but
+# whether the GPU itself has headroom to spare. Below this (matching the same 6.0 threshold the
+# 7b model tier already uses elsewhere as "a GPU that can comfortably run its own model"), the
+# GPU is already fully committed just running its OWN (lowest-tier, 3b) model; a second lane's
+# concurrent request to the same Ollama server -- even one forced off-GPU via num_gpu=0 -- still
+# has to share that server's scheduling, and confirmed live, on a 2-4 GB card this contention
+# stalled BOTH lanes (the GPU lane stuck at "Generating analysis..." indefinitely, the CPU lane
+# completing exactly one task and then nothing). Plenty of system RAM doesn't fix a GPU that's
+# already maxed out on its own.
+DUAL_LANE_MIN_VRAM_GB = 6.0
+
 class DualStatusBoard:
     """One shared, redrawing status window covering BOTH lanes at once, used instead of each
     lane's own independent box in dual-lane mode. A single lane's box (print_terminal_status
@@ -2216,9 +2227,15 @@ def main():
 
     system_ram_gb = get_system_ram_gb()
     # Dual-lane needs a REAL GPU (a CPU-only machine has nothing extra to run a second lane on --
-    # it'd just be two lanes fighting over the same CPU cores) plus enough spare RAM that a full
-    # concurrent qwen2.5-coder:3b run doesn't starve the GPU lane's own host-side overhead.
-    dual_capable = gpu_type != "cpu" and system_ram_gb >= DUAL_LANE_MIN_RAM_GB
+    # it'd just be two lanes fighting over the same CPU cores) with actual headroom to spare
+    # (DUAL_LANE_MIN_VRAM_GB -- see its comment; system RAM alone doesn't help if the GPU itself
+    # is already maxed out), plus enough spare RAM that a full concurrent qwen2.5-coder:3b run
+    # doesn't starve the GPU lane's own host-side overhead.
+    dual_capable = (
+        gpu_type != "cpu"
+        and system_ram_gb >= DUAL_LANE_MIN_RAM_GB
+        and total_vram_gb >= DUAL_LANE_MIN_VRAM_GB
+    )
 
     log_diagnostic({
         "event": "session_start", "platform": PLATFORM, "gpu_type": gpu_type,
