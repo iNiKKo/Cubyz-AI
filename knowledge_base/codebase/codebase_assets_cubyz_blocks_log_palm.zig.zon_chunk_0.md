@@ -8,7 +8,13 @@
 Defines texture paths for a palm log block.
 
 ## Explanation
-This chunk contains configuration data specifying the file paths for various textures associated with a palm log block. Each field (texture0 to texture5) maps to a specific texture image used in rendering different aspects of the log's appearance, such as its dot pattern, line orientation, bend, intersection, cross, and top.
+This chunk contains configuration data specifying the exact file paths for various textures associated with a palm log block. Each field (texture0 to texture5) maps to a specific texture image used in rendering different aspects of the log's appearance, as follows:
+- `texture0` = "cubyz:log/palm/dot"
+- `texture1` = "cubyz:log/palm/line"
+- `texture2` = "cubyz:log/palm/bend"
+- `texture3` = "cubyz:log/palm/intersection"
+- `texture4` = "cubyz:log/palm/cross"
+- `texture5` = "cubyz:log/palm/top"
 
 ## Related Questions
 - What is the texture file path for the dot pattern of the palm log block?

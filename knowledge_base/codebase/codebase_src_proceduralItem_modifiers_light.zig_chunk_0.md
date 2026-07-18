@@ -9,7 +9,7 @@
 ProceduralItem modifiers for light
 
 ## Explanation
-This chunk defines procedural item modifiers for enhancing the light properties of entities. It includes functions to load, combine, and apply these modifiers to procedural items.
+This chunk defines procedural item modifiers for enhancing light properties. It includes a packed struct `Data` with a `strength` field that is clamped between 0 and 1 when loading data from `zon`. The clamp function used is `std.math.clamp(zon.get(f32, "strength") orelse 0, 0, 1)`. This value affects the swing speed property of procedural items by increasing it based on the formula `proceduralItem.getProperty(.swingSpeed)*(1 + data.strength)`. The tooltip printed by `printTooltip` displays the percentage increase in swing speed as `#9fffde**Light**#808080 *Increases swing speed by **{d:.0}%`, where `{d:.0}` is replaced with `data.strength*100`. Additionally, two `Data` structs are combined using the hypotenuse function `std.math.hypot(data1.strength, data2.strength)`. The priority of this chunk is set to 1.
 
 ## Code Example
 ```zig
@@ -19,17 +19,8 @@ pub fn loadData(zon: main.ZonElement) Data {
 ```
 
 ## Related Questions
-- What is the purpose of the `Data` struct in this chunk?
-- How does the `loadData` function handle missing or invalid strength values?
-- What algorithm is used to combine two `Data` structs?
-- In what context is the `changeProceduralItemParameters` function called?
-- What is the format of the tooltip printed by `printTooltip`?
-- How does the `priority` variable affect the order of execution in this chunk?
-- What is the significance of the `packed struct(u128)` declaration for the `Data` struct?
-- Can you explain how the `clamp` function is used within the `loadData` function?
-- What is the purpose of the `hypot` function in the `combineModifiers` function?
-- How does the `changeProceduralItemParameters` function modify the swing speed property of a procedural item?
-- Can you describe how the tooltip string is constructed and printed by `printTooltip`?
-- What are the potential implications of modifying the swing speed property using the `changeProceduralItemParameters` function?
+- What is the exact formula used in the `loadData` function to clamp the strength value?
+- How does the `hypot` function combine two `Data` structs?
+- What is the specific effect on swing speed when applying a `Data` struct with a given strength value?
 
 *Source: unknown | chunk_id: codebase_src_proceduralItem_modifiers_light.zig_chunk_0*

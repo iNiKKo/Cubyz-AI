@@ -8,7 +8,13 @@
 Defines texture paths for the Cirrus log block.
 
 ## Explanation
-This chunk contains a configuration object with six fields, each representing a different texture used by the Cirrus log block. The textures are named according to their visual characteristics: dot, line, bend, intersection, cross, and top. Each field maps to a specific texture file path within the Cubyz asset structure.
+This chunk contains a configuration object with six fields, each representing a different texture used by the Cirrus log block. The textures are named according to their visual characteristics and map to specific texture file paths within the Cubyz asset structure as follows:
+- `texture0` = "cubyz:log/cirrus/dot"
+- `texture1` = "cubyz:log/cirrus/line"
+- `texture2` = "cubyz:log/cirrus/bend"
+- `texture3` = "cubyz:log/cirrus/intersection"
+- `texture4` = "cubyz:log/cirrus/cross"
+- `texture5` = "cubyz:log/cirrus/top"
 
 ## Related Questions
 - What are the texture paths defined for the Cirrus log block?

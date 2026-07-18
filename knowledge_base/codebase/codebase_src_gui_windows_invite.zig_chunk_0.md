@@ -9,7 +9,7 @@
 This chunk defines the logic for a GUI window that allows users to invite others by sharing their IP address.
 
 ## Explanation
-The chunk contains a `GuiWindow` instance named `window` and several components like `Label`, `TextInput`, and `Button`. It includes functions for discovering the local IP address (`discoverIpAddress`), inviting a user (`invite`), copying the IP address to the clipboard (`copyIp`), handling window open and close events (`onOpen`, `onClose`), and updating the GUI (`update`). The chunk uses threading to discover the IP address in a separate thread, ensuring the main thread remains responsive. It also handles error logging and resource management, such as freeing allocated memory when the window closes.
+This chunk defines a `GuiWindow` instance named `window`, which manages user-invitation logic through sharing IP addresses. The window has a content size of `(128, 256)` pixels. It contains several GUI components like `Label`, `TextInput`, and `Button`. Key functions include `discoverIpAddress`, `invite`, `copyIp`, handling window open/close events (`onOpen`, `onClose`), and updating the GUI (`update`). Threading is used to discover the local IP address in a separate thread, ensuring responsiveness. The discovered IP address is stored in `ipAddress` and displayed using `Label`. Error logging occurs when spawning threads or connecting users, with specific error messages for each case. Memory management includes freeing allocated memory for the IP address string upon window closure.
 
 ## Code Example
 ```zig

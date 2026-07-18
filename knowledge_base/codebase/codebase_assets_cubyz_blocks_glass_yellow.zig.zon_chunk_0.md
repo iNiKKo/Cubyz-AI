@@ -8,7 +8,7 @@
 Defines properties for a yellow glass block.
 
 ## Explanation
-This chunk defines the properties of a yellow glass block in Cubyz. It specifies the absorbed light color and the texture file path.
+This chunk defines the properties of a yellow glass block in Cubyz. It specifies that the absorbed light value is `0x0d36f1` and the texture file path is `cubyz:glass/yellow`. The configuration includes the exact hexadecimal color code for the absorbed light and the precise texture mapping.
 
 ## Related Questions
 - What is the absorbed light color of the yellow glass block?

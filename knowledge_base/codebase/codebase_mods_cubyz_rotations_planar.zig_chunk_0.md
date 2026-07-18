@@ -9,7 +9,17 @@
 Handles block model rotations and data generation based on player direction.
 
 ## Explanation
-This chunk manages the creation and rotation of block models, as well as generating block data based on player direction. It uses a string hash map to store rotated models for efficient retrieval. The `createBlockModel` function rotates a base model by different angles and stores it in the hash map. The `generateData` function sets the block's data based on the player's direction when placing a block. Other functions like `rotateZ`, `model`, and `updateBlockFromNeighborConnectivity` support these primary operations.
+This chunk manages the creation and rotation of block models, as well as generating block data based on player direction. It uses a string hash map (`rotatedModels`) to store rotated models for efficient retrieval. The `createBlockModel` function rotates a base model by different angles (90 degrees clockwise, 180 degrees, and 270 degrees) and stores it in the hash map. Specifically, the rotation matrix transformations are applied as follows:
+
+- Mat4f.rotationZ(std.math.pi/2.0)
+- Mat4f.rotationZ(-std.math.pi/2.0)
+- Mat4f.rotationZ(std.math.pi)
+- Mat4f.identity()
+
+The `generateData` function sets the block's data based on the player's direction when placing a block, determining whether to set the data for positive or negative X and Y directions.
+The `rotateZ` function uses a precomputed rotation table to rotate block data by 90-degree increments. The `model` function retrieves the model index for a given block. The `updateBlockFromNeighborConnectivity` function updates the block based on neighbor connectivity, setting it to air if there is no downward support.
+
+Other functions like `rotateZ`, `model`, and `updateBlockFromNeighborConnectivity` support these primary operations.
 
 ## Code Example
 ```zig

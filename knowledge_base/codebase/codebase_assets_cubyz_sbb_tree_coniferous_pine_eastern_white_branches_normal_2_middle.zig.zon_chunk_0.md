@@ -8,7 +8,7 @@
 Defines blueprints for different types of coniferous tree branches.
 
 ## Explanation
-This chunk contains a configuration structure that lists various blueprints for coniferous tree branches. Each blueprint is identified by a unique string ID, which specifies the type and variant of the branch. This configuration data is likely used by the game engine to generate or reference these specific types of tree branches in the world.
+This chunk contains a configuration structure that lists five specific blueprints for coniferous tree branches. Each blueprint is identified by a unique string ID, which specifies the type and variant of the branch. The IDs are as follows: 'cubyz:tree/coniferous/branch/normal/5/0', 'cubyz:tree/coniferous/branch/normal/5/1', 'cubyz:tree/coniferous/branch/normal/5/2', 'cubyz:tree/coniferous/branch/normal/5/3', and 'cubyz:tree/coniferous/branch/normal/5/4'. This configuration data is used by the game engine to generate or reference these specific types of tree branches in the world.
 
 ## Related Questions
 - What are the IDs of the coniferous tree branches defined in this configuration?

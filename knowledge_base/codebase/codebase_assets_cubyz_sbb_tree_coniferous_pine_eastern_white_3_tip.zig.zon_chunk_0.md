@@ -8,7 +8,15 @@
 Defines blueprints for different variants of an eastern white pine tree tip.
 
 ## Explanation
-This chunk contains a configuration structure defining multiple blueprints, each identified by a unique string. These identifiers are used to reference specific models or assets within the Cubyz voxel engine's asset management system. The blueprints represent various stages or types of the eastern white pine tree tip, likely used for procedural generation or rendering different states of the tree.
+This chunk contains a configuration structure defining multiple blueprints for different variants of an eastern white pine tree tip. The identifiers are used to reference specific models or assets within the Cubyz voxel engine's asset management system. Specifically, the following blueprints are defined:
+
+- cubyz:tree/coniferous/tip/4/0
+- cubyz:tree/coniferous/tip/4/1
+- cubyz:tree/coniferous/tip/4/2
+- cubyz:tree/coniferous/tip/4/3
+- cubyz:tree/coniferous/tip/5/0
+- cubyz:tree/coniferous/tip/5/1
+- cubyz:tree/coniferous/tip/5/2
 
 ## Related Questions
 - What are the identifiers for the different variants of the eastern white pine tree tip?

@@ -9,7 +9,24 @@
 Cave Sky Islands Biome Defaults Configuration
 
 ## Explanation
-This chunk defines the configuration for the Cave Sky Islands biome, including its properties such as fog color, density, and lower/upper limits. It also specifies music, stone block, ground structure, and various structures with their respective IDs, placement modes, chances, widths, variations, densities, priorities, and blocks.
+This chunk defines the configuration for the Cave Sky Islands biome in Cubyz. The properties include:
+- **isCave**: true
+- **tags**: sky_island_layer, cirrus
+- **fogColor**: 0xbbebff
+- **fogDensity**: 5.0
+- **fogLower**: 1e10
+- **fogHigher**: 1e10
+- **music**: cubyz:mischol/sunshower
+- **stoneBlock**: cubyz:nimbusite/smooth
+- **ground_structure**: consists of cubyz:grass/sky and 2 to 3 layers of cubyz:aerosoil
+- **structures**:
+  - ID: cbb, structure: cubyz:tree/cirrus/base, placeMode: degradable, chance: 0.02
+  - ID: flower_patch (daisies), blocks: cubyz:daisies, width: 6, variation: 3, density: 0.3, priority: 0.1
+  - ID: flower_patch (lumiflora), blocks: cubyz:lumiflora, width: 6, variation: 3, density: 0.1, priority: 0.1
+  - ID: flower_patch (grass vegetation sky), blocks: cubyz:grass/vegetation/sky, width: 5, variation: 8, density: 0.5, priority: 0.2
+  - ID: simple_vegetation (sky grass), block: cubyz:grass/vegetation/sky, chance: 0.4, height: 1, height_variation: 0
+  - ID: simple_vegetation (vine cirrus), block: cubyz:vine/cirrus, generationMode: ceiling, chance: 0.2, height: 9, height_variation: 8
+  - ID: stalagmite, block: cubyz:nimbusite/smooth, generationMode: ceiling, chance: 0.048, size: 4, size_variation: 6
 
 ## Related Questions
 - What is the fog color for the Cave Sky Islands biome?

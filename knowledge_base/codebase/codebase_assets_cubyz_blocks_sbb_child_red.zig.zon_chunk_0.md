@@ -8,7 +8,7 @@
 Defines texture paths for a red child block variant.
 
 ## Explanation
-This chunk specifies the texture paths for different sides of a red child block. It includes the side, top, and bottom textures, all pointing to specific files within the Cubyz asset directory structure.
+This chunk specifies the exact texture paths for different sides of a red child block. The side texture is set to 'cubyz:sbb/child/side/red', the top texture is 'cubyz:sbb/child/top/red', and the bottom texture is 'cubyz:sbb/child/bottom/red'.
 
 ## Related Questions
 - What is the side texture for the red child block?

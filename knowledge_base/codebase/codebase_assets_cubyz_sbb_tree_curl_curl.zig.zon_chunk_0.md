@@ -8,7 +8,7 @@
 Defines a list of blueprints for different curl tree variants.
 
 ## Explanation
-This chunk contains a configuration structure that lists five distinct blueprints, each identified by a unique string. These identifiers are used to reference specific types of curl trees within the Cubyz engine's asset system. The blueprints are likely used for loading and managing different variations of curl trees in the game world.
+This chunk contains a configuration structure that lists five distinct blueprints for curl tree variants. The identifiers are as follows: 'cubyz:tree/curl/curl/0', 'cubyz:tree/curl/curl/1', 'cubyz:tree/curl/curl/2', 'cubyz:tree/curl/curl/3', and 'cubyz:tree/curl/curl/4'. These identifiers are used to reference specific types of curl trees within the Cubyz engine's asset system. The blueprints are likely used for loading and managing different variations of curl trees in the game world.
 
 ## Related Questions
 - What are the identifiers for the curl tree blueprints?

@@ -9,7 +9,7 @@
 Cave Mushroom Biome Defaults Configuration
 
 ## Explanation
-This chunk defines the configuration for the Cave Mushroom biome, including cave layer tags, fog density, music track, structures with specific block types and chances, and cave models with minimum and maximum amounts, radii.
+This chunk defines the configuration for the Cave Mushroom biome, including cave layer tags, fog density, music track, structures with specific block types and chances, and cave models with minimum and maximum amounts, radii. The biome is marked as a shallow cave layer with an isCave tag set to true. It has a fogDensity of 2 and plays the 'cubyz:totaldemented/vitreous' music track. Structures defined include ground patches made of clay blocks with a chance of 0.08, stalagmites made of smooth slate with a chance of 0.048, and boulders made of rough or smooth slate each with a chance of 0.016. Specifically, the 'cubyz:boulder' structures are defined twice: one with a block type of 'cubyz:slate/rough' and another with 'cubyz:slate/smooth'. Cave models include partial spheres generated between 10 to 20 times with radii ranging from 8 to 16 units.
 
 ## Related Questions
 - What is the fog density for the Cave Mushroom biome?

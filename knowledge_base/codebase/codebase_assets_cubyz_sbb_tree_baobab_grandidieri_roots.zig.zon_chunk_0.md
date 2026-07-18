@@ -8,7 +8,7 @@
 Defines blueprints for Baobab Grandidieri tree roots.
 
 ## Explanation
-This chunk contains a configuration structure defining two blueprints for the Baobab Grandidieri tree roots. Each blueprint is identified by a unique string ID within the Cubyz asset system.
+This chunk contains a configuration structure defining **two** blueprints for the Baobab Grandidieri tree roots. The specific IDs are 'cubyz:tree/baobab/grandidieri/roots/0' and 'cubyz:tree/baobab/grandidieri/roots/1'. Each blueprint is identified by a unique string ID within the Cubyz asset system.
 
 ## Related Questions
 - What are the IDs of the Baobab Grandidieri tree roots blueprints?

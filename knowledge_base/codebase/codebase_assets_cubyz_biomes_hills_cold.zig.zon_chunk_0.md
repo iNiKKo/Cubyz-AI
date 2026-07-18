@@ -9,7 +9,7 @@
 Biome configuration for cold hills.
 
 ## Explanation
-Defines properties, tags, ground structure, music, and structures for a cold hill biome. Includes details on tree logs, flower patches, simple vegetation, and small buildings (SBBs) with specific placement modes and chances.
+Defines properties, tags, ground structure, music, and structures for a cold hill biome. Properties include 'cold'. Tags are 'pine'. Ground structure consists of 'cubyz:grass/cold' with 2 to 3 cubyz:soil layers. Music associated is 'cubyz:totaldemented/hypoxia'. Structures defined include fallen trees (log type 'cubyz:log/pine', height range 6-9, chance 0.002), flower patches ('cubyz:grass/vegetation/cold' blocks, width 5, variation 8, density 0.5, priority 0.2, chance 0.1), simple vegetation ('cubyz:grass/vegetation/cold', height 1, chance 0.4), and small buildings (SBBs) with specific placement modes and chances for eastern white pine trees and young pine trees.
 
 ## Related Questions
 - What are the properties of this biome?

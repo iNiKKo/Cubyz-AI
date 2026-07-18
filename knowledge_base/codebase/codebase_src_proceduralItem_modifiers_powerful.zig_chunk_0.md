@@ -9,7 +9,7 @@
 This chunk defines a powerful modifier for procedural items, affecting their strength and damage.
 
 ## Explanation
-The chunk declares a `Data` struct with a packed field `strength` of type `f32` and a padding field `pad`. It sets a priority level. The `loadData` function retrieves the strength from a ZonElement, ensuring it's non-negative. The `combineModifiers` function combines two Data instances using the hypotenuse formula to calculate combined strength. The `changeProceduralItemParameters` method adjusts the damage of a procedural item based on its strength. The `printTooltip` function formats a tooltip string indicating the increase in damage.
+This chunk defines a powerful modifier for procedural items, affecting their strength and damage. The `Data` struct contains a packed field `strength` of type `f32` and a padding field `pad`. It sets the priority level to 1. The `loadData` function retrieves the strength from a ZonElement, ensuring it's non-negative by using `@max(0, zon.get(f32, "strength") orelse 0)`. The `combineModifiers` function combines two Data instances using the hypotenuse formula to calculate combined strength with `std.math.hypot(data1.strength, data2.strength)`. The `changeProceduralItemParameters` method adjusts the damage of a procedural item based on its strength by multiplying the current damage property by `(1 + data.strength)`. The `printTooltip` function formats a tooltip string indicating an increase in damage by `{d:.0}%`, where the percentage is calculated as `data.strength * 100`.
 
 ## Code Example
 ```zig

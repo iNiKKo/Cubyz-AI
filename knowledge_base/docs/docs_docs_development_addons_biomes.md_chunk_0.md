@@ -9,7 +9,24 @@
 Describes the structure and properties of `zig.zon` files used to define biomes in Cubyz, including various generation parameters and settings.
 
 ## Explanation
-Every biome in Cubyz is defined by a `zig.zon` file that contains essential data for world generation. The `properties: GenerationProperties` field specifies basic information about the biome's characteristics, such as temperature, terrain type, and moisture levels. The table lists various properties like `isCave`, `radius`, `minHeight`, `maxHeight`, and others that control the biome's behavior, appearance, and environmental effects. For example, `smoothBeaches` enables smooth beach generation, while `interpolation` defines how biomes blend with their neighbors. Each property has a specific type and default value, allowing for precise customization of biome generation.
+Every biome in Cubyz is defined by a `zig.zon` file which contains essential data for world generation. The `properties: GenerationProperties` field specifies basic information about the biome's characteristics, such as temperature, terrain type, and moisture levels. Each property has a specific type and default value that allows precise customization of biome generation.
+
+The table lists various properties like `isCave`, `radius`, `minHeight`, `maxHeight`, and others that control the biome's behavior, appearance, and environmental effects:
+- `isCave`: A boolean indicating whether the biome is a cave (`true`) or surface biome (`false`). Default: —
+- `radius`: Size of the biome. Use `minRadius` and `maxRadius` for variable sizes. Default: 256
+- `minHeight`: Lowest terrain height the biome can generate. Default: —
+- `maxHeight`: Highest terrain height the biome can generate. Default: —
+- `smoothBeaches`: Enables smooth beach generation. Default: false
+- `interpolation`: Border interpolation method (`none`, `linear`, or `square`). Default: square
+- `roughness`: Applies terrain roughness by scattering blocks. Default: —
+- `hills`: Controls rolling hill generation. Default: —\n- `mountains`: Controls spiky mountain generation. Default: —
+- `stoneBlock`: Base block the biome is constructed from (e.g., slate). Default: slate
+- `fogColor`: Fog color in RGB format. Default: —
+- `skyColor`: Sky color in RGB format. Default: {0.46, 0.7, 1.0}
+- `subBiomes`: Collection of sub-biomes. Default: —
+- `parentBiomes`: Parent biomes this biome can generate within. Default: —
+
+Each property has a specific type and default value that allows precise customization of biome generation.
 
 ## Related Questions
 - What is the purpose of the `zig.zon` file in Cubyz?

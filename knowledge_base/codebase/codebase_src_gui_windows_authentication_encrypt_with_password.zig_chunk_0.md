@@ -6,10 +6,10 @@
 **Concepts:** GUI, authentication, encryption, password
 
 ## Summary
-GUI window for encrypting account code with password
+GUI window for encrypting an account code using a password, including checkboxes, text inputs, and buttons to handle user input and actions such as confirming encryption or returning to previous screens.
 
 ## Explanation
-This chunk defines a GUI window for encrypting an account code using a password. It includes components like checkboxes, text inputs, and buttons to allow the user to choose encryption method and enter a password. The window updates based on user input and handles actions such as confirming encryption and returning to previous screens.
+This chunk defines a GUI window for encrypting an account code using a password. It includes components like checkboxes, text inputs, and buttons to allow the user to choose encryption method and enter a password. The `encryptAccountCode` variable determines whether the account code is encrypted with a password or stored unencoded. When the confirm button is clicked, the function checks if `encryptAccountCode` is true and initializes the settings accordingly using either `initFromPassword` or `initUnencoded`. If encryption is chosen, the user must enter a password in the text input field. The window updates based on user input and handles actions such as confirming encryption and returning to previous screens. The inner list dynamically adds components like checkboxes and horizontal lists with labels and text inputs when encrypting with a password. The back button returns the user to the 'authentication/stay_logged_in' screen, while the confirm button saves settings and opens the multiplayer window. The `refreshInner` function updates the content of the vertical list based on the value of `encryptAccountCode`. The confirm button becomes disabled if encryption is chosen but no password has been entered. Upon closing the window, any traces of the account code or password are removed from memory.
 
 ## Code Example
 ```zig
@@ -37,8 +37,5 @@ fn confirm() void {
 - How is the window content size updated after changes?
 - What is the purpose of the `refreshInner` function?
 - What are the conditions under which the confirm button becomes disabled?
-- What actions does the `onClose` function perform?
-- Where is the password row stored in memory?
-- What happens if the user chooses not to encrypt with a password?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_authentication_encrypt_with_password.zig_chunk_0*

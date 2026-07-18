@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.21"
+VERSION = "1.1.22"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -2413,10 +2413,16 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
         task_durations.append(seconds)
         del task_durations[:-MAX_DURATION_SAMPLES]
 
+    def avg_task_seconds():
+        """None until this lane has completed at least one task -- sent to the server on every
+        /get_work poll so it can compute a capacity-based ETA (sum of 1/speed across online
+        nodes) instead of only inferring throughput from how recently chunks finished server-side."""
+        return (sum(task_durations) / len(task_durations)) if task_durations else None
+
     def speed_str():
-        if not task_durations:
+        avg = avg_task_seconds()
+        if avg is None:
             return "calculating..."
-        avg = sum(task_durations) / len(task_durations)
         return f"{avg:.1f}s/chunk avg (last {len(task_durations)})"
 
     def print_terminal_status(task_desc, step_msg, is_first, comp, tot, eta=None):
@@ -2508,7 +2514,12 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
             # other choice (see AUDIT_MODEL_ROSTER's assignment logic).
             local_ollama_models = get_local_ollama_models()
             available_models_param = urllib.parse.quote(",".join(sorted(local_ollama_models)))
-            work_package = make_request(f"{SERVER_URL}/get_work?user_id={user_id}&hardware_tier={hardware_tier}&model={urllib.parse.quote(chosen_model)}&client_version={VERSION}&available_models={available_models_param}", timeout=10)
+            # avg_task_seconds is omitted (not sent as 0 or similar) until this lane has completed
+            # at least one task -- see avg_task_seconds()'s comment; the server keeps whatever
+            # speed it last heard from this user_id rather than treating a missing value as "0".
+            speed = avg_task_seconds()
+            speed_param = f"&avg_task_seconds={speed}" if speed is not None else ""
+            work_package = make_request(f"{SERVER_URL}/get_work?user_id={user_id}&hardware_tier={hardware_tier}&model={urllib.parse.quote(chosen_model)}&client_version={VERSION}&available_models={available_models_param}{speed_param}", timeout=10)
 
             mode = work_package.get("mode", "rag")
 

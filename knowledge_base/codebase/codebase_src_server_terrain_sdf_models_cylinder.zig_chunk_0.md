@@ -9,7 +9,19 @@
 Cylinder SDF Model Initialization and Instantiation
 
 ## Explanation
-This chunk defines a cylinder-shaped Signed Distance Function (SDF) model. It initializes the model with parameters from a ZonElement, calculates its bounding box, and generates an instance of the SDF model based on random values for radius and half-height. The `generate` function computes the distance to the nearest point on the cylinder's surface.
+This chunk defines a cylinder-shaped Signed Distance Function (SDF) model. It initializes the model with parameters from a ZonElement, calculates its bounding box, and generates an instance of the SDF model based on random values for radius and half-height. The `generate` function computes the distance to the nearest point on the cylinder's surface using specific formulas.
+
+The `id` variable is set to "cubyz:cylinder". The parameters `minRadius`, `maxRadius`, `minHalfHeight`, and `maxHalfHeight` are initialized based on values provided in a ZonElement or default values if not specified:
+- `minRadius`: defaults to 16 if not provided.
+- `maxRadius`: defaults to the value of `minRadius` if not provided.
+- `minHalfHeight`: defaults to half of 32 (i.e., 16) if not provided.
+- `maxHalfHeight`: defaults to twice the value of `minHalfHeight` divided by 2 (i.e., `minHalfHeight * 2 / 2`) if not provided.
+
+The bounding box for the cylinder SDF model is calculated based on these parameters. The `instantiate` function creates an instance of the cylinder SDF model with random values for radius and half-height within the specified ranges. The `generate` function computes the distance to the nearest point on the cylinder's surface using the formulas:
+- Circle SDF: `vec.length(vec.xy(samplePos)) - self.radius`
+- Height SDF: `@abs(samplePos[2]) - self.halfHeight`
+
+The final distance is calculated as the length of the maximum vector between these two values and their minimum value, adjusted for cases where the sample point is outside the cylinder's bounds.
 
 ## Code Example
 ```zig

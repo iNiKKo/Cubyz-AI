@@ -8,7 +8,7 @@
 Defines texture paths for a lime-colored block variant.
 
 ## Explanation
-This chunk specifies the file paths for different textures of a lime-colored block. It includes the side, top, and bottom textures used to render the block in various orientations.
+This chunk specifies the exact file paths for different textures of a lime-colored block. The side texture is defined as `cubyz:sbb/child/side/lime`, the top texture as `cubyz:sbb/child/top/lime`, and the bottom texture as `cubyz:sbb/child/bottom/lime`. These file paths are used to render the block in various orientations.
 
 ## Related Questions
 - What is the side texture file for the lime block?

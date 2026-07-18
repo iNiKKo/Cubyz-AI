@@ -9,7 +9,7 @@
 Hills Temperate Biome Configuration
 
 ## Explanation
-This chunk defines the configuration for the Hills Temperate biome, including ground structures, music, and various structures that can appear in the biome. It specifies properties like height variation, chance of occurrence, and width/variation/density for different types of vegetation.
+This chunk defines the configuration for the Hills Temperate biome. It specifies that the ground structure consists of 'cubyz:grass/temperate' with a layer of 2 to 3 cubyz:soil blocks underneath. The music track associated with this biome is 'cubyz:mischol/sunshower'. Various structures can appear in the biome, including fallen trees made from oak logs with a height ranging between 6 and 9 (with a variation of 3) and a chance of occurrence at 0.2%. Flower patches use cubyz:grass/vegetation/temperate blocks with a width of 5, variation of 8, density of 0.5, and priority of 0.2. Simple vegetation uses the same block type as flower patches but has a fixed height of 1 without any variation in height. Two types of sbb structures can appear: one is an oak tree with white bark (cubyz:tree/oak/white) placed degradably, and another is a young oak tree also placed degradably.
 
 ## Related Questions
 - What are the ground structures for the Hills Temperate biome?

@@ -9,7 +9,18 @@
 Configuration data for tree blueprint IDs
 
 ## Explanation
-This chunk contains a list of tree blueprint IDs, each representing a different type and size of tufted tree in the game. The IDs are used to identify and load specific tree models and configurations.
+This chunk contains a list of tree blueprint IDs, each representing a different type and size of tufted tree in the game. The IDs are used to identify and load specific tree models and configurations. Specifically, there are ten distinct blueprint IDs listed as follows:
+
+- cubyz:tree/tuften/young/tufts/small/violet
+- cubyz:tree/tuften/young/tufts/small/pink
+- cubyz:tree/tuften/young/tufts/small/red
+- cubyz:tree/tuften/young/tufts/small/orange
+- cubyz:tree/tuften/young/tufts/small/yellow
+- cubyz:tree/tuften/young/tufts/big/violet
+- cubyz:tree/tuften/young/tufts/big/pink
+- cubyz:tree/tuften/young/tufts/big/red
+- cubyz:tree/tuften/young/tufts/big/orange
+- cubyz:tree/tuften/young/tufts/big/yellow
 
 ## Related Questions
 - What are the total number of tree blueprint IDs in this configuration?

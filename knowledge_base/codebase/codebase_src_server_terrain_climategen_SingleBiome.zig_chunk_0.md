@@ -9,7 +9,7 @@
 Single Biome Climate Map Generation
 
 ## Explanation
-This chunk defines the logic for generating a climate map using a fluid dynamics simulation. It initializes a biome, iterates over each entry in the map fragment, calculates noise values based on the position and world seed, and assigns biome properties to each entry.
+This chunk defines the logic for generating a climate map using a fluid dynamics simulation. It initializes a biome based on parameters, iterates over each entry in the map fragment, calculates noise values based on position and world seed, and assigns specific biome properties to each entry. The `init` function sets the biome by retrieving it from the biomes list with a default fallback if no parameter is provided. The `generateMapFragment` function uses a nested loop to iterate over each entry in the map fragment, calculates noise values using terrain.noise.ValueNoise.samplePoint2D, and assigns properties such as biome type, height (calculated based on biome.minHeight and biome.maxHeight), roughness, hills, mountains, and seed value. The seed is calculated by XORing worldSeed with 53298562891.
 
 ## Code Example
 ```zig
@@ -17,17 +17,7 @@ pub fn init(parameters: ZonElement) void { biome = terrain.biomes.getById(parame
 ```
 
 ## Related Questions
-- What is the purpose of the `init` function in this chunk?
-- How does the `generateMapFragment` function calculate noise values for each entry in the map fragment?
-- What biome properties are assigned to each entry in the climate map?
-- What is the role of the `worldSeed` in the noise calculation?
-- What is the purpose of the `NeverFailingAllocator` used in this chunk?
-- How does the `generateMapFragment` function iterate over each entry in the map fragment?
-- What are the units of measurement for the height and roughness values assigned to each entry?
-- What is the purpose of the `seed` value assigned to each entry in the climate map?
-- What is the relationship between the biome radius and the noise calculation?
-- How does the `generateMapFragment` function handle missing parameters?
-- What are the units of measurement for the hills and mountains values assigned to each entry?
-- What is the purpose of the `id` variable in this chunk?
+- What specific biome properties are assigned to each entry in the climate map?
+- How exactly does the `generateMapFragment` function calculate noise values for each entry in the map fragment?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_climategen_SingleBiome.zig_chunk_0*

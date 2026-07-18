@@ -9,7 +9,7 @@
 Configuration for a rare knitted funny pit biome.
 
 ## Explanation
-This chunk defines the configuration settings for a rare knitteded funny pit biome. It includes properties such as radius, minimum and maximum heights, chance of generation, stone block type, ground structure, structures to be placed within the biome, parent biomes, and various other parameters that influence the biome's appearance and behavior.
+This chunk defines the configuration settings for a rare knitted funny pit biome. It includes properties such as radius (16), minimum height limit (7), minimum height (22), maximum height (40), chance of generation (0), maximum height limit (50), stone block type ('cubyz:cloth/block/grey'), ground structure ('1 cubyz:cloth/brown:0b111111', '5 cubyz:air'), parent biomes ('cubyz:rare/knitted/forest' with a chance of 6), and various other parameters that influence the biome's appearance and behavior. The configuration also specifies whether to keep original terrain (true) and smooth beaches (true). Additionally, it includes roughness (1), hills (8), and valid player spawn (false).
 
 ## Related Questions
 - What is the radius of the rare knitteded funny pit biome?

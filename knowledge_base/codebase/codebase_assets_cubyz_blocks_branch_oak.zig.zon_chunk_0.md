@@ -8,7 +8,7 @@
 Defines properties for an oak branch block in the Cubyz voxel engine.
 
 ## Explanation
-This chunk configures various attributes of an oak branch block, including its tags (choppable, wood, branch), health, textures, item properties such as durability and texture roughness, and decay behavior. The block is marked as a decay prohibitor, indicating it does not decay over time.
+This chunk configures various attributes of an oak branch block in Cubyz. The block has the following properties: tags (choppable, wood, branch), health value of 4, textures for different orientations ('cubyz:branch/oak/dot', 'cubyz:branch/oak/half_line', 'cubyz:branch/oak/line', 'cubyz:branch/oak/bend', 'cubyz:branch/oak/intersection', 'cubyz:branch/oak/cross'), item properties (durability of 36, massDamage of 1.25, hardnessDamage of 0.70, swingSpeed of 4.3, textureRoughness of 0.7, colors {0xff463724, 0xff55422b, 0xff6a5030, 0xff836136, 0xff6a5030}, modifiers with id 'durable' and strength of 0.45), texture for the item form ('branch/oak.png'), and decay behavior marked as a prohibitor.
 
 ## Related Questions
 - What are the tags associated with the oak branch block?

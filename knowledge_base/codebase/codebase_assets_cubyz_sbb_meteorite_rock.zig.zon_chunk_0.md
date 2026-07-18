@@ -8,7 +8,7 @@
 Defines blueprints for different types of meteorite rocks.
 
 ## Explanation
-This chunk contains a configuration structure that lists various blueprints for meteorite rocks. Each blueprint is identified by a unique string ID, which follows the format 'cubyz:meteorite/rock/X', where X is an index number. This configuration data is likely used to define different variants of meteorite rocks within the Cubyz game engine.
+This chunk contains a configuration structure that lists specific blueprints for meteorite rocks. The blueprints are identified by unique string IDs: 'cubyz:meteorite/rock/0', 'cubyz:meteorite/rock/1', and 'cubyz:meteorite/rock/2'. Each ID follows the format 'cubyz:meteorite/rock/X', where X is an index number. This configuration data defines different variants of meteorite rocks within the Cubyz game engine.
 
 ## Related Questions
 - What are the IDs of the meteorite rock blueprints defined in this chunk?

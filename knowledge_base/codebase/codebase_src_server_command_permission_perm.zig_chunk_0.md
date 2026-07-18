@@ -9,7 +9,21 @@
 Handles command to manage player permissions
 
 ## Explanation
-The chunk defines a command '/perm' that allows users to add, remove, or check permissions for players. It parses arguments and performs the corresponding operations on user permissions.
+The chunk defines a '/perm' command that allows users to add, remove, or check permissions for players. The command supports several sub-commands with specific syntax:
+
+1. `/perm <permissionPath>`: Checks if the current player has the specified permission path.
+2. `/perm @<playerIndex> <permissionPath>`: Checks if a specified player (by index) has the given permission path.
+3. `/perm <add/remove> <whitelist/blacklist> <permissionPath>`: Adds or removes a permission for the current player in the specified list.
+4. `/perm <add/remove> <whitelist/blacklist> @<playerIndex> <permissionPath>`: Adds or removes a permission for a specified player (by index) in the specified list.
+
+The command uses an `Args` union to parse arguments and perform corresponding operations on user permissions. The possible actions are 'add' and 'remove', while the lists can be either 'whitelist' or 'blacklist'.
+
+Error handling is implemented during argument parsing and permission management:
+- If a player index is provided, it checks if the target player exists.
+- Permission paths must begin with a '/' character; otherwise, an error message is printed.
+- When adding or removing permissions, errors are handled by checking if the path already exists in the specified list before performing the operation. If the path does not exist and removal is attempted, an error message is displayed to inform the user.
+
+The 'Path' struct ensures that permission paths begin with a '/' character, and error messages are printed if this condition is not met. User permissions are managed through the `ListType` enum which specifies whether a path belongs to a whitelist or blacklist.
 
 ## Code Example
 ```zig

@@ -9,7 +9,19 @@
 Biome configuration for mountains.
 
 ## Explanation
-This chunk defines a biome named 'mountain' with specific properties and settings for generating terrain, structures, and music. It specifies the radius of the biome, minimum and maximum heights, whether to smooth beaches, roughness level, number of mountains, river presence, music track, ground structure, and structures to place within the biome.
+This chunk defines a biome named 'mountain' with specific properties and settings for generating terrain, structures, and music. The biome has the following attributes:
+
+- **Properties:** `.properties = .{ .mountain }`
+- **Tags:** `.tags = .{ .oak }`
+- **Radius:** `400` cubyz units
+- **Minimum Height Limit:** `7` cubyz units
+- **Minimum Height:** `60` cubyz units
+- **Maximum Height:** `256` cubyz units
+- **Smooth Beaches:** `true`
+- **Roughness Level:** `10`
+- **Number of Mountains:** `100`
+- **River Presence:** `true`
+- **Music Track:** `
 
 ## Related Questions
 - What is the name of the biome defined in this configuration?

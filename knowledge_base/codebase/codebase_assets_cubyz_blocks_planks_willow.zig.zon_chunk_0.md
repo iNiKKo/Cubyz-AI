@@ -8,7 +8,7 @@
 Defines properties for the willow planks block, including material attributes and texture.
 
 ## Explanation
-This chunk defines a configuration for the willow planks block in the Cubyz voxel engine. It specifies various material properties such as durability, mass damage, hardness damage, swing speed, texture roughness, and color gradients. Additionally, it includes modifiers like 'durable' with a specified strength. The texture path is also set to point to the appropriate image file for rendering.
+This chunk defines a configuration for the willow planks block in the Cubyz voxel engine. It specifies material properties such as durability of 20, mass damage of 1.0, hardness damage of 0.95, swing speed of 4.8, texture roughness of 0.7, and five color values: 0xff35281b, 0xff493523, 0xff60462e, 0xff6f5133, 0xff815d39. Additionally, it includes a modifier 'durable' with a strength of 0.4. The texture path is set to 'cubyz:planks/willow'.
 
 ## Related Questions
 - What is the durability of the willow planks block?

@@ -8,7 +8,7 @@
 Defines a list of decoration blueprints with associated chances for mahogany tree decorations.
 
 ## Explanation
-This chunk defines a configuration structure containing an array of blueprint entries, each specifying a decoration ID and its chance of occurrence. The entries include various ivy and bolete side decorations for mahogany trees, with varying probabilities. The last entry has a null ID, likely indicating the end of the list.
+This chunk defines a configuration structure containing an array of five blueprint entries for mahogany tree decorations. Each entry specifies a unique decoration ID and its associated probability of occurrence. The blueprints include 'cubyz:deco/ivy_side_3' with a chance of 0.05, 'cubyz:deco/ivy_side_2' with a chance of 0.1, 'cubyz:deco/ivy_side_1' with a chance of 0.6, and 'cubyz:deco/bolete_side' with a chance of 0.05. The last entry has a null ID, indicating the end of the list.
 
 ## Related Questions
 - What is the chance of 'cubyz:deco/ivy_side_3' occurring?

@@ -9,7 +9,7 @@
 Defines a FlowerPatch structure for generating flower patches in the terrain.
 
 ## Explanation
-The FlowerPatch struct is responsible for loading parameters from a configuration and generating flower patches based on those parameters. The `loadModel` function initializes a FlowerPatch instance with blocks, width, variation, and density from a ZonElement. The `generate` function places flowers in a specified area of the terrain, considering random orientation, ellipse shape, and density to simulate natural distribution.
+The `FlowerPatch` struct is responsible for loading parameters from a configuration and generating flower patches based on those parameters. The `loadModel` function initializes a FlowerPatch instance with specific blocks, width, variation, and density from a ZonElement. If the 'blocks' field of flower_patch is empty or contains invalid entries, an error will be logged and null will be returned. The `generate` function places flowers in a specified area of the terrain using random orientation, ellipse shape, and density to simulate natural distribution. Specifically, the width parameter defaults to 5 if not provided, variation defaults to 1, and density defaults to 0.5.
 
 ## Code Example
 ```zig
@@ -46,5 +46,6 @@ pub fn loadModel(parameters: ZonElement) ?*FlowerPatch {
 - How are blocks assigned within a FlowerPatch?
 - What conditions determine where flowers are placed in the terrain?
 - How does the FlowerPatch handle different generation modes?
+- What happens if the 'blocks' field of flower_patch is empty or contains invalid entries?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_simple_structures_FlowerPatch.zig_chunk_0*

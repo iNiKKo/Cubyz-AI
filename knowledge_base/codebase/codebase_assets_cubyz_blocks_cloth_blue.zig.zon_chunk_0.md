@@ -8,7 +8,7 @@
 Defines configuration for a blue cloth block, including its texture and item properties.
 
 ## Explanation
-This chunk is a configuration file that specifies the visual and item-related properties of a blue cloth block in the Cubyz voxel engine. It sets the texture path for both the block itself and its corresponding item representation. The configuration uses a structured format to define these properties, ensuring that the blue cloth block appears correctly in the game environment and can be interacted with as an item.
+This chunk is a configuration file that specifies the visual and item-related properties of a blue cloth block in the Cubyz voxel engine. It sets the texture path for both the block itself to `cubyz:cloth/blue` and its corresponding item representation to `cloth/blue.png`. The configuration uses a structured format to define these properties, ensuring that the blue cloth block appears correctly in the game environment and can be interacted with as an item.
 
 ## Related Questions
 - What is the texture path for the blue cloth block?

@@ -9,19 +9,12 @@
 Leafy Birch block definition
 
 ## Explanation
-Defines a Leafy Birch block with specific properties including drop items, textures, and LOD replacement.
+Defines a Leafy Birch block with specific properties including drop items, textures, and LOD replacement. The block drops `cubyz:branch/birch` when updated via decay type and can also drop `cubyz:leaves/birch` if cuttable tools are used. Textures include `cubyz:leaves/birch`, `cubyz:branch/birch/dot`, `cubyz:branch/birch/half_line`, `cubyz:branch/birch/line`, `cubyz:branch/birch/bend`, `cubyz:branch/birch/intersection`, and `cubyz:branch/birch/cross`. The LOD replacement is set to `cubyz:leaves/opaque/birch`.
 
 ## Related Questions
-- What is the block type of Leafy Birch?
-- Which items can be dropped when a Leafy Birch block is broken?
-- What textures are associated with the Leafy Birch block?
-- How does the Leafy Birch block handle LOD replacement?
-- What is the opaque variant of the Leafy Birch block?
-- What happens to the Leafy Birch block when it is updated?
-- Which tools can be used to cut the Leafy Birch block?
-- What textures are associated with the Leafy Birch branch and dot?
-- What textures are associated with the Leafy Birch half line, line, bend, intersection, cross?
-- How does the Leafy Birch block handle drops when it is broken?
-- What is the texture used for the Leafy Birch block?
+- What items are dropped when a Leafy Birch block is updated via decay?
+- Which tools can be used to cut the Leafy Birch block and what drops do they produce?
+- List all textures associated with the Leafy Birch branch and dot, half line, line, bend, intersection, cross.
+- How does the LOD replacement work for the Leafy Birch block?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_branch_leafy_birch.zig.zon_chunk_0*

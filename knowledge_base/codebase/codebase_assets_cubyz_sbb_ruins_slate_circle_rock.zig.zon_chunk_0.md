@@ -8,7 +8,7 @@
 Defines blueprints for slate circle rocks in the ruins asset pack.
 
 ## Explanation
-This chunk contains a configuration structure defining two blueprints for slate circle rocks. Each blueprint is identified by a unique string ID within the Cubyz engine's asset system. The IDs specify the location and variant of the rock assets, allowing the game to load and render the appropriate models and textures.
+This chunk contains a configuration structure defining two blueprints for slate circle rocks. The specific IDs are 'cubyz:ruins/slate/circle/rock/0' and 'cubyz:ruins/slate/circle/rock/1'. Each blueprint is identified by a unique string ID within the Cubyz engine's asset system, specifying the location and variant of the rock assets. This allows the game to load and render the appropriate models and textures.
 
 ## Related Questions
 - What are the IDs of the slate circle rock blueprints defined in this chunk?

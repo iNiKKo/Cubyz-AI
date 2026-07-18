@@ -8,7 +8,7 @@
 Defines configuration for the oak sign block, including textures.
 
 ## Explanation
-This chunk is a configuration file in the Cubyz engine that specifies the visual assets and properties of an oak sign block. It sets the texture path for both the block itself and its corresponding item representation. The configuration uses a structured format to map asset paths to their respective components, ensuring that the game can correctly render and handle the oak sign block during gameplay.
+This chunk is a configuration file in the Cubyz engine that specifies the visual assets and properties of an oak sign block. It sets the texture path for both the block itself and its corresponding item representation. Specifically, the texture path for the oak sign block is `cubyz:sign/oak`, and the item texture path is `sign/oak.png`. The configuration uses a structured format to map asset paths to their respective components, ensuring that the game can correctly render and handle the oak sign block during gameplay.
 
 ## Related Questions
 - What is the texture path for the oak sign block?

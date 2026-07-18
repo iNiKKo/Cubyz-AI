@@ -8,7 +8,7 @@
 Defines blueprints for different variants of a big bolete mushroom cap.
 
 ## Explanation
-This chunk contains a configuration structure defining multiple blueprints, each with a unique ID. These IDs are used to identify different variants of the big bolete mushroom cap in the Cubyz voxel engine. The blueprints are stored in an array under the `.blueprints` key, and each blueprint is represented as a struct with an `.id` field.
+This chunk contains a configuration structure defining multiple blueprints, each with a unique ID. These IDs are used to identify different variants of the big bolete mushroom cap in the Cubyz voxel engine. The specific IDs for the variants are as follows: `cubyz:mushroom/big/bolete/cap/0`, `cubyz:mushroom/big/bolete/cap/1`, `cubyz:mushroom/big/bolete/cap/2`, `cubyz:mushroom/big/bolete/cap/3`, and `cubyz:mushroom/big/bolete/cap/4`. The blueprints are stored in an array under the `.blueprints` key, and each blueprint is represented as a struct with an `.id` field.
 
 ## Related Questions
 - What are the IDs of the different variants of the big bolete mushroom cap?

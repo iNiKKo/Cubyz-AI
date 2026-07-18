@@ -155,7 +155,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.1.2"
-LATEST_CLIENT_VERSION = "1.1.21"
+LATEST_CLIENT_VERSION = "1.1.22"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:
@@ -206,6 +206,7 @@ audit_completion_log = []
 rag_total_chunks = 0
 finetune_total_chunks = 0
 online_clients = {}  # unified roster -- one client identity now, regardless of which mode it's working in
+ONLINE_STALE_SECONDS = 60  # a client not heard from in this long is treated as offline everywhere
 
 # ETA estimation: a rolling log of completion timestamps per campaign, used to derive the
 # aggregate throughput of ALL currently-active nodes combined (chunks/sec), not any single
@@ -213,10 +214,21 @@ online_clients = {}  # unified roster -- one client identity now, regardless of 
 # -- it ignores parallelism (N nodes working together finish in ~1/N the time a lone node's
 # estimate implies) and is noisy for a node that just joined. Computing one aggregate rate
 # server-side from real completion events avoids both problems and needs no client-side timing.
+#
+# This window-based method is now the FALLBACK -- see _capacity_based_eta() below for the
+# preferred path, used whenever at least one online client has reported a real measured speed.
+# The window method stayed noisy in practice: multi-round audit conversations resolve in bursts,
+# so a lucky cluster of completions landing inside ETA_WINDOW_SECONDS swung the estimate wildly,
+# and a fast node joining didn't move the number until enough of ITS completions accumulated in
+# the window -- confirmed live when adding a fast "easy"-tier node barely moved a ~6h estimate.
 ETA_WINDOW_SECONDS = 600  # only the last 10 minutes of completions count toward the current rate
 ETA_MIN_SAMPLES = 3       # below this many recent completions, the rate is too noisy to trust
 rag_completion_log = []
 finetune_completion_log = []
+audit_actions_count = 0  # every accepted propose/review/revise submission (audit mode only) --
+                          # used below to derive an actions-per-completed-chunk ratio, since a
+                          # resolved audit chunk usually costs more than one submission (a
+                          # propose plus at least one independent review).
 
 
 class RAGNode(BaseModel):
@@ -354,6 +366,48 @@ def _estimate_eta_seconds(completion_log: list, remaining_chunks: int):
     span = max(now - min(recent), 1.0)
     rate = len(recent) / span  # combined chunks/sec across all active nodes
     return remaining_chunks / rate
+
+def _capacity_based_eta(remaining_units: float, avg_actions_per_unit: float = 1.0):
+    """Preferred ETA path: sum 1/speed across every currently-online client that has reported a
+    real measured speed (seconds/task, from that client's own recent dispatch->submit timings --
+    see CUBYZ_FOLDING.py's task_durations), for a combined actions/sec capacity. Unlike the
+    window-based _estimate_eta_seconds, this reacts the instant a node joins or leaves (its speed
+    is known immediately, not inferred from waiting for enough of its completions to land in a
+    rolling window) and doesn't swing on how bursty recent completion timing happened to be.
+    avg_actions_per_unit converts actions/sec into units/sec for campaigns (audit) where one
+    resolved unit costs more than one submission. Returns None if no online client has reported a
+    speed yet (e.g. right after a restart, before any client's first get_work poll lands) -- the
+    caller should fall back to _estimate_eta_seconds in that case."""
+    if remaining_units <= 0:
+        return 0.0
+    now = time.time()
+    capacity = 0.0  # actions/sec, summed across every online node with a known speed
+    for info in online_clients.values():
+        speed = info.get("speed")
+        if speed and speed > 0 and now - info["timestamp"] < ONLINE_STALE_SECONDS:
+            capacity += 1.0 / speed
+    if capacity <= 0:
+        return None
+    return (remaining_units * avg_actions_per_unit) / capacity
+
+def _eta_seconds(completion_log: list, remaining_units: float, avg_actions_per_unit: float = 1.0):
+    """Tries the capacity-based estimate first (see _capacity_based_eta), falling back to the
+    older completion-window method when no online client has reported a speed yet."""
+    capacity_eta = _capacity_based_eta(remaining_units, avg_actions_per_unit)
+    if capacity_eta is not None:
+        return capacity_eta
+    return _estimate_eta_seconds(completion_log, remaining_units)
+
+def _audit_avg_actions_per_chunk(completed_chunks: int) -> float:
+    """A resolved audit chunk usually costs more than one submission (a propose plus at least one
+    independent review, sometimes a revise round or a second docs approval), so a raw actions/sec
+    capacity overstates how fast chunks actually resolve unless converted through this ratio.
+    Derived empirically from the campaign's own history so far rather than guessed; 2.0 (propose +
+    one review, the most common real shape) is used as a reasonable prior before enough chunks
+    have resolved to trust the observed ratio."""
+    if completed_chunks < 5:
+        return 2.0
+    return max(1.0, audit_actions_count / completed_chunks)
 
 # ============================================================
 # RAG CAMPAIGN -- chunk ingestion, hard reset (unchanged logic from the pre-merge server.py,
@@ -983,7 +1037,11 @@ def _get_audit_work(user_id: str, hardware_tier: str, client_local_models: set =
         # waiting on someone else's review, or they already approved it once and it's waiting on a
         # second approver) -- it just isn't offered to them this call.
 
-    eta_seconds = _estimate_eta_seconds(audit_completion_log, len(candidates))
+    # Global remaining count (matches /leaderboard's definition), not len(candidates) -- the
+    # candidate list is just what THIS caller can currently pick from, not the campaign's real
+    # remaining size, so it made the live status ETA inconsistent with the leaderboard's.
+    eta_seconds = _eta_seconds(audit_completion_log, total_chunks - completed_chunks,
+                                _audit_avg_actions_per_chunk(completed_chunks))
 
     if not candidates:
         if state_modified:
@@ -1022,12 +1080,17 @@ def _get_audit_work(user_id: str, hardware_tier: str, client_local_models: set =
             "completed_chunks": completed_chunks, "eta_seconds": eta_seconds, "audit_model": assigned_model}
 
 def _submit_audit_work(submission: UnifiedSubmission) -> dict:
+    global audit_actions_count
     state = load_lock_state(AUDIT_LOCK_FILE)
     state["locked"].pop(submission.chunk_id, None)
 
     if submission.chunk_id in state["completed"]:
         save_lock_state(AUDIT_LOCK_FILE, state)
         return {"status": "ignored"}
+
+    # Counts every real propose/review/revise submission accepted past this point, regardless of
+    # whether it ends up resolving the chunk -- see _audit_avg_actions_per_chunk's comment.
+    audit_actions_count += 1
 
     original_task = next((t for t in audit_chunk_queue if t["chunk_id"] == submission.chunk_id), None)
     collection = (original_task or {}).get("collection", "docs")
@@ -1379,7 +1442,7 @@ def _get_rag_work(user_id: str, hardware_tier: str, model: str) -> dict:
     # false prematurely, reporting "done" while real unprocessed work still remains queued.
     total_chunks = rag_total_chunks
     completed_chunks = len(state["completed"])
-    eta_seconds = _estimate_eta_seconds(rag_completion_log, total_chunks - completed_chunks)
+    eta_seconds = _eta_seconds(rag_completion_log, total_chunks - completed_chunks)
 
     if not available_tasks:
         if state_modified:
@@ -1409,7 +1472,7 @@ def _get_finetune_work(user_id: str, hardware_tier: str) -> dict:
 
     total_chunks = finetune_total_chunks  # true campaign size -- see _get_rag_work's comment
     completed_chunks = len(state["completed"])
-    eta_seconds = _estimate_eta_seconds(finetune_completion_log, total_chunks - completed_chunks)
+    eta_seconds = _eta_seconds(finetune_completion_log, total_chunks - completed_chunks)
 
     # Fine-tune generation needs stronger instruction-following than RAG extraction (natural
     # prose + judging debugging-vs-review shape for reviews) -- "easy" tier clients are capped at
@@ -1438,14 +1501,21 @@ def _get_finetune_work(user_id: str, hardware_tier: str) -> dict:
     return {"mode": "finetune", "status": "active", "task": assigned_task, "total_chunks": total_chunks, "completed_chunks": completed_chunks, "eta_seconds": eta_seconds}
 
 @app.get("/get_work")
-def get_work(user_id: str, hardware_tier: str = "medium", model: str = "", client_version: str = "", available_models: str = ""):
+def get_work(user_id: str, hardware_tier: str = "medium", model: str = "", client_version: str = "", available_models: str = "", avg_task_seconds: float = None):
     if not user_id.isalpha() or not (3 <= len(user_id) <= 9):
         raise HTTPException(status_code=400, detail="Invalid ID layout.")
 
     if _parse_version(client_version) < _parse_version(MIN_CLIENT_VERSION):
         raise HTTPException(status_code=426, detail=_version_rejection_message(client_version))
 
-    online_clients[user_id.lower()] = {"timestamp": time.time(), "tier": hardware_tier}
+    # avg_task_seconds is omitted by a client with no completed tasks yet (nothing to average) and
+    # by any pre-1.1.22 client that doesn't send it at all -- keep whatever speed we last heard
+    # from this user_id rather than blanking it out on every single poll.
+    prior = online_clients.get(user_id.lower(), {})
+    online_clients[user_id.lower()] = {
+        "timestamp": time.time(), "tier": hardware_tier,
+        "speed": avg_task_seconds if avg_task_seconds is not None else prior.get("speed"),
+    }
     client_local_models = {m for m in available_models.split(",") if m}
 
     # The whole read-lock_state -> pick a task -> write-lock_state cycle inside _get_rag_work/
@@ -1567,7 +1637,13 @@ def submit_work(submission: UnifiedSubmission):
     if _parse_version(submission.client_version) < _parse_version(MIN_CLIENT_VERSION):
         raise HTTPException(status_code=426, detail=_version_rejection_message(submission.client_version))
 
-    online_clients[submission.user_id.lower()] = {"timestamp": time.time(), "tier": "reporting"}
+    # Preserve whatever tier/speed the last /get_work poll reported instead of clobbering it --
+    # this endpoint doesn't receive either, and online_clients is the shared roster both /get_work
+    # and the capacity-based ETA (_capacity_based_eta) read from.
+    prior = online_clients.get(submission.user_id.lower(), {})
+    online_clients[submission.user_id.lower()] = {
+        "timestamp": time.time(), "tier": prior.get("tier", "reporting"), "speed": prior.get("speed"),
+    }
 
     # Same reasoning as /get_work's campaign_state_lock use -- _submit_rag_work/
     # _submit_finetune_work each do a read-modify-write on lock_state.json AND user_stats.json,
@@ -1622,7 +1698,7 @@ def _rag_leaderboard() -> dict:
         "total_chunks_in_codebase": total_chunks,
         "total_chunks_completed": completed_chunks,
         "global_percentage": round(global_pct, 2),
-        "eta_seconds": _estimate_eta_seconds(rag_completion_log, total_chunks - completed_chunks),
+        "eta_seconds": _eta_seconds(rag_completion_log, total_chunks - completed_chunks),
         "rankings": rankings
     }
 
@@ -1652,7 +1728,7 @@ def _finetune_leaderboard() -> dict:
         "total_chunks_in_campaign": total_chunks,
         "total_chunks_completed": completed_chunks,
         "global_percentage": round(global_pct, 2),
-        "eta_seconds": _estimate_eta_seconds(finetune_completion_log, total_chunks - completed_chunks),
+        "eta_seconds": _eta_seconds(finetune_completion_log, total_chunks - completed_chunks),
         "rankings": rankings,
     }
 
@@ -1686,7 +1762,8 @@ def _audit_leaderboard() -> dict:
         "total_chunks_completed": completed_chunks,
         "global_percentage": round(global_pct, 2),
         "in_flight_conversations": len(pending),
-        "eta_seconds": _estimate_eta_seconds(audit_completion_log, total_chunks - completed_chunks),
+        "eta_seconds": _eta_seconds(audit_completion_log, total_chunks - completed_chunks,
+                                     _audit_avg_actions_per_chunk(completed_chunks)),
         "rankings": rankings,
     }
 

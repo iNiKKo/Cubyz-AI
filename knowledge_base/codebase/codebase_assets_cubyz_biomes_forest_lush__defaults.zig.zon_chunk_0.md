@@ -9,7 +9,26 @@
 Biome defaults for lush forest
 
 ## Explanation
-Defines properties, tags, and various parameters for a lush forest biome.
+Defines properties, tags, and various parameters for a lush forest biome. The specific values are as follows:
+
+- Properties: .wet
+- Tags: oak, pine
+- Minimum height limit (minHeightLimit): 7
+- Minimum height (minHeight): 20
+- Maximum height (maxHeight): 50
+- Maximum height limit (maxHeightLimit): 60
+- Smooth beaches (smoothBeaches): true
+- Minimum radius (minRadius): 256
+- Maximum radius (maxRadius): 320
+- Roughness: 10
+- Hills: 12
+- Music: cubyz:totaldemented/leaves
+- Valid player spawn (validPlayerSpawn): true
+- Structures:
+  - Fallen tree with oak log, chance: 0.005, height: 6, variation: 3
+  - Fallen tree with pine log, chance: 0.002, height: 6, variation: 3
+  - Flower patch with bolete block, chance: 0.02, width: 3, variation: 3, density: 0.4, priority: 0.1
+  - Flower patch with toadstool block, chance: 0.01, width: 8, variation: 3, density: 0.1, priority: 0.1
 
 ## Related Questions
 - What are the properties of the lush forest biome?

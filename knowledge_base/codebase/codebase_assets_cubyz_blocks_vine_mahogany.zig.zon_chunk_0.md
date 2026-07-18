@@ -8,7 +8,7 @@
 Defines textures and item properties for Mahogany Vine blocks.
 
 ## Explanation
-This chunk specifies the texture paths for different sides of a Mahogany Vine block, including top, bottom, and item representation. It does not contain any executable logic but rather static configuration data used by other parts of the engine to render and handle these blocks.
+This chunk specifies the texture paths for different sides of a Mahogany Vine block, including top, bottom, and item representation. The specific textures are as follows: `texture0` is set to "cubyz:vine/mahogany/top", `texture1` is set to "cubyz:vine/mahogany/bottom", and the item texture is defined as "vine/mahogany.png". This chunk does not contain any executable logic but rather static configuration data used by other parts of the engine to render and handle these blocks.
 
 ## Related Questions
 - What is the texture path for the top of a Mahogany Vine block?

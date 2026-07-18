@@ -9,7 +9,7 @@
 Config for volcano slope5 biome.
 
 ## Explanation
-Defines properties of the volcano slope5 biome, including mountain type, radius, height range, roughness, number of mountains, interpolation method, chance, music track, parent biomes, maximum subbiome count, ground structure, and stone block.
+Defines properties of the volcano slope5 biome, including mountain type (mountain), radius (100), height range (minHeight: 672, maxHeight: 672), roughness (100), number of mountains (50), interpolation method (linear), chance (0), music track (cubyz:mrmayman/out_of_breath), parent biomes (volcano/slope4 with a chance of 1 and parentEdgeDistance of 16), maximum subbiome count (1), ground structure (0 to 10 cubyz:magma), and stone block (cubyz:basalt/smooth).
 
 ## Related Questions
 - What is the radius of the volcano slope5 biome?

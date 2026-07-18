@@ -8,7 +8,7 @@
 Defines configuration for a void cavern biome in Cubyz, including cave model parameters and visual properties.
 
 ## Explanation
-This chunk defines the configuration for a specific biome type in the Cubyz game engine, focusing on a void cavern. It specifies various attributes such as whether it is a cave biome, tags associated with the biome, generation chance, fog density and color, music track, stone block used, and details of cave models including their IDs, minimum and maximum amounts, and radius ranges. This configuration is used by the world generation system to create instances of this biome in the game world.
+This chunk defines the configuration for a void cavern biome in Cubyz, including various attributes such as whether it is a cave biome (true), tags associated with the biome (.root_layer), generation chance (0.1), fog density (10) and color (0x272334), music track ('cubyz:totaldemented/root'), stone block used ('cubyz:voidstone/smooth'), and details of cave models including their IDs ('cubyz:partial_sphere'), minimum amount (10), maximum amount (20), minimum radius (15), and maximum radius (30). This configuration is used by the world generation system to create instances of this biome in the game world.
 
 ## Related Questions
 - What is the chance of generating a void cavern biome?

@@ -8,7 +8,7 @@
 Defines configuration for the Prairie biome, including height and radius ranges.
 
 ## Explanation
-This chunk contains a single anonymous struct that defines the configuration parameters for the Prairie biome. It specifies the minimum and maximum heights as well as the minimum and maximum radii for this biome type. These values are used in world generation to determine how the Prairie biome is shaped and positioned within the game world.
+This chunk contains a single anonymous struct that defines the configuration parameters for the Prairie biome. It specifies the minimum height as 40, the maximum height as 50, the minimum radius as 256, and the maximum radius as 320. These values are used in world generation to determine how the Prairie biome is shaped and positioned within the game world.
 
 ## Related Questions
 - What is the minimum height for the Prairie biome?

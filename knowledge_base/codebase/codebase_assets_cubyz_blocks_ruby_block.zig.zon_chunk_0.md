@@ -8,7 +8,20 @@
 Defines properties for the Ruby Block in Cubyz, including its mineability, health, resistance, drops, rotation model, and texture.
 
 ## Explanation
-This chunk defines a configuration for the Ruby Block within the Cubyz game engine. It specifies that the block is mineable, has a health value of 55, a resistance value of 9, and automatically drops items when mined. The block uses a stairs rotation model and a cube model with a texture named 'cubyz:ruby_block'. This configuration data is used by the game engine to manage the block's behavior in the world.
+# [easy/codebase_assets_cubyz_blocks_ruby_block.zig.zon] - Chunk 0
+
+**Type:** configuration
+**Keywords:** configuration, block health, block resistance, drops, rotation model, texture
+**Concepts:** block properties, mineable blocks, item drops
+
+## Summary
+Defines properties for the Ruby Block in Cubyz, including its mineability, health, resistance, drops, rotation model (stairs), and texture.
+
+## Explanation
+This chunk defines a configuration for the Ruby Block within the Cubyz game engine. It specifies that the block is mineable, has a health value of 55, a resistance value of 9, automatically drops items when mined, uses a stairs rotation model, and has a texture named 'cubyz:ruby_block'. This configuration data is used by the game engine to manage the block's behavior in the world.
+
+## Related Questions
+- What type of rotation model does the Ruby Block use?
 
 ## Related Questions
 - What is the mineability status of the Ruby Block?
