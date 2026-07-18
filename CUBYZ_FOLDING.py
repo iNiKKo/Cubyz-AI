@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.20"
+VERSION = "1.1.21"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -2396,9 +2396,20 @@ def main():
             primary_is_gpu = cached["primary_is_gpu"]
             gpu_time, cpu_time = cached.get("gpu_time"), cached.get("cpu_time")
         else:
-            print(f"{Colors.CYAN}[~] First-time hardware benchmark: measuring real CPU vs. GPU throughput on this machine (one-time, well under a minute)...{Colors.RESET}")
-            gpu_time = benchmark_lane(chosen_model, force_cpu=False)
-            cpu_time = benchmark_lane(cpu_model, force_cpu=True)
+            # Run both lanes' benchmark calls concurrently rather than one after the other --
+            # sequential was up to BENCHMARK_TIMEOUT*2 (3 minutes) in the worst case, which
+            # confirmed live looked indistinguishable from a hang with no progress indication in
+            # between. Dual-lane mode already proves GPU+CPU can hit the same Ollama server at
+            # once without issue, so there's no reason the benchmark itself needs to be serial.
+            print(f"{Colors.CYAN}[~] First-time hardware benchmark: measuring real CPU vs. GPU throughput on this machine (one-time, can take up to a couple of minutes on slower hardware -- this is not frozen)...{Colors.RESET}")
+            _bench_results = {}
+            _bench_gpu_thread = threading.Thread(target=lambda: _bench_results.update(gpu=benchmark_lane(chosen_model, force_cpu=False)), daemon=True)
+            _bench_cpu_thread = threading.Thread(target=lambda: _bench_results.update(cpu=benchmark_lane(cpu_model, force_cpu=True)), daemon=True)
+            _bench_gpu_thread.start()
+            _bench_cpu_thread.start()
+            _bench_gpu_thread.join()
+            _bench_cpu_thread.join()
+            gpu_time, cpu_time = _bench_results.get("gpu"), _bench_results.get("cpu")
             gpu_tier_for_compare = gpu_tier_from_vram(total_vram_gb)
             if gpu_time is None:
                 primary_is_gpu = False
