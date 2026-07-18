@@ -9,7 +9,7 @@
 Desert biome configuration
 
 ## Explanation
-This chunk defines a desert biome with properties such as hot, dry, barren tags, chance of occurrence, minimum and maximum heights, radius limits, hills count, valid player spawn status, music track, ground structure, structures to place, stone block type.
+This chunk defines a desert biome with specific properties such as hot, dry, barren tags. The chance of occurrence is set to 1.0. The minimum height limit is 7 cubyz, while the actual minHeight for terrain generation is 22 cubyz and maxHeight is 40 cubyz, with a maxHeightLimit of 50 cubyz. Radius limits are defined as minRadius = 512 and maxRadius = 640. There are hills generated in this biome with a count of 20. Player spawn is not valid (validPlayerSpawn = false). The music track used for this desert biome is 'cubyz:mischol/desert_firefly'. Ground structure consists of 3 to 4 cubyz:sand blocks. Structures include cactus/saguaro and young cacti with respective chances of 0.01 and 0.006, and tussock flower patches with a chance of 0.03, width of 4, variation of 4, density of 0.2, and priority of 0.1. The stone block type used in this desert biome is cubyz:sandstone/rough.
 
 ## Related Questions
 - What are the tags associated with this desert biome?

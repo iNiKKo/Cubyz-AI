@@ -9,7 +9,32 @@
 Cave Mantle Biome Defaults
 
 ## Explanation
-Defines default settings for the Cave Mantle biome, including cave models with specific properties like id, amount range, radius range, cut direction, and mode.
+Defines default settings for the Cave Mantle biome. The settings include:
+- `.isCave = true`
+- Tags: `mantle_layer`
+- Fog density: `15`
+- Fog color: `0x3d1a11`
+- Stone block type: `cubyz:pyrolite/rough`
+- Music track: `cubyz:totaldemented/scoria`
+
+Cave models are defined with specific properties:
+- First cave model:
+  - ID: `partial_sphere`
+  - Min amount: `10`
+  - Max amount: `20`
+  - Min radius: `30`
+  - Max radius: `60`
+
+- Second cave model:
+  - ID: `partial_sphere`
+  - Min amount: `1`
+  - Max amount: `1`
+  - Min radius: `60`
+  - Max radius: `100`
+  - Cut direction: `{0, 0, 1}`
+  - Cut direction randomness: `0.1`
+  - Cut percentage: `0.8`
+  - Mode: `additive`
 
 ## Related Questions
 - What is the fog density for the Cave Mantle biome?

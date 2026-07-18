@@ -8,7 +8,7 @@
 Defines properties for the Toadstool branch block, including textures, health, and item attributes.
 
 ## Explanation
-This chunk defines a configuration for a specific block type in the Cubyz voxel engine. The block is identified as a toadstool branch with various tags indicating its interactability (choppable, cuttable, sliceable, mushroom). It has a block health of 2 and multiple textures assigned to different orientations or states (dot, half_line, line, bend, intersection, cross). The item associated with this block has material properties such as durability, mass damage, swing speed, and texture roughness. Additionally, the block is marked as a decay prohibitor, meaning it will not decay over time.
+This chunk defines a configuration for the Toadstool branch block in Cubyz. The block has interactability tags including choppable, cuttable, sliceable, and mushroom. It has a block health of 2 and specific textures assigned to different orientations: dot (texture0), half_line (texture1), line (texture2), bend (texture3), intersection (texture4), and cross (texture5). The item associated with this block has material properties such as durability of 230, mass damage of 1.2, hardness damage of 0.0, swing speed of 4.4, texture roughness of 0.5, and a modifier with an ID 'durable' and strength of 0.45. Additionally, the block is marked as a decay prohibitor, meaning it will not decay over time.
 
 ## Related Questions
 - What are the interactability tags for the Toadstool branch block?

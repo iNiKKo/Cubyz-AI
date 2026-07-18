@@ -1,0 +1,22 @@
+{
+  "nickc": {
+    "model": "qwen2.5:7b",
+    "tier": "medium",
+    "last_seen": 1784390623.5462368
+  },
+  "nick": {
+    "model": "qwen2.5:14b",
+    "tier": "hard",
+    "last_seen": 1784390641.6204214
+  },
+  "nicksrvr": {
+    "model": "llama3.1:8b",
+    "tier": "medium",
+    "last_seen": 1784390635.2610366
+  },
+  "nickmac": {
+    "model": "qwen2.5:3b",
+    "tier": "easy",
+    "last_seen": 1784390635.2553103
+  }
+}

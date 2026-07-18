@@ -8,7 +8,12 @@
 Defines configuration for flame particles in the Cubyz engine.
 
 ## Explanation
-This chunk contains a configuration object for flame particles, specifying properties such as texture, density range, rotation velocity range, and drag coefficient range. These settings define how the flame particles will behave in the game environment.
+This chunk contains a configuration object for flame particles in the Cubyz engine. The properties specified include:
+- Texture: `cubyz:flame`
+- Density range: `{0.00065, 0.00085}`
+- Rotation velocity range: `{20, 35}`
+- Drag coefficient range: `{0.2, 0.3}`
+These settings define how the flame particles will behave in the game environment.
 
 ## Related Questions
 - What is the texture used for flame particles?

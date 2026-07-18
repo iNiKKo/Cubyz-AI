@@ -8,7 +8,7 @@
 Defines blueprints and children for an oak tree asset.
 
 ## Explanation
-This chunk defines the structure of an oak tree asset in Cubyz. It includes a list of blueprints with unique IDs, each representing different base parts of the tree. Additionally, it specifies child assets that are associated with different color variations of the trunk and root.
+This chunk defines the structure of an oak tree asset in Cubyz. It includes a list of three blueprints with unique IDs: 'cubyz:tree/oak/base/1', 'cubyz:tree/oak/base/2', and 'cubyz:tree/oak/base/3'. Additionally, it specifies child assets that are associated with different color variations of the trunk and root. The children include 'cubyz:tree/oak/white/root' for crimson, red, and blue color variants, and 'cubyz:tree/oak/white/trunk' for brown.
 
 ## Related Questions
 - What are the IDs of the blueprints defined for the oak tree?

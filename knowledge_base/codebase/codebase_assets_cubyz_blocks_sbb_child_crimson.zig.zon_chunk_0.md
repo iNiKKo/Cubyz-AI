@@ -8,7 +8,7 @@
 Defines texture paths for a crimson block variant.
 
 ## Explanation
-This chunk specifies the texture paths for different sides of a crimson block variant. It includes the side, top, and bottom textures, all pointing to specific files within the Cubyz assets directory.
+This chunk specifies the exact texture paths for a crimson block variant. The side texture is defined as `cubyz:sbb/child/side/crimson`, the top texture as `cubyz:sbb/child/top/crimson`, and the bottom texture as `cubyz:sbb/child/bottom/crimson`. These textures are located within the Cubyz assets directory.
 
 ## Related Questions
 - What is the side texture for the crimson block variant?

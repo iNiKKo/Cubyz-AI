@@ -8,7 +8,7 @@
 Defines properties for a gold ingot item in the Cubyz game.
 
 ## Explanation
-This chunk defines the configuration for a gold ingot item within the Cubyz game. It specifies tags such as 'metal' and 'precious', assigns a texture file, and sets various material properties including durability, mass damage, hardness damage, swing speed, texture roughness, and color gradients.
+This chunk defines the configuration for a gold ingot item within the Cubyz game. It specifies tags such as 'metal' and 'precious', assigns a texture file named `gold_ingot.png`, and sets various material properties including durability of 400, mass damage of 14.0, hardness damage of 1.0, swing speed of 0.25, texture roughness of 0.05, and color gradients with hex codes: `#ffbc7132`, `#ffda972b`, `#fff2cd53`, `#fff2cd53`, `#fffae39e`.
 
 ## Related Questions
 - What are the tags assigned to the gold ingot item?

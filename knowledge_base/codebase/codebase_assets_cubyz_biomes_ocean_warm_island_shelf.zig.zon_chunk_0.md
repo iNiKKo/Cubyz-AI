@@ -8,7 +8,7 @@
 Defines configuration for a warm ocean island shelf biome.
 
 ## Explanation
-This chunk contains a JSON-like structure defining the properties of a specific biome in the Cubyz game engine. It specifies parameters such as height range, radius, number of hills, and maximum sub-biome count. The ground structure is described as consisting of sand layers. Parent biomes are listed with their respective chances of occurrence.
+This chunk contains a JSON-like structure defining the properties of a warm ocean island shelf biome in Cubyz. The configuration includes parameters such as minHeight (-10), maxHeight (-1), radius (70 cubyz units), number of hills (3), and maximum sub-biome count (1). The ground structure is described as consisting of 1 to 2 layers of sand ('cubyz:sand'). Parent biomes include 'cubyz:ocean/warm/base' with a chance of 1, and 'cubyz:ocean/warm/archipelago' with a chance of 15.
 
 ## Related Questions
 - What is the minimum height of the warm ocean island shelf biome?

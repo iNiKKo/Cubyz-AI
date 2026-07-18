@@ -9,7 +9,15 @@
 Handles the /spawn command for setting or getting player/world spawn points.
 
 ## Explanation
-This chunk defines a command handler for the '/spawn' command, which allows users to set or retrieve spawn points for players or the world. It uses an argument parser to interpret different command formats and then performs actions based on the parsed arguments. The `execute` function processes the input arguments, handles errors by sending error messages to the user, and updates or retrieves spawn positions accordingly.
+This chunk defines a command handler for the '/spawn' command, which allows users to set or retrieve spawn points for players or the world. It uses an argument parser (`ArgParser`) to interpret different command formats and then performs actions based on the parsed arguments. The `execute` function processes these commands and updates or retrieves spawn positions accordingly.
+
+The specific command formats are as follows:
+- `/spawn`: Retrieves the world's current spawn point.
+- `/spawn <playerIndex>`: Retrieves a player's current spawn point.
+- `/spawn <world> <x> <y> <z>`: Sets the world's spawn position to the specified coordinates `(x, y, z)`.
+- `/spawn <playerIndex> <x> <y> <z>`: Sets a player's spawn position to the specified coordinates `(x, y, z)`.
+
+For example, if the command is `/spawn <world> <x> <y> <z>`, it sets the world's spawn position using `command.resolveCoordinates(params.x, params.y, params.z, source)`. If the command is `/spawn <playerIndex>`, it retrieves and sends the player's spawn point to the user. The function also handles errors by sending error messages to the user if there are issues with parsing or executing the commands.
 
 ## Code Example
 ```zig

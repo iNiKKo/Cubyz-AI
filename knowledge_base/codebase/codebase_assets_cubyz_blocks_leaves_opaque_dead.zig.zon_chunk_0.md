@@ -8,7 +8,7 @@
 Defines properties for opaque dead leaves block.
 
 ## Explanation
-This chunk defines a configuration object with two fields: 'absorbedLight' and 'texture'. The 'absorbedLight' field is set to a hexadecimal color value, indicating the light absorption characteristics of the block. The 'texture' field specifies the path to the texture file used for rendering the opaque dead leaves.
+This chunk defines a configuration object for opaque dead leaves with two fields: 'absorbedLight' and 'texture'. The 'absorbedLight' field is set to the hexadecimal value `0x222222`, indicating the light absorption characteristics of the block. The 'texture' field specifies the path to the texture file used for rendering the opaque dead leaves, which is `cubyz:leaves/opaque/dead`.
 
 ## Related Questions
 - What is the light absorption value for the opaque dead leaves block?

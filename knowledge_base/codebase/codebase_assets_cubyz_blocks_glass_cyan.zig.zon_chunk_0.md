@@ -8,7 +8,7 @@
 Defines properties for a cyan glass block.
 
 ## Explanation
-This chunk defines the properties of a cyan glass block in the Cubyz voxel engine. It specifies the absorbed light color and the texture file path for rendering the block.
+This chunk defines the properties of a cyan glass block in the Cubyz voxel engine. It specifies that the absorbed light color is `0xc62031` and the texture file path for rendering the block is `cubyz:glass/cyan`. The configuration includes the exact hexadecimal value for the absorbed light property and the specific texture mapping.
 
 ## Related Questions
 - What is the absorbed light color of the cyan glass block?

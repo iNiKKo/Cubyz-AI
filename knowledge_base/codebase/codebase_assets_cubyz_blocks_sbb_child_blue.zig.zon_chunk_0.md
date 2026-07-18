@@ -8,7 +8,7 @@
 Defines texture paths for a blue SBB child block.
 
 ## Explanation
-This chunk is a configuration file that specifies the texture paths for different sides of a blue SBB (Structured Building Block) child block. It defines three textures: one for the side, one for the top, and one for the bottom. These paths are used by the rendering engine to apply the correct textures when drawing the block in the game world.
+This chunk is a configuration file that specifies the exact texture paths for different sides of a blue SBB (Structured Building Block) child block. It defines three textures: `cubyz:sbb/child/side/blue` for the side, `cubyz:sbb/child/top/blue` for the top, and `cubyz:sbb/child/bottom/blue` for the bottom. These paths are used by the rendering engine to apply the correct textures when drawing the block in the game world.
 
 ## Related Questions
 - What is the texture path for the side of the blue SBB child block?

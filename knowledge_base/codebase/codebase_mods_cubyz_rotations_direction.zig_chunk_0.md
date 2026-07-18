@@ -9,7 +9,13 @@
 Handles block model rotations and data generation based on neighbor connectivity.
 
 ## Explanation
-This chunk manages the creation and rotation of block models. It initializes a string hash map to store rotated models, providing functions to initialize, deinitialize, and reset this map. The `createBlockModel` function generates a unique model index for each block by rotating its base model based on various angles. The `model` function retrieves the model index for a given block. The `rotateZ` function uses a precomputed rotation table to rotate block data around the Z-axis. The `generateData` function updates block data based on neighbor connectivity during block placement. Additionally, the `updateBlockFromNeighborConnectivity` function checks and updates block properties based on neighboring blocks' support.
+This chunk manages the creation and rotation of block models. It initializes a string hash map to store rotated models, providing functions to initialize, deinitialize, and reset this map. The `createBlockModel` function generates a unique model index for each block by rotating its base model based on specific angles: Y-axis rotations of π radians (180 degrees) and Z-axis rotations of -π/2 radians (-90 degrees), π/2 radians (45 degrees), and π radians (180 degrees). The exact rotation matrices used are as follows:
+- `Mat4f.rotationY(std.math.pi)` for Y-axis rotation by 180 degrees.
+- `Mat4f.rotationZ(-std.math.pi / 2.0).mul(Mat4f.rotationX(-std.math.pi / 2.0))` for Z-axis rotation by -90 degrees combined with X-axis rotation by -90 degrees.
+- `Mat4f.rotationZ(std.math.pi / 2.0).mul(Mat4f.rotationX(-std.math.pi / 2.0))` for Z-axis rotation by 45 degrees combined with X-axis rotation by -90 degrees.
+- `Mat4f.rotationX(-std.math.pi / 2.0)` for X-axis rotation by -90 degrees.
+- `Mat4f.rotationZ(std.math.pi).mul(Mat4f.rotationX(-std.math.pi / 2.0))` for Z-axis rotation by 180 degrees combined with X-axis rotation by -90 degrees.
+The `model` function retrieves the model index for a given block using the formula: `blocks.meshes.modelIndexStart(block) + @min(block.data, 5)`. The `rotateZ` function uses a precomputed rotation table to rotate block data around the Z-axis. The `generateData` function updates block data based on neighbor connectivity during block placement by setting the current data to the reverse of the neighbor's direction if placing a new block. Additionally, the `updateBlockFromNeighborConnectivity` function checks and updates block properties based on neighboring blocks' support, setting the block to air if it lacks support from its neighbors.
 
 ## Code Example
 ```zig

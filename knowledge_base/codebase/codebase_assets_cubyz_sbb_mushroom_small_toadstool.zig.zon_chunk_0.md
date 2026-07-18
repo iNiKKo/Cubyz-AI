@@ -8,7 +8,7 @@
 Defines blueprints for small toadstool mushroom variants.
 
 ## Explanation
-This chunk defines a list of blueprints, each with a unique ID representing different variants of a small toadstool mushroom. These IDs are used to identify and differentiate between the various visual or property variations of the mushroom within the Cubyz voxel engine.
+This chunk defines a list of blueprints for small toadstool mushroom variants, each with a unique ID. The specific IDs are: cubyz:mushroom/small/toadstool/variant/0, cubyz:mushroom/small/toadstool/variant/1, cubyz:mushroom/small/toadstool/variant/2, cubyz:mushroom/small/toadstool/variant/3, cubyz:mushroom/small/toadstool/variant/4, cubyz:mushroom/small/toadstool/variant/5, cubyz:mushroom/small/toadstool/variant/6, cubyz:mushroom/small/toadstool/variant/7, cubyz:mushroom/small/toadstool/variant/8, and cubyz:mushroom/small/toadstool/variant/9. These IDs are used to identify and differentiate between the various visual or property variations of the mushroom within the Cubyz voxel engine.
 
 ## Related Questions
 - What are the IDs defined for small toadstool mushroom variants?

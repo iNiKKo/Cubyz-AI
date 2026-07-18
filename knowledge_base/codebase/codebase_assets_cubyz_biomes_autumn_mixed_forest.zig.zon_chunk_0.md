@@ -8,7 +8,36 @@
 Defines properties and structures for the Autumn Mixed Forest biome in Cubyz.
 
 ## Explanation
-This chunk is a configuration file defining various properties and structures specific to the Autumn Mixed Forest biome in the Cubyz voxel engine. It includes details such as temperature, tags (types of trees), generation chances, height limits, beach smoothness, radius, roughness, hills, music, player spawn validity, ground structure, and a list of structures with their respective IDs, types, chances, and other parameters like log, leaves, height, and variation. This configuration is used by the world generation system to create biomes with the specified characteristics.
+This chunk is a configuration file defining various properties and structures specific to the Autumn Mixed Forest biome in the Cubyz voxel engine. It includes the following detailed information:
+
+- **Properties:**
+  - `cold`: true
+- **Tags:** birch, pine, oak
+- **Generation Chance:** 0.5
+- **Height Limits:** minHeightLimit = 7, maxHeightLimit = 60
+- **Smooth Beaches:** true
+- **Radius:** minRadius = 256, maxRadius = 320
+- **Roughness:** 10
+- **Hills:** 10
+- **Music:** cubyz:totaldemented/leaves
+- **Player Spawn Validity:** true
+- **Ground Structure:**
+  - Grass (cubyz:grass/temperate)
+  - Soil (2 to 3 layers of cubyz:soil)
+- **Structures:**
+  - `simple_tree` with yellow leaves and birch logs, chance = 0.1
+    - Height: 8, height_variation: 5
+    - LeafRadius: 3, leafRadius_variation: 1.5
+  - Fallen tree with oak logs, chance = 0.005
+    - Height: 6, height_variation: 3
+  - Fallen tree with birch logs, chance = 0.002
+    - Height: 6, height_variation: 3
+  - `simple_vegetation` with temperate grass, chance = 0.4
+    - Height: 1, height_variation: 0
+  - Flower patches with red and yellow leaf piles, chance = 0.05 each
+    - Width: 10, variation: 6, density: 0.6, priority: 0.1
+  - Coniferous pine trees (loblolly, eastern_white, young_tree), chance = 0.06 each
+    - Place mode: degradable
 
 ## Related Questions
 - What are the tags associated with the Autumn Mixed Forest biome?

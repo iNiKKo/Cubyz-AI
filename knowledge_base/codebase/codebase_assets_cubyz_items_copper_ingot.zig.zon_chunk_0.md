@@ -8,7 +8,7 @@
 Defines properties for a copper ingot item in the Cubyz game.
 
 ## Explanation
-This chunk defines the configuration for a copper ingot item. It specifies tags, texture, and material properties such as durability, mass damage, hardness damage, swing speed, texture roughness, and color gradients. The configuration is structured using nested fields to organize different attributes of the item.
+This chunk defines the configuration for a copper ingot item. It specifies tags, texture, and material properties such as durability (300), mass damage (1.0), hardness damage (5.1), swing speed (7.1), texture roughness (0.1), and color gradients (0xffa24e37, 0xffb65f3f, 0xffd57e4b, 0xffee9168, 0xfff2b17e). The configuration is structured using nested fields to organize different attributes of the item.
 
 ## Related Questions
 - What tags are associated with the copper ingot item?

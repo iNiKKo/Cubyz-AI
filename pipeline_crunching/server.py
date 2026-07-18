@@ -97,6 +97,32 @@ AUDIT_ASSIGNMENT_STALE_SECONDS = 120
 
 audit_model_assignments = {}  # user_id (lowercase) -> {"model": ..., "tier": ..., "last_seen": ...}
 
+# The review/revise role -- judging whether a proposed fix is correct AND whether it silently
+# regresses something already-correct -- is a harder task than the "easy" tier's 3B-class models
+# reliably handle. Confirmed live during the first real 3-machine test: an "easy"-tier reviewer
+# rejected/re-requested-revision on genuinely correct fixes, at one point giving literally
+# self-contradictory feedback across rounds on the same chunk (first said a value shouldn't be
+# added because it was already present, then two rounds later said the same value was missing and
+# must be added) -- 56% of that reviewer's review actions ended up on chunks that never converged
+# and had to be escalated to a human, versus a small fraction for the other three volunteers
+# combined. "easy" tier can still PROPOSE (simple pattern-matching against source); it just isn't
+# offered review/revise work.
+HARDWARE_TIER_RANK = {"easy": 1, "medium": 2, "hard": 3}
+REVIEW_MIN_TIER = "medium"
+
+# Fixes to "docs" chunks are the highest-consequence in the whole knowledge base -- wiki/FAQ-style
+# content that gets quoted close to verbatim in real chat answers, and literally every severe bug
+# found during the 2026-07-18 session (healing, multiplayer port/UDP, an entire missing "Great Zig
+# Rewrite" section, etc.) lived there. Everything else (codebase config, addon_creator, reviews)
+# stays at a single approval to keep the common case fast; "docs" requires a second, independent
+# approval before a fix is actually written. A dict (not a hardcoded branch) so this can be
+# extended later if evidence from other collections warrants it.
+AUDIT_REQUIRED_APPROVALS = {"docs": 2}
+AUDIT_DEFAULT_REQUIRED_APPROVALS = 1
+
+def _required_approvals(collection: str) -> int:
+    return AUDIT_REQUIRED_APPROVALS.get(collection, AUDIT_DEFAULT_REQUIRED_APPROVALS)
+
 TASK_TIMEOUT = 300
 
 # How many separate nodes must independently give up on the same RAG chunk (each after their own
@@ -931,11 +957,13 @@ def _get_audit_work(user_id: str, hardware_tier: str, client_local_models: set =
     completed_chunks = len(state["completed"])
 
     # Three kinds of work can exist for a given chunk right now: a fresh chunk nobody's looked at
-    # yet (propose), a chunk sitting with an unreviewed proposal (review -- but never handed to the
-    # same user_id who wrote that proposal, since a "review" by the proposer isn't independent of
-    # anything), or a chunk whose reviewer asked for a better fix (revise -- never handed back to
-    # that same reviewer, so a fresh attempt gets made rather than the same person just overriding
-    # their own feedback).
+    # yet (propose), a chunk sitting with an unreviewed (or not-yet-fully-approved) proposal
+    # (review -- but never handed to the proposer, nor to anyone who already approved this same
+    # proposal, since re-approving with yourself isn't independent of anything), or a chunk whose
+    # reviewer asked for a better fix (revise -- never handed back to that same reviewer, so a
+    # fresh attempt gets made rather than the same person just overriding their own feedback).
+    # Review/revise are gated to medium+ hardware tier -- see REVIEW_MIN_TIER's comment.
+    can_review = HARDWARE_TIER_RANK.get(hardware_tier, 2) >= HARDWARE_TIER_RANK[REVIEW_MIN_TIER]
     candidates = []
     for t in audit_chunk_queue:
         cid = t["chunk_id"]
@@ -944,12 +972,16 @@ def _get_audit_work(user_id: str, hardware_tier: str, client_local_models: set =
         p = pending.get(cid)
         if not p or not p.get("stage"):
             candidates.append(("propose", t, p))
-        elif p["stage"] == "proposed" and p["proposer"].lower() != user_id.lower():
+        elif not can_review:
+            continue
+        elif p["stage"] == "proposed" and p["proposer"].lower() != user_id.lower() \
+                and user_id.lower() not in [a.lower() for a in p.get("approvals", [])]:
             candidates.append(("review", t, p))
         elif p["stage"] == "revise_requested" and (p.get("last_reviewer") or "").lower() != user_id.lower():
             candidates.append(("revise", t, p))
         # else: nothing this user_id can do for this chunk right now (e.g. they're the proposer
-        # waiting on someone else's review) -- it just isn't offered to them this call.
+        # waiting on someone else's review, or they already approved it once and it's waiting on a
+        # second approver) -- it just isn't offered to them this call.
 
     eta_seconds = _estimate_eta_seconds(audit_completion_log, len(candidates))
 
@@ -1051,7 +1083,14 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
             "corrected_related_questions": submission.corrected_related_questions,
             "attempts": prior.get("attempts", 0) + 1,
             "last_reviewer": None,
-            "history": prior.get("history", []) + [{"stage": "proposed", "user_id": submission.user_id, "timestamp": time.time()}],
+            "approvals": [],
+            "history": prior.get("history", []) + [{
+                "stage": "proposed", "user_id": submission.user_id, "timestamp": time.time(),
+                "reason": submission.reason,
+                "corrected_summary": submission.corrected_summary,
+                "corrected_explanation": submission.corrected_explanation,
+                "corrected_related_questions": submission.corrected_related_questions,
+            }],
         }
         write_json_file(AUDIT_PENDING_FILE, pending, "audit pending fixes")
         save_lock_state(AUDIT_LOCK_FILE, state)
@@ -1074,6 +1113,24 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
         })
 
         if submission.review_verdict == "approve":
+            required = _required_approvals(collection)
+            approvals = entry.setdefault("approvals", [])
+            if submission.user_id not in approvals:
+                approvals.append(submission.user_id)
+
+            if len(approvals) < required:
+                # Not enough independent approvals yet for a chunk this consequential -- see
+                # AUDIT_REQUIRED_APPROVALS's comment. Stays in "proposed" (still reviewable, just
+                # not by anyone already in `approvals` -- see _get_audit_work's filter) rather than
+                # applying on a single approval.
+                pending[submission.chunk_id] = entry
+                write_json_file(AUDIT_PENDING_FILE, pending, "audit pending fixes")
+                save_lock_state(AUDIT_LOCK_FILE, state)
+                save_user_stats(AUDIT_STATS_FILE, user_stats)
+                print(f"[AUDIT ✓] '{submission.user_id}' approved '{submission.chunk_id}' "
+                      f"({len(approvals)}/{required} approvals) -- awaiting one more independent approval.")
+                return {"status": "success", "result": "approved_awaiting_more"}
+
             applied = _apply_audit_fix(
                 submission.chunk_id, collection,
                 entry.get("corrected_summary"), entry.get("corrected_explanation"),
@@ -1086,13 +1143,13 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
             append_jsonl(AUDIT_APPLIED_LOG, {
                 "chunk_id": submission.chunk_id, "collection": collection,
                 "reason": entry.get("reason"), "proposer": entry.get("proposer"),
-                "reviewer": submission.user_id, "attempts": entry.get("attempts", 1),
-                "applied_at": time.time(),
+                "reviewers": approvals, "required_approvals": required,
+                "attempts": entry.get("attempts", 1), "applied_at": time.time(),
             }, "audit applied fix")
             pkey = entry["proposer"].lower()
             user_stats.setdefault(pkey, _new_user_stats_entry())
             user_stats[pkey]["fixes_applied"] += 1
-            print(f"[AUDIT ✓✓] Fix for '{submission.chunk_id}' approved by '{submission.user_id}' "
+            print(f"[AUDIT ✓✓] Fix for '{submission.chunk_id}' approved by {approvals} "
                   f"(proposed by '{entry['proposer']}') -- applied.")
             # Don't cache a hash for content only ever checked by LLMs, never a human -- leave it
             # eligible for a future re-audit rather than treating it as permanently settled.
@@ -1157,7 +1214,13 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
         entry["corrected_summary"] = submission.corrected_summary
         entry["corrected_explanation"] = submission.corrected_explanation
         entry["corrected_related_questions"] = submission.corrected_related_questions
-        entry["history"].append({"stage": "revised", "user_id": submission.user_id, "timestamp": time.time()})
+        entry["approvals"] = []  # this is different content from whatever was approved (if anything) before -- needs fresh approval
+        entry["history"].append({
+            "stage": "revised", "user_id": submission.user_id, "timestamp": time.time(),
+            "corrected_summary": submission.corrected_summary,
+            "corrected_explanation": submission.corrected_explanation,
+            "corrected_related_questions": submission.corrected_related_questions,
+        })
         pending[submission.chunk_id] = entry
         write_json_file(AUDIT_PENDING_FILE, pending, "audit pending fixes")
         save_lock_state(AUDIT_LOCK_FILE, state)

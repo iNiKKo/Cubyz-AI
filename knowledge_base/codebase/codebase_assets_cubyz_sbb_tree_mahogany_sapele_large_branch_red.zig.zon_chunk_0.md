@@ -8,7 +8,7 @@
 Defines blueprints for red mahogany and sapele large branches.
 
 ## Explanation
-This chunk contains a configuration structure defining two blueprints, each with an ID. These IDs are used to identify specific types of tree branches within the Cubyz voxel engine. The blueprints are likely part of a larger asset management system responsible for loading and managing different types of assets in the game.
+This chunk contains a configuration structure defining two blueprints for specific types of tree branches within the Cubyz voxel engine. The IDs for these blueprints are 'cubyz:tree/mahogany/sapele/large/branch/red/0' and 'cubyz:tree/mahogany/sapele/large/branch/red/1'. These IDs are used to identify specific types of tree branches within the Cubyz voxel engine. The blueprints are likely part of a larger asset management system responsible for loading and managing different types of assets in the game.
 
 ## Related Questions
 - What are the IDs defined for the red mahogany and sapele large branches?

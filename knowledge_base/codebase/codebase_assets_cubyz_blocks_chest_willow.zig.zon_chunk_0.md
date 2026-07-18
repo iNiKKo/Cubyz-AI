@@ -8,7 +8,13 @@
 Defines texture paths for the willow chest block.
 
 ## Explanation
-This chunk specifies the file paths for various textures associated with a willow chest block in the Cubyz voxel engine. Each field corresponds to a different face of the chest, such as front, back, left, right, top, and bottom. The texture paths are used by the rendering system to apply the correct images to each side of the block when it is displayed in the game world.
+This chunk specifies the file paths for various textures associated with a willow chest block in the Cubyz voxel engine. Each field corresponds to a different face of the chest, as follows:
+- `texture`: "cubyz:chest/willow/back"
+- `texture_front`: "cubyz:chest/willow/front"
+- `texture_left`: "cubyz:chest/willow/side"
+- `texture_right`: "cubyz:chest/willow/side"
+- `texture_top`: "cubyz:chest/willow/top"
+- `texture_bottom`: "cubyz:chest/willow/bottom"
 
 ## Related Questions
 - What is the texture path for the front of the willow chest block?

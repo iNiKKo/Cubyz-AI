@@ -8,7 +8,7 @@
 Defines a list of blueprints for different top ring configurations of a cirrus tree.
 
 ## Explanation
-This chunk contains a configuration structure that lists five distinct blueprints, each identified by a unique string. These identifiers are used to reference specific top ring configurations of a cirrus tree within the Cubyz voxel engine. The blueprints are stored in an array under the `.blueprints` key.
+This chunk contains a configuration structure that lists five distinct blueprints for different top ring configurations of a cirrus tree. The identifiers used to reference these specific top ring configurations within the Cubyz voxel engine are: `cubyz:tree/cirrus/rings/top/0`, `cubyz:tree/cirrus/rings/top/1`, `cubyz:tree/cirrus/rings/top/2`, `cubyz:tree/cirrus/rings/top/3`, and `cubyz:tree/cirrus/rings/top/4`. These identifiers are stored in an array under the `.blueprints` key.
 
 ## Related Questions
 - What are the identifiers for the top ring configurations of a cirrus tree?

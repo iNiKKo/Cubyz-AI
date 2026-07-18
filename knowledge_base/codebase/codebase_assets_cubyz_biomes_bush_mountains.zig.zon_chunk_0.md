@@ -8,7 +8,7 @@
 Defines properties and structures for a snowy bush mountain biome in Cubyz.
 
 ## Explanation
-This chunk configures the characteristics of a specific biome within the Cubyz game engine. It specifies properties like height limits, tags, roughness, and musical theme. The configuration also details ground structures and various structures that can appear within this biome, such as trees and patches of gravel or snow.
+This chunk configures the characteristics of a snowy bush mountain biome within the Cubyz game engine. It specifies properties like height limits (minHeight = 80, maxHeight = 256), tags (.snowy, .oak), roughness = 10, and mountains = 100. The configuration also includes rivers = true and music = 'cubyz:totaldemented/adventurous'. Additionally, it details ground structures including cubyz:grass/temperate (chance 0 to 1), cubyz:gravel (chance 0 to 1), and cubyz:slate/rough (chance 0 to 1). The configuration also outlines various structures that can appear within this biome, such as oak trees with a chance of 0.16 and patches of gravel or snow with specific dimensions and smoothness values.
 
 ## Related Questions
 - What are the height limits for this biome?

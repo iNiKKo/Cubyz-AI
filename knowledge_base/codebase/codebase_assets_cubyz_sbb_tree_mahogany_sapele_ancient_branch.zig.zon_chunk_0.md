@@ -8,7 +8,15 @@
 Defines blueprints for different types of mahogany and sapele tree branches with associated generation chances.
 
 ## Explanation
-This chunk contains a configuration structure defining various blueprints for mahogany and sapele tree branches. Each blueprint has an ID string that uniquely identifies the branch type and a chance value representing the probability of generating that specific branch type during world generation. The last entry in the array has a null ID with a chance of 1.0, which likely serves as a default or fallback option.
+This chunk contains a configuration structure defining various blueprints for mahogany and sapele tree branches. Each blueprint has an ID string that uniquely identifies the branch type and a chance value representing the probability of generating that specific branch type during world generation. The IDs and chances are as follows:
+
+- `cubyz:tree/mahogany/sapele/large/branch/red/0` with a chance of 0.1
+- `cubyz:tree/mahogany/sapele/large/branch/red/1` with a chance of 0.1
+- `cubyz:tree/mahogany/sapele/large/branch/blue/0` with a chance of 0.1
+- `cubyz:tree/mahogany/sapele/large/branch/blue/1` with a chance of 0.1
+- `cubyz:tree/mahogany/sapele/large/branch/green/0` with a chance of 0.1
+- `cubyz:tree/mahogany/sapele/large/branch/green/1` with a chance of 0.1
+- A null ID with a chance of 1.0, which serves as the default or fallback option for branch generation.
 
 ## Related Questions
 - What are the different types of mahogany and sapele tree branches defined in this configuration?

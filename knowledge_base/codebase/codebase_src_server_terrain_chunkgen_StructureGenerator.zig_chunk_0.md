@@ -9,7 +9,7 @@
 The StructureGenerator module handles the generation of structures within terrain chunks.
 
 ## Explanation
-This chunk defines a structure generator for Cubyz, responsible for placing various structures in generated terrain. It imports necessary modules and types from other parts of the codebase, such as random number generators, terrain-related utilities, and vector math. The `generate` function is the core logic, which uses a structure map to place structures within a specified chunk based on cave maps and biome maps.
+This chunk defines a structure generator for Cubyz with the ID 'cubyz:vegetation' and a priority level of 131072. It imports necessary modules and types from other parts of the codebase, such as random number generators, terrain-related utilities, and vector math. The `generate` function is the core logic, which uses a structure map to place structures within a specified chunk based on cave maps and biome maps. Additionally, it initializes with a specific generator seed (0x2026b65487da9226) and defaults to an enabled state.
 
 ## Code Example
 ```zig

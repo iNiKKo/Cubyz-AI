@@ -8,7 +8,7 @@
 Defines blueprints and children for a specific Baobab tree variant in Cubyz.
 
 ## Explanation
-This chunk defines the structure of a Baobab tree variant named 'grandidieri' within the Cubyz game engine. It specifies the blueprints, which are unique identifiers for different parts of the trunk, and the children, which represent the branches, leaves, and roots of the tree. Each blueprint ID corresponds to a specific model or texture used in rendering the tree's trunk segments.
+This chunk defines the structure of a Baobab tree variant named 'grandidieri' within the Cubyz game engine. It specifies four blueprint IDs for different parts of the trunk: `cubyz:tree/baobab/grandidieri/trunk/0`, `cubyz:tree/baobab/grandidieri/trunk/1`, `cubyz:tree/baobab/grandidieri/trunk/2`, and `cubyz:tree/baobab/grandidieri/trunk/3`. The children field represents the branches, leaves, and roots of the tree. Specifically, the white color corresponds to the branch asset (`cubyz:tree/baobab/grandidieri/branch`), grey corresponds to the leaves asset (`cubyz:tree/baobab/grandidieri/leaves`), and brown corresponds to the roots asset (`cubyz:tree/baobab/grandidieri/roots`).
 
 ## Related Questions
 - What are the blueprint IDs defined for the Baobab tree 'grandidieri'?

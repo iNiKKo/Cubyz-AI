@@ -1,4 +1,4 @@
 {
-  "mode": "finetune",
-  "clean_shutdown": true
+  "mode": "audit",
+  "clean_shutdown": false
 }

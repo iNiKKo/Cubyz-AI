@@ -8,7 +8,7 @@
 Defines properties for a magenta glass block.
 
 ## Explanation
-This chunk defines the properties of a specific type of glass block in the Cubyz voxel engine. It sets the absorbed light value and specifies the texture file used to render the block. The absorbed light value is a hexadecimal color code, and the texture path points to an image file within the assets directory.
+This chunk defines the properties of a specific type of glass block in the Cubyz voxel engine. It sets the absorbed light value to `0x0d9f35` and specifies the texture file as `cubyz:glass/magenta`. The absorbed light value is a hexadecimal color code, and the texture path points to an image file within the assets directory.
 
 ## Related Questions
 - What is the absorbed light value for the magenta glass block?

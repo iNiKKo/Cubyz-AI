@@ -1,0 +1,301 @@
+{
+  "codebase_assets_cubyz_sbb_phantasmal_pillar_offshoot_offshoot.zig.zon_chunk_0": {
+    "stage": "revise_requested",
+    "collection": "codebase",
+    "proposer": "NickMac",
+    "reason": "The kb_content does not state the exact chance values for each blueprint, which are provided in raw_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "# [easy/codebase_assets_cubyz_sbb_phantasmal_pillar_offshoot_offshoot.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** blueprint, chance, pillar offshoot, configuration data, engine logic\n**Symbols:** blueprints\n**Concepts:** configuration, blueprint generation\n\n## Summary\nConfiguration data for pillar offshoot blueprint generation.\n\n## Explanation\nThis chunk defines a configuration structure for generating pillar offshoots in the Cubyz voxel engine. It contains an array of blueprints, each with an ID and a chance value. The IDs correspond to specific types of pillar offshoots, and the chances determine their likelihood of being generated. The exact chance values are as follows:\n\n- `cubyz:phantasmal/pillar/offshoot/0` has a chance of 0.08.\n- `cubyz:phantasmal/pillar/offshoot/1` has a chance of 0.08.\n- `cubyz:phantasmal/pillar/offshoot/2` has a chance of 0.08.\n- `cubyz:phantasmal/pillar/offshoot/3` has a chance of 0.08.\n- `cubyz:phantasmal/pillar/offshoot/4` has a chance of 0.08.\n- `cubyz:phantasmal/pillar/offshoot/5` has a chance of 0.08.\n- `cubyz:phantasmal/pillar/offshoot/6` has a chance of 0.5.\n- `cubyz:phantasmal/pillar/offshoot/7` has a chance of 0.08.\n- `cubyz:phantasmal/pillar/offshoot/8` has a chance of 0.08.\n- `cubyz:phantasmal/pillar/offshoot/9` has a chance of 0.08.\n- `cubyz:phantasmal/pillar/offshoot/10` has a chance of 0.08.\n- `cubyz:phantasmal/pillar/offshoot/11` has a chance of 0.08.\n- `cubyz:phantasmal/pillar/offshoot/12` has a chance of 0.08.\n- `cubyz:phantasmal/pillar/offshoot/13` has a chance of 1.2.\n- `cubyz:phantasmal/pillar/offshoot/14` has a chance of 0.8.\n- The blueprint with ID `null` has a chance of 0.3.\n\nThe exact chance values are provided in the raw content.",
+    "corrected_related_questions": [
+      "What is the total number of blueprint entries in this configuration?",
+      "Which ID has the highest chance value?",
+      "How many blueprints have a chance greater than 0.5?",
+      "What is the sum of all chance values in the configuration?",
+      "Which blueprint entry has an ID of null?",
+      "How many blueprints have a chance value less than or equal to 0.8?",
+      "What is the average chance value across all blueprints?",
+      "Which blueprint entry has the lowest chance value?",
+      "How many blueprints have a chance value greater than 1.2?",
+      "What is the maximum chance value in the configuration?",
+      "How many blueprints have a chance value between 0.3 and 0.8?",
+      "What is the total chance value of all blueprints with an ID starting with 'cubyz:phantasmal/pillar/offshoot/'?"
+    ],
+    "attempts": 2,
+    "last_reviewer": "Nick",
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickMac",
+        "timestamp": 1784389537.6095397
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nick",
+        "verdict": "revise",
+        "feedback": "The proposed explanation provides detailed chance values but drops previously stated facts about the configuration structure and its purpose. The original kb_content included a concise summary of what the chunk defines, which should be retained. Additionally, the related questions section in the proposal is identical to the original, so there's no need for changes here.",
+        "timestamp": 1784389550.8719773
+      }
+    ],
+    "review_feedback": "The proposed explanation provides detailed chance values but drops previously stated facts about the configuration structure and its purpose. The original kb_content included a concise summary of what the chunk defines, which should be retained. Additionally, the related questions section in the proposal is identical to the original, so there's no need for changes here."
+  },
+  "codebase_assets_cubyz_tools_sickle.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific values and matrices for damage calculation, durability, swing speed, etc., as mentioned in the related questions.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk contains configuration settings for a sickle tool. It includes disabled properties defined by a matrix with specific values indicating which attributes are disabled. The optional properties are also specified through another matrix. Parameters define how damage is calculated based on source attributes, including massDamage and hardnessDamage, each with their own matrices and factors. For durability calculation, parameters use the 'durability' source attribute with specific matrices and factors. Swing speed is also defined using similar methods and factors.",
+    "corrected_related_questions": [],
+    "attempts": 2,
+    "last_reviewer": "NickMac",
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784389697.723136
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "NickMac",
+        "verdict": "revise",
+        "feedback": "The proposed explanation includes additional details not present in the raw content, such as specific matrices and factors for damage calculation. These should be removed to avoid contradicting the existing information in kb_content.",
+        "timestamp": 1784389731.4583704
+      },
+      {
+        "stage": "revised",
+        "user_id": "Nick",
+        "timestamp": 1784390602.347925,
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk contains configuration settings for a sickle tool. It includes disabled properties defined by a matrix with specific values indicating which attributes are disabled. The optional properties are also specified through another matrix. Parameters define how damage is calculated based on source attributes, including massDamage and hardnessDamage, each with their own matrices and factors. For durability calculation, parameters use the 'durability' source attribute with specific matrices and factors. Swing speed is also defined using similar methods and factors.",
+        "corrected_related_questions": []
+      }
+    ],
+    "review_feedback": "The proposed explanation includes additional details not present in the raw content, such as specific matrices and factors for damage calculation. These should be removed to avoid contradicting the existing information in kb_content.",
+    "approvals": []
+  },
+  "codebase_assets_cubyz_biomes_swamp_pond.zig.zon_chunk_0": {
+    "stage": "revise_requested",
+    "collection": "codebase",
+    "proposer": "NickMac",
+    "reason": "kb_content does not mention any of the specific block IDs and generation modes for lily pads, which are explicitly stated in raw_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "# [easy/codebase_assets_cubyz_biomes_swamp_pond.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** swamp, pond, biome, configuration, lily pad\n**Symbols:** Swamp_pond_biome\n**Concepts:** biome, configuration, lily pad\n\n## Summary\nSwamp pond biome configuration\n\n## Explanation\nThis chunk defines the properties, height range, radius, roughness, hills, music, ground structure, structures, and parent biomes for a swamp pond biome. It includes specific block IDs and generation modes for lily pads.\n\n### Ground Structure\n- The ground structure is defined as `4 to 5 cubyz:mud`.\n\n### Structures\n- Lilies are generated using the water surface generation mode with the following properties:\n  - Block IDs: `cubyz:lily_pad:0`, `cubyz:lily_pad:1`, `cubyz:lily_pad:2`, and `cubyz:lily_pad:3`.\n- The structures are defined as follows:\n  - Width: 6 blocks.\n  - Variation: 6.\n  - Density: 0.1.\n  - Priority: 0.1.\n\n*Source: unknown | chunk_id: codebase_assets_cubyz_biomes_swamp_pond.zig.zon_chunk_0*\n",
+    "corrected_related_questions": [
+      "What is the minimum height of the swamp pond biome?",
+      "What is the maximum height of the swamp pond biome?",
+      "What is the minimum radius of the swamp pond biome?",
+      "What is the maximum radius of the swamp pond biome?",
+      "What is the chance of generating a lily pad in the swamp pond biome?",
+      "What are the block IDs for lily pads in the swamp pond biome?",
+      "What generation mode is used for lily pads in the swamp pond biome?",
+      "What is the width of the lily pad structures in the swamp pond biome?",
+      "What is the variation of the lily pad structures in the swamp pond biome?",
+      "What is the density of the lily pad structures in the swamp pond biome?",
+      "What is the priority of the lily pad structures in the swamp pond biome?",
+      "What are the parent biomes for the swamp pond biome?"
+    ],
+    "attempts": 2,
+    "last_reviewer": "Nick",
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickMac",
+        "timestamp": 1784389718.6288614
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nick",
+        "verdict": "revise",
+        "feedback": "The proposed explanation introduces a new fact that was not present in the raw_content: it mentions 'Lilies' instead of 'lily pads'. Additionally, the chance of generating lily pad structures is mentioned as 0.1 but this value should be noted correctly without introducing incorrect terminology or details. Ensure to stick strictly to the information provided in the raw_content.",
+        "timestamp": 1784389724.908336
+      }
+    ],
+    "review_feedback": "The proposed explanation introduces a new fact that was not present in the raw_content: it mentions 'Lilies' instead of 'lily pads'. Additionally, the chance of generating lily pad structures is mentioned as 0.1 but this value should be noted correctly without introducing incorrect terminology or details. Ensure to stick strictly to the information provided in the raw_content."
+  },
+  "codebase_assets_cubyz_blocks_coal_ore.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific values for the number of veins, size, maximum height, and density of coal ore distribution.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines the configuration for the coal ore block in the Cubyz game. It specifies that the block is mineable with a health of 16 and a resistance of 1. The ore properties include 5 veins, each with a size of 100 blocks, generated up to a maximum height of 500 units, and a density of 0.5. The block drops an item automatically when mined. The rotation, model, and texture are set to specific identifiers within the Cubyz asset system: 'cubyz:ore', 'cubyz:cube', and 'cubyz:coal_ore' respectively. Additionally, it specifies that the item representation uses the texture 'coal.png'.",
+    "corrected_related_questions": [
+      "What is the number of veins in the coal ore distribution?",
+      "What is the size of each vein in the coal ore?",
+      "What is the maximum height for coal ore generation?",
+      "What is the density of coal ore?"
+    ],
+    "attempts": 1,
+    "last_reviewer": null,
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784389721.8285613
+      }
+    ]
+  },
+  "codebase_assets_cubyz_blocks_log_oak.zig.zon_chunk_0": {
+    "stage": "revise_requested",
+    "collection": "codebase",
+    "proposer": "Nickc",
+    "reason": "The kb_content does not state the specific texture paths for each oak log block orientation, which are explicitly provided in raw_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk contains a configuration object with six fields, each representing a different texture used for rendering an oak log block. The textures and their corresponding paths are as follows: \n- `texture0`: 'cubyz:log/oak/dot'\n- `texture1`: 'cubyz:log/oak/line'\n- `texture2`: 'cubyz:log/oak/bend'\n- `texture3`: 'cubyz:log/oak/intersection'\n- `texture4`: 'cubyz:log/oak/cross'\n- `texture5`: 'cubyz:log/oak/top' \nThese textures likely correspond to various orientations or patterns on the log's surface.",
+    "corrected_related_questions": [
+      "What are the texture paths defined for the oak log block?",
+      "How many different textures are specified for the oak log?",
+      "What is the purpose of each texture in the oak log configuration?"
+    ],
+    "attempts": 2,
+    "last_reviewer": "Nick",
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nickc",
+        "timestamp": 1784389722.8444588
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nick",
+        "verdict": "revise",
+        "feedback": "The proposed explanation correctly adds the specific texture paths, but it omits the previously stated fact that these textures correspond to visual characteristics like dot, line, bend, etc. This information should be retained.",
+        "timestamp": 1784389726.7643816
+      }
+    ],
+    "review_feedback": "The proposed explanation correctly adds the specific texture paths, but it omits the previously stated fact that these textures correspond to visual characteristics like dot, line, bend, etc. This information should be retained."
+  },
+  "codebase_assets_cubyz_blocks_bars__defaults.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The kb_content mentions 'drops' but does not specify the exact items dropped, which is a concrete value in raw_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines the default properties of a Cubyz bars block, including tags, drops, absorbed light level, rotation model, and visual model. The block is marked as mineable with the tag `.mineable`. It has one drop item which is auto-generated. The absorbed light level is set to `0x202830`. For its appearance and rotation, it uses predefined models named `cubyz:bars` and `cubyz:fence`, respectively.",
+    "corrected_related_questions": [],
+    "attempts": 2,
+    "last_reviewer": "Nickc",
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784390609.614752,
+        "reason": "The kb_content mentions 'drops' but does not specify the exact items dropped, which is a concrete value in raw_content.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines the default properties of a Cubyz bars block, including tags, drops, absorbed light level, rotation model, and visual model. The block is marked as mineable with the tag `.mineable`. It has one drop item which is auto-generated. The absorbed light level is set to `0x202830`. For its appearance and rotation, it uses predefined models named `cubyz:bars` and `cubyz:fence`, respectively.",
+        "corrected_related_questions": [
+          "What items does the Cubyz bars block drop by default?",
+          "Which model is used for the rotation of the Cubyz bars block?"
+        ]
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nickc",
+        "verdict": "revise",
+        "feedback": "The proposed fix correctly adds the specific item dropped, but it regresses by removing the correct fact that the absorbed light level is `0x202830`. The original kb_content accurately stated this value, which should be preserved.",
+        "timestamp": 1784390622.5406032
+      },
+      {
+        "stage": "revised",
+        "user_id": "Nick",
+        "timestamp": 1784390629.0723124,
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines the default properties of a Cubyz bars block, including tags, drops, absorbed light level, rotation model, and visual model. The block is marked as mineable with the tag `.mineable`. It has one drop item which is auto-generated. The absorbed light level is set to `0x202830`. For its appearance and rotation, it uses predefined models named `cubyz:bars` and `cubyz:fence`, respectively.",
+        "corrected_related_questions": []
+      }
+    ],
+    "review_feedback": "The proposed fix correctly adds the specific item dropped, but it regresses by removing the correct fact that the absorbed light level is `0x202830`. The original kb_content accurately stated this value, which should be preserved."
+  },
+  "codebase_assets_cubyz_blocks_branch_palm.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific values for several properties such as durability, swing speed, texture roughness, and the exact decay behavior. It also omits details about the material modifiers.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines the properties of a palm branch block in the Cubyz voxel engine. The block has tags for choppable, wood, and branch. Its update type is set to decay. The block health value is 4. It uses specific textures including 'cubyz:branch/palm/dot', 'cubyz:branch/palm/half_line', 'cubyz:branch/palm/line', 'cubyz:branch/palm/bend', 'cubyz:branch/palm/intersection', and 'cubyz:branch/palm/cross'. The item has a durability of 31, mass damage of 1.15, hardness damage of 0.51, swing speed of 4.7, texture roughness of 0.7, and colors defined as {0xff6d4f33, 0xff865f3d, 0xff9f6c46, 0xffb47f51, 0xff9f6c46}. The item also has a durability modifier with an ID of 'durable' and strength of 0.45. There is a decay prohibition setting for the palm branch block.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784390617.2075062,
+        "reason": "The explanation does not provide specific values for several properties such as durability, swing speed, texture roughness, and the exact decay behavior. It also omits details about the material modifiers.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines the properties of a palm branch block in the Cubyz voxel engine. The block has tags for choppable, wood, and branch. Its update type is set to decay. The block health value is 4. It uses specific textures including 'cubyz:branch/palm/dot', 'cubyz:branch/palm/half_line', 'cubyz:branch/palm/line', 'cubyz:branch/palm/bend', 'cubyz:branch/palm/intersection', and 'cubyz:branch/palm/cross'. The item has a durability of 31, mass damage of 1.15, hardness damage of 0.51, swing speed of 4.7, texture roughness of 0.7, and colors defined as {0xff6d4f33, 0xff865f3d, 0xff9f6c46, 0xffb47f51, 0xff9f6c46}. The item also has a durability modifier with an ID of 'durable' and strength of 0.45. There is a decay prohibition setting for the palm branch block.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_assets_cubyz_biomes_cave_mushroom_big__defaults.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific values for maxHeight, music, ground_structure, structures, and caveModels.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines the configuration for the Cave Mushroom Big biome. It specifies that it is a cave layer with tags .{.cave_layer}. The maximum height of this biome is -512 cubyz. The music track used in this biome is 'cubyz:totaldemented/mycelia'.\n\nThe ground structure consists of 2 to 3 blocks of cubyz:soil. There are structures defined for the Cave Mushroom Big biome, including one with an ID of 'cubyz:ground_patch', which uses clay as the block type and has a generation chance of 0.3. The width is set to 5 cubyz with a variation of 5 cubyz, depth of 2 cubyz, and smoothness of 0.5.\n\nCave models are also defined for this biome, including one partial sphere model that can generate between 10 to 30 instances, with minimum and maximum radii set at 10 and 20 cubyz respectively.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784390624.8780665,
+        "reason": "The explanation does not provide specific values for maxHeight, music, ground_structure, structures, and caveModels.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines the configuration for the Cave Mushroom Big biome. It specifies that it is a cave layer with tags .{.cave_layer}. The maximum height of this biome is -512 cubyz. The music track used in this biome is 'cubyz:totaldemented/mycelia'.\n\nThe ground structure consists of 2 to 3 blocks of cubyz:soil. There are structures defined for the Cave Mushroom Big biome, including one with an ID of 'cubyz:ground_patch', which uses clay as the block type and has a generation chance of 0.3. The width is set to 5 cubyz with a variation of 5 cubyz, depth of 2 cubyz, and smoothness of 0.5.\n\nCave models are also defined for this biome, including one partial sphere model that can generate between 10 to 30 instances, with minimum and maximum radii set at 10 and 20 cubyz respectively.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_assets_cubyz_blocks_branch_leafy_palm.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific values and details for the Leafy Palm block configuration, such as exact drop items, allowed tool tags, shell model, texture slot offset, etc.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines the configuration for a Leafy Palm block in Cubyz. It includes properties such as model with radius of 4 and shellModel 'cubyz:cube_hanging_planes' using textureSlotOffset 6, update behavior with decay type dropping items 'cubyz:branch/palm', drop items including 'cubyz:branch/palm' and 'cubyz:leaves/palm' when cuttable tool is used, textures such as 'cubyz:leaves/palm', 'cubyz:leaves/palm_hanging', 'cubyz:branch/palm/dot', 'cubyz:branch/palm/half_line', 'cubyz:branch/palm/line', 'cubyz:branch/palm/bend', 'cubyz:branch/palm/intersection', and 'cubyz:branch/palm/cross', LOD replacement texture 'cubyz:leaves/opaque/palm', and opaque variant 'cubyz:leaves/opaque/palm'.",
+    "corrected_related_questions": [
+      "What is the radius of the Leafy Palm block model?",
+      "How does the Leafy Palm block update its state?",
+      "What items can be dropped when the Leafy Palm block is broken?",
+      "Which textures are associated with the Leafy Palm block?",
+      "What is the LOD replacement texture for the Leafy Palm block?",
+      "What is the opaque variant of the Leafy Palm block?",
+      "How many drop items does the Leafy Palm block have?",
+      "What are the allowed tool tags for dropping leaves from the Leafy Palm block?",
+      "What is the model used for the shell of the Leafy Palm block?",
+      "What texture slot offset is used for the Leafy Palm block?"
+    ],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784390640.3411279,
+        "reason": "The explanation does not provide specific values and details for the Leafy Palm block configuration, such as exact drop items, allowed tool tags, shell model, texture slot offset, etc.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines the configuration for a Leafy Palm block in Cubyz. It includes properties such as model with radius of 4 and shellModel 'cubyz:cube_hanging_planes' using textureSlotOffset 6, update behavior with decay type dropping items 'cubyz:branch/palm', drop items including 'cubyz:branch/palm' and 'cubyz:leaves/palm' when cuttable tool is used, textures such as 'cubyz:leaves/palm', 'cubyz:leaves/palm_hanging', 'cubyz:branch/palm/dot', 'cubyz:branch/palm/half_line', 'cubyz:branch/palm/line', 'cubyz:branch/palm/bend', 'cubyz:branch/palm/intersection', and 'cubyz:branch/palm/cross', LOD replacement texture 'cubyz:leaves/opaque/palm', and opaque variant 'cubyz:leaves/opaque/palm'.",
+        "corrected_related_questions": [
+          "What is the radius of the Leafy Palm block model?",
+          "How does the Leafy Palm block update its state?",
+          "What items can be dropped when the Leafy Palm block is broken?",
+          "Which textures are associated with the Leafy Palm block?",
+          "What is the LOD replacement texture for the Leafy Palm block?",
+          "What is the opaque variant of the Leafy Palm block?",
+          "How many drop items does the Leafy Palm block have?",
+          "What are the allowed tool tags for dropping leaves from the Leafy Palm block?",
+          "What is the model used for the shell of the Leafy Palm block?",
+          "What texture slot offset is used for the Leafy Palm block?"
+        ]
+      }
+    ]
+  }
+}
