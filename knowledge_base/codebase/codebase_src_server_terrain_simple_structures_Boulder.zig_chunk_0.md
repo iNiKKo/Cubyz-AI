@@ -9,7 +9,7 @@
 Boulder generation logic
 
 ## Explanation
-This chunk defines the Boulder structure with a block, size, and size variation. It provides a loadModel function to parse parameters and a generate function to place blocks based on a point cloud potential function.
+This chunk defines the Boulder structure with a block, size, and size variation. The `loadModel` function parses parameters for these attributes: 'block' defaults to 'cubyz:slate/smooth', 'size' defaults to 4, and 'sizeVariation' defaults to 1 if not specified in parameters. The `generate` function places blocks based on a point cloud potential function using the parsed values. It calculates radius as `self.size + self.sizeVariation * (random.nextFloat(seed) * 2 - 1)` and uses this radius to determine block placement within a square area of side length 2*radius.
 
 ## Code Example
 ```zig
@@ -53,17 +53,8 @@ pub fn generate(self: *Boulder, _: GenerationMode, x: i32, y: i32, z: i32, chunk
 ```
 
 ## Related Questions
-- What is the purpose of the Boulder structure?
-- How does the loadModel function parse parameters for the Boulder structure?
-- What is the generationMode for the Boulder structure?
-- What is the generate function used for in the Boulder structure?
-- What is the point cloud potential function used in the Boulder structure?
-- What is the radius calculation used in the Boulder structure?
-- How does the Boulder structure place blocks based on the point cloud potential function?
-- What is the maximum radius used in the Boulder structure?
-- What is the chunk update logic used in the Boulder structure?
-- What is the block placement condition used in the Boulder structure?
-- What is the potential calculation used in the Boulder structure?
-- What is the distance calculation used in the Boulder structure?
+- What are the default values for 'size' and 'sizeVariation' in the Boulder structure?
+- How is the default block ('cubyz:slate/smooth') set if no parameter is provided?
+- What is the formula used to calculate radius during generation?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_simple_structures_Boulder.zig_chunk_0*

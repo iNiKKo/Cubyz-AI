@@ -8,7 +8,7 @@
 Defines properties and structures for the Rainbow Forest biome in Cubyz.
 
 ## Explanation
-This chunk configures the Rainbow Forest biome, specifying its height limits, terrain properties, music, player spawn validity, ground structure, and various tree structures with different colored leaves and logs. Each tree type has a specified chance of appearing, growth parameters, and priority.
+This chunk configures the Rainbow Forest biome with specific properties including a minimum height limit of 7, minHeight of 22, maxHeight of 40, and maxHeightLimit of 60. The terrain is smoothBeaches enabled with roughness set to 10 and hills also at 10. The chance for the biome generation is 0.01. The music track associated with this biome is 'cubyz:zeahtrix/foggy_memories'. Valid player spawn settings are true, allowing players to spawn within the biome. Ground structure includes grass of type 'temperate' and soil layers ranging from 2 to 3 cubyz deep. Various tree structures are defined with different colored leaves and logs such as red, green, blue, yellow, cyan, and magenta. The oak tree (cubyz:sbb) has a chance of appearing at 0.3, while each type of 'simple_tree' has a chance of appearing at 0.05. Each simple_tree has round type growth, height variation up to 3 cubyz, leaf radius of 16 cubyz, and priority set to 0.1.
 
 ## Related Questions
 - What is the minimum height limit for the Rainbow Forest biome?

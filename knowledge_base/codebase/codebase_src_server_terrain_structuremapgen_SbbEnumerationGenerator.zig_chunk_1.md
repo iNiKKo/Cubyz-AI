@@ -9,7 +9,7 @@
 Generates structures for a terrain map fragment based on SBB (Structure Block Blueprint) data.
 
 ## Explanation
-The `generate` function iterates over a grid within the map's size, calculating positions and indices to select SBBs from a list. For each position, it decides whether to create a `SignGenerator` or `SimpleStructure` based on a condition involving the y-coordinate (`wpy`). It then adds these structures to the map with appropriate parameters. The `SignGenerator` struct has a `generate` method that updates blocks in a chunk and loads sign data from an ID.
+The `generate` function iterates over a grid within the map's size, using a margin of 16 units horizontally and 32 units vertically (`marginZ`). It calculates positions and indices to select SBBs from a list. For each position `(px, py)`, it checks if the y-coordinate (`wpy`) is divisible by 1024 (i.e., `wpy & 1023 == 0`), which determines whether to create a `SignGenerator` or `SimpleStructure`. If the condition is met, a `SignGenerator` is created with specific parameters and added to the map. Otherwise, a `SimpleStructure` is created with its own set of parameters including a seed calculated from the worldSeed and y-coordinate (`wpy`). The `generate` function updates blocks in a chunk and loads sign data from an ID using a binary reader.
 
 ## Code Example
 ```zig
@@ -29,11 +29,11 @@ pub fn generate(self: *const SignGenerator, chunk: *ServerChunk, _: terrain.Cave
 ```
 
 ## Related Questions
-- What is the purpose of the `generate` function in this chunk?
-- How does the `generate` function determine which structure to create at each position?
-- What does the `SignGenerator.generate` method do?
-- How are structures added to the map in this chunk?
+- What are the values for `margin`, `marginZ`, and how do they affect the grid iteration?
+- How is the index calculated to select SBBs from the list?
+- Under what condition does the function create a `SignGenerator` versus a `SimpleStructure`?
+- What specific parameters are used when adding structures to the map?
+- How is the seed for `SimpleStructure` generated?
 - What error handling is implemented for loading sign data?
-- What is the significance of the `marginZ` variable in the `generate` function?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_structuremapgen_SbbEnumerationGenerator.zig_chunk_1*

@@ -9,7 +9,7 @@
 UI component for creating and editing recipes in the Cubyz Addon Creator.
 
 ## Explanation
-This UI component is responsible for allowing users to create and edit recipes. It includes a dropdown menu for loading preset recipes, input fields for specifying recipe ID, input ingredients with quantity and texture selection, output item result with amount made and texture selection, and a save button to add the recipe to the project.
+This UI component is responsible for allowing users to create and edit recipes. It includes a "Load Preset" dropdown with exactly two presets: "Oak Planks" (`loadRecipePreset('planks')`) and "Workbench" (`loadRecipePreset('workbench')`). Input Ingredients allows up to 4 items (the 2nd-4th are optional, searchable via a filterable dropdown), each with a quantity and texture selection. The output section specifies the result item, amount made, and texture selection. A save button adds the finished recipe to the project.
 
 ## Code Example
 ```zig

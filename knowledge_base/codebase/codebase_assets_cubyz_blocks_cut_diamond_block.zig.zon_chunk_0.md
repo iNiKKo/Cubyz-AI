@@ -8,7 +8,7 @@
 Defines properties for a cut diamond block in the Cubyz game.
 
 ## Explanation
-This chunk specifies configuration data for a cut diamond block, including its tags, health, resistance, drop items, rotation model, and texture. The block is marked as mineable with specific attributes that define how it behaves within the game environment.
+This chunk specifies configuration data for a cut diamond block with the following properties: tags marked as mineable, health set to 55, resistance set to 10, drop items automatically determined (auto), rotation model specified as 'cubyz:stairs', and texture applied as 'cubyz:cut_diamond_block'. The block is marked as mineable with specific attributes that define how it behaves within the game environment.
 
 ## Related Questions
 - What are the tags associated with the cut diamond block?

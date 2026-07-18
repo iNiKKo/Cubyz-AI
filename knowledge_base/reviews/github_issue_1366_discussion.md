@@ -21,11 +21,11 @@ diff
 ```
 
 ## Related Questions
-- OpenGL vertex attribute array warning
-- buffer object usage hint inconsistency
-- Cubyz segmentation fault fix
-- Zig memory management issues
-- OpenGL buffer operations in Cubyz
-- vertex attribute array pointer offset
+- What OpenGL vertex attribute array warning is reported in this issue?
+- What is inconsistent about the buffer object's usage hint?
+- What did the maintainer suggest as a temporary workaround for this segmentation fault?
+- At what address did the segmentation fault occur?
+- Which file and lines does the suggested workaround change?
+- Should this issue be closed once the workaround is applied?
 
 *Source: unknown | chunk_id: github_issue_1366_discussion*

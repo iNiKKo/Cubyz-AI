@@ -9,7 +9,21 @@
 Marigold block configuration.
 
 ## Explanation
-This chunk defines the Marigold block's properties and behaviors. It includes tags, health, drops, selection capabilities, replaceability, degradability, view-through property, absorbed light level, collision behavior, model, texture, item appearance, LOD replacement, and an update function.
+This chunk defines the Marigold block's properties and behaviors in detail. It includes the following specific values:
+- Tags: `.cuttable`, `.sliceable`
+- Health: `blockHealth = 0.2`
+- Drops: `{ .items = {.auto}, .allowedToolTags = { .cuttable } }
+- Selection capabilities: `.toolEffective`
+- Replaceability: `replaceable = true`
+- Degradability: `degradable = true`
+- View-through property: `viewThrough = true`
+- Absorbed light level: `absorbedLight = 0x121012`
+- Collision behavior: `collide = false`
+- Model: `model = "cubyz:cross"`
+- Texture: `texture = "cubyz:marigold"`
+- Item appearance: `{ .texture = "marigold.png" }`
+- LOD replacement: `lodReplacement = "cubyz:air"`
+- Update function type: `.check_support_blocks`
 
 ## Related Questions
 - What are the tags associated with the Marigold block?

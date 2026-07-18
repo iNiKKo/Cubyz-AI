@@ -9,7 +9,14 @@
 Configuration data for a sickle tool
 
 ## Explanation
-This chunk contains configuration settings for a sickle tool, including disabled and optional properties, as well as parameters that define how damage is calculated based on source attributes.
+This chunk contains configuration settings for a sickle tool: `tags = .{.cuttable}`, plus 5x5 `disabled`/`optional` matrices controlling which material-slot combinations are usable. It defines 7 damage/durability/speed parameters:
+- `massDamage` -> `damage`, factor `0.06`, method `.sum`
+- `massDamage` -> `damage`, factor `0.24`, method `.average`
+- `hardnessDamage` -> `damage`, factor `0.2`, method `.average`
+- `durability` -> `maxDurability`, factor `0.2`, method `.sum`
+- `durability` -> `maxDurability`, factor `0.8`, method `.average`
+- `swingSpeed` -> `swingSpeed`, factor `-0.2`, method `.sum`
+- `swingSpeed` -> `swingSpeed`, factor `1.2`, method `.average`
 
 ## Related Questions
 - What are the disabled properties of the sickle tool?

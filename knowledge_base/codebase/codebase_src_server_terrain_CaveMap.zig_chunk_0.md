@@ -9,7 +9,18 @@
 Defines the CaveMapFragment and CaveGenerator structures for cave terrain generation in a voxel engine.
 
 ## Explanation
-The chunk defines two main structures: CaveMapFragment and CaveGenerator. CaveMapFragment represents a section of cave data using a 1-bit per block format, where 0 indicates an empty block and 1 indicates a non-empty block. It includes methods for initializing, deinitializing, adding ranges, removing ranges, and retrieving column data. CaveGenerator is responsible for generating cave maps based on given parameters and settings. It maintains a registry of available generators and provides functionality to initialize and sort them based on priority.
+The chunk defines two main structures: CaveMapFragment and CaveGenerator. CaveMapFragment represents a section of cave data using a 1-bit per block format, where 0 indicates an empty block and 1 indicates a non-empty block. It has the following constants:
+- width = 64
+- height = 64
+- widthMask = 63 (width - 1)
+- heightMask = 63 (height - 1)
+It includes methods for initializing, deinitializing, adding ranges, removing ranges, and retrieving column data. CaveGenerator is responsible for generating cave maps based on given parameters and settings. It maintains a registry of available generators and provides functionality to initialize and sort them based on priority.
+
+Specifically:
+- `CaveMapFragment.init` initializes the fragment with provided coordinates and voxel size.
+- `CaveMapFragment.deferredDeinit` schedules deferred deinitialization.
+- Methods like `addRange`, `removeRange`, and `getColumnData` manipulate cave data ranges and retrieve column data respectively.
+- CaveGenerator maintains a registry of generators initialized based on settings and sorted by priority.
 
 ## Code Example
 ```zig

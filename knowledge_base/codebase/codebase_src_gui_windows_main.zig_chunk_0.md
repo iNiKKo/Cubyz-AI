@@ -9,7 +9,7 @@
 Handles the main menu window logic for a GUI application.
 
 ## Explanation
-This chunk defines the main menu window of a GUI application. It includes functions to handle actions like exiting the game, selecting singleplayer mode, and accessing multiplayer options. The `onOpen` function initializes the window with buttons for different actions, while `onClose` deinitializes components when the window is closed.
+This chunk defines the main menu window with four buttons: "Singleplayer", "Multiplayer", "Settings", and "Touch Grass" (the exit-game button, which calls `glfwSetWindowShouldClose`). `singleplayerSelection` sets the save-selection window's mode to `.singleplayer` and reopens it. `multiplayer` checks if `KeyCollection` is already initialized -- if so, it opens the multiplayer window directly. Otherwise it branches on `storedAccount.typ`: if `.none` with no stored data, it opens the login window; if `.none` with stored data, it tries to decrypt the Account Code (opening the login window on error, otherwise initializing `KeyCollection` and opening the multiplayer window, logging a warning if decryption produced non-fatal errors); for any other account type, it opens the "authentication/unlock" window. `onClose` deinitializes the root component.
 
 ## Code Example
 ```zig

@@ -8,7 +8,7 @@
 Defines blueprints for various treasure items found in a specific Slate Circle Ruins area.
 
 ## Explanation
-This chunk contains configuration data for different types of treasures that can be found within the Slate Circle Ruins area. Each treasure item is represented as a blueprint with an ID and, optionally, a chance value indicating its probability of appearing. The blueprints are organized in an array under the `.blueprints` key.
+This chunk contains configuration data for four treasure blueprints in the Slate Circle Ruins area: `cubyz:ruins/slate/circle/treasure/coal`, `cubyz:ruins/slate/circle/treasure/copper`, and `cubyz:ruins/slate/circle/treasure/silver` (no explicit chance value given for these three), and `cubyz:ruins/slate/circle/treasure/meteorite` with an explicit `chance = 0.5`.
 
 ## Related Questions
 - What are the IDs of the treasure items defined in this chunk?

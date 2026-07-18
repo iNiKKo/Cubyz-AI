@@ -8,7 +8,7 @@
 Defines configuration for the Highlands Thicket biome, including terrain generation parameters and structure placements.
 
 ## Explanation
-This chunk is a configuration file in JSON-like format (ZON) that specifies settings for the Highlands Thicket biome in the Cubyz voxel engine. It includes tags like pine and oak trees, terrain height limits, beach smoothing, radius constraints, and roughness. The configuration also lists various structures such as different types of trees, ground patches, flower patches, boulders, and specific flowers to be placed within this biome. Additionally, it specifies parent biomes with their respective spawn chances.
+This chunk is a configuration file in JSON-like format (ZON) that specifies settings for the Highlands Thicket biome in the Cubyz voxel engine. It includes tags like pine and oak trees, terrain height limits of minHeight = 80 and maxHeight = 150 with minHeightLimit = 50 and maxHeightLimit = 200, beach smoothing enabled, radius constraints from minRadius = 24 to maxRadius = 48, roughness set to 3. The configuration also lists various structures such as different types of trees (oak white, oak young, pine loblolly, pine eastern_white, pine young_tree), ground patches with soil and grass vegetation, flower patches for daffodil, vetch, ferns, boulders made of slate, and specific flowers to be placed within this biome. Additionally, it specifies parent biomes with their respective spawn chances, where the parent biome 'cubyz:highlands/base' has a chance of 3.
 
 ## Related Questions
 - What are the tags associated with the Highlands Thicket biome?

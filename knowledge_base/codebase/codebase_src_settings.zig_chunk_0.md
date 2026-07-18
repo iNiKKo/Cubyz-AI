@@ -9,7 +9,7 @@
 This chunk defines various configuration settings for the Cubyz engine and provides a function to initialize these settings from a ZON file.
 
 ## Explanation
-The chunk declares a series of public constants and variables representing different settings such as default port, connection timeout, entity lookback, and more. It also includes an `init` function that reads settings from a ZON file into these variables. The function handles various data types, including optional values and custom structs like `std.Io.Duration`. It logs errors if the settings file cannot be read or if there are issues parsing specific settings.
+This chunk defines various configuration settings for the Cubyz engine and provides a function to initialize these settings from a ZON file. The public constants and variables include specific values like `defaultPort: u16 = 47649`, which is the default port used by the server, `connectionTimeout: u32 = 60_000_000` (in nanoseconds), which specifies the timeout for establishing a connection to the server, `entityLookback: i16 = 100`, which determines how many past positions of entities are stored and used for prediction, `highestSupportedLod: u3 = 5`, which represents the highest level of detail supported by the engine (with LOD levels ranging from 0 to 5), and more. The `init` function reads settings from a ZON file into these variables, handling various data types including optional values and custom structs like `std.Io.Duration`. It logs errors if the settings file cannot be read or if there are issues parsing specific settings. Additionally, it initializes keyboard settings by reading key bindings from the ZON file and setting default values for missing keys.
 
 ## Code Example
 ```zig
@@ -69,11 +69,8 @@ pub fn init() void {
 ```
 
 ## Related Questions
-- What is the default port setting for Cubyz?
-- How does the engine handle missing settings in the ZON file?
-- Which settings are optional and how are they handled?
-- What is the purpose of the `init` function in this chunk?
-- How are durations like `storageTime` parsed from the ZON file?
-- What error handling is implemented when reading the settings file?
+- What is the purpose of the `highestSupportedLod` variable?
+- How does the engine handle optional variables like `cpuThreads` and `fpsCap`?
+- What are the specific keyboard settings that can be configured in the ZON file?
 
 *Source: unknown | chunk_id: codebase_src_settings.zig_chunk_0*

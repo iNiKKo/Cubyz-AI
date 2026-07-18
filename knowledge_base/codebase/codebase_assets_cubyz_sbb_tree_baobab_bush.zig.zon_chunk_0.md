@@ -8,7 +8,7 @@
 Defines blueprints and children for a baobab bush asset.
 
 ## Explanation
-This chunk defines the configuration for a baobab bush asset in Cubyz. It specifies multiple blueprints, each with a unique ID, representing different variations of the bush. Additionally, it lists a child asset 'brown' which is associated with the root of the baobab bush.
+This chunk defines the configuration for a baobab bush asset in Cubyz. It specifies six blueprints, each a variation of the bush: `cubyz:tree/baobab/bush/0` through `cubyz:tree/baobab/bush/5`. Additionally, it lists one child asset, `brown`, mapped to `cubyz:tree/baobab/bush/root`.
 
 ## Related Questions
 - What are the unique IDs for the baobab bush blueprints?

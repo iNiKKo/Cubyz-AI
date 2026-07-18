@@ -8,7 +8,7 @@
 This chunk defines configuration settings for red leaves in the Cubyz voxel engine.
 
 ## Explanation
-The chunk contains a single anonymous struct with four fields. `absorbedLight` is set to a hexadecimal color value, indicating how light is absorbed by the leaves. The `texture` field specifies the path to the texture file used for rendering the red leaves. The `lodReplacement` and `opaqueVariant` fields both point to the same opaque variant of the red leaves, suggesting that under certain conditions (like low level of detail or when the block is considered opaque), the engine will use this alternative representation.
+This chunk defines configuration settings for red leaves in the Cubyz voxel engine. The `absorbedLight` field is set to `0x213241`, indicating how light is absorbed by the leaves. The `texture` field specifies the path to the texture file used for rendering the red leaves as `cubyz:leaves/red`. Both the `lodReplacement` and `opaqueVariant` fields point to `cubyz:leaves/opaque/red`, suggesting that under certain conditions (like low level of detail or when the block is considered opaque), the engine will use this alternative representation.
 
 ## Related Questions
 - What is the light absorption value for red leaves?

@@ -8,7 +8,7 @@
 Defines configuration for a marble cave biome in Cubyz, including noise strength, height range, fog density, music, stone block type, and structures.
 
 ## Explanation
-This chunk is a configuration file for a specific biome in the Cubyz game engine. It sets various properties of the marble cave biome such as whether it is a cave, its tags, noise strength, minimum height, generation chance, fog density, music, stone block type, and structures. The structures include stalagmites and ground patches with specified chances, sizes, and variations. Additionally, it defines cave models like partial spheres with their own amount and radius ranges.
+This chunk is a configuration file for the marble cave biome in Cubyz. It sets various properties including whether it is a cave (true), its tags (.shallow_cave_layer), noise strength (5), minimum height (-512), generation chance (0.2), fog density (10), music track ('cubyz:totaldemented/vitreous'), stone block type ('cubyz:marble/smooth'), and structures such as stalagmites with a block of 'cubyz:marble/smooth', chance 0.112, size 4, and size variation 10; ground patches with a block of 'cubyz:water', chance 0.064, width 6, depth 1, smoothness 1, and variation 5. Additionally, it defines cave models like partial spheres with minAmount 20, maxAmount 30, minRadius 4, and maxRadius 14.
 
 ## Related Questions
 - What is the noise strength for the marble cave biome?

@@ -9,7 +9,7 @@
 Handles version compatibility checks between client and server versions.
 
 ## Explanation
-The chunk defines a function `isCompatibleClientVersion` that checks if a given client version is compatible with the server version. It uses semantic versioning to compare major and minor version numbers, allowing any `-dev` server version to be considered compatible. The chunk also includes tests for both development and release versions to ensure correctness.
+The chunk defines a function `isCompatibleClientVersion` that checks if a given client version is compatible with the server version, via `isCompatibleClientVersionImpl`. If the server version ends with `"-dev"`, it's always compatible (returns `true` immediately, before parsing anything). Otherwise, if the *client* version ends with `"-dev"`, it's always incompatible (`false`). Otherwise, both are parsed as `std.SemanticVersion` and compared: compatible only if `major` and `minor` both match exactly (patch version is ignored). Two test blocks cover a `-dev` server version (`"1054.11.423-dev"`) and a release server version (`"4.5.6"`) against various client versions.
 
 ## Code Example
 ```zig

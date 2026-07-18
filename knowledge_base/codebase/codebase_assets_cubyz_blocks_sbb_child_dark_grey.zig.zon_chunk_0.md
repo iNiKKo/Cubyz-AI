@@ -8,7 +8,7 @@
 This chunk defines texture paths for a dark grey block variant.
 
 ## Explanation
-The chunk contains configuration data specifying the textures for different sides of a block. It lists the side, top, and bottom textures using string identifiers that reference texture files within the Cubyz asset system.
+This chunk defines specific textures for a dark grey block variant. The configuration specifies that the side texture is 'cubyz:sbb/child/side/dark_grey', the top texture is 'cubyz:sbb/child/top/dark_grey', and the bottom texture is 'cubyz:sbb/child/bottom/dark_grey'.
 
 ## Related Questions
 - What are the texture paths defined for the dark grey block?

@@ -6,10 +6,10 @@
 **Concepts:** climate map generation, fragment caching, generator registry
 
 ## Summary
-Defines the ClimateMapGenerator and related data structures for generating climate maps in the Cubyz voxel engine.
+Defines the `ClimateMapFragment` structure, cache mechanisms, and generator registry for efficient climate map generation in Cubyz. Includes specific constants like `cacheSize`, `associativity`, and methods such as `hashCode`, `deferredDeinit`, and `getOrGenerateFragment`. Also includes detailed initialization and deinitialization processes.
 
 ## Explanation
-This chunk defines the `ClimateMapFragment` structure, which represents a fragment of the climate map. It includes methods for initialization (`init`), deferred deinitialization (`deferredDeinit`), and hash code generation (`hashCode`). The `ClimateMapGenerator` struct manages different climate map generators, allowing them to be initialized and used to generate map fragments. The chunk also defines a cache for managing climate map fragments efficiently and provides functions for initializing the generator (`init`), deinitializing resources (`deinit`), and retrieving or generating a fragment by position (`getOrGenerateFragment`).
+This chunk defines the `ClimateMapFragment` structure, which represents a fragment of the climate map. It includes fields like biome samples (`biome: *const Biome`, `height: f32`, etc.), position (`wx: i32`, `wy: i32`), and methods for initialization (`init`), deferred deinitialization (`deferredDeinit`), and hash code generation (`hashCode`). The `ClimateMapGenerator` struct manages different climate map generators, allowing them to be initialized and used to generate map fragments. It includes a registry of generators with specific IDs and functions like `getGeneratorById`. The chunk also defines a cache for managing climate map fragments efficiently using constants such as `cacheSize = 1 << 5`, `associativity = 8`, and methods like `init`, `deinit`, and `getOrGenerateFragment`.
 
 ## Code Example
 ```zig

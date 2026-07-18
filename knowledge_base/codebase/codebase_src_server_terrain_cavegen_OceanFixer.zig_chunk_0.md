@@ -9,7 +9,7 @@
 Ocean fixer generator for cave maps
 
 ## Explanation
-This chunk defines a generator function `generate` that modifies the height of cave fragments in a terrain map based on the ocean floor. It calculates the smallest height around each voxel and seals off caves if they intersect the ocean floor.
+This chunk defines the OceanFixer cave generator: `id = "cubyz:ocean_fixer"`, `priority = 262144`, `generatorSeed = 0x7658930674389`, `defaultState = .enabled`. `init` ignores its parameters (a no-op). `generate` initializes a `CaveBiomeMapView` for the fragment's width, then for each `(x, y)` position (stepped by `voxelSize`) computes the surface height at that point plus its 4 direct neighbors and takes the minimum (`smallestHeight`). If `smallestHeight < 1` (i.e. at or below sea level), it calls `map.addRange` to seal off any cave in that column between `smallestHeight - voxelSize` and the height relative to the fragment's Z position -- preventing caves from opening into the ocean floor.
 
 ## Code Example
 ```zig

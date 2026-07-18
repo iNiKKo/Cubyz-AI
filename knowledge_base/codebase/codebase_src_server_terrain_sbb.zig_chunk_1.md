@@ -9,7 +9,7 @@
 Defines block rotation logic and checks for child and origin blocks.
 
 ## Explanation
-This chunk defines functions to check if a block is a child or origin block. It also defines an enum `RotationMode` and a union `Rotation` with associated methods for applying, getting initial, sampling random, and getting child rotations. The `Rotation` union includes a nested enum `FixedRotation` representing fixed rotation angles. Methods like `apply`, `getInitialRotation`, `getChildRotation`, and `fromZon` handle different aspects of block rotation logic based on the mode (fixed, random, inherit). The `fromZon` method parses rotations from Zon elements.
+This chunk defines functions to check if a block is a child or origin block. It also defines an enum `RotationMode` with three modes: fixed, random, and inherit. A union `Rotation` includes these modes along with methods for applying, getting initial, sampling random, and getting child rotations. The `FixedRotation` nested enum represents four fixed rotation angles: 0 ("@0"), 90 ("@90"), 180 ("@180"), and 270 ("@270") degrees. Methods like `apply`, `getInitialRotation`, `getChildRotation`, and `fromZon` handle different aspects of block rotation logic based on the mode (fixed, random, inherit). The `isChildBlock` function checks if a block is a child by looking up its numeric ID in `childBlockNumericIdMap`. The `isOriginBlock` function checks if a block's type matches the origin block's numeric ID (`originBlockNumericId`). The `fromZon` method parses rotations from Zon elements, supporting string and integer representations of rotation modes. For example, it converts strings like "fixed", "random", or "inherit" to their corresponding enum values.
 
 ## Code Example
 ```zig

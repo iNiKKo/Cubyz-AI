@@ -9,7 +9,7 @@
 This chunk implements the SDF cave generation logic for the Cubyz voxel engine.
 
 ## Explanation
-The chunk defines a cave generator using signed distance functions (SDF). It includes initialization and deinitialization functions, as well as core generation logic that processes noise data and applies it to cave map fragments. The `generate` function orchestrates the SDF generation process, handling both additive and subtractive operations based on biome data. The `Mode` enum manages different modes of operation for modifying the cave map ranges.
+This chunk implements the SDF cave generation logic for the Cubyz voxel engine. It includes several constants like `id` set to 'cubyz:sdf_cave', `priority` set to 65536, and `generatorSeed` set to 0x76490367012869. The chunk also defines the default state as `.enabled`. Initialization (`init`) and deinitialization (`deinit`) functions are provided without specific operations other than `_ = parameters;` in `init`. Core generation logic includes retrieving SDF values from noise arrays using `getValue`, generating SDF data with `generateSdf`, and orchestrating these processes within the `generate` function. The `Mode` enum supports additive and subtractive modes for modifying cave map ranges via `modifyRange`. Specific parameters such as `noiseScale = 16`, `interpolatedPart = 4`, `smoothness = 4`, and `perimeter = interpolatedPart*2 + smoothness*4` are crucial in defining the generation process.
 
 ## Code Example
 ```zig
@@ -23,6 +23,10 @@ pub fn init(parameters: ZonElement) void {
 - What is the priority level for this generator?
 - How does the `init` function handle its parameters?
 - What operations are performed in the `deinit` function?
+- What is the value of `noiseScale`?
+- What is the value of `interpolatedPart`?
+- What is the value of `smoothness`?
+- How is the perimeter calculated?
 - How is the SDF value retrieved from the noise array?
 - What is the purpose of the `generateSdf` function?
 - How does the `generate` function manage memory for different outputs?

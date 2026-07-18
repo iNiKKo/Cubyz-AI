@@ -8,7 +8,7 @@
 Defines configuration for the palm fence block, including textures and item properties.
 
 ## Explanation
-This chunk is a configuration file defining the visual and item properties of a palm fence block in the Cubyz voxel engine. It specifies the texture paths for different sides of the block, including the top and bottom, which use the same texture. Additionally, it defines the item properties, such as the texture used when the block is held or placed in the inventory.
+This chunk is a configuration file defining the visual and item properties of a palm fence block in the Cubyz voxel engine. It specifies the following texture paths: `texture = "cubyz:fence/palm"`, `texture_top = "cubyz:fence/top/palm"`, and `texture_bottom = "cubyz:fence/top/palm"`. Additionally, it defines the item properties with the texture path `item.texture = "fence/palm.png"`.
 
 ## Related Questions
 - What is the texture used for the top of the palm fence block?

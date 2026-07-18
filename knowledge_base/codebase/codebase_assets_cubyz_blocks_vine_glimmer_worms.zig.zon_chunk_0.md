@@ -8,7 +8,7 @@
 Defines configuration for the Glimmer Worms block, including textures and emitted light.
 
 ## Explanation
-This chunk contains a configuration object for the Glimmer Worms block in Cubyz. It specifies the textures used for different sides of the block (top and bottom) and the color of light it emits. The item texture is also defined, which is likely used when the block is represented as an item in the player's inventory.
+This chunk contains a configuration object for the Glimmer Worms block in Cubyz: `texture0 = "cubyz:vine/glimmer_worms/top"`, `texture1 = "cubyz:vine/glimmer_worms/bottom"`, and `emittedLight = 0x392862` (a blue-purple RGB hex color). Its item representation uses the texture file `vine/glimmer_worms.png`.
 
 ## Related Questions
 - What is the texture used for the top of the Glimmer Worms block?

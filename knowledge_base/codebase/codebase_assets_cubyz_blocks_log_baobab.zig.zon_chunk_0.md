@@ -8,7 +8,7 @@
 Defines texture paths for Baobab log block.
 
 ## Explanation
-This chunk defines a configuration object with six texture paths, each associated with a specific face or feature of the Baobab log block. The textures are named according to their visual characteristics: dot, line, bend, intersection, cross, and top. These paths are likely used by the rendering engine to apply the correct texture to each corresponding part of the block when it is rendered in the game world.
+This chunk defines a configuration object with six specific texture paths for the Baobab log block. The textures are named as follows: `texture0` is set to "cubyz:log/baobab/dot", `texture1` to "cubyz:log/baobab/line", `texture2` to "cubyz:log/baobab/bend", `texture3` to "cubyz:log/baobab/intersection", `texture4` to "cubyz:log/baobab/cross", and `texture5` to "cubyz:log/baobab/top". These paths are used by the rendering engine to apply the correct texture to each corresponding part of the block when it is rendered in the game world.
 
 ## Related Questions
 - What are the texture paths defined for the Baobab log block?

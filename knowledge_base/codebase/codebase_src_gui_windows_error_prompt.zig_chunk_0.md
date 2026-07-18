@@ -9,7 +9,7 @@
 Manages an error prompt GUI window for displaying errors and log file access.
 
 ## Explanation
-This chunk defines a GUI window that displays an error message and provides a button to open the logs. It initializes textures, handles window lifecycle events, updates content based on gamepad input, and manages component creation and destruction. The primary responsibility is to present an interactive error prompt to the user.
+This chunk defines a GUI window that displays the message "The game encountered errors. Check the logs for details" (in yellow, `#ffff00`) alongside a button. `init` loads the texture `"assets/cubyz/ui/file_explorer_icon.png"` into `fileExplorerIcon`; `deinit` releases it. Clicking the button calls `openLog()`, which opens the `"logs"` directory via `main.files.openDirInWindow`. The `update` function closes this window (`gui.closeWindowFromRef`) once `main.Window.Gamepad.wereControllerMappingsDownloaded()` returns true. `onClose` deinitializes the root component.
 
 ## Code Example
 ```zig

@@ -9,7 +9,20 @@
 The chunk initializes and manages the enumeration of structure building blocks (SBBs) for terrain generation.
 
 ## Explanation
-This chunk is responsible for initializing a list of SBBs, marking them based on their parent-child relationships, ensuring all structures are reachable, sorting them by ID, and preparing them for generation. It also initializes a sign block used in the process. The `init` function handles most of this logic, including iterating over SBBs, checking reachability, and setting up structure data models.
+This chunk initializes and manages the enumeration of structure building blocks (SBBs) for terrain generation. It defines several important constants such as `id`, `priority`, `generatorSeed`, and `defaultState`. The `init` function handles initializing a list of SBBs, marking them based on their parent-child relationships, ensuring all structures are reachable, sorting them by ID, and preparing them for generation. Additionally, it initializes a sign block used in the process with specific values.
+
+The constants defined include:
+- `id`: The unique identifier for this generator (`cubyz:sbb_enumeration_generator`)
+- `priority`: The priority level of the generator (131072)
+- `generatorSeed`: A fixed seed value used in generation processes (0x7568492764892)
+- `defaultState`: Indicates whether the generator is enabled or disabled by default (`disabled`)
+
+The `init` function performs several key operations:
+1. Initializes a list of SBBs and marks them based on their parent-child relationships.
+2. Ensures all structures are reachable, handling recursion if necessary.
+3. Sorts the SBBs alphabetically by ID using `std.sort.insertion`.
+4. Prepares structure data models for generation with specific configurations such as `placeMode`, `rotation`, and other properties.
+5. Initializes a sign block (`cubyz:sign/oak`) with an index of 6, handling errors if the block is not found.
 
 ## Code Example
 ```zig
@@ -115,11 +128,10 @@ pub fn init(parameters: ZonElement) void {
 ```
 
 ## Related Questions
-- What is the purpose of the `init` function in this chunk?
+- What are the values of `id`, `priority`, `generatorSeed`, and `defaultState`?
 - How does the chunk determine if an SBB has a parent?
 - What happens to unreachable SBBs during initialization?
 - How are SBBs sorted after initialization?
 - What block ID is used for the sign block, and how is it handled if not found?
-- Where is the `generatorSeed` defined and what is its value?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_structuremapgen_SbbEnumerationGenerator.zig_chunk_0*

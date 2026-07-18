@@ -8,7 +8,7 @@
 Defines configuration for the Moffalo entity model.
 
 ## Explanation
-This chunk contains a configuration object for the Moffalo entity model in Cubyz. It specifies the model file, default texture, height, and coordinate system used by the entity. The configuration is structured as a JSON-like object with key-value pairs where keys are strings representing configuration properties and values are either strings or numbers.
+This chunk contains a configuration object for the Moffalo entity model in Cubyz: `model = "cubyz:moffalo"`, `defaultTexture = "cubyz:moffalo"`, `height = 1.8` (blocks), and `coordinateSystem = .right_handed_y_up`. Four properties total; no functions or methods are defined in this chunk.
 
 ## Related Questions
 - What is the default texture for the Moffalo entity?

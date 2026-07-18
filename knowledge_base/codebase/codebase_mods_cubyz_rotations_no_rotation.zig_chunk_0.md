@@ -9,7 +9,7 @@
 This chunk defines functions for initializing, deinitializing, and resetting a rotation module. It also includes a function to update a block based on its neighbor connectivity.
 
 ## Explanation
-The chunk contains three public functions: `init`, `deinit`, and `reset`, which are responsible for setting up, tearing down, and resetting the rotation module, respectively. The primary functionality is provided by the `updateBlockFromNeighborConnectivity` function, which checks if a block should be set to air based on its neighbor connectivity. This function takes a pointer to a `Block` and an array of boolean values indicating whether each neighboring direction supports the block.
+This chunk defines functions for initializing, deinitializing, and resetting a rotation module. It also includes a function `updateBlockFromNeighborConnectivity` that updates a block based on its neighbor connectivity. Specifically, the `updateBlockFromNeighborConnectivity` function takes a pointer to a `Block` and an array of boolean values indicating whether each neighboring direction supports the block. If the downward neighbor does not support the block (i.e., `neighborSupportive[Neighbor.dirDown.toInt()]` is false), then the block is set to air.
 
 ## Code Example
 ```zig

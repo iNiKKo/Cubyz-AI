@@ -8,7 +8,7 @@
 Defines starlit star blueprints with their generation chances.
 
 ## Explanation
-This chunk contains a configuration for starlit star blueprints, specifying each blueprint's unique identifier and the chance of it being generated. The blueprints are defined within an array under the `.blueprints` key. Each blueprint entry is an object with two fields: `id`, which is a string representing the blueprint's identifier, and `chance`, which is a floating-point number indicating the probability of that blueprint being selected during generation.
+This chunk contains a configuration for starlit star blueprints, defining four blueprints under the `.blueprints` key: `cubyz:starlit/star/0`, `cubyz:starlit/star/1`, and `cubyz:starlit/star/2` all with `chance = 1` (equally likely), and `cubyz:starlit/star/3` with a much lower `chance = 0.01` -- not all blueprints are equally likely to be generated.
 
 ## Related Questions
 - What are the identifiers of the starlit star blueprints defined in this configuration?

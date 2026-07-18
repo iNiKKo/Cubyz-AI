@@ -8,7 +8,7 @@
 Defines blueprints for palm coconut frond assets.
 
 ## Explanation
-This chunk contains a configuration structure defining multiple blueprints for different variants of palm coconut fronds. Each blueprint is identified by a unique string ID, which follows the Cubyz asset naming convention. The blueprints are stored in an array under the `.blueprints` key.
+This chunk contains a configuration structure defining multiple blueprints for different variants of palm coconut fronds. Each blueprint is identified by a unique string ID, which follows the Cubyz asset naming convention. The blueprints are stored in an array under the `.blueprints` key and include the following IDs: `cubyz:tree/palm/coconut/fronds/0`, `cubyz:tree/palm/coconut/fronds/1`, `cubyz:tree/palm/coconut/fronds/2`, `cubyz:tree/palm/coconut/fronds/3`, and `cubyz:tree/palm/coconut/fronds/4`.
 
 ## Related Questions
 - What are the unique identifiers for the palm coconut frond blueprints?

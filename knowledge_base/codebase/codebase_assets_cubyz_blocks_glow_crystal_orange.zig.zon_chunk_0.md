@@ -8,7 +8,7 @@
 Defines properties for the orange glow crystal block.
 
 ## Explanation
-This chunk defines a configuration object with two fields: `emittedLight` and `texture`. The `emittedLight` field specifies the color of light emitted by the block using a hexadecimal value. The `texture` field specifies the path to the texture file used for rendering the block.
+This chunk defines a configuration object with two fields: `emittedLight` and `texture`. The `emittedLight` field specifies the color of light emitted by the block using the hexadecimal value `0xee7c11`. The `texture` field specifies the path to the texture file used for rendering the block, which is set to `"cubyz:glow_crystal/orange"`.
 
 ## Related Questions
 - What is the emitted light color of the orange glow crystal block?

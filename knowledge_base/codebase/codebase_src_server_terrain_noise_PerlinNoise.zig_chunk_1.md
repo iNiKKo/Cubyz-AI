@@ -9,7 +9,24 @@
 Generates a smooth noise map using Perlin noise algorithm.
 
 ## Explanation
-The `generateSmoothNoise` function creates a smooth noise map with values between 0 and 1. It initializes an `Array2D(f32)` to store the noise values, sets all elements to zero, and scrambles a seed based on the world seed. A `Context` struct is used to manage grid points and resolution settings. The function iterates over scales from `maxScale` down to `minScale`, calculating grid points and adding Perlin noise values to the map. The `calculateGridPoints` method computes grid points for the current scale, and `freeGridPoints` cleans up after processing each scale. The noise values are accumulated with a geometric series factor that reduces with each scale.
+The `generateSmoothNoise` function creates a smooth noise map with values between 0 and 1. It initializes an `Array2D(f32)` to store the noise values, sets all elements to zero, and scrambles a seed based on the world seed. A `Context` struct is used to manage grid points and resolution settings. The function iterates over scales from `maxScale` down to `minScale`, calculating grid points and adding Perlin noise values to the map. The exact formula for the geometric series factor `fac` is given by: 
+
+```plaintext
+var fac = 1 / ((1 - std.math.pow(f32, reductionFactor, @as(f32, @floatFromInt(@ctz(maxScale/minScale) + 1)))) / (1 - reductionFactor));
+```
+
+The `calculateGridPoints` method computes grid points for the current scale using the formula: 
+
+```plaintext
+const x0 = x & ~context.resolutionMask;
+const y0 = y & ~context.resolutionMask;
+```
+
+and `freeGridPoints` cleans up after processing each scale. The noise values are accumulated with a geometric series factor that reduces with each scale, calculated as: 
+
+```plaintext
+fac *= reductionFactor;
+```
 
 ## Code Example
 ```zig

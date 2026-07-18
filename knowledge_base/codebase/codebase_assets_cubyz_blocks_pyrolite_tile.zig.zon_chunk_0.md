@@ -8,7 +8,7 @@
 Defines configuration for a Pyrolite Tile block, specifying its rotation, model, and texture.
 
 ## Explanation
-This chunk is a configuration file in the Zigon format (`.zon`). It defines the properties of a specific block type called 'Pyrolite Tile'. The configuration includes three key attributes: `rotation`, `model`, and `texture`. Each attribute is assigned a string value that references other assets within the Cubyz engine. The `rotation` specifies how the block can be rotated, `model` indicates the 3D model used to render the block, and `texture` defines the surface texture applied to the block.
+This chunk is a configuration file in the Zigon format (`.zon`) defining the Pyrolite Tile block with exactly three attributes: `rotation = "cubyz:stairs"`, `model = "cubyz:cube"`, and `texture = "cubyz:pyrolite/tile"`.
 
 ## Related Questions
 - What is the rotation type for the Pyrolite Tile block?

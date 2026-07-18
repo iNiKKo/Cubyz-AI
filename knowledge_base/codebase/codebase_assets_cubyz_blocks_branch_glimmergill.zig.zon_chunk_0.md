@@ -9,7 +9,7 @@
 Block definition for Glimmergill branch in Cubyz
 
 ## Explanation
-This chunk defines a block named 'Glimmergill branch' with various properties including tags, health, textures, item material, durability, and decay prohibition. The block has the following specific attributes:
+This chunk defines a block named 'Glimmergill branch' with the following attributes:
 
 - **Tags:** `.choppable`, `.cuttable`, `.sliceable`, `.mushroom`
 - **Block Health:** 2
@@ -26,12 +26,17 @@ This chunk defines a block named 'Glimmergill branch' with various properties in
   - **Hardness Damage:** 0.5
   - **Swing Speed:** 4.2
   - **Texture Roughness:** 0.5
-  - **Colors:** `0xff4a3570`, `0xff564085`, `0xff684a97`, `0xff7555b2`
-  - **Modifiers:**
-    - `.id`: `
+  - **Colors:** `0xff4a3570`, `0xff564085`, `0xff684a97`, `0xff7555b2`, `0xff7555b2` (5 entries, the last repeated)
+  - **Modifiers:** one modifier, `.id = "durable"`, `.strength = 0.50`
+  - **Item texture:** `branch/glimmergill.png`
+- **Decay Prohibitor:** `true` (this block prevents decay)
 
 ## Related Questions
-- durable
-- strength: 0.50
+- What tags are assigned to the Glimmergill branch block?
+- What is the block health of the Glimmergill branch?
+- What durability does the Glimmergill branch item material have?
+- What modifier is applied to the Glimmergill branch, and what is its strength?
+- Does the Glimmergill branch prevent decay?
+- How many colors are defined for the Glimmergill branch's item material?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_branch_glimmergill.zig.zon_chunk_0*

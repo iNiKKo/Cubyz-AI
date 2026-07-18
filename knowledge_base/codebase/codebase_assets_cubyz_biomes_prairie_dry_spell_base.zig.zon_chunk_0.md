@@ -5,10 +5,46 @@
 **Concepts:** world generation, biome configuration
 
 ## Summary
-Defines configuration for the dry spell prairie biome, including terrain retention, parent biomes, and various structures with their probabilities and properties.
+Defines configuration for the dry spell prairie biome with a terrain retention probability of 0.5, inheriting from 'cubyz:prairie/base' with a chance of 3. It includes configurations for ground patches, boulders, flower patches, simple trees, and fallen trees, detailing their block types, occurrence probabilities, dimensions, variations, and other properties.
 
 ## Explanation
-This chunk is a configuration file in the Cubyz voxel engine that specifies settings for a particular biome called 'dry spell prairie'. It includes parameters such as terrain retention probability, parent biomes, maximum sub-biome count, and detailed configurations for various structures like ground patches, boulders, flower patches, simple trees, and fallen trees. Each structure entry defines its ID, block types, chance of occurrence, dimensions, variations, and other specific properties.
+This chunk is a configuration file in the Cubyz voxel engine that specifies settings for the 'dry spell prairie' biome. It includes parameters such as terrain retention probability (0.5), parent biomes ('cubyz:prairie/base' with a chance of 3), and maximum sub-biome count (1). Detailed configurations are provided for various structures like ground patches, boulders, flower patches, simple trees, and fallen trees. Each structure entry defines its ID, block types, occurrence probability, dimensions, variations, and other specific properties as follows:
+
+- **Ground Patch:**
+  - ID: 'cubyz:ground_patch'
+  - Block: 'cubyz:grass/dry'
+  - Chance: 0.05
+  - Width: 15
+  - Variation: 7
+  - Depth: 1
+  - Smoothness: 0.5
+- **Boulder:**
+  - ID: 'cubyz:boulder'
+  - Block: 'cubyz:leaves/dead'
+  - Chance: 0.05
+  - Size: 3
+  - Size Variance: 3
+- **Flower Patch (Dead Leaf Pile):**
+  - ID: 'cubyz:flower_patch'
+  - Blocks: ['cubyz:dead_leaf_pile:1', 'cubyz:dead_leaf_pile:0']
+  - Chance: 0.05 for 'cubyz:dead_leaf_pile:1' and 0.06 for 'cubyz:dead_leaf_pile:0'
+  - Width: 4
+  - Variation: 3
+  - Density: 0.6 for both patches, with priority of 0.2 for 'cubyz:dead_leaf_pile:1' and 0.1 for 'cubyz:grass/vegetation/dry'
+- **Simple Tree:**
+  - ID: 'cubyz:simple_tree'
+  - Leaves: 'cubyz:air'
+  - Log: 'cubyz:log/oak'
+  - Chance: 0.01
+  - Type: Round
+  - Height: 3
+  - Height Variation: 3
+- **Fallen Tree:**
+  - ID: 'cubyz:fallen_tree'
+  - Log: 'cubyz:log/oak'
+  - Chance: 0.025
+  - Height: 5
+  - Height Variation: 1
 
 ## Related Questions
 - What is the terrain retention probability for the dry spell prairie biome?

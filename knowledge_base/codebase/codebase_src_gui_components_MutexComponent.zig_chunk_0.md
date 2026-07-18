@@ -9,7 +9,7 @@
 The MutexComponent struct manages a GUI component with mutual exclusion to ensure thread safety during updates and rendering.
 
 ## Explanation
-The MutexComponent struct encapsulates a GUI component, ensuring that all operations on the child component are protected by a mutex. It provides methods for updating the inner state, deinitializing resources, converting itself to a generic GuiComponent, handling selection and hovering states, rendering, and processing button press and release events. Each method locks the mutex at the start and unlocks it upon completion, ensuring that only one thread can access the child component's methods at any given time.
+The MutexComponent struct (constants `scrollBarWidth = 5`, `border = 3`) encapsulates a GUI component, ensuring that all operations on the child component are protected by a mutex. Most methods (`updateSelected`, `updateHovered`, `render`, `mainButtonPressed`, `mainButtonReleased`) lock the mutex themselves at the start and unlock it (via `defer`) upon completion. Two methods -- `updateInner` and `deinit` -- do NOT lock it themselves; they instead call `self.mutex.assertLocked()`, meaning the caller is responsible for already holding the lock before calling them.
 
 ## Code Example
 ```zig

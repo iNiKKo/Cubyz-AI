@@ -6,10 +6,10 @@
 **Concepts:** Biome Creation, Terrain Generation, Environmental Settings, Audio Integration, Cave Generation, Foliage and Structures, Dynamic User Interface, Game Development Tools
 
 ## Summary
-This HTML snippet represents a detailed form for creating or editing a biome in a game development environment. It includes various input fields and options to customize different aspects of the biome, such as terrain generation, environmental settings, underground cave generation, and foliage/decor structures.
+This HTML snippet represents a detailed form for creating or editing a biome in a game development environment. It includes various input fields and options to customize different aspects of the biome, such as terrain generation, environmental settings, underground cave generation, foliage/decor structures, texture selection, and audio integration.
 
 ## Explanation
-The provided HTML code is structured into several sections, each focusing on different attributes of a biome. Here's a breakdown of its components:
+The provided HTML code is structured into several sections, each focusing on different attributes of a biome. Here's an expanded breakdown of its components:
 
 1. **Biome Name**: A text input field for entering the name of the biome.
 2. **Terrain Generation Settings**:
@@ -24,9 +24,15 @@ The provided HTML code is structured into several sections, each focusing on dif
    - An option to enable cave generation properties with settings like **Cave Density Scale**, **Cave Openness Radius Factor**, and **Glow Crystals Frequency**.
 5. **Foliage, Decor & Structures**:
    - A button to add structure layers, each of which can be customized with specific settings (not detailed in the snippet).
-6. **Save Biome to Project**: A primary button to save all the configured settings into the project.
+6. **Texture Selection**: Allows users to select textures for different terrain types using dropdown menus and a preview pane.
+7. **Custom Audio File Handling**: Provides an option to upload custom audio files for ambient music tracks.
+8. **Save Biome to Project**: A primary button to save all the configured settings into the project.
 
-The form uses various HTML elements such as `div`, `input`, `label`, and `button` to create a user-friendly interface for biome customization. It also includes inline styles and some JavaScript function calls (e.g., `window.toggleMusicPreview()`) that are not defined in the snippet but suggest interactivity and dynamic behavior within the application.
+The form uses various HTML elements such as `div`, `input`, `label`, and `button` to create a user-friendly interface for biome customization. It also includes inline styles and some JavaScript function calls (e.g., `window.toggleMusicPreview()`) that suggest interactivity and dynamic behavior within the application.
+
+**Texture Selection**: The texture selection section allows users to choose textures for different terrain types using dropdown menus. Users can preview selected textures before applying them, ensuring a cohesive visual appearance of the biome.
+
+**Custom Audio File Handling**: This feature enables users to upload custom audio files for ambient music tracks, enhancing the immersive experience by providing unique background sounds tailored to each biome.
 
 ## Related Questions
 - How does the terrain generation settings affect the biome's appearance?
@@ -35,5 +41,7 @@ The form uses various HTML elements such as `div`, `input`, `label`, and `button
 - What are the benefits of enabling cave generation properties in a biome?
 - How do you add and customize structure layers in the Foliage, Decor & Structures section?
 - What is the role of the 'Valid Spawn' checkbox in the environment settings?
+- How does texture selection impact the visual appearance of terrain types within the biome?
+- What are some best practices for integrating custom audio files into a biome's ambient music track?
 
 *Source: unknown | chunk_id: addon_creator_biomes.html_chunk_0*

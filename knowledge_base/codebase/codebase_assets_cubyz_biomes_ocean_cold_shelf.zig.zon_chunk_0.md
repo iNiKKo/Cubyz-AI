@@ -8,7 +8,7 @@
 Defines properties for a cold ocean shelf biome in Cubyz.
 
 ## Explanation
-This chunk configures the characteristics of a specific biome within the Cubyz game engine, focusing on its environmental and structural attributes. It specifies that this is an ocean-based biome with a defined radius, height range, and interpolation method. The configuration includes details about ground structures, such as gravel layers, and potential structures like patches of moss-covered gravel. Additionally, it sets the music associated with this biome.
+This chunk configures the characteristics of a cold ocean shelf biome within Cubyz. The biome has an ocean property with a radius of 500 cubyz, a minHeight of -4, and a maxHeight of 0. It uses linear interpolation for generation. Ground structures include gravel layers ranging from 2 to 4 blocks deep. Potential structures like patches of moss-covered gravel have a chance of 0.064, width of 6, variation of 2, depth of 2, and smoothness of 0.2. The music associated with this biome is 'cubyz:totaldemented/tides'. Additionally, the hills property is set to 10.
 
 ## Related Questions
 - What is the radius of the cold ocean shelf biome?

@@ -9,7 +9,7 @@
 Defines public key types and account code handling for network authentication.
 
 ## Explanation
-The chunk defines a `PublicKey` union that supports different cryptographic algorithms (Ed25519, ECDSA P-256 with SHA-256, and MLDSA44) and provides methods to initialize from base64 strings and verify signatures. The `AccountCode` struct handles user input validation, random generation, and secure deinitialization. It ensures that the account code adheres to specific formatting rules and checksums.
+Defines public key types and account code handling for network authentication. The `PublicKey` union supports three cryptographic algorithms: Ed25519, ECDSA P-256 with SHA-256, and MLDSA44. It provides methods to initialize from base64 strings (`initFromBase64`) and verify signatures (`verifySignature`). Each algorithm has a specific public key type associated with it (e.g., `PublicKey.ed25519` for Ed25519). The `AccountCode` struct handles user input validation, ensuring that the account code contains only ASCII letters and spaces, adheres to a 15-word format, and includes a checksum. It also supports random generation of an AccountCode (`initRandomly`) and secure deinitialization (`deinit`).
 
 ## Code Example
 ```zig
@@ -31,11 +31,10 @@ pub fn initFromBase64(base64: []const u8, typ: KeyTypeEnum) !PublicKey {
 ```
 
 ## Related Questions
-- How does the PublicKey union handle different cryptographic algorithms?
-- What methods are provided for initializing a PublicKey from a base64 string?
-- How is the AccountCode struct validated against user input?
+- What are the specific cryptographic algorithms supported by the PublicKey union?
+- How does the initFromBase64 method handle different key types?
+- What is the exact format required for an AccountCode during user input validation?
+- How many words should a valid AccountCode contain and what is the checksum requirement?
 - What steps are taken to securely deinitialize an AccountCode instance?
-- How is a random AccountCode generated?
-- What is the purpose of the EncodingType enum in this chunk?
 
 *Source: unknown | chunk_id: codebase_src_network_authentication.zig_chunk_1*

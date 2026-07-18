@@ -6,10 +6,14 @@
 **Concepts:** terrain generation, noise functions, biome interpolation
 
 ## Summary
-Generates a terrain map fragment using noise functions and biome interpolation.
+The function `generateMapFragment` generates terrain map fragments using noise functions and biome interpolation. It initializes several 2D arrays for intermediate noise values, applies fractal and perlin noise generation techniques, and uses barycentric coordinates to interpolate biome data from a climate map. The latest version of the code includes refined methods for calculating interpolation weights which improve the accuracy of biome transitions.
 
 ## Explanation
-The function `generateMapFragment` is responsible for generating a terrain map fragment. It uses various noise functions to create different layers of terrain, including mountains, hills, and roughness. The function initializes several 2D arrays (`xOffsetMap`, `yOffsetMap`, `mountainMap`, `hillMap`, `roughMap`) to store intermediate noise values. These maps are generated using fractal noise and perlin noise functions. The function then interpolates biome data from a climate map to determine the final height and biome type for each voxel in the fragment. It uses barycentric coordinates to weight contributions from neighboring biomes, ensuring smooth transitions between different terrain types.
+The `generateMapFragment` function is responsible for generating terrain map fragments by combining various noise functions with biome interpolation. It initializes several 2D arrays (`xOffsetMap`, `yOffsetMap`, `mountainMap`, `hillMap`, and `roughMap`) to store intermediate noise values generated through fractal and perlin noise techniques. These maps contribute to the overall height, roughness, hills, and mountains of the terrain.
+
+The function then interpolates biome data from a climate map to determine the final height and biome type for each voxel in the fragment. It uses barycentric coordinates to weight contributions from neighboring biomes, ensuring smooth transitions between different terrain types. The latest version of this function includes refined methods for calculating interpolation weights which improve the accuracy of biome transitions.
+
+Specifically, the updated code calculates biome interpolation weights more accurately by considering the distance and relative position of each voxel within a hexagonal grid. This ensures that biomes blend smoothly across the map fragment, creating a natural transition between different terrain types.
 
 ## Code Example
 ```zig
@@ -113,11 +117,11 @@ pub fn generateMapFragment(map: *MapFragment, worldSeed: u64) void {
 ```
 
 ## Related Questions
-- What is the purpose of the `generateMapFragment` function?
-- How are noise maps generated in this function?
-- What role do biome maps play in terrain generation?
-- How is the height and biome type determined for each voxel?
-- What is the significance of barycentric interpolation in this context?
-- How does the function ensure smooth transitions between different biomes?
+- What is the purpose of the `generateMapFragment` function? - It generates terrain map fragments using noise functions and biome interpolation.
+- How are noise maps generated in this function? - Noise maps are generated using fractal and perlin noise techniques to create layers such as mountains, hills, and roughness.
+- What role do biome maps play in terrain generation? - Biome maps determine the final height and biome type for each voxel based on interpolated data from neighboring biomes.
+- How is the height and biome type determined for each voxel? - Height and biome type are determined by interpolating biome data using barycentric coordinates, which weight contributions from neighboring biomes.
+- What is the significance of barycentric interpolation in this context? - Barycentric interpolation ensures smooth transitions between different biomes by weighting contributions based on proximity and relative position within a hexagonal grid.
+- How does the function ensure smooth transitions between different biomes? - The function uses refined methods for calculating interpolation weights, which improve the accuracy of biome transitions.
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_mapgen_MapGenV1.zig_chunk_1*

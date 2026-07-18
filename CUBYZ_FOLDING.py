@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.22"
+VERSION = "1.1.23"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -2021,7 +2021,15 @@ def generate_local_leaderboard_html(stats: dict):
     """Generates a styled, read-only HTML file next to the client script."""
     html_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "leaderboard.html")
 
-    total = stats.get("total_chunks_in_codebase") or stats.get("total_chunks_in_campaign") or 1
+    # rag/finetune rankings use chunks_completed/lines_crunched/pairs_generated; audit mode's
+    # rankings use a completely different shape (chunks_audited/issues_found/reviews_done/
+    # fixes_applied). Reading the wrong field names doesn't error -- .get(..., 0) just silently
+    # returns 0 for everything -- so this used to render a real-looking table that was always
+    # zero for every audit-mode user, confirmed live (names and online status appeared correctly
+    # since those field names ARE shared, only the numeric columns were wrong).
+    is_audit = stats.get("mode") == "audit"
+
+    total = stats.get("total_chunks_in_codebase") or stats.get("total_chunks_in_campaign") or stats.get("total_chunks_due") or 1
     completed = stats.get("total_chunks_completed", 0)
     global_pct = stats.get("global_percentage", 0.0)
 
@@ -2057,24 +2065,27 @@ def generate_local_leaderboard_html(stats: dict):
                 <tr>
                     <th>Rank</th>
                     <th>User ID</th>
-                    <th>Chunks</th>
-                    <th>Lines Crunched</th>
-                    <th>Share</th>
+                    {"<th>Audited</th><th>Issues Found</th><th>Reviews Done</th><th>Fixes Applied</th>" if is_audit else "<th>Chunks</th><th>Lines Crunched</th><th>Share</th>"}
                 </tr>
             </thead>
             <tbody>
     """
 
     for user in stats.get("rankings", []):
-        lines_crunched = user.get("lines_crunched", user.get("pairs_generated", 0))
-        share = user.get("contribution_percentage", "")
+        if is_audit:
+            stat_cells = (f"<td>{user.get('chunks_audited', 0)}</td>"
+                          f"<td>{user.get('issues_found', 0)}</td>"
+                          f"<td>{user.get('reviews_done', 0)}</td>"
+                          f"<td>{user.get('fixes_applied', 0)}</td>")
+        else:
+            lines_crunched = user.get("lines_crunched", user.get("pairs_generated", 0))
+            share = user.get("contribution_percentage", "")
+            stat_cells = f"<td>{user.get('chunks_completed', 0)}</td><td>{lines_crunched}</td><td>{share}%</td>"
         html_content += f"""
                 <tr>
                     <td class="rank">#{user.get('rank', '?')}</td>
                     <td>{user.get('user_id', '?')}</td>
-                    <td>{user.get('chunks_completed', 0)}</td>
-                    <td>{lines_crunched}</td>
-                    <td>{share}%</td>
+                    {stat_cells}
                 </tr>"""
 
     html_content += """
@@ -2099,7 +2110,14 @@ def fetch_and_show_leaderboard():
 
     generate_local_leaderboard_html(stats)
 
-    tot = stats.get("total_chunks_in_codebase") or stats.get("total_chunks_in_campaign") or 1
+    # audit mode's rankings use a different stat shape entirely (chunks_audited/issues_found/
+    # reviews_done/fixes_applied) than rag/finetune's (chunks_completed/lines_crunched or
+    # pairs_generated) -- reading the wrong field names never errors, just silently returns 0 for
+    # everything, which is why names/online status showed correctly here before but every numeric
+    # column was always 0 for an audit-mode roster (confirmed live).
+    is_audit = stats.get("mode") == "audit"
+
+    tot = stats.get("total_chunks_in_codebase") or stats.get("total_chunks_in_campaign") or stats.get("total_chunks_due") or 1
     comp = stats.get("total_chunks_completed", 0)
     pct = stats.get("global_percentage", 0.0)
     bar_len = 20
@@ -2122,10 +2140,17 @@ def fetch_and_show_leaderboard():
         # row competing for attention.
         row_color = f"{Colors.YELLOW}{Colors.BOLD}" if rank == 1 else ""
         row_reset = Colors.RESET if rank == 1 else ""
-        lines_crunched = u.get("lines_crunched", u.get("pairs_generated", 0))
-        share = u.get("contribution_percentage")
-        share_text = f" • {share:.1f}% share" if isinstance(share, (int, float)) else ""
-        print(f"  {row_color}{label:<13}: {u.get('user_id','?')} • {format_count(u.get('chunks_completed',0))} chunks • {format_count(lines_crunched)} lines{share_text}{row_reset}")
+        if is_audit:
+            stat_text = (f"{format_count(u.get('chunks_audited', 0))} audited • "
+                         f"{format_count(u.get('issues_found', 0))} issues found • "
+                         f"{format_count(u.get('reviews_done', 0))} reviewed • "
+                         f"{format_count(u.get('fixes_applied', 0))} fixes applied")
+        else:
+            lines_crunched = u.get("lines_crunched", u.get("pairs_generated", 0))
+            share = u.get("contribution_percentage")
+            share_text = f" • {share:.1f}% share" if isinstance(share, (int, float)) else ""
+            stat_text = f"{format_count(u.get('chunks_completed',0))} chunks • {format_count(lines_crunched)} lines{share_text}"
+        print(f"  {row_color}{label:<13}: {u.get('user_id','?')} • {stat_text}{row_reset}")
     print(f"  {'Local View':<13}: also written to leaderboard.html next to this script")
     print(f"{Colors.YELLOW}────────────────────────────────────────────────────────────────────────{Colors.RESET}")
 
@@ -2136,6 +2161,7 @@ def fetch_and_show_userlist():
         print(f"{Colors.RED}[X] Could not sync node roster: {e}{Colors.RESET}")
         return
 
+    is_audit = stats.get("mode") == "audit"
     users = stats.get("rankings", [])
     online = [u for u in users if "ONLINE" in u.get("status", "")]
     offline = [u for u in users if "ONLINE" not in u.get("status", "")]
@@ -2148,8 +2174,15 @@ def fetch_and_show_userlist():
         is_online = "ONLINE" in u.get("status", "")
         status_color = Colors.GREEN if is_online else Colors.GRAY
         label = u.get("status", "?")
-        lines_crunched = u.get("lines_crunched", u.get("pairs_generated", 0))
-        print(f"  {status_color}{label:<13}{Colors.RESET}: {u.get('user_id','?')} • {format_count(u.get('chunks_completed',0))} chunks • {format_count(lines_crunched)} lines")
+        if is_audit:
+            stat_text = (f"{format_count(u.get('chunks_audited', 0))} audited • "
+                         f"{format_count(u.get('issues_found', 0))} issues found • "
+                         f"{format_count(u.get('reviews_done', 0))} reviewed • "
+                         f"{format_count(u.get('fixes_applied', 0))} fixes applied")
+        else:
+            lines_crunched = u.get("lines_crunched", u.get("pairs_generated", 0))
+            stat_text = f"{format_count(u.get('chunks_completed',0))} chunks • {format_count(lines_crunched)} lines"
+        print(f"  {status_color}{label:<13}{Colors.RESET}: {u.get('user_id','?')} • {stat_text}")
     print(f"{Colors.CYAN}────────────────────────────────────────────────────────────────────────{Colors.RESET}")
 
 def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None):

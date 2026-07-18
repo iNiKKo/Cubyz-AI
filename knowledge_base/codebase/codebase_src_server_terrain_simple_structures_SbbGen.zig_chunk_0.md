@@ -9,7 +9,7 @@
 The `SbbGen` struct handles the generation of structures using SBB (Structure Building Block) models, including loading parameters and placing structures in chunks.
 
 ## Explanation
-The `SbbGen` struct is responsible for generating structures based on SBB models. It includes methods to load configuration from Zon elements, generate structures at specific coordinates, and place individual SBB blocks within a chunk. The `loadModel` function parses parameters such as structure ID, placement mode, and rotation. The `generate` method places the main structure and recursively handles child structures. The `placeSbb` function manages the placement of each block, including applying rotations and handling child structures. The `alignDirections` function computes the necessary rotation to align directions for placing structures.
+`id = "cubyz:sbb"`, `generationMode = .floor`. The `SbbGen` struct is responsible for generating structures based on SBB (Structure Building Block) models. `loadModel` requires a `structure` field (errors and returns `null` if missing, or if no matching blueprint is found by that ID); `placeMode` defaults to `"degradable"` if omitted or unrecognized; `rotation` defaults to `.random` if the field is missing or invalid (logging an error either way). `generate` places the main structure and recursively handles child structures via `placeSbb`, which pastes the rotated blueprint into the chunk using `self.placeMode`, then recurses into each of the blueprint's `childBlocks`. `alignDirections` computes (via a comptime-built lookup table) the rotation needed to align an input direction with a desired one. `getHash` combines `placeMode` and the structure's ID via `std.hash.Wyhash`.
 
 ## Code Example
 ```zig

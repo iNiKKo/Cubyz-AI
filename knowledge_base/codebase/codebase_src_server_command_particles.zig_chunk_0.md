@@ -9,7 +9,23 @@
 Handles the /particles command to spawn particles in the game world.
 
 ## Explanation
-The chunk defines a function `execute` that parses arguments for spawning particles and sends them to connected users. It uses helper functions like `parseArguments`, `parseBool`, and `parseNumber` to validate and parse input parameters. The function handles errors such as too few or many arguments, invalid boolean values, and overflowed particle counts.
+Handles the /particles command to spawn particles in the game world. The chunk defines a function `execute` that parses arguments for spawning particles and sends them to connected users. It uses helper functions like `parseArguments`, `parseBool`, and `parseNumber` to validate and parse input parameters. The function handles errors such as too few or many arguments, invalid boolean values, and overflowed particle counts.
+
+The command usage is defined as follows:
+```
+/particles <id> <x> <y> <z>
+/particles <id> <x> <y> <z> <collides>
+/particles <id> <x> <y> <z> <collides> <count>
+/particles <id> <x> <y> <z> <collides> <count> <spawnDataZon>
+```
+The `execute` function sends particles to connected users using the `main.network.protocols.genericUpdate.sendParticles` function. The maximum number of particles that can be spawned is determined by `particles.ParticleSystem.maxCapacity`. If a particle count exceeds this limit, an error message is sent to the user and the command execution stops.
+
+The helper functions are:
+- `parseArguments`: Parses arguments for spawning particles and handles errors such as too few or many arguments, invalid boolean values, and overflowed particle counts. It sends appropriate error messages to the user if any of these conditions occur. The specific error handling messages include '#ff0000Too few arguments for command /particles', '#ff0000Too many arguments for command /particles', '#ff0000Invalid argument. Expected "true" or "false"', and '#ff0000Expected number, found "{s}"'.
+- `parseBool`: Validates whether a given argument is either 'true' or 'false'. If not, it returns an error message indicating an invalid boolean value.
+- `parseNumber`: Parses a number and handles overflow errors by sending an error message with the maximum particle count. The specific error handling message includes '#ff0000Too many particles spawned "{s}", maximum: "{d}"', where `{d}` is the value of `particles.ParticleSystem.maxCapacity`.
+
+Additionally, the command usage supports using '~' to apply current player position coordinates in `<x> <y> <z>` fields. The `spawnDataZon` parameter can be used to specify additional properties for particles such as shape, radius, mode, speed, lifeTime, and randomRotate.
 
 ## Code Example
 ```zig

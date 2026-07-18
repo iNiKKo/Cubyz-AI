@@ -9,7 +9,7 @@
 Handles block model creation and data generation for hanging blocks.
 
 ## Explanation
-This chunk defines logic for handling hanging blocks in the Cubyz voxel engine. It includes functions for initializing, deinitializing, and resetting block models. The `createBlockModel` function generates a model index based on top and bottom textures specified in ZonElement. The `model` function retrieves the model index for a given block. The `generateData` function checks conditions for placing a hanging block, ensuring it is supported by a non-replaceable block below. The `updateData` function updates the block's data when its neighbor changes.
+This chunk defines logic for handling hanging blocks in the Cubyz voxel engine, with `dependsOnNeighbors = true` (this rotation mode's placement/data depends on adjacent blocks). `init`/`deinit`/`reset` are no-ops. `createBlockModel` builds model indices from `"top"`/`"bottom"` Zon fields (each defaulting to `"cubyz:cube"` if missing) and returns the (transformed, via a no-op `transform`) top model's index. `model(block)` picks between the two model variants using `block.data % 2`. `generateData` only allows placement when placing against the block's top face (`Neighbor.dirUp`) against a different block type, requiring that neighboring block be non-replaceable and have a downward-facing quad to attach to (sets `data = 1` on success); placing against the same block type or without support fails. `updateData` re-evaluates support only when the neighbor below (`.dirDown`) changes: `data` becomes `0` if that neighbor is the same block type, else `1`.
 
 ## Code Example
 ```zig

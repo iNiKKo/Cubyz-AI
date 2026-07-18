@@ -9,7 +9,7 @@
 Savannah Butte biome configuration
 
 ## Explanation
-This chunk defines the Savannah Butte biome with properties such as hot, dry, and barren conditions. It specifies a minimum height of 75 and maximum height of 100, a minimum radius of 33 and maximum radius of 48, roughness of 15, and no chance for hills or stripes. The stone block is set to limestone smooth, and it has parent biomes including Savannah Base with a chance of 24.
+This chunk defines the Savannah Butte biome with properties `.hot`, `.dry`, `.barren`. `minHeight = 75`, `maxHeight = 100`, `minRadius = 33`, `maxRadius = 48`, `roughness = 15`, `hills = 40`. Biome generation `chance = 0` (this biome doesn't generate on its own -- it only appears as a sub-biome via `parentBiomes`). Two stripe layers (no chance field on stripes themselves): `cubyz:ferrock/smooth` and `cubyz:sandstone/rough`, both `width = 1`. Stone block: `cubyz:limestone/smooth`. One parent biome: `cubyz:savannah/base` with `chance = 24`.
 
 ## Related Questions
 - What are the minimum and maximum heights for the Savannah Butte biome?

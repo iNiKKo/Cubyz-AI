@@ -9,7 +9,7 @@
 Vetch block definition with properties for health, drops, selection capabilities, replaceability, degradation, view-through, light absorption, collision, model, texture, item, LOD replacement, and update behavior.
 
 ## Explanation
-This chunk defines the Vetch block's properties including its health, drop items, selection capabilities, replaceability, degradation status, visibility through blocks, light absorption level, collision behavior, model, texture, item texture, low-detail replacement block, and an update function to check support blocks.
+This chunk defines the Vetch block's properties including its health (0.2), drop items (auto drops with cuttable tools), selection capabilities (toolEffective for cuttable/sliceable blocks), replaceability (true), degradation status (true), visibility through blocks (true), light absorption level (0x121012), collision behavior (false), model ('cubyz:cross'), texture ('cubyz:vetch'), item texture ('vetch.png'), low-detail replacement block ('cubyz:air'), and an update function to check support blocks.
 
 ## Related Questions
 - What are the properties of the Vetch block?

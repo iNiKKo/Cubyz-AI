@@ -6,10 +6,10 @@
 **Concepts:** world_generation, structure generation
 
 ## Summary
-The `StructureMapFragment` struct manages the generation and storage of structures within a voxelized terrain chunk.
+The `StructureMapFragment` struct manages the generation and storage of structures within a voxelized terrain chunk. It includes methods for initialization, deinitialization, generating structures in chunks, adding structures to specific regions, and finishing the generation process by sorting and allocating structure data. The struct uses an arena allocator for efficient memory management and maintains a list of structures sorted by priority for generation.
 
 ## Explanation
-The `StructureMapFragment` struct is responsible for managing the generation and storage of structures within a voxelized terrain chunk. It includes methods for initialization, deinitialization, generating structures in chunks, adding structures to specific regions, and finishing the generation process by sorting and allocating structure data. The struct uses an arena allocator for efficient memory management and maintains a list of structures sorted by priority for generation.
+The `StructureMapFragment` struct is responsible for managing the generation and storage of structures within a voxelized terrain chunk. It includes constants such as `size`, `sizeMask`, and `chunkedSize`. The constant `size` is defined as `1 << 7`, which equals 128, and `sizeMask` is `size - 1`, which equals 127. Additionally, `chunkedSize` is calculated as `size >> main.chunk.chunkShift`. This struct includes methods for initialization (`init`), deinitialization (`privateDeinit` and `deferredDeinit`), generating structures in chunks (`generateStructuresInChunk`), adding structures to specific regions (`addStructure`), and finishing the generation process by sorting and allocating structure data (`finishGeneration`). The struct uses an arena allocator for efficient memory management and maintains a list of structures sorted by priority for generation. It also includes methods such as `getIndex`, which ensures that coordinates are within range.
 
 ## Code Example
 ```zig
@@ -42,7 +42,7 @@ pub fn init(self: *StructureMapFragment, tempAllocator: NeverFailingAllocator, w
 - How does the `StructureMapFragment` handle deinitialization?
 - What is the significance of the `tempData` field in the `StructureMapFragment`?
 - How are structures generated within a chunk using the `StructureMapFragment`?
-- What is the purpose of the `chunkedSize` constant in the `StructureMapFragment`?
+- What are the values for constants like `size`, `sizeMask`, and `chunkedSize`?
 - How does the `StructureMapFragment` ensure that coordinates are within range?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_StructureMap.zig_chunk_0*

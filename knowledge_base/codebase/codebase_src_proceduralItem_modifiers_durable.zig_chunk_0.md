@@ -9,7 +9,7 @@
 Defines a modifier for procedural items that increases their durability.
 
 ## Explanation
-This chunk defines a modifier for procedural items that affects their durability. It includes a packed struct `Data` to store the strength of the modifier, a function `loadData` to load data from a ZonElement, a function `combineModifiers` to combine two modifiers' strengths using the hypotenuse formula, a function `changeProceduralItemParameters` to apply the modifier's effect on a procedural item's maximum durability, and a function `printTooltip` to generate a tooltip string describing the modifier's effect.
+This chunk defines a modifier for procedural items that affects their durability, with `priority = 1`. It includes a packed struct `Data` (`packed struct(u128) { strength: f32, pad: u96 = undefined }`) to store the strength of the modifier, a function `loadData` to load data from a ZonElement, a function `combineModifiers` to combine two modifiers' strengths using the hypotenuse formula (`std.math.hypot`), a function `changeProceduralItemParameters` that multiplies the item's `maxDurability` by `(1 + strength)`, and a function `printTooltip` to generate a tooltip string describing the modifier's effect as a percentage increase.
 
 ## Code Example
 ```zig

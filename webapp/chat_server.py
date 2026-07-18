@@ -23,9 +23,12 @@ into fixing the knowledge_base/ chunks the same way this project's testing did a
 Run (from anywhere -- all paths are anchored to this file's own location, not the cwd):
     pip install fastapi uvicorn
     python3 webapp/chat_server.py
-Then open http://localhost:7000 . Port chosen because it's already open/forwarded on the router.
-It already binds to 0.0.0.0, so as soon as the router forwards 7000 to this machine, it's
-reachable from outside as a real shareable URL (your public IP:7000, or a domain pointed at it).
+Then open http://localhost:7001 . Moved off 7000 (2026-07-18) so this can run at the same time as
+pipeline_crunching/server.py, which owns 7000 for the distributed crunching/audit campaigns --
+the two used to have to run one at a time on the same port. It still binds to 0.0.0.0, so once the
+router forwards 7001 to this machine, it's reachable from outside as a real shareable URL (your
+public IP:7001, or a domain pointed at it) -- the router's forwarding rule needs updating to match
+if it was set up for the old port 7000.
 """
 import sqlite3
 import uuid
@@ -40,7 +43,7 @@ from starlette.concurrency import run_in_threadpool
 import local_rag_chat
 
 HOST = "0.0.0.0"
-PORT = 7000
+PORT = 7001
 DB_PATH = str(Path(__file__).parent / "chat_history.db")
 SESSION_COOKIE = "cubyz_session"
 FRONTEND_PATH = Path(__file__).parent / "chat_frontend.html"

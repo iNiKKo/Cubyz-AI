@@ -8,7 +8,7 @@
 Defines configuration for a decorative stone rock biome in Cubyz.
 
 ## Explanation
-This chunk contains a JSON-like configuration structure defining properties of a decorative stone rock biome. It specifies parameters such as radius, generation chance, height range, terrain preservation probability, roughness, and the types of mountains and hills present. The biome is associated with several parent biomes, each with its own generation chance.
+This chunk configures the decorative stone rock biome: `radius = 16`, `chance = 0`, `minHeight = 1500`, `maxHeight = 3000`, `keepOriginalTerrain = 0.99`, `roughness = 1`, `mountains = 50`, `hills = 20`, `stoneBlock = "cubyz:slate/smooth"`. It has 14 parent biomes with individual generation chances, ranging from `cubyz:autumn/forest` (chance 2) to the most likely, `cubyz:rocky_grassland` (chance 24); others include `cubyz:tundra/base` (12), `cubyz:autumn/dead_forest`/`cubyz:grassland` (3 each), `cubyz:taiga/base`/`cubyz:forest/mixed/oak_birch`/`cubyz:forest/mixed/oak_pine`/`cubyz:forest/birch` (4 each), `cubyz:tundra/patchy` (6), and `cubyz:rare/tuften/fields`/`cubyz:hills/temperate`/`cubyz:hills/cold` (3 each).
 
 ## Related Questions
 - What is the radius of the decorative stone rock biome?

@@ -9,7 +9,7 @@
 Biome configuration for Crimson Wasteland base
 
 ## Explanation
-Defines properties, height limits, and structures for the Crimson Wasteland biome.
+Defines properties, height limits, and structures for the Crimson Wasteland biome. Properties include hot, dry, and barren conditions. The minimum height limit is set to 7 with a minHeight of 42 and maxHeight of 60, capped at a maxHeightLimit of 65. Smooth beaches are enabled (smoothBeaches = true). The biome's radius ranges from a minRadius of 256 to a maxRadius of 320. Roughness is set to 1 with hills having a value of 15 and the overall chance for this biome being 0.01. Player spawning in this biome is disabled (validPlayerSpawn = false). The stone block used is cubyz:obsidian. Structures include stalagmites with varying chances, sizes, and blocks such as basalt/smooth and obsidian. Ground patches are also defined with specific blocks like chalk/red, basalt/smooth, and chalk/crimson.
 
 ## Related Questions
 - What are the properties of the Crimson Wasteland biome?

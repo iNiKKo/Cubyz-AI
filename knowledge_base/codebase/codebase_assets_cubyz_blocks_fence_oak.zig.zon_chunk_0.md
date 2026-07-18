@@ -8,7 +8,7 @@
 Defines configuration for the oak fence block, including textures and item properties.
 
 ## Explanation
-This chunk defines a configuration object for an oak fence block in the Cubyz voxel engine. It specifies the texture paths for different sides of the fence, including the top and bottom, which use the same texture file. Additionally, it configures the item representation of the fence, specifying its texture.
+This chunk defines a configuration object for an oak fence block in the Cubyz voxel engine. It specifies the following textures: `cubyz:fence/oak` for the main sides, `cubyz:fence/top/oak` for both top and bottom faces. Additionally, it configures the item representation of the fence with the texture file name `fence/oak.png`. The configuration includes identical textures for the top and bottom of the oak fence.
 
 ## Related Questions
 - What is the texture path for the top of the oak fence?

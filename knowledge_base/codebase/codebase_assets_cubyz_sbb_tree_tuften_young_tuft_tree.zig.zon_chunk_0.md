@@ -8,7 +8,7 @@
 Defines blueprints and children for a young tuft tree in the Cubyz engine.
 
 ## Explanation
-This chunk specifies the blueprints and child components of a young tuft tree. The blueprints include various stem configurations with different IDs, representing straight, tilted, and curvy stems in different sizes. The children section defines a pink canopy component associated with this tree type.
+This chunk specifies the blueprints and child components of a young tuft tree. The blueprints include eight different stem configurations with the following IDs: 'cubyz:tree/tuften/young/stem/straight/4', 'cubyz:tree/tuften/young/stem/straight/5', 'cubyz:tree/tuften/young/stem/straight/6', 'cubyz:tree/tuften/young/stem/straight/7', 'cubyz:tree/tuften/young/stem/tilt/5', 'cubyz:tree/tuften/young/stem/tilt/6', 'cubyz:tree/tuften/young/stem/curvy/6', and 'cubyz:tree/tuften/young/stem/curvy/7'. The children section defines a pink canopy component with the ID 'cubyz:tree/tuften/young_tuft_canopy' associated with this tree type.
 
 ## Related Questions
 - What are the different stem configurations defined for the young tuft tree?

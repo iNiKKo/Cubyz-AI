@@ -8,7 +8,7 @@
 Defines properties and characteristics of the Ferrock Mountains biome in Cubyz.
 
 ## Explanation
-This chunk configures the Ferrock Mountains biome, specifying its properties like temperature, humidity, and terrain features. It includes settings for music, height limits, fog density, and color, as well as details about mountains, beaches, hills, and rivers. The configuration also lists specific blocks and structures that can be found within this biome, such as cacti and boulders.
+This chunk configures the Ferrock Mountains biome. Properties: `.mountain`, `.hot`, `.dry`, `.barren`; tag: `.cactus`. Music: `cubyz:mischol/desert_firefly`. Height: `minHeightLimit = 7`, `minHeight = 80`, `maxHeight = 256`, radius `240`-`256`. Fog: `fogDensity = 1.5`, `fogColor = 0xe9f2e2`. Terrain: `roughness = 10`, `mountains = 20`, `smoothBeaches = true`, `hills = 50`, `rivers = true`, `validPlayerSpawn = false`. Base block: `stoneBlock = "cubyz:ferrock/smooth"`. Two stripe layers (`cubyz:limestone/smooth` and `cubyz:sandstone/rough`). Two structures: `cubyz:simple_vegetation` placing `cubyz:cactus` (`chance = 0.08`, `height = 1`, `height_variation = 2`), and `cubyz:boulder` using `cubyz:ferrock/smooth` (`chance = 0.016`, `size = 2`, `size_variance = 7`).
 
 ## Related Questions
 - What is the music associated with the Ferrock Mountains biome?

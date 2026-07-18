@@ -8,7 +8,7 @@
 Defines properties for the Aqua Glow Crystal block.
 
 ## Explanation
-This chunk defines a configuration object for the Aqua Glow Crystal block in Cubyz. It specifies the emitted light color and texture path. The `emittedLight` field is set to a hexadecimal color value, and the `texture` field points to the image file used for rendering the block.
+This chunk defines a configuration object for the Aqua Glow Crystal block in Cubyz. It specifies the emitted light color and texture path. The `emittedLight` field is set to the hexadecimal value `0x16a7da`, and the `texture` field points to the image file `cubyz:glow_crystal/aqua`. This configuration includes fields for both the block's visual appearance (`texture`) and its light emission properties (`emittedLight`).
 
 ## Related Questions
 - What is the emitted light color of the Aqua Glow Crystal block?

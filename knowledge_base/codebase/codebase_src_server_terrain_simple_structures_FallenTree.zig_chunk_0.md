@@ -9,7 +9,7 @@
 Defines the logic for generating fallen trees in the Cubyz voxel engine.
 
 ## Explanation
-This chunk implements the generation of fallen trees within the game world. It includes a struct `FallenTree` that holds properties like wood block type, rotation mode, and height variations. The `loadModel` function initializes a `FallenTree` instance from configuration parameters. The `generateStump` method places the base of the tree, while `generateFallen` creates the fallen trunk by checking cave map conditions and placing blocks accordingly. The main `generate` function orchestrates the entire process, determining the height and calling the other generation methods.
+This chunk implements the generation of fallen trees within the game world: `id = "cubyz:fallen_tree"`, `generationMode = .floor`. `loadModel` reads the `log` field (required, errors and returns `null` if missing), `height` (default `6`, into `height0`), and `height_variation` (default `3`, into `deltaHeight`), and detects the wood's rotation mode type (`.branch`, `.log`, or `.direction`, else `.unknown`) from its block rotation. `generate` computes `height = height0 + random(0..deltaHeight)`, places the vertical stump via `generateStump`, then the fallen trunk via `generateFallen` using `height - 2`. `generateFallen` tries up to 4 random horizontal directions, and for each candidate checks every position along the trunk's length that the cave map is NOT solid at that spot but IS solid one block below (i.e. the trunk would rest on solid ground with clear space above) -- the first direction that satisfies this for the whole length is used; if none of the 4 work, nothing is placed.
 
 ## Code Example
 ```zig

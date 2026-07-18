@@ -9,7 +9,7 @@
 Cubyz relies on community contributions for code and development. Volunteers are needed to maintain the community, create content, and support the project.
 
 ## Explanation
-Cubyz encourages open-source community contributions through a guide, issue tracking, and various volunteer roles. Volunteers can help with coding, addon development, managing YouTube content, Discord moderation, maintaining the wiki, reviewing pull requests on GitHub, moderating Reddit, or supporting the project financially via Patreon.
+Cubyz encourages open-source community contributions through a guide, issue tracking, and various volunteer roles. You don't need to know how to code to make an impact -- keeping the community active, welcoming, and well-documented is just as vital to Cubyz's growth as code contributions. Volunteers can help with coding, addon development, managing YouTube content (Youtube Team), Discord moderation (Discord Team), maintaining the wiki (Wiki Team), reviewing pull requests and triaging issues on GitHub (Github Team), moderating Reddit (Reddit Team), or supporting the project financially via Patreon/Ko-Fi to back specific contributors (e.g. the project lead for engine/core work, or the artist for art direction and custom textures).
 
 ## Related Questions
 - What is the link to the Cubyz Contributions Guide?

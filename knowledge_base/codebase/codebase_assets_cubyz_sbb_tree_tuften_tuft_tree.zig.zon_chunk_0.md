@@ -8,14 +8,10 @@
 Defines blueprints and children for a tuft tree in the Cubyz voxel engine.
 
 ## Explanation
-This chunk defines the configuration for a specific type of tree, known as a 'tuft' tree. It includes a list of blueprints, each with an ID and an optional chance value, which specifies different stem variations for the tree. The children field indicates that this tuft tree has a pink canopy child.
+This chunk defines the configuration for a specific type of tree, known as a 'tuft' tree. It includes blueprints with IDs such as 'cubyz:tree/tuften/stem/straight/5', 'cubyz:tree/tuften/stem/tilt/7', and others up to 'cubyz:tree/tuften/stem/curvy/10'. Some of these blueprints have an optional chance value, such as 0.5 for the IDs 'cubyz:tree/tuften/stem/straight/8', 'cubyz:tree/tuften/stem/straight/9', and 'cubyz:tree/tuften/stem/straight/10'. The children field specifies that this tuft tree has a pink canopy child with the ID 'cubyz:tree/tuften/tuft_canopy'.
 
 ## Related Questions
-- What are the different stem variations defined for the tuft tree?
-- How many blueprints are specified for the tuft tree?
-- Which blueprint has a chance value of 0.5?
-- What is the ID of the pink canopy child for the tuft tree?
-- Are there any duplicate entries in the blueprints list?
-- Does this configuration support multiple canopies?
+- What are the specific IDs of the blueprints defined for the tuft tree?
+- Which blueprint IDs have an associated chance value and what is that value?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_tree_tuften_tuft_tree.zig.zon_chunk_0*

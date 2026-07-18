@@ -9,7 +9,7 @@
 Defines the model component for entities, handling both client and server logic including initialization, deinitialization, loading, unloading, and data serialization.
 
 ## Explanation
-This chunk defines the model component for entities in the Cubyz engine. It includes separate structures and functions for client-side and server-side operations. The client structure manages rendering-related data such as matrices and nodes, while the server handles saving and transmitting changes. Both sides use a `SparseSet` to map entities to their respective components. Functions like `init`, `deinit`, `load`, `unload`, and `get` are provided for managing component lifecycle and access. The chunk also includes error handling for version mismatches and data reading issues.
+This chunk defines the model component for entities in the Cubyz engine, with `entityComponentVersion = 0` -- `load`/`loadFromData` both return `error.InvalidComponentVersion` if the given version doesn't match 0. It includes separate structures and functions for client-side and server-side operations. The client structure manages rendering-related data such as matrices and nodes (deinit frees both, plus releases the model's buffer allocation from `modelRenderer.client.nodeBuffer`), while the server holds just an `entityModel` index; `server.put` stores/overwrites a component and calls `main.entity.server.transmitChange(Self, entity)` to notify clients of the change. Both sides use a `SparseSet` to map entities to their respective components. Functions like `init`, `deinit`, `load`, `unload`, and `get` are provided for managing component lifecycle and access.
 
 ## Code Example
 ```zig

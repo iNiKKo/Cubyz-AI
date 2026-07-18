@@ -8,7 +8,7 @@
 Defines configuration for the Birch forest biome in Cubyz, including height limits, terrain features, and music.
 
 ## Explanation
-This chunk is a configuration file for the Birch forest biome in the Cubyz game engine. It specifies various properties such as height limits, beach smoothness, radius, roughness, hills, and spawn validity. The file also defines ground structures and structures like trees, fallen logs, and flower patches with their respective chances, sizes, and variations.
+This chunk configures the Birch forest biome: tag `.birch`; `minHeightLimit = 7`, `minHeight = 20`, `maxHeight = 48`, `maxHeightLimit = 60`; `smoothBeaches = true`; radius `200`-`256`; `roughness = 10`; `hills = 12`; `chance = 0.66`; `music = "cubyz:totaldemented/leaves"`; `validPlayerSpawn = true`. Ground structure: `cubyz:grass/temperate` then "1 to 2 cubyz:soil". Structures: a `cubyz:ground_patch` (gravel, chance 0.1); two `cubyz:sbb` silver birch trees (`tree/birch/silver/1` and `/2`, both `.degradable`, chance 0.1 each); a `cubyz:fallen_tree` (birch log, chance 0.005, height 6 +/-3); and 6 `cubyz:flower_patch` entries -- daisies, dandelions, trumpet_lily, daffodil, bolete, and grass/vegetation/temperate -- each chance 0.01-0.1 with its own width/variation/density.
 
 ## Related Questions
 - What is the minimum height limit for the Birch forest biome?

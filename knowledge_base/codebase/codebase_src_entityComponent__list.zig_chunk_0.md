@@ -9,7 +9,7 @@
 Imports various modules related to entity components.
 
 ## Explanation
-This chunk imports several modules that are part of the Cubyz engine's entity component system. Each import statement brings in a different module, which likely contains specific functionality or data structures for handling entities and their components within the game world.
+This chunk imports exactly four entity component modules, each aliased to a `cubyz:` namespaced constant: `cubyz:_template` (from `_template.zig`), `cubyz:bag` (from `bag.zig`), `cubyz:model` (from `model.zig`), and `cubyz:player` (from `player.zig`).
 
 ## Related Questions
 - What modules are imported in this chunk?

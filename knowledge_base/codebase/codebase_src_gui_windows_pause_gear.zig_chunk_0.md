@@ -9,7 +9,7 @@
 Manages the pause gear GUI window, including initialization, deinitialization, and handling of open/close events.
 
 ## Explanation
-This chunk defines a GUI window for the pause gear in the Cubyz engine. It includes functions to initialize and deinitialize resources such as textures. The `onOpen` method sets up the window with a button component using a pause icon texture when the window is opened, adjusting the content size accordingly. The `onClose` method cleans up the root component of the window when it is closed.
+This chunk defines a GUI window for the pause gear in the Cubyz engine. `init` loads the texture `"assets/cubyz/ui/pause_icon.png"` into `pauseIcon`; `deinit` releases it. The `onOpen` method creates a 64x64 icon button using `pauseIcon` that opens the `"pause"` window when clicked, sets it as the window's root component, and sets `window.contentSize` to the button's size. The `onClose` method deinitializes the root component of the window when it is closed.
 
 ## Code Example
 ```zig

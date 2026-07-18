@@ -9,7 +9,7 @@
 Defines a spherical Signed Distance Function (SDF) model for terrain generation.
 
 ## Explanation
-This chunk implements a spherical SDF model used in terrain generation. It includes the initialization of the sphere model with minimum and maximum radii, instantiation of individual spheres with random sizes within the specified range, and the generation function that calculates the distance from any point to the surface of the sphere.
+This chunk implements a spherical SDF model used in terrain generation: `id = "cubyz:sphere"`. `initAndGetExtend` reads `minRadius` (default `16`) and `maxRadius` (defaults to `minRadius` if not given) from Zon, and returns a `maxExtend` bounding box from `floor(-maxRadius)` to `ceil(maxRadius)`. `instantiate` picks a random radius uniformly between `minRadius` and `maxRadius` for that specific instance, and returns bounds/center offset derived from that instance radius. `generate(samplePos)` returns the signed distance from `samplePos` to the sphere's surface: `length(samplePos) - radius` (negative inside, positive outside).
 
 ## Code Example
 ```zig

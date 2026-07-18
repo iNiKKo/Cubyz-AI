@@ -8,7 +8,7 @@
 This chunk defines a list of blueprints for different rock hoodoo assets in Cubyz.
 
 ## Explanation
-The chunk contains a single anonymous struct with a field named `.blueprints`. This field is an array of anonymous structs, each containing an `.id` field. The `.id` fields specify unique identifiers for various small and medium-sized rock hoodoo assets within the Cubyz game. These identifiers are used to reference these specific asset blueprints in the game's asset management system.
+The chunk contains a single anonymous struct with a `.blueprints` field: an array of 7 blueprints total, one small (`cubyz:rock/hoodoo/small/0`) and six medium (`cubyz:rock/hoodoo/medium/0` through `cubyz:rock/hoodoo/medium/5`). These identifiers are used to reference these specific asset blueprints in the game's asset management system.
 
 ## Related Questions
 - What is the purpose of the `.blueprints` field in this chunk?

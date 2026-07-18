@@ -6,10 +6,10 @@
 **Concepts:** block meshing, entity ECS, world generation, networking protocol
 
 ## Summary
-Handles torch block rotations and model creation based on neighbor interactions.
+Handles torch block rotations and model creation based on neighbor interactions. Includes functions to initialize, deinitialize, reset internal state related to rotated models, generate unique model indices for each combination of base and side models considering various orientations, compute new data values based on rotation angles, and update torch data based on neighbor interactions.
 
 ## Explanation
-This chunk manages the rotation logic for torch blocks in the Cubyz voxel engine. It includes functions to initialize, deinitialize, and reset internal state related to rotated models. The `createBlockModel` function generates a unique model index for each combination of base and side models, considering various orientations. The `model` function retrieves the model index for a given block. The `rotateZ` function computes new data values based on rotation angles. The `generateData` function updates torch data based on neighbor interactions to ensure proper orientation.
+This chunk manages the rotation logic for torch blocks in the Cubyz voxel engine. It includes functions to initialize (`init`), deinitialize (`deinit`), and reset internal state related to rotated models (`reset`). The `createBlockModel` function generates a unique model index for each combination of base and side models, considering various orientations based on the `TorchData` struct which contains boolean flags for center, negX, posX, negY, and posY. The `model` function retrieves the model index for a given block using the `blocks.meshes.modelIndexStart(block).add(@as(u5, @truncate(block.data)) -| 1)` method. The `rotateZ` function computes new data values based on rotation angles by applying a precomputed rotation table to the current torch data. The `generateData` function updates torch data based on neighbor interactions to ensure proper orientation using the `TorchData` struct and checks for neighbor support before updating the block's data.
 
 ## Code Example
 ```zig
@@ -19,11 +19,8 @@ pub fn deinit() void {
 ```
 
 ## Related Questions
-- How does the `createBlockModel` function generate unique model indices?
-- What is the purpose of the `rotateZ` function in this chunk?
-- How does the `generateData` function update torch data based on neighbor interactions?
-- What is the role of the `rotatedModels` variable in this chunk?
-- How does the `init` and `deinit` functions manage the lifecycle of rotated models?
-- What is the structure of the `TorchData` packed struct used in this chunk?
+- How does the `createBlockModel` function generate unique model indices considering various orientations?
+- What is the purpose of the `rotateZ` function in this chunk, including how it uses a precomputed rotation table?
+- How does the `generateData` function update torch data based on neighbor interactions and checks for neighbor support?
 
 *Source: unknown | chunk_id: codebase_mods_cubyz_rotations_torch.zig_chunk_0*

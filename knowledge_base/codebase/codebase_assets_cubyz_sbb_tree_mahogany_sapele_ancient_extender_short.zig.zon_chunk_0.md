@@ -8,7 +8,10 @@
 Defines a blueprint for an ancient mahogany and sapele tree extender with specific child nodes.
 
 ## Explanation
-This chunk defines a configuration structure for a voxel-based game asset, specifically a tree extender. It includes blueprints with unique identifiers, rotation settings, and references to child nodes that represent different parts of the tree such as the top, branches, and decorative elements. The configuration is structured in a way that allows for hierarchical assembly of the tree model within the game engine.
+This chunk defines a configuration structure for an ancient mahogany and sapele tree extender. It includes blueprints with unique identifier 'cubyz:tree/mahogany/sapele/ancient/extender/0', rotation settings that inherit orientation, and references to child nodes representing different parts of the tree such as the top ('white' node), branches ('green' node), and decorative elements ('yellow' node). The configuration is structured in a way that allows for hierarchical assembly of the tree model within the game engine. Specifically, the 'children' field includes:
+- white: cubyz:tree/mahogany/sapele/ancient/top
+- green: cubyz:tree/mahogany/sapele/ancient/branch
+- yellow: cubyz:deco/side_dense
 
 ## Related Questions
 - What is the unique identifier for the ancient mahogany and sapele tree extender?

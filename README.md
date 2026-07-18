@@ -152,9 +152,11 @@ push past) Prototype 4's 89% benchmark. This section keeps growing as work conti
   mismatch forever — fixed by verifying the downloaded file's own `VERSION` line before installing.
 - **Terminal UI.** Live status display is color-coded by campaign (RAG cyan, fine-tune magenta)
   with severity coloring on status lines, auto-disabled on non-terminal stdout.
-- **Known, not-yet-fixed:** `webapp/chat_server.py` and `pipeline_crunching/server.py` intentionally
-  share port 7000 (run one at a time). None of `/admin/mode`, `/submit_work`, or the volunteer
-  `user_id` scheme have authentication — needs a real design decision, not fixed yet.
+- **Port conflict resolved:** `webapp/chat_server.py` and `pipeline_crunching/server.py` used to
+  share port 7000 (run one at a time). `chat_server.py` was moved to port 7001 so the live AI chat
+  website and a distributed campaign can now run concurrently.
+- **Known, not-yet-fixed:** none of `/admin/mode`, `/submit_work`, or the volunteer `user_id`
+  scheme have authentication — needs a real design decision, not fixed yet.
 
 ### Dual-lane crunching & hardware detection
 

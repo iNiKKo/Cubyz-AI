@@ -5,21 +5,20 @@
 **Concepts:** biome configuration, tree generation
 
 ## Summary
-Defines configuration for the Glass Forest biome in Cubyz, including tree structures and terrain properties.
+Defines configuration for the Glass Forest biome in Cubyz, including specific properties such as generation chance (0.02), height limits (minHeightLimit = 7, minHeight = 22, maxHeight = 40, maxHeightLimit = 60), beach smoothness (smoothBeaches = true), roughness and hills values (both set to 10), music (cubyz:bytepop/pixel_wires), player spawn validity (validPlayerSpawn = false), ground structure (0 to 1 cubyz:slate/rough), and detailed configurations for different types of trees with varying colored glass leaves and chalk logs.
 
 ## Explanation
-This chunk is a configuration file for the Glass Forest biome in the Cubyz voxel engine. It specifies various properties such as generation chance, height limits, beach smoothness, roughness, hills, music, player spawn validity, ground structure, and detailed configurations for different types of trees with varying colored glass leaves and chalk logs.
+This chunk is a configuration file for the Glass Forest biome in the Cubyz voxel engine. It specifies various properties such as generation chance (0.02), height limits (minHeightLimit = 7, minHeight = 22, maxHeight = 40, maxHeightLimit = 60), beach smoothness (smoothBeaches = true), roughness and hills values (both set to 10), music (cubyz:bytepop/pixel_wires), player spawn validity (validPlayerSpawn = false), ground structure (0 to 1 cubyz:slate/rough), and detailed configurations for different types of trees with varying colored glass leaves and chalk logs. Each tree type has a chance of 0.008, is round in shape, has a height range from 10 to 5, and leaf radius ranging from 3 to 3.
 
 ## Related Questions
-- What is the chance of generating a Glass Forest biome?
-- How many different types of trees are defined in the Glass Forest biome?
-- What materials are used for the leaves and logs of the trees in the Glass Forest biome?
-- Is player spawning valid in the Glass Forest biome?
-- What is the minimum height limit for the Glass Forest biome?
-- What is the maximum height limit for the Glass Forest biome?
-- How does the roughness affect the terrain generation in the Glass Forest biome?
+- What is the generation chance for the Glass Forest biome?
+- What are the minimum and maximum height limits for the Glass Forest biome?
+- Is beach smoothness enabled in the Glass Forest biome?
+- What values are set for roughness and hills in the Glass Forest biome?
 - What music is associated with the Glass Forest biome?
-- What is the ground structure of the Glass Forest biome?
-- What is the height variation for the trees in the Glass Forest biome?
+- Can players spawn in the Glass Forest biome?
+- What materials make up the ground structure of the Glass Forest biome?
+- How many different types of trees are defined in the Glass Forest biome?
+- What colors and materials are used for leaves and logs in each tree type?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_biomes_rare_glass_forest.zig.zon_chunk_0*

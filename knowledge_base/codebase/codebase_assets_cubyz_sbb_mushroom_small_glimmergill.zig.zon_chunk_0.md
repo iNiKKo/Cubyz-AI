@@ -8,7 +8,7 @@
 Defines blueprints for different variants of a small glimmergill mushroom.
 
 ## Explanation
-This chunk defines a configuration structure containing multiple blueprints, each with an unique ID representing a variant of a small glimmergill mushroom. The blueprints are stored in an array under the `.blueprints` field. Each blueprint is an object with an `.id` field that specifies the variant's identifier.
+This chunk defines 8 blueprints for small glimmergill mushroom variants, each with only an `.id` field (no other properties): `cubyz:mushroom/small/glimmergill/variant/0` through `cubyz:mushroom/small/glimmergill/variant/7`. Yes, variant `3` (`cubyz:mushroom/small/glimmergill/variant/3`) is among them.
 
 ## Related Questions
 - What are the IDs of the different variants of the small glimmergill mushroom?

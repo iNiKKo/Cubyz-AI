@@ -9,7 +9,16 @@
 The function `renderDropOptions` sets up dropdown options for various search inputs in the addon creator UI.
 
 ## Explanation
-This JavaScript code snippet defines a function `renderDropOptions` that initializes and configures dropdown options for multiple search input fields within the Cubyz Addon Creator. It iterates over an array of target objects, each representing a specific input field with its ID and type (e.g., 'blocks', 'music'). For each target, it finds the corresponding input element and its parent wrapper. If no dropdown already exists for that input, it creates one and appends it to the wrapper. The function then attaches event handlers: `onfocus` to trigger a dropdown display using `window.showRecipeDropdown`, and `oninput` to filter the dropdown options using `window.filterDropdown`. Additionally, the script listens for the 'DOMContentLoaded' event to call `loadServerAssets`, which presumably loads necessary assets from the server.
+This JavaScript code snippet defines a function `renderDropOptions` that initializes and configures dropdown options for multiple search input fields within the Cubyz Addon Creator. It iterates over an array of target objects, each representing a specific input field with its ID and type (e.g., 'recipeOutputSearch', 'blocks', 'music'). The targets include:
+
+- `recipeOutputSearch` (type: blocks)
+- `recipeInputSearch1`, `recipeInputSearch2`, `recipeInputSearch3`, `recipeInputSearch4` (all types: blocks)
+- `bioMusic` (type: music)
+- `bioSurfaceBlock`, `bioSubBlock`, `bioStoneBlock` (all types: blocks)
+- `entityModelSearch` (type: models)
+- `entityTextureSearch` (type: textures)
+
+For each target, it finds the corresponding input element and its parent wrapper. If no dropdown already exists for that input, it creates one and appends it to the wrapper. The function then attaches event handlers: `onfocus` to trigger a dropdown display using `window.showRecipeDropdown`, and `oninput` to filter the dropdown options using `window.filterDropdown`. Additionally, the script listens for the 'DOMContentLoaded' event to call `loadServerAssets`, which presumably loads necessary assets from the server.
 
 ## Related Questions
 - What is the purpose of the `renderDropOptions` function?

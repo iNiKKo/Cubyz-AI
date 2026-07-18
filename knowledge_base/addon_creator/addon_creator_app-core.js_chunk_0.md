@@ -9,7 +9,23 @@
 This chunk handles the loading of server assets and updating UI components based on the loaded data.
 
 ## Explanation
-The chunk defines several global variables to store server asset data, such as blocks, items, textures, recipes, music, entities, and particles. It includes an asynchronous function `loadServerAssets` that fetches JSON data from the server for these assets. The function updates various UI components like status badges, dropdowns, and metrics UI based on the loaded data. It also handles errors by logging them to the console and updating the status badge with an error message.
+This chunk handles the loading of server assets and updating UI components based on the loaded data. It defines several global variables to store server asset data such as blocks, items, textures, recipes, music, entities, and particles. The function `loadServerAssets` fetches JSON data from the server for these assets using specific paths defined by `window.VERSION_PATH`. For example, it fetches blocks.json, items.json, textures.json, recipes.json, music.json, entity_models.json, and particles.json. If any of these files are missing on the server during the fetch operation, an error is thrown with a message indicating that one or more manifests are missing.
+
+The function updates various UI components like status badges, dropdowns, and metrics UI based on the loaded data. It categorizes textures into different types (block textures, item textures, entity textures, particle textures) by checking if their paths include specific keywords such as 'blocks/', 'items/', 'entityModels/', or 'particles/'. Each texture is represented by a `textureObject` containing properties like name, dataUrl, and type flags indicating whether it's a block, item, entity, or particle texture.
+
+The function also updates the global variable `window.metricCounts`, which stores counts of various assets such as blocks, items, textures, music tracks, entities, and particles. The structure of `window.metricCounts` is defined as follows:
+```json
+{
+    "blocks": window.serverBlocks.length,
+    "items": window.serverItems.length,
+    "blockTex": window.blockTexturesOnly.length,
+    "itemTex": window.itemTexturesOnly.length,
+    "music": window.serverMusicList.length,
+    "entities": window.serverEntityModels.length,
+    "particles": window.serverParticles.length
+}
+```
+Dropdowns are rebuilt after loading server assets using the `rebuildDropdowns` function if it is defined. If an error occurs during data fetching, it logs the error to the console and updates the status badge with a specific error message.
 
 ## Related Questions
 - What is the purpose of the `loadServerAssets` function?

@@ -9,7 +9,7 @@
 This chunk defines a GUI window for sound settings, including components like sliders and formatters for music volume control.
 
 ## Explanation
-The code initializes a `GuiWindow` with specific content size and behavior. It includes functions for converting between decibel and linear scales (`deziBelToLinear`, `linearToDezibel`) and formatting the slider's display value (`musicFormatter`). The `onOpen` function sets up a vertical list containing a continuous slider for adjusting music volume, while `onClose` deinitializes the window's components. The chunk uses various GUI components like `VerticalList` and `ContinuousSlider`, and interacts with settings to save and load music volume preferences.
+The code initializes a `GuiWindow` with `contentSize = {128, 256}`. `deziBelToLinear`/`linearToDezibel` convert between a -60..0 dB slider range and a 0..1 linear volume, both treating anything below -59.95 dB as silent (`0` linear / `-60` dB). `musicFormatter` displays `"Music volume: Off"` when the linear percentage is exactly 0, otherwise just `"Music volume:"` (the source does not actually append the numeric percentage in that branch). `onOpen` sets up a single `ContinuousSlider` ranging from `-60` to `0` (dB), initialized from the current `settings.musicVolume` converted to dB; on change, `musicCallback` converts the new dB value back to linear, stores it in `settings.musicVolume`, and calls `settings.save()`. `onClose` deinitializes the window's root component.
 
 ## Code Example
 ```zig

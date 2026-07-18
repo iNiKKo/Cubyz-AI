@@ -9,7 +9,7 @@
 Handles vine decay logic on the server side.
 
 ## Explanation
-This chunk implements the server-side logic for handling vine decay. It checks if a block is in the 'cubyz:hanging' rotation and then determines if it should decay based on the block above it. If the conditions are met, it decays the vine by replacing it with air.
+This chunk implements the server-side logic for handling vine decay. `run()` first verifies the block's rotation is `cubyz:hanging` (logging an error and returning `.ignored` otherwise), re-fetches the block at that world position to confirm it still matches, then checks the block directly above: if that block is a different type, decay is skipped (`.ignored`) unless the block above is `.replaceable()` (decays immediately) OR its model has no down-facing quads (`neighborFacingQuads[Neighbor.dirDown]` is empty -- decays anyway, since nothing is visually blocking it). `decay()` performs the actual replacement via `cmpxchgBlock`, an atomic compare-and-swap that only replaces the block with `blocks.Block.air` if it still matches the expected `current` value (returns `.handled` on success, `.ignored` if it changed underneath).
 
 ## Code Example
 ```zig

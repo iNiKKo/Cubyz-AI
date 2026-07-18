@@ -9,7 +9,7 @@
 Defines a blueprint for a coniferous pine loblolly tree branch asset.
 
 ## Explanation
-This chunk contains configuration data for an asset in the Cubyz voxel engine. It defines a single blueprint with an ID that identifies the specific type of tree branch, which is used by the engine to load and render the corresponding model or mesh.
+This chunk contains configuration data for an asset in the Cubyz voxel engine. It defines a single blueprint with the ID `cubyz:tree/coniferous/branch/lushy/4/0`, which is used by the engine to load and render the corresponding model or mesh.
 
 ## Related Questions
 - What is the ID of the coniferous pine loblolly tree branch asset?

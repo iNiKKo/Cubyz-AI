@@ -9,7 +9,7 @@
 Generates random cave biomes for a given map fragment using a seed-based random distribution.
 
 ## Explanation
-This chunk defines a module responsible for generating random cave biomes within a specified map fragment. It uses a seed-based random number generator to distribute biomes across the map. The `generate` function iterates over the map's grid, sampling biomes from predefined layers and assigning them based on their height constraints.
+This chunk defines a module responsible for generating random cave biomes within a specified map fragment: `id = "cubyz:random_biome"`, `priority = 1024`, `generatorSeed = 765893678349`, `defaultState = .enabled`. `init` ignores its parameters entirely (a no-op). `generate` uses a seed-based random number generator (`random.initSeed3D`) to distribute biomes across the map, iterating over the grid in steps of `caveBiomeSize` and sampling a biome from the matching cave layer for each position, re-sampling in a loop until one satisfies the position's height constraints (`biome.minHeight`/`biome.maxHeight`).
 
 ## Code Example
 ```zig

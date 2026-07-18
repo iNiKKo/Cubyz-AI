@@ -9,7 +9,7 @@
 Cave mushroom big bolete configuration
 
 ## Explanation
-This chunk defines a configuration for the cave mushroom big bolete structure in Cubyz, specifying its chance of occurrence and associated structures.
+This chunk defines a configuration for the cave mushroom big bolete biome feature in Cubyz, with an overall `chance` of `0.04`. It defines three structures: an `cubyz:sbb` structure using `cubyz:mushroom/big/bolete` with `placeMode = .degradable` and `chance = 0.15`; a second `cubyz:sbb` structure using `cubyz:mushroom/small/bolete`, also `.degradable`, with `chance = 0.2`; and a `cubyz:flower_patch` structure using block `cubyz:bolete` with `chance = 0.1`, `width = 8`, `variation = 4`, `density = 0.06`, and `priority = 0.1`.
 
 ## Related Questions
 - What is the chance of occurrence for the cave mushroom big bolete?

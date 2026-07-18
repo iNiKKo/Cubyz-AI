@@ -9,7 +9,7 @@
 SimulationChunk manages server-side chunk data and block updates.
 
 ## Explanation
-The SimulationChunk struct holds a reference to a ServerChunk, refCount for concurrency control, position, and a BlockUpdateSystem. It provides methods to initialize, deinitialize, increase/decrease reference counts, get/set chunks, and update blocks based on random tick speed.
+The SimulationChunk struct holds an atomic reference to a ServerChunk, an atomic `refCount`, its `pos`, and a `BlockUpdateSystem`. `initAndIncreaseRefCount` allocates a new instance with `refCount = 1`. `increaseRefCount` atomically increments (asserting the previous value wasn't 0). `decreaseRefCount` atomically decrements: if the value *before* decrementing was `2`, it calls `ChunkManager.tryRemoveSimulationChunk`; if it was `1`, it calls `deinit()` (which asserts `refCount == 0`, deinitializes the `blockUpdateSystem`, decreases the underlying chunk's ref count if set, and frees the struct). `update(randomTickSpeed)` calls `tickBlocksInChunk`, which picks `randomTickSpeed` random block positions (via `main.random.nextInt`), locks the chunk's mutex to read each block, then runs that block's `onTick()` callback.
 
 ## Code Example
 ```zig

@@ -9,7 +9,7 @@
 This chunk implements a semaphore using mutex and condition variable for synchronization.
 
 ## Explanation
-The Semaphore struct uses a Mutex and Condition to manage permits, allowing threads to wait until a permit is available or post a new permit. The `wait` function blocks the calling thread if no permits are available, while `timedWait` allows waiting with a timeout. The `post` function increments the permits and signals any waiting threads.
+The Semaphore struct uses a Mutex and Condition to manage `permits`, which defaults to `0` (it's explicitly OK to initialize it to any value). It supports static initialization and needs no deinitialization. The `wait` function blocks the calling thread while `permits == 0`, then decrements it by 1 and signals another waiter if permits remain. `timedWait` does the same but returns `error.Timeout` if the timeout elapses first. The `post` function increments `permits` and signals one waiting thread.
 
 ## Code Example
 ```zig

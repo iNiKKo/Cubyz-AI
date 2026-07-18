@@ -8,14 +8,16 @@
 Defines texture paths for birch log block.
 
 ## Explanation
-This chunk defines a configuration structure with six fields, each representing a different texture used for the birch log block. The textures are categorized by their visual characteristics such as dots, lines, bends, intersections, crosses, and top. Each field is assigned a string value that specifies the path to the corresponding texture file within the Cubyz asset system.
+This chunk defines a configuration structure for the birch log block with six fields, each representing a different texture. The textures are categorized by their visual characteristics such as dots, lines, bends, intersections, crosses, and top. Each field is assigned a specific file path within the Cubyz asset system:
+- `texture0` = "cubyz:log/birch/dot"
+- `texture1` = "cubyz:log/birch/line"
+- `texture2` = "cubyz:log/birch/bend"
+- `texture3` = "cubyz:log/birch/intersection"
+- `texture4` = "cubyz:log/birch/cross"
+- `texture5` = "cubyz:log/birch/top"
 
 ## Related Questions
-- What are the texture paths defined for the birch log block?
-- How many different textures are specified for the birch log block?
-- What is the path to the 'dot' texture for the birch log block?
-- Which texture is used for the top of the birch log block?
-- Are there any specific naming conventions for the texture files in this configuration?
-- How might these texture paths be used within the Cubyz engine?
+- What are the exact file paths for each texture of the birch log block?
+- Which specific textures (dots, lines, etc.) have corresponding file paths defined?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_log_birch.zig.zon_chunk_0*

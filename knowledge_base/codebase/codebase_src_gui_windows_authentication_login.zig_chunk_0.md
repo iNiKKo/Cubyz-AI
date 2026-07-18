@@ -9,7 +9,7 @@
 Handles login window for Multiplayer authentication
 
 ## Explanation
-Manages the login window for Multiplayer authentication, including input fields for Account Code, a checkbox to show/hide the code, and buttons for logging in or creating an account. Handles error notifications and updates based on user input.
+Manages the login window for Multiplayer authentication. The `window` variable is a `GuiWindow` with an initial content size of (128, 256) and closes if the mouse is grabbed. It includes an input field (`TextInput`) for entering the Account Code, which can be shown or hidden using a checkbox (`CheckBox`). A button (`Button`) allows logging in or creating an account. The `login` function verifies the entered Account Code and handles error notifications. If there are errors during verification, it prompts the user to continue anyway by updating the login button text to 'Login anyways'. When the window is opened, it initializes components such as labels, input fields, buttons, and lists with specific dimensions and padding values (8). The `onClose` function securely clears any sensitive data from memory. Additionally, the content size of the window is updated based on the root component's position and size.
 
 ## Code Example
 ```zig

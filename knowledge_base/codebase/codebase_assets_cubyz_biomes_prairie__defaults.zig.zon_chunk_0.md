@@ -8,7 +8,32 @@
 Defines default properties and structures for the Prairie biome in Cubyz.
 
 ## Explanation
-This chunk is a configuration file that specifies various properties and structures for the Prairie biome in the Cubyz game engine. It includes settings such as minHeightLimit, maxHeightLimit, smoothBeaches, roughness, hills, music, validPlayerSpawn, ground_structure, and structures. The structures array contains multiple entries, each defining different types of terrain features like ground patches, trees, boulders, and flower patches with specific probabilities and sizes.
+This chunk is a configuration file that specifies default properties and structures for the Prairie biome in Cubyz. The biome has the following properties:
+- dry: true
+- minHeightLimit: 7
+- maxHeightLimit: 60
+- smoothBeaches: true
+- roughness: 1
+- hills: 6
+- music: 'cubyz:mischol/simmer'
+- validPlayerSpawn: true
+The ground structure is defined as:
+- 1 cubyz:grass/dry
+- 1 to 2 cubyz:dirt
+- 3 to 4 cubyz:limestone/smooth
+Structures array contains multiple entries, each defining different types of terrain features with specific probabilities and sizes. These include:
+- Ground patches with 'cubyz:dirt' blocks (chance: 0.01, width: 5, variation: 4)
+- Ground patches with 'cubyz:grass/temperate' blocks (chance: 0.015, width: 9, variation: 7)
+- Young oak trees (chance: 0.025)
+- Limestone boulders (chance: 0.05, size: 3, size_variance: 6)
+- Slate boulders (chance: 0.01, size: 3, size_variance: 4)
+- Flower patches with 'cubyz:grass/vegetation/dry' blocks (chance: 0.15, width: 6, variation: 6, density: 0.6, priority: 0.1)
+- Simple vegetation with 'cubyz:grass/vegetation/dry' blocks (chance: 0.4, height: 1, height_variation: 0)
+- Flower patches with 'cubyz:grass/vegetation/temperate' blocks (chance: 0.06, width: 6, variation: 6, density: 0.6, priority: 0.1)
+- Vetch flower patches (chance: 0.005, width: 3, variation: 3, density: 0.4, priority: 0.1)
+- Marigold flower patches (chance: 0.01, width: 4, variation: 3, density: 0.4, priority: 0.1)
+- Daisies flower patches (chance: 0.02, width: 5, variation: 6, density: 0.7, priority: 0.1)
+- Dandelions flower patches (chance: 0.04, width: 5, variation: 6, density: 0.7, priority: 0.1)
 
 ## Related Questions
 - What is the minimum height limit for the Prairie biome?

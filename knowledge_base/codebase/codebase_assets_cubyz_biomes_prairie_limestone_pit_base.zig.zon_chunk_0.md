@@ -9,7 +9,7 @@
 Prairie Limestone Pit Base Biome Configuration
 
 ## Explanation
-This chunk defines the configuration for a Prairie Limestone Pit Base biome. It specifies properties like dry and barren, minimum and maximum radius, chance, height range, roughness, hill count, stone block type, parent biomes, and structures with their respective chances, sizes, and size variance.
+This chunk defines the configuration for a Prairie Limestone Pit Base biome. It specifies that the biome is dry and barren with a minimum radius of 16 and maximum radius of 22. The chance of generating this biome is 0, and its height range is from 30 to 36. The roughness value is set to 1, and there are 10 hills generated in the biome. The stone block type used is 'cubyz:limestone/smooth'. This biome inherits properties from a parent biome with an ID of 'cubyz:prairie/base' and a chance of 3. Additionally, structures can be generated within this biome, specifically boulders made of limestone smooth blocks with a size range between 2 to 11 (with variance).
 
 ## Related Questions
 - What are the properties of the Prairie Limestone Pit Base Biome?

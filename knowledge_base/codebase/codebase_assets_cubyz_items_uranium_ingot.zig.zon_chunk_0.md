@@ -8,7 +8,7 @@
 Defines properties for the uranium ingot item in Cubyz.
 
 ## Explanation
-This chunk defines the configuration for the uranium ingot item within the Cubyz game engine. It specifies tags, texture, and material properties such as durability, mass damage, hardness damage, swing speed, texture roughness, and color gradients. The data structure is a JSON-like object with nested fields representing different attributes of the item.
+This chunk defines the configuration for the uranium ingot item within the Cubyz game engine. It specifies tags, texture, and material properties such as durability (1500), mass damage (10.0), hardness damage (15.0), swing speed (0.5), texture roughness (0.3), and color gradients (0xff395533, 0xff466e45, 0xff5d8a5f, 0xff6da367, 0xff74c761). The data structure is a JSON-like object with nested fields representing different attributes of the item.
 
 ## Related Questions
 - What tags are associated with the uranium ingot item?

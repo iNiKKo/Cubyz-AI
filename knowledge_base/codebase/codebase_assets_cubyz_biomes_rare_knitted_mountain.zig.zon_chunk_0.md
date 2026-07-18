@@ -8,7 +8,7 @@
 Defines properties for a rare knitted mountain biome in Cubyz.
 
 ## Explanation
-This chunk configures the parameters for a specific biome type within the Cubyz game engine. It sets various attributes such as radius, generation chance, height range, terrain preservation settings, and block types used for its structure. The biome also includes parent biomes with associated chances of spawning.
+This chunk configures the parameters for a rare knitted mountain biome in Cubyz. It sets various attributes such as radius (20), generation chance (0%), height range (minHeight: 40, maxHeight: 70), terrain preservation settings (keepOriginalTerrain: false), and block types used for its structure (stoneBlock: 'cubyz:cloth/block/grey'). The biome also includes parent biomes with associated chances of spawning (parentBiome: 'cubyz:rare/knitted/forest' with a chance of 8%). Additionally, it specifies the roughness setting (1) and hill generation settings (hills: 20).
 
 ## Related Questions
 - What is the radius of the rare knitted mountain biome?

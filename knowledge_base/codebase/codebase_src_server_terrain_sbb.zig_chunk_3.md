@@ -6,10 +6,10 @@
 **Concepts:** structure building blocks (SBBs), blueprints, world generation
 
 ## Summary
-Handles registration and management of structure building blocks (SBBs) and blueprints in the Cubyz server.
+Handles registration and management of structure building blocks (SBBs) and blueprints in the Cubyz server by ensuring proper capacity allocation for internal data structures, initializing and populating lists and maps, managing child block registration, loading and rotating blueprint entries, providing access to registered SBBs and blueprints, and resetting the registry.
 
 ## Explanation
-This chunk defines functions to register SBBs, child blocks, and blueprints. It includes error handling for failed registrations and ensures proper capacity allocation for internal data structures. The `registerSBB` function initializes and populates structure lists and maps, while `registerChildBlock` manages child block registration. The `registerBlueprints` function loads and rotates blueprint entries. Other functions provide access to registered SBBs and blueprints, as well as resetting the registry.
+This chunk defines functions to register structure building blocks (SBBs), child blocks, and blueprints. It includes error handling for failed registrations and ensures proper capacity allocation for internal data structures. The `registerSBB` function initializes and populates structure lists and maps by iterating through the provided structures, ensuring each entry is correctly registered with assertions and logging errors if registration fails. The `childrenToResolve` variable manages child resolution during registration. The `registerChildBlock` function registers a numeric ID and string ID for child blocks, taking only the color name from the ID and storing it in appropriate data structures. The `registerBlueprints` function loads blueprint entries, rotates them by 90 degrees increments, and stores them in lists and maps with assertions to ensure proper capacity allocation. Other functions provide access to registered SBBs and blueprints via string IDs and reset the registry entirely.
 
 ## Code Example
 ```zig

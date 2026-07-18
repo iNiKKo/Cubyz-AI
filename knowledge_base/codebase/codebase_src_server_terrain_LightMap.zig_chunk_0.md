@@ -9,7 +9,7 @@
 The `LightMapFragment` struct manages light start positions for block columns in a terrain chunk. It includes methods for initialization, deferred deinitialization, and height retrieval.
 
 ## Explanation
-The `LightMapFragment` struct is responsible for storing the starting height of light for each block column within a map fragment. It uses a fixed-size array to store these heights and provides methods to initialize, deinitialize, and retrieve these values. The `cacheInit` function generates a new `LightMapFragment` by calculating the base height from the surface map and adjusting it with a heuristic value. The cache mechanism manages multiple fragments efficiently, ensuring that frequently accessed fragments are readily available.
+The `LightMapFragment` struct manages light start positions for block columns in a terrain chunk. It includes methods for initialization, deferred deinitialization, and height retrieval. The struct uses constants such as `mapShift`, `mapSize`, and `mapMask` to define the size of its internal array `startHeight`. Specifically, `mapShift` is set to 8, making `mapSize` equal to 256 (1 << mapShift), and `mapMask` equals 255 (mapSize - 1). The cache mechanism manages multiple fragments efficiently with a fixed size of 64 entries (`cacheSize = 1 << 6`) and an associativity of 8, ensuring that frequently accessed fragments are readily available. The `cacheInit` function generates a new `LightMapFragment` by calculating the base height from the surface map and adjusting it with a heuristic value (baseHeight +| 16).
 
 ## Code Example
 ```zig
@@ -23,9 +23,9 @@ pub fn getHeight(self: *LightMapFragment, wx: i32, wy: i32) i32 {
 ## Related Questions
 - What is the size of the `startHeight` array in a `LightMapFragment`?
 - How does the `deferredDeinit` method work in `LightMapFragment`?
+- What are the values for `mapShift`, `mapSize`, and `mapMask` in `LightMapFragment`?
 - What is the purpose of the `cacheInit` function?
+- What are the concrete values for `cacheSize` and `associativity` used in the cache mechanism?
 - How are light start positions calculated for each block column?
-- What is the role of the cache mechanism in managing `LightMapFragment` instances?
-- How does the `getOrGenerateFragment` method ensure efficient fragment retrieval?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_LightMap.zig_chunk_0*

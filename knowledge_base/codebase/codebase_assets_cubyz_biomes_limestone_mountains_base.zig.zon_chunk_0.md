@@ -9,7 +9,7 @@
 Biome configuration for Limestone Mountains Base
 
 ## Explanation
-Defines properties, tags, height limits, music, roughness, mountains count, stone block, ground structure, and structures for the Limestone Mountains Base biome.
+Defines the configuration of the Limestone Mountains Base biome with specific properties including .properties = { .mountain, .dry, .hot }, tags = { .oak, .baobab }, minHeightLimit = 7, minHeight = 64, maxHeight = 256, smoothBeaches = true, music = 'cubyz:mischol/simmer', roughness = 10, mountains = 100, stoneBlock = 'cubyz:limestone/smooth'. The ground structure is defined as { 'cubyz:grass/dry', '0 to 3 cubyz:dirt' }. Structures include ground_patch with block 'cubyz:grass/temperate', chance 0.025, width 16, variation 4, depth 2, smoothness 0.1; sbb with structure 'cubyz:tree/baobab/young', placeMode degradable, chance 0.05; and another sbb with structure 'cubyz:tree/oak/young', placeMode degradable, chance 0.075.
 
 ## Related Questions
 - What are the properties of the Limestone Mountains Base biome?

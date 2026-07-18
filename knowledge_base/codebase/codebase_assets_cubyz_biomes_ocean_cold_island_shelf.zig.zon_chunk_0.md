@@ -8,7 +8,7 @@
 Defines configuration for a cold ocean island shelf biome.
 
 ## Explanation
-This chunk contains a JSON-like structure defining the properties of a specific biome in the Cubyz game engine. It specifies parameters such as height range, radius, number of hills, ground structures, maximum sub-biome count, and various structures with their respective chances, blocks, dimensions, and smoothness. The parent biomes are also listed with their associated chances.
+This chunk configures the cold ocean island shelf biome: `minHeight = -10`, `maxHeight = -1`, `radius = 70`, `hills = 3`, `maxSubBiomeCount = 1`. Ground structure: "2 to 3 cubyz:gravel". One structure is defined: `cubyz:ground_patch` using block `cubyz:amber_ore:cubyz:gravel`, `chance = 0.012`, `width = 1`, `variation = 2`, `depth = 1`, `smoothness = 0.1`. Two parent biomes: `cubyz:ocean/cold/base` (`chance = 1`) and `cubyz:ocean/cold/archipelago` (`chance = 15`).
 
 ## Related Questions
 - What is the minimum height of the cold ocean island shelf biome?

@@ -9,7 +9,7 @@
 Handles block support checks and updates in the server environment.
 
 ## Explanation
-This chunk defines a callback function for checking and updating block support in the server. It calculates the world coordinates of the block, iterates over its neighbors to determine their supportiveness, and applies rotation-specific logic if applicable. If the block changes, it handles item drops based on the change.
+This chunk defines a callback function for checking and updating block support in the server environment. It calculates the world coordinates of the block using `params.chunk.super.pos.wx + params.blockPos.x`, `params.chunk.super.pos.wy + params.blockPos.y`, and `params.chunk.super.pos.wz + params.blockPos.z`. The chunk iterates over its neighbors to determine their supportiveness by checking if they are replaceable and have neighbor-facing quads. It applies rotation-specific logic using the `updateBlockFromNeighborConnectivity` function for each rotation mode defined in `main.rotation.rotations`. If a block change occurs, it handles item drops based on the change, dropping items with specific probabilities and positions calculated from the block's model.
 
 ## Code Example
 ```zig

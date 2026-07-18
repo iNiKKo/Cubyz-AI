@@ -9,7 +9,7 @@
 Manages the hotbar GUI window, including initialization, deinitialization, and updating item slots.
 
 ## Explanation
-This chunk defines a hotbar GUI window for the Cubyz game. It initializes textures, creates item slots, and updates the selected slot's hover state. The `init` function loads the texture for hotbar slots, while `deinit` releases it. The `onOpen` method sets up the horizontal list of item slots, attaching them to the player's inventory. The `onClose` method deinitializes components when the window is closed. The `update` function highlights the currently selected slot by setting its hover state.
+This chunk defines a hotbar GUI window for the Cubyz game with exactly **12** item slots. The `init` function loads the texture `"assets/cubyz/ui/inventory/hotbar_slot.png"` into `hotbarSlotTexture`, while `deinit` releases it. `onOpen` builds a `HorizontalList` of 12 `ItemSlot`s bound to `Player.inventory`, using that texture, then sets the window's `rootComponent` and calls `gui.updateWindowPositions()`. `onClose` deinitializes `rootComponent` if present. `update` locks `Player.mutex`, then sets `.hovered = true` on the `ItemSlot` at `Player.selectedSlot` to highlight it.
 
 ## Code Example
 ```zig

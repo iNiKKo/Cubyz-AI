@@ -6,10 +6,10 @@
 **Concepts:** GUI component, health bar, texture rendering, player health display
 
 ## Summary
-Defines a health bar GUI component for the Cubyz game, handling initialization, rendering, and cleanup of heart textures.
+Defines a health bar GUI component for the Cubyz game, handling initialization of textures from specified files, rendering heart icons based on player health, and cleanup procedures.
 
 ## Explanation
-The chunk defines a health bar GUI window that displays the player's health using heart icons. It initializes three textures for full hearts, half hearts, and dead hearts from file paths. The `render` function calculates how many whole and half hearts to display based on the player's current health and maximum health. It then binds the appropriate texture and draws each heart icon in a grid layout within the window. If the rendered content exceeds the initial window size, it updates the window's content size and triggers a repositioning of all GUI windows.
+The chunk defines a health bar GUI window that displays the player's health using heart icons. It initializes three textures: `heartTexture`, `halfHeartTexture`, and `deadHeartTexture` from file paths 'assets/cubyz/ui/hud/heart.png', 'assets/cubyz/ui/hud/half_heart.png', and 'assets/cubyz/ui/hud/dead_heart.png' respectively. The `render` function calculates how many whole and half hearts to display based on the player's current health and maximum health. It then binds the appropriate texture (full heart, half heart, or dead heart) and draws each heart icon in a grid layout within the window. If the rendered content exceeds the initial window size, it updates the window's content size and triggers a repositioning of all GUI windows. The `init` function initializes these textures from file paths, while the `deinit` function cleans up by deinitializing them.
 
 ## Code Example
 ```zig

@@ -52,11 +52,11 @@ pub fn generateAligned(allocator: NeverFailingAllocator, wx: i32, wy: i32, wz: i
 ```
 
 ## Related Questions
-- - What is the purpose of the `generateAligned` function?
-- - How does the `generateInitializedFractalTerrain` function work?
-- - What data structure is used to store the noise values?
-- - What are the parameters required for generating fractal noise?
-- - How is randomness incorporated into the noise generation process?
-- - What assertion checks are performed in the `generateAligned` function?
+- What is the purpose of the `generateAligned` function?
+- How does the `generateInitializedFractalTerrain` function work?
+- What data structure is used to store the noise values?
+- What are the parameters required for generating fractal noise?
+- How is randomness incorporated into the noise generation process?
+- What assertion checks are performed in the `generateAligned` function?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_noise_FractalNoise3D.zig_chunk_0*

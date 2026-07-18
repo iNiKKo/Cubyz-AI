@@ -6,10 +6,10 @@
 **Concepts:** world_generation, biome generation
 
 ## Summary
-Generates a biome map by stitching together smaller climate fragments.
+Generates a biome map by stitching together smaller climate fragments using bitwise operations to calculate offsets and handle boundary conditions efficiently.
 
 ## Explanation
-The `getBiomeMap` function creates a large 2D array of biome samples based on smaller, pre-generated climate fragments. It calculates the starting and ending coordinates for these fragments relative to the requested area. The function iterates over each fragment, copying relevant biome data into the final map while adjusting for offsets. This approach allows efficient generation of large maps by reusing existing climate data.
+The `getBiomeMap` function creates a large 2D array of biome samples based on smaller, pre-generated climate fragments. It calculates the starting and ending coordinates for these fragments relative to the requested area using bitwise AND operations with `~ClimateMapFragment.mapMask`. The function iterates over each fragment, copying relevant biome data into the final map while adjusting for offsets calculated by shifting indices right by `MapFragment.biomeShift` bits. Specifically, it uses `(x -% wx) >> MapFragment.biomeShift` and `(y -% wy) >> MapFragment.biomeShift` to determine the offset of each fragment's indices in the result map. The function handles cases where the resulting X or Y coordinates are out-of-bounds by checking if `resultX < 0` or `resultY < 0`, as well as ensuring they do not exceed the dimensions of the final map (`width >> MapFragment.biomeShift` and `height >> MapFragment.biomeShift`). This approach allows efficient generation of large maps by reusing existing climate data.
 
 ## Code Example
 ```zig

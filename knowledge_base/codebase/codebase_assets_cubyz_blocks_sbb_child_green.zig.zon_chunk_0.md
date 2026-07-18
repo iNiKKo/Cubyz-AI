@@ -8,7 +8,7 @@
 Defines texture paths for a green SBB child block.
 
 ## Explanation
-This chunk specifies the file paths for different textures of a green SBB (Smooth Block Builder) child block. It includes the side, top, and bottom textures, each pointing to a specific image resource within the Cubyz asset structure.
+This chunk specifies the exact file paths for different textures of a green SBB (Smooth Block Builder) child block. The side texture is defined as `cubyz:sbb/child/side/green`, the top texture as `cubyz:sbb/child/top/green`, and the bottom texture as `cubyz:sbb/child/bottom/green`. These paths point to specific image resources within the Cubyz asset structure.
 
 ## Related Questions
 - What is the side texture path for the green SBB child block?

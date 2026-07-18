@@ -9,7 +9,7 @@
 UI component for creating and configuring entity blueprints in the Cubyz Addon Creator.
 
 ## Explanation
-The UI component is responsible for allowing users to input details about an entity, including its ID, height, coordinate system, model, texture, and tags. It includes input fields for each property, dropdowns for selecting models and textures, a tag input field with quick add buttons, and a save button to create the entity blueprint.
+The UI component is responsible for allowing users to input details about an entity: ID, height, coordinate system, model, texture, and tags. The Height field is a number input defaulting to `2.0` (blocks), with `step="0.1"` and `min="0.1"`. The Model field is a searchable dropdown (filtered against the `entity_models` list as the user types) with a separate custom-upload option accepting `.glb` files. Tags are entered freely via a text input, plus three "Quick Add" buttons that pre-fill common tags: `playerModel`, `living`, and `ambient`. A save button creates the entity blueprint from these inputs.
 
 ## Code Example
 ```zig

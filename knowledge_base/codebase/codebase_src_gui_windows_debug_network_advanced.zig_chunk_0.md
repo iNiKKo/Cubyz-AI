@@ -9,7 +9,11 @@
 Network connection data rendering
 
 ## Explanation
-This chunk defines the `renderConnectionData` function, which renders statistics for network connections. It also includes the `render` function that calls `renderConnectionData` for client and server connections and updates the window size based on rendered content.
+This chunk defines the `renderConnectionData` function which renders network connection statistics for both client and server connections. It also includes the `render` function that calls `renderConnectionData` to display these statistics and updates the window size based on the rendered content.
+
+The `renderConnectionData` function takes a network connection object (`conn`) and a name string as parameters, along with a pointer to a floating-point variable (`y`). It locks the mutex of the connection object, initializes arrays for unconfirmed and queued packets, retrieves statistics from different channels (lossy, secure, slow), calculates RTT estimate in milliseconds by dividing `conn.rttEstimate` by 1000.0, and bandwidth estimate per RTT in kilobytes by dividing `conn.bandwidthEstimateInBytesPerRtt` by 1024.0, and prints these values using `draw.print`. The function also displays waiting queue sizes and sent but not confirmed packet sizes.
+
+The `render` function first checks if the game world is non-null and calls `renderConnectionData` for the client connection with specific statistics calculations. It then retrieves a list of users from the server using `main.server.getUserListAndIncreaseRefCount(main.stackAllocator)` and iterates through this list to call `renderConnectionData` for each user's connection, updating the window size based on rendered content by adjusting `window.contentSize[1] = y;`. Finally, it updates the window size based on the rendered content by calling `window.updateWindowPosition()`.
 
 ## Code Example
 ```zig

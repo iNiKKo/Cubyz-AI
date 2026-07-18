@@ -9,7 +9,7 @@
 The `generate` function in the SimpleStructureGen module is responsible for generating structures within a given map fragment based on biomes and noise data.
 
 ## Explanation
-The `generate` function initializes biome and cave maps, then iterates over potential structure positions using blue noise or grid-based methods depending on the voxel size. It calculates random values to determine if a structure should be placed at each position, adjusting for biome-specific vegetation models. Structures are created and added to the map with their generation functions set. The `SimpleStructure` struct holds data about individual structures, including their model, seed, and world coordinates. Its `generate` method places the structure within a chunk using the provided maps and seed.
+The `generate` function in the SimpleStructureGen module is responsible for generating structures within a given map fragment based on biomes and noise data. It initializes biome and cave maps with specific sizes and margins, then iterates over potential structure positions using blue noise or grid-based methods depending on the voxel size of the map fragment. For smaller voxel sizes (<= 4), it uses blue noise to determine potential structure positions within a margin around the map's position. For larger voxel sizes (> 4), it uses a grid-based method with adjusted chances based on distance from the center. It calculates random values using seeds derived from world coordinates and biome data, determining if a structure should be placed at each position according to vegetation models' chance parameters. Structures are created as instances of `SimpleStructure`, which holds data about individual structures including their model, seed, world coordinates (wx, wy, wz), and whether they are ceiling structures. The `generate` method places the structure within a chunk using the provided maps and seed, adjusting for biome-specific vegetation models and cave map influences.
 
 ## Code Example
 ```zig
@@ -29,5 +29,6 @@ pub fn generate(self: *const SimpleStructure, chunk: *ServerChunk, caveMap: terr
 - How are structures added to the map within the `generate` function?
 - What role do biome and cave maps play in the generation process?
 - How is the random seed used in the structure generation process?
+- What specific conditions determine whether blue noise or grid-based methods are used for determining potential structure positions?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_structuremapgen_SimpleStructureGen.zig_chunk_1*

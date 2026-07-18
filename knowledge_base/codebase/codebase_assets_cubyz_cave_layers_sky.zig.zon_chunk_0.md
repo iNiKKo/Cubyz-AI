@@ -8,7 +8,7 @@
 Defines configuration for a sky layer in the Cubyz cave generation system.
 
 ## Explanation
-This chunk is a configuration file defining properties of a sky layer used in the Cubyz game's cave generation process. It specifies tags, layer height, depth hint, and cave density parameters that influence how caves are generated within this sky layer.
+This chunk is a configuration file defining properties of a sky layer used in the Cubyz game's cave generation process. It specifies tags, layer height, depth hint, and cave density parameters that influence how caves are generated within this sky layer. The specific values defined are: `.tags = .{.sky_layer}`, `layerHeight = 7000`, `depthHint = 0`, and `caveDensity = 0.001`.
 
 ## Related Questions
 - What is the height of the sky layer defined in this configuration?

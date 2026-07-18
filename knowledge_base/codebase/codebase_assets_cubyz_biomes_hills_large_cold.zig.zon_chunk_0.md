@@ -8,7 +8,7 @@
 Defines properties and structures for a large cold hills biome in Cubyz.
 
 ## Explanation
-This chunk configures the Large Cold Hills biome, specifying its properties (cold), tags (pine), ground structure (grass/cold and soil), music (hypoxia), and various structures that can appear within it. Structures include fallen trees, flower patches, simple vegetation, and specific pine tree types like eastern white and young tree, each with defined chances of appearance, dimensions, and placement modes.
+This chunk configures the Large Cold Hills biome: property `.cold`, tag `.pine`. Ground structure: `cubyz:grass/cold` then `cubyz:soil`. Music: `cubyz:totaldemented/hypoxia`. Structures: `cubyz:fallen_tree` (pine log, `chance = 0.002`, height 6 +/-3); `cubyz:flower_patch` (grass/vegetation/cold, `chance = 0.1`, width 5, variation 8, density 0.5, priority 0.2); `cubyz:simple_vegetation` (grass/vegetation/cold, `chance = 0.4`, height 1); two `cubyz:sbb` pine trees, both `.degradable` -- `tree/coniferous/pine/eastern_white` (`chance = 0.008`) and `tree/coniferous/pine/young_tree` (`chance = 0.004`).
 
 ## Related Questions
 - What are the properties of the Large Cold Hills biome?

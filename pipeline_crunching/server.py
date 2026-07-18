@@ -11,6 +11,66 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from typing import List, Optional, Literal
 
+# ============================================================
+# Console logging: every campaign event used to be a raw, differently-shaped print(f"...") scattered
+# across every dispatch/submit branch -- no consistent column layout, no color, and the username
+# was sometimes at the start of the line, sometimes buried mid-sentence, never in the same visual
+# spot twice. Confirmed live: watching a multi-node campaign scroll by, it was genuinely hard to
+# tell at a glance which volunteer a given line was even about. log_event() below gives every line
+# the same shape (timestamp, mode badge, a fixed-width colored username field, a severity symbol,
+# then the message), auto-disabled (no ANSI codes) when stdout isn't a real terminal.
+# ============================================================
+_TTY = sys.stdout.isatty()
+
+# Every attribute is a real escape code on a real terminal, or "" everywhere else -- defined
+# conditionally here (not stripped later) specifically so any Colors.X reference embedded directly
+# inside a log_event() message string (not just the timestamp/badge/user/symbol wrapper log_event
+# itself controls) is automatically a no-op when stdout isn't a real terminal, without every call
+# site needing its own _TTY check.
+class Colors:
+    RESET = "\033[0m" if _TTY else ""
+    BOLD = "\033[1m" if _TTY else ""
+    DIM = "\033[2m" if _TTY else ""
+    RED = "\033[91m" if _TTY else ""
+    GREEN = "\033[92m" if _TTY else ""
+    YELLOW = "\033[93m" if _TTY else ""
+    BLUE = "\033[94m" if _TTY else ""
+    MAGENTA = "\033[95m" if _TTY else ""
+    CYAN = "\033[96m" if _TTY else ""
+    GRAY = "\033[90m" if _TTY else ""
+    WHITE = "\033[97m" if _TTY else ""
+
+# A fixed palette cycled per user_id (stable hash, not Python's randomized built-in hash() --
+# that's salted per-process, so the same username would pick a different color every server
+# restart) so the SAME volunteer's lines are always the same color for the whole campaign -- lets
+# you track "what is THIS user doing" by color alone while scrolling, without re-reading the name
+# on every single line.
+_USER_COLOR_PALETTE = [Colors.CYAN, Colors.MAGENTA, Colors.YELLOW, Colors.BLUE, Colors.GREEN, Colors.RED, Colors.WHITE]
+
+def _user_color(user_id: str) -> str:
+    if not _TTY or not user_id:
+        return ""
+    digest = hashlib.md5(user_id.lower().encode()).digest()
+    return _USER_COLOR_PALETTE[digest[0] % len(_USER_COLOR_PALETTE)]
+
+_MODE_BADGES = {  # (color, label) -- RAG/finetune colors match CUBYZ_FOLDING.py's client-side convention
+    "rag": (Colors.CYAN, "RAG"),
+    "finetune": (Colors.MAGENTA, "FINETUNE"),
+    "audit": (Colors.BLUE, "AUDIT"),
+    "admin": (Colors.GRAY, "ADMIN"),
+}
+
+def log_event(mode: str, user_id: str, symbol: str, symbol_color: str, message: str):
+    """The one place every campaign console line goes through. mode picks the badge color/label
+    (see _MODE_BADGES); user_id gets its own stable color (see _user_color) in a fixed-width field
+    so it lines up in a column across every log line; symbol/symbol_color carries the severity
+    (checkmark/green for success, X/red for failure, tilde/yellow for in-progress, etc.)."""
+    mode_color, mode_label = _MODE_BADGES.get(mode, (Colors.WHITE, mode.upper()))
+    ts = f"{Colors.DIM}{datetime.now().strftime('%H:%M:%S')}{Colors.RESET}"
+    u_color = _user_color(user_id)
+    user_field = f"{u_color}{user_id:<10}{Colors.RESET}" if user_id else " " * 10
+    print(f"{ts} {mode_color}[{mode_label:<8}]{Colors.RESET} {user_field} {symbol_color}{symbol}{Colors.RESET} {message}")
+
 app = FastAPI(title="Cubyz Distributed Dataset Coordinator")
 
 # FastAPI/Starlette runs synchronous "def" route handlers (every route in this file) in a thread
@@ -155,7 +215,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.1.2"
-LATEST_CLIENT_VERSION = "1.1.22"
+LATEST_CLIENT_VERSION = "1.1.23"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:
@@ -902,14 +962,14 @@ def _assign_audit_model(user_id: str, hardware_tier: str, client_local_models: s
             chosen = min(candidates, key=lambda m: roster.index(m))
             audit_model_assignments[user_key] = {"model": chosen, "tier": tier, "last_seen": time.time()}
             write_json_file(AUDIT_MODEL_ASSIGNMENTS_FILE, audit_model_assignments, "audit model assignments")
-            print(f"[AUDIT] '{user_id}' assigned model '{chosen}' (hardware tier: {tier}, already local -- no pull needed)")
+            log_event("audit", user_id, "i", Colors.GRAY, f"assigned model {Colors.BOLD}{chosen}{Colors.RESET} (tier: {tier}, already local)")
             return chosen
 
     chosen = min(roster, key=lambda m: (usage[m], roster.index(m)))
     audit_model_assignments[user_key] = {"model": chosen, "tier": tier, "last_seen": time.time()}
     write_json_file(AUDIT_MODEL_ASSIGNMENTS_FILE, audit_model_assignments, "audit model assignments")
     pull_note = "" if chosen in client_local_models else " -- will need to be pulled"
-    print(f"[AUDIT] '{user_id}' assigned model '{chosen}' (hardware tier: {tier}){pull_note}")
+    log_event("audit", user_id, "i", Colors.GRAY, f"assigned model {Colors.BOLD}{chosen}{Colors.RESET} (tier: {tier}){pull_note}")
     return chosen
 
 def audit_initialize_chunks():
@@ -1011,9 +1071,7 @@ def _apply_audit_fix(chunk_id: str, collection: str, corrected_summary, correcte
     # into the pool for another attempt, rather than writing structurally corrupted content.
     for field in (corrected_summary, corrected_explanation):
         if field and re.search(r"^##\s+(Summary|Explanation|Related Questions)\s*$", field, re.M):
-            print(f"[AUDIT X] '{chunk_id}': a corrected field contains an embedded '## ' section "
-                  f"heading (looks like a whole replacement document, not one section) -- refusing "
-                  f"to apply, chunk stays open for another attempt.")
+            log_event("audit", "", "✗", Colors.RED, f"{Colors.BOLD}{chunk_id}{Colors.RESET}: corrected field contains an embedded '## ' heading (whole replacement document, not one section) -- refusing to apply, chunk stays open")
             return False
 
     with open(kb_path, encoding="utf-8") as f:
@@ -1098,7 +1156,7 @@ def _get_audit_work(user_id: str, hardware_tier: str, client_local_models: set =
 
     state["locked"][assigned_task["chunk_id"]] = {"user_id": user_id, "timestamp": time.time()}
     save_lock_state(AUDIT_LOCK_FILE, state)
-    print(f"[AUDIT ➔ {user_id}] Dispatched ({task_type}): {assigned_task['chunk_id']} ({assigned_task['collection']})")
+    log_event("audit", user_id, "→", Colors.BLUE, f"dispatched {Colors.BOLD}{task_type}{Colors.RESET} · {assigned_task['chunk_id']} {Colors.GRAY}({assigned_task['collection']}){Colors.RESET}")
 
     task = {
         "chunk_id": assigned_task["chunk_id"],
@@ -1166,7 +1224,7 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
         user_stats[user_key]["chunks_audited"] += 1
         if submission.verdict != "needs_fix":
             save_user_stats(AUDIT_STATS_FILE, user_stats)
-            print(f"[AUDIT ✓] '{submission.user_id}': {submission.chunk_id} -- no issue found.")
+            log_event("audit", submission.user_id, "✓", Colors.GREEN, f"{submission.chunk_id} -- no issue found")
             return _mark_done("ok")
 
         # Same false-positive guard confirmed necessary live during testing: the model can flag
@@ -1177,8 +1235,7 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
         proposed_explanation = submission.corrected_explanation or ""
         if existing_explanation and proposed_explanation and _text_similarity(existing_explanation, proposed_explanation) > 0.95:
             save_user_stats(AUDIT_STATS_FILE, user_stats)
-            print(f"[AUDIT ~] '{submission.user_id}': {submission.chunk_id} -- flagged needs_fix but "
-                  f"proposal is near-identical to what's published -- treating as no-op.")
+            log_event("audit", submission.user_id, "~", Colors.YELLOW, f"{submission.chunk_id} -- flagged needs_fix but near-identical to what's published, treating as no-op")
             return _mark_done("false_positive_no_op")
 
         user_stats[user_key]["issues_found"] += 1
@@ -1203,8 +1260,7 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
         write_json_file(AUDIT_PENDING_FILE, pending, "audit pending fixes")
         save_lock_state(AUDIT_LOCK_FILE, state)
         save_user_stats(AUDIT_STATS_FILE, user_stats)
-        print(f"[AUDIT ⚠] '{submission.user_id}' proposed a fix for '{submission.chunk_id}': "
-              f"{submission.reason[:100]} -- awaiting independent review.")
+        log_event("audit", submission.user_id, "⚠", Colors.YELLOW, f"proposed fix for {Colors.BOLD}{submission.chunk_id}{Colors.RESET}: {submission.reason[:100]} -- awaiting review")
         return {"status": "success", "result": "proposed_awaiting_review"}
 
     # --- Stage 2: an independent review of someone else's proposal ---
@@ -1235,8 +1291,7 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
                 write_json_file(AUDIT_PENDING_FILE, pending, "audit pending fixes")
                 save_lock_state(AUDIT_LOCK_FILE, state)
                 save_user_stats(AUDIT_STATS_FILE, user_stats)
-                print(f"[AUDIT ✓] '{submission.user_id}' approved '{submission.chunk_id}' "
-                      f"({len(approvals)}/{required} approvals) -- awaiting one more independent approval.")
+                log_event("audit", submission.user_id, "✓", Colors.YELLOW, f"approved {submission.chunk_id} ({len(approvals)}/{required} approvals) -- awaiting one more")
                 return {"status": "success", "result": "approved_awaiting_more"}
 
             applied = _apply_audit_fix(
@@ -1245,9 +1300,39 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
                 entry.get("corrected_related_questions"),
             )
             if not applied:
+                # This used to just bail out here without touching `pending` or `entry` at all --
+                # neither persisted to disk (this reviewer's approval silently vanished) nor
+                # advanced the conversation state, so the exact same malformed proposal (most
+                # commonly the embedded-whole-document guard in _apply_audit_fix) kept getting
+                # re-offered for review forever, with every reviewer hitting the identical
+                # rejection on repeat -- confirmed live as a real infinite loop. Treated the same
+                # as an explicit "revise" verdict instead: send it back for a fresh attempt (still
+                # counting toward MAX_REVIEW_ROUNDS, so a proposer that can't produce anything
+                # clean after repeated tries still eventually escalates to a human) rather than
+                # leaving it stuck in "proposed" with unpersisted state.
+                attempts = entry.get("attempts", 1)
+                log_event("audit", submission.user_id, "✗", Colors.RED, f"{submission.chunk_id}: approved fix failed to apply (malformed content) -- requesting a fresh attempt")
+                if attempts >= MAX_REVIEW_ROUNDS:
+                    append_jsonl(AUDIT_NEEDS_HUMAN_FILE, {
+                        "chunk_id": submission.chunk_id, "collection": collection,
+                        "reason": "approved fix repeatedly failed to apply (malformed content)",
+                        "history": entry["history"], "flagged_at": time.time(),
+                    }, "audit needs human review")
+                    save_user_stats(AUDIT_STATS_FILE, user_stats)
+                    return _mark_done("needs_human_review")
+                entry["stage"] = "revise_requested"
+                entry["review_feedback"] = ("The approved fix could not be applied -- it likely contains "
+                    "a whole replacement document (its own '## Summary'/'## Explanation'/'## Related "
+                    "Questions' headings) instead of clean text for just one section. Write a corrected "
+                    "field containing ONLY that section's prose, with no '## ' headings inside it.")
+                entry["last_reviewer"] = submission.user_id
+                entry["attempts"] = attempts + 1
+                entry["approvals"] = []  # this content never actually landed -- needs fresh approval too
+                pending[submission.chunk_id] = entry
+                write_json_file(AUDIT_PENDING_FILE, pending, "audit pending fixes")
                 save_lock_state(AUDIT_LOCK_FILE, state)
                 save_user_stats(AUDIT_STATS_FILE, user_stats)
-                return {"status": "success", "result": "fix_failed_to_apply"}
+                return {"status": "success", "result": "fix_failed_to_apply_requeued"}
             append_jsonl(AUDIT_APPLIED_LOG, {
                 "chunk_id": submission.chunk_id, "collection": collection,
                 "reason": entry.get("reason"), "proposer": entry.get("proposer"),
@@ -1257,8 +1342,7 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
             pkey = entry["proposer"].lower()
             user_stats.setdefault(pkey, _new_user_stats_entry())
             user_stats[pkey]["fixes_applied"] += 1
-            print(f"[AUDIT ✓✓] Fix for '{submission.chunk_id}' approved by {approvals} "
-                  f"(proposed by '{entry['proposer']}') -- applied.")
+            log_event("audit", entry['proposer'], "✓✓", Colors.GREEN + Colors.BOLD, f"fix APPLIED for {submission.chunk_id} -- approved by {', '.join(approvals)}")
             # Don't cache a hash for content only ever checked by LLMs, never a human -- leave it
             # eligible for a future re-audit rather than treating it as permanently settled.
             return _mark_done("fix_applied", cache_hash=False)
@@ -1269,8 +1353,7 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
             # the proposal and send the chunk back for a completely fresh, independent pass, so a
             # single reviewer's opinion isn't the last word either.
             attempts = entry.get("attempts", 1)
-            print(f"[AUDIT ✗] '{submission.user_id}' rejected {entry['proposer']}'s proposal for "
-                  f"'{submission.chunk_id}': {submission.review_feedback[:100]}")
+            log_event("audit", submission.user_id, "✗", Colors.RED, f"rejected {Colors.BOLD}{entry['proposer']}{Colors.RESET}'s proposal for {submission.chunk_id}: {submission.review_feedback[:100]}")
             if attempts >= MAX_REVIEW_ROUNDS:
                 append_jsonl(AUDIT_NEEDS_HUMAN_FILE, {
                     "chunk_id": submission.chunk_id, "collection": collection,
@@ -1306,8 +1389,7 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
         write_json_file(AUDIT_PENDING_FILE, pending, "audit pending fixes")
         save_lock_state(AUDIT_LOCK_FILE, state)
         save_user_stats(AUDIT_STATS_FILE, user_stats)
-        print(f"[AUDIT ~] '{submission.user_id}' requested revision for '{submission.chunk_id}': "
-              f"{submission.review_feedback[:100]}")
+        log_event("audit", submission.user_id, "↺", Colors.YELLOW, f"requested revision for {submission.chunk_id}: {submission.review_feedback[:100]}")
         return {"status": "success", "result": "revision_requested"}
 
     # --- Stage 3: a revised fix, in response to a reviewer's specific feedback ---
@@ -1332,7 +1414,7 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
         pending[submission.chunk_id] = entry
         write_json_file(AUDIT_PENDING_FILE, pending, "audit pending fixes")
         save_lock_state(AUDIT_LOCK_FILE, state)
-        print(f"[AUDIT ~] '{submission.user_id}' submitted a revised fix for '{submission.chunk_id}' -- awaiting review.")
+        log_event("audit", submission.user_id, "↺", Colors.YELLOW, f"submitted revised fix for {submission.chunk_id} -- awaiting review")
         return {"status": "success", "result": "revised_awaiting_review"}
 
     save_lock_state(AUDIT_LOCK_FILE, state)
@@ -1507,7 +1589,7 @@ def _get_rag_work(user_id: str, hardware_tier: str, model: str) -> dict:
     assigned_task = available_tasks[0]
     state["locked"][assigned_task["chunk_id"]] = {"user_id": user_id, "timestamp": time.time()}
     save_lock_state(RAG_LOCK_FILE, state)
-    print(f"[RAG ➔ {user_id}] Dispatched Priority ({assigned_task['difficulty'].upper()}): {assigned_task['chunk_id']}")
+    log_event("rag", user_id, "→", Colors.BLUE, f"dispatched {Colors.BOLD}{assigned_task['difficulty'].upper()}{Colors.RESET} · {assigned_task['chunk_id']}")
 
     return {"mode": "rag", "status": "active", "task": assigned_task, "total_chunks": total_chunks, "completed_chunks": completed_chunks, "eta_seconds": eta_seconds}
 
@@ -1541,7 +1623,7 @@ def _get_finetune_work(user_id: str, hardware_tier: str) -> dict:
     assigned_task = available_tasks[0]
     state["locked"][assigned_task["chunk_id"]] = {"user_id": user_id, "timestamp": time.time()}
     save_lock_state(FINETUNE_LOCK_FILE, state)
-    print(f"[FINETUNE ➔ {user_id}] Dispatched ({assigned_task['source_type']}): {assigned_task['chunk_id']}")
+    log_event("finetune", user_id, "→", Colors.BLUE, f"dispatched {Colors.BOLD}{assigned_task['source_type']}{Colors.RESET} · {assigned_task['chunk_id']}")
 
     return {"mode": "finetune", "status": "active", "task": assigned_task, "total_chunks": total_chunks, "completed_chunks": completed_chunks, "eta_seconds": eta_seconds}
 
@@ -1640,7 +1722,7 @@ def _submit_rag_work(submission: UnifiedSubmission) -> dict:
     with open(user_file, "a", encoding="utf-8") as out_f:
         out_f.write(json.dumps(output_record) + "\n")
 
-    print(f"[RAG ✓] '{submission.user_id}': {submission.title} -> {target_file} ({submission.lines_crunched} LOC)")
+    log_event("rag", submission.user_id, "✓", Colors.GREEN, f"{submission.title} → {target_file} ({submission.lines_crunched} LOC)")
     return {"status": "success"}
 
 def _submit_finetune_work(submission: UnifiedSubmission) -> dict:
@@ -1674,7 +1756,7 @@ def _submit_finetune_work(submission: UnifiedSubmission) -> dict:
             "user_id": submission.user_id,
         }) + "\n")
 
-    print(f"[FINETUNE ✓] '{submission.user_id}': {submission.chunk_id} -> {len(submission.pairs)} pairs")
+    log_event("finetune", submission.user_id, "✓", Colors.GREEN, f"{submission.chunk_id} → {len(submission.pairs)} pairs")
     return {"status": "success"}
 
 @app.post("/submit_work")
@@ -1856,7 +1938,7 @@ def set_mode(mode: str, force: bool = False):
     # shutdown writes True, the next startup's "unfinished campaign" flag reflects THIS mode,
     # not whatever was persisted before the switch.
     save_server_mode_state(CURRENT_MODE, clean_shutdown=False)
-    print(f"[ADMIN] Campaign mode switched to: {mode.upper()}")
+    log_event("admin", "", "⚙", Colors.WHITE + Colors.BOLD, f"campaign mode switched to {mode.upper()}")
     return {"mode": CURRENT_MODE}
 
 @app.get("/version")
@@ -1898,7 +1980,7 @@ def submit_diagnostics(payload: dict):
                     if gave_up_counts[chunk_id] >= RAG_GIVE_UP_THRESHOLD:
                         state["completed"].append(chunk_id)
                         gave_up_counts.pop(chunk_id, None)
-                        print(f"[RAG ⚠] '{chunk_id}' permanently given up after {RAG_GIVE_UP_THRESHOLD} independent failures -- marked done with no output.")
+                        log_event("rag", "", "⚠", Colors.RED, f"{Colors.BOLD}{chunk_id}{Colors.RESET} permanently given up after {RAG_GIVE_UP_THRESHOLD} independent failures -- marked done with no output")
                     save_lock_state(RAG_LOCK_FILE, state)
 
     return {"status": "logged"}

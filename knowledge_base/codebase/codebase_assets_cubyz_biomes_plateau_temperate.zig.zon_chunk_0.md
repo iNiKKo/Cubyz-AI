@@ -8,7 +8,7 @@
 Defines the configuration for the Temperate Plateau biome in Cubyz, including properties, tags, ground structure, music, structures, and parent biomes.
 
 ## Explanation
-This chunk defines the configuration for the Temperate Plateau biome. It specifies properties and tags that describe the biome's characteristics. The ground structure is defined with layers of grass and soil. Music associated with this biome is specified as 'cubyz:mischol/sunshower'. Structures such as fallen trees, flower patches, simple vegetation, and specific tree types (white oak and young oak) are defined with their respective chances, dimensions, and placement modes. The parent biomes from which the Temperate Plateau can transition include Grassland, Rocky Grassland, Temperate Hills, and Large Temperate Hills, each with a specified chance of occurrence.
+This chunk defines the configuration for the Temperate Plateau biome. Tag: `.oak`. Ground structure: `cubyz:grass/temperate` then "1 to 2 cubyz:soil". Music: `cubyz:mischol/sunshower`. Structures: `cubyz:fallen_tree` (oak log, `chance = 0.002`, height 6 +/-3); `cubyz:flower_patch` (grass/vegetation/temperate, `chance = 0.1`, width 5, variation 8, density 0.5, priority 0.2); `cubyz:simple_vegetation` (grass/vegetation/temperate, `chance = 0.4`, height 1); two `cubyz:sbb` oak trees -- `tree/oak/white` (`chance = 0.007`) and `tree/oak/young` (`chance = 0.003`), both `.degradable`. Four parent biomes: `cubyz:grassland` (`chance = 0.5`), `cubyz:rocky_grassland` (`chance = 0.2`), `cubyz:hills/temperate` (`chance = 0.5`), `cubyz:hills/large/temperate` (`chance = 0.5`).
 
 ## Related Questions
 - What is the music associated with the Temperate Plateau biome?

@@ -9,7 +9,7 @@
 Handles the GUI window for staying logged in, managing user choices and updating settings.
 
 ## Explanation
-This chunk defines a GUI window that prompts the user to decide whether they want to stay logged in. It includes functions to set the account code, handle button actions for staying or not staying logged in, initialize the window components on open, and clean up resources on close. The window uses vertical and horizontal lists to layout labels and buttons.
+This chunk defines a GUI window (`padding = 8`, used to size the layout) that prompts the user with "Would you like to stay logged in? This will store your Account Code locally in your settings file." and two buttons, "No" and "Yes". Clicking "Yes" (`stayLoggedIn`) hands the account code to the `"authentication/encrypt_with_password"` window, clears the local `accountCode` variable, closes this window, and opens that one. Clicking "No" (`dontStayLoggedIn`) just closes this window and opens `"multiplayer"` directly (the code is never persisted). `onClose` explicitly calls `accountCode.deinit()` first, with a comment noting this ensures no trace of the account code or password remains in memory.
 
 ## Code Example
 ```zig

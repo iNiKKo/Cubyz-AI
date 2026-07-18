@@ -9,7 +9,7 @@
 Performance graph rendering
 
 ## Explanation
-This chunk initializes and renders a performance graph. It uses an SSBO to store frame times, binds a pipeline for rendering lines, sets uniforms for screen dimensions, start position, dimension, points, offset, and line color, and draws the graph on the window.
+This chunk initializes and renders a performance graph. Frame times are stored in a fixed-size ring buffer of **2048** samples (`lastFrameTime: [2048]f32`), with `index` tracking the current write position (also passed to the shader as the `offset` uniform so it knows where the ring buffer wraps). `init` creates an SSBO and a graphics pipeline from `graph.vert`/`graph.frag` shaders (cull mode none, no depth test/write, alpha blending). `render` appends the latest frame time (`main.lastFrameTime`, converted to milliseconds), draws "32 ms"/"16 ms"/"00 ms" reference labels and gridlines, then binds the pipeline and sets uniforms: `points` (2048), `offset` (`index`), `lineColor` (`1, 1, 1` -- white), `screen` (window width/height), `start`/`dimension` (the graph's position and size within an 8px `border`), before drawing the line via `GL_LINE_STRIP`. `deinit` releases the SSBO.
 
 ## Code Example
 ```zig

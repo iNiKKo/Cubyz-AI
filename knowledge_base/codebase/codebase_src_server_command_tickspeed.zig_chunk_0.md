@@ -9,7 +9,7 @@
 Handles server tick speed commands
 
 ## Explanation
-The chunk defines a command to get or set the server's random tickrate, measured in blocks per chunk per tick. It uses an argument parser to handle different command formats and updates the world's tick speed accordingly.
+The chunk defines a command to get or set the server's random tickrate, measured in blocks per chunk per tick (`/tickspeed` or `/tickspeed <rate>`). If a rate argument is given, it's stored into `main.server.world.?.tickSpeed` (atomic, `.monotonic` ordering). If no rate is given, that step is skipped entirely (a no-op). Either way, the current tick speed is then sent back to the user as a yellow (`#ffff00`) chat message. Parse errors are reported to the user in red (`#ff0000`).
 
 ## Code Example
 ```zig

@@ -8,7 +8,7 @@
 Defines default properties for a desert oasis biome in Cubyz.
 
 ## Explanation
-This chunk configures the default settings for a desert oasis biome, including its music, fog density and color, ground structure, and stone block type. The biome is set to have no chance of generation by default (chance = 0).
+This chunk configures the default settings for a desert oasis biome: property `.hot`, `music = "cubyz:mischol/desert_firefly"`, `fogDensity = 1.5`, `fogColor = 0xe9f2e2`, ground structure "3 to 4 cubyz:sand", `stoneBlock = "cubyz:sandstone/rough"`. The biome is set to have no chance of generation by default (`chance = 0`).
 
 ## Related Questions
 - What is the default music for the desert oasis biome?

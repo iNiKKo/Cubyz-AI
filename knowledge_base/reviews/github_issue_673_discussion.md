@@ -8,7 +8,7 @@
 Discussion on fixing OBJ tiles with larger than one tile hitboxes.
 
 ## Explanation
-The issue revolves around the broken hitbox for OBJ tiles that exceed the size of one tile. The maintainer considers this a trade-off between gameplay flexibility and performance optimization, as limiting hitboxes to single blocks reduces iteration overhead but may not be suitable for complex game mechanics like Minecraft's fences.
+The issue revolves around the broken hitbox for OBJ tiles that exceed the size of one tile. The maintainer considers this a trade-off between gameplay flexibility and performance optimization, as limiting hitboxes to single blocks reduces iteration overhead but may not be suitable for complex game mechanics like Minecraft's fences. Notably, the maintainer declares this issue as not planned, indicating that larger hitboxes are not currently implemented or planned.
 
 ## Related Questions
 - What is the current implementation of hitboxes in Cubyz?
