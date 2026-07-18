@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.18"
+VERSION = "1.1.19"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -1042,29 +1042,65 @@ def make_request(url, payload=None, timeout=180):
     # minutes with nothing on screen and no way out short of Ctrl+C.
     with urllib.request.urlopen(req, timeout=timeout) as res: return json.loads(res.read().decode('utf-8'))
 
-# Bounded generously, but a lane that can't finish a trivial 40-token generation within this long
-# isn't worth using at all -- treated the same as an outright failure, not just "slow."
-BENCHMARK_TIMEOUT = 45.0
+# Bounded generously (a real crunching call gets up to 180s by default -- see make_request), but
+# a lane that can't finish even this representative benchmark within this long isn't worth using
+# for sustained real work either -- treated the same as an outright failure, not just "slow."
+BENCHMARK_TIMEOUT = 90.0
+
+# Bumped whenever benchmark_lane()'s own methodology changes (prompt shape, format constraint,
+# timeout, etc.) and included in main()'s cache fingerprint -- otherwise a machine with an
+# already-cached result from an older, less representative benchmark would keep reusing that
+# stale verdict forever, never re-measuring under the improved method. Confirmed live: a GPU
+# whose trivial 40-token benchmark (version 1) completed in ~5s and "won" against CPU went on to
+# hang indefinitely on real crunching work -- the fix only means anything if it forces a re-run.
+BENCHMARK_VERSION = 2
+
+# A small but real Zig-shaped snippet, used only to give the benchmark call something structurally
+# similar to a real chunk to work with -- not from the actual corpus, just representative in
+# shape/length.
+_BENCHMARK_SNIPPET = """pub fn calculateDamage(base: f32, multiplier: f32, armor: f32) f32 {
+	const raw = base * multiplier;
+	const reduction = armor / (armor + 100.0);
+	return raw * (1.0 - reduction);
+}
+
+pub const DamageType = enum {
+	physical,
+	fire,
+	poison,
+};"""
 
 def benchmark_lane(model: str, force_cpu: bool):
-    """Times a small, fixed-size real Ollama generation to measure actual throughput -- run once
-    per machine (see main()'s use of load_benchmark_result()/save_benchmark_result()) to decide
-    which of CPU/GPU actually performs better HERE, rather than guessing from declared hardware
-    specs. VRAM detection in particular has repeatedly proven unreliable across GPU vendors and
-    driver/tooling states (see check_amd_gpu()'s history in this file) -- and even when the VRAM
-    number is accurate, a technically-present GPU can still be too weak, or too poorly supported
-    by whatever backend Ollama uses for it, to actually be worth using at all. Measuring real
-    throughput sidesteps needing to trust either signal.
+    """Times a real Ollama generation -- using the actual RAG_JSON_SCHEMA format constraint and
+    prompt shape real crunching uses, not a trivial one-line completion -- to measure actual
+    throughput on real-shaped work. Run once per machine (see main()'s use of
+    load_benchmark_result()/save_benchmark_result()) to decide which of CPU/GPU actually performs
+    better HERE, rather than guessing from declared hardware specs. VRAM detection in particular
+    has repeatedly proven unreliable across GPU vendors and driver/tooling states (see
+    check_amd_gpu()'s history in this file) -- and even when the VRAM number is accurate, a
+    technically-present GPU can still be too weak, or too poorly supported by whatever backend
+    Ollama uses for it, to actually be worth using at all. Measuring real throughput sidesteps
+    needing to trust either signal.
+
+    Deliberately NOT a trivial short completion: an earlier version used a bare one-sentence
+    prompt capped at 40 tokens, which could finish quickly even on a GPU that then went on to
+    hang or stall on real crunching calls (confirmed live -- a card whose 40-token benchmark
+    completed in under 5 seconds, "winning" against CPU, turned out to get stuck indefinitely on
+    real, much longer, schema-constrained generation once actually crunching). Using the same
+    format constraint and a similarly-shaped prompt as real work is what makes this predictive of
+    real usability rather than just "can it echo a sentence back quickly."
 
     Returns elapsed seconds (lower is better), or None if the lane failed outright or didn't
     finish within BENCHMARK_TIMEOUT.
     """
     payload = {
         "model": model,
-        "prompt": "Write a one-sentence description of what a stack data structure is.",
+        "prompt": f"Context Source File: benchmark.zig\nRelative Path: benchmark.zig\nDirectory Module context: CODEBASE\nChunk Index: 0\nRaw Content:\n```\n{_BENCHMARK_SNIPPET}\n```\n",
+        "system": RAG_PROMPTS["CODEBASE"],
         "stream": False,
         "think": False,
-        "options": {"num_predict": 40, **({"num_gpu": 0} if force_cpu else {})},
+        "format": RAG_JSON_SCHEMA,
+        "options": {"temperature": 0.15, **({"num_gpu": 0} if force_cpu else {})},
     }
     start = time.time()
     try:
@@ -2342,7 +2378,7 @@ def main():
     primary_is_gpu = gpu_type != "cpu"
     gpu_time = cpu_time = None
     if gpu_type != "cpu":
-        fingerprint = f"{gpu_type}:{round(total_vram_gb, 1)}:{os.cpu_count()}:{round(system_ram_gb, 1)}:{chosen_model}:{cpu_model}"
+        fingerprint = f"v{BENCHMARK_VERSION}:{gpu_type}:{round(total_vram_gb, 1)}:{os.cpu_count()}:{round(system_ram_gb, 1)}:{chosen_model}:{cpu_model}"
         cached = load_benchmark_result()
         if cached.get("fingerprint") == fingerprint:
             primary_is_gpu = cached["primary_is_gpu"]
