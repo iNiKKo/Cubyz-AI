@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.9"
+VERSION = "1.1.10"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -1644,6 +1644,20 @@ class DualStatusBoard:
         self.eta = None
         self.rendered_once = False
         self.last_line_count = 0
+        self.last_announced_mode = None
+
+    def should_announce_mode(self, mode: str) -> bool:
+        """The campaign mode (rag/finetune/idle) is server-global, not per-lane -- both lanes'
+        own `current_mode != mode` checks fire independently, typically within moments of each
+        other at startup (both transitioning from their own initial None), which without this
+        would print the "MODE ACTIVATED" banner twice and force two redundant full-box reprints
+        in a row (confirmed live). Only the first lane to notice a given transition actually
+        announces it; the other just updates its own current_mode silently."""
+        with print_lock:
+            if mode == self.last_announced_mode:
+                return False
+            self.last_announced_mode = mode
+            return True
 
     def _status_color(self, step_msg: str) -> str:
         if step_msg.startswith("✓"):
@@ -1829,10 +1843,15 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
 
             if mode != current_mode:
                 first_stat_print = True
-                if mode == "idle":
-                    banner(f"{Colors.GRAY}[{lane_tag}] Server online -- no tasks available (idle mode).{Colors.RESET}")
-                else:
-                    banner(f"\n[{lane_tag}] [{MODE_BANNERS.get(mode, mode.upper() + ' MODE ACTIVATED')}]\n")
+                # In dual-lane mode this transition is shared server-global state, not a
+                # lane-specific event -- only the first lane to notice it announces it (see
+                # should_announce_mode's comment). A solo run has no board, so this is always
+                # True there and behavior is unchanged.
+                if board is None or board.should_announce_mode(mode):
+                    if mode == "idle":
+                        banner(f"{Colors.GRAY}[{lane_tag}] Server online -- no tasks available (idle mode).{Colors.RESET}")
+                    else:
+                        banner(f"\n[{lane_tag}] [{MODE_BANNERS.get(mode, mode.upper() + ' MODE ACTIVATED')}]\n")
                 current_mode = mode
 
             if mode == "idle":
