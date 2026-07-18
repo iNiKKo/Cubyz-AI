@@ -8,7 +8,7 @@
 Discussion about applying rounding to tool damage numbers in Cubyz.
 
 ## Explanation
-The issue revolves around whether tool damage numbers should be integers or if they should be rounded to make gameplay more user-friendly. The maintainer suggests that even rounding up to one decimal could be beneficial. There is a distinction made between rounding for tooltips and rounding for the actual calculations used in block breaking speed.
+Discussion about applying rounding to tool damage numbers in Cubyz. The issue revolves around whether tool damage numbers should be integers or rounded to make gameplay more user-friendly. A maintainer suggests that even rounding up to one decimal would be beneficial, without specifying if it is for tooltips or actual game mechanics. Another maintainer asks if this rounding is intended for tooltips or actual game mechanics.
 
 ## Related Questions
 - What are the potential impacts of rounding tool damage numbers on gameplay?

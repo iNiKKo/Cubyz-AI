@@ -9,7 +9,7 @@
 Discussion about statically linking release artifacts against musl instead of glibc to ensure compatibility with systems like NixOS.
 
 ## Explanation
-The issue revolves around the current build process that statically links against glibc, making binaries incompatible with systems like NixOS. The user proposes switching to musl for full static linking, which could resolve this issue but raises concerns about losing dynamic library capabilities such as hardware acceleration and proprietary drivers. The maintainer initially questions the logic behind the issue but later shares a failed attempt at linking musl. The discussion highlights trade-offs between compatibility and functionality.
+Discussion about statically linking release artifacts against musl instead of glibc to ensure compatibility with systems like NixOS. The current builds are statically linked against glibc, making them incompatible with NixOS and other systems that do not support dynamically-linked binaries. The user proposes switching to musl for full static linking, which would resolve the incompatibility issue but raises concerns about losing dynamic library capabilities such as hardware acceleration (via dlopen) and proprietary drivers like NVIDIA's. The maintainer initially questions this logic but later shares a failed attempt at linking musl with commit fe5afde6d36acd37637d56746536cf3387b9eeed. Additionally, the user suggests using an AppImage built for Alpine Linux and NixOS, which works as long as the GPU supports OpenGL 4.6. However, running this AppImage on NixOS requires disabling `appimage-run` due to SquashFS expectations.
 
 ## Related Questions
 - What are the potential benefits and drawbacks of statically linking against musl?

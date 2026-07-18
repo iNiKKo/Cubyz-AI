@@ -8,7 +8,7 @@
 The issue was closed due to content suggestion guidelines.
 
 ## Explanation
-The maintainer agreed that adding cobble variants for other stone types would be beneficial but decided to close the issue based on the project's content suggestion guidelines. This decision likely aims to maintain a consistent and manageable content development process.
+Currently, slate is the only stone type in Cubyz that has a cobble variant. The maintainer agreed that adding cobble variants for other stone types would be beneficial but decided to close the issue based on the project's content suggestion guidelines. This decision aims to maintain a consistent and manageable content development process according to these guidelines.
 
 ## Related Questions
 - What are the content suggestion guidelines for Cubyz?

@@ -442,18 +442,24 @@ AUDIT_NEEDS_HUMAN_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "audit_ne
 AUDIT_MODEL_ASSIGNMENTS_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "audit_model_assignments.json")
 
 # Model roster for audit mode, split by hardware tier so a weak machine only ever gets assigned a
-# model it can actually run and a strong machine gets real capability out of its hardware -- but
-# WITHIN a tier, every concurrently-online volunteer gets a DIFFERENT model than everyone else
-# currently online, cycling back to the top of the list once every model in the tier is in use.
-# Deliberately spans multiple vendors/architectures (Qwen, Llama, Gemma, Mistral/Mixtral, DeepSeek)
-# rather than just different sizes of one family -- the whole point of "a different reviewer" is a
-# genuinely different model's blind spots, not the same underlying training data reviewed from a
-# different context window. Operators should have these pulled in Ollama ahead of time; the client
-# will attempt to pull an assigned model on demand if it isn't present locally.
+# model it can actually run and a strong machine gets real capability out of its hardware.
+#
+# Used to deliberately span multiple vendors/architectures (Qwen, Llama, Gemma, Mistral/Mixtral,
+# DeepSeek) so a "different reviewer" meant a genuinely different model's blind spots, not just a
+# different size of the same family -- and WITHIN a tier, every concurrently-online volunteer got a
+# distinct model from the list, cycling back to the top once every model in the tier was in use.
+# Simplified to qwen2.5-coder only, on explicit request, trading that cross-model blind-spot
+# diversity away for a single, predictable, code-tuned family -- also more consistent with the rest
+# of this project, which already uses qwen2.5-coder (not plain qwen2.5, what this roster used
+# before) for RAG/finetune's own hardware-based model picks. One real, immediate side effect: since
+# there's only one model per tier now, every online volunteer in the same tier gets the SAME model
+# -- the round-robin "distinct model per volunteer" logic in _assign_audit_model still runs, it just
+# has nothing left to diversify across. Operators should have these pulled in Ollama ahead of time;
+# the client will attempt to pull an assigned model on demand if it isn't present locally.
 AUDIT_MODEL_ROSTER = {
-    "easy":   ["qwen2.5:3b", "llama3.2:3b", "gemma2:2b", "phi3.5:3.8b"],
-    "medium": ["qwen2.5:7b", "llama3.1:8b", "gemma2:9b", "mistral:7b"],
-    "hard":   ["qwen2.5:14b", "gemma2:27b", "mixtral:8x7b", "deepseek-coder-v2:16b"],
+    "easy":   ["qwen2.5-coder:3b"],
+    "medium": ["qwen2.5-coder:7b"],
+    "hard":   ["qwen2.5-coder:14b"],
 }
 # A brief gap between polls (network hiccup, a slow Ollama call) shouldn't free up a model that's
 # genuinely still in use and hand it to someone else -- this is deliberately looser than the 60s
@@ -1237,8 +1243,14 @@ def _assign_audit_model(user_id: str, hardware_tier: str, client_local_models: s
     user_key = user_id.lower()
     client_local_models = client_local_models or set()
 
+    # Also checks the existing model is still actually IN the current roster, not just that the
+    # tier matches -- without this, editing AUDIT_MODEL_ROSTER (e.g. removing a model that turned
+    # out too large for its tier's low end) would never actually take effect for anyone already
+    # holding that now-removed model: this stayed sticky purely on tier match, so a volunteer
+    # assigned a model that got deleted from the roster would keep being handed that same
+    # unpullable/oversized model forever, confirmed live right after gemma2:27b was removed here.
     existing = audit_model_assignments.get(user_key)
-    if existing and existing.get("tier") == tier:
+    if existing and existing.get("tier") == tier and existing.get("model") in roster:
         existing["last_seen"] = time.time()
         write_json_file(AUDIT_MODEL_ASSIGNMENTS_FILE, audit_model_assignments, "audit model assignments")
         return existing["model"]

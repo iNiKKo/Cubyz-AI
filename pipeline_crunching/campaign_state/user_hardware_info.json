@@ -33,7 +33,7 @@
     "dual_lane": false,
     "primary_is_gpu": true,
     "hardware_tier": "easy",
-    "benchmark_gpu_time": 80.96531438827515,
+    "benchmark_gpu_time": 84.97353792190552,
     "benchmark_cpu_time": null,
     "benchmark_gpu_error": null,
     "benchmark_cpu_error": "timeout: timed out"

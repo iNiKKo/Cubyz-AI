@@ -5,10 +5,10 @@
 **Concepts:** fractional items, stack sizes, rational numbers, irrational numbers
 
 ## Summary
-Discussion about allowing fractional stack sizes for homogenous items in Cubyz.
+Discussion about allowing fractional stack sizes for homogenous items like stones and metals in Cubyz. The conversation includes examples such as having 2+¾ blocks in a single stack, the possibility of irrational numbers like π, potential use cases for modded content, and technical challenges.
 
 ## Explanation
-The discussion revolves around the possibility of implementing fractional stack sizes for items like stones and metals. Initial comments suggest that this could be a feature rather than a bug, with some maintainers considering the inclusion of irrational numbers like π. However, other maintainers are skeptical about the practicality and necessity of such a feature. The conversation also touches on potential use cases, such as modders needing precise measurements for circular structures. Ultimately, there is no clear consensus on whether to implement this feature.
+The discussion revolves around the possibility of implementing fractional stack sizes for homogenous items such as stones and metals. Initial comments suggest that this could be a feature rather than a bug, with some maintainers considering the inclusion of irrational numbers like π. For example, one maintainer mentioned having 2+¾ blocks in a single stack instead of splitting them into multiple stacks. Other maintainers are skeptical about the practicality and necessity of such a feature. The conversation also touches on potential use cases, such as modders needing precise measurements for circular structures or pillars. One user asked for an example of how this could be implemented, to which another maintainer responded that increasing stack sizes and using smaller units would allow for fractional items. Ultimately, there is no clear consensus on whether to implement this feature.
 
 ## Related Questions
 - What are the potential benefits of allowing fractional stack sizes in Cubyz?

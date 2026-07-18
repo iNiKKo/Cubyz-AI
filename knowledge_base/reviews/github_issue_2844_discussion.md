@@ -8,7 +8,7 @@
 Discussion about chat message commands in Cubyz, focusing on the use of '/' at the beginning.
 
 ## Explanation
-The issue revolves around the handling of chat messages that start with a '/'. The maintainer initially suggests using '//' or './foobar', but the user points out that the current implementation only checks if the first character is a '/' and then executes the command. This indicates a potential oversight in the command parsing logic, as it might not handle other common prefixes like '.' or '\'. The discussion highlights the need to ensure robust command execution based on different prefixes.
+Discussion about chat message commands in Cubyz, focusing on the use of '/' at the beginning. The maintainer initially suggests using '//' or './foobar', but the user points out that the current implementation only checks if the first character is a '/' and then executes the command (https://github.com/PixelGuys/Cubyz/blob/3a7b55815cf4f57670c325f54ff3751dea7a9d2b/src/gui/windows/chat.zig#L265-L266). This indicates a potential oversight in the command parsing logic, as it might not handle other common prefixes like '.' or '\'. The discussion highlights the need to ensure robust command execution based on different prefixes.
 
 ## Related Questions
 - What is the current implementation for command execution in chat messages?

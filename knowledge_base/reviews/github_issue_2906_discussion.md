@@ -6,10 +6,16 @@
 **Concepts:** thread safety, OpenGL context, driver interaction, undefined behavior
 
 ## Summary
-A consistent segfault occurs during world exit due to OpenGL operations being performed on a thread without an OpenGL context.
+A consistent segfault occurs during world exit when attempting to deinitialize textures in `entityModel.zig` on a server thread that lacks an OpenGL context. This issue is reproducible with certain NVIDIA drivers and can be resolved by forcing Cubyz to use the discrete GPU via `prime-run`. The maintainer suspects this is related to recent changes around texture management and threading.
 
 ## Explanation
-The issue arises from attempting to deinitialize textures in the `entityModel.zig` file on a server thread that lacks an OpenGL context. This leads to undefined behavior, resulting in a segmentation fault. The maintainer suspects that this is related to recent changes in the codebase, particularly around texture management and threading. The user identified that forcing Cubyz to use the discrete GPU with `prime-run` resolves the issue, suggesting a potential interaction between the OpenGL context and the NVIDIA drivers.
+The issue arises from attempting to deinitialize textures in the `entityModel.zig` file on a server thread that lacks an OpenGL context. This leads to undefined behavior, resulting in a segmentation fault. The user reported consistent segfaults after updates between commit ranges ac54ee2f and e0dac499. The maintainer suspects this is related to recent changes around texture management and threading. Specifically, the problematic code is located at `src/entityModel.zig:291` where `c.glDeleteTextures(1, &self.textureID);` is called without an OpenGL context on the server thread.
+
+The user identified that forcing Cubyz to use the discrete GPU with `prime-run` resolves the issue. The maintainer was able to reproduce this issue on an AMD Ryzen 9 7950x with an nVidia RTX 3080 and Ubuntu 24.04.4 LTS, confirming it is not tied to a single world or hardware configuration.
+
+The user suggested adding prints in the `main.entityModel.reset()` loop to identify which model ID crashes during texture deinitialization. The maintainer suspects that this issue might be related to commit 6762462102b5b8994ca3ba1c36ba0331d94480af, as it added the problematic code at `src/entityModel.zig:291`. The maintainer also noted that this issue is not reproducible on Windows and suggested moving texture deinitialization to the main thread similar to how block textures are managed.
+
+The user's hardware details include an Intel Xeon E3-1535M v6 (8) @ 4.20 GHz, NVIDIA Quadro M2200 Mobile, and Intel HD Graphics P630 with nVidia drivers version 580xx.
 
 ## Related Questions
 - What is the impact of performing OpenGL operations on a thread without an OpenGL context?

@@ -9,7 +9,7 @@
 Discussion on the utility and stats of branches as a tool material in Cubyz, with concerns about their value and practicality compared to planks.
 
 ## Explanation
-The discussion revolves around whether branches should have the same stats as their corresponding planks or if they should retain unique properties. Users argue that making branches identical to planks would make them redundant since they are worth more materials. The maintainer suggests that branches should be slightly better than planks, with higher durability and mass damage but a longer swing time, reflecting their less refined nature. There is also debate about whether branches should have the 'durable' tag instead of 'fragile' to align with their supposed superiority over planks.
+Discussion on the utility and stats of branches as a tool material in Cubyz. Users argue that making branches identical to planks would make them redundant since they are worth more materials (2 planks). The maintainer suggests that branches should be slightly better than planks, with higher durability (+10% compared to planks), do slightly more mass damage (+5%), but have a longer swing time (+0.1 seconds) due to their less refined nature. There is also debate about whether branches should have the 'durable' tag instead of 'fragile' to align with their supposed superiority over planks.
 
 ## Related Questions
 - What are the current stats for branches compared to planks in Cubyz?
