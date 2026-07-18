@@ -8,7 +8,7 @@
 The issue involves players sometimes teleporting into walls due to floating-point errors when resizing the hitbox. The maintainer suggests transitioning to fixed-point arithmetic as a potential solution.
 
 ## Explanation
-The problem arises from floating-point precision issues during hitbox resizing, causing collisions with floor blocks. The maintainer proposes switching to fixed-point arithmetic to mitigate these errors. This change aims to improve accuracy and prevent unintended teleportation into walls.
+The issue involves players sometimes teleporting into walls due to floating-point precision issues when resizing the hitbox. The maintainer suggests transitioning to fixed-point arithmetic as a potential solution, noting that it is colliding with floor blocks due to these errors during hitbox resizing.
 
 ## Related Questions
 - What are the potential benefits of using fixed-point arithmetic over floating-point in this scenario?

@@ -8,7 +8,7 @@
 The issue regarding entity rendering is resolved, with entities now being displayed. The discussion indicates that further work on dynamic models and animations will be tracked under a new project.
 
 ## Explanation
-This chunk discusses the resolution of an issue where entities were present in the game but not rendered. The maintainer's comment confirms that basic entity rendering is functioning, which was the primary goal of the issue. As a result, the remaining tasks such as dynamic models and animations are being moved to a new project tab for further development.
+This chunk discusses the resolution of an issue where entities were present in the game but not rendering properly. The maintainer's comment confirms that basic entity rendering is now functioning, with tasks such as loading and displaying models completed. However, dynamic models (e.g., ground items) and animations remain unfinished and are being moved to a new project tab for further development.
 
 ## Related Questions
 - What are the remaining tasks after resolving the entity rendering issue?

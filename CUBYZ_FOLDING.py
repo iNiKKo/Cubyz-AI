@@ -3,6 +3,7 @@ import re
 import sys
 import json
 import ssl
+import glob
 import time
 import platform
 import subprocess
@@ -110,7 +111,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.38"
+VERSION = "1.1.39"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -2213,6 +2214,21 @@ def fetch_and_show_userlist():
         print(f"  {status_color}{label:<13}{Colors.RESET}: {u.get('user_id','?')} • {stat_text}")
     print(f"{Colors.CYAN}────────────────────────────────────────────────────────────────────────{Colors.RESET}")
 
+def _find_rocm_tool(name: str):
+    """shutil.which(name) alone misses a very common real-world case: ROCm's own CLI tools
+    (rocm-smi, rocminfo) are frequently installed under /opt/rocm/bin/ -- across multiple distros'
+    packaging, not just one -- and that directory is NOT on the default PATH, so a genuinely
+    successful install still reports as "not found" purely because of where it landed. Confirmed
+    live: a volunteer installed rocm-smi-lib via pacman and `which rocm-smi` still failed. Checked
+    directly here instead of only trusting PATH."""
+    found = shutil.which(name)
+    if found:
+        return found
+    for candidate in [f"/opt/rocm/bin/{name}"] + sorted(glob.glob(f"/opt/rocm-*/bin/{name}")):
+        if os.path.isfile(candidate) and os.access(candidate, os.X_OK):
+            return candidate
+    return None
+
 def run_live_gpu_diagnostic():
     """Step-by-step live checks, printed directly to THIS machine's own terminal in real time --
     added because the server-side dashboard can only ever show the final captured error, not walk
@@ -2254,18 +2270,19 @@ def run_live_gpu_diagnostic():
         # so an AMD-specific "Ollama can't actually use this GPU" case went completely undetected.
         print(f"{Colors.CYAN}[3/4] Raw rocm-smi output (checking driver health / current VRAM usage):{Colors.RESET}")
         ran_something = False
-        for cmd in (['rocm-smi'], ['amd-smi', 'monitor']):
-            if shutil.which(cmd[0]):
+        for cmd_name, cmd_args in ((['rocm-smi'], []), (['amd-smi'], ['monitor'])):
+            tool_path = _find_rocm_tool(cmd_name[0])
+            if tool_path:
                 ran_something = True
                 try:
-                    res = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
+                    res = subprocess.run([tool_path] + cmd_args, capture_output=True, text=True, timeout=15)
                     for line in (res.stdout or res.stderr).splitlines():
                         print(f"  {line}")
                 except Exception as e:
-                    print(f"  {Colors.RED}✗ Could not run {cmd[0]}: {e}{Colors.RESET}")
+                    print(f"  {Colors.RED}✗ Could not run {cmd_name[0]}: {e}{Colors.RESET}")
                 break
         if not ran_something:
-            print(f"  {Colors.YELLOW}⚠ Neither rocm-smi nor amd-smi found on PATH -- can't confirm driver-level GPU health this way.{Colors.RESET}")
+            print(f"  {Colors.YELLOW}⚠ Neither rocm-smi nor amd-smi found (checked PATH and /opt/rocm*/bin) -- can't confirm driver-level GPU health this way.{Colors.RESET}")
 
         # The single most common reason Ollama silently can't use a real, detected AMD GPU: ROCm
         # only officially lists specific gfx architectures as supported, and anything outside that
@@ -2274,9 +2291,10 @@ def run_live_gpu_diagnostic():
         # architecture string directly -- surfaced here instead of leaving the volunteer to dig for
         # it themselves, since a wrong override guessed blind can make things worse (crash) rather
         # than better, so this deliberately reports the real value without guessing a fix for them.
-        if shutil.which('rocminfo'):
+        rocminfo_path = _find_rocm_tool('rocminfo')
+        if rocminfo_path:
             try:
-                res = subprocess.run(['rocminfo'], capture_output=True, text=True, timeout=15)
+                res = subprocess.run([rocminfo_path], capture_output=True, text=True, timeout=15)
                 gfx_versions = sorted(set(re.findall(r'gfx[0-9a-fA-F]+', res.stdout)))
                 if gfx_versions:
                     print(f"  {Colors.CYAN}Detected GPU architecture(s) via rocminfo: {', '.join(gfx_versions)}{Colors.RESET}")
@@ -2287,7 +2305,7 @@ def run_live_gpu_diagnostic():
             except Exception as e:
                 print(f"  {Colors.YELLOW}⚠ Could not run rocminfo: {e}{Colors.RESET}")
         else:
-            print(f"  {Colors.YELLOW}⚠ rocminfo not found on PATH -- can't report the real GPU architecture string.{Colors.RESET}")
+            print(f"  {Colors.YELLOW}⚠ rocminfo not found (checked PATH and /opt/rocm*/bin) -- can't report the real GPU architecture string.{Colors.RESET}")
 
         # No ROCm userland tools at all (confirmed by both checks above failing) means there's no
         # way to ask ROCm directly what it thinks of this card -- but Ollama's OWN startup log
@@ -2387,8 +2405,7 @@ def run_live_gpu_diagnostic():
         # rather than left as a guess.
         if PLATFORM == "linux":
             print(f"  {Colors.CYAN}Checking GPU device node permissions (/dev/kfd, /dev/dri/render*)...{Colors.RESET}")
-            import glob as _glob
-            device_paths = (['/dev/kfd'] if os.path.exists('/dev/kfd') else []) + sorted(_glob.glob('/dev/dri/renderD*'))
+            device_paths = (['/dev/kfd'] if os.path.exists('/dev/kfd') else []) + sorted(glob.glob('/dev/dri/renderD*'))
             if not device_paths:
                 print(f"  {Colors.RED}✗ Neither /dev/kfd nor any /dev/dri/renderD* device exists at all -- the ROCm kernel driver (amdgpu) may not be loaded, or this GPU isn't recognized by the kernel as ROCm-capable.{Colors.RESET}")
             else:

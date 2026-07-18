@@ -8,7 +8,7 @@
 The issue discusses the desire for alternative communication platforms like Matrix or Telegram instead of Discord, highlighting concerns about privacy and account restrictions.
 
 ## Explanation
-The discussion revolves around user privacy concerns regarding Discord's requirement for phone numbers. The maintainer acknowledges the concern but expresses reluctance to manage multiple platforms due to existing commitments. As a compromise, the maintainer suggests allowing users to create unofficial servers on alternative platforms and provides a link in the readme.
+The issue discusses user concerns about using Discord due to its requirement for phone numbers, which some users find restrictive. The maintainer acknowledges these privacy concerns and explains that they have used Discord without providing a phone number successfully for many years. However, the maintainer expresses reluctance to manage multiple communication platforms like Matrix or Telegram due to existing commitments with Discord. As a compromise, the maintainer suggests allowing users to create unofficial servers on alternative platforms and provides a link in the readme to facilitate this.
 
 ## Related Questions
 - What are the main concerns raised about using Discord?

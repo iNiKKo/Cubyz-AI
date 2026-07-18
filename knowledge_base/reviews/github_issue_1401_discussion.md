@@ -9,7 +9,9 @@
 The user proposes changing the day sky color in Cubyz from a desaturated look to a more natural 'sky blue' by modifying the `getSkyColor` function in `src/renderer.zig`. The maintainer suggests testing with hardcoded values and integrating a suggested color.
 
 ## Explanation
-The issue revolves around improving the visual appearance of the day sky in Cubyz. The current implementation results in a desaturated, overcast look, which is not visually appealing. The user proposes changing the `getSkyColor` function to return a hardcoded value representing a more natural sky blue. The maintainer provides guidance on how to test this change by modifying the function and suggests that the user might explore further customization of fog colors for different biomes in the future.
+The issue revolves around improving the visual appearance of the day sky in Cubyz. The current implementation results in a desaturated, overcast look, which is not visually appealing. The user proposes changing the `getSkyColor` function to return a hardcoded value representing a more natural sky blue. Specifically, the user replaced the `getSkyColor` function with `{0.46, 0.7, 1.0}` and changed the default fog color to `0xffbfe2ff`. The maintainer provides guidance on how to test this change by modifying the function at line 769 in `src/renderer.zig`, where the sky color is defined as a Vec3f with values between 0.0 and 1.0.
+
+The user also mentions exploring further customization of fog colors for different biomes but notes that they do not know how to properly implement this change dynamically. The maintainer suggests testing these hardcoded values first before integrating them into the codebase.
 
 ## Related Questions
 - How does the current implementation of `getSkyColor` affect the sky appearance?

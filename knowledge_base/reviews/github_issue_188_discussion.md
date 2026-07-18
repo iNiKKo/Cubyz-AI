@@ -9,7 +9,7 @@
 Discussion about improving mountain biome texturing and LOD transitions, with suggestions for more intelligent block painting.
 
 ## Explanation
-The issue revolves around the current implementation of mountain biomes in Cubyz, which results in visually noisy textures even at lower levels of detail (LOD). The proposed changes aim to make the LOD transitions less noticeable by using a more uniform texturing approach. However, this leads to a loss of detail. Reviewers suggest that improving the ground structure's block painting algorithm could help reintroduce detail while maintaining better LOD performance. There is also mention of potential issues with the LOD algorithm itself, as it may have gotten worse after a previous change (#1699). The maintainer asks for further investigation and possible fixes to the LOD chunk algorithm.
+The issue revolves around the current implementation of mountain biomes in Cubyz, which results in visually noisy textures even at lower levels of detail (LOD). The proposed changes aim to make the LOD transitions less noticeable by using a more uniform texturing approach. However, this leads to a loss of detail. Reviewers suggest that improving the ground structure's block painting algorithm could help reintroduce detail while maintaining better LOD performance. Specifically, the proposal includes using ground patches or tiny sub-biomes to add back the lost detail. There is also mention of potential issues with the LOD algorithm itself, as it may have gotten worse after a previous change (#1699). The maintainer asks for further investigation and possible fixes to the LOD chunk algorithm.
 
 ## Related Questions
 - What changes were made to the LOD algorithm in #1699?

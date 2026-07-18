@@ -8,7 +8,7 @@
 The current default background is outdated and needs to be updated with a new forest scene screenshot.
 
 ## Explanation
-The issue discusses the need for an update to the default background image used in Cubyz. The maintainer agrees that the current background is outdated, particularly given the new sky color. They suggest finding a nice forest scene, increasing the render distance, and taking a screenshot as the new default background. Additionally, the maintainer mentions plans to move backgrounds into a larger assets repository in the future.
+The issue discusses updating the current default background image used in Cubyz, which is considered outdated. The maintainer agrees that a new forest scene should be taken to replace it. Specifically, they suggest finding a nice looking forest, increasing the render distance, and taking a screenshot with dimensions of 4096x1024 pixels as the new default background. Additionally, the maintainer mentions plans to move backgrounds into a larger assets repository in the future.
 
 ## Related Questions
 - What is the current status of the default background update?

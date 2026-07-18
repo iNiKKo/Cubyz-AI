@@ -9,10 +9,10 @@
 Discussion about disabling development features in release versions and renaming a test file.
 
 ## Explanation
-The discussion revolves around the removal of certain development-specific features from release versions of Cubyz. The maintainer suggests renaming 'test.png' to something more descriptive, indicating that this file is also planned for removal as part of issue #91.
+Discussion about disabling certain development-specific features in release versions of Cubyz. The maintainer suggests renaming 'test.png' to something more descriptive and indicates that this file is planned for removal as part of issue #91. Specifically, the option to create testing worlds is mentioned as a feature intended for removal.
 
 ## Related Questions
-- What are the specific development features planned for removal in release versions?
+- What specific development features are planned for removal in release versions?
 - Why is 'test.png' being renamed and what will it be renamed to?
 - Is there a timeline for when these changes will be implemented?
 - How will the removal of these features affect existing users?

@@ -9,7 +9,7 @@
 The issue involves GPU freezing due to illegal memory access during item model rendering.
 
 ## Explanation
-The problem stems from OpenGL's behavior of running fragment shaders on 2x2 quads, even if they fall outside the given triangle. This results in out-of-range values being sampled from an SSBO (Shader Storage Buffer Object), leading to illegal memory access. The maintainer notes that this issue is rare and difficult to reproduce, as it occurs randomly during block breaking or at specific angles.
+The issue involves GPU freezing due to illegal memory access during item model rendering. Specifically, OpenGL runs fragment shaders on 2x2 quads even if they fall outside the given triangle, resulting in out-of-range values being sampled from an SSBO (Shader Storage Buffer Object). This leads to a graphics driver log message: `amdgpu: amdgpu_cs_query_fence_status failed.` The game freezes for exactly 10 seconds during this issue. The maintainer notes that this problem is rare and difficult to reproduce, as it occurs randomly during block breaking or at specific angles.
 
 ## Related Questions
 - What is the specific condition under which the fragment shader runs on out-of-range quads?
