@@ -50,6 +50,16 @@ FINETUNE_BACKUP_DIR = os.path.join(REPO_ROOT, "archive", "finetune_campaign_back
 
 TASK_TIMEOUT = 300
 
+# How many separate nodes must independently give up on the same RAG chunk (each after their own
+# internal 3-attempt retry loop) before the server stops handing it back out. See submit_diagnostics()
+# -- unlike finetune mode (which always submits a real, if empty, result and so always reaches a
+# terminal "completed" state), RAG mode's give-up path makes no submission at all, so without this
+# a structurally hard chunk (e.g. code_example content the model can never shape correctly, or a
+# fragment from the oversized-unit chunking fallback that's missing its own declaration) gets
+# handed to every node in the swarm forever, once every TASK_TIMEOUT, and the campaign can never
+# reach 100%. Confirmed live: 'graphics.zig_chunk_20' failed identically 5 times over ~25 minutes.
+RAG_GIVE_UP_THRESHOLD = 3
+
 # A chunk this short (same threshold the client uses to cap synthetic_queries) doesn't carry
 # enough genuine content for small local models to extract from without fabricating -- verified live
 # against qwen2.5-coder:3b/7b/14b: only the 14b tier stayed fully grounded on chunks this thin.
@@ -1050,6 +1060,28 @@ def submit_diagnostics(payload: dict):
     # task_retry events stay purely local, so this endpoint doesn't get hit on every single retry.
     payload["received_at"] = time.time()
     append_jsonl(CLIENT_DIAGNOSTICS_FILE, payload, "client diagnostic")
+
+    if payload.get("event") == "task_gave_up" and payload.get("mode") == "rag":
+        chunk_id = payload.get("chunk_id")
+        if chunk_id:
+            state = load_lock_state(RAG_LOCK_FILE)
+            if chunk_id not in state["completed"]:
+                # Release the lock immediately (don't make the next node wait out the full
+                # TASK_TIMEOUT before they can even try) and count this as one independent
+                # give-up. Only after RAG_GIVE_UP_THRESHOLD separate nodes have all given up is
+                # the chunk marked permanently completed -- with no RAG output ever written for
+                # it, which is the accepted tradeoff (finetune's 0-pairs give-up path already
+                # accepts the same tradeoff) against the alternative of infinite wasted swarm
+                # compute on a chunk that's structurally never going to pass validation.
+                state["locked"].pop(chunk_id, None)
+                gave_up_counts = state.setdefault("gave_up_counts", {})
+                gave_up_counts[chunk_id] = gave_up_counts.get(chunk_id, 0) + 1
+                if gave_up_counts[chunk_id] >= RAG_GIVE_UP_THRESHOLD:
+                    state["completed"].append(chunk_id)
+                    gave_up_counts.pop(chunk_id, None)
+                    print(f"[RAG ⚠] '{chunk_id}' permanently given up after {RAG_GIVE_UP_THRESHOLD} independent failures -- marked done with no output.")
+                save_lock_state(RAG_LOCK_FILE, state)
+
     return {"status": "logged"}
 
 if __name__ == "__main__":
