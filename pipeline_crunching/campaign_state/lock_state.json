@@ -1,12 +1,12 @@
 {
   "locked": {
+    "codebase_assets_cubyz_blocks_glow_crystal_indigo.zig.zon_chunk_0": {
+      "user_id": "Nick",
+      "timestamp": 1784356992.4025483
+    },
     "codebase_src_graphics.zig_chunk_20": {
       "user_id": "Nick",
-      "timestamp": 1784356785.3790865
-    },
-    "addon_creator_README.md_chunk_0": {
-      "user_id": "Nick",
-      "timestamp": 1784356858.6307533
+      "timestamp": 1784357087.6754494
     }
   },
   "completed": [
@@ -2225,6 +2225,33 @@
     "codebase_assets_cubyz_biomes_hills__defaults.zig.zon_chunk_0",
     "codebase_assets_cubyz_blocks_tussock.zig.zon_chunk_0",
     "codebase_assets_cubyz_blocks_glass_purple.zig.zon_chunk_0",
-    "docs_docs_development_addons_items.md_chunk_0"
+    "docs_docs_development_addons_items.md_chunk_0",
+    "addon_creator_README.md_chunk_0",
+    "codebase_assets_cubyz_blocks_grass__defaults.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_sbb_child_crimson.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_sbb_origin.zig.zon_chunk_0",
+    "codebase_src_callbacks_block_server__list.zig_chunk_0",
+    "codebase_src_server_command_worldedit_rotate.zig_chunk_0",
+    "codebase_assets_cubyz_cave_layers_dropoff.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_grass_cold.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_castilleja.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_basalt_rough.zig.zon_chunk_0",
+    "codebase_assets_cubyz_sbb_tree_coniferous_pine_eastern_white_branches_normal_1_bottom_middle.zig.zon_chunk_0",
+    "codebase_assets_cubyz_biomes_tall_mountain_slope2.zig.zon_chunk_0",
+    "codebase_assets_cubyz_sbb_tree_oak_white.zig.zon_chunk_0",
+    "codebase_assets_cubyz_sbb_tree_mahogany_sapele_ancient_top_double.zig.zon_chunk_0",
+    "codebase_src_gui_windows_chest.zig_chunk_0",
+    "codebase_src_server_command_spawn.zig_chunk_0",
+    "codebase_assets_cubyz_blocks_leaves_opaque_dead.zig.zon_chunk_0",
+    "codebase_mods_cubyz_rotations_texture_pile.zig_chunk_0",
+    "codebase_src_proceduralItem_modifiers_restrictions_always.zig_chunk_0",
+    "codebase_assets_cubyz_blocks_branch_toadstool.zig.zon_chunk_0",
+    "codebase_assets_cubyz_biomes_cave_crystal.zig.zon_chunk_0",
+    "codebase_assets_cubyz_sbb_tree_baobab_grandidieri.zig.zon_chunk_0",
+    "codebase_assets_cubyz_sbb_rock_hoodoo_small_medium.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_branch_bolete.zig.zon_chunk_0",
+    "codebase_assets_cubyz_sbb_tree_oak_white_root.zig.zon_chunk_0",
+    "codebase_assets_cubyz_biomes_highlands__defaults.zig.zon_chunk_0",
+    "codebase_src_gui_windows__list.zig_chunk_0"
   ]
 }
