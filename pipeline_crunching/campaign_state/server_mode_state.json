@@ -1,4 +1,4 @@
 {
-  "mode": "rag",
+  "mode": "finetune",
   "clean_shutdown": false
 }
