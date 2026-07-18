@@ -8,7 +8,7 @@
 The 'Create Account' screen displays an account code and clears the clipboard upon leaving the screen.
 
 ## Explanation
-The issue revolves around the display of an account code on the 'Create Account' screen and the behavior of clearing the clipboard when navigating away from this screen. The user observed that the account code is visible, but the copy button does not function as expected by copying anything to the clipboard.
+The issue revolves around the display of an account code on the 'Create Account' screen and the behavior of clearing the clipboard when navigating away from this screen. The user observed that the account code is visible in the screenshot, but the copy button does not function as expected by copying anything to the clipboard. Upon leaving the 'Create Account' screen, the clipboard is cleared, which is intended behavior to encourage users to save the account code elsewhere, such as a password manager.
 
 ## Related Questions
 - What is the purpose of clearing the clipboard when leaving the 'Create Account' screen?

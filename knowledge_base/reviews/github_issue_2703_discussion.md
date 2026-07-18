@@ -8,7 +8,9 @@
 The user requests displaying the version number in the window's title.
 
 ## Explanation
-The user is suggesting a feature enhancement to display the application's version number directly in the window's title bar. This could improve user awareness of the software version they are using, which can be helpful for support and debugging purposes.
+A user has requested to display the application's version number directly in the window's title bar. The suggestion was made after noticing that the current implementation does not show the version number prominently. This feature could enhance user awareness of the software version they are using, which is beneficial for support and debugging purposes. Additionally, a similar issue was reported where the user suggested displaying the version number in the bottom right corner of the menu.
+
+The discussion includes comments from other users who also find this enhancement valuable.
 
 ## Related Questions
 - How can we retrieve the current software version programmatically?

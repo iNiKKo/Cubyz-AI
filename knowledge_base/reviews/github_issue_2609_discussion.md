@@ -8,7 +8,7 @@
 The issue discusses updating Zig to version 0.16.0-dev2565, which could potentially resolve multiple existing issues.
 
 ## Explanation
-The discussion centers around the need to update Zig, a programming language used in Cubyz development, to its latest version (0.16.0-dev2565). The maintainer points out that there are already several open issues labeled as 'upstream' that track what needs to be addressed with future Zig updates. This suggests that the update might help resolve these issues and potentially others.
+The issue discusses updating Zig to version 0.16.0-dev2565, which is aimed at resolving several existing issues labeled 'upstream'. The maintainer notes that there are multiple open issues tracking what needs to be addressed with future Zig updates (see https://github.com/PixelGuys/Cubyz/issues?q=state%3Aopen%20label%3A%22upstream%22). This update might help resolve these specific issues and potentially others.
 
 ## Related Questions
 - What are the specific issues that updating Zig to 0.16.0-dev2565 aims to resolve?

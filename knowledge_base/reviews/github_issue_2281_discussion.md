@@ -8,7 +8,7 @@
 Discussion about adding a 'Flat World' option to Cubyz.
 
 ## Explanation
-The discussion revolves around adding a new world generation option in Cubyz that creates completely flat worlds without caves. The primary purpose is to facilitate easier testing of game mechanics. However, there is a suggestion that the tag 'testing' might be more appropriate for unit testing rather than this feature.
+Discussion about adding a new world generation option in Cubyz to create completely flat worlds without caves. The primary purpose of this feature is to facilitate easier testing of game mechanics. However, there was a suggestion that the tag 'testing' might be more appropriate for unit testing rather than this feature.
 
 ## Related Questions
 - What is the purpose of adding a 'Flat World' option in Cubyz?

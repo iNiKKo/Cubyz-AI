@@ -9,7 +9,11 @@
 The discussion revolves around modifying the structure table system in Cubyz to be biome-independent, allowing for more flexible and generic structure spawning across different biomes using tags.
 
 ## Explanation
-The proposal introduces a new structure table type that includes an ID, biome tags (like 'cubyz:cold'), and structures. Biomes will no longer directly store structure tables but instead use biome tags to associate with structure tables. During asset loading, structure tables are loaded from specific directories, and biomes concatenate relevant structure tables based on matching biome tags or lack thereof. The maintainer emphasizes that this change is intended to extend the existing system rather than replace it, allowing for structures not tied to specific biomes. There's a suggestion to maintain both versions of the system if feasible.
+The proposal introduces a new structure table type that includes an ID, biome tags (like 'cubyz:cold'), and structures. Biomes will no longer directly store structure tables but instead use biome tags to associate with structure tables. During asset loading, structure tables are loaded from specific directories such as `assets/cubyz/structure_tables` or `assets/<addon_name>/structure_tables`. The system builds a list of structure table IDs for lookup later.
+
+Biomes concatenate relevant structure tables based on matching biome tags or lack thereof during the asset loading process. If a structure table has a biometag that matches the biome, or if it has no biometag, its contents are concatenated to the biome's internal structure table. The total chance is added as before and normalized if greater than 1.
+
+The maintainer emphasizes that this change is intended to extend the existing system rather than replace it, allowing for structures not tied to specific biomes. There's a suggestion to maintain both versions of the system if feasible. Additionally, hashing functions may need to be moved out of `src/server/terrain/biomes.zig` and into `src/utils/hash.zig` or `src/server/terrain/hash.zig`, depending on usage.
 
 ## Related Questions
 - What is the purpose of the new structure table type in Cubyz?

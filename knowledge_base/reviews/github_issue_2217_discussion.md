@@ -9,7 +9,7 @@
 Discussion on generating SDF-based structures in a low-resolution version of the cave map to allow more versatile terrain options.
 
 ## Explanation
-The discussion revolves around implementing SDF-based structures in a lower-resolution floating-point version of the cave map, separate from the normal CaveMap. The maintainer questions the feasibility and cost of regenerating these structures for each chunk, noting that while multi-pass generation is already used, it involves different data structures. The current system stores structures in the StructureMap, but the proposed low-resolution SDF-based approach would regenerate structures, which is acceptable given the lower resolution and larger coverage.
+Discussion on generating SDF-based structures in a low-resolution version of the cave map to allow more versatile terrain options. The maintainer questions the feasibility and cost of regenerating these structures for each chunk, noting that while multi-pass generation is already used, it involves different data structures (each pass uses a different data structure). The current system stores structures in the StructureMap, but the proposed low-resolution SDF-based approach would regenerate structures, which is acceptable given the lower resolution and larger coverage.
 
 ## Related Questions
 - What is the current data structure used for storing structures in normal chunks?

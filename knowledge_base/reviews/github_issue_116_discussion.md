@@ -5,10 +5,10 @@
 **Concepts:** lighting, gamma correction, user experience
 
 ## Summary
-User requests gamma correction to improve lighting in Cubyz, noting that nights and caves appear too dark.
+A user reports that nights and caves in Cubyz are too dark, even with minimal light present. They suggest implementing gamma correction to improve visibility by adjusting brightness levels across different display settings.
 
 ## Explanation
-The user is experiencing issues with the lighting in the game, particularly during night-time and in cave environments. They find these areas to be excessively dark, even when there is minimal light present. The user suggests that gamma correction could help address this issue by adjusting the brightness levels more effectively across different display settings.
+The user is experiencing issues with the lighting in the game, particularly during night-time and in cave environments. They find these areas to be excessively dark, even when there is minimal light present. The user suggests that gamma correction could help address this issue by adjusting the brightness levels more effectively across different display settings. The user has increased the brightness on their monitor to maximum but still finds the game too dark.
 
 ## Related Questions
 - What is the current implementation of lighting in Cubyz?

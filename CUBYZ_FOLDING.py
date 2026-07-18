@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.31"
+VERSION = "1.1.32"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -1162,7 +1162,28 @@ def benchmark_lane(model: str, force_cpu: bool):
         elapsed = time.time() - start
         kind = "timeout" if elapsed >= BENCHMARK_TIMEOUT - 1 else type(e).__name__
         return None, f"{kind}: {e}"[:200]
-    return time.time() - start, None
+    elapsed = time.time() - start
+
+    if not force_cpu:
+        # A "GPU" call finishing within budget does NOT actually prove Ollama ran it on the GPU --
+        # omitting num_gpu just means "let Ollama decide," and Ollama silently falls back to CPU
+        # whenever it can't really use the GPU (an unsupported ROCm architecture, no
+        # HSA_OVERRIDE_GFX_VERSION set for an unlisted AMD card, etc). Confirmed live: on a machine
+        # where Ollama couldn't actually use its AMD GPU, this "GPU" call quietly ran on CPU and
+        # still finished in time -- reported as "GPU benchmarked successfully" -- while the
+        # explicitly CPU-forced call, now contending for the same CPU cores concurrently, timed out
+        # and got mislabeled as "CPU failed." Reality was the exact opposite of what got reported.
+        # /api/ps reports how many bytes of the loaded model are actually resident on GPU
+        # (size_vram) -- checked here instead of just trusted.
+        try:
+            ps = make_request(f"{OLLAMA_HOST}/api/ps", timeout=10)
+            entry = next((m for m in ps.get("models", []) if m.get("model") == model or m.get("name") == model), None)
+            size_vram = (entry or {}).get("size_vram", 0)
+            if not size_vram:
+                return None, f"no_gpu_offload: request finished in {elapsed:.1f}s but Ollama reports 0 bytes resident on GPU -- it silently ran on CPU instead"
+        except Exception:
+            pass  # /api/ps itself failing shouldn't invalidate an otherwise-successful benchmark
+    return elapsed, None
 
 # ============================================================
 # RAG MODE -- task processing (from pipeline_crunching/RAG_FOLDING.py)
@@ -2226,18 +2247,42 @@ def run_live_gpu_diagnostic():
                 print(f"  {line}")
         except Exception as e:
             print(f"  {Colors.RED}✗ Could not run nvidia-smi: {e}{Colors.RESET}")
+    elif gpu_type == "amd":
+        # This branch didn't exist before -- confirmed live, an AMD card silently unusable to
+        # Ollama (unsupported ROCm architecture, no HSA_OVERRIDE_GFX_VERSION set for an unlisted
+        # card, etc.) had ZERO diagnostic coverage: this diagnostic only ever checked nvidia-smi,
+        # so an AMD-specific "Ollama can't actually use this GPU" case went completely undetected.
+        print(f"{Colors.CYAN}[3/4] Raw rocm-smi output (checking driver health / current VRAM usage):{Colors.RESET}")
+        ran_something = False
+        for cmd in (['rocm-smi'], ['amd-smi', 'monitor']):
+            if shutil.which(cmd[0]):
+                ran_something = True
+                try:
+                    res = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
+                    for line in (res.stdout or res.stderr).splitlines():
+                        print(f"  {line}")
+                except Exception as e:
+                    print(f"  {Colors.RED}✗ Could not run {cmd[0]}: {e}{Colors.RESET}")
+                break
+        if not ran_something:
+            print(f"  {Colors.YELLOW}⚠ Neither rocm-smi nor amd-smi found on PATH -- can't confirm driver-level GPU health this way.{Colors.RESET}")
     else:
-        print(f"{Colors.CYAN}[3/4] Skipped (nvidia-smi output is only meaningful for NVIDIA cards; this is {gpu_type}).{Colors.RESET}")
+        print(f"{Colors.CYAN}[3/4] Skipped (no smi-style tool wired up for {gpu_type} cards yet).{Colors.RESET}")
 
     print(f"{Colors.CYAN}[4/4] Running a LIVE benchmark call now (up to {BENCHMARK_TIMEOUT:.0f}s, real schema-constrained generation, same as a real crunching task)...{Colors.RESET}")
     ensure_ollama_running_and_model_pulled(chosen_model)
     gpu_time, gpu_error = benchmark_lane(chosen_model, force_cpu=False)
     if gpu_time is not None:
-        print(f"  {Colors.GREEN}✓ GPU generation completed in {gpu_time:.1f}s.{Colors.RESET}")
+        print(f"  {Colors.GREEN}✓ GPU generation completed in {gpu_time:.1f}s, AND Ollama confirms it was actually resident on GPU (checked via /api/ps, not just timed).{Colors.RESET}")
         print(f"  {Colors.YELLOW}→ This actually worked just now. If the dashboard still shows a cached failure, use [B] to clear the cache and restart.{Colors.RESET}")
     else:
         print(f"  {Colors.RED}✗ GPU generation failed: {gpu_error}{Colors.RESET}")
-        if gpu_error and gpu_error.startswith("timeout"):
+        if gpu_error and gpu_error.startswith("no_gpu_offload"):
+            print(f"  {Colors.YELLOW}→ The request finished fine, but Ollama itself never actually put the model on the GPU -- it silently ran on CPU instead.")
+            print(f"    This usually means Ollama can't really use this GPU at all: an unsupported architecture (common for newer/less common AMD cards without")
+            print(f"    HSA_OVERRIDE_GFX_VERSION set), a ROCm/CUDA version mismatch, or Ollama's GPU backend failing to initialize silently. Check Ollama's own")
+            print(f"    startup logs for a GPU detection warning -- this is NOT a timing/driver-crash issue, so a longer timeout won't fix it.{Colors.RESET}")
+        elif gpu_error and gpu_error.startswith("timeout"):
             print(f"  {Colors.YELLOW}→ Ollama responded to /api/tags but this specific model never finished generating within {BENCHMARK_TIMEOUT:.0f}s on the GPU.")
             print(f"    Likely causes: the model doesn't actually fit in VRAM and Ollama is silently spilling to CPU/swap (very slow), a stuck/zombie Ollama process from a previous run, or a driver issue letting Ollama see the GPU but not use it properly.{Colors.RESET}")
         else:

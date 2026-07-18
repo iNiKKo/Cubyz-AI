@@ -9,14 +9,10 @@
 Discussion about improving biome interpolation in the NoiseBasedVoronoi generator for better performance with smaller biomes and edge cases.
 
 ## Explanation
-The issue report highlights that the current implementation of biome interpolation in the NoiseBasedVoronoi generator does not perform well, especially for smaller biomes. The maintainer suggests that this problem might have been addressed in a previous rewrite (#1783) focused on interpolation improvements.
+The issue report highlights that the current implementation of biome interpolation in the NoiseBasedVoronoi generator does not perform well, especially for smaller biomes. The maintainer suggests using natural-neighbor interpolation and adjusting it to fit a variable size voronoi grid. This problem was addressed in a previous rewrite (#1783) focused on interpolation improvements.
 
 ## Related Questions
-- What was the specific change made in #1783 that might have fixed this issue?
-- How does natural neighbor interpolation differ from other interpolation methods?
-- Can you explain how the variable size voronoi grid affects biome interpolation?
-- Are there any known limitations of natural neighbor interpolation in this context?
-- What are the potential performance implications of implementing natural neighbor interpolation?
-- How might edge cases be handled with the new interpolation method?
+- What specific changes were made in #1783 to address the biome interpolation issue?
+- How does natural-neighbor interpolation differ from other methods and how is it adjusted for a variable size voronoi grid?
 
 *Source: unknown | chunk_id: github_issue_908_discussion*

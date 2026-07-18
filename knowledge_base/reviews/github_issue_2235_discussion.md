@@ -8,7 +8,7 @@
 The game crashes when specifying less than 5 colors for tool materials. The discussion suggests that the issue might be related to lighting calculations.
 
 ## Explanation
-The user reported that the game crashes when fewer than 5 colors are specified for tool materials. The discussion indicates a potential bug in the lighting calculation logic, where the number of colors is being reduced to 4 if it falls below this threshold. This could lead to an unexpected behavior or crash.
+The game crashes when fewer than 5 colors are specified for tool materials. The discussion includes a user comment suggesting that the issue might be related to lighting calculations where the number of colors is reduced to 4 if it falls below this threshold, potentially causing unexpected behavior or crash. This indicates a potential bug in the logic handling color thresholds and lighting calculations.
 
 ## Related Questions
 - What is the current logic for handling fewer than 5 colors in tool materials?

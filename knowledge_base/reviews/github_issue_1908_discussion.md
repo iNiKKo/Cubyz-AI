@@ -8,7 +8,7 @@
 The discussion revolves around the possibility of publishing Cubyz as a Flatpak package on Flathub, with considerations for distribution, discoverability, compatibility, and security.
 
 ## Explanation
-The maintainer initially expressed reluctance to support additional package managers due to time constraints and prioritized adding new features. However, they acknowledged that maintaining such packages could be considered in the future if there is community interest. The user emphasized the benefits of Flathub for distribution, discoverability, compatibility across Linux distributions, and security features. They also highlighted the requirement for upstream maintainers to contact Flathub before publishing a package themselves.
+The discussion revolves around the possibility of publishing Cubyz as a Flatpak package on Flathub, with considerations for distribution, discoverability, compatibility, and security. The maintainer initially expressed reluctance to support additional package managers due to time constraints and prioritized adding new features over distribution channels. However, they acknowledged that maintaining such packages could be considered in the future if there is community interest. The user emphasized the benefits of Flathub for distribution, discoverability across Linux distributions, compatibility, and security features provided by Flatpak's permission declaration at build time. They also highlighted the requirement for upstream maintainers to contact Flathub before publishing a package themselves as per Flathub guidelines.
 
 ## Related Questions
 - What are the benefits of publishing Cubyz as a Flatpak package on Flathub?

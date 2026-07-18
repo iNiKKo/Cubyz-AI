@@ -9,14 +9,14 @@
 Discussion about adding a `/clear chat` command and optionally clearing the command history, with considerations for user experience and security.
 
 ## Explanation
-The discussion revolves around implementing a `/clear chat` command to empty the chat and potentially clear the command history. The main concerns include preventing accidental inventory clearing by renaming commands to be more specific (e.g., `/clear inventory`, `/clear chat`). There is also debate about the necessity of clearing the command history, with some arguing it could prevent password leaks in login systems, while others worry about increased maintenance and potential misuse.
+The discussion revolves around implementing a `/clear chat` command to empty the chat, with potential options to clear specific parts of it such as `/clear chatHistory`. The main proposal is to rename existing commands for clarity (e.g., `/clear inventory`, `/clear chat`). There are debates about clearing the command history due to security concerns and maintenance burdens. Use-cases include cleaning up insults from a malicious user, preparing lobbies between rounds, or displaying loading information. However, there's concern that clearing entire chat might be excessive for such scenarios. The proposal also includes tracking who said what in future implementations so admins can selectively remove messages of specific players using syntax like `/clear chat <username>`. Clearing command history is seen as trivial to implement but adds maintenance work and potential misuse risks.
 
 ## Related Questions
-- What are the potential use-cases for the `/clear chat` command?
-- Why is there a debate about clearing the command history?
-- How does renaming commands prevent accidental inventory clearing?
-- What are the security implications of allowing servers to clear command history?
-- How long is the estimated timeline for implementing #1737?
-- What are the potential drawbacks of storing command history on disk?
+- What are the proposed commands for clearing inventory, chat, and chat history?
+- Why was renaming existing clear commands suggested?
+- What are the use-cases for the `/clear chat` command?
+- How does tracking message origins help in selective removal of messages?
+- What are the security concerns with clearing command history?
+- What is the timeline for implementing #1737?
 
 *Source: unknown | chunk_id: github_issue_2402_discussion*

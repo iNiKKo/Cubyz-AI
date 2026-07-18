@@ -8,7 +8,7 @@
 Discussion about adding a single command to save selected areas using the selection wand.
 
 ## Explanation
-The issue discusses the inconvenience of saving structure pieces in Cubyz by repeatedly copying and saving them as blueprints. The user suggests creating a single command to streamline this process. However, the maintainer sees limited benefit in this feature, preferring instead to enhance the functionality of wands to reduce reliance on commands. This discussion highlights the trade-offs between adding new features and improving existing tools.
+Discussion about adding a single command to save selected areas using the selection wand. The user suggests creating a single command to streamline saving structure pieces by copying and saving them as blueprints repeatedly. However, the maintainer sees little benefit in this feature, preferring instead to enhance the functionality of wands to reduce reliance on commands. The maintainer also mentions that tedious tasks can be automated with the command history. This discussion highlights the trade-offs between adding new features and improving existing tools.
 
 ## Related Questions
 - What is the current process for saving structure pieces in Cubyz?
@@ -16,6 +16,5 @@ The issue discusses the inconvenience of saving structure pieces in Cubyz by rep
 - How could automation of command history improve the user experience?
 - What are the potential benefits and drawbacks of adding a single save command for selected areas?
 - How might enhancing wand functionality reduce reliance on commands in Cubyz?
-- Can you provide examples of how other games handle similar structure saving processes?
 
 *Source: unknown | chunk_id: github_issue_2456_discussion*

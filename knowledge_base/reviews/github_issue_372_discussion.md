@@ -8,7 +8,7 @@
 Discussion about removing or adjusting item drop shadows in Cubyz to improve visual quality and contrast.
 
 ## Explanation
-The issue revolves around the misalignment of item drop shadows with the pixel grid, causing subpixel artifacts. The maintainer initially made the shadow offset less than one pixel to avoid awkward cutoffs but found that it affects contrast for certain blocks. Users suggested removing the shadow entirely or making it more translucent. The maintainer experimented with increasing contrast and found that higher contrast darkens the world. After updating textures, users preferred no shadow at all, except for tools where further work is needed.
+Discussion about removing or adjusting item drop shadows in Cubyz to improve visual quality and contrast. The issue revolves around subpixel artifacts caused by misalignment of item drop shadows with the pixel grid, leading to floating artifacts on dark items that appear as blobs. Initially, the maintainer set the shadow offset less than one pixel to avoid awkward cutoffs but found this affected contrast for certain blocks like diamond and stone. Users suggested removing the shadow entirely or making it more translucent. The maintainer experimented with increasing texture contrast, noting that higher contrast darkens the world significantly. After updating textures, users preferred no drop shadow at all except for tools where further work is needed to address issues. Screenshots展示了不同对比度级别的效果，包括当前的、更多的和甚至更多的对比度级别。最终决定在更新纹理后移除阴影以提高视觉质量。
 
 ## Related Questions
 - What are the potential visual effects of removing item drop shadows in Cubyz?
