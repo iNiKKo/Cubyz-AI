@@ -17,3 +17,4 @@
 {"event": "task_gave_up", "mode": "rag", "chunk_id": "codebase_src_TEST_FAKE_chunk_0", "final_reason": "test failure", "received_at": 1784357505.971373}
 {"event": "task_gave_up", "mode": "finetune", "chunk_id": "some_finetune_chunk", "final_reason": "x", "received_at": 1784357505.971672}
 {"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_src_TEST_CANCEL_chunk_0", "received_at": 1784357505.9718077}
+{"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_src_gui_windows_hotbar.zig_chunk_0", "timestamp": 1784359297.718925, "received_at": 1784359297.811484}
