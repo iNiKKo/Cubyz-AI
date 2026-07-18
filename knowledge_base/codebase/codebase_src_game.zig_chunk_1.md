@@ -9,7 +9,7 @@
 The Player struct defines the player's state, including position, velocity, inventory, and gamemode. It provides methods for loading from a configuration, setting and getting positions, managing gamemodes, placing blocks, killing the player, dropping items, breaking blocks, and acquiring selected blocks.
 
 ## Explanation
-The Player struct encapsulates all aspects of a player's state in the game, including their position, velocity, inventory, and various flags related to their status (e.g., flying, ghost mode). It includes methods for loading from a configuration file, setting and getting positions with thread safety using a mutex, managing gamemodes with atomic operations, placing blocks based on user input, killing the player by resetting their position and health, dropping items from their inventory, breaking blocks, and acquiring selected blocks. The struct also defines constants for bounding box extents, jump height, and other physical properties.
+The Player struct defines the player's state, including position, velocity, inventory, gamemode, and various physical properties. It includes constants such as standingBoundingBoxExtent (Vec3d{0.3, 0.3, 0.9}), crouchingBoundingBoxExtent (Vec3d{0.3, 0.3, 0.725}), jumpHeight (1.25), and defaultBlockDamage (1). The struct also manages thread safety for position updates using a mutex, provides methods to switch between gamemodes with atomic operations, place blocks based on user input, kill the player by resetting their position and health, drop items from inventory, break blocks, and acquire selected blocks. Additionally, it defines friction properties, volume properties, bounding box extents, jump cooldown constants, and other physical parameters.
 
 ## Code Example
 ```zig

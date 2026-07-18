@@ -2,21 +2,21 @@
   "nickc": {
     "model": "qwen2.5:7b",
     "tier": "medium",
-    "last_seen": 1784405852.8471687
+    "last_seen": 1784406241.048361
   },
   "nick": {
     "model": "qwen2.5:14b",
     "tier": "hard",
-    "last_seen": 1784405850.2220478
-  },
-  "nicksrvr": {
-    "model": "llama3.1:8b",
-    "tier": "medium",
-    "last_seen": 1784405793.9791188
+    "last_seen": 1784406244.8345127
   },
   "caleb": {
     "model": "qwen2.5:3b",
     "tier": "easy",
-    "last_seen": 1784405822.8575256
+    "last_seen": 1784406196.1021802
+  },
+  "nicksrvr": {
+    "model": "llama3.1:8b",
+    "tier": "medium",
+    "last_seen": 1784406233.8254223
   }
 }

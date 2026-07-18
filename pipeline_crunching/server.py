@@ -144,7 +144,15 @@ def _format_hardware_info(hw: dict) -> str:
     if not hw:
         return f"{Colors.GRAY}(unknown -- pre-1.1.25 client, or hasn't reported yet){Colors.RESET}"
     os_label = _PLATFORM_LABELS.get(hw.get("platform"), hw.get("platform") or "?")
-    gpu_label = _GPU_TYPE_LABELS.get(hw.get("gpu_type"), hw.get("gpu_type") or "?")
+    # gpu_type "cpu" is ambiguous on its own -- it means either a genuinely GPU-less machine, OR
+    # this specific panel is the secondary CPU lane of a dual-lane machine that DOES have a real
+    # GPU, just in use by its sibling lane (see main()'s dual-lane session_start report). The
+    # latter showing "CPU only (no GPU)" reads as if the whole machine has no GPU at all, which
+    # is wrong and confusing -- confirmed live for a real dual-lane volunteer.
+    if hw.get("gpu_type") == "cpu" and hw.get("dual_lane"):
+        gpu_label = "CPU lane (GPU in use by dual-lane partner)"
+    else:
+        gpu_label = _GPU_TYPE_LABELS.get(hw.get("gpu_type"), hw.get("gpu_type") or "?")
     vram = hw.get("total_vram_gb")
     vram_text = f" ({vram:.1f} GB VRAM)" if isinstance(vram, (int, float)) and vram > 0 else ""
     ram = hw.get("system_ram_gb")
@@ -465,7 +473,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.1.2"
-LATEST_CLIENT_VERSION = "1.1.27"
+LATEST_CLIENT_VERSION = "1.1.28"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:

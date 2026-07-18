@@ -9,7 +9,7 @@
 This chunk implements physics calculations for eye movement and wall collisions in the game.
 
 ## Explanation
-The `calculateEyeMovement` function computes the new position and velocity of the player's eye based on spring and friction models. It checks for block collisions and adjusts the eye's position accordingly. The `calculateWallCollision` function handles collision detection and response when the player hits walls, adjusting their motion and velocity while considering factors like crouching and stepping height.
+The `calculateEyeMovement` function computes the new position and velocity of the player's eye based on spring and friction models, checking for block collisions and adjusting the eye's position accordingly. The `calculateWallCollision` function handles collision detection and response when the player hits walls, adjusting their motion and velocity while considering factors like crouching and stepping height.
 
 ## Code Example
 ```zig

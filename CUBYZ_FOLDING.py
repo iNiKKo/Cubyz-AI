@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.27"
+VERSION = "1.1.28"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -2198,7 +2198,7 @@ def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None):
             dual_status_color = Colors.GREEN if dual_controller.active else Colors.GRAY
             dual_status = f"{dual_status_color}{'ON' if dual_controller.active else 'OFF'}{Colors.RESET}"
             dual_option = f", [D] to toggle the secondary CPU lane (currently {dual_status})"
-        choice = input(f"Enter [R] to resume, [L] to view the leaderboard, [U] to view active users, [A] to toggle auto-update (currently {auto_status}){dual_option}, or [Q] to safely exit: ").strip().lower()
+        choice = input(f"Enter [R] to resume, [L] to view the leaderboard, [U] to view active users, [A] to toggle auto-update (currently {auto_status}){dual_option}, [B] to force a fresh hardware benchmark, or [Q] to safely exit: ").strip().lower()
         if choice == 'r': return
         elif choice == 'l': fetch_and_show_leaderboard()
         elif choice == 'u': fetch_and_show_userlist()
@@ -2214,6 +2214,18 @@ def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None):
             else:
                 dual_controller.start()
                 print(f"{Colors.GREEN}[✓] Secondary CPU lane ENABLED -- crunching with GPU + CPU lanes again.{Colors.RESET}")
+        elif choice == 'b':
+            # The hardware benchmark (see main()) runs exactly once per machine and is cached
+            # forever, keyed only on static specs (GPU type/VRAM/CPU count/RAM) -- NOT on whether
+            # that one run was actually representative. A single transient failure (Ollama
+            # momentarily busy, a driver hiccup, another app holding VRAM at that exact moment)
+            # gets baked in as a permanent "this GPU doesn't work" verdict with previously no way
+            # to retry short of manually deleting the local config file -- confirmed live as the
+            # explanation for a volunteer whose real, working NVIDIA GPU sat unused on CPU-only
+            # after one bad benchmark. Clearing the cache and restarting re-runs it fresh.
+            save_benchmark_result({})
+            print(f"{Colors.CYAN}[~] Cleared cached hardware benchmark -- restarting to measure CPU vs. GPU throughput fresh...{Colors.RESET}")
+            os.execv(sys.executable, [sys.executable] + sys.argv)
         elif choice == 'q': sys.exit(f"{Colors.CYAN}[X] Disconnecting safely. Thank you for your computational contributions!{Colors.RESET}")
 
 def interruptible_sleep(seconds, dual_controller: "DualLaneController | None" = None):

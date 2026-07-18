@@ -9,7 +9,7 @@
 The `User` struct manages player state and interactions within the server, including initialization, deinitialization, reference counting, and state transitions.
 
 ## Explanation
-The `User` struct encapsulates all data related to a connected user in the server. It includes fields for connection details, player attributes, inventory management, permissions, and job scheduling. The struct provides methods for initializing (`initAndIncreaseRefCount`), continuing (`@continue`), deinitializing (`deinit`), pausing (`pause`), increasing (`increaseRefCount`), and decreasing (`decreaseRefCount`) reference counts. It also handles key identification (`identifyFromKeysAndName`). The `User` struct interacts with various components like the connection manager, inventory system, permissions, and world data.
+The `User` struct manages player state and interactions within the server, including initialization, deinitialization, reference counting, and state transitions. It contains several important fields such as connection details (`conn`), player attributes (`innerPlayer`, `timeDifference`, etc.), inventory management (`inventoryClientToServerIdMap`, `inventory`, `handInventory`), permissions (`permissions`), job scheduling (`jobQueue`, `jobQueueLastUpdate`), and more. The struct provides methods for initializing (`initAndIncreaseRefCount`), continuing (`@continue`), deinitializing (`deinit`), pausing (`pause`), increasing (`increaseRefCount`), and decreasing (`decreaseRefCount`) reference counts. It also handles key identification (`identifyFromKeysAndName`). Constants like `maxSimulationDistance`, `simulationSize`, and `simulationMask` are defined as follows: `const maxSimulationDistance = 8; const simulationSize = 2 * maxSimulationDistance; const simulationMask = simulationSize - 1;`. The `User` struct interacts with various components like the connection manager, inventory system, permissions, and world data.
 
 ## Code Example
 ```zig
@@ -19,15 +19,7 @@ pub fn player(self: *User) *Entity {
 ```
 
 ## Related Questions
-- What is the purpose of the `initAndIncreaseRefCount` method in the `User` struct?
-- How does the `User` struct handle reference counting?
-- What fields are included in the `User` struct?
-- What is the role of the `pause` method in the `User` struct?
-- How does the `User` struct manage inventory data?
-- What is the purpose of the `identifyFromKeysAndName` method?
-- How does the `User` struct interact with other components like the connection manager and inventory system?
-- What is the structure of the `jobQueueLastUpdate` field in the `User` struct?
-- How does the `User` struct handle deinitialization (`deinit`)?
-- What are the possible states a `User` can be in, as defined by the `State` enum?
+- What are the values of constants such as maxSimulationDistance, simulationSize, and simulationMask?
+- How does the User struct handle reference counting?
 
 *Source: unknown | chunk_id: codebase_src_server_server.zig_chunk_1*

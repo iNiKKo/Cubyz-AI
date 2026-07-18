@@ -6,10 +6,19 @@
 **Concepts:** camera controls, gamemodes, damage types
 
 ## Summary
-Defines camera controls, gamemodes, and damage types with message handling.
+Defines detailed camera control logic including precise rotation limits based on mouse input, gamemodes (survival and creative), and damage types with corresponding message handling methods.
 
 ## Explanation
-This chunk defines the camera control logic, including rotation based on mouse input and updating the view matrix. It also declares an enum for game modes (survival and creative) and another enum for damage types with a method to send messages corresponding to each type of damage.
+This chunk defines the camera control logic in Cubyz. The `camera` struct contains variables for rotation (`rotation`) and direction (`direction`). The `moveRotation` function updates these based on mouse input, ensuring that the x-axis rotation is clamped between -π/2 + 0.001 and π/2 - 0.001 to prevent gimbal lock issues. The `updateViewMatrix` function calculates the view matrix using the current camera rotation values.
+
+The chunk also declares an enum for game modes (`Gamemode`) with two options: survival (0) and creative (1). Additionally, it defines an enum for damage types (`DamageType`) including heal (0), kill (1), fall (2), heat (3), and spiky (4). Each `DamageType` has a method `sendMessage` that sends specific messages to the server when a player is affected by different types of damage.
+
+The exact message strings for each damage type are:
+- heal: `{s}§#ffffff was healed`
+- kill: `{s}§#ffffff was killed`
+- fall: `{s}§#ffffff died of fall damage`
+- heat: `{s}§#ffffff burned to death`
+- spiky: `{s}§#ffffff experienced death by 1000 needles`
 
 ## Code Example
 ```zig
@@ -24,11 +33,8 @@ pub fn moveRotation(mouseX: f32, mouseY: f32) void {
 ```
 
 ## Related Questions
-- How does the camera rotation work in this chunk?
-- What are the defined game modes in this code?
-- How is damage type handled and what messages are sent?
-- What is the purpose of the `updateViewMatrix` function?
-- Which libraries or modules are imported at the beginning of this file?
-- Can you explain the bounds set for camera rotation in the `moveRotation` function?
+- How does the camera rotation work in this chunk, including specific bounds?
+- What are the defined game modes and their values?
+- Can you explain how damage types handle message sending with exact examples?
 
 *Source: unknown | chunk_id: codebase_src_game.zig_chunk_0*

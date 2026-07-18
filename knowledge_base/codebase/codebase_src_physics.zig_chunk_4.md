@@ -9,7 +9,11 @@
 This chunk defines structures and functions for calculating physical properties, friction, and motion in a voxel engine.
 
 ## Explanation
-The chunk contains the definition of `FrictionState` struct with fields `current` and `mobile`. It includes three main functions: `calculateVolumeProperties`, `calculateFriction`, and `calculateMotion`. The `calculateVolumeProperties` function computes volume properties based on block presence. The `calculateFriction` function calculates friction coefficients considering ground contact. The `calculateMotion` function models motion over a single frame, applying gravity, input acceleration, and friction effects.
+This chunk defines structures and functions for calculating physical properties, friction, and motion in a voxel engine. The `FrictionState` struct contains fields `current: f32` and `mobile: f32`. It includes three main functions: `calculateVolumeProperties`, `calculateFriction`, and `calculateMotion`. 
+
+The `calculateVolumeProperties` function computes volume properties based on block presence, setting density to `airDensity`, terminal velocity to `airTerminalVelocity`, max density to `airDensity`, and mobile friction to `1.0/airTerminalVelocity`. The `calculateFriction` function calculates friction coefficients considering ground contact, where the current friction is calculated as `groundFriction + volumeFrictionCoeffecient` and mobile friction as `groundFriction + mobileFriction`. This function also considers whether the entity is on the ground (`onGround`) to adjust the ground friction accordingly. The `calculateMotion` function models motion over a single frame, applying gravity, input acceleration, and friction effects. It uses effective gravity `(gravity*(density - volumeProperties.density)/density)`, calculates the base friction coefficient (`baseGravity/volumeProperties.terminalVelocity`), and updates velocity based on these parameters.
+
+During jumping, no friction is applied if `jumpHeight > 0.0`. The jump velocity is calculated as `@sqrt(jumpHeight*baseGravity*2)`.
 
 ## Code Example
 ```zig
