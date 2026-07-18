@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.13"
+VERSION = "1.1.14"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -615,6 +615,28 @@ def check_nvidia_gpu() -> tuple:
         except Exception: pass
     return False, 0.0
 
+def _amd_vram_from_sysfs() -> float:
+    """Reads real VRAM size straight from the amdgpu kernel driver's sysfs interface -- exposed
+    for essentially every AMD GPU the amdgpu driver supports, including older consumer cards
+    (e.g. Polaris/RX 500-series) that amd-smi/rocm-smi frequently don't recognize at all, with no
+    extra tooling required. Returns 0.0 if nothing readable is found (not on Linux, driver not
+    loaded, permissions, etc.) so callers can fall through to their next-best option."""
+    try:
+        import glob
+        for vendor_path in glob.glob('/sys/class/drm/card*/device/vendor'):
+            with open(vendor_path) as f:
+                if f.read().strip() != '0x1002':  # AMD's PCI vendor ID
+                    continue
+            vram_path = vendor_path.replace('/vendor', '/mem_info_vram_total')
+            if os.path.exists(vram_path):
+                with open(vram_path) as f:
+                    vram_bytes = int(f.read().strip())
+                if vram_bytes > 0:
+                    return vram_bytes / (1024.0 ** 3)
+    except Exception:
+        pass
+    return 0.0
+
 def check_amd_gpu() -> tuple:
     if PLATFORM == "win32":
         for gpu in get_windows_gpus():
@@ -640,6 +662,17 @@ def check_amd_gpu() -> tuple:
     try:
         pci = subprocess.run(['lspci'], capture_output=True, text=True).stdout.lower()
         if "amd" in pci or "radeon" in pci:
+            # amd-smi/rocm-smi either aren't installed or don't recognize this card (common for
+            # older consumer GPUs, e.g. Polaris/RX 500-series, which ROCm's compute tooling was
+            # never targeted at) -- sysfs is the actual real reading, not a guess, and needs
+            # nothing beyond the kernel driver that's already loaded for the card to work at all.
+            # Confirmed live: without this, an RX 550 (2-4 GB) was hardcoded to a blind "16.0"
+            # just because its name matched the "radeon rx" marker below, badly overestimating
+            # available VRAM and pushing model-tier selection (and dual-lane RAM math) off a
+            # fabricated number.
+            sysfs_vram = _amd_vram_from_sysfs()
+            if sysfs_vram > 0:
+                return True, sysfs_vram
             if any(m in pci for m in DISCRETE_AMD_MARKERS):
                 return True, 16.0
             return True, get_system_ram_gb() * 0.4
