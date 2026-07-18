@@ -9,7 +9,7 @@
 The `openDir` function's change from using `makeOpenPath` to `openDir` caused the blueprints directory not to be created when using the `/blueprint save` command. The discussion revolves around potential implications for other use-cases of `openDir` and whether `makeOpenPath` is always necessary.
 
 ## Explanation
-The issue arises from a change in the implementation of the `openDir` function, which was modified to no longer use `makeOpenPath`. This modification led to the blueprints directory not being created as expected when executing the `/blueprint save` command. The maintainers are concerned about the broader implications for other parts of the codebase that rely on `openDir`, questioning whether there are scenarios where `makeOpenPath` should still be used. The user points out a specific case where `hasDir` could potentially replace `makeOpenPath`, suggesting a possible solution to address the issue.
+The issue arises from a change in the implementation of the `openDir` function, which was modified to no longer use `makeOpenPath`. This modification led to the blueprints directory not being created as expected when executing the `/blueprint save` command. The specific commit causing this issue is referenced in #1785. The maintainers are concerned about the broader implications for other parts of the codebase that rely on `openDir`, questioning whether there are scenarios where `makeOpenPath` should still be used. Specifically, the maintainer comments in issue #1806 indicate a need to review all use-cases of `openDir`. The user points out a specific case where `hasDir` could potentially replace `makeOpenPath`, suggesting a possible solution to address the issue. This discussion highlights potential risks and implications for other functions or modules that might be affected by this change, emphasizing the importance of ensuring backwards compatibility and thorough testing.
 
 ## Related Questions
 - What was the original implementation of `openDir` before the change?
@@ -21,6 +21,5 @@ The issue arises from a change in the implementation of the `openDir` function, 
 - Is there a way to test the impact of this change on other parts of the codebase?
 - Can you identify any other commands or features that might be affected by this restructuring?
 - What are the potential performance implications of using `hasDir` instead of `makeOpenPath`?
-- How can we prevent similar issues from arising in the future during refactoring?
 
 *Source: unknown | chunk_id: github_issue_1806_discussion*

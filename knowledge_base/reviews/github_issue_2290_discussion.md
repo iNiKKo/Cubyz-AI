@@ -9,7 +9,7 @@
 The game crashes when creating a world with a specific seed due to type mismatch between expected i64 and provided u64 values.
 
 ## Explanation
-The issue arises because the seed value is being treated as a u64, but the function ZonElement.Int expects an i64. This discrepancy causes the game to crash when processing the seed. Additionally, there's a potential conflict with another issue (#2251) that needs to be addressed. The problem was initially uncovered by #2136, though it is not directly caused by that issue.
+The game crashes when creating a world with a specific seed due to a type mismatch between expected i64 and provided u64 values. The issue arises because ZonElement.Int expects an i64, but the seed value is treated as a u64. This discrepancy causes the game to crash when processing the seed. Additionally, there's a 50/50 chance you can't open a newly created world more than one time with this bug since Zon.ParseNumber uses an i64 and the seed is a u64. The problem was initially uncovered by #2136 but is not directly caused by it. There may also be a conflict with another issue (#2251) that needs to be addressed.
 
 ## Related Questions
 - What is the expected data type for seed values in ZonElement.Int?

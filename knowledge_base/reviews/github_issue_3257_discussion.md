@@ -9,7 +9,21 @@
 The reviewer added a check in `clientReceive` to ensure data is being received and modified a state switch case to send an empty payload.
 
 ## Explanation
-The reviewer attempted to reproduce the issue reported in issue_3257.md, where sending over the Protocol system without a payload did not trigger `clientReceive`. The reviewer added a check in the `clientReceive` function to panic if no data is remaining in the reader, indicating that the function was being called. Additionally, the reviewer modified a state switch case to send an empty payload using `conn.send(.secure, id, &.{})`, which might help in understanding or resolving the issue. The primary concern here is ensuring that the Protocol system correctly handles cases where no payload is sent.
+The reviewer attempted to reproduce the issue reported in issue_3257.md, where sending over the Protocol system without a payload did not trigger `clientReceive`. The reviewer added a check in the `clientReceive` function to panic if no data is remaining in the reader, indicating that the function was being called. Specifically, the following code snippet was added:
+
+```zig
+diff
++ if (reader.remaining.len == 0) {
++ @panic("It gets called!");
++ }
+```
+Additionally, the reviewer modified a state switch case to send an empty payload using `conn.send(.secure, id, &.{})`, which might help in understanding or resolving the issue. The primary concern here is ensuring that the Protocol system correctly handles cases where no payload is sent. Specifically, the following code snippet was added:
+
+```zig
+diff
++ conn.send(.secure, id, &.{});
+```
+The reviewer's modifications aim to ensure proper handling of empty payloads and verify if `clientReceive` is being called as expected.
 
 ## Related Questions
 - Why was the `clientReceive` function modified to panic if no data is remaining?

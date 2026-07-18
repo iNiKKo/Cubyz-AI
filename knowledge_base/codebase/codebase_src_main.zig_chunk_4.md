@@ -9,7 +9,7 @@
 The chunk defines the main client entry point and utility functions for testing.
 
 ## Explanation
-This chunk contains the `clientMain` function, which serves as the primary entry point for the Cubyz client. It handles initialization tasks such as setting up the GUI, audio, and rendering environment. The function manages the game loop, including event handling, world updates, rendering, and FPS capping. Additionally, it provides a utility function `refAllDeclsRecursiveExceptCImports` to recursively reference all declarations in a type while excluding C imports. The chunk also includes test functions to ensure allocators are usable in tests.
+This chunk contains the `clientMain` function, which serves as the primary entry point for the Cubyz client. It handles initialization tasks such as setting up the GUI, audio, and rendering environment based on player settings. The function manages the game loop by handling events, updating the world if it exists, and rendering graphics. FPS capping is implemented with a specific mechanism that calculates frame time and enforces a minimum frame duration to ensure smooth performance. Additionally, the chunk provides a utility function `refAllDeclsRecursiveExceptCImports` to recursively reference all declarations in a type while excluding C imports. The chunk also includes test functions to ensure allocators are usable in tests by allocating and deallocating memory for different types of data structures.
 
 ## Code Example
 ```zig
@@ -107,12 +107,10 @@ pub fn clientMain() void { // MARK: clientMain()
 
 ## Related Questions
 - What is the primary entry point for the Cubyz client?
-- How does the `clientMain` function handle initialization tasks?
-- What is the role of the game loop in the `clientMain` function?
-- How does the `clientMain` function manage FPS capping?
-- What utility functions are provided in this chunk?
-- How does the `refAllDeclsRecursiveExceptCImports` function work?
-- What tests are included in this chunk?
-- How do the test functions ensure allocators are usable?
+- How does the `clientMain` function handle initialization tasks such as setting up the GUI, audio, and rendering environment based on player settings?
+- What specific mechanisms are used to manage FPS capping in the game loop?
+- How does the `clientMain` function update the world if it exists during each frame?
+- What is the role of the `refAllDeclsRecursiveExceptCImports` utility function and how does it work?
+- What tests are included in this chunk to ensure allocators are usable?
 
 *Source: unknown | chunk_id: codebase_src_main.zig_chunk_4*

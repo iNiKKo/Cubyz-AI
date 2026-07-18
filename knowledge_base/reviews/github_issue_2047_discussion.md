@@ -9,7 +9,7 @@
 Discussion on handling item loss in procedural crafting grid during unexpected game closures.
 
 ## Explanation
-The issue revolves around items being lost if the game crashes or is unexpectedly closed while items are placed in the procedural crafting grid. The main concern is ensuring that items remain in the player's inventory until they are actually crafted. Various solutions are proposed, including treating the crafting grid like a chest, using pointers to original inventory slots, and creating a separate persistent crafting inventory. However, there are concerns about UI clarity and potential confusion for new players.
+Discussion on handling item loss in procedural crafting grid during unexpected game closures. The issue arises when items placed in the procedural crafting window are lost if the game crashes or is unexpectedly closed, as these items are not stored in the player's inventory until after an item has been crafted. Proposed solutions include treating the crafting grid like a chest to prevent item loss and using pointers to original inventory slots to maintain UI clarity. Another suggestion involves creating a separate persistent crafting inventory for each player that moves back into their primary inventory upon reconnection, with semitransparent placeholders indicating occupied slots when items are stored elsewhere. However, there is concern about the potential negative impact on user experience due to confusing UI design and unfamiliarity for new players.
 
 ## Related Questions
 - How can the crafting grid be modified to prevent item loss during unexpected game closures?

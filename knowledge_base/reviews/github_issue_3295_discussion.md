@@ -8,7 +8,7 @@
 The issue discusses mushrooms not bouncing as expected.
 
 ## Explanation
-The maintainer is expressing confusion or surprise about why mushrooms do not bounce, indicating a potential bug or oversight in the game's physics engine related to mushroom behavior. This could involve issues with collision detection, gravity handling, or material properties assigned to mushrooms.
+The issue discusses mushrooms not bouncing as expected. The maintainer expresses surprise at how this occurred, indicating a potential bug or oversight in the game's physics engine related to mushroom behavior. This could involve issues with collision detection, gravity handling, or material properties assigned to mushrooms. However, no specific details are provided beyond the maintainer's confusion.
 
 ## Related Questions
 - What is the current implementation of mushroom collision detection?

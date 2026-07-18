@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.29"
+VERSION = "1.1.30"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -2254,9 +2254,13 @@ def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None):
         # the prompt, so a non-capable machine's menu looks completely unchanged.
         dual_option = ""
         if dual_controller is not None:
+            # The secondary lane isn't always CPU anymore (see main()'s dual_capable comment --
+            # a working GPU that lost PRIMARY on capability tier runs as secondary instead), so
+            # this reads the actual lane_tag rather than hardcoding "CPU" into the menu text.
+            secondary_tag = dual_controller.cpu_lane_kwargs.get("lane_tag", "secondary")
             dual_status_color = Colors.GREEN if dual_controller.active else Colors.GRAY
             dual_status = f"{dual_status_color}{'ON' if dual_controller.active else 'OFF'}{Colors.RESET}"
-            dual_option = f", [D] to toggle the secondary CPU lane (currently {dual_status})"
+            dual_option = f", [D] to toggle the secondary {secondary_tag} lane (currently {dual_status})"
         choice = input(f"Enter [R] to resume, [L] to view the leaderboard, [U] to view active users, [A] to toggle auto-update (currently {auto_status}){dual_option}, [B] to force a fresh hardware benchmark, [G] to run a live GPU diagnostic, or [Q] to safely exit: ").strip().lower()
         if choice == 'r': return
         elif choice == 'l': fetch_and_show_leaderboard()
@@ -2267,12 +2271,13 @@ def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None):
             state_color = Colors.GREEN if new_value else Colors.GRAY
             print(f"{state_color}[✓] Auto-update is now {'ENABLED' if new_value else 'DISABLED'}.{Colors.RESET}")
         elif choice == 'd' and dual_controller is not None:
+            secondary_tag = dual_controller.cpu_lane_kwargs.get("lane_tag", "secondary")
             if dual_controller.active:
                 dual_controller.stop()
-                print(f"{Colors.GRAY}[✓] Secondary CPU lane DISABLED -- back to a single GPU lane.{Colors.RESET}")
+                print(f"{Colors.GRAY}[✓] Secondary {secondary_tag} lane DISABLED -- back to a single primary lane.{Colors.RESET}")
             else:
                 dual_controller.start()
-                print(f"{Colors.GREEN}[✓] Secondary CPU lane ENABLED -- crunching with GPU + CPU lanes again.{Colors.RESET}")
+                print(f"{Colors.GREEN}[✓] Secondary {secondary_tag} lane ENABLED -- crunching with both lanes again.{Colors.RESET}")
         elif choice == 'b':
             # The hardware benchmark (see main()) runs exactly once per machine and is cached
             # forever, keyed only on static specs (GPU type/VRAM/CPU count/RAM) -- NOT on whether
@@ -3043,6 +3048,13 @@ def main():
                 "gpu_error": gpu_error, "cpu_error": cpu_error,
             })
 
+    # Captured BEFORE the CPU-primary reassignment below can overwrite chosen_model/hardware_tier
+    # -- needed so a working GPU that merely lost the PRIMARY slot (beaten on capability tier, not
+    # unusable -- see dual_capable below) can still be configured as the SECONDARY dual-lane lane
+    # with its own real model/tier, not the CPU's.
+    gpu_native_model = chosen_model
+    gpu_native_tier = gpu_tier_from_vram(total_vram_gb) if gpu_type != "cpu" else None
+
     if not primary_is_gpu:
         # Whether because there was never a GPU at all, it benchmarked unusable, or the CPU
         # simply won -- the primary lane runs on CPU with the model/tier get_cpu_model_tier
@@ -3067,14 +3079,19 @@ def main():
         else:
             primary_hardware_label = f"{gpu_type.upper()} ({total_vram_gb:.1f} GB VRAM)"
 
-    # Dual-lane needs the GPU to actually BE the primary lane (a benchmark-rejected or CPU-beaten
-    # GPU has nothing independent left to add -- see primary_is_gpu above), the CPU side of the
-    # same benchmark to have also succeeded (confirms it's independently viable, not just
-    # "unmeasured"), and both the RAM/VRAM headroom checks (see DUAL_LANE_MIN_RAM_GB/
-    # DUAL_LANE_MIN_VRAM_GB's comments -- system RAM alone doesn't help if the GPU itself is
-    # already maxed out).
+    # Used to require primary_is_gpu -- i.e. a GPU that lost the primary slot for ANY reason
+    # (benchmark failure, OR simply being beaten on capability tier by a CPU with a lot of RAM)
+    # was treated as having nothing left to contribute, and sat completely idle even when it had
+    # just benchmarked successfully and FASTER than the CPU that beat it. Confirmed live: a
+    # Threadripper with 4GB VRAM benchmarked its GPU at 42.9s (vs CPU's 81.0s) -- the GPU lost
+    # PRIMARY only because CPU's "medium" capability tier (from huge system RAM) outranks the
+    # GPU's VRAM-capped "easy" tier, not because the GPU doesn't work. What actually matters for
+    # dual-lane eligibility is that BOTH lanes are independently confirmed working (gpu_time and
+    # cpu_time both real numbers, not None) -- which of the two happens to be "primary" is a
+    # separate decision (see primary_is_gpu above) that no longer gates this at all.
     dual_capable = (
-        primary_is_gpu
+        gpu_type != "cpu"
+        and gpu_time is not None
         and cpu_time is not None
         and system_ram_gb >= DUAL_LANE_MIN_RAM_GB
         and total_vram_gb >= DUAL_LANE_MIN_VRAM_GB
@@ -3102,40 +3119,67 @@ def main():
 
     dual_controller = None
     if dual_capable:
-        # Reserve a couple of logical threads for the GPU lane's own overhead and the OS, give
-        # the rest to the CPU lane's Ollama call. Hardcoding the same "2" the solo Eco Profile
-        # uses here was wrong -- that value is deliberately conservative for a genuinely weak
-        # CPU-only volunteer, not for a real multi-core CPU running a *second*, dedicated lane
-        # alongside a GPU lane (confirmed live: a 6-core/12-thread Ryzen 5 9600X sat at ~35% CPU
-        # utilization capped at "2" -- 2 threads on a 12-thread part).
-        cpu_lane_threads = max(2, (os.cpu_count() or 4) - 2)
-        cpu_hardware_label = f"{cpu_lane_threads} threads, {system_ram_gb:.1f} GB RAM"
-        print(f"{Colors.CYAN}[✓] Dual-lane mode: GPU ({primary_hardware_label}) + a secondary CPU lane ({cpu_model}, {cpu_hardware_label}) will crunch two tasks at once. Toggle it off/on anytime from the pause menu.{Colors.RESET}\n")
-        board = DualStatusBoard(gpu_label=primary_hardware_label, cpu_label=cpu_hardware_label)
-        # user_id is 3-9 alpha chars (enforced at login); truncating to 8 and appending "c" always
-        # differs from the primary lane's own id (even at the 9-char ceiling, where a bare
-        # suffix would otherwise just silently reproduce the original id) while staying within
-        # that same 3-9 range the server itself validates against.
-        cpu_user_id = user_id[:8] + "c"
-        # The CPU lane is a fully separate user_id on the server (see cpu_user_id's own comment)
-        # but used to never get its own session_start report at all -- only the primary lane's
-        # user_id ever sent one, tagged with ITS OWN specs -- so the admin dashboard showed the
-        # primary lane correctly (real GPU, DUAL-LANE flag) and the CPU lane's panel as "unknown"
-        # forever, confirmed live. Sends the CPU lane's own event, describing this specific lane
-        # (no GPU from its own point of view, same machine's RAM/OS, its own chosen model/tier),
-        # reusing the CPU benchmark time already measured above rather than re-benchmarking.
+        # The secondary lane is whichever one ISN'T primary -- see dual_capable's comment. Most of
+        # the time that's still CPU-secondary-alongside-GPU-primary (the original, only supported
+        # shape), but when CPU won primary purely on capability tier despite a slower-but-working
+        # GPU, the secondary lane is that GPU instead, so it isn't left sitting completely idle.
+        if primary_is_gpu:
+            # Reserve a couple of logical threads for the GPU lane's own overhead and the OS, give
+            # the rest to the CPU lane's Ollama call. Hardcoding the same "2" the solo Eco Profile
+            # uses here was wrong -- that value is deliberately conservative for a genuinely weak
+            # CPU-only volunteer, not for a real multi-core CPU running a *second*, dedicated lane
+            # alongside a GPU lane (confirmed live: a 6-core/12-thread Ryzen 5 9600X sat at ~35%
+            # CPU utilization capped at "2" -- 2 threads on a 12-thread part).
+            secondary_lane_tag = "CPU"
+            secondary_model, secondary_tier = cpu_model, cpu_tier
+            secondary_threads = max(2, (os.cpu_count() or 4) - 2)
+            secondary_cooldown = 1.0
+            secondary_force_cpu = True
+            secondary_hardware_label = f"{secondary_threads} threads, {system_ram_gb:.1f} GB RAM"
+            secondary_desc = "Eco Profile (Automated: Secondary CPU lane, running alongside the primary GPU lane)"
+        else:
+            # Mirrors the same cooldown/thread-limit choice a GPU gets when it's primary (see
+            # above) -- a strong secondary GPU shouldn't be artificially throttled just because it
+            # lost the primary slot on capability tier, and a weak one still gets the same gentler
+            # pacing it would if it *had* won primary.
+            secondary_lane_tag = "GPU"
+            secondary_model, secondary_tier = gpu_native_model, gpu_native_tier
+            secondary_threads = None if total_vram_gb > 8.0 else 4
+            secondary_cooldown = 0.0 if total_vram_gb > 8.0 else 1.5
+            secondary_force_cpu = False
+            secondary_hardware_label = f"{gpu_type.upper()} ({total_vram_gb:.1f} GB VRAM)"
+            secondary_desc = "Performance Profile (Automated: Secondary GPU lane, running alongside the primary CPU lane -- this GPU lost PRIMARY only on capability tier, not because it doesn't work)"
+        print(f"{Colors.CYAN}[✓] Dual-lane mode: {primary_hardware_label} (primary) + a secondary {secondary_lane_tag} lane ({secondary_model}, {secondary_hardware_label}) will crunch two tasks at once. Toggle it off/on anytime from the pause menu.{Colors.RESET}\n")
+        board = DualStatusBoard(gpu_label=primary_hardware_label if primary_is_gpu else secondary_hardware_label,
+                                 cpu_label=secondary_hardware_label if primary_is_gpu else primary_hardware_label)
+        # user_id is 3-9 alpha chars (enforced at login); truncating to 8 and appending a suffix
+        # that's never "c" for a GPU secondary (avoids colliding with what a CPU-secondary run on
+        # this same machine would have used) always differs from the primary lane's own id (even
+        # at the 9-char ceiling, where a bare suffix would otherwise just silently reproduce the
+        # original id) while staying within that same 3-9 range the server itself validates
+        # against.
+        secondary_user_id = user_id[:8] + ("c" if primary_is_gpu else "g")
+        # The secondary lane is a fully separate user_id on the server but used to never get its
+        # own session_start report at all -- only the primary lane's user_id ever sent one, tagged
+        # with ITS OWN specs -- so the admin dashboard showed the primary lane correctly and the
+        # secondary lane's panel as "unknown" forever, confirmed live. Sends the secondary lane's
+        # own event, describing this specific lane, reusing the benchmark time already measured
+        # above rather than re-benchmarking.
         submit_diagnostic_to_server({
-            "event": "session_start", "user_id": cpu_user_id, "platform": PLATFORM, "gpu_type": "cpu",
-            "total_vram_gb": 0.0, "system_ram_gb": round(system_ram_gb, 2),
-            "chosen_model": cpu_model, "hardware_tier": cpu_tier, "client_version": VERSION,
-            "dual_lane": True, "primary_is_gpu": False,
-            "benchmark_gpu_time": None, "benchmark_cpu_time": cpu_time,
-            "benchmark_gpu_error": None, "benchmark_cpu_error": cpu_error,
+            "event": "session_start", "user_id": secondary_user_id, "platform": PLATFORM,
+            "gpu_type": "cpu" if primary_is_gpu else gpu_type,
+            "total_vram_gb": 0.0 if primary_is_gpu else round(total_vram_gb, 2),
+            "system_ram_gb": round(system_ram_gb, 2),
+            "chosen_model": secondary_model, "hardware_tier": secondary_tier, "client_version": VERSION,
+            "dual_lane": True, "primary_is_gpu": not primary_is_gpu,
+            "benchmark_gpu_time": None if primary_is_gpu else gpu_time,
+            "benchmark_cpu_time": cpu_time if primary_is_gpu else None,
+            "benchmark_gpu_error": None, "benchmark_cpu_error": None,
         })
         dual_controller = DualLaneController(board=board, cpu_lane_kwargs=dict(
-            lane_tag="CPU", user_id=cpu_user_id, hardware_tier=cpu_tier, chosen_model=cpu_model,
-            max_threads=cpu_lane_threads, cooldown=1.0, mode_desc="Eco Profile (Automated: Secondary CPU lane, running alongside the primary GPU lane)",
-            hardware_label=cpu_hardware_label, force_cpu=True, fancy_ui=False,
+            lane_tag=secondary_lane_tag, user_id=secondary_user_id, hardware_tier=secondary_tier, chosen_model=secondary_model,
+            max_threads=secondary_threads, cooldown=secondary_cooldown, mode_desc=secondary_desc,
+            hardware_label=secondary_hardware_label, force_cpu=secondary_force_cpu, fancy_ui=False,
         ))
         dual_controller.start()  # on by default, same as before this toggle existed -- just now reversible
 
@@ -3151,8 +3195,8 @@ def main():
         # ambiguous on the server's admin dashboard (a volunteer showed as lane "MAIN" with no way
         # to tell what that actually meant). primary_is_gpu is already known at this exact point
         # (force_cpu below is derived from it too), so report the real answer instead of a vague
-        # placeholder. Dual-lane's primary is always GPU by construction (see the dual-lane
-        # eligibility check above -- a benchmark-rejected or CPU-beaten GPU never becomes primary).
+        # placeholder. Primary is NOT always GPU even in dual-lane anymore -- see dual_capable's
+        # comment: CPU can win primary on capability tier while a working GPU runs as secondary.
         lane_tag="GPU" if primary_is_gpu else "CPU", user_id=user_id, hardware_tier=hardware_tier,
         chosen_model=chosen_model, max_threads=max_threads, cooldown=cooldown, mode_desc=mode_desc,
         hardware_label=primary_hardware_label, force_cpu=not primary_is_gpu, fancy_ui=True,

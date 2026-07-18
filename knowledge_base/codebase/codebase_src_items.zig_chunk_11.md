@@ -9,7 +9,7 @@
 This chunk defines functions for parsing item recipes from Zon elements and registering them into a global list.
 
 ## Explanation
-The `parseRecipeItem` function takes a ZonElement, extracts an item ID and amount, trims whitespace, parses the amount if present, and then looks up the base item by ID. If the item is not found, it returns an error. The `registerRecipes` function iterates over a slice of recipe Zon elements, attempts to parse each one into a recipe using `recipes.parseRecipe`, and logs an error message if parsing fails, skipping that recipe.
+The `parseRecipeItem` function takes a ZonElement, extracts an item ID and amount, trims whitespace using `std.mem.trim`, parses the amount if present (using `std.fmt.parseInt`), and then looks up the base item by ID. If the item is not found, it returns an error of type `error.ItemNotFound`. The function uses `std.mem.indexOfScalar(u8, id, ' ')` to check for a space in the ID before parsing the amount. The `registerRecipes` function iterates over a slice of recipe Zon elements, attempts to parse each one into a recipe using `recipes.parseRecipe`, and logs an error message if parsing fails (using `std.log.err`) with details about the error and the problematic recipe string, then frees the allocated memory for the recipe string.
 
 ## Code Example
 ```zig

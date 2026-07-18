@@ -8,14 +8,11 @@
 The issue proposes adding a timed game exit feature specified by the user, initially intended for CI but with potential other uses. The maintainer suggests implementing this via a command to stdin instead.
 
 ## Explanation
-The discussion revolves around adding a new configuration option in the launchConfig that allows the game to automatically exit after a specified duration. This feature is primarily aimed at facilitating Continuous Integration (CI) processes, but it may also be useful for other scenarios where automatic termination of the game runtime loop is beneficial. The maintainer's comment suggests an alternative approach using stdin commands, which could offer more flexibility and control over when and how the game exits.
+The issue proposes adding a timed game exit feature to the launchConfig, which will be specified by the user in some time unit (microseconds or milliseconds, undecided). Once this duration elapses after opening the game (primarily in headless mode but not limited to it), the game will gracefully exit its runtime loop. The primary motivation for this is to facilitate Continuous Integration (CI) processes, although QD mentioned other potential uses in comment #2227. The maintainer suggests implementing this feature via a command sent to stdin instead of through configuration options.
 
 ## Related Questions
-- What is the primary motivation for adding a timed game exit feature?
-- How does the maintainer suggest implementing the timed game exit feature?
-- Are there any potential use cases for this feature beyond CI?
-- What are the benefits of using stdin commands for controlling game termination?
-- How might this feature impact the game's runtime loop behavior?
-- Is there a specific time unit proposed for specifying the duration in the launchConfig?
+- What specific time unit will be used to specify the duration for timed game exit?
+- How does the game gracefully exit its runtime loop after the specified duration?
+- Is there any flexibility in specifying the mode (headless or not) when using this feature?
 
 *Source: unknown | chunk_id: github_issue_2287_discussion*

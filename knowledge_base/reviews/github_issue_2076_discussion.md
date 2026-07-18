@@ -5,10 +5,22 @@
 **Concepts:** network communication, packet validation, error handling
 
 ## Summary
-The player disconnects from the server due to an 'Invalid' error while processing network data.
+A player disconnects from the server due to an 'Invalid' error while processing network data during mining activities. The maintainer suggests adding more debugging information in version 0.0.1 to help identify and resolve the problem.
 
 ## Explanation
-The issue arises when the game encounters invalid packets during network communication, leading to a disconnection. The maintainer suggests adding more debugging information in version 0.0.1 to help identify and resolve the problem.
+The issue arises when the game encounters invalid packets during network communication, leading to a disconnection. The player was mining at the time of the error. Here are some key details from the log file:
+
+```
+[info]: Resizing internal mesh buffer from 256 MiB to 512 MiB
+...
+[warning]: The server is lagging behind by 38.7 ms
+[error]: Got error while processing received network data: Invalid
+[info]: Chat: cuppercom§#ffff00 left
+[info]: Disconnected
+```
+The maintainer suggests adding more debugging information in version 0.0.1 to help identify and resolve the problem.
+
+The player was mining during this session, which may be a contributing factor.
 
 ## Related Questions
 - What is the cause of the 'Invalid' error during network data processing?

@@ -9,7 +9,7 @@
 The discussion revolves around establishing a policy for content suggestions in Cubyz, emphasizing that suggestions should be demonstrated through addons or mods and align with the game's design principles. Maintainers propose refining these principles to ensure consistency.
 
 ## Explanation
-The issue highlights the challenge of managing numerous content suggestions without cluttering the project. The proposed policy requires suggestions to either be implemented in an addon/mod or come from active contributors, ensuring they are actionable and align with the game's design principles. Maintainers suggest refining these principles to have clear guidelines for rejecting suggestions, particularly regarding what constitutes clutter. They also mention adding a detailed explanation of the content suggestion process to the issue template.
+The issue discusses establishing a policy for content suggestions in Cubyz to prevent clutter and manage numerous suggestions effectively. The proposed policy requires that content suggestions be demonstrated through addons or mods, come from active contributors, and align with the game's design principles. These principles include ensuring new blocks are unique (filling underrepresented niches) and versatile (usable across multiple biomes), and considering whether players care about the new block. Maintainers suggest refining these principles to have clear guidelines for rejecting suggestions, particularly regarding what constitutes clutter. The issue template will be updated with a detailed explanation of the content suggestion process, including specific design principles.
 
 ## Related Questions
 - What are the current content suggestion guidelines in Cubyz?

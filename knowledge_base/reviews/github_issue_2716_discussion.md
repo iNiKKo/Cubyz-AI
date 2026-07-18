@@ -9,7 +9,7 @@
 A segfault occurs when walking into a branch block containing an ore, likely due to a corrupted or unexpected state of the branch block.
 
 ## Explanation
-The issue involves a segmentation fault at address 0x0, which is triggered by walking into a branch block that has an embedded ore. The maintainer suggests obtaining a debug mode stacktrace to better understand the cause. The user initially experienced this issue after merging master into their branch and encountering a corrupted baobab branch block. However, they were unable to reproduce the issue after merging missing commits from upstream, indicating potential instability or corruption in the branch block's state.
+A segmentation fault occurs when walking into a branch block containing an ore, specifically at address 0x0. This issue was reported while testing #2129 and involves the clientMain function located at /home/boysanic/git/Cubyz/src/main.zig:684. The maintainer requested a debug mode stacktrace to better understand the cause of the segfault. The user initially experienced this issue after merging master into their branch, encountering a corrupted baobab branch block that was completely transparent and missing textures. However, they were unable to reproduce the issue after merging missing commits from upstream, indicating potential instability or corruption in the branch block's state. The maintainer confirmed that segfaults should not occur even on corruptions like this.
 
 ## Related Questions
 - What is the potential cause of the segfault in the branch block with an embedded ore?

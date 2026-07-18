@@ -91,7 +91,29 @@ if os.path.exists(USER_FIRST_SEEN_FILE):
 _user_last_status = {}   # user_id (lower) -> {"mode","symbol","symbol_color","message","timestamp"}
 _user_error_counts = {}  # user_id (lower) -> int, incremented for every RED-severity event
 _recent_events = deque(maxlen=10)  # rolling tail of (ts, mode, user_id, symbol, symbol_color, message)
-_user_hardware_info = {}  # user_id (lower) -> {"platform","gpu_type","total_vram_gb","system_ram_gb","dual_lane"}, from /diagnostics' session_start event -- see submit_diagnostics()
+
+# Persisted, same reasoning as USER_FIRST_SEEN_FILE above -- this used to be a bare in-memory dict,
+# which meant every SERVER restart wiped it back to empty for every volunteer, even ones whose own
+# client process never restarted at all: session_start is sent exactly once per client process
+# lifetime (at that client's own startup), not resent on every poll, so there was no way for
+# already-lost info to come back short of that specific client also restarting. Confirmed live --
+# every panel showed "unknown" again after a routine server restart for an unrelated fix.
+USER_HARDWARE_INFO_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "campaign_state", "user_hardware_info.json")
+_user_hardware_info = {}  # user_id (lower) -> {"platform","gpu_type","total_vram_gb","system_ram_gb","dual_lane",...}, from /diagnostics' session_start event -- see submit_diagnostics()
+if os.path.exists(USER_HARDWARE_INFO_FILE):
+    try:
+        with open(USER_HARDWARE_INFO_FILE, encoding="utf-8") as f:
+            _user_hardware_info.update(json.load(f))
+    except Exception:
+        pass
+
+def _save_user_hardware_info():
+    try:
+        with open(USER_HARDWARE_INFO_FILE, "w", encoding="utf-8") as f:
+            json.dump(_user_hardware_info, f, indent=2)
+    except Exception:
+        pass
+
 _DASHBOARD_ACTIVE = False  # flipped true once the background render thread actually starts
 
 def log_event(mode: str, user_id: str, symbol: str, symbol_color: str, message: str):
@@ -130,6 +152,12 @@ def _relative_time(ago_seconds: float) -> str:
 
 def _mode_stats_file(mode: str):
     return {"rag": RAG_STATS_FILE, "finetune": FINETUNE_STATS_FILE, "audit": AUDIT_STATS_FILE}.get(mode)
+
+def _gpu_tier_from_vram(total_vram_gb: float) -> str:
+    """Mirrors CUBYZ_FOLDING.py's gpu_tier_from_vram() exactly -- same thresholds -- so the
+    dashboard's explanation of a capability-based CPU-over-GPU choice (see
+    _format_benchmark_note) reflects the client's actual real decision logic, not a guess."""
+    return "easy" if total_vram_gb <= 4.5 else ("medium" if total_vram_gb <= 8.5 else "hard")
 
 _PLATFORM_LABELS = {"win32": "Windows", "linux": "Linux", "darwin": "macOS"}
 _GPU_TYPE_LABELS = {
@@ -176,7 +204,21 @@ def _format_benchmark_note(hw: dict):
         reason = f" -- {_truncate(gpu_error, 90)}" if gpu_error else " (no error detail -- pre-1.1.28 client)"
         cpu_text = f" (CPU: {cpu_time:.1f}s)" if isinstance(cpu_time, (int, float)) else ""
         return f"{Colors.YELLOW}⚠ GPU benchmark FAILED{Colors.RESET}{reason}{cpu_text}"
-    return f"{Colors.YELLOW}⚠ GPU benchmark succeeded ({gpu_time:.1f}s) but CPU was faster/chosen instead ({cpu_time:.1f}s){Colors.RESET}" if isinstance(cpu_time, (int, float)) else f"{Colors.YELLOW}⚠ GPU benchmark succeeded ({gpu_time:.1f}s) but CPU was chosen instead{Colors.RESET}"
+    # GPU succeeded but CPU still ended up primary -- this used to ALWAYS say "CPU was faster",
+    # even when it wasn't. main()'s real decision logic (see its own comment) picks CPU over a
+    # faster GPU in one specific case: CPU can reach a more capable model tier than the GPU's low
+    # VRAM allows ("capability beats speed"), NOT just raw speed -- confirmed live wrong for a
+    # Threadripper (huge RAM, "medium" CPU tier) paired with a weak ~4GB GPU (capped at "easy"):
+    # GPU benchmarked FASTER (42.9s vs 81.0s) but lost anyway because "medium" beats "easy", and
+    # the old message claimed "CPU was faster", which was backwards.
+    if isinstance(cpu_time, (int, float)) and cpu_time < gpu_time:
+        return f"{Colors.YELLOW}⚠ GPU benchmark succeeded ({gpu_time:.1f}s) but CPU was genuinely faster ({cpu_time:.1f}s) -- CPU chosen{Colors.RESET}"
+    total_vram = hw.get("total_vram_gb")
+    gpu_tier = _gpu_tier_from_vram(total_vram) if isinstance(total_vram, (int, float)) else "?"
+    winning_tier = hw.get("hardware_tier") or "?"
+    cpu_text = f", CPU: {cpu_time:.1f}s" if isinstance(cpu_time, (int, float)) else ""
+    return (f"{Colors.YELLOW}⚠ GPU was actually faster ({gpu_time:.1f}s{cpu_text}) but CPU chosen anyway{Colors.RESET} "
+            f"-- CPU can reach a more capable tier ({winning_tier}) than the GPU's low VRAM allows ({gpu_tier}); capability beats raw speed")
 
 def _format_progress_line(mode: str, stats: dict) -> str:
     if mode == "audit":
@@ -479,7 +521,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.1.2"
-LATEST_CLIENT_VERSION = "1.1.29"
+LATEST_CLIENT_VERSION = "1.1.30"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:
@@ -2244,6 +2286,9 @@ def submit_diagnostics(payload: dict):
             # live: a volunteer's dashboard panel showed "NVIDIA GPU (12GB VRAM)" right next to
             # "lane: CPU" with nothing explaining the gap.
             "primary_is_gpu": payload.get("primary_is_gpu"),
+            # Never actually captured despite being in the payload all along -- _format_benchmark_note's
+            # capability-tier explanation showed "(?)" for the winning tier instead of e.g. "medium".
+            "hardware_tier": payload.get("hardware_tier"),
             "benchmark_gpu_time": payload.get("benchmark_gpu_time"),
             "benchmark_cpu_time": payload.get("benchmark_cpu_time"),
             # The actual exception (timeout vs connection error vs Ollama-side error, etc.) --
@@ -2252,6 +2297,7 @@ def submit_diagnostics(payload: dict):
             "benchmark_gpu_error": payload.get("benchmark_gpu_error"),
             "benchmark_cpu_error": payload.get("benchmark_cpu_error"),
         }
+        _save_user_hardware_info()
 
     if payload.get("event") == "task_gave_up" and payload.get("mode") == "rag":
         chunk_id = payload.get("chunk_id")

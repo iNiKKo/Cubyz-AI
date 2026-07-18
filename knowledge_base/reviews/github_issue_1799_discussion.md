@@ -8,7 +8,7 @@
 Discussion about adding shift-click functionality to move multiple items between chests and the player's inventory.
 
 ## Explanation
-The discussion revolves around enhancing the user interface by allowing players to transfer multiple items at once using a shift-click action. The maintainer initially clarifies that only one block inventory can be open simultaneously, which sets the context for the proposed feature. The user expresses interest in extending this functionality to allow transferring all items passed over during a shift-drag operation.
+Discussion about adding shift-click functionality to move multiple items between chests and the player's inventory. The maintainer clarifies that only one block inventory can be open at a time, setting the context for the proposed feature. A user asks if it is possible to transfer all items passed over during a shift-drag operation, to which the maintainer responds affirmatively.
 
 ## Related Questions
 - How can we implement shift-click functionality to move multiple items between chests and the inventory?
@@ -16,6 +16,6 @@ The discussion revolves around enhancing the user interface by allowing players 
 - How should the UI be updated to support this new feature?
 - Are there any performance concerns with implementing this feature?
 - How will this change affect existing user workflows?
-- What is the current limitation that only one block inventory can be open at a time?
+- Is it possible to transfer all items passed over during a shift-drag operation?
 
 *Source: unknown | chunk_id: github_issue_1799_discussion*

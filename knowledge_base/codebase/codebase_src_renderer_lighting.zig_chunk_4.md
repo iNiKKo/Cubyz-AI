@@ -6,10 +6,35 @@
 **Concepts:** chunk meshing, lighting calculations, interpolation, rendering
 
 ## Summary
-Handles lighting calculations for chunk meshes in the Cubyz voxel engine.
+Handles lighting calculations for chunk meshes in the Cubyz voxel engine by defining functions to get light values at specific positions, interpolate light across corners, handle aligned normals, and pack light values into a format suitable for rendering. It includes detailed bit manipulations and vector operations.
 
 ## Explanation
-This chunk defines functions to calculate and retrieve lighting values for blocks within a chunk mesh. It includes methods to get light values at specific positions, interpolate light across corners, handle aligned normals, and pack light values into a format suitable for rendering. The primary responsibility is to ensure accurate and efficient lighting calculations based on block positions and mesh data.
+This chunk defines several functions to calculate and retrieve lighting values for blocks within a chunk mesh in the Cubyz voxel engine. The primary responsibility is to ensure accurate and efficient lighting calculations based on block positions and mesh data.
+
+### Functions Overview:
+- **getValues(mesh: *ChunkMesh, pos: chunk.BlockPos)**
+  - Retrieves both block light and sun light values at a given position within the mesh.
+  - Asserts that the CPU architecture is little-endian.
+  - Combines block light and sun light into a single `u64` value using bitwise operations and returns it as an `@Vector(8, u8)`.
+
+- **getLightAt(parent: *ChunkMesh, x: i32, y: i32, z: i32)**
+  - Calculates the light values at a specific position within or neighboring the chunk mesh.
+  - Uses bitwise operations to determine if the queried position is within the current chunk and retrieves light data accordingly.
+
+- **getCornerLight(parent: *ChunkMesh, pos: Vec3i, normal: Vec3f)**
+  - Interpolates light values across corners of a block based on its position and normal vector.
+  - Calculates interpolated positions and weights for each corner and aggregates the light values using these weights.
+
+- **getLightSampleAligned(parent: *ChunkMesh, pos: Vec3i, direction: chunk.Neighbor)**
+  - Retrieves aligned lighting samples along a specified direction from a given position.
+  - Adjusts lighting based on differences between adjacent blocks if voxel size is 1.
+
+- **packLightValues(rawVals: [4]LightVector)**
+  - Packs light values into a format suitable for rendering by shifting and combining bits of each `u8` component in the `LightVector` array.
+
+- **getLight(parent: *ChunkMesh, blockPos: Vec3i, textureIndex: u16, quadIndex: QuadIndex)**
+  - Retrieves lighting values for a specific block position based on its texture index and quad information.
+  - Uses precomputed samples if the normal direction is aligned; otherwise, it interpolates light across corners or vertices depending on conditions.
 
 ## Code Example
 ```zig

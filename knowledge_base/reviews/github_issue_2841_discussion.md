@@ -8,7 +8,7 @@
 The 'entityModel' asset folder randomly uses camel case instead of underscores, causing inconsistency.
 
 ## Explanation
-The issue arises from the 'entityModel' asset folder using camel case naming conventions while other assets use underscores. This inconsistency can lead to confusion and potential merge conflicts, especially after integrating ECS 7,8 and RanPix .glb PRs. The user suggests addressing this issue post-merge to avoid complications.
+The issue arises from the 'entityModel' asset folder using camel case naming conventions while other assets use underscores. Specifically, when everything else is `seperated_by_underscore`, the 'entityModel' folder uses camelCase. This inconsistency can lead to confusion and potential merge conflicts, especially after integrating ECS 7,8 and RanPix .glb PRs. The user suggests addressing this issue post-merge to avoid complications.
 
 ## Related Questions
 - What is the impact of inconsistent naming conventions on code maintainability?

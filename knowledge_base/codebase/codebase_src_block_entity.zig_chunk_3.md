@@ -11,6 +11,13 @@ Handles initialization, deinitialization, and data management for block entities
 ## Explanation
 This chunk manages the lifecycle of block entities within the Cubyz engine. It initializes and deinitializes storage servers and clients, sets up graphics pipelines for rendering, and handles loading, updating, and storing entity data. The code includes functions for handling client and server-specific operations, such as removing entities, updating text, and synchronizing data between the client and server. It also manages memory allocation and deallocation for entity text and textures, ensuring proper resource management.
 
+Specifically, it defines constants for texture dimensions:
+- `textureWidth` is set to 128 pixels.
+- `textureHeight` is set to 72 pixels.
+- `textureMargin` is set to 4 pixels.
+
+The initialization function (`init`) sets up the graphics pipeline with specific shader files and configuration options. The deinitialization function (`deinit`) cleans up resources such as textures, pipelines, and storage servers/clients. Memory allocation for entity text involves duplicating strings using `main.globalAllocator.dupe(u8, event.update.remaining)` and freeing memory when entities are removed or updated.
+
 ## Code Example
 ```zig
 pub fn deinit() void {
@@ -27,11 +34,7 @@ pub fn deinit() void {
 ```
 
 ## Related Questions
-- What is the purpose of the `init` function in this chunk?
-- How does the code handle client-server synchronization for block entities?
-- What role do mutexes play in managing entity data?
-- How is memory allocated and deallocated for entity text in this chunk?
-- What steps are taken to ensure proper resource management in this module?
-- How does the `updateTextFromClient` function update the text of a block entity?
+- What specific values are assigned to textureWidth, textureHeight, and textureMargin?
+- How does the initialization function (`init`) set up the graphics pipeline with shader files and configuration options?
 
 *Source: unknown | chunk_id: codebase_src_block_entity.zig_chunk_3*

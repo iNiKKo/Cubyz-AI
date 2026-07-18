@@ -8,7 +8,7 @@
 Discussion about disabling ambient occlusion on specific blocks like grass.
 
 ## Explanation
-The maintainer initially suggested that disabling ambient occlusion could be easily done, but later clarified that this is not the case. Ambient occlusion is a result of smooth lighting and cannot be simply turned off. The maintainer also mentioned considering the source's method of grass rendering, which involves billboarded and flat-shaded techniques.
+Discussion about disabling ambient occlusion on specific blocks like grass. The maintainer initially suggested that disabling ambient occlusion could be easily done, but later clarified that this is not the case because ambient occlusion is a side-product of smooth lighting and cannot be simply turned off. The maintainer also mentioned considering the source's method of grass rendering, which involves billboarded and flat-shaded techniques.
 
 ## Related Questions
 - What is the impact of disabling ambient occlusion on block rendering?

@@ -9,7 +9,11 @@
 The main function initializes and deinitializes various components of the Cubyz game engine based on command-line arguments and configuration settings.
 
 ## Explanation
-The main function starts by setting up thread-local storage, logging, and argument checking. It ensures that no command line arguments are provided, directing users to use a configuration file instead. The function initializes global settings, environment variables, and file handling systems. It sets up a thread pool for concurrent operations and initializes various subsystems such as GUI, graphics, audio, models, items, network communication, entity management, and rendering. Depending on whether the game is running in headless mode or not, it initializes additional components like window management, synchronization, item drop rendering, asset loading, block meshing, and particle systems. Finally, it starts either a server or client based on the configuration.
+The main function initializes and deinitializes various components of the Cubyz game engine based on command-line arguments and configuration settings. It starts by setting up thread-local storage, logging, and argument checking. The function ensures that no command line arguments are provided, directing users to use a configuration file instead. Specifically, if any command line arguments are detected, it logs an error message and exits the program.
+
+The main function initializes global settings, environment variables, and file handling systems. It sets up a thread pool for concurrent operations using `@max(1, (std.Thread.getCpuCount() catch 4) -| 1)` threads by default unless overridden in the configuration. Various subsystems such as GUI, graphics, audio, models, items, network communication, entity management, and rendering are initialized depending on whether the game is running in headless mode or not.
+
+In non-headless mode, additional components like window management, synchronization, item drop rendering, asset loading, block meshing, and particle systems are also initialized. The function starts either a server or client based on the configuration settings provided.
 
 ## Code Example
 ```zig
@@ -141,7 +145,7 @@ pub fn main(args: std.process.Init.Minimal) void { // MARK: main()
 - How does the main function handle command line arguments?
 - Which subsystems are initialized when the game runs in headless mode?
 - What happens if there is an error getting the environment variable for the home path?
-- How many threads are used by default for the thread pool?
+- How many threads are used by default for the thread pool? The default number of threads is `@max(1, (std.Thread.getCpuCount() catch 4) -| 1)` unless overridden in the configuration.
 - What is the purpose of the `argCheck` block in the main function?
 
 *Source: unknown | chunk_id: codebase_src_main.zig_chunk_3*

@@ -6,10 +6,10 @@
 **Concepts:** lighting propagation, thread safety, queue processing, neighbor interactions
 
 ## Summary
-Handles lighting propagation within a chunk, including destructive and constructive updates.
+Handles light propagation from neighboring chunks, including checks for occlusion and updates to light values within the chunk.
 
 ## Explanation
-The code defines functions for propagating light changes within a chunk. `propagateDestructive` processes entries in a queue to update light values and handle neighbor interactions. It uses mutex locking to ensure thread safety. `propagateFromNeighbor` and `propagateDestructiveFromNeighbor` handle light propagation from neighboring chunks. `propagateLights` initializes the process by setting up a queue with initial light positions and optionally checking neighbors for further propagation.
+The code processes light data from neighboring chunks, updating light values based on occlusion calculations. It iterates through each neighbor of a chunk, calculates new light values considering both outgoing and incoming occlusions, and queues these updated values for further processing if they differ from the current state.
 
 ## Code Example
 ```zig
@@ -96,15 +96,12 @@ fn propagateDestructive(self: *ChannelChunk, lightQueue: *main.utils.CircularBuf
 ```
 
 ## Related Questions
-- What is the purpose of the `propagateDestructive` function?
-- How does the code ensure thread safety during lighting propagation?
-- What data structures are used to manage light queue and neighbor lists?
-- How does the `propagateLights` function initialize the light propagation process?
-- What conditions determine whether a light value is appended to the constructive list?
-- How does the code handle interactions with neighboring chunks during light propagation?
-- What role does the mutex play in the lighting propagation logic?
-- How are light values updated for blocks within the chunk?
-- What is the process for calculating outgoing and incoming occlusion during light propagation?
-- How does the code manage memory allocation and deallocation for lists and queues?
+- What is the purpose of iterating over neighboring chunks in this context?
+- How does the code determine which blocks to update based on neighbor interactions?
+- What role do `calculateOutgoingOcclusion` and `calculateIncomingOcclusion` functions play in light propagation?
+- How are new light values queued for further processing if they differ from existing ones?
+- Why is there a check for sun lighting conditions before updating light values?
+- What data structures are used to manage the queue of light updates?
+- How does the code handle memory allocation and deallocation during this process?
 
 *Source: unknown | chunk_id: codebase_src_renderer_lighting.zig_chunk_2*

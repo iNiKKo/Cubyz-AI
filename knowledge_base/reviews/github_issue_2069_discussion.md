@@ -9,7 +9,7 @@
 The user reports issues building and running a Vulkan window on MacOS, encountering errors related to thread renaming and unsupported OpenGL version. The maintainer suggests missing MoltenVK and other dependencies, and references a potential fix in pull request #2351.
 
 ## Explanation
-The user is attempting to work on Vulkan migration steps but encounters multiple issues when running the build command with `vulkanTestingWindow` set to true. The primary errors include repeated 'Couldn't rename thread: Unsupported' messages, a Vulkan unsupported error, and an OpenGL version mismatch. The maintainer comments that these issues are likely due to missing dependencies such as MoltenVK and other required libraries for building on MacOS. They also mention that a potential fix has been proposed in pull request #2351.
+The user reports issues building and running a Vulkan window on MacOS when setting `vulkanTestingWindow` to true. The primary errors include repeated 'Couldn't rename thread: Unsupported' messages, a Vulkan unsupported error ('Vulkan is not supported. Please update your drivers if you want to keep playing Cubyz in the future.'), and an OpenGL version mismatch ('Requested OpenGL version 4.6, got version 2.1'). These issues are due to missing dependencies such as MoltenVK for building on MacOS. Specifically, the line in `build.zig` that adds RPath with `/usr/local/GL/lib` is problematic because this path does not exist for the user. The maintainer comments that these issues are being addressed and suggests installing MoltenVK to resolve them. A potential fix has been proposed in pull request #2351.
 
 ## Related Questions
 - What is the status of pull request #2351?

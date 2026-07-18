@@ -8,7 +8,7 @@
 The issue proposes adding shader `#include` support, but it has been deemed less critical due to recent changes and potential conflicts.
 
 ## Explanation
-The original request was to implement a custom `#include` directive for shaders to reduce code duplication. However, the maintainer notes that this feature is no longer as pressing due to the removal of voxel models. Additionally, there are concerns about compatibility with another ongoing project (#303) and the potential exacerbation of existing buffer management issues (#3335). The discussion highlights the trade-offs between adding new features and maintaining codebase integrity.
+The issue proposes adding shader `#include` support to reduce code duplication by including common functions. However, due to recent changes in the project (removal of voxel models), this feature is no longer considered critical. The maintainer notes that implementing `#include` could conflict with another ongoing project (#303) and exacerbate existing buffer management issues (#3335). Additionally, there are concerns about potential impacts on autocomplete support due to less structured file naming conventions. Specifically, the maintainer mentions that each included file would need to have the same name as the function they contain to maintain some level of autocomplete functionality.
 
 ## Related Questions
 - What are the potential impacts of implementing shader `#include` support?
