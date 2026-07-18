@@ -103,7 +103,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.4"
+VERSION = "1.1.5"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -1414,6 +1414,23 @@ def format_count(n) -> str:
             return f"{value:.1f}{suffix}"
     return str(int(n))
 
+def format_eta(seconds) -> str:
+    """None/negative -> 'calculating...' (not enough recent completions yet for the server to
+    trust a rate); otherwise the largest two units that matter, e.g. '2h 14m' or '38m'."""
+    if seconds is None or seconds < 0:
+        return "calculating..."
+    seconds = int(seconds)
+    if seconds < 60:
+        return f"{seconds}s"
+    days, rem = divmod(seconds, 86400)
+    hours, rem = divmod(rem, 3600)
+    minutes, _ = divmod(rem, 60)
+    if days:
+        return f"{days}d {hours}h"
+    if hours:
+        return f"{hours}h {minutes}m"
+    return f"{minutes}m"
+
 def generate_local_leaderboard_html(stats: dict):
     """Generates a styled, read-only HTML file next to the client script."""
     html_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "leaderboard.html")
@@ -1508,6 +1525,7 @@ def fetch_and_show_leaderboard():
 
     print(f"{Colors.YELLOW}─── [ CUBYZ DISTRIBUTED LEADERBOARD ] ──────────────────────────────────{Colors.RESET}")
     print(f"  Global Progress: [{Colors.GREEN}{p_bar}{Colors.RESET}] {format_count(comp)}/{format_count(tot)} ({pct:.2f}%)")
+    print(f"  Est. Time Left : {format_eta(stats.get('eta_seconds'))} (from combined speed of all active nodes)")
     rankings = stats.get("rankings", [])
     if not rankings:
         print(f"  {'Rankings':<13}: No contributions recorded yet.")
@@ -1663,9 +1681,9 @@ def main():
             return f"CPU Engine ({get_system_ram_gb():.1f} GB RAM)"
         return f"{gpu_type.upper()} ({total_vram_gb:.1f} GB VRAM)"
 
-    def print_terminal_status(task_desc, step_msg, is_first, comp, tot):
+    def print_terminal_status(task_desc, step_msg, is_first, comp, tot, eta=None):
         if not is_first:
-            sys.stdout.write("\033[F\033[K" * 6)
+            sys.stdout.write("\033[F\033[K" * 7)
 
         pct = (comp / tot * 100) if tot else 0.0
         bar_len = 20
@@ -1691,6 +1709,7 @@ def main():
         print(f"  Configuration: Model: {chosen_model} • Profile: {mode_desc.split(' (')[0]}")
         print(f"  Node Status  : {status_color}{step_msg}{Colors.RESET}")
         print(f"  Global Progress: [{box_color}{p_bar}{Colors.RESET}] {format_count(comp)}/{format_count(tot)} ({pct:.2f}%)")
+        print(f"  Est. Time Left : {format_eta(eta)}")
         print(f"{box_color}────────────────────────────────────────────────────────────────────────{Colors.RESET}")
         sys.stdout.flush()
 
@@ -1738,6 +1757,7 @@ def main():
                 continue
 
             total_chunks, completed_chunks = work_package.get("total_chunks", 0), work_package.get("completed_chunks", 0)
+            eta_seconds = work_package.get("eta_seconds")
 
             if work_package.get("status") == "done":
                 # Doesn't exit -- the server can switch this client into a different mode (or back
@@ -1755,17 +1775,17 @@ def main():
             if mode == "rag":
                 task["lines"] = len(task.get('raw_content', '').splitlines())
                 task_desc = format_current_task_line(task)
-                print_terminal_status(task_desc, "Generating analysis...", first_stat_print, completed_chunks, total_chunks)
+                print_terminal_status(task_desc, "Generating analysis...", first_stat_print, completed_chunks, total_chunks, eta_seconds)
 
                 current_task_chunk_id = task["chunk_id"]
                 parsed_data, last_failure_reason = generate_rag_analysis(
                     task, chosen_model, max_threads,
-                    lambda msg: print_terminal_status(task_desc, msg, False, completed_chunks, total_chunks)
+                    lambda msg: print_terminal_status(task_desc, msg, False, completed_chunks, total_chunks, eta_seconds)
                 )
                 current_task_chunk_id = None
 
                 if parsed_data is None:
-                    print_terminal_status(task_desc, f"✗ Skipped after 3 failed attempts ({last_failure_reason}). Releasing chunk for another node.", False, completed_chunks, total_chunks)
+                    print_terminal_status(task_desc, f"✗ Skipped after 3 failed attempts ({last_failure_reason}). Releasing chunk for another node.", False, completed_chunks, total_chunks, eta_seconds)
                     time.sleep(cooldown if cooldown > 0 else 1)
                     continue
 
@@ -1777,19 +1797,19 @@ def main():
                     "mode": "rag",
                     "client_version": VERSION,
                 })
-                print_terminal_status(task_desc, "Submitting analysis to master server...", False, completed_chunks, total_chunks)
+                print_terminal_status(task_desc, "Submitting analysis to master server...", False, completed_chunks, total_chunks, eta_seconds)
                 make_request(f"{SERVER_URL}/submit_work", parsed_data)
 
-                print_terminal_status(task_desc, "✓ Analysis uploaded successfully!", False, completed_chunks + 1, total_chunks)
+                print_terminal_status(task_desc, "✓ Analysis uploaded successfully!", False, completed_chunks + 1, total_chunks, eta_seconds)
 
             else:  # mode == "finetune"
                 task_desc = format_finetune_task_line(task)
-                print_terminal_status(task_desc, "Generating training pairs...", first_stat_print, completed_chunks, total_chunks)
+                print_terminal_status(task_desc, "Generating training pairs...", first_stat_print, completed_chunks, total_chunks, eta_seconds)
 
                 current_task_chunk_id = task["chunk_id"]
                 parsed, last_failure = generate_finetune_pairs(
                     task, chosen_model,
-                    lambda msg: print_terminal_status(task_desc, msg, False, completed_chunks, total_chunks)
+                    lambda msg: print_terminal_status(task_desc, msg, False, completed_chunks, total_chunks, eta_seconds)
                 )
                 current_task_chunk_id = None
 
@@ -1797,7 +1817,7 @@ def main():
                     # Submit a 0-pairs result instead of just skipping past it: without this, the
                     # chunk is never reported to the server, so its lock just expires and it gets
                     # handed back out again -- forever, if the failure is deterministic.
-                    print_terminal_status(task_desc, f"✗ Skipped after 3 failed attempts ({last_failure}). Marking as done with 0 pairs.", False, completed_chunks, total_chunks)
+                    print_terminal_status(task_desc, f"✗ Skipped after 3 failed attempts ({last_failure}). Marking as done with 0 pairs.", False, completed_chunks, total_chunks, eta_seconds)
                     try:
                         make_request(f"{SERVER_URL}/submit_work", {
                             "chunk_id": task["chunk_id"],
@@ -1823,10 +1843,10 @@ def main():
                     "mode": "finetune",
                     "client_version": VERSION,
                 }
-                print_terminal_status(task_desc, "Submitting pairs to master server...", False, completed_chunks, total_chunks)
+                print_terminal_status(task_desc, "Submitting pairs to master server...", False, completed_chunks, total_chunks, eta_seconds)
                 make_request(f"{SERVER_URL}/submit_work", submission)
 
-                print_terminal_status(task_desc, f"✓ Submitted {pairs_generated} training pairs!", False, completed_chunks + 1, total_chunks)
+                print_terminal_status(task_desc, f"✓ Submitted {pairs_generated} training pairs!", False, completed_chunks + 1, total_chunks, eta_seconds)
 
             first_stat_print = False
             if cooldown > 0: time.sleep(cooldown)

@@ -70,7 +70,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.1.2"
-LATEST_CLIENT_VERSION = "1.1.4"
+LATEST_CLIENT_VERSION = "1.1.5"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:
@@ -106,6 +106,17 @@ finetune_chunk_queue = []
 rag_total_chunks = 0
 finetune_total_chunks = 0
 online_clients = {}  # unified roster -- one client identity now, regardless of which mode it's working in
+
+# ETA estimation: a rolling log of completion timestamps per campaign, used to derive the
+# aggregate throughput of ALL currently-active nodes combined (chunks/sec), not any single
+# node's solo rate. Averaging individual clients' own "time remaining" estimates would be wrong
+# -- it ignores parallelism (N nodes working together finish in ~1/N the time a lone node's
+# estimate implies) and is noisy for a node that just joined. Computing one aggregate rate
+# server-side from real completion events avoids both problems and needs no client-side timing.
+ETA_WINDOW_SECONDS = 600  # only the last 10 minutes of completions count toward the current rate
+ETA_MIN_SAMPLES = 3       # below this many recent completions, the rate is too noisy to trust
+rag_completion_log = []
+finetune_completion_log = []
 
 
 class RAGNode(BaseModel):
@@ -208,6 +219,30 @@ def prune_stale_locks(state: dict) -> bool:
         stale_info = state["locked"].pop(key)
         print(f"[!] Task '{key}' timed out from user '{stale_info['user_id']}'. Released back to queue.")
     return bool(stale_keys)
+
+def _record_completion(completion_log: list):
+    """Appends a completion event (now) to a campaign's rolling log and drops anything older than
+    ETA_WINDOW_SECONDS, so the log stays bounded and every reading reflects only recent activity."""
+    now = time.time()
+    completion_log.append(now)
+    cutoff = now - ETA_WINDOW_SECONDS
+    while completion_log and completion_log[0] < cutoff:
+        completion_log.pop(0)
+
+def _estimate_eta_seconds(completion_log: list, remaining_chunks: int):
+    """Aggregate throughput across every node that has completed a chunk in the last
+    ETA_WINDOW_SECONDS, applied to however many chunks are left. Returns None when there isn't
+    enough recent data yet to trust a rate (campaign just started/resumed, or gone quiet)."""
+    if remaining_chunks <= 0:
+        return 0.0
+    now = time.time()
+    cutoff = now - ETA_WINDOW_SECONDS
+    recent = [t for t in completion_log if t >= cutoff]
+    if len(recent) < ETA_MIN_SAMPLES:
+        return None
+    span = max(now - min(recent), 1.0)
+    rate = len(recent) / span  # combined chunks/sec across all active nodes
+    return remaining_chunks / rate
 
 # ============================================================
 # RAG CAMPAIGN -- chunk ingestion, hard reset (unchanged logic from the pre-merge server.py,
@@ -704,6 +739,7 @@ def _get_rag_work(user_id: str, hardware_tier: str, model: str) -> dict:
     # false prematurely, reporting "done" while real unprocessed work still remains queued.
     total_chunks = rag_total_chunks
     completed_chunks = len(state["completed"])
+    eta_seconds = _estimate_eta_seconds(rag_completion_log, total_chunks - completed_chunks)
 
     if not available_tasks:
         if state_modified:
@@ -713,8 +749,8 @@ def _get_rag_work(user_id: str, hardware_tier: str, model: str) -> dict:
         # deliberately excluded from) as a false "complete!" the moment their eligible work runs
         # dry, while those chunks sit unprocessed forever waiting for a 14B+ client to show up.
         if state["locked"] or completed_chunks < total_chunks:
-            return {"mode": "rag", "status": "waiting", "total_chunks": total_chunks, "completed_chunks": completed_chunks}
-        return {"mode": "rag", "status": "done", "total_chunks": total_chunks, "completed_chunks": completed_chunks}
+            return {"mode": "rag", "status": "waiting", "total_chunks": total_chunks, "completed_chunks": completed_chunks, "eta_seconds": eta_seconds}
+        return {"mode": "rag", "status": "done", "total_chunks": total_chunks, "completed_chunks": completed_chunks, "eta_seconds": eta_seconds}
 
     if "hard" in allowed:
         priority_map = {"hard": 0, "medium": 1, "easy": 2}
@@ -725,7 +761,7 @@ def _get_rag_work(user_id: str, hardware_tier: str, model: str) -> dict:
     save_lock_state(RAG_LOCK_FILE, state)
     print(f"[RAG ➔ {user_id}] Dispatched Priority ({assigned_task['difficulty'].upper()}): {assigned_task['chunk_id']}")
 
-    return {"mode": "rag", "status": "active", "task": assigned_task, "total_chunks": total_chunks, "completed_chunks": completed_chunks}
+    return {"mode": "rag", "status": "active", "task": assigned_task, "total_chunks": total_chunks, "completed_chunks": completed_chunks, "eta_seconds": eta_seconds}
 
 def _get_finetune_work(user_id: str, hardware_tier: str) -> dict:
     state = load_lock_state(FINETUNE_LOCK_FILE)
@@ -733,6 +769,7 @@ def _get_finetune_work(user_id: str, hardware_tier: str) -> dict:
 
     total_chunks = finetune_total_chunks  # true campaign size -- see _get_rag_work's comment
     completed_chunks = len(state["completed"])
+    eta_seconds = _estimate_eta_seconds(finetune_completion_log, total_chunks - completed_chunks)
 
     # Fine-tune generation needs stronger instruction-following than RAG extraction (natural
     # prose + judging debugging-vs-review shape for reviews) -- "easy" tier clients are capped at
@@ -750,15 +787,15 @@ def _get_finetune_work(user_id: str, hardware_tier: str) -> dict:
         if state_modified:
             save_lock_state(FINETUNE_LOCK_FILE, state)
         if state["locked"] or completed_chunks < total_chunks:
-            return {"mode": "finetune", "status": "waiting", "total_chunks": total_chunks, "completed_chunks": completed_chunks}
-        return {"mode": "finetune", "status": "done", "total_chunks": total_chunks, "completed_chunks": completed_chunks}
+            return {"mode": "finetune", "status": "waiting", "total_chunks": total_chunks, "completed_chunks": completed_chunks, "eta_seconds": eta_seconds}
+        return {"mode": "finetune", "status": "done", "total_chunks": total_chunks, "completed_chunks": completed_chunks, "eta_seconds": eta_seconds}
 
     assigned_task = available_tasks[0]
     state["locked"][assigned_task["chunk_id"]] = {"user_id": user_id, "timestamp": time.time()}
     save_lock_state(FINETUNE_LOCK_FILE, state)
     print(f"[FINETUNE ➔ {user_id}] Dispatched ({assigned_task['source_type']}): {assigned_task['chunk_id']}")
 
-    return {"mode": "finetune", "status": "active", "task": assigned_task, "total_chunks": total_chunks, "completed_chunks": completed_chunks}
+    return {"mode": "finetune", "status": "active", "task": assigned_task, "total_chunks": total_chunks, "completed_chunks": completed_chunks, "eta_seconds": eta_seconds}
 
 @app.get("/get_work")
 def get_work(user_id: str, hardware_tier: str = "medium", model: str = "", client_version: str = ""):
@@ -787,6 +824,7 @@ def _submit_rag_work(submission: UnifiedSubmission) -> dict:
     state["locked"].pop(submission.chunk_id, None)
     state["completed"].append(submission.chunk_id)
     save_lock_state(RAG_LOCK_FILE, state)
+    _record_completion(rag_completion_log)
 
     user_stats = load_user_stats(RAG_STATS_FILE)
     user_key = submission.user_id.lower()
@@ -850,6 +888,7 @@ def _submit_finetune_work(submission: UnifiedSubmission) -> dict:
     state["locked"].pop(submission.chunk_id, None)
     state["completed"].append(submission.chunk_id)
     save_lock_state(FINETUNE_LOCK_FILE, state)
+    _record_completion(finetune_completion_log)
 
     user_stats = load_user_stats(FINETUNE_STATS_FILE)
     user_key = submission.user_id.lower()
@@ -919,6 +958,7 @@ def _rag_leaderboard() -> dict:
         "total_chunks_in_codebase": total_chunks,
         "total_chunks_completed": completed_chunks,
         "global_percentage": round(global_pct, 2),
+        "eta_seconds": _estimate_eta_seconds(rag_completion_log, total_chunks - completed_chunks),
         "rankings": rankings
     }
 
@@ -948,6 +988,7 @@ def _finetune_leaderboard() -> dict:
         "total_chunks_in_campaign": total_chunks,
         "total_chunks_completed": completed_chunks,
         "global_percentage": round(global_pct, 2),
+        "eta_seconds": _estimate_eta_seconds(finetune_completion_log, total_chunks - completed_chunks),
         "rankings": rankings,
     }
 
