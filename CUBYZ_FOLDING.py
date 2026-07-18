@@ -1053,6 +1053,42 @@ def make_request(url, payload=None, timeout=180):
     # minutes with nothing on screen and no way out short of Ctrl+C.
     with urllib.request.urlopen(req, timeout=timeout) as res: return json.loads(res.read().decode('utf-8'))
 
+OLLAMA_HOST = OLLAMA_URL.rsplit("/api/", 1)[0]
+
+def get_local_ollama_models() -> set:
+    """Every model tag Ollama already has pulled on this machine, checked fresh each call (a
+    /api/tags listing is a near-instant local call, not worth caching stale) -- used both to tell
+    the server what this volunteer already has (see AUDIT_MODEL_ROSTER assignment, which prefers
+    handing out a model the client won't need to download) and to decide whether an assigned model
+    needs pulling at all before spending time on it."""
+    try:
+        tags = make_request(f"{OLLAMA_HOST}/api/tags", timeout=10)
+        return {m.get("name") for m in tags.get("models", []) if m.get("name")} | \
+               {m.get("model") for m in tags.get("models", []) if m.get("model")}
+    except Exception:
+        return set()
+
+def ensure_audit_model_available(model: str, status_cb, local_models: set = None) -> bool:
+    """Audit mode's model is assigned by the server from AUDIT_MODEL_ROSTER, not auto-detected
+    from this machine's own benchmark like RAG/finetune's. The server already tries to assign
+    something this volunteer reported having (see get_local_ollama_models() being sent with every
+    /get_work call), so the common case here is just confirming that -- a pull only actually
+    happens when the server had no choice but to assign something genuinely missing (e.g. every
+    roster model this client already has is already claimed by someone else online)."""
+    if local_models is None:
+        local_models = get_local_ollama_models()
+    if model in local_models:
+        return True
+
+    status_cb(f"Model '{model}' not found locally -- pulling now (may take a while)...")
+    try:
+        make_request(f"{OLLAMA_HOST}/api/pull", {"name": model, "stream": False}, timeout=1800)
+        status_cb(f"✓ Pulled '{model}'.")
+        return True
+    except Exception as e:
+        status_cb(f"⚠ Failed to pull '{model}': {e}")
+        return False
+
 # Bounded generously (a real crunching call gets up to 180s by default -- see make_request), but
 # a lane that can't finish even this representative benchmark within this long isn't worth using
 # for sustained real work either -- treated the same as an outright failure, not just "slow."
@@ -1552,6 +1588,279 @@ def generate_rag_analysis(task: dict, chosen_model: str, max_threads, status_cb,
     return parsed_data, last_failure_reason
 
 # ============================================================
+# AUDIT MODE -- checks an ALREADY-published knowledge_base/*.md chunk against its real source,
+# looking specifically for the "topic mentioned, value never stated" bug class that every real bug
+# found during the 2026-07-18 RAG debugging session turned out to share (FAQ healing, multiplayer
+# port/UDP/permissions, an entire "Great Zig Rewrite" section compressed to one sentence, wood
+# recipes, keybinding lists phrased ambiguously, etc.) -- distinct from RAG mode's job (which
+# extracts a fresh chunk from raw source with nothing to compare against yet), this compares two
+# things that already exist and decides whether the second is a faithful account of the first.
+# ============================================================
+
+AUDIT_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "verdict": {"type": "string", "enum": ["ok", "needs_fix"]},
+        "reason": {
+            "type": "string",
+            "description": "If needs_fix: the specific fact/value/number/name/command in raw_content that kb_content drops, generalizes away, or contradicts. If ok: empty string."
+        },
+        "corrected_summary": {"type": ["string", "null"]},
+        "corrected_explanation": {"type": ["string", "null"]},
+        "corrected_related_questions": {"type": "array", "items": {"type": "string"}},
+    },
+    "required": ["verdict", "reason", "corrected_summary", "corrected_explanation", "corrected_related_questions"],
+    "additionalProperties": False,
+}
+
+AUDIT_PROMPT = """You are auditing an already-published Cubyz knowledge-base entry against the real source content it was supposedly extracted from. You are NOT extracting a fresh summary -- you are checking whether an EXISTING summary (kb_content) faithfully preserves every concrete, enumerable fact that raw_content actually states.
+
+The single most common real bug found in this knowledge base: kb_content mentions that a topic is COVERED, without ever stating the actual VALUE for it. Concrete confirmed examples from this exact project:
+- kb_content said an FAQ "covers... healing mechanics" -- raw_content actually says "there is currently no means to heal." The topic was named; the answer was never given. This is a failure.
+- kb_content said "tools can increase damage based on the block type they are specialized for" -- raw_content actually lists exactly which tool damages which material (pickaxe/stone, axe/wood, etc). This is a failure.
+- kb_content said "the recipes cover transformations such as converting logs to planks..." -- raw_content actually gives the EXACT recipe (4 planks -> 1 workbench) and kb_content's own related-questions list literally asked "what are the inputs required to craft a workbench?" without ever answering it in the explanation. This is a failure.
+
+What counts as needs_fix:
+- A specific number, exact command/config syntax, named value, or enumerated list item that raw_content explicitly states, but kb_content only refers to generically (e.g. "various settings," "several options," "certain requirements") instead of stating the actual value(s).
+- A direct question-and-answer pair in raw_content (FAQ-style) where kb_content mentions the question was covered but never states the answer.
+- kb_content stating something that directly CONTRADICTS what raw_content says (not just omits -- actively wrong).
+- An enumerated list in raw_content (a table, a bullet list, several named items) where kb_content's related_questions ask about specific items from that list but the explanation never actually answers them.
+
+What does NOT count as needs_fix (do not flag these):
+- kb_content is more concise than raw_content but still states every concrete value raw_content gives -- brevity alone is not a bug.
+- kb_content omits something raw_content itself treats as unimportant framing/narrative (e.g. an introductory sentence, a rhetorical aside) rather than a concrete fact.
+- Minor rephrasing that preserves the same specific values.
+- raw_content itself doesn't actually contain the fact in question (don't invent a "missing fact" that was never there to begin with -- re-read raw_content carefully before flagging anything).
+
+If you find at least one genuine instance of the pattern above: set verdict to "needs_fix", explain the specific dropped/wrong fact in "reason", and write a corrected_explanation that is comprehensive_explanation, DENSE, and includes every concrete fact/value/number/name/command from raw_content that the current kb_content dropped -- write it as a replacement for the ENTIRE Explanation section, not just an addendum, since it fully replaces the old text. Only include corrected_summary if the Summary section itself is also wrong or misleadingly vague (set to null otherwise). Only include corrected_related_questions if you're adding genuinely new questions the corrected explanation now answers (set to an empty list otherwise, keeping the existing ones).
+
+If kb_content already states every concrete fact raw_content gives (even if worded differently or more concisely): set verdict to "ok", reason to "", and all three correction fields to null/empty.
+
+Never invent a fact that isn't in raw_content. Never flag something as wrong just because it's phrased differently. Output strict JSON matching the given schema, nothing else.
+"""
+
+def generate_audit_analysis(task: dict, chosen_model: str, status_cb, force_cpu: bool = False) -> tuple:
+    raw_content = task.get("raw_content", "")
+    kb_content = task.get("kb_content", "")
+
+    prompt_text = f"raw_content (the real source):\n```\n{raw_content}\n```\n\nkb_content (the existing knowledge-base entry to audit):\n```\n{kb_content}\n```\n"
+    system_text = AUDIT_PROMPT
+    if task.get("task_type") == "revise":
+        # A reviewer already confirmed a real issue exists here (see task["proposal_reason"]) and
+        # rejected the SPECIFIC fix below for a SPECIFIC reason (task["review_feedback"]) -- this
+        # is not a fresh audit, it's fixing a fix. Producing another generic "covers X" non-answer
+        # would just repeat the exact failure this whole system exists to catch, one level deeper.
+        prompt_text += (
+            f"\nA previous attempt to fix this diagnosed issue was reviewed and rejected as inadequate:\n"
+            f"Diagnosed issue: {task.get('proposal_reason', '')}\n"
+            f"Previously proposed (rejected) explanation:\n```\n{task.get('proposed_explanation', '')}\n```\n"
+            f"Reviewer's specific feedback on why that fix wasn't good enough:\n{task.get('review_feedback', '')}\n\n"
+            f"Write a genuinely improved corrected_explanation that addresses the reviewer's specific feedback -- "
+            f"don't just resubmit something similar to the rejected version. Set verdict to \"needs_fix\" "
+            f"(the issue is already confirmed real; your job now is only to produce a better fix for it)."
+        )
+
+    payload = {
+        "model": chosen_model,
+        "prompt": prompt_text,
+        "system": system_text,
+        "think": False,
+        "stream": False, "format": AUDIT_SCHEMA,
+        "options": {
+            "temperature": 0.1,  # low but nonzero -- this is a judgment call (does X count as "dropped"?), not pure extraction
+            **({"num_gpu": 0} if force_cpu else {}),
+        }
+    }
+
+    def _log_retry(attempt_num, reason, extra=None):
+        event = {
+            "event": "task_retry", "mode": "audit", "chunk_id": task.get("chunk_id"),
+            "attempt": attempt_num + 1, "reason": reason,
+        }
+        if extra:
+            event.update({k: (v[:2000] if isinstance(v, str) else v) for k, v in extra.items()})
+        log_diagnostic(event)
+
+    parsed_data = None
+    last_failure_reason = "no attempts made"
+    for attempt in range(3):
+        if attempt > 0:
+            time.sleep(5)
+        payload["options"]["temperature"] = 0.1 + (attempt * 0.1)
+
+        try:
+            res = make_request(OLLAMA_URL, payload)
+            json_string = res.get("response", "").strip()
+        except Exception as e:
+            last_failure_reason = f"{type(e).__name__}: {e}"
+            status_cb(f"⚠ Attempt {attempt+1} failed: {last_failure_reason}")
+            _log_retry(attempt, last_failure_reason)
+            continue
+
+        if not json_string:
+            last_failure_reason = "Ollama returned HTTP 200 with an empty 'response' field"
+            status_cb(f"⚠ Attempt {attempt+1}: model returned empty output. Retrying...")
+            _log_retry(attempt, last_failure_reason)
+            continue
+
+        if json_string.startswith("```"):
+            lines = json_string.splitlines()
+            if lines and lines[0].startswith("```"): lines = lines[1:]
+            if lines and lines[-1].startswith("```"): lines = lines[:-1]
+            json_string = "\n".join(lines).strip()
+
+        try:
+            candidate = json.loads(json_string[json_string.find("{"):json_string.rfind("}")+1] if "{" in json_string else json_string)
+        except Exception as e:
+            last_failure_reason = f"JSON parse error: {e}"
+            status_cb(f"⚠ Attempt {attempt+1}: {last_failure_reason}. Retrying...")
+            _log_retry(attempt, last_failure_reason, {"raw_response": json_string})
+            continue
+
+        # Self-check, same spirit as validate_extraction() for RAG mode: a "needs_fix" verdict
+        # must actually justify itself -- if the model says something's wrong but its own
+        # corrected_explanation is empty, or if it claims a fact is missing that provably IS in
+        # kb_content already (crude substring-overlap heuristic, not exhaustive), reject and retry
+        # rather than silently forwarding a self-contradictory audit result to the server.
+        if candidate.get("verdict") == "needs_fix" and not (candidate.get("corrected_explanation") or "").strip():
+            last_failure_reason = "Self-check failed: verdict is needs_fix but corrected_explanation is empty"
+            status_cb(f"⚠ Attempt {attempt+1}: {last_failure_reason}. Retrying...")
+            _log_retry(attempt, last_failure_reason, {"candidate": candidate})
+            continue
+
+        parsed_data = candidate
+        break
+
+    if parsed_data is None:
+        gave_up_event = {
+            "event": "task_gave_up", "mode": "audit", "chunk_id": task.get("chunk_id"),
+            "final_reason": last_failure_reason,
+        }
+        log_diagnostic(gave_up_event)
+        submit_diagnostic_to_server(gave_up_event)
+
+    return parsed_data, last_failure_reason
+
+REVIEW_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "verdict": {"type": "string", "enum": ["approve", "reject", "revise"]},
+        "feedback": {
+            "type": "string",
+            "description": "If reject: why the original diagnosis is wrong (the 'issue' isn't real). If revise: specifically what's wrong with the proposed fix and what it still needs. If approve: empty string."
+        },
+    },
+    "required": ["verdict", "feedback"],
+    "additionalProperties": False,
+}
+
+REVIEW_PROMPT = """You are the SECOND, INDEPENDENT reviewer of a proposed fix to a Cubyz knowledge-base entry. Someone else's LLM already looked at this and proposed a change -- your job is not to redo their work from scratch, it's to check THEIR specific reasoning and THEIR specific fix.
+
+You are given:
+- raw_content: the real source the entry is supposed to summarize.
+- kb_content: the CURRENT, already-published entry (before any fix).
+- proposal_reason: why the proposer thinks kb_content is wrong.
+- proposed_explanation (and possibly proposed_summary / proposed_related_questions): their suggested replacement.
+
+Check, in this order:
+1. Is the proposer's diagnosis actually real? Re-read raw_content yourself. If kb_content already states the fact the proposer claims is missing (even worded differently), or if raw_content doesn't actually contain what the proposer claims it does, the diagnosis itself is wrong -- verdict "reject", and explain what the proposer got wrong.
+2. If the diagnosis IS real: does proposed_explanation actually fix it -- does it now state the specific fact/value/number/name/command that was missing, without fabricating anything not in raw_content? If yes so far, continue to the next check.
+3. REGRESSION CHECK (the most important check, and the one most likely to be skipped): compare proposed_explanation against the CURRENT kb_content's Explanation side by side. Does the proposed version drop, generalize away, or contradict ANY fact that kb_content already stated correctly, in the process of fixing the one thing the proposer targeted? A fix that solves one problem while quietly deleting an unrelated fact that was already right is not an improvement -- it's a regression, and should be treated as harshly as leaving the original bug in place. If you find this, verdict "revise" and say exactly which previously-correct fact got dropped and that it must be kept.
+4. If the fix passes all three checks: verdict "approve", feedback "".
+5. If the diagnosis is real but the fix has smaller issues (unclear wording, a fact stated but not precisely enough, minor omissions) that don't rise to a full regression: verdict "revise" with specific, actionable feedback on what to change.
+
+Be genuinely skeptical -- your entire purpose is to catch a fix that looks plausible but is wrong, incomplete, or introduces a new problem, not to rubber-stamp the first plausible-sounding thing you're shown. Output strict JSON matching the given schema, nothing else.
+"""
+
+def generate_audit_review(task: dict, chosen_model: str, status_cb, force_cpu: bool = False) -> tuple:
+    prompt_text = (
+        f"raw_content (the real source):\n```\n{task.get('raw_content', '')}\n```\n\n"
+        f"kb_content (CURRENT published entry, before any fix):\n```\n{task.get('kb_content', '')}\n```\n\n"
+        f"proposal_reason (why the proposer flagged this):\n{task.get('proposal_reason', '')}\n\n"
+        f"proposed_explanation (their suggested replacement):\n```\n{task.get('proposed_explanation', '')}\n```\n"
+    )
+    if task.get("proposed_summary"):
+        prompt_text += f"\nproposed_summary:\n```\n{task['proposed_summary']}\n```\n"
+    if task.get("proposed_related_questions"):
+        prompt_text += f"\nproposed_related_questions: {task['proposed_related_questions']}\n"
+
+    payload = {
+        "model": chosen_model,
+        "prompt": prompt_text,
+        "system": REVIEW_PROMPT,
+        "think": False,
+        "stream": False, "format": REVIEW_SCHEMA,
+        "options": {
+            "temperature": 0.1,
+            **({"num_gpu": 0} if force_cpu else {}),
+        }
+    }
+
+    def _log_retry(attempt_num, reason, extra=None):
+        event = {
+            "event": "task_retry", "mode": "audit_review", "chunk_id": task.get("chunk_id"),
+            "attempt": attempt_num + 1, "reason": reason,
+        }
+        if extra:
+            event.update({k: (v[:2000] if isinstance(v, str) else v) for k, v in extra.items()})
+        log_diagnostic(event)
+
+    parsed_data = None
+    last_failure_reason = "no attempts made"
+    for attempt in range(3):
+        if attempt > 0:
+            time.sleep(5)
+        payload["options"]["temperature"] = 0.1 + (attempt * 0.1)
+
+        try:
+            res = make_request(OLLAMA_URL, payload)
+            json_string = res.get("response", "").strip()
+        except Exception as e:
+            last_failure_reason = f"{type(e).__name__}: {e}"
+            status_cb(f"⚠ Attempt {attempt+1} failed: {last_failure_reason}")
+            _log_retry(attempt, last_failure_reason)
+            continue
+
+        if not json_string:
+            last_failure_reason = "Ollama returned HTTP 200 with an empty 'response' field"
+            status_cb(f"⚠ Attempt {attempt+1}: model returned empty output. Retrying...")
+            _log_retry(attempt, last_failure_reason)
+            continue
+
+        if json_string.startswith("```"):
+            lines = json_string.splitlines()
+            if lines and lines[0].startswith("```"): lines = lines[1:]
+            if lines and lines[-1].startswith("```"): lines = lines[:-1]
+            json_string = "\n".join(lines).strip()
+
+        try:
+            candidate = json.loads(json_string[json_string.find("{"):json_string.rfind("}")+1] if "{" in json_string else json_string)
+        except Exception as e:
+            last_failure_reason = f"JSON parse error: {e}"
+            status_cb(f"⚠ Attempt {attempt+1}: {last_failure_reason}. Retrying...")
+            _log_retry(attempt, last_failure_reason, {"raw_response": json_string})
+            continue
+
+        if candidate.get("verdict") in ("reject", "revise") and not (candidate.get("feedback") or "").strip():
+            last_failure_reason = f"Self-check failed: verdict is {candidate.get('verdict')} but feedback is empty"
+            status_cb(f"⚠ Attempt {attempt+1}: {last_failure_reason}. Retrying...")
+            _log_retry(attempt, last_failure_reason, {"candidate": candidate})
+            continue
+
+        parsed_data = candidate
+        break
+
+    if parsed_data is None:
+        gave_up_event = {
+            "event": "task_gave_up", "mode": "audit_review", "chunk_id": task.get("chunk_id"),
+            "final_reason": last_failure_reason,
+        }
+        log_diagnostic(gave_up_event)
+        submit_diagnostic_to_server(gave_up_event)
+
+    return parsed_data, last_failure_reason
+
+# ============================================================
 # FINETUNE MODE -- task processing (from finetune/scripts/FINETUNE_FOLDING.py)
 # ============================================================
 
@@ -1892,6 +2201,7 @@ def interruptible_sleep(seconds, dual_controller: "DualLaneController | None" = 
 MODE_BANNERS = {
     "rag": f"{Colors.CYAN}{Colors.BOLD}★ RAG MODE ACTIVATED -- receiving knowledge-extraction tasks{Colors.RESET}",
     "finetune": f"{Colors.MAGENTA}{Colors.BOLD}★ FINETUNE MODE ACTIVATED -- receiving training-pair generation tasks{Colors.RESET}",
+    "audit": f"{Colors.YELLOW}{Colors.BOLD}★ AUDIT MODE ACTIVATED -- checking existing knowledge_base entries against their source{Colors.RESET}",
 }
 
 # Minimum spare system RAM (beyond what the GPU lane's own host-side overhead needs) required
@@ -2191,7 +2501,14 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
                 elif update_status == "update_available":
                     offer_update(update_status, update_info, mandatory=False)
 
-            work_package = make_request(f"{SERVER_URL}/get_work?user_id={user_id}&hardware_tier={hardware_tier}&model={urllib.parse.quote(chosen_model)}&client_version={VERSION}", timeout=10)
+            # Reported on every poll (cheap -- a local /api/tags call, not a network round trip)
+            # regardless of mode, since we don't know we're in audit mode until the response comes
+            # back: the server uses this to prefer assigning a roster model this volunteer already
+            # has pulled, only falling back to something that needs a fresh download when it has no
+            # other choice (see AUDIT_MODEL_ROSTER's assignment logic).
+            local_ollama_models = get_local_ollama_models()
+            available_models_param = urllib.parse.quote(",".join(sorted(local_ollama_models)))
+            work_package = make_request(f"{SERVER_URL}/get_work?user_id={user_id}&hardware_tier={hardware_tier}&model={urllib.parse.quote(chosen_model)}&client_version={VERSION}&available_models={available_models_param}", timeout=10)
 
             mode = work_package.get("mode", "rag")
 
@@ -2213,7 +2530,7 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
                 time.sleep(30)
                 continue
 
-            if mode not in ("rag", "finetune"):
+            if mode not in ("rag", "finetune", "audit"):
                 banner(f"{Colors.YELLOW}[{lane_tag}] [!] Unrecognized mode '{mode}' from server -- skipping this cycle.{Colors.RESET}")
                 time.sleep(5)
                 continue
@@ -2266,6 +2583,92 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
 
                 record_duration(time.time() - task_start_time)
                 report(task_desc, "✓ Analysis uploaded successfully!", False, completed_chunks + 1, total_chunks, eta_seconds)
+
+            elif mode == "audit":
+                task_type = task.get("task_type", "propose")
+                task_desc = f"[AUDIT/{task_type.upper()}] {task['chunk_id']} ({task.get('collection', '?')})"
+                current_task_chunk_id = task["chunk_id"]
+
+                # Audit mode's model is assigned by the server (see AUDIT_MODEL_ROSTER server-side)
+                # rather than auto-detected like RAG/finetune's -- that's the whole mechanism that
+                # keeps concurrent volunteers reviewing each other with genuinely different models
+                # instead of everyone defaulting to the same one. Falls back to this lane's own
+                # auto-detected model only if the server is old enough not to send one.
+                audit_model = work_package.get("audit_model") or chosen_model
+                if audit_model != chosen_model and not ensure_audit_model_available(
+                    audit_model, lambda msg: report(task_desc, msg, False, completed_chunks, total_chunks, eta_seconds),
+                    local_ollama_models,
+                ):
+                    report(task_desc, f"✗ Assigned model '{audit_model}' unavailable and couldn't be pulled -- skipping this cycle.", False, completed_chunks, total_chunks, eta_seconds)
+                    time.sleep(cooldown if cooldown > 0 else 5)
+                    continue
+
+                if task_type in ("propose", "revise"):
+                    verb = "Checking against source..." if task_type == "propose" else "Working on an improved fix..."
+                    report(task_desc, verb, first_stat_print, completed_chunks, total_chunks, eta_seconds)
+                    parsed_data, last_failure_reason = generate_audit_analysis(
+                        task, audit_model,
+                        lambda msg: report(task_desc, msg, False, completed_chunks, total_chunks, eta_seconds),
+                        force_cpu,
+                    )
+                    current_task_chunk_id = None
+
+                    if parsed_data is None:
+                        report(task_desc, f"✗ Skipped after 3 failed attempts ({last_failure_reason}). Releasing chunk for another node.", False, completed_chunks, total_chunks, eta_seconds)
+                        time.sleep(cooldown if cooldown > 0 else 1)
+                        continue
+
+                    if task_type == "propose":
+                        submission = {
+                            "mode": "audit", "task_type": "propose",
+                            "chunk_id": task["chunk_id"], "user_id": user_id, "client_version": VERSION,
+                            "verdict": parsed_data["verdict"],
+                            "reason": parsed_data.get("reason", ""),
+                            "corrected_summary": parsed_data.get("corrected_summary"),
+                            "corrected_explanation": parsed_data.get("corrected_explanation"),
+                            "corrected_related_questions": parsed_data.get("corrected_related_questions") or [],
+                        }
+                        verdict_msg = "✓ No issue found." if parsed_data["verdict"] == "ok" else f"⚠ Proposed a fix: {parsed_data.get('reason', '')[:80]}"
+                    else:  # revise
+                        submission = {
+                            "mode": "audit", "task_type": "revise",
+                            "chunk_id": task["chunk_id"], "user_id": user_id, "client_version": VERSION,
+                            "corrected_summary": parsed_data.get("corrected_summary"),
+                            "corrected_explanation": parsed_data.get("corrected_explanation"),
+                            "corrected_related_questions": parsed_data.get("corrected_related_questions") or [],
+                        }
+                        verdict_msg = "✓ Submitted a revised fix."
+
+                    report(task_desc, "Submitting to master server...", False, completed_chunks, total_chunks, eta_seconds)
+                    make_request(f"{SERVER_URL}/submit_work", submission)
+                    record_duration(time.time() - task_start_time)
+                    report(task_desc, verdict_msg, False, completed_chunks + 1, total_chunks, eta_seconds)
+
+                else:  # task_type == "review"
+                    report(task_desc, "Reviewing another node's proposed fix...", first_stat_print, completed_chunks, total_chunks, eta_seconds)
+                    parsed_data, last_failure_reason = generate_audit_review(
+                        task, audit_model,
+                        lambda msg: report(task_desc, msg, False, completed_chunks, total_chunks, eta_seconds),
+                        force_cpu,
+                    )
+                    current_task_chunk_id = None
+
+                    if parsed_data is None:
+                        report(task_desc, f"✗ Skipped after 3 failed attempts ({last_failure_reason}). Releasing chunk for another node.", False, completed_chunks, total_chunks, eta_seconds)
+                        time.sleep(cooldown if cooldown > 0 else 1)
+                        continue
+
+                    submission = {
+                        "mode": "audit", "task_type": "review",
+                        "chunk_id": task["chunk_id"], "user_id": user_id, "client_version": VERSION,
+                        "review_verdict": parsed_data["verdict"],
+                        "review_feedback": parsed_data.get("feedback", ""),
+                    }
+                    report(task_desc, "Submitting review to master server...", False, completed_chunks, total_chunks, eta_seconds)
+                    make_request(f"{SERVER_URL}/submit_work", submission)
+                    record_duration(time.time() - task_start_time)
+                    verdict_labels = {"approve": "✓ Approved -- fix applied.", "reject": "✗ Rejected -- no real issue.", "revise": "⚠ Sent back for revision."}
+                    report(task_desc, verdict_labels.get(parsed_data["verdict"], parsed_data["verdict"]), False, completed_chunks + 1, total_chunks, eta_seconds)
 
             else:  # mode == "finetune"
                 task_desc = format_finetune_task_line(task)

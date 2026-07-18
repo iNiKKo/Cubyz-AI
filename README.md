@@ -375,6 +375,47 @@ not just patched after the fact):**
    summary for reviews -- without it, a later "is this actually grounded" audit (like this one)
    hits a dead end instead of a fixable bug.
 
+**Real-user dislike feedback, replayed against the fixed pipeline:** the live webapp's 21
+thumbs-down messages (out of 391 total, `webapp/chat_history.db`) were re-run through the fixed
+RAG system. Most were now fixed as a side effect of the work above (e.g. a Windows/Mac
+keybinding-support mixup, an "ashframe is a Cubyz server" misidentification, a "the plan for
+shadows is not specified in the provided text" meta-reference violation). One dislike surfaced a
+brand new, previously untested instance of the same fact-loss bug: `codebase_assets_cubyz_
+recipes_wood_recipes.zig.zon_chunk_0.md` mentioned "converting logs to planks, branches, fences,
+signs, chests" as topics without ever stating the actual recipes -- including literally listing
+"What are the inputs required to craft a workbench?" as a synthetic question its own explanation
+never answered. Fixed with the exact recipes from the raw `.zig.zon` source. One dislike (soundtrack
+attribution) turned out to be the model confidently hallucinating a plausible-sounding name (a
+well-known royalty-free composer) despite the grounding rules -- there is no source anywhere in the
+corpus about who made the music, so this is a real instance of the model overriding its own "say you
+don't know" instruction, not a fixable knowledge-base gap.
+
+**Benchmark expanded from 96 to 144 questions** (`webapp/rag_batch_test.py` and
+`finetune/training/test_inference.py`, kept in sync) to cover previously-untested corpus areas:
+Game Design Principles, CONTRIBUTING.md conventions, installation requirements, modding, art
+guidelines, the soil block page, wood recipes, more developer-judgment facts, Ashframe/server-list
+config, and multiplayer backup paths. Running the new 48 cold exposed the systemic version of the
+same bug at its worst: `docs_GAME_DESIGN_PRINCIPLES.md`, `docs_CONTRIBUTING.md`, and
+`docs_CONTENT_SUGGESTIONS.md` -- all long, itemized policy/principles documents -- had been crunched
+down to a single sentence *listing the topic names* ("the game avoids dimensions, teleportation,
+automation...") with zero of the actual reasoning or values behind any of them. One of these was a
+mistake made earlier in this same session: the `multiplayer.md` fix above added "backups must be
+done manually" but never restated the actual backup paths, reproducing the exact bug it was meant to
+fix. All were rewritten comprehensively (2 docs split into additional chunks given how much real
+content they'd lost), the same way `history.md` was earlier. This is the clearest evidence yet for
+why a benchmark's "PASS" only proves the specific facts it happened to probe -- it doesn't prove the
+surrounding, untested content in the same files is fine.
+
+**Final combined result: 138 correct / 1 partial / 5 wrong out of 144 (~95.8%)**, re-verified with a
+full fresh embed and batch run. The 5 remaining wrong answers are a distinct, smaller class of
+problem from everything above: in each case the correct fact is genuinely present in the retrieved
+context, but a topically-similar-but-distinct chunk (a UI-discussion issue thread for "creative
+inventory," a workbench-*usage* doc competing with the workbench-*crafting* recipe) wins the model's
+attention instead. This is a retrieval-reranking limitation, not a data gap -- confirmed by checking
+retrieval logs directly rather than assuming -- and is left as a known residual issue rather than
+chased further with prompt tweaks, since two dedicated attempts (increasing `GLOBAL_TOP_K`, checking
+in isolation) didn't resolve it and risked destabilizing already-verified behavior elsewhere.
+
 ---
 
 ## Summary
@@ -385,7 +426,7 @@ not just patched after the fact):**
 | 2 | RAG only, single-file KB | Facts good, code examples wrong |
 | 3 | Distributed crunching | 1,134/1,134 chunks, bigger KB (introduced a fact-loss bug found later) |
 | 4 | Fine-tune + RAG hybrid | 89% on 96-question benchmark, general capability fully intact |
-| 5 | Consolidation & cleanup | RAG (3,247) + fine-tune (2,193) campaigns both complete; dual-lane crunching; 89%->71.9% regression found, corrected root cause (live crunching fact-loss bugs + context ordering/list-format issues, not corpus dilution), systematic RAG-side fixes brought it to 94/96 (97.9%); new training round in progress to beat that on the fine-tune side |
+| 5 | Consolidation & cleanup | RAG (3,247) + fine-tune (2,193) campaigns both complete; dual-lane crunching; 89%->71.9% regression found, corrected root cause (live crunching fact-loss bugs + context ordering/list-format issues, not corpus dilution); systematic RAG-side fixes plus a benchmark expansion to 144 questions (exposing the same bug systemically in policy-style docs) brought it to 138/144 (95.8%); new training round in progress to beat that on the fine-tune side |
 
 Everything upstream of the current system is kept in `archive/`, organized by prototype, because
 each dead end is the reason the current one works.

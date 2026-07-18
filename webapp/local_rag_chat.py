@@ -102,39 +102,66 @@ def scan_files():
     return entries
 
 
-def build_index():
-    print("[~] Building embedding index (one-time, cached to disk)...")
-    entries = scan_files()
-    print(f"[~] Embedding {len(entries)} chunks in batches of {EMBED_BATCH_SIZE}...")
-    for i in range(0, len(entries), EMBED_BATCH_SIZE):
-        batch = entries[i:i + EMBED_BATCH_SIZE]
+def build_index(existing_entries=None):
+    # Incremental by default: a single chunk edit used to force a full re-embed of the entire
+    # knowledge base (3000+ chunks, ~15-20 minutes) -- painfully slow for the actual common case of
+    # fixing one or two chunks at a time. Reuse any cached embedding whose (collection, filename,
+    # text) triple is unchanged; only call the embedding model for chunks that are genuinely new or
+    # edited. Pass existing_entries=None (or use --rebuild) to force embedding everything from
+    # scratch, e.g. if the embedding model itself changed or the cache is suspected corrupt.
+    scanned = scan_files()
+    cached_by_key = {}
+    if existing_entries:
+        cached_by_key = {(e["collection"], e["filename"]): e for e in existing_entries}
+
+    final_entries = []
+    to_embed = []
+    for e in scanned:
+        cached = cached_by_key.get((e["collection"], e["filename"]))
+        if cached and cached["text"] == e["text"] and "embedding" in cached:
+            e["embedding"] = cached["embedding"]
+            final_entries.append(e)
+        else:
+            to_embed.append(e)
+
+    reused = len(final_entries)
+    if reused:
+        print(f"[~] Reusing {reused} unchanged cached embeddings; embedding {len(to_embed)} new/changed chunks...")
+    else:
+        print(f"[~] Building embedding index from scratch: {len(to_embed)} chunks...")
+
+    for i in range(0, len(to_embed), EMBED_BATCH_SIZE):
+        batch = to_embed[i:i + EMBED_BATCH_SIZE]
         embeddings = embed_batch([e["text"] for e in batch])
         for e, emb in zip(batch, embeddings):
             e["embedding"] = emb
-        done = min(i + EMBED_BATCH_SIZE, len(entries))
-        if (i // EMBED_BATCH_SIZE) % 10 == 0 or done == len(entries):
-            print(f"    ... {done}/{len(entries)}")
+        done = min(i + EMBED_BATCH_SIZE, len(to_embed))
+        if (i // EMBED_BATCH_SIZE) % 10 == 0 or done == len(to_embed):
+            print(f"    ... {done}/{len(to_embed)}")
+    final_entries.extend(to_embed)
 
     with open(CACHE_FILE, "w") as f:
-        json.dump(entries, f)
-    print(f"[OK] Index cached to {CACHE_FILE}")
-    return entries
+        json.dump(final_entries, f)
+    print(f"[OK] Index cached to {CACHE_FILE} ({len(final_entries)} total chunks)")
+    return final_entries
 
 
 def load_index(rebuild=False):
-    if not rebuild and os.path.exists(CACHE_FILE):
+    existing = None
+    if os.path.exists(CACHE_FILE):
         with open(CACHE_FILE) as f:
-            entries = json.load(f)
-        # Compares (collection, filename, text) identity, not just a count -- swapping N files for
-        # a different N files (e.g. replacing a stale chunk with a corrected one under a new
-        # filename) leaves the count unchanged, so a count-only check would silently keep serving
-        # embeddings for deleted files while never picking up the new ones.
-        cached = {(e["collection"], e["filename"]): e["text"] for e in entries}
-        current = {(e["collection"], e["filename"]): e["text"] for e in scan_files()}
-        if cached == current:
-            return entries
-        print("[~] Cache stale (files changed), rebuilding...")
-    return build_index()
+            existing = json.load(f)
+        if not rebuild:
+            # Compares (collection, filename, text) identity, not just a count -- swapping N files
+            # for a different N files (e.g. replacing a stale chunk with a corrected one under a
+            # new filename) leaves the count unchanged, so a count-only check would silently keep
+            # serving embeddings for deleted files while never picking up the new ones.
+            cached = {(e["collection"], e["filename"]): e["text"] for e in existing}
+            current = {(e["collection"], e["filename"]): e["text"] for e in scan_files()}
+            if cached == current:
+                return existing
+            print("[~] Cache stale (files changed) -- incrementally re-embedding only what changed...")
+    return build_index(existing_entries=None if rebuild else existing)
 
 
 def retrieve(query, index, global_top_k=GLOBAL_TOP_K, min_per_collection=MIN_PER_COLLECTION):

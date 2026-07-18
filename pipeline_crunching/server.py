@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import json
 import time
@@ -62,6 +63,40 @@ FINETUNE_STATS_FILE = os.path.join(FINETUNE_ROOT, "campaign_state", "user_stats.
 FINETUNE_HASH_DB_FILE = os.path.join(FINETUNE_ROOT, "campaign_state", "file_hashes.json")
 FINETUNE_BACKUP_DIR = os.path.join(REPO_ROOT, "archive", "finetune_campaign_backups")
 
+# --- Audit campaign paths (finds and fixes "fact dropped during crunching" bugs in ALREADY
+# crunched knowledge_base/*.md content -- the manual work done by hand throughout the 2026-07-18
+# RAG debugging session, turned into an ongoing distributed job instead of a one-off pass) ---
+KNOWLEDGE_DIR = os.path.join(REPO_ROOT, "knowledge_base")
+AUDIT_LOCK_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "audit_lock_state.json")
+AUDIT_STATS_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "audit_user_stats.json")
+AUDIT_HASH_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "audit_hash_state.json")
+AUDIT_PENDING_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "audit_pending_fixes.json")
+AUDIT_APPLIED_LOG = os.path.join(PIPELINE_ROOT, "campaign_state", "audit_applied_log.jsonl")
+AUDIT_NEEDS_HUMAN_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "audit_needs_human_review.jsonl")
+AUDIT_MODEL_ASSIGNMENTS_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "audit_model_assignments.json")
+
+# Model roster for audit mode, split by hardware tier so a weak machine only ever gets assigned a
+# model it can actually run and a strong machine gets real capability out of its hardware -- but
+# WITHIN a tier, every concurrently-online volunteer gets a DIFFERENT model than everyone else
+# currently online, cycling back to the top of the list once every model in the tier is in use.
+# Deliberately spans multiple vendors/architectures (Qwen, Llama, Gemma, Mistral/Mixtral, DeepSeek)
+# rather than just different sizes of one family -- the whole point of "a different reviewer" is a
+# genuinely different model's blind spots, not the same underlying training data reviewed from a
+# different context window. Operators should have these pulled in Ollama ahead of time; the client
+# will attempt to pull an assigned model on demand if it isn't present locally.
+AUDIT_MODEL_ROSTER = {
+    "easy":   ["qwen2.5:3b", "llama3.2:3b", "gemma2:2b", "phi3.5:3.8b"],
+    "medium": ["qwen2.5:7b", "llama3.1:8b", "gemma2:9b", "mistral:7b"],
+    "hard":   ["qwen2.5:14b", "gemma2:27b", "mixtral:8x7b", "deepseek-coder-v2:16b"],
+}
+# A brief gap between polls (network hiccup, a slow Ollama call) shouldn't free up a model that's
+# genuinely still in use and hand it to someone else -- this is deliberately looser than the 60s
+# "online" window used elsewhere for display purposes, since reassigning someone's model out from
+# under them mid-session is more disruptive than a leaderboard briefly showing them as offline.
+AUDIT_ASSIGNMENT_STALE_SECONDS = 120
+
+audit_model_assignments = {}  # user_id (lowercase) -> {"model": ..., "tier": ..., "last_seen": ...}
+
 TASK_TIMEOUT = 300
 
 # How many separate nodes must independently give up on the same RAG chunk (each after their own
@@ -120,8 +155,23 @@ SERVER_STATE_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "server_mode_s
 # own.
 CLIENT_DIAGNOSTICS_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "client_diagnostics.jsonl")
 
+# Audit mode is a genuine two-role conversation, not blind independent voting: one volunteer's LLM
+# PROPOSES a fix, a DIFFERENT volunteer's LLM (never the same one) REVIEWS that specific proposal --
+# sees the proposer's stated reasoning, checks it's real against raw_content, and explicitly checks
+# the fix doesn't drop/contradict anything the ORIGINAL content already had right (the regression
+# check). The reviewer can approve (fix gets applied), reject (proposer's diagnosis itself was
+# wrong -- goes back for a completely fresh, independent proposal), or request revision (the
+# diagnosis is right but the fix itself needs work -- goes out with the reviewer's specific
+# feedback attached for someone else to take another pass at). Capped at MAX_REVIEW_ROUNDS
+# propose/reject/revise cycles per chunk before giving up and flagging it for an actual human
+# instead of ping-ponging between LLMs forever on a chunk they can't agree on.
+MAX_REVIEW_ROUNDS = 3
+
 rag_chunk_queue = []
 finetune_chunk_queue = []
+audit_chunk_queue = []
+audit_total_chunks = 0
+audit_completion_log = []
 # True campaign size, including chunks skipped from the queues above because they're already
 # fully completed and unchanged (see rag_initialize_chunks()/finetune_initialize_chunks()) --
 # *_chunk_queue only holds chunks still available to hand out, so once enough of a campaign is
@@ -170,7 +220,7 @@ class UnifiedSubmission(BaseModel):
     # "mode" defaults to "rag" so an old, not-yet-updated RAG-only client (which never sends this
     # field) still submits correctly as long as the server happens to be in RAG mode -- the same
     # spirit as CUBYZ_FOLDING.py defaulting an absent /get_work "mode" to "rag".
-    mode: Literal["rag", "finetune"] = "rag"
+    mode: Literal["rag", "finetune", "audit"] = "rag"
     client_version: str = ""  # absent (old client) is treated the same as "0.0.0" -- see _parse_version
     chunk_id: str
     user_id: str = Field(..., min_length=3, max_length=9, pattern="^[a-zA-Z]+$")
@@ -188,6 +238,17 @@ class UnifiedSubmission(BaseModel):
     # Fine-tune-mode fields
     source_type: Optional[str] = None
     pairs: List[dict] = []
+    # Audit-mode fields -- see _submit_audit_work(). task_type tracks which of the three roles
+    # this submission is responding as; verdict/reason/corrected_* are the PROPOSER's (or
+    # REVISER's) fields, review_verdict/review_feedback are the REVIEWER's.
+    task_type: Optional[Literal["propose", "review", "revise"]] = None
+    verdict: Optional[Literal["ok", "needs_fix"]] = None
+    reason: str = ""
+    corrected_summary: Optional[str] = None
+    corrected_explanation: Optional[str] = None
+    corrected_related_questions: List[str] = []
+    review_verdict: Optional[Literal["approve", "reject", "revise"]] = None
+    review_feedback: str = ""
 
 
 def read_json_file(path: str, default):
@@ -626,6 +687,486 @@ def finetune_initialize_chunks():
     print(f" Active task targets:   {len(finetune_chunk_queue)}")
     print("─"*55 + "\n")
 
+# ============================================================
+# AUDIT CAMPAIGN -- finds and fixes the "fact dropped during crunching" bug class in ALREADY
+# published knowledge_base/*.md content. This is the automated, ongoing version of the manual
+# audit-and-rewrite work done by hand throughout the 2026-07-18 RAG debugging session (see
+# README.md's Prototype 5 section): every bug found that day had the same shape -- a chunk's
+# Explanation mentioned a topic without stating the actual value/fact the raw source gives for it.
+#
+# Deliberately separate campaign state from RAG/finetune (own lock file, own stats, own hash
+# tracking) since chunk_ids can collide as strings across campaigns without meaning the same
+# chunk -- same reasoning already documented at the top of this file for RAG vs finetune.
+# ============================================================
+
+def _enumerate_source_chunks_for_audit() -> list:
+    """Every (chunk_id, raw_content, collection) triple currently derivable from local source
+    data, re-chunked with the exact same chunk_size/overlap/boundaries rag_initialize_chunks()
+    uses for docs/codebase/addon_creator, so chunk_id and raw_content match exactly what the
+    original crunch saw -- deliberately NOT reusing rag_chunk_queue directly, since that only
+    holds chunks still *incomplete* for the RAG campaign, while auditing needs raw_content for
+    already-completed chunks too (the ones with an existing knowledge_base entry to check).
+    Reviews are handled differently: raw_content is read directly from organized_cubyz_dataset's
+    reviews json, which -- unlike the crunched output stored in users/*/github_reviews.jsonl --
+    still carries the original PR diff/comment text (confirmed present live, 2026-07-18)."""
+    chunk_size, overlap = 150, 30
+    results = []
+
+    for tier in ["easy", "medium", "hard"]:
+        tier_path = os.path.join(RAG_SOURCE_DIR, tier)
+        if not os.path.exists(tier_path):
+            continue
+        for file in os.listdir(tier_path):
+            file_path = os.path.join(tier_path, file)
+            if not os.path.isfile(file_path):
+                continue
+
+            if file.lower().endswith('.json') or file.lower().startswith('reviews'):
+                try:
+                    with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                        review_array = json.load(f)
+                except Exception:
+                    continue
+                for review_item in review_array:
+                    chunk_id = review_item.get("chunk_id")
+                    raw_content = review_item.get("raw_content", "")
+                    if chunk_id and raw_content:
+                        results.append({"chunk_id": chunk_id, "raw_content": raw_content, "collection": "reviews"})
+            else:
+                try:
+                    with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                        lines = f.readlines()
+                except Exception:
+                    continue
+                file_lower = file.lower()
+                if file_lower.startswith("codebase_"):
+                    collection = "codebase"
+                elif file_lower.startswith("addon_creator_"):
+                    collection = "addon_creator"
+                else:
+                    collection = "docs"
+                for idx, chunk_raw_content in enumerate(_structural_chunks(lines, chunk_size, chunk_size * 2, overlap)):
+                    results.append({
+                        "chunk_id": f"{file}_chunk_{idx}",
+                        "raw_content": chunk_raw_content,
+                        "collection": collection,
+                    })
+    return results
+
+def _combined_audit_hash(raw_content: str, kb_content: str) -> str:
+    """One hash covering both sides of what an audit checks -- if EITHER the raw source or the
+    published knowledge_base chunk changes, the combined hash changes, and the chunk is due for
+    re-audit. Hashing only one side would miss e.g. a hand-edit to the knowledge_base chunk (like
+    every fix made by hand this session) that never touched the raw source."""
+    h = hashlib.sha256()
+    h.update(raw_content.encode("utf-8", errors="ignore"))
+    h.update(b"\x00")
+    h.update(kb_content.encode("utf-8", errors="ignore"))
+    return h.hexdigest()
+
+def _prune_stale_audit_assignments():
+    now = time.time()
+    stale = [u for u, info in audit_model_assignments.items() if now - info["last_seen"] > AUDIT_ASSIGNMENT_STALE_SECONDS]
+    for u in stale:
+        audit_model_assignments.pop(u, None)
+    if stale:
+        write_json_file(AUDIT_MODEL_ASSIGNMENTS_FILE, audit_model_assignments, "audit model assignments")
+
+def _assign_audit_model(user_id: str, hardware_tier: str, client_local_models: set = None) -> str:
+    """Gives this volunteer one specific model from their hardware tier's roster, distinct from
+    every other model currently in use by someone else online in that same tier -- see
+    AUDIT_MODEL_ROSTER's comment for why. Stable for as long as they stay online (no reason to make
+    Ollama reload a different model every single poll); reassigned fresh once they've been away
+    long enough to be pruned."""
+    _prune_stale_audit_assignments()
+    tier = hardware_tier if hardware_tier in AUDIT_MODEL_ROSTER else "medium"
+    roster = AUDIT_MODEL_ROSTER[tier]
+    user_key = user_id.lower()
+    client_local_models = client_local_models or set()
+
+    existing = audit_model_assignments.get(user_key)
+    if existing and existing.get("tier") == tier:
+        existing["last_seen"] = time.time()
+        write_json_file(AUDIT_MODEL_ASSIGNMENTS_FILE, audit_model_assignments, "audit model assignments")
+        return existing["model"]
+
+    # Whichever roster model the fewest OTHER currently-active same-tier volunteers are using gets
+    # picked, ties broken by roster order. The 1st joiner gets roster[0] (everything at 0 usage,
+    # first tie-break wins); the 2nd gets roster[1] (roster[0] now has 1 user, everything else 0);
+    # once every model has exactly 1 user, the next joiner ties everything again and lands back on
+    # roster[0] -- a genuine repeat of the list, the same behavior whether 3 or 30 people join.
+    usage = {m: 0 for m in roster}
+    for u, info in audit_model_assignments.items():
+        if u != user_key and info.get("tier") == tier and info.get("model") in usage:
+            usage[info["model"]] += 1
+
+    # Prefer a model this specific client already has pulled -- avoids an unnecessary download
+    # entirely when there's a diversity-valid choice available for free. Only fall through to the
+    # full roster (accepting a pull may be needed) when none of what they already have is a viable,
+    # least-used option in this tier.
+    already_have = [m for m in roster if m in client_local_models]
+    if already_have:
+        min_usage_overall = min(usage.values())
+        # Only prefer "already have" if it doesn't force a strictly worse (more duplicated) model
+        # than the true least-used one -- otherwise two clients who both already have roster[0]
+        # would keep piling onto it forever instead of ever spreading out.
+        candidates = [m for m in already_have if usage[m] == min_usage_overall]
+        if candidates:
+            chosen = min(candidates, key=lambda m: roster.index(m))
+            audit_model_assignments[user_key] = {"model": chosen, "tier": tier, "last_seen": time.time()}
+            write_json_file(AUDIT_MODEL_ASSIGNMENTS_FILE, audit_model_assignments, "audit model assignments")
+            print(f"[AUDIT] '{user_id}' assigned model '{chosen}' (hardware tier: {tier}, already local -- no pull needed)")
+            return chosen
+
+    chosen = min(roster, key=lambda m: (usage[m], roster.index(m)))
+    audit_model_assignments[user_key] = {"model": chosen, "tier": tier, "last_seen": time.time()}
+    write_json_file(AUDIT_MODEL_ASSIGNMENTS_FILE, audit_model_assignments, "audit model assignments")
+    pull_note = "" if chosen in client_local_models else " -- will need to be pulled"
+    print(f"[AUDIT] '{user_id}' assigned model '{chosen}' (hardware tier: {tier}){pull_note}")
+    return chosen
+
+def audit_initialize_chunks():
+    global audit_total_chunks
+    audit_chunk_queue.clear()
+    audit_total_chunks = 0
+    audit_model_assignments.clear()
+    audit_model_assignments.update(read_json_file(AUDIT_MODEL_ASSIGNMENTS_FILE, {}))
+
+    if not os.path.exists(RAG_SOURCE_DIR) or not os.path.exists(KNOWLEDGE_DIR):
+        print("[X] Audit campaign: source dataset or knowledge_base/ not found -- skipping.")
+        return
+
+    lock_state = load_lock_state(AUDIT_LOCK_FILE)
+    completed_chunks = set(lock_state.get("completed", []))
+    audit_hashes = read_json_file(AUDIT_HASH_FILE, {})
+
+    skipped_no_kb_entry = 0
+    skipped_unchanged = 0
+    for entry in _enumerate_source_chunks_for_audit():
+        chunk_id, collection = entry["chunk_id"], entry["collection"]
+        kb_path = os.path.join(KNOWLEDGE_DIR, collection, f"{chunk_id}.md")
+        if not os.path.exists(kb_path):
+            skipped_no_kb_entry += 1
+            continue  # never crunched yet (or a different campaign's in-progress chunk) -- nothing to audit
+
+        try:
+            with open(kb_path, encoding="utf-8") as f:
+                kb_content = f.read()
+        except Exception:
+            continue
+
+        current_hash = _combined_audit_hash(entry["raw_content"], kb_content)
+        if chunk_id in completed_chunks and audit_hashes.get(chunk_id) == current_hash:
+            skipped_unchanged += 1
+            continue  # already audited, and neither side has changed since
+
+        audit_total_chunks += 1
+        audit_chunk_queue.append({
+            "chunk_id": chunk_id,
+            "collection": collection,
+            "raw_content": entry["raw_content"],
+            "kb_content": kb_content,
+            "content_hash": current_hash,
+        })
+
+    print("\n" + "─"*55)
+    print("              AUDIT PIPELINE METRICS                  ")
+    print("─"*55)
+    print(f" Not yet crunched (skipped):     {skipped_no_kb_entry}")
+    print(f" Already audited, unchanged:     {skipped_unchanged}")
+    print(f" Due for (re-)audit:             {len(audit_chunk_queue)}")
+    print("─"*55 + "\n")
+
+def _extract_kb_section(text: str, heading: str) -> str:
+    match = re.search(rf"## {re.escape(heading)}\n(.*?)(?=\n\n## |\n\n\*Source)", text, re.S)
+    return match.group(1).strip() if match else ""
+
+def _text_similarity(a: str, b: str) -> float:
+    import difflib
+    norm = lambda s: re.sub(r"\s+", " ", s.strip().lower())
+    return difflib.SequenceMatcher(None, norm(a), norm(b)).ratio()
+
+def _replace_kb_section(text: str, heading: str, new_body: str) -> str:
+    """Replaces just one section's body (e.g. everything after '## Explanation') in a
+    knowledge_base/*.md chunk, leaving the header/Type/Keywords/Symbols/Concepts and the trailing
+    '## Related Questions'/Source footer exactly as they are -- an audit fix corrects the
+    generated content, it never touches structural metadata a human or the original crunch
+    already got right. Matches up to the next '## ' heading or the '*Source:' footer, whichever
+    comes first, since which section follows varies (a Code Example section is only present on
+    some chunk types)."""
+    pattern = re.compile(rf"(## {re.escape(heading)}\n).*?(?=\n\n## |\n\n\*Source)", re.S)
+    if not pattern.search(text):
+        return text
+    return pattern.sub(lambda m: m.group(1) + new_body.strip(), text, count=1)
+
+def _apply_audit_fix(chunk_id: str, collection: str, corrected_summary, corrected_explanation, corrected_related_questions) -> bool:
+    kb_path = os.path.join(KNOWLEDGE_DIR, collection, f"{chunk_id}.md")
+    if not os.path.exists(kb_path):
+        return False
+    with open(kb_path, encoding="utf-8") as f:
+        text = f.read()
+
+    if corrected_summary:
+        text = _replace_kb_section(text, "Summary", corrected_summary)
+    if corrected_explanation:
+        text = _replace_kb_section(text, "Explanation", corrected_explanation)
+    if corrected_related_questions:
+        rq_body = "\n".join(f"- {q}" for q in corrected_related_questions)
+        text = _replace_kb_section(text, "Related Questions", rq_body)
+
+    with open(kb_path, "w", encoding="utf-8") as f:
+        f.write(text)
+    return True
+
+def _new_user_stats_entry() -> dict:
+    return {"chunks_audited": 0, "issues_found": 0, "fixes_applied": 0, "reviews_done": 0}
+
+def _get_audit_work(user_id: str, hardware_tier: str, client_local_models: set = None) -> dict:
+    state = load_lock_state(AUDIT_LOCK_FILE)
+    state_modified = prune_stale_locks(state)
+    pending = read_json_file(AUDIT_PENDING_FILE, {})
+    assigned_model = _assign_audit_model(user_id, hardware_tier, client_local_models)
+
+    total_chunks = len(audit_chunk_queue)
+    completed_chunks = len(state["completed"])
+
+    # Three kinds of work can exist for a given chunk right now: a fresh chunk nobody's looked at
+    # yet (propose), a chunk sitting with an unreviewed proposal (review -- but never handed to the
+    # same user_id who wrote that proposal, since a "review" by the proposer isn't independent of
+    # anything), or a chunk whose reviewer asked for a better fix (revise -- never handed back to
+    # that same reviewer, so a fresh attempt gets made rather than the same person just overriding
+    # their own feedback).
+    candidates = []
+    for t in audit_chunk_queue:
+        cid = t["chunk_id"]
+        if cid in state["completed"] or cid in state["locked"]:
+            continue
+        p = pending.get(cid)
+        if not p or not p.get("stage"):
+            candidates.append(("propose", t, p))
+        elif p["stage"] == "proposed" and p["proposer"].lower() != user_id.lower():
+            candidates.append(("review", t, p))
+        elif p["stage"] == "revise_requested" and (p.get("last_reviewer") or "").lower() != user_id.lower():
+            candidates.append(("revise", t, p))
+        # else: nothing this user_id can do for this chunk right now (e.g. they're the proposer
+        # waiting on someone else's review) -- it just isn't offered to them this call.
+
+    eta_seconds = _estimate_eta_seconds(audit_completion_log, len(candidates))
+
+    if not candidates:
+        if state_modified:
+            save_lock_state(AUDIT_LOCK_FILE, state)
+        status = "waiting" if (state["locked"] or pending) else "done"
+        return {"mode": "audit", "status": status, "total_chunks": total_chunks,
+                "completed_chunks": completed_chunks, "eta_seconds": eta_seconds, "audit_model": assigned_model}
+
+    # Review/revise work clears an in-flight chunk all the way to a decision; fresh proposals just
+    # add more in-flight chunks. Prioritizing the former keeps the pending backlog from growing
+    # unbounded when there are more volunteers proposing than reviewing.
+    priority = {"review": 0, "revise": 1, "propose": 2}
+    candidates.sort(key=lambda c: priority[c[0]])
+    task_type, assigned_task, p = candidates[0]
+
+    state["locked"][assigned_task["chunk_id"]] = {"user_id": user_id, "timestamp": time.time()}
+    save_lock_state(AUDIT_LOCK_FILE, state)
+    print(f"[AUDIT ➔ {user_id}] Dispatched ({task_type}): {assigned_task['chunk_id']} ({assigned_task['collection']})")
+
+    task = {
+        "chunk_id": assigned_task["chunk_id"],
+        "collection": assigned_task["collection"],
+        "raw_content": assigned_task["raw_content"],
+        "kb_content": assigned_task["kb_content"],
+        "task_type": task_type,
+    }
+    if task_type in ("review", "revise"):
+        task["proposed_summary"] = p.get("corrected_summary")
+        task["proposed_explanation"] = p.get("corrected_explanation")
+        task["proposed_related_questions"] = p.get("corrected_related_questions")
+        task["proposal_reason"] = p.get("reason")
+    if task_type == "revise":
+        task["review_feedback"] = p.get("review_feedback")
+
+    return {"mode": "audit", "status": "active", "task": task, "total_chunks": total_chunks,
+            "completed_chunks": completed_chunks, "eta_seconds": eta_seconds, "audit_model": assigned_model}
+
+def _submit_audit_work(submission: UnifiedSubmission) -> dict:
+    state = load_lock_state(AUDIT_LOCK_FILE)
+    state["locked"].pop(submission.chunk_id, None)
+
+    if submission.chunk_id in state["completed"]:
+        save_lock_state(AUDIT_LOCK_FILE, state)
+        return {"status": "ignored"}
+
+    original_task = next((t for t in audit_chunk_queue if t["chunk_id"] == submission.chunk_id), None)
+    collection = (original_task or {}).get("collection", "docs")
+    content_hash = (original_task or {}).get("content_hash")
+    kb_content = (original_task or {}).get("kb_content", "")
+
+    user_stats = load_user_stats(AUDIT_STATS_FILE)
+    user_key = submission.user_id.lower()
+    user_stats.setdefault(user_key, _new_user_stats_entry())
+
+    pending = read_json_file(AUDIT_PENDING_FILE, {})
+
+    def _mark_done(result_label, cache_hash=True):
+        state["completed"].append(submission.chunk_id)
+        save_lock_state(AUDIT_LOCK_FILE, state)
+        if cache_hash and content_hash:
+            audit_hashes = read_json_file(AUDIT_HASH_FILE, {})
+            audit_hashes[submission.chunk_id] = content_hash
+            write_json_file(AUDIT_HASH_FILE, audit_hashes, "audit hash state")
+        pending.pop(submission.chunk_id, None)
+        write_json_file(AUDIT_PENDING_FILE, pending, "audit pending fixes")
+        save_user_stats(AUDIT_STATS_FILE, user_stats)
+        _record_completion(audit_completion_log)
+        return {"status": "success", "result": result_label}
+
+    # --- Stage 1: a fresh proposal ---
+    if submission.task_type == "propose":
+        user_stats[user_key]["chunks_audited"] += 1
+        if submission.verdict != "needs_fix":
+            save_user_stats(AUDIT_STATS_FILE, user_stats)
+            print(f"[AUDIT ✓] '{submission.user_id}': {submission.chunk_id} -- no issue found.")
+            return _mark_done("ok")
+
+        # Same false-positive guard confirmed necessary live during testing: the model can flag
+        # needs_fix against content that's already correct while its own "fix" restates the same
+        # facts near-verbatim. If the proposal isn't actually different from what's published,
+        # there's nothing for a reviewer to usefully review -- skip straight to done.
+        existing_explanation = _extract_kb_section(kb_content, "Explanation")
+        proposed_explanation = submission.corrected_explanation or ""
+        if existing_explanation and proposed_explanation and _text_similarity(existing_explanation, proposed_explanation) > 0.95:
+            save_user_stats(AUDIT_STATS_FILE, user_stats)
+            print(f"[AUDIT ~] '{submission.user_id}': {submission.chunk_id} -- flagged needs_fix but "
+                  f"proposal is near-identical to what's published -- treating as no-op.")
+            return _mark_done("false_positive_no_op")
+
+        user_stats[user_key]["issues_found"] += 1
+        prior = pending.get(submission.chunk_id, {})
+        pending[submission.chunk_id] = {
+            "stage": "proposed", "collection": collection, "proposer": submission.user_id,
+            "reason": submission.reason,
+            "corrected_summary": submission.corrected_summary,
+            "corrected_explanation": submission.corrected_explanation,
+            "corrected_related_questions": submission.corrected_related_questions,
+            "attempts": prior.get("attempts", 0) + 1,
+            "last_reviewer": None,
+            "history": prior.get("history", []) + [{"stage": "proposed", "user_id": submission.user_id, "timestamp": time.time()}],
+        }
+        write_json_file(AUDIT_PENDING_FILE, pending, "audit pending fixes")
+        save_lock_state(AUDIT_LOCK_FILE, state)
+        save_user_stats(AUDIT_STATS_FILE, user_stats)
+        print(f"[AUDIT ⚠] '{submission.user_id}' proposed a fix for '{submission.chunk_id}': "
+              f"{submission.reason[:100]} -- awaiting independent review.")
+        return {"status": "success", "result": "proposed_awaiting_review"}
+
+    # --- Stage 2: an independent review of someone else's proposal ---
+    if submission.task_type == "review":
+        entry = pending.get(submission.chunk_id)
+        if entry is None or entry.get("stage") != "proposed":
+            save_lock_state(AUDIT_LOCK_FILE, state)
+            return {"status": "ignored", "result": "no_matching_proposal"}
+
+        user_stats[user_key]["reviews_done"] += 1
+        entry["history"].append({
+            "stage": "reviewed", "user_id": submission.user_id, "verdict": submission.review_verdict,
+            "feedback": submission.review_feedback, "timestamp": time.time(),
+        })
+
+        if submission.review_verdict == "approve":
+            applied = _apply_audit_fix(
+                submission.chunk_id, collection,
+                entry.get("corrected_summary"), entry.get("corrected_explanation"),
+                entry.get("corrected_related_questions"),
+            )
+            if not applied:
+                save_lock_state(AUDIT_LOCK_FILE, state)
+                save_user_stats(AUDIT_STATS_FILE, user_stats)
+                return {"status": "success", "result": "fix_failed_to_apply"}
+            append_jsonl(AUDIT_APPLIED_LOG, {
+                "chunk_id": submission.chunk_id, "collection": collection,
+                "reason": entry.get("reason"), "proposer": entry.get("proposer"),
+                "reviewer": submission.user_id, "attempts": entry.get("attempts", 1),
+                "applied_at": time.time(),
+            }, "audit applied fix")
+            pkey = entry["proposer"].lower()
+            user_stats.setdefault(pkey, _new_user_stats_entry())
+            user_stats[pkey]["fixes_applied"] += 1
+            print(f"[AUDIT ✓✓] Fix for '{submission.chunk_id}' approved by '{submission.user_id}' "
+                  f"(proposed by '{entry['proposer']}') -- applied.")
+            # Don't cache a hash for content only ever checked by LLMs, never a human -- leave it
+            # eligible for a future re-audit rather than treating it as permanently settled.
+            return _mark_done("fix_applied", cache_hash=False)
+
+        if submission.review_verdict == "reject":
+            # The reviewer says there was never a real issue -- the proposer's DIAGNOSIS itself was
+            # wrong, not just the wording of the fix. Don't just re-ask the same proposer -- clear
+            # the proposal and send the chunk back for a completely fresh, independent pass, so a
+            # single reviewer's opinion isn't the last word either.
+            attempts = entry.get("attempts", 1)
+            print(f"[AUDIT ✗] '{submission.user_id}' rejected {entry['proposer']}'s proposal for "
+                  f"'{submission.chunk_id}': {submission.review_feedback[:100]}")
+            if attempts >= MAX_REVIEW_ROUNDS:
+                append_jsonl(AUDIT_NEEDS_HUMAN_FILE, {
+                    "chunk_id": submission.chunk_id, "collection": collection,
+                    "reason": "proposer and reviewer disagreed repeatedly without resolving",
+                    "history": entry["history"], "flagged_at": time.time(),
+                }, "audit needs human review")
+                save_user_stats(AUDIT_STATS_FILE, user_stats)
+                return _mark_done("needs_human_review")
+            pending[submission.chunk_id] = {"attempts": attempts, "history": entry["history"]}
+            write_json_file(AUDIT_PENDING_FILE, pending, "audit pending fixes")
+            save_lock_state(AUDIT_LOCK_FILE, state)
+            save_user_stats(AUDIT_STATS_FILE, user_stats)
+            return {"status": "success", "result": "rejected_requeued"}
+
+        # review_verdict == "revise": the reviewer agrees something's genuinely wrong, but the
+        # proposed fix itself needs work -- keep the diagnosis, attach specific feedback, and route
+        # it out for a fresh attempt at the fix (see _get_audit_work's last_reviewer exclusion).
+        attempts = entry.get("attempts", 1)
+        if attempts >= MAX_REVIEW_ROUNDS:
+            append_jsonl(AUDIT_NEEDS_HUMAN_FILE, {
+                "chunk_id": submission.chunk_id, "collection": collection,
+                "reason": "revision requested repeatedly without landing on an approved fix",
+                "history": entry["history"], "flagged_at": time.time(),
+            }, "audit needs human review")
+            save_user_stats(AUDIT_STATS_FILE, user_stats)
+            return _mark_done("needs_human_review")
+
+        entry["stage"] = "revise_requested"
+        entry["review_feedback"] = submission.review_feedback
+        entry["last_reviewer"] = submission.user_id
+        entry["attempts"] = attempts + 1
+        pending[submission.chunk_id] = entry
+        write_json_file(AUDIT_PENDING_FILE, pending, "audit pending fixes")
+        save_lock_state(AUDIT_LOCK_FILE, state)
+        save_user_stats(AUDIT_STATS_FILE, user_stats)
+        print(f"[AUDIT ~] '{submission.user_id}' requested revision for '{submission.chunk_id}': "
+              f"{submission.review_feedback[:100]}")
+        return {"status": "success", "result": "revision_requested"}
+
+    # --- Stage 3: a revised fix, in response to a reviewer's specific feedback ---
+    if submission.task_type == "revise":
+        entry = pending.get(submission.chunk_id)
+        if entry is None or entry.get("stage") != "revise_requested":
+            save_lock_state(AUDIT_LOCK_FILE, state)
+            return {"status": "ignored", "result": "no_matching_revision_request"}
+
+        entry["stage"] = "proposed"
+        entry["proposer"] = submission.user_id  # the reviser's fix is what gets reviewed next
+        entry["corrected_summary"] = submission.corrected_summary
+        entry["corrected_explanation"] = submission.corrected_explanation
+        entry["corrected_related_questions"] = submission.corrected_related_questions
+        entry["history"].append({"stage": "revised", "user_id": submission.user_id, "timestamp": time.time()})
+        pending[submission.chunk_id] = entry
+        write_json_file(AUDIT_PENDING_FILE, pending, "audit pending fixes")
+        save_lock_state(AUDIT_LOCK_FILE, state)
+        print(f"[AUDIT ~] '{submission.user_id}' submitted a revised fix for '{submission.chunk_id}' -- awaiting review.")
+        return {"status": "success", "result": "revised_awaiting_review"}
+
+    save_lock_state(AUDIT_LOCK_FILE, state)
+    return {"status": "ignored", "result": "unknown_task_type"}
+
 def _rag_campaign_complete() -> bool:
     # An empty total (RAG source not configured/scanned) counts as "complete" -- nothing to
     # block on. Real incompleteness is completed < total with a nonzero total. Uses
@@ -652,7 +1193,7 @@ def server_startup_gate():
     # of silently forgetting what was running. Doesn't auto-resume -- the operator still has to
     # pick it -- just makes it obvious that campaign was mid-run when the server last stopped.
     persisted = load_server_mode_state()
-    unfinished_mode = persisted.get("mode") if not persisted.get("clean_shutdown", True) and persisted.get("mode") in ("rag", "finetune") else None
+    unfinished_mode = persisted.get("mode") if not persisted.get("clean_shutdown", True) and persisted.get("mode") in ("rag", "finetune", "audit") else None
     rag_flag = "  ⚠ was still running when the server last stopped -- resume?" if unfinished_mode == "rag" else ""
     finetune_flag = "  ⚠ was still running when the server last stopped -- resume?" if unfinished_mode == "finetune" else ""
 
@@ -661,23 +1202,27 @@ def server_startup_gate():
     rag_progress = f"  [{rag_done}/{rag_total} chunks]" if rag_total else ""
     finetune_not_ready = "  ⚠ RAG campaign not finished yet -- see note below" if not _rag_campaign_complete() else ""
 
+    audit_flag = "  ⚠ was still running when the server last stopped -- resume?" if unfinished_mode == "audit" else ""
+    audit_progress = f"  [{len(load_lock_state(AUDIT_LOCK_FILE)['completed'])}/{len(audit_chunk_queue)} chunks]" if audit_chunk_queue else ""
+
     print("\n" + "═"*55)
     print("        CUBYZ DISTRIBUTED DATASET ENGINE COORDINATOR      ")
     print("═"*55)
     print(f"  [1] 🟢 LAUNCH IN RAG MODE           (knowledge extraction){rag_flag}{rag_progress}")
     print(f"  [2] 🟢 LAUNCH IN FINETUNE MODE      (training-pair generation){finetune_flag}{finetune_not_ready}")
     print("  [3] 🟢 LAUNCH IN IDLE MODE          (server up, no tasks handed out)")
-    print("  [4] ⚠️ HARD RESET RAG CAMPAIGN       (wipe queue & database to 0 -- contribution stats kept)")
-    print("  [5] ⚠️ HARD RESET FINETUNE CAMPAIGN  (wipe queue & pairs to 0 -- contribution stats kept)")
-    print("  [6] ⚠️ HARD RESET BOTH CAMPAIGNS     (wipe both queues to 0 -- contribution stats kept)")
-    print("  [7] 🛑 SHUTDOWN ENGINE")
+    print(f"  [4] 🔍 LAUNCH IN AUDIT MODE         (find/fix dropped facts in existing knowledge_base){audit_flag}{audit_progress}")
+    print("  [5] ⚠️ HARD RESET RAG CAMPAIGN       (wipe queue & database to 0 -- contribution stats kept)")
+    print("  [6] ⚠️ HARD RESET FINETUNE CAMPAIGN  (wipe queue & pairs to 0 -- contribution stats kept)")
+    print("  [7] ⚠️ HARD RESET BOTH CAMPAIGNS     (wipe both queues to 0 -- contribution stats kept)")
+    print("  [8] 🛑 SHUTDOWN ENGINE")
     print("═"*55)
-    print("  Mode can be switched later without restarting: POST /admin/mode?mode=idle|rag|finetune")
+    print("  Mode can be switched later without restarting: POST /admin/mode?mode=idle|rag|finetune|audit")
     print("═"*55)
 
     while True:
         try:
-            choice = input("Select command index (1-7): ").strip()
+            choice = input("Select command index (1-8): ").strip()
             if choice == "1":
                 CURRENT_MODE = "rag"
                 print("\n[➔] Access Authorized. Launching in RAG mode...")
@@ -701,29 +1246,37 @@ def server_startup_gate():
                 print("\n[➔] Access Authorized. Launching in IDLE mode...")
                 break
             elif choice == "4":
+                if not audit_chunk_queue:
+                    print("\n[~] Nothing currently due for audit (either everything's already been audited "
+                          "and unchanged since, or knowledge_base/ is empty). Launching anyway is harmless -- "
+                          "the queue is rechecked live as chunks/source files change.")
+                CURRENT_MODE = "audit"
+                print("\n[➔] Access Authorized. Launching in AUDIT mode...")
+                break
+            elif choice == "5":
                 confirm = input("\n⚠️ CRITICAL WARNING: Confirm wiping the RAG queue/database to 0? (leaderboard stats are kept) (y/n): ").strip().lower()
                 if confirm == 'y':
                     rag_execute_hard_reset()
                 else:
                     print("[~] Reset routine aborted.")
-            elif choice == "5":
+            elif choice == "6":
                 confirm = input("\n⚠️ CRITICAL WARNING: Confirm wiping all fine-tune generated pairs? (leaderboard stats are kept) (y/n): ").strip().lower()
                 if confirm == 'y':
                     finetune_execute_hard_reset()
                 else:
                     print("[~] Reset routine aborted.")
-            elif choice == "6":
+            elif choice == "7":
                 confirm = input("\n⚠️ CRITICAL WARNING: Confirm wiping BOTH campaigns' queues/data to 0? (leaderboard stats are kept) (y/n): ").strip().lower()
                 if confirm == 'y':
                     rag_execute_hard_reset()
                     finetune_execute_hard_reset()
                 else:
                     print("[~] Reset routine aborted.")
-            elif choice == "7":
+            elif choice == "8":
                 print("[X] Terminating environment.")
                 sys.exit(0)
             else:
-                print("[!] Parameter outside boundary bounds. Select 1-7.")
+                print("[!] Parameter outside boundary bounds. Select 1-8.")
         except KeyboardInterrupt:
             print("\n[X] Forced Close.")
             sys.exit(0)
@@ -822,7 +1375,7 @@ def _get_finetune_work(user_id: str, hardware_tier: str) -> dict:
     return {"mode": "finetune", "status": "active", "task": assigned_task, "total_chunks": total_chunks, "completed_chunks": completed_chunks, "eta_seconds": eta_seconds}
 
 @app.get("/get_work")
-def get_work(user_id: str, hardware_tier: str = "medium", model: str = "", client_version: str = ""):
+def get_work(user_id: str, hardware_tier: str = "medium", model: str = "", client_version: str = "", available_models: str = ""):
     if not user_id.isalpha() or not (3 <= len(user_id) <= 9):
         raise HTTPException(status_code=400, detail="Invalid ID layout.")
 
@@ -830,6 +1383,7 @@ def get_work(user_id: str, hardware_tier: str = "medium", model: str = "", clien
         raise HTTPException(status_code=426, detail=_version_rejection_message(client_version))
 
     online_clients[user_id.lower()] = {"timestamp": time.time(), "tier": hardware_tier}
+    client_local_models = {m for m in available_models.split(",") if m}
 
     # The whole read-lock_state -> pick a task -> write-lock_state cycle inside _get_rag_work/
     # _get_finetune_work has to be one atomic unit -- see campaign_state_lock's comment. Without
@@ -842,6 +1396,8 @@ def get_work(user_id: str, hardware_tier: str = "medium", model: str = "", clien
             return _get_rag_work(user_id, hardware_tier, model)
         if CURRENT_MODE == "finetune":
             return _get_finetune_work(user_id, hardware_tier)
+        if CURRENT_MODE == "audit":
+            return _get_audit_work(user_id, hardware_tier, client_local_models)
         return {"mode": "idle", "status": "idle"}
 
 def _submit_rag_work(submission: UnifiedSubmission) -> dict:
@@ -957,6 +1513,8 @@ def submit_work(submission: UnifiedSubmission):
     with campaign_state_lock:
         if submission.mode == "finetune":
             return _submit_finetune_work(submission)
+        if submission.mode == "audit":
+            return _submit_audit_work(submission)
         return _submit_rag_work(submission)
 
 def _rag_leaderboard() -> dict:
@@ -1035,13 +1593,59 @@ def _finetune_leaderboard() -> dict:
         "rankings": rankings,
     }
 
+def _audit_leaderboard() -> dict:
+    state = load_lock_state(AUDIT_LOCK_FILE)
+    user_stats = load_user_stats(AUDIT_STATS_FILE)
+    total_chunks = len(audit_chunk_queue)
+    completed_chunks = len(state["completed"])
+    global_pct = (completed_chunks / total_chunks * 100) if total_chunks > 0 else 0.0
+
+    known_users = set(user_stats.keys()) | set(online_clients.keys())
+    rankings = []
+    for u_id in known_users:
+        data = user_stats.get(u_id, _new_user_stats_entry())
+        is_online = u_id in online_clients and (time.time() - online_clients[u_id]["timestamp"] < 60)
+        rankings.append({
+            "user_id": u_id,
+            "chunks_audited": data.get("chunks_audited", 0),
+            "issues_found": data.get("issues_found", 0),
+            "reviews_done": data.get("reviews_done", 0),
+            "fixes_applied": data.get("fixes_applied", 0),
+            "status": "ONLINE" if is_online else "OFFLINE",
+        })
+    rankings.sort(key=lambda x: (x["fixes_applied"], x["chunks_audited"]), reverse=True)
+    for i, entry in enumerate(rankings, 1):
+        entry["rank"] = i
+
+    pending = read_json_file(AUDIT_PENDING_FILE, {})
+    return {
+        "total_chunks_due": total_chunks,
+        "total_chunks_completed": completed_chunks,
+        "global_percentage": round(global_pct, 2),
+        "in_flight_conversations": len(pending),
+        "eta_seconds": _estimate_eta_seconds(audit_completion_log, total_chunks - completed_chunks),
+        "rankings": rankings,
+    }
+
 @app.get("/leaderboard")
 def get_leaderboard():
     # Reflects whichever campaign is currently active, same as /get_work -- defaults to the RAG
     # shape while idle (arbitrary but stable) rather than returning nothing.
-    result = _finetune_leaderboard() if CURRENT_MODE == "finetune" else _rag_leaderboard()
+    if CURRENT_MODE == "finetune":
+        result = _finetune_leaderboard()
+    elif CURRENT_MODE == "audit":
+        result = _audit_leaderboard()
+    else:
+        result = _rag_leaderboard()
     result["mode"] = CURRENT_MODE
     return result
+
+@app.get("/admin/audit_pending")
+def get_audit_pending():
+    """Every chunk currently mid-conversation (proposed and awaiting review, or sent back for
+    revision) -- lets an operator see what's in flight without waiting for it to resolve on its
+    own."""
+    return read_json_file(AUDIT_PENDING_FILE, {})
 
 @app.get("/admin/mode")
 def get_mode():
@@ -1050,8 +1654,8 @@ def get_mode():
 @app.post("/admin/mode")
 def set_mode(mode: str, force: bool = False):
     global CURRENT_MODE
-    if mode not in ("idle", "rag", "finetune"):
-        raise HTTPException(status_code=400, detail="mode must be one of: idle, rag, finetune")
+    if mode not in ("idle", "rag", "finetune", "audit"):
+        raise HTTPException(status_code=400, detail="mode must be one of: idle, rag, finetune, audit")
     if mode == "finetune" and not force and not _rag_campaign_complete():
         total = len(rag_chunk_queue)
         completed = len(load_lock_state(RAG_LOCK_FILE)["completed"])
@@ -1120,6 +1724,7 @@ if __name__ == "__main__":
     # check against instead of an empty, not-yet-scanned queue.
     rag_initialize_chunks()
     finetune_initialize_chunks()
+    audit_initialize_chunks()
     server_startup_gate()
     # Dirty the persisted state the moment we're about to actually start serving -- only the
     # finally block below (a real clean stop) clears it back to True.

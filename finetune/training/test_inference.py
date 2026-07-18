@@ -177,6 +177,131 @@ CUBYZ_QUESTIONS = [
 GENERAL_QUESTIONS = [
     "What is the capital of France?",
     "What's 17 * 24?",
+    # ============================================================
+    # New questions (batch 2) -- expanded corpus coverage: game design
+    # principles, contribution guidelines, installation, modding, art
+    # guidelines, soil block page, wood recipes, developer judgment,
+    # ashframe/server list, multiplayer backups, permission syntax.
+    # ============================================================
+    # --- Game Design Principles ---
+    ("Why doesn't Cubyz use separate dimensions for different areas?",
+     "Instead of creating separate dimensions, these places are fit physically into Cubyz's massive world for the player to come across"),
+    ("Why doesn't Cubyz have teleportation?",
+     "Teleportation makes the game less immersive -- it diminishes the exploring aspect and doesn't let the player get a good sense of the scale of the world"),
+    ("Per Cubyz's Game Design Principles, why is automation avoided?",
+     "Having quick, infinite resources at the palm of players' hands discourages exploration, since the player will never need to forage or search for blocks they desire"),
+    ("Do mobs respawn naturally in Cubyz, per the Game Design Principles?",
+     "No -- clearing a dangerous area of its monsters makes it safe to build and explore, and this also prevents mob farming"),
+    ("Are there passive animals in Cubyz, per the Game Design Principles?",
+     "No -- animals do not want to die, so they either run from an attacking player or attempt to defend themselves"),
+    ("Why does Cubyz avoid unbreakable tools, per the Game Design Principles?",
+     "If a player gets too attached to an unbreakable tool, they won't want to make other types of tools, and low-tier materials will see less use"),
+    ("What is the \"2OP4ME\" balancing principle in Cubyz's Game Design Principles?",
+     "Players need to be vulnerable at all times to avoid power imbalances -- armor, tools, accessories, and buffs should aid the player, not let them win outright"),
+    ("What's the design difference between big trees and small trees in Cubyz?",
+     "Big trees are designed to be built upon or left as decoration, whereas small trees are designed to be chopped down"),
+
+    # --- CONTRIBUTING.md: process and conventions ---
+    ("What's the maximum recommended size for a Cubyz pull request?",
+     "No more than 200 lines -- the maintainer may refuse to review larger PRs"),
+    ("What are Cubyz's four main allocators and their intended lifetimes?",
+     "main.globalArena for global lifetime (used until the game ends), main.worldArena for world lifetime (used until the player exits the world), main.stackAllocator for local/scope lifetime, and main.globalAllocator for other lifetimes"),
+    ("What naming convention does Cubyz use for variables and functions?",
+     "camelCase"),
+    ("What naming convention does Cubyz use for types?",
+     "CapitalCamelCase (PascalCase)"),
+    ("What naming convention does Cubyz use for files and namespaces?",
+     "snake_case"),
+    ("Does Cubyz enforce a maximum line length for code?",
+     "No -- there is no line limit, though contributors should still be reasonable about it"),
+    ("What is Cubyz's policy on writing code comments?",
+     "Don't write comments unless something non-obvious needs explaining -- prefer readable code with descriptive names, and if you do write a comment, explain the why, not the what or how"),
+    ("Why does CONTRIBUTING.md ask contributors not to submit AI-generated pull requests?",
+     "Narrow AI is trained to produce code matching its training data rather than being good at programming, likely won't follow the project's conventions, and is unable to learn from mistakes the way a human contributor would"),
+    ("Whose optimization philosophy does Cubyz's CONTRIBUTING.md say to follow?",
+     "Casey Muratori's non-pessimization philosophy -- not needlessly making things worse"),
+    ("When is `catch unreachable` the correct way to handle error.OutOfMemory in Cubyz?",
+     "When using the standard allocators (main.globalAllocator and main.stackAllocator), since error.OutOfMemory cannot happen with them"),
+
+    # --- Installation ---
+    ("What are the three key files needed to run a downloaded Cubyz release?",
+     "Cubyz (or Cubyz.exe), launchConfig.zon, and assets"),
+    ("What's the minimum recommended RAM to play Cubyz?",
+     "At least 4 GB"),
+    ("What example GPUs does the Cubyz installation page list as minimum spec?",
+     "Radeon Vega 8, Intel HD Graphics 530, or NVIDIA GTX 750"),
+    ("What script builds Cubyz from source on Linux?",
+     "run_linux.sh"),
+    ("What script builds Cubyz from source on Windows?",
+     "run_windows.bat"),
+
+    # --- Modding ---
+    ("Is Cubyz's official compile-time modding API finished?",
+     "No -- it has not been finished; its progress is tracked in GitHub issue #1528"),
+    ("Name an unofficial Cubyz modding fork mentioned in the documentation.",
+     "Examples include Web Assembly (wasm) modding, compile-time modding by KewaiiGamer, and a Lua integration by LinaPlusPlus"),
+
+    # --- Content Suggestions / art guidelines ---
+    ("What texture resolution does Cubyz require for new textures?",
+     "16 x 16"),
+    ("What lighting direction should Cubyz item and block textures use?",
+     "Top-left"),
+    ("Who made the majority of the art for Cubyz?",
+     "careeoki"),
+
+    # --- Soil block page ---
+    ("How much health does a Cubyz soil block have?",
+     "6.5"),
+    ("What rotation mode does the Cubyz soil block use?",
+     "stairs"),
+    ("According to its wiki page, how is soil obtained in Cubyz?",
+     "Found in temperate biomes as grass blocks or ground patches -- breaking temperate grass drops soil blocks"),
+
+    # --- Wood recipes (codebase) ---
+    ("How do you craft a workbench in Cubyz?",
+     "4 planks of any wood type"),
+    ("How many planks does crafting one log produce in Cubyz?",
+     "4 planks (of the same wood type)"),
+    ("How many branches does crafting one log produce in Cubyz?",
+     "2 branches (of the same wood type)"),
+    ("What's needed to craft a chest in Cubyz?",
+     "4 planks of the same wood type"),
+    ("What ingredients craft a regular torch in Cubyz?",
+     "Planks (any mod's, any type) plus coal ore, producing 8 torches"),
+
+    # --- Developer judgment (additional facts) ---
+    ("Why does Cubyz prefer explicit code over generic or clever solutions in review?",
+     "This project strongly prefers explicit, predictable, allocator-conscious code over clever/generic/automatic solutions, even when the generic solution is more DRY -- \"magic\" is treated as a mild pejorative"),
+    ("Is eager or lazy allocation preferred in Cubyz code review?",
+     "It's a judgment call, not a fixed rule -- lazy/path-based loading is preferred for large or rarely-touched data, but eager initialization is preferred when correctness or synchronization ordering demands it"),
+    ("Why is placing a `defer` far from its matching `init` flagged in Cubyz review, even if technically correct?",
+     "Because it's fragile to future edits"),
+
+    # --- Ashframe / server list ---
+    ("Who runs Ashframe?",
+     "iNiKKo"),
+    ("What does the 'enabled' field control in the Cubyz Server List's config.json?",
+     "true broadcasts the server's information to the Cubyz Server List (servers.ashframe.net); false disables server list integration entirely"),
+
+    # --- Multiplayer backups ---
+    ("Where is a Cubyz world save located by default on Linux, for backup purposes?",
+     "/home/USERNAME/.cubyz/saves/WORLD_NAME"),
+    ("Where is a Cubyz world save located by default on Windows, for backup purposes?",
+     "C:\\Users\\USERNAME\\Saved Games\\Cubyz\\saves\\WORLD_NAME"),
+
+    # --- Permission layer (engine syntax) ---
+    ("What is the full engine command syntax for managing permissions in Cubyz?",
+     "/perm <add/remove> <whitelist/blacklist> @<playerIndex> <permissionPath>"),
+
+    # --- Installation troubleshooting / misc CONTRIBUTING guidance ---
+    ("What should you do if Cubyz runs poorly or doesn't start, per the installation guide?",
+     "Reach out on the Cubyz Discord"),
+    ("What does CONTRIBUTING.md say about writing long comments instead of readable code?",
+     "Prefer readable code with descriptive names instead of long comments, since comments naturally degrade over time as the surrounding code changes; any comment written should explain the why, not the what or how"),
+    ("What data-structure guidance does CONTRIBUTING.md give when a collection's size is known upfront?",
+     "Use the simplest data structure for the job -- e.g. use a slice instead of a List if you know the size upfront"),
+    ("What's the recommended sweet-spot file size (in lines) for a Cubyz source file, per CONTRIBUTING.md?",
+     "Very roughly 1000 lines"),
 ]
 
 
