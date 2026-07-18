@@ -9,10 +9,10 @@
 The discussion revolves around whether to compile Cubyz scripts in ReleaseSafe instead of ReleaseFast, considering the trade-offs between better debug information and potential performance degradation.
 
 ## Explanation
-The maintainers initially considered disabling safety checks in critical functions but found that the performance impact could be significant. The user suggested using fast math options, which led to a comparison showing a 20% increase in runtime. The maintainers ultimately decided against switching to ReleaseSafe due to the longer compile and run times, although they acknowledged its benefits for bug detection. With Zig 14.0 introducing new allocators like DebugAllocator and SmpAllocator, there is a renewed interest in using DebugAllocator for debug scripts and considering options for release scripts, including safety features or performance optimizations.
+The discussion revolves around whether to compile Cubyz scripts in ReleaseSafe instead of ReleaseFast, considering the trade-offs between better debug information and potential performance degradation. The maintainers initially considered disabling safety checks in critical functions but found that the performance impact could be significant. Specifically, loading a render distance 12 world went from 33.5 seconds to 40 seconds with ReleaseSafe mode, representing a 20% increase in runtime. The user suggested using fast math options (`@setFloatMode(comptime mode: FloatMode) void`), which is equivalent to `-ffast-math` in GCC. However, the maintainers ultimately decided against switching to ReleaseSafe due to longer compile and run times, although they acknowledged its benefits for bug detection. With Zig 14.0 introducing new allocators like DebugAllocator and SmpAllocator, there is a renewed interest in using DebugAllocator for debug scripts and considering options for release scripts, including safety features or performance optimizations (`@setRuntimeSafety(false)`). The maintainers noted that the types of bugs caught by DebugAllocator (use-after-free, leaks, double frees) are easily detected during development but acknowledged the need for stack traces for segfaults.
 
 ## Related Questions
-- What is the performance impact of using DebugAllocator in Cubyz?
+- What is the exact performance impact of using DebugAllocator in Cubyz?
 - How can we profile Cubyz more accurately without including menu times?
 - Is there a way to log profiling results for further analysis?
 - What are the potential benefits and drawbacks of switching to ReleaseSafe mode?

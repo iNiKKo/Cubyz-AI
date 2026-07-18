@@ -8,7 +8,7 @@
 The game stops responding when placing a light in lava caves.
 
 ## Explanation
-The issue report indicates that placing a light in specific areas of the game (lava caves) causes the game to become unresponsive. The maintainer has been unable to reproduce the issue, suggesting it might be related to a specific environment or installation state. The maintainer asks for additional debugging information such as running the game in debug mode and checking terminal errors.
+The game stops responding when placing a light in lava caves. The maintainer has been unable to reproduce this issue, suggesting it might be related to a specific environment or installation state. The maintainer asks for additional debugging information such as running the game in debug mode and checking terminal errors. Additionally, the maintainer notes that interrupting Zig installation may have caused the issue, but confirms that on a fresh install, they cannot recreate the problem.
 
 ## Related Questions
 - How can I enable debug mode in the game?

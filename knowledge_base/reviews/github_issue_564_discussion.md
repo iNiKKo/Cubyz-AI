@@ -9,7 +9,7 @@
 The discussion revolves around making the GenerationMode configurable for structures like SimpleVegetation, specifically to support ceiling mode for cave vines.
 
 ## Explanation
-The maintainer acknowledges that allowing the GenerationMode to be configurable would provide more flexibility. However, they point out that currently, SimpleVegetation does not handle cases where generation should occur on ceilings, such as for cave vines. This indicates a limitation in the current implementation that needs addressing.
+The discussion revolves around making the GenerationMode configurable for structures like SimpleVegetation, specifically to support ceiling mode for cave vines. The maintainer acknowledges that allowing the GenerationMode to be configurable would provide more flexibility but points out a current limitation: SimpleVegetation does not handle cases where generation should occur on ceilings, such as for cave vines. This means that currently, SimpleVegetation will generate into the ceiling regardless of whether it is intended to do so or not.
 
 ## Related Questions
 - What is the current behavior of SimpleVegetation when generating structures in ceiling mode?

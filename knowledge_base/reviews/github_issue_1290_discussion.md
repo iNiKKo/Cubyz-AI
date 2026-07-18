@@ -9,7 +9,7 @@
 The discussion revolves around changing the inventory storage format to binary while retaining backwards compatibility, and considering changes to how items and tools are stored to reduce memory usage.
 
 ## Explanation
-The issue discusses the current storage of inventories as Zon files, which is inefficient for larger inventories like chests. The proposal includes changing the storage format to binary, using `BaseItem` indexes instead of string names for item migrations, and adding a tool palette with similar considerations. The maintainers suggest that while human-readable inventory data is useful for server hosts, this feature should not block improvements in inventory storage efficiency. Memory usage reduction is highlighted as a significant benefit, particularly for tools stored in crafting grids and material grids.
+The discussion revolves around changing the inventory storage format to binary while retaining backwards compatibility. The current storage of inventories as Zon files is inefficient for larger inventories like chests, especially when considering items and tools. Proposals include using `BaseItem` indexes instead of string names for item migrations and adding a tool palette with similar considerations. Human-readable inventory data remains important for server hosts due to its utility in tasks such as searching for and removing illegal/cheated items, migrating player inventories, and setting gamemodes with cheats disabled. Specific commands mentioned include `/inventory open <player-query>#hand`, `/inventory clone <player-query>#hand`, `/inventory clear <player-query>#hand`, `/permissions set <player-query> #admin enabled`, `/permissions set <player-query> @worldedit enabled`, and `/permissions set <player-query> /set enabled`. Memory usage reduction is highlighted as a significant benefit, particularly for tools stored in crafting grids and material grids. The change from u64 to u16 would reduce memory usage 4 times on 64-bit systems.
 
 ## Related Questions
 - What are the potential benefits and drawbacks of changing inventory storage to binary format?
@@ -18,5 +18,6 @@ The issue discusses the current storage of inventories as Zon files, which is in
 - Why is human-readable inventory data important for server hosts?
 - How can item migrations be effectively managed with the proposed changes?
 - What are the long-term implications of decoupling server moderation from physical access to the file system?
+- What specific commands and permissions are required for managing player inventories and gamemodes?
 
 *Source: unknown | chunk_id: github_issue_1290_discussion*

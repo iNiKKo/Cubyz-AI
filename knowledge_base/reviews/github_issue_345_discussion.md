@@ -9,7 +9,27 @@
 Allow blocks to specify a 2D item texture for inventory display, particularly useful for non-cube block models.
 
 ## Explanation
-This change introduces a new feature that enables blocks to define a specific texture for their item representation in the inventory. This is beneficial for blocks with complex geometries like fences and torches, which cannot be accurately represented by default cube textures. The maintainer provides an example configuration for an oak fence block, demonstrating how to specify both general block textures and a separate item texture. The item texture must be placed within the 'items' folder to ensure proper loading.
+This change introduces a new feature that enables blocks to define a specific texture for their item representation in the inventory. This is beneficial for blocks with complex geometries like fences and torches, which cannot be accurately represented by default cube textures. The maintainer provides an example configuration for an oak fence block as follows:
+
+```json
+{
+    "class" : "wood",
+    "hardness" : 7,
+    "drops" : [
+        "auto"
+    ],
+    "absorbedLight" : 0x202830,
+    "rotation" : "fence",
+    "model" : "fence",
+    "texture" : "cubyz:oak_fence",
+    "texture_top" : "cubyz:oak_fence_top",
+    "texture_bottom" : "cubyz:oak_fence_top",
+    "item": {
+        "texture" : "materials/stick.png"
+    }
+}
+```
+The example demonstrates how to specify both general block textures and a separate item texture. The `item` field contains the path to the 2D texture used for inventory display, which must be placed within the 'items' folder to ensure proper loading. Additionally, the configuration includes specific attributes such as hardness (7), drops array with auto value, absorbed light property (0x202830), and rotation setting ('fence').
 
 ## Related Questions
 - What is the purpose of specifying a separate item texture for blocks?

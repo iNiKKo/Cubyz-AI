@@ -8,14 +8,14 @@
 The discussion revolves around the suboptimal network bandwidth in Cubyz compared to raw TCP and UDP. The maintainer explains that their custom protocol uses congestion control for reliable packets but does not throttle unreliable packets.
 
 ## Explanation
-The issue highlights a performance discrepancy between Cubyz's custom network protocol and raw TCP/UDP, where the latter achieves significantly higher bandwidth on localhost. The maintainer clarifies that their protocol includes congestion control for reliable data transmission but lacks it for unreliable messages. This distinction could explain why the custom protocol is slower, as unreliable packets are not being throttled by any congestion control mechanism.
+The discussion revolves around the suboptimal network bandwidth in Cubyz compared to raw TCP and UDP. The maintainer explains that their custom protocol uses congestion control for reliable data transmission but does not throttle unreliable packets, leading to a significant performance discrepancy on localhost. Specifically, the sliding window size is set to up to 65536 packets of slightly less than 1500 bytes each, which should theoretically not be a bottleneck here. The maintainer also mentions that they send bulk acks once every 100 ms for unreliable packets.
 
 ## Related Questions
 - What is the current implementation of congestion control in Cubyz's custom protocol?
 - How does Cubyz handle acknowledgments (acks) for unreliable packets?
 - Is there a plan to implement congestion control for unreliable packets in Cubyz?
 - What are the potential performance gains if congestion control is added to unreliable packets?
-- How does the sliding window size affect the throughput of Cubyz's custom protocol?
+- How does the sliding window size of up to 65536 packets affect the throughput of Cubyz's custom protocol?
 - Are there any known limitations or bottlenecks in Cubyz's current network implementation?
 
 *Source: unknown | chunk_id: github_issue_419_discussion*

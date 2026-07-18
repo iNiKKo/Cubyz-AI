@@ -9,7 +9,7 @@
 Discussion about implementing a garbage collection system using an ArenaAllocator, with concerns about memory overhead and complexity.
 
 ## Explanation
-The issue discusses the potential implementation of a garbage collection system in Cubyz, specifically using an ArenaAllocator. The proposal involves triggering garbage collection after a certain number of allocations and copying live pointers to a new arena. However, the maintainer decided against this approach, suggesting that it may not be as useful due to its complexity and memory overhead.
+Discussion about implementing a garbage collection system using an ArenaAllocator, with concerns about memory overhead and complexity. The proposal involves allocating strings dynamically with the global allocator and triggering garbage collection after `n` allocations, where `n` is the number of active allocations from the previous garbage collect (resulting in amortized 1 copy operation at 2× memory overhead). On garbage collection, a new arena is created, an application callback iterates through all live pointers and copies them into the new arena, then destroys the old arena. However, the maintainer decided against this approach, suggesting that it may not be as useful due to its complexity and memory overhead.
 
 ## Related Questions
 - What is the primary concern with using ArenaAllocator for garbage collection?

@@ -8,7 +8,7 @@
 Discussion about the behavior of dropped ores spawning inside blocks and potential solutions.
 
 ## Explanation
-The discussion revolves around the issue where dropped ores are spawning inside the block instead of outside. The maintainers suggest adding an option to control the drop location, such as 'Droptype=side' to spawn items on the side mined. They also mention that the current implementation does not correctly detect when the item is stuck because it only checks surface triangles. There's a concern about the randomness of direction if the item automatically pops out and whether this behavior should be relied upon for block drops.
+The discussion revolves around the issue where dropped ores are spawning inside the block instead of outside. The maintainers suggest adding an option to control the drop location, such as 'Droptype=side' which would spawn items on the side mined. They also mention that the current implementation does not correctly detect when the item is stuck because it only checks surface triangles. There's a concern about the randomness of direction if the item automatically pops out and whether this behavior should be relied upon for block drops. The maintainers clarify that un-stucking should work by moving towards non-solid blocks or upwards if no nearby non-solid blocks are found, but this method shouldn't be used to ensure proper drop locations.
 
 ## Related Questions
 - How does the current implementation detect if an item is stuck inside a block?

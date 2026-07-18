@@ -8,12 +8,12 @@
 The issue discusses improving item physics in Cubyz, addressing issues like random direction flight, floaty movement, phasing through blocks, and latency between block break and item drop. The maintainer reduced latency by ~50 ms and suggests further improvements for release polishing.
 
 ## Explanation
-The discussion revolves around enhancing the physics of items that drop from blocks in Cubyz. The main issues identified include random direction flight, floaty movement, occasional phasing through blocks, and a noticeable delay between block breakage and item appearance. The maintainer addressed latency by reducing it by approximately 50 ms, attributing much of the remaining delay to network latency. Concerns about items not always appearing from the center of the block were also raised. The maintainer notes that while the current implementation is functional, further polishing is needed for game release. Additionally, there are ongoing issues with item gliding without friction and other priorities that block further improvements.
+The issue discusses improving item physics in Cubyz, addressing issues like random direction flight, floaty movement, phasing through blocks, and latency between block breakage and item appearance. The maintainer identified that items drop with a random velocity vector and can sometimes phase through blocks entirely due to high velocities. They also noted a significant delay of around 50 ms before the item appears after breaking a block, attributing this largely to network latency (2/3) and server tick updates once every tick. The maintainer reduced the overall latency by approximately 50 ms on average, noting that further improvements are needed for game release polishing. Additionally, there are ongoing issues with items gliding without friction (#83), which is blocked by another priority issue (#816).
 
 ## Related Questions
-- What was the average reduction in latency achieved?
+- What was the exact reduction in latency achieved?
 - How much of the remaining latency is attributed to network issues?
-- Why did items sometimes phase through blocks?
+- Why did items sometimes phase through blocks entirely?
 - What specific changes were made to reduce latency?
 - Is there a plan to address the issue where items don't always appear from the center of the block?
 - What other priorities are blocking further improvements to item physics?

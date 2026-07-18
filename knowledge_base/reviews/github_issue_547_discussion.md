@@ -8,14 +8,10 @@
 Discussion about cave structures generating on the surface, focusing on stalagmites and ground patches.
 
 ## Explanation
-The issue discusses cave structures appearing on the surface, specifically mentioning stalagmites and ground patches. Stalagmites are noted to be generated outside of the structure system, explaining their different behavior. Ground patches are suspected to continue underground patterns on the surface. The maintainer suggests setting a lower max_height for biomes as a temporary fix but notes that this approach is not ideal due to its uniformity.
+Discussion about cave structures appearing on the surface, specifically mentioning stalagmites and ground patches. Stalagmites are noted to be generated outside of the structure system, explaining their different behavior compared to other cave structures. Ground patches are suspected to continue underground patterns on the surface due to a separate issue within the generation process. The maintainer suggests setting a lower max_height for biomes as a temporary fix but notes that this approach is not ideal due to its uniformity and does not address the underlying issues with ground patch generation.
 
 ## Related Questions
-- What is the current behavior of stalagmite generation in Cubyz?
-- How does the ground patch generation differ from underground patterns?
-- Why is setting max_height a temporary fix for cave structures on the surface?
-- Are there any plans to address the uniformity issue with the max_height approach?
-- Can the structure system be modified to handle stalagmite generation correctly?
-- What are the potential impacts of changing ground patch generation rules?
+- What specific behavior do stalagmites exhibit when generated outside of the structure system?
+- How exactly are ground patches continuing underground patterns on the surface?
 
 *Source: unknown | chunk_id: github_issue_547_discussion*

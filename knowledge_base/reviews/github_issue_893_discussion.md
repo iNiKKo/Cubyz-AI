@@ -8,7 +8,7 @@
 Discussion about adding a new tree leave type called 'Flatbottom' for jungle environments, with suggestions to control the width/height of basic spheres.
 
 ## Explanation
-The issue revolves around introducing a new leaf type named 'Flatbottom' specifically designed for use in jungles. The primary motivation is to provide more cover options without resorting to wasteful spherical leaves. There is a suggestion to enhance flexibility by allowing control over the width and height of basic spheres, which could be particularly useful for creating mahogany-like structures. The maintainer has proposed checking if this solution meets the user's requirements.
+Discussion about adding a new tree leave type called 'Flatbottom' for jungle environments, with suggestions to control the width/height of basic spheres. The primary motivation is to provide more cover options without resorting to wasteful spherical leaves. There are comments suggesting that this could be better described as a mushroom and that controlling the width and height of basic spheres would be beneficial for creating mahogany-like structures. The maintainer has proposed checking if this solution meets the user's requirements.
 
 ## Related Questions
 - What is the primary motivation for adding the 'Flatbottom' leaf type?

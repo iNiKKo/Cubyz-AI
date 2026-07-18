@@ -2,21 +2,16 @@
   "nickc": {
     "model": "qwen2.5-coder:7b",
     "tier": "medium",
-    "last_seen": 1784410130.2684255
+    "last_seen": 1784410711.273865
   },
   "nick": {
     "model": "qwen2.5-coder:14b",
     "tier": "hard",
-    "last_seen": 1784410138.7760677
+    "last_seen": 1784410710.7558146
   },
   "nicksrvr": {
     "model": "qwen2.5-coder:7b",
     "tier": "medium",
-    "last_seen": 1784410140.8273194
-  },
-  "caleb": {
-    "model": "qwen2.5-coder:14b",
-    "tier": "hard",
-    "last_seen": 1784410146.0769165
+    "last_seen": 1784410597.9936771
   }
 }

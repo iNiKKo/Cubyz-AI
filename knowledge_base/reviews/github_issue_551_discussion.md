@@ -8,7 +8,7 @@
 Discussion about adding a jump delay when holding down the 'jump' button.
 
 ## Explanation
-The issue report describes a scenario where pressing and holding the jump button while walking into a block results in an immediate jump after landing, creating the illusion of jumping twice as high. The maintainer expresses concern that adding a delay might affect the consistency of jump height across different scenarios.
+Discussion about adding a jump delay when holding down the 'jump' button. The issue report describes a scenario where pressing and holding the jump button while walking into a block results in an immediate jump after landing, creating the illusion of jumping twice as high. The maintainer expresses concern that adding a delay might affect the consistency of jump height across different scenarios, specifically noting that the lack of delay is important to ensure consistent jump height.
 
 ## Related Questions
 - What is the current behavior of the jump mechanics when holding down the jump button?

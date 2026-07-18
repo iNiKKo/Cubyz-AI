@@ -6,10 +6,10 @@
 **Concepts:** naming conventions, data migration, user experience
 
 ## Summary
-The discussion revolves around renaming the material 'stone' to 'slate' due to its lack of specificity and better alignment with other stone types. The maintainer suggests considering 'Slate' or 'Shale' as alternatives, while users prefer 'Slate' for its visual match and common usage.
+The discussion revolves around renaming the material 'stone' to 'slate' due to its lack of specificity and better alignment with other stone types. The maintainer suggests considering 'Slate' or 'Shale' as alternatives, while users prefer 'Slate' for its visual match and common usage. Slate was chosen as the winning name in a poll.
 
 ## Explanation
-The issue highlights the need for more specific material names within the game to avoid confusion and improve consistency. The discussion includes considerations of visual appearance and practicality in relation to real-world materials. The maintainer emphasizes the importance of item migrations to handle player inventories during such changes, ensuring data integrity and user experience.
+The issue highlights the need for more specific material names within the game to avoid confusion and improve consistency. The discussion includes considerations of visual appearance and practicality in relation to real-world materials, with users preferring 'Slate' due to its close match visually and common usage as a building material. The maintainer emphasizes the importance of item migrations to handle player inventories during such changes, ensuring data integrity and user experience. Slate was chosen as the winning name in a poll conducted by the maintainer.
 
 ## Related Questions
 - What are the potential impacts of renaming 'stone' to 'slate' on existing game mechanics?

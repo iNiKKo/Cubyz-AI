@@ -8,7 +8,7 @@
 Discussion about implementing 9-slice button textures to improve button appearance and prevent pixel cut-off issues.
 
 ## Explanation
-The discussion revolves around the implementation of 9-slice button textures in Cubyz. The user proposes using this technique to create buttons with bold outlines, aiming to avoid abrupt pixel cuts. The maintainer initially questions the concept but later suggests overlaying a nine-slice texture for the outline on top of a base texture like wood or chalk. Additionally, the maintainer has unhardcoded the button selection and pressed states, allowing for more customization.
+Discussion about implementing 9-slice button textures in Cubyz to improve button appearance and prevent pixel cut-off issues. The user proposes using this technique to create buttons with bold outlines, aiming to avoid abrupt pixel cuts. Initially, the maintainer questions the concept but later suggests overlaying a nine-slice texture for the outline on top of a base texture like wood or chalk. Additionally, the maintainer has unhardcoded the button selection and pressed states, allowing customization options such as changing these states independently.
 
 ## Related Questions
 - What is the purpose of implementing 9-slice button textures in Cubyz?

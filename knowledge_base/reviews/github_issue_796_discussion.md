@@ -8,7 +8,7 @@
 Biome display issue causes constant jungle-themed fog and music.
 
 ## Explanation
-The bug arises from every biome being incorrectly displayed as 'cubyz:jungle(TODO)', leading to a failure in dynamically changing the biome-specific fog and music. The maintainer's comment highlights that this misrepresentation results in a static environment experience, where the visual and auditory cues should vary based on the actual biome type.
+The bug arises from every biome being incorrectly displayed as 'cubyz:jungle(TODO)', leading to a failure in dynamically changing the biome-specific fog and music. The maintainer's comment highlights that this misrepresentation results in a static environment experience, where the visual and auditory cues should vary based on the actual biome type. Specifically, the maintainer notes that biome fog and music do not change due to this issue.
 
 ## Related Questions
 - What is the root cause of every biome being displayed as 'cubyz:jungle(TODO)'?

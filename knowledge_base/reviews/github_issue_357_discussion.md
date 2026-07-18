@@ -8,7 +8,7 @@
 Discussion about using a rotation mode for wood and cacti blocks instead of separate top and log blocks.
 
 ## Explanation
-The discussion revolves around whether to implement a rotation mode for wood and cacti blocks to allow for directional textures. The maintainer suggests that this could complicate the system with too many variations and would require additional textures for multi-block logs, potentially making it unnecessary. The user argues in favor of directional textures for the ends of the logs.
+The discussion revolves around whether to implement a rotation mode for wood and cacti blocks to allow for directional textures. The maintainer suggests that this could complicate the system with too many variations and would require additional textures for multi-block logs, potentially making it unnecessary. They also suggest handling such cases with separate blocks or considering if it is even worth implementing. The user argues in favor of directional textures specifically for the ends of the logs.
 
 ## Related Questions
 - What are the potential performance implications of implementing a rotation mode for wood and cacti blocks?

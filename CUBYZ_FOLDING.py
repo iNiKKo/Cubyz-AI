@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.33"
+VERSION = "1.1.34"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -2288,6 +2288,26 @@ def run_live_gpu_diagnostic():
                 print(f"  {Colors.YELLOW}⚠ Could not run rocminfo: {e}{Colors.RESET}")
         else:
             print(f"  {Colors.YELLOW}⚠ rocminfo not found on PATH -- can't report the real GPU architecture string.{Colors.RESET}")
+
+        # No ROCm userland tools at all (confirmed by both checks above failing) means there's no
+        # way to ask ROCm directly what it thinks of this card -- but Ollama's OWN startup log
+        # almost always states outright whether it found/rejected a GPU (e.g. "no compatible
+        # amdgpu found", or a specific ROCm initialization error), which is the most direct answer
+        # available without any extra tooling. On Linux, Ollama is commonly a systemd service.
+        if PLATFORM == "linux" and shutil.which('journalctl'):
+            print(f"  {Colors.CYAN}Checking Ollama's own service log for GPU-related lines (journalctl -u ollama)...{Colors.RESET}")
+            try:
+                res = subprocess.run(['journalctl', '-u', 'ollama', '-n', '200', '--no-pager'], capture_output=True, text=True, timeout=15)
+                gpu_lines = [l for l in res.stdout.splitlines() if re.search(r'gpu|rocm|amdgpu|hip|cuda', l, re.I)]
+                if gpu_lines:
+                    for line in gpu_lines[-15:]:
+                        print(f"  {line}")
+                elif res.returncode != 0:
+                    print(f"  {Colors.YELLOW}⚠ Could not read the ollama service log (not running as a systemd service under this name, or needs elevated permissions).{Colors.RESET}")
+                else:
+                    print(f"  {Colors.YELLOW}⚠ No GPU/ROCm-related lines found in the last 200 log lines.{Colors.RESET}")
+            except Exception as e:
+                print(f"  {Colors.YELLOW}⚠ Could not check the Ollama service log: {e}{Colors.RESET}")
     else:
         print(f"{Colors.CYAN}[3/4] Skipped (no smi-style tool wired up for {gpu_type} cards yet).{Colors.RESET}")
 

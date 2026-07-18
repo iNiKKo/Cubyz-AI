@@ -8,7 +8,7 @@
 Discussion about adding functionality to hide UI elements for screenshotting purposes, including bounding boxes and selection boxes.
 
 ## Explanation
-The discussion revolves around enhancing the user interface by adding a button that allows users to hide various UI components such as the UI itself, bounding boxes, and selection boxes. This feature is intended to facilitate the creation of clean screenshots without unwanted elements visible in the final image.
+The discussion revolves around enhancing the user interface by adding a button to hide various UI components, as suggested by a maintainer's comment. This feature is intended to facilitate the creation of clean screenshots without unwanted elements visible in the final image. The specific suggestion from the maintainer includes hiding bounding boxes and selection boxes.
 
 ## Related Questions
 - What is the purpose of adding a button to hide UI elements?

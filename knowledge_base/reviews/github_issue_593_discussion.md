@@ -8,7 +8,7 @@
 The issue discusses preventing certain windows, including the main menu and in-game UI elements like the crosshair, from being closed.
 
 ## Explanation
-The discussion centers around ensuring user interface elements that are critical for navigation or gameplay cannot be accidentally closed. The maintainer's comment extends this to other in-game UIs that also should not be closable. This change aims to improve the quality of life by preventing users from losing access to essential features.
+The issue discusses preventing certain windows, including the main menu and in-game UI elements like the crosshair, from being closed. The maintainer's comment extends this to other in-game UIs that also should not be closable. Specifically, these include the crosshair and potentially other critical UI elements essential for navigation or gameplay. This change aims to improve the quality of life by preventing users from losing access to essential features.
 
 ## Related Questions
 - What are the specific windows that cannot be reopened?

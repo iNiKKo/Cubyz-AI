@@ -8,7 +8,7 @@
 Discussion about the rotation of textures for logs and carpets, with a focus on consistency in building orientation and correct lighting.
 
 ## Explanation
-The issue revolves around the incorrect rotation of textures when using specific rotation modes ('Log' and 'Carpet'). The maintainer argues that the current behavior aligns better with how trees would naturally fall. However, the user contends that maintaining consistent texture orientation across all directions would be more appropriate for building purposes and would correct lighting issues.
+Discussion about the incorrect rotation of textures for logs and carpets when using specific rotation modes ('Log' and 'Carpet'). The maintainer argues that the current behavior aligns better with how trees would naturally fall, as shown in the image provided. However, the user contends that maintaining consistent texture orientation across all directions would be more appropriate for building purposes and would correct lighting issues, also illustrated by an accompanying image.
 
 ## Related Questions
 - What is the current behavior of texture rotation for logs and carpets?

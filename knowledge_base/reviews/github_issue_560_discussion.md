@@ -8,7 +8,7 @@
 The issue discusses the behavior of jumping into a block with another block above the player's head, which allows entering 1-block gaps.
 
 ## Explanation
-The discussion revolves around determining whether the ability to jump into a block with another block directly above the player's head and enter 1-block gaps is intended as a bug or a feature. The maintainers are considering the implications of this behavior on gameplay mechanics and user experience.
+The issue discusses the behavior of jumping into a block with another block directly above the player's head, allowing entry into 1-block gaps. The maintainers are considering whether this behavior should be treated as a bug or a feature and note that it is hard to decide due to its implications on gameplay mechanics and user experience.
 
 ## Related Questions
 - What is the intended behavior of jumping into a block with another block above the player's head?

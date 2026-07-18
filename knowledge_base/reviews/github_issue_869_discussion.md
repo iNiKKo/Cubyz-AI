@@ -8,14 +8,12 @@
 Discussion about the necessity and design of cobblestone in Cubyz, considering player expectations and game mechanics.
 
 ## Explanation
-The issue revolves around whether to remove cobblestone or add cobbled variants for other stones. The main points include the historical context from Minecraft, where only stone has a cobbled variant. Users argue that stone should drop itself, while others suggest making smooth stones by mixing cobbled variants with clay. There's also discussion about the cost and utility of stones, particularly in comparison to Minecraft's mechanics. The maintainer considers cobblestone as a unique texture but acknowledges player expectations. An idea to make cobblestone from various stones was proposed and implemented.
+The issue revolves around whether to remove cobblestone or add cobbled variants for other stones. The main points include the historical context from Minecraft, where only stone has a cobbled variant. Users argue that stone should drop itself and cobblestone should be left as a crafted/found decorative block. Tool material values from cobble can be given to stone, and then the other stones can be made tool materials. There's also discussion about obtaining smooth stones by mixing cobbled variants with clay. The maintainer considers cobblestone as a unique texture but acknowledges player expectations for its existence due to familiarity from Minecraft. An idea was proposed to make cobblestone have textures of various stones, and this has been implemented in issue #1024.
 
 ## Related Questions
-- What is the historical context of cobblestone in Minecraft?
-- Why should stone drop itself instead of cobblestone?
+- What are the tool material values associated with cobblestone?
 - How can smooth stones be obtained by mixing cobbled variants with clay?
-- What are the arguments for and against removing cobblestone?
-- How does the maintainer view the unique texture of cobblestone?
-- What is the proposed method to make cobblestone from various stones?
+- Why should stone drop itself instead of cobblestone?
+- What is the exact method to make cobblestone from various stones?
 
 *Source: unknown | chunk_id: github_issue_869_discussion*

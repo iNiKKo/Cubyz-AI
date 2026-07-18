@@ -8,7 +8,7 @@
 Discussion about the creation of a /fill command for creative-mode players, noting the existence of alternative commands like /set and /help.
 
 ## Explanation
-The issue discusses the need for a /fill command to assist creative-mode players. The maintainers initially thought the issue could be closed due to another feature (#1236). However, they later discovered that there are already existing commands such as /set and /help which might serve the purpose.
+The issue discusses the need for a /fill command to assist creative-mode players. The maintainers initially thought the issue could be closed due to another feature (#1236). However, they later discovered that there are already existing commands such as /set and /help which might serve the purpose. Specifically, the maintainer mentioned that the /set command can be used for setting block properties directly, and the /help command provides information on available commands in-game.
 
 ## Related Questions
 - What is the performance impact of implementing the /fill command without #610?
