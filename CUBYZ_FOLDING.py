@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.8"
+VERSION = "1.1.9"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -1623,20 +1623,99 @@ MODE_BANNERS = {
 # cover a full qwen2.5-coder:3b run *while* the GPU lane's own process is also live.
 DUAL_LANE_MIN_RAM_GB = 12.0
 
+class DualStatusBoard:
+    """One shared, redrawing status window covering BOTH lanes at once, used instead of each
+    lane's own independent box in dual-lane mode. A single lane's box (print_terminal_status
+    inside crunch_lane) assumes it's the only thing touching the terminal -- true for a solo
+    lane, but with two lanes running, whichever one drew last would tear/stack over the other's
+    box the moment the other lane printed anything in between (confirmed live). Routing both
+    lanes' updates through this one object means there's only ever one piece of code doing
+    cursor math, so it can always know exactly how many lines it drew last time.
+    """
+
+    def __init__(self, gpu_label: str, cpu_label: str):
+        self.labels = {"GPU": gpu_label, "CPU": cpu_label}
+        self.state = {
+            "GPU": {"task": "(waiting for a task...)", "status": "Starting...", "speed": "calculating..."},
+            "CPU": {"task": "(waiting for a task...)", "status": "Starting...", "speed": "calculating..."},
+        }
+        self.comp = 0
+        self.tot = 0
+        self.eta = None
+        self.rendered_once = False
+        self.last_line_count = 0
+
+    def _status_color(self, step_msg: str) -> str:
+        if step_msg.startswith("✓"):
+            return Colors.GREEN
+        if step_msg.startswith("⚠"):
+            return Colors.YELLOW
+        if step_msg.startswith("✗"):
+            return Colors.RED
+        return ""
+
+    def _build_lines(self) -> list:
+        pct = (self.comp / self.tot * 100) if self.tot else 0.0
+        bar_len = 20
+        fill_len = max(0, min(bar_len, int(round(bar_len * self.comp / float(self.tot))))) if self.tot else 0
+        p_bar = '█' * fill_len + '░' * (bar_len - fill_len)
+
+        lines = [f"{Colors.BOLD}─── [ DUAL-LANE CRUNCHING ] ─────────────────────────────────────────{Colors.RESET}"]
+        for tag, color in (("GPU", Colors.CYAN), ("CPU", Colors.MAGENTA)):
+            s = self.state[tag]
+            lines.append(f" {color}{tag}{Colors.RESET} │ {self.labels[tag]}")
+            lines.append(f"     │ Task  : {s['task']}")
+            lines.append(f"     │ Status: {self._status_color(s['status'])}{s['status']}{Colors.RESET}")
+            lines.append(f"     │ Speed : {s['speed']}")
+            lines.append(f"{color}─────┴─────────────────────────────────────────────────────────────{Colors.RESET}")
+        lines.append(f"  Global Progress: [{Colors.CYAN}{p_bar}{Colors.RESET}] {format_count(self.comp)}/{format_count(self.tot)} ({pct:.2f}%)")
+        lines.append(f"  Est. Time Left : {format_eta(self.eta)}")
+        lines.append(f"{Colors.BOLD}───────────────────────────────────────────────────────────────────────{Colors.RESET}")
+        return lines
+
+    def _render_locked(self):
+        lines = self._build_lines()
+        if self.rendered_once:
+            sys.stdout.write("\033[F\033[K" * self.last_line_count)
+        for line in lines:
+            print(line)
+        sys.stdout.flush()
+        self.last_line_count = len(lines)
+        self.rendered_once = True
+
+    def update(self, lane_tag: str, task_desc: str, step_msg: str, comp: int, tot: int, eta, speed: str):
+        with print_lock:
+            self.state[lane_tag] = {"task": task_desc, "status": step_msg, "speed": speed}
+            self.comp, self.tot, self.eta = comp, tot, eta
+            self._render_locked()
+
+    def note(self, msg: str):
+        """A scrolling one-off line (mode changed, idle, an error) from either lane -- printed
+        above the board, which then redraws fresh underneath on the next update() instead of
+        trying to clear over top of what was just printed."""
+        with print_lock:
+            print(msg)
+            self.rendered_once = False
+
 def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: str, max_threads,
                  cooldown: float, mode_desc: str, hardware_label: str, force_cpu: bool = False,
-                 fancy_ui: bool = True, pause_event: "threading.Event | None" = None):
+                 fancy_ui: bool = True, pause_event: "threading.Event | None" = None,
+                 board: "DualStatusBoard | None" = None):
     """Runs the poll -> crunch -> submit cycle forever for one lane. A "lane" is one independent
     identity polling /get_work and calling Ollama on its own -- there's normally just one (the
     whole client, as before dual-lane support existed), but a machine with both a real GPU and
     enough spare RAM (see run_dual_lane_if_capable()) runs two: this function unmodified in the
     main thread for the GPU lane (Ctrl+C/the interrupt menu behave exactly as they always have),
     and a second call in a background thread for the CPU lane (force_cpu=True routes that lane's
-    Ollama calls through num_gpu=0 so it never competes with the GPU lane for VRAM). fancy_ui is
-    only ever True for a solo lane -- the redrawing status box assumes it's the only thing
-    touching the terminal, which a second lane's log lines would break no matter how printing
-    itself is locked, so dual-lane mode runs both lanes with fancy_ui=False (plain tagged log
-    lines) instead.
+    Ollama calls through num_gpu=0 so it never competes with the GPU lane for VRAM).
+
+    fancy_ui (this lane's own independent redrawing box) is only ever used for a genuinely solo
+    lane. In dual-lane mode both lanes instead report into a single shared `board`
+    (DualStatusBoard) -- one lane's own box assumes it's the only thing touching the terminal,
+    which a second lane drawing its own box (or even just printing plain lines) would break no
+    matter how the printing itself is locked, since a lock only stops characters from
+    interleaving, not the cursor math from landing in the wrong place. `board` is None for solo
+    runs, in which case fancy_ui's own box is used exactly as before dual-lane support existed.
 
     pause_event coordinates the two lanes without needing the background thread to handle Ctrl+C
     itself (Python only ever delivers SIGINT/KeyboardInterrupt to the main thread, so a background
@@ -1697,14 +1776,23 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
             sys.stdout.flush()
 
     def report(task_desc, step_msg, is_first, comp, tot, eta):
-        if fancy_ui:
+        if board is not None:
+            board.update(lane_tag, task_desc, step_msg, comp, tot, eta, speed_str())
+        elif fancy_ui:
             print_terminal_status(task_desc, step_msg, is_first, comp, tot, eta)
         else:
-            # fancy_ui's box has a dedicated "Lane Speed" row that's always current; the simple
-            # log has no persistent line to put that in, so it rides along on each completed-task
-            # line instead (the only message shape a fresh speed reading is actually relevant on).
             suffix = f" ({speed_str()})" if step_msg.startswith("✓") else ""
             safe_print(f"{Colors.GRAY}[{lane_tag}]{Colors.RESET} {task_desc}: {step_msg}{suffix}")
+
+    def banner(msg):
+        """A one-off scrolling line (mode changed, idle, an error) rather than an ongoing task
+        status -- goes through the shared board's note() in dual-lane mode so it scrolls above
+        the board instead of getting silently clobbered by the next redraw, or straight to
+        safe_print otherwise."""
+        if board is not None:
+            board.note(msg)
+        else:
+            safe_print(msg)
 
     current_mode = None
     first_stat_print = True
@@ -1742,9 +1830,9 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
             if mode != current_mode:
                 first_stat_print = True
                 if mode == "idle":
-                    safe_print(f"{Colors.GRAY}[{lane_tag}] Server online -- no tasks available (idle mode).{Colors.RESET}")
+                    banner(f"{Colors.GRAY}[{lane_tag}] Server online -- no tasks available (idle mode).{Colors.RESET}")
                 else:
-                    safe_print(f"\n[{lane_tag}] [{MODE_BANNERS.get(mode, mode.upper() + ' MODE ACTIVATED')}]\n")
+                    banner(f"\n[{lane_tag}] [{MODE_BANNERS.get(mode, mode.upper() + ' MODE ACTIVATED')}]\n")
                 current_mode = mode
 
             if mode == "idle":
@@ -1752,7 +1840,7 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
                 continue
 
             if mode not in ("rag", "finetune"):
-                safe_print(f"{Colors.YELLOW}[{lane_tag}] [!] Unrecognized mode '{mode}' from server -- skipping this cycle.{Colors.RESET}")
+                banner(f"{Colors.YELLOW}[{lane_tag}] [!] Unrecognized mode '{mode}' from server -- skipping this cycle.{Colors.RESET}")
                 time.sleep(5)
                 continue
 
@@ -1763,11 +1851,11 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
                 # Doesn't exit -- the server can switch this client into a different mode (or back
                 # to idle) later, and it should just keep following along rather than requiring a
                 # manual restart every time one campaign's queue empties out.
-                safe_print(f"\n{mode_color(mode)}{Colors.BOLD}[{lane_tag}] [★] {mode.upper()} campaign complete -- all chunks processed. Waiting for the next campaign...{Colors.RESET}")
+                banner(f"\n{mode_color(mode)}{Colors.BOLD}[{lane_tag}] [★] {mode.upper()} campaign complete -- all chunks processed. Waiting for the next campaign...{Colors.RESET}")
                 time.sleep(30)
                 continue
             if work_package.get("status") == "waiting":
-                safe_print(f"{Colors.GRAY}[{lane_tag}] [~] Server online -- no matched tasks left for hardware tier '{hardware_tier}'. Sleeping...{Colors.RESET}")
+                banner(f"{Colors.GRAY}[{lane_tag}] [~] Server online -- no matched tasks left for hardware tier '{hardware_tier}'. Sleeping...{Colors.RESET}")
                 time.sleep(30); continue
 
             task = work_package["task"]
@@ -1906,14 +1994,14 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
                     f"    This is a data/config problem, not a network hiccup -- retrying won't fix it.\n"
                     f"    Check your volunteer ID and, if this persists, report it as a bug.{Colors.RESET}"
                 )
-            safe_print(f"\n{Colors.YELLOW}[{lane_tag}] [Warning] Server error {he.code}. Retrying in 15 seconds...{Colors.RESET}"); interruptible_sleep(15)
+            banner(f"\n{Colors.YELLOW}[{lane_tag}] [Warning] Server error {he.code}. Retrying in 15 seconds...{Colors.RESET}"); interruptible_sleep(15)
         except urllib.error.URLError:
             current_mode = None
             first_stat_print = True
-            safe_print(f"\n{Colors.RED}[{lane_tag}] [X] Server offline -- no tasks available. Retrying in 15 seconds...{Colors.RESET}"); interruptible_sleep(15)
+            banner(f"\n{Colors.RED}[{lane_tag}] [X] Server offline -- no tasks available. Retrying in 15 seconds...{Colors.RESET}"); interruptible_sleep(15)
         except Exception as e:
             first_stat_print = True
-            safe_print(f"\n{Colors.RED}[{lane_tag}] [Error] Failure path encounter: {e}. Retrying in 5 seconds...{Colors.RESET}"); interruptible_sleep(5)
+            banner(f"\n{Colors.RED}[{lane_tag}] [Error] Failure path encounter: {e}. Retrying in 5 seconds...{Colors.RESET}"); interruptible_sleep(5)
 
 def _background_lane(**kwargs):
     """Thread target for the secondary (CPU) lane. sys.exit() from a fatal, unrecoverable error
@@ -2020,6 +2108,7 @@ def main():
             return f"CPU Engine ({system_ram_gb:.1f} GB RAM)"
         return f"{gpu_type_val.upper()} ({total_vram_gb:.1f} GB VRAM)"
 
+    board = None
     if dual_capable:
         # Reserve a couple of logical threads for the GPU lane's own overhead and the OS, give
         # the rest to the CPU lane's Ollama call. Hardcoding the same "2" the solo Eco Profile
@@ -2028,7 +2117,9 @@ def main():
         # alongside a GPU lane (confirmed live: a 6-core/12-thread Ryzen 5 9600X sat at ~35% CPU
         # utilization capped at "2" -- 2 threads on a 12-thread part).
         cpu_lane_threads = max(2, (os.cpu_count() or 4) - 2)
-        print(f"{Colors.CYAN}[✓] Dual-lane mode: GPU ({hardware_label_for(gpu_type)}) + a secondary CPU lane (qwen2.5-coder:3b, {cpu_lane_threads} threads, {system_ram_gb:.1f} GB RAM) will crunch two tasks at once.{Colors.RESET}\n")
+        cpu_hardware_label = f"{cpu_lane_threads} threads, {system_ram_gb:.1f} GB RAM"
+        print(f"{Colors.CYAN}[✓] Dual-lane mode: GPU ({hardware_label_for(gpu_type)}) + a secondary CPU lane (qwen2.5-coder:3b, {cpu_hardware_label}) will crunch two tasks at once.{Colors.RESET}\n")
+        board = DualStatusBoard(gpu_label=hardware_label_for(gpu_type), cpu_label=cpu_hardware_label)
         pause_event = threading.Event()
         # user_id is 3-9 alpha chars (enforced at login); truncating to 8 and appending "c" always
         # differs from the primary lane's own id (even at the 9-char ceiling, where a bare
@@ -2040,8 +2131,8 @@ def main():
             kwargs=dict(
                 lane_tag="CPU", user_id=cpu_user_id, hardware_tier="easy", chosen_model="qwen2.5-coder:3b",
                 max_threads=cpu_lane_threads, cooldown=1.0, mode_desc="Eco Profile (Automated: Secondary CPU lane, running alongside the primary GPU lane)",
-                hardware_label=f"CPU Engine ({system_ram_gb:.1f} GB RAM, secondary lane)",
-                force_cpu=True, fancy_ui=False, pause_event=pause_event,
+                hardware_label=cpu_hardware_label,
+                force_cpu=True, fancy_ui=False, pause_event=pause_event, board=board,
             ),
             daemon=True,
         )
@@ -2050,16 +2141,10 @@ def main():
         pause_event = None
 
     crunch_lane(
-        # fancy_ui's cursor-redraw box assumes it's the only thing touching the terminal -- true
-        # for a solo lane, but in dual-lane mode the CPU lane's own log lines land in between
-        # redraws and throw off the "move up N lines" math no matter how the printing itself is
-        # locked (a lock only stops characters from interleaving, not extra lines from shifting
-        # where the cursor already is). Confirmed live: the box visibly tore/stacked instead of
-        # redrawing cleanly. Both lanes fall back to plain tagged log lines in dual mode instead
-        # -- solo runs (the common case) are completely unaffected.
         lane_tag="GPU" if dual_capable else "MAIN", user_id=user_id, hardware_tier=hardware_tier,
         chosen_model=chosen_model, max_threads=max_threads, cooldown=cooldown, mode_desc=mode_desc,
-        hardware_label=hardware_label_for(gpu_type), force_cpu=False, fancy_ui=not dual_capable, pause_event=pause_event,
+        hardware_label=hardware_label_for(gpu_type), force_cpu=False, fancy_ui=not dual_capable,
+        pause_event=pause_event, board=board,
     )
 
 if __name__ == "__main__":
