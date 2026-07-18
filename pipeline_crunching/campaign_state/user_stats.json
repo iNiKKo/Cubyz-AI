@@ -1,7 +1,7 @@
 {
   "nick": {
-    "chunks_completed": 3507,
-    "lines_crunched": 160144
+    "chunks_completed": 3542,
+    "lines_crunched": 161051
   },
   "nickmac": {
     "chunks_completed": 83,
@@ -24,7 +24,7 @@
     "lines_crunched": 6097
   },
   "nickc": {
-    "chunks_completed": 69,
-    "lines_crunched": 3691
+    "chunks_completed": 75,
+    "lines_crunched": 4086
   }
 }

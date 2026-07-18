@@ -30,3 +30,4 @@
 {"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_assets_cubyz_sbb_rare_triclops_statue_root_base.zig.zon_chunk_0", "timestamp": 1784360813.5033364, "received_at": 1784360813.5444028}
 {"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_assets_cubyz_biomes_tall_mountain_slope8.zig.zon_chunk_0", "timestamp": 1784361083.4619184, "received_at": 1784361083.465295}
 {"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_assets_cubyz_blocks_cloth_block_pink.zig.zon_chunk_0", "timestamp": 1784361102.974931, "received_at": 1784361102.978949}
+{"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_assets_cubyz_biomes_bog__defaults.zig.zon_chunk_0", "timestamp": 1784361207.110241, "received_at": 1784361207.1133409}
