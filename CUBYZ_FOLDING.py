@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.16"
+VERSION = "1.1.17"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -549,11 +549,31 @@ def check_intel_mac_dgpu() -> tuple:
         if match:
             value, unit = float(match.group(1)), match.group(2)
             return True, (value / 1024.0 if unit == "MB" else value)
-        return True, 4.0
+        # A discrete GPU block exists but system_profiler didn't report a parseable VRAM figure --
+        # detected-but-unknown-size (0.0) rather than a fabricated number. See check_nvidia_gpu's
+        # comment for how "unknown" is handled downstream (smallest safe model tier, then the
+        # real benchmark decides usability).
+        return True, 0.0
     return False, 0.0
 
-DISCRETE_AMD_MARKERS = ["radeon rx", "radeon pro", "radeon vii", "instinct"]
-DISCRETE_INTEL_MARKERS = ["arc a", "arc b", "dg2", "dg3", "data center gpu", "flex 1", "max 1"]
+def _windows_adapter_vram_gb(adapter_ram) -> float:
+    """AdapterRAM from WMI's Win32_VideoController is a real reading when it works, but it's a
+    known-unreliable field on some Windows systems: certain drivers report it clamped to exactly
+    the 32-bit-unsigned ceiling (4294967295 bytes, "-1" reinterpreted as unsigned) instead of the
+    true value once real VRAM exceeds ~4 GB. That's a narrow, specific pattern to reject -- NOT
+    "any large value": most real cards legitimately report well above 4 GB and a naive "reject
+    anything near or above 4 GB" check would wrongly discard the correct reading for nearly every
+    modern GPU (an earlier version of this function did exactly that; caught before it shipped).
+    A negative value is the same overflow, just interpreted as signed. 0.0 (detected-but-unknown-
+    size) is returned for both that sentinel and anything otherwise unparseable, never a
+    fabricated number."""
+    try:
+        val = int(adapter_ram)
+    except (TypeError, ValueError):
+        return 0.0
+    if val <= 0 or val in (4294967295, 4294967296):
+        return 0.0
+    return val / (1024.0 ** 3)
 
 def _normalize_gpu_name(name: str) -> str:
     name = name.lower()
@@ -602,11 +622,16 @@ def check_nvidia_gpu() -> tuple:
     except Exception:
         pass
 
+    # nvidia-smi failing on a real Nvidia card (driver/PATH issue, etc.) still leaves the GPU
+    # detectable by name -- but with no real VRAM reading available, report it as detected with
+    # an unknown size (0.0) rather than fabricating a number. get_vram_and_choose_model() treats
+    # unknown VRAM as "pick the smallest safe model," and the benchmark (see benchmark_lane() in
+    # main()) is what actually decides whether this GPU is worth using at all -- not a guess here.
     if PLATFORM == "win32":
         for gpu in get_windows_gpus():
             name = _normalize_gpu_name(str(gpu.get("Name", "")))
             if "nvidia" in name or "geforce" in name or "quadro" in name or "rtx" in name:
-                return True, 16.0
+                return True, _windows_adapter_vram_gb(gpu.get("AdapterRAM"))
     else:
         try:
             pci = subprocess.run(['lspci'], capture_output=True, text=True).stdout
@@ -643,9 +668,12 @@ def check_amd_gpu() -> tuple:
             name = _normalize_gpu_name(str(gpu.get("Name", "")))
             if "amd" not in name and "radeon" not in name:
                 continue
-            if any(m in name for m in DISCRETE_AMD_MARKERS):
-                return True, 16.0
-            return True, get_system_ram_gb() * 0.4
+            # No universally-installed real-VRAM tool for AMD on Windows (amd-smi/rocm-smi are
+            # Linux-first and rarely present here) -- AdapterRAM if it's a sane reading, otherwise
+            # detected-but-unknown-size (0.0) rather than a fabricated number. See
+            # _windows_adapter_vram_gb's comment and get_vram_and_choose_model()/benchmark_lane()
+            # for how "unknown" gets handled downstream (smallest safe model, then measured).
+            return True, _windows_adapter_vram_gb(gpu.get("AdapterRAM"))
         return False, 0.0
 
     for cmd in [['amd-smi', 'metric', '--json'], ['rocm-smi', '--showmeminfo', 'vram']]:
@@ -666,16 +694,10 @@ def check_amd_gpu() -> tuple:
             # older consumer GPUs, e.g. Polaris/RX 500-series, which ROCm's compute tooling was
             # never targeted at) -- sysfs is the actual real reading, not a guess, and needs
             # nothing beyond the kernel driver that's already loaded for the card to work at all.
-            # Confirmed live: without this, an RX 550 (2-4 GB) was hardcoded to a blind "16.0"
-            # just because its name matched the "radeon rx" marker below, badly overestimating
-            # available VRAM and pushing model-tier selection (and dual-lane RAM math) off a
-            # fabricated number.
-            sysfs_vram = _amd_vram_from_sysfs()
-            if sysfs_vram > 0:
-                return True, sysfs_vram
-            if any(m in pci for m in DISCRETE_AMD_MARKERS):
-                return True, 16.0
-            return True, get_system_ram_gb() * 0.4
+            # If even sysfs has nothing, report detected-but-unknown-size (0.0) rather than
+            # fabricating a number -- see check_nvidia_gpu's comment for how that's handled
+            # downstream (smallest safe model tier, then the real benchmark decides usability).
+            return True, _amd_vram_from_sysfs()
     except Exception: pass
     return False, 0.0
 
@@ -685,17 +707,17 @@ def check_intel_gpu() -> tuple:
             name = _normalize_gpu_name(str(gpu.get("Name", "")))
             if "intel" not in name:
                 continue
-            if any(m in name for m in DISCRETE_INTEL_MARKERS):
-                return True, 16.0
-            return True, get_system_ram_gb() * 0.4
+            return True, _windows_adapter_vram_gb(gpu.get("AdapterRAM"))
         return False, 0.0
 
     try:
         pci = subprocess.run(['lspci'], capture_output=True, text=True).stdout.lower()
         if "intel" in pci and any(x in pci for x in ["arc", "graphics", "dg2", "dg3"]):
-            if any(m in pci for m in DISCRETE_INTEL_MARKERS):
-                return True, 16.0
-            return True, get_system_ram_gb() * 0.4
+            # No reliable real-VRAM reading attempted here (Intel's discrete-GPU sysfs layout is
+            # less consistent/verified across kernel driver generations than amdgpu's) -- rather
+            # than guess a wrong path or a wrong number, report detected-but-unknown-size and let
+            # the benchmark decide, same as everywhere else in this file.
+            return True, 0.0
     except Exception: pass
     return False, 0.0
 
