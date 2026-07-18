@@ -98,6 +98,7 @@ def mode_color(mode: str) -> str:
 SERVER_URL = "http://ashframe.net:7000"
 OLLAMA_URL = "http://localhost:11434/api/generate"
 CONFIG_FILE = os.path.expanduser("~/.cubyz_node_config.json")
+DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
@@ -496,7 +497,17 @@ def is_apple_silicon() -> bool:
 def check_apple_silicon_gpu() -> tuple:
     if not is_apple_silicon():
         return False, 0.0
-    return True, get_system_ram_gb() * 0.75
+    ram_gb = get_system_ram_gb()
+    # Apple Silicon has unified memory -- there's no separate VRAM pool, so this estimates how
+    # much of total RAM is safe to hand to a model. A flat 75% (the old behavior) left only ~2GB
+    # for macOS itself on an 8GB M1 -- not enough for the OS to function once a 7B model (the tier
+    # that boundary picks) is loaded, causing heavy swap thrashing under sustained crunching load
+    # that presented as thermal throttling / full system crashes after 5-10 minutes.
+    # min() of a fixed OS-overhead subtraction and the old percentage: for RAM >= 14GB the
+    # percentage is the tighter (smaller) bound, so this is a no-op there -- 16GB+ Apple Silicon
+    # machines pick exactly the same model as before. Only the 8GB tier (the one actually
+    # reported broken) gets a meaningfully smaller, safer budget.
+    return True, min(ram_gb - 3.5, ram_gb * 0.75)
 
 def check_intel_mac_dgpu() -> tuple:
     if is_apple_silicon():
@@ -670,6 +681,20 @@ def get_vram_and_choose_model() -> tuple:
         sys.exit(f"\n[X] Hardware Restriction: Insufficient resources ({total_vram_gb:.1f}G VRAM / {ram_gb:.1f}G RAM).")
 
     return model, gpu_type, total_vram_gb
+
+def log_diagnostic(event: dict):
+    """Appends one line to the local diagnostic log -- never submitted anywhere, purely for the
+    volunteer (or whoever's debugging their machine) to look back at afterward. Best-effort: a
+    failure to write a diagnostic line should never interrupt real crunching. Logged at task
+    START (before the heavy Ollama call) as well as at completion, specifically so that if the
+    process dies mid-task (crash, OOM, thermal shutdown) the log still shows which chunk was
+    in-flight when it happened, not just the tasks that finished cleanly."""
+    event["timestamp"] = time.time()
+    try:
+        with open(DIAGNOSTICS_FILE, "a") as f:
+            f.write(json.dumps(event) + "\n")
+    except Exception:
+        pass
 
 def load_config() -> dict:
     if os.path.exists(CONFIG_FILE):
@@ -895,10 +920,15 @@ def format_chunk_descriptor(task: dict) -> str:
     # GITHUB_REVIEWS tasks don't have a real sequential chunk_index -- each review comment stands
     # alone with no natural position within the file it touches, so the source dataset reuses
     # chunk_index to carry the comment's own (huge, unique) numeric ID instead. Displayed as
-    # "Chunk 3295308100" that looks like a bug rather than what it actually is.
+    # "Chunk 3295308100" that looks like a bug rather than what it actually is. Issue-discussion
+    # chunks (from extract_issues.py) reuse the same GITHUB_REVIEWS category with chunk_index set
+    # to the actual issue number, so they get their own equally-readable case.
     match = re.match(r'github_pr_(\d+)_comment_\d+', task.get("chunk_id", ""))
     if match:
         return f"PR #{match.group(1)} review diff"
+    match = re.match(r'github_issue_(\d+)_discussion', task.get("chunk_id", ""))
+    if match:
+        return f"Issue #{match.group(1)} discussion"
     return f"Chunk {task['chunk_index']}"
 
 def format_current_task_line(task: dict) -> str:
@@ -906,9 +936,15 @@ def format_current_task_line(task: dict) -> str:
     # real PR -- relative_path only names the diff's target file, it is NOT that file's own source
     # being processed. A filename-first line reads exactly like "processing this file's code",
     # which is wrong, so lead with the diff/PR framing instead to make the distinction obvious.
+    # Issue-discussion chunks have no target file at all (relative_path is a synthetic
+    # issues/issue_N.md path), so they get their own framing rather than the misleading
+    # "touching issues/issue_N.md" phrasing that would otherwise result.
     match = re.match(r'github_pr_(\d+)_comment_\d+', task.get("chunk_id", ""))
     if match:
         return f"GitHub PR #{match.group(1)} review diff, touching {task['relative_path']} ({task['lines']} lines)"
+    match = re.match(r'github_issue_(\d+)_discussion', task.get("chunk_id", ""))
+    if match:
+        return f"GitHub Issue #{match.group(1)} discussion ({task['lines']} lines)"
     return f"{task['relative_path']} ({format_chunk_descriptor(task)} • {task['lines']} lines)"
 
 def format_finetune_task_line(task: dict) -> str:
@@ -1125,6 +1161,15 @@ def generate_rag_analysis(task: dict, chosen_model: str, max_threads, status_cb)
         "stream": False, "format": RAG_JSON_SCHEMA, "options": {"temperature": temp, **({"num_thread": max_threads} if max_threads else {})}
     }
 
+    # Diagnostic logging here is deliberately scoped to retries/failures only -- a chunk that
+    # succeeds on attempt 1 (the normal case) logs nothing at all. The point is "why did this
+    # chunk need to be redone," not a full audit trail of routine work.
+    def _log_retry(attempt_num, reason):
+        log_diagnostic({
+            "event": "task_retry", "mode": "rag", "chunk_id": task.get("chunk_id"),
+            "attempt": attempt_num + 1, "reason": reason,
+        })
+
     parsed_data = None
     last_failure_reason = "no attempts made"
     for attempt in range(3):
@@ -1139,11 +1184,13 @@ def generate_rag_analysis(task: dict, chosen_model: str, max_threads, status_cb)
         except Exception as e:
             last_failure_reason = f"{type(e).__name__}: {e}"
             status_cb(f"⚠ Attempt {attempt+1} failed: {last_failure_reason}")
+            _log_retry(attempt, last_failure_reason)
             continue
 
         if not json_string:
             last_failure_reason = "Ollama returned HTTP 200 with an empty 'response' field"
             status_cb(f"⚠ Attempt {attempt+1}: model returned empty output. Retrying...")
+            _log_retry(attempt, last_failure_reason)
             continue
 
         if json_string.startswith("```"):
@@ -1156,6 +1203,7 @@ def generate_rag_analysis(task: dict, chosen_model: str, max_threads, status_cb)
         except Exception as e:
             last_failure_reason = f"JSON parse error: {e}"
             status_cb(f"⚠ Attempt {attempt+1}: {last_failure_reason}. Retrying...")
+            _log_retry(attempt, last_failure_reason)
             continue
 
         candidate = sanitize_extraction(candidate, raw_content, p_key)
@@ -1166,6 +1214,13 @@ def generate_rag_analysis(task: dict, chosen_model: str, max_threads, status_cb)
             break
         last_failure_reason = f"Self-check failed: {validation_reason}"
         status_cb(f"⚠ Attempt {attempt+1}: {last_failure_reason}. Retrying...")
+        _log_retry(attempt, last_failure_reason)
+
+    if parsed_data is None:
+        log_diagnostic({
+            "event": "task_gave_up", "mode": "rag", "chunk_id": task.get("chunk_id"),
+            "final_reason": last_failure_reason,
+        })
 
     return parsed_data, last_failure_reason
 
@@ -1229,6 +1284,14 @@ def generate_finetune_pairs(task: dict, chosen_model: str, status_cb) -> tuple:
         "options": {"temperature": 0.3},
     }
 
+    # Same scoping as generate_rag_analysis's _log_retry -- only retries/failures get logged, a
+    # clean first-attempt success logs nothing.
+    def _log_retry(attempt_num, reason):
+        log_diagnostic({
+            "event": "task_retry", "mode": "finetune", "chunk_id": task.get("chunk_id"),
+            "attempt": attempt_num + 1, "reason": reason,
+        })
+
     grounding_text = grounding_text_for(task)
     parsed = None
     last_failure = "no attempts made"
@@ -1241,6 +1304,7 @@ def generate_finetune_pairs(task: dict, chosen_model: str, status_cb) -> tuple:
         except Exception as e:
             last_failure = f"{type(e).__name__}: {e}"
             status_cb(f"⚠ Attempt {attempt+1} failed: {last_failure}")
+            _log_retry(attempt, last_failure)
             continue
         if raw.startswith("```"):
             lines = raw.splitlines()
@@ -1254,6 +1318,7 @@ def generate_finetune_pairs(task: dict, chosen_model: str, status_cb) -> tuple:
         except Exception as e:
             last_failure = f"JSON parse error: {e}"
             status_cb(f"⚠ Attempt {attempt+1}: {last_failure}. Retrying...")
+            _log_retry(attempt, last_failure)
             continue
 
         ok, reason = validate_pairs(candidate.get("pairs", []), grounding_text)
@@ -1262,6 +1327,13 @@ def generate_finetune_pairs(task: dict, chosen_model: str, status_cb) -> tuple:
             break
         last_failure = f"Self-check failed: {reason}"
         status_cb(f"⚠ Attempt {attempt+1}: {last_failure}. Retrying...")
+        _log_retry(attempt, last_failure)
+
+    if parsed is None:
+        log_diagnostic({
+            "event": "task_gave_up", "mode": "finetune", "chunk_id": task.get("chunk_id"),
+            "final_reason": last_failure,
+        })
 
     return parsed, last_failure
 
@@ -1501,6 +1573,12 @@ def main():
 
     chosen_model, gpu_type, total_vram_gb = get_vram_and_choose_model()
     hardware_tier = "easy" if gpu_type == "cpu" or total_vram_gb <= 4.5 else ("medium" if total_vram_gb <= 8.5 else "hard")
+
+    log_diagnostic({
+        "event": "session_start", "platform": PLATFORM, "gpu_type": gpu_type,
+        "total_vram_gb": round(total_vram_gb, 2), "system_ram_gb": round(get_system_ram_gb(), 2),
+        "chosen_model": chosen_model, "hardware_tier": hardware_tier, "client_version": VERSION,
+    })
 
     if gpu_type != "cpu" and total_vram_gb > 8.0:
         mode_desc = "Performance Profile (Automated: High-memory Apple Silicon or discrete GPU detected)" if PLATFORM == "darwin" else "Performance Profile (Automated: High VRAM GPU detected)"

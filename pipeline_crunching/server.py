@@ -264,6 +264,72 @@ def _classify_role_context(file_lower: str, tier_path: str) -> str:
         is_wiki_ext = file_lower.endswith(('.md', '.txt', '.html'))
         return "DEFINITIVE_WIKI_DOCUMENTATION" if is_wiki_ext else "FUNCTIONAL_CODEBASE_LOGIC"
 
+def _structural_chunks(lines: list, target: int = 150, max_size: int = 300, overlap: int = 30) -> list:
+    """Splits a file's lines into chunks that respect logical boundaries instead of blindly
+    slicing every `target` lines regardless of what's in the middle. A fixed-size sliding window
+    doesn't know where a function or doc section ends, so a chunk boundary could fall in the
+    middle of one, handing the crunching LLM two structurally incoherent halves -- directly
+    feeding "vague/incomplete explanation" bugs (see the stub-page-hallucination and
+    gameplay_controls.md under-generation bugs documented in finetune/README.md, and this
+    project's repeated live-verification findings that source coherence drives crunch quality).
+
+    Boundary detection is language-agnostic on purpose (one heuristic instead of separate Zig/JS/
+    markdown parsers, each with its own edge cases to get wrong): a new logical unit starts at any
+    unindented (column-0) non-blank line that is either the first line of the file or immediately
+    preceded by a blank line. This matches how top-level functions/structs are conventionally
+    separated by a blank line in Zig/JS, and how markdown headers work too, without needing a
+    per-language keyword list.
+
+    Consecutive small units are greedily merged up to `target` lines (matching the previous flat
+    chunk size, so typical output stays similarly sized). A single unit larger than `target` but
+    not larger than `max_size` becomes its own chunk rather than being split (a complete large
+    function beats an arbitrarily-cut one). Only a single unit that's *itself* bigger than
+    `max_size` falls back to the old sliding-window slicing, scoped to just that unit, so no chunk
+    is ever unbounded.
+    """
+    if not lines:
+        return []
+
+    boundaries = []
+    for i, line in enumerate(lines):
+        if not line.strip():
+            continue
+        if line == line.lstrip():
+            if i == 0 or not lines[i - 1].strip():
+                boundaries.append(i)
+    if not boundaries or boundaries[0] != 0:
+        boundaries.insert(0, 0)
+
+    spans = [(boundaries[k], boundaries[k + 1]) for k in range(len(boundaries) - 1)]
+    spans.append((boundaries[-1], len(lines)))
+
+    chunk_spans = []
+    current_start = spans[0][0]
+    current_end = spans[0][0]
+    step = max(target - overlap, 1)
+
+    for start, end in spans:
+        if end - start > max_size:
+            if current_end > current_start:
+                chunk_spans.append((current_start, current_end))
+            for i in range(start, end, step):
+                chunk_spans.append((i, min(i + target, end)))
+                if i + target >= end:
+                    break
+            current_start = current_end = end
+            continue
+
+        if end - current_start > target and current_end > current_start:
+            chunk_spans.append((current_start, current_end))
+            current_start = start
+
+        current_end = end
+
+    if current_end > current_start:
+        chunk_spans.append((current_start, current_end))
+
+    return ["".join(lines[s:e]) for s, e in chunk_spans]
+
 def rag_initialize_chunks():
     chunk_size, overlap = 150, 30
     step = chunk_size - overlap
@@ -326,10 +392,7 @@ def rag_initialize_chunks():
                     isolated_role_context = _classify_role_context(file.lower(), tier_path)
 
                     file_chunks = []
-                    idx = 0
-                    for i in range(0, len(lines), step):
-                        chunk_lines = lines[i:i + chunk_size]
-                        chunk_raw_content = "".join(chunk_lines)
+                    for idx, chunk_raw_content in enumerate(_structural_chunks(lines, chunk_size, chunk_size * 2, overlap)):
                         file_chunks.append({
                             "chunk_id": f"{file}_chunk_{idx}",
                             "file_name": file,
@@ -340,9 +403,6 @@ def rag_initialize_chunks():
                             "raw_content": chunk_raw_content,
                             "requires_strong_model": len(chunk_raw_content) < THIN_CONTENT_CHAR_THRESHOLD
                         })
-                        idx += 1
-                        if i + chunk_size >= len(lines):
-                            break
 
                     if _is_chunk_set_unchanged(file_chunks, file, f_hash, old_hashes, completed_chunks):
                         skipped_unchanged_count += 1

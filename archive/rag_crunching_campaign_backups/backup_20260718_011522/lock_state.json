@@ -1,0 +1,24 @@
+{
+  "locked": {
+    "codebase_src_physics.zig_chunk_2": {
+      "user_id": "Nick",
+      "timestamp": 1784333515.2174652
+    },
+    "codebase_src_server_server.zig_chunk_0": {
+      "user_id": "Nick",
+      "timestamp": 1784333630.06636
+    }
+  },
+  "completed": [
+    "codebase_src_server_storage.zig_chunk_0",
+    "codebase_src_server_storage.zig_chunk_1",
+    "codebase_src_server_storage.zig_chunk_2",
+    "codebase_src_server_storage.zig_chunk_3",
+    "codebase_src_physics.zig_chunk_0",
+    "codebase_src_physics.zig_chunk_1",
+    "codebase_src_physics.zig_chunk_3",
+    "codebase_src_physics.zig_chunk_4",
+    "codebase_src_physics.zig_chunk_5",
+    "codebase_src_physics.zig_chunk_6"
+  ]
+}

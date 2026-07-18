@@ -1,0 +1,12 @@
+{
+  "locked": {
+    "codebase_src_server_storage.zig_chunk_2": {
+      "user_id": "Nick",
+      "timestamp": 1784331237.7634068
+    }
+  },
+  "completed": [
+    "codebase_src_server_storage.zig_chunk_0",
+    "codebase_src_server_storage.zig_chunk_1"
+  ]
+}

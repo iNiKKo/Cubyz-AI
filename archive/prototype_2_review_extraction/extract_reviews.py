@@ -14,9 +14,15 @@ REPO_OWNER = "PixelGuys"
 REPO_NAME = "Cubyz"
 
 OUTPUT_FILE = "cubyz_reviews_dataset.json"
+# Closed PRs only -- a closed PR's review thread is final, so once scanned it never needs
+# re-checking. Open PRs are NOT tracked here (see get_open_pull_requests()): their review threads
+# are still active and can grow new comments, so every run re-scans all currently-open PRs. This
+# is cheap (comment-level chunk_id dedup in main() already skips anything already collected) and
+# means a comment only gets picked up once it actually exists, without needing this script to
+# separately notice "this open PR grew a new comment since last time."
 STATE_FILE = "processed_prs.txt"
 
-# Maximum amount of closed PRs to scan
+# Maximum amount of closed PRs to scan per run
 MAX_PULL_REQUESTS = 2000
 
 # GitHub maximum allowed
@@ -174,7 +180,11 @@ def is_tier_1_only(comment_body):
     body = comment_body.lower()
 
 
-    # Remove low-value comments
+    # Remove low-value comments. "color"/"fog" deliberately removed from here -- as bare words
+    # they reject legitimate architectural discussion that happens to mention a rendering/fog
+    # system (e.g. a real comment about gpu_performance_measuring for Skybox rendering got
+    # rejected purely for containing "fog" nowhere near a rendering context). Kept only as
+    # specific dismissive phrases, which is what this list is actually trying to catch.
     blacklist = [
         "sorry",
         "idk",
@@ -188,8 +198,8 @@ def is_tier_1_only(comment_body):
         "typo",
         "spelling",
         "grammar",
-        "color",
-        "fog",
+        "just a color",
+        "wrong color",
         "look better"
     ]
 
@@ -254,21 +264,21 @@ def is_tier_1_only(comment_body):
 # GITHUB PR FETCHING
 # ============================================================
 
-def get_closed_pull_requests():
+def get_pull_requests(state, limit):
     """
-    Retrieves closed PRs from newest to oldest.
+    Retrieves PRs in the given state ("closed" or "open") from newest to oldest.
     """
 
     page = 1
     fetched = 0
 
 
-    while fetched < MAX_PULL_REQUESTS:
+    while fetched < limit:
 
         url = (
             f"https://api.github.com/repos/"
             f"{REPO_OWNER}/{REPO_NAME}/pulls"
-            f"?state=closed"
+            f"?state={state}"
             f"&sort=updated"
             f"&direction=desc"
             f"&per_page={PER_PAGE}"
@@ -291,11 +301,22 @@ def get_closed_pull_requests():
             fetched += 1
 
 
-            if fetched >= MAX_PULL_REQUESTS:
+            if fetched >= limit:
                 break
 
 
         page += 1
+
+
+def get_closed_pull_requests():
+    return get_pull_requests("closed", MAX_PULL_REQUESTS)
+
+
+def get_open_pull_requests():
+    # No cap to speak of -- Cubyz's open-PR count is small (low hundreds at most), nowhere near
+    # MAX_PULL_REQUESTS, and every one of them gets re-scanned every run anyway (see STATE_FILE
+    # comment above), so there's no meaningful "too many to handle" case here.
+    return get_pull_requests("open", MAX_PULL_REQUESTS)
 
 
 
@@ -427,21 +448,56 @@ def process_pull_request(pr):
 # MAIN EXECUTION
 # ============================================================
 
+def _scan_prs(prs, existing_chunk_ids, processed_prs, track_processed):
+    """
+    Scans an iterable of PRs, returning (new_chunks, scanned_count, skipped_count,
+    newly_completed_pr_numbers). If track_processed is False, every PR is scanned every run
+    (used for open PRs, whose review threads can still grow) instead of being skipped once seen.
+    """
+
+    new_chunks = []
+    completed_prs = []
+    scanned = 0
+    skipped = 0
+
+    for pr in prs:
+        pr_number = pr["number"]
+
+        if track_processed and pr_number in processed_prs:
+            skipped += 1
+            continue
+
+        scanned += 1
+        chunks = process_pull_request(pr)
+
+        added = 0
+        for chunk in chunks:
+            chunk_id = chunk["chunk_id"]
+            if chunk_id in existing_chunk_ids:
+                continue
+            existing_chunk_ids.add(chunk_id)
+            new_chunks.append(chunk)
+            added += 1
+
+        if track_processed:
+            completed_prs.append(pr_number)
+
+        print(f"[✓] PR #{pr_number} added {added} chunks")
+
+    return new_chunks, scanned, skipped, completed_prs
+
+
 def main():
 
     print(
         f"[~] Starting Tier-1 architecture "
         f"dataset extraction for "
-        f"{REPO_OWNER}/{REPO_NAME}"
+        f"{REPO_OWNER}/{REPO_NAME} "
+        f"(closed PRs, permanently tracked, + open PRs, re-scanned every run)"
     )
 
-
-
     processed_prs = load_processed_prs()
-
     dataset = load_dataset()
-
-
 
     # Prevent duplicate chunks
     existing_chunk_ids = {
@@ -450,103 +506,32 @@ def main():
         if "chunk_id" in item
     }
 
+    closed_chunks, closed_scanned, closed_skipped, closed_completed = _scan_prs(
+        get_closed_pull_requests(), existing_chunk_ids, processed_prs, track_processed=True
+    )
+    open_chunks, open_scanned, open_skipped, _ = _scan_prs(
+        get_open_pull_requests(), existing_chunk_ids, processed_prs, track_processed=False
+    )
 
-
-    new_chunks = []
-
-    completed_prs = []
-
-
-
-    scanned = 0
-
-    skipped = 0
-
-
-
-    for pr in get_closed_pull_requests():
-
-        pr_number = pr["number"]
-
-
-        # Already scanned previously
-        if pr_number in processed_prs:
-
-            skipped += 1
-            continue
-
-
-
-        scanned += 1
-
-
-
-        chunks = process_pull_request(pr)
-
-
-
-        added = 0
-
-
-        for chunk in chunks:
-
-            chunk_id = chunk["chunk_id"]
-
-
-            if chunk_id in existing_chunk_ids:
-                continue
-
-
-
-            existing_chunk_ids.add(
-                chunk_id
-            )
-
-
-            new_chunks.append(
-                chunk
-            )
-
-            added += 1
-
-
-
-        completed_prs.append(
-            pr_number
-        )
-
-
-
-        print(
-            f"[✓] PR #{pr_number} "
-            f"added {added} chunks"
-        )
-
-
+    new_chunks = closed_chunks + open_chunks
+    scanned = closed_scanned + open_scanned
+    skipped = closed_skipped + open_skipped
 
     if not scanned:
-
         print(
             "[✓] No new PRs to process."
         )
-
         return
 
-
-
-    # Save processed state
+    # Save processed state -- closed PRs only, open ones are never permanently skipped
     save_processed_prs(
-        completed_prs
+        closed_completed
     )
-
-
 
     # Merge datasets
     dataset.extend(
         new_chunks
     )
-
-
 
     with open(
         OUTPUT_FILE,
@@ -561,16 +546,16 @@ def main():
             ensure_ascii=False
         )
 
-
-
     print("\n========== COMPLETE ==========")
 
     print(
-        f"PRs scanned: {scanned}"
+        f"PRs scanned: {scanned} "
+        f"({closed_scanned} closed, {open_scanned} open)"
     )
 
     print(
-        f"PRs skipped: {skipped}"
+        f"PRs skipped: {skipped} "
+        f"({closed_skipped} closed, already processed)"
     )
 
     print(
