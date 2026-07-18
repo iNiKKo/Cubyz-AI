@@ -31,3 +31,5 @@
 {"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_assets_cubyz_biomes_tall_mountain_slope8.zig.zon_chunk_0", "timestamp": 1784361083.4619184, "received_at": 1784361083.465295}
 {"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_assets_cubyz_blocks_cloth_block_pink.zig.zon_chunk_0", "timestamp": 1784361102.974931, "received_at": 1784361102.978949}
 {"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_assets_cubyz_biomes_bog__defaults.zig.zon_chunk_0", "timestamp": 1784361207.110241, "received_at": 1784361207.1133409}
+{"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_assets_cubyz_biomes_cave_stone_forest.zig.zon_chunk_0", "timestamp": 1784361387.3357935, "received_at": 1784361387.342586}
+{"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_assets_cubyz_cave_layers_post_mantle.zig.zon_chunk_0", "timestamp": 1784361536.0651488, "received_at": 1784361536.107675}
