@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.6"
+VERSION = "1.1.7"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -1995,7 +1995,14 @@ def main():
         return f"{gpu_type_val.upper()} ({total_vram_gb:.1f} GB VRAM)"
 
     if dual_capable:
-        print(f"{Colors.CYAN}[✓] Dual-lane mode: GPU ({hardware_label_for(gpu_type)}) + a secondary CPU lane (qwen2.5-coder:3b, {system_ram_gb:.1f} GB RAM) will crunch two tasks at once.{Colors.RESET}\n")
+        # Reserve a couple of logical threads for the GPU lane's own overhead and the OS, give
+        # the rest to the CPU lane's Ollama call. Hardcoding the same "2" the solo Eco Profile
+        # uses here was wrong -- that value is deliberately conservative for a genuinely weak
+        # CPU-only volunteer, not for a real multi-core CPU running a *second*, dedicated lane
+        # alongside a GPU lane (confirmed live: a 6-core/12-thread Ryzen 5 9600X sat at ~35% CPU
+        # utilization capped at "2" -- 2 threads on a 12-thread part).
+        cpu_lane_threads = max(2, (os.cpu_count() or 4) - 2)
+        print(f"{Colors.CYAN}[✓] Dual-lane mode: GPU ({hardware_label_for(gpu_type)}) + a secondary CPU lane (qwen2.5-coder:3b, {cpu_lane_threads} threads, {system_ram_gb:.1f} GB RAM) will crunch two tasks at once.{Colors.RESET}\n")
         pause_event = threading.Event()
         # user_id is 3-9 alpha chars (enforced at login); truncating to 8 and appending "c" always
         # differs from the primary lane's own id (even at the 9-char ceiling, where a bare
@@ -2006,7 +2013,7 @@ def main():
             target=_background_lane,
             kwargs=dict(
                 lane_tag="CPU", user_id=cpu_user_id, hardware_tier="easy", chosen_model="qwen2.5-coder:3b",
-                max_threads=2, cooldown=4.0, mode_desc="Eco Profile (Automated: Secondary CPU lane, running alongside the primary GPU lane)",
+                max_threads=cpu_lane_threads, cooldown=1.0, mode_desc="Eco Profile (Automated: Secondary CPU lane, running alongside the primary GPU lane)",
                 hardware_label=f"CPU Engine ({system_ram_gb:.1f} GB RAM, secondary lane)",
                 force_cpu=True, fancy_ui=False, pause_event=pause_event,
             ),
