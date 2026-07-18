@@ -1,8 +1,24 @@
 {
   "locked": {
-    "github_pr_3297_comment_3560914855": {
+    "github_issue_837_discussion": {
+      "user_id": "NickSRVR",
+      "timestamp": 1784411434.6682763
+    },
+    "github_issue_367_discussion": {
+      "user_id": "NickSRVR",
+      "timestamp": 1784411545.5207353
+    },
+    "github_issue_194_discussion": {
+      "user_id": "NickSRVR",
+      "timestamp": 1784411670.0808833
+    },
+    "github_issue_235_discussion": {
       "user_id": "Nick",
-      "timestamp": 1784411260.8547573
+      "timestamp": 1784411692.2853768
+    },
+    "github_issue_1746_discussion": {
+      "user_id": "Nickc",
+      "timestamp": 1784411698.6875167
     }
   },
   "completed": [
@@ -1706,8 +1722,38 @@
     "codebase_src_assets.zig_chunk_6",
     "github_issue_1106_discussion",
     "github_issue_346_discussion",
-    "github_issue_55_discussion"
+    "github_issue_55_discussion",
+    "github_pr_3297_comment_3564114095",
+    "github_issue_1027_discussion",
+    "github_issue_1092_discussion",
+    "github_issue_984_discussion",
+    "github_issue_1020_discussion",
+    "github_issue_983_discussion",
+    "github_pr_2530_comment_2775343384",
+    "github_issue_981_discussion",
+    "github_issue_938_discussion",
+    "github_issue_844_discussion",
+    "github_issue_826_discussion",
+    "github_issue_708_discussion",
+    "github_issue_698_discussion",
+    "github_issue_656_discussion",
+    "github_issue_571_discussion",
+    "github_issue_476_discussion",
+    "github_issue_472_discussion",
+    "github_issue_438_discussion",
+    "github_issue_427_discussion",
+    "github_issue_311_discussion",
+    "github_issue_257_discussion",
+    "github_issue_1622_discussion",
+    "github_issue_1107_discussion",
+    "github_issue_242_discussion",
+    "github_issue_1571_discussion",
+    "github_pr_3219_comment_3408687776",
+    "github_pr_3219_comment_3409736085",
+    "github_pr_3219_comment_3409751648",
+    "github_pr_3219_comment_3409758613",
+    "github_issue_1814_discussion"
   ],
   "actions_baseline_completed": 543,
-  "actions_count": 3945
+  "actions_count": 4020
 }

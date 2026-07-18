@@ -8,7 +8,7 @@
 The maintainer investigates an issue where music quality degrades over time in Cubyz, but cannot reproduce the problem themselves.
 
 ## Explanation
-The maintainer discusses a reported issue where music quality decreases as it plays longer. They ask for clarification on the timeframe and whether it's specific to Windows. After examining audio files and comparing them side by side, they find no perceivable difference in sound quality, attributing any visual differences in spectrograms to expected resampling artifacts. The maintainer suggests that improving audio resampling might require a better audio library, but for now, they believe the current implementation is acceptable given their inability to hear a difference.
+The maintainer investigates an issue where music quality degrades over time in Cubyz. They ask for clarification on the timeframe and whether it's specific to Windows. After examining audio files and comparing them side by side using Audacity, they find no perceivable difference in sound quality, attributing any visual differences in spectrograms to expected resampling artifacts. The maintainer suggests that improving audio resampling might require a better audio library but believes the current implementation is acceptable given their inability to hear a difference.
 
 ## Related Questions
 - What is the reported timeframe for the music quality degradation issue?

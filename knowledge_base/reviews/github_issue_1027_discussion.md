@@ -8,7 +8,7 @@
 The issue discusses sub-biomes spawning only next to each other, with a bias towards the center of the parent biome.
 
 ## Explanation
-The discussion revolves around an issue where sub-biomes are not evenly distributed but tend to cluster together near the center of their parent biomes. The maintainer suggests that this might be due to incorrect parameter settings and indicates that it should have been resolved by a previous change (#917). However, there is uncertainty about whether the parameters have been correctly adjusted.
+The discussion addresses an issue where sub-biomes tend to cluster together near the center of their parent biomes rather than being evenly distributed. The maintainer notes that this bias might be due to incorrect parameter settings and indicates that it should have been resolved by a previous change (#917). However, there is uncertainty about whether the parameters have been correctly adjusted. The maintainer also requests feedback on whether the issue still occurs in other areas.
 
 ## Related Questions
 - What changes were made in #917 to address the sub-biome generation issue?

@@ -8,7 +8,7 @@
 Discussion about allowing players to upload OBJ models for customization.
 
 ## Explanation
-The issue revolves around enabling players to upload their own OBJ models, which could be used for testing different art styles. The maintainer suggests that this might have already been addressed in a previous commit (#780), but the reporter is interested in further implementation details. The maintainer also mentions using an existing model to manually adjust it for testing purposes.
+Discussion about allowing players to upload their own OBJ models for customization. The maintainer suggests that this might have already been addressed in a previous commit (#780), but the reporter is interested in further implementation details. Currently, users can manually adjust an existing model in the files for testing different art styles.
 
 ## Related Questions
 - What specific changes were made in commit #780 to address this issue?

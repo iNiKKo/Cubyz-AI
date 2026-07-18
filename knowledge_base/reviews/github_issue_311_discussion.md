@@ -8,14 +8,10 @@
 The maintainer decides not to fix terrain generation issues near the integer limit, stating that players should appreciate the 'farlands'.
 
 ## Explanation
-The maintainer's comment indicates a prioritization of user experience and gameplay balance over technical perfection. The decision not to address terrain issues in distant areas suggests a focus on maintaining performance and stability in more commonly explored regions of the game world.
+The maintainer has decided not to address terrain generation issues near the integer limit, specifically stating that they will only fix problems that negatively affect areas closer to (0, 0). This decision reflects a prioritization of user experience and gameplay balance in more commonly explored regions over technical perfection in distant parts of the game world. The maintainer's stance is that players should enjoy exploring the 'farlands' without expecting perfect terrain generation.
 
 ## Related Questions
-- What is the maintainer's stance on fixing terrain issues near the integer limit?
-- How does the maintainer prioritize user experience in Cubyz?
-- Are there any plans to revisit and fix terrain generation issues in distant areas?
-- What impact does the decision have on gameplay balance?
-- How might this decision affect player engagement with distant parts of the game world?
-- Is there a documented policy for handling edge-case bugs like terrain generation near integer limits?
+- What specific areas does the maintainer intend to fix for terrain issues?
+- Why are only certain areas prioritized over others in terms of fixing terrain issues?
 
 *Source: unknown | chunk_id: github_issue_311_discussion*

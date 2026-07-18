@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.37"
+VERSION = "1.1.38"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -2342,6 +2342,18 @@ def run_live_gpu_diagnostic():
                 if gpu_lines:
                     for line in gpu_lines[-20:]:
                         print(f"  {line}")
+                    # A distinct, unambiguous signature worth calling out on its own rather than
+                    # leaving buried in raw log text -- confirmed live as the real root cause once:
+                    # this means the Ollama binary running in THIS container has no GPU backend
+                    # compiled in AT ALL, regardless of device passthrough/permissions/architecture
+                    # support. Almost always means the container isn't actually running the
+                    # ollama/ollama:rocm image (see the image check above -- compare against it).
+                    if any('compiled without gpu support' in l.lower() for l in gpu_lines):
+                        print(f"  {Colors.RED}✗✗ 'llama.cpp was compiled without GPU support' -- this container's Ollama binary has NO GPU")
+                        print(f"     backend built in at all. This is not a permissions/device/architecture issue -- the software itself")
+                        print(f"     can't do GPU inference no matter what. Almost certainly means this container isn't actually running")
+                        print(f"     the ROCm image (compare the 'Image:' line above -- expected 'ollama/ollama:rocm'). Fix: docker rm -f")
+                        print(f"     {docker_container}, then recreate it with --device /dev/kfd --device /dev/dri using ollama/ollama:rocm.{Colors.RESET}")
                 else:
                     print(f"  {Colors.YELLOW}⚠ No GPU/ROCm-related lines in the container's log either.{Colors.RESET}")
             except Exception as e:

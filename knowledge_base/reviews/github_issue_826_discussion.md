@@ -9,7 +9,7 @@
 Discussion on implementing Axis-Aligned Bounding Boxes (AABBs) for collision detection, focusing on integration with existing models and handling of rotation.
 
 ## Explanation
-The discussion revolves around enhancing collision detection by using AABBs, which could improve performance and enable features like non-jumpable fences. The maintainer questions how to handle generated models and suggests using a separate zon file or suffix for collision models. There is debate on whether bounding boxes should be tied to the model or remain independent. The maintainer ultimately decides that AABBs should be integrated into the Model struct, with each model having its own slice of AABBs.
+Discussion on implementing Axis-Aligned Bounding Boxes (AABBs) for collision detection, focusing on integration with existing models and handling of rotation. The maintainer questions how to handle generated models and suggests using a separate zon file or suffix for collision models. There is debate on whether bounding boxes should be tied to the model or remain independent. The maintainer ultimately decides that AABBs should be integrated into the Model struct, with each model having its own slice of AABBs.
 
 ## Related Questions
 - How are AABBs generated from the model?

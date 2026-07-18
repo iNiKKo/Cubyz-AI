@@ -8,7 +8,7 @@
 Discussion on making the first-time name prompt uncloseable in Cubyz.
 
 ## Explanation
-The discussion revolves around addressing an issue where closing the name creation prompt during the first launch results in an empty screen. The proposed solution is to make this prompt uncloseable, but there is a concern that this might lead to the absence of a menu, which could be another issue.
+Discussion on addressing an issue where closing the name creation prompt during first launch leads to an empty screen. The proposed solution involves making this prompt uncloseable; however, there is concern that doing so would eliminate the menu entirely, which could introduce another problem.
 
 ## Related Questions
 - What is the current behavior of the name creation prompt on first launch?

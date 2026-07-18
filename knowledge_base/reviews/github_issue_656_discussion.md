@@ -5,10 +5,10 @@
 **Concepts:** user experience, build scripts
 
 ## Summary
-Discussion about adding entertainment features during Cubyzig compilation, with a maintainer comment suggesting simplicity.
+Discussion about adding entertainment features during Cubyzig compilation, with a maintainer suggesting to keep the build scripts simple.
 
 ## Explanation
-The discussion revolves around enhancing user experience by adding features like playing a song or displaying an ASCII banner during the Cubyzig compilation process. The maintainer's concern is to avoid complicating the build scripts, indicating a preference for maintaining simplicity and ease of use in the development environment.
+The discussion centers on enhancing user experience by playing a song or displaying an ASCII banner during the Cubyzig compilation process. The maintainer emphasizes simplicity in the build scripts and advises against complicating them for ease of use in the development environment.
 
 ## Related Questions
 - What are the potential benefits of adding an ASCII banner during compilation?
