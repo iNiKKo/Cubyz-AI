@@ -9,7 +9,11 @@
 Cave Mushroom Big Biome Defaults Configuration
 
 ## Explanation
-This chunk defines the configuration for the Cave Mushroom Big biome, including cave layer tags, maximum height, music track, ground structure, structures to generate, and cave models. It specifies parameters such as block types, chances, widths, variations, depths, smoothness, minimum and maximum amounts, and radii for generating structures and cave models.
+This chunk defines the configuration for the Cave Mushroom Big biome. The biome is identified as a cave layer with tags .{.cave_layer}. It specifies that the maximum height of this biome is -512 cubyz and uses the music track 'cubyz:totaldemented/mycelia'.
+
+The ground structure consists of 2 to 3 blocks of cubyz:soil. There is one defined structure with an ID of 'cubyz:ground_patch', which uses clay as the block type, has a generation chance of 0.3, width of 5 cubyz, variation of 5 cubyz, depth of 2 cubyz, and smoothness of 0.5.
+
+Cave models are also defined for this biome, including one partial sphere model that can generate between 10 to 30 instances with a minimum radius of 10 cubyz and a maximum radius of 20 cubyz.
 
 ## Related Questions
 - What is the maximum height of the Cave Mushroom Big biome?

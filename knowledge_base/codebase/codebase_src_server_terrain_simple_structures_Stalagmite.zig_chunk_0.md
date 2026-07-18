@@ -9,7 +9,7 @@
 Stalagmite structure generation logic
 
 ## Explanation
-This chunk defines the Stalagmite structure in Cubyz. It includes a loadModel function to initialize the structure from configuration parameters and a generate function to place the structure within a chunk based on its position, size, and slope.
+This Zig code defines the Stalagmite structure generation logic in Cubyz. The `loadModel` function initializes the structure from configuration parameters using default values if none are provided: 'block' defaults to 'cubyz:stalagmite', 'size' is set to 12, and 'sizeVariation' is set to 8. Additionally, 'baseSlope' defaults to 4.0 and 'topSlope' defaults to the value of 'baseSlope'. The `generate` function places the stalagmite within a chunk based on its position (x, y, z), size, slope, and random variations. It calculates the height of the stalagmite using parameters such as 'baseSlope', 'topSlope', and ensures that specific properties are satisfied for accurate placement: height(r = 0) = height, height'(r = 0) = -topSlope, height(r = baseRadius) = 0, height'(r = baseRadius) = -baseSlope. The code handles cases where the base radius is negative or zero and ensures correct block updates within the chunk by checking if a block's type is 0 or degradable before updating it.
 
 ## Code Example
 ```zig
@@ -79,15 +79,11 @@ pub fn generate(self: *Stalagmite, _: GenerationMode, x: i32, y: i32, z: i32, ch
 ```
 
 ## Related Questions
-- What is the purpose of the Stalagmite structure in Cubyz?
-- How does the generate function place the stalagmite within a chunk?
-- What are the key properties that must be satisfied for the height calculation of the stalagmite?
-- What is the algorithm used to calculate the base radius of the stalagmite?
-- How does the code handle cases where the base radius is negative?
-- What is the purpose of the block placement logic within the generate function?
-- What are the conditions under which a block will be updated in the generation process?
-- How does the code ensure that the stalagmite structure is placed correctly within the chunk?
-- What is the role of the random number generator in the Stalagmite structure generation?
-- How does the code handle cases where the base radius is zero?
+- What are the default values for 'block', 'size', 'sizeVariation', 'baseSlope', and 'topSlope' in the `loadModel` function?
+- How does the generate function place the stalagmite within a chunk based on its position, size, and slope?
+- What specific properties must be satisfied for accurate height calculation of the stalagmite?
+- What is the exact formula used to calculate 'baseRadius' when 'self.baseSlope' equals 'self.topSlope'?
+- How does the code handle cases where the base radius is negative or zero during height and radius calculations?
+- What are the conditions under which a block will be updated in the generation process within the chunk?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_simple_structures_Stalagmite.zig_chunk_0*

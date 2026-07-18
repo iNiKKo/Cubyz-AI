@@ -8,7 +8,7 @@
 Defines properties for a snowy rock tundra biome in Cubyz.
 
 ## Explanation
-This chunk defines the configuration for a specific biome type in the Cubyz game engine. The biome is characterized by its radius, generation chance, height range, terrain preservation probability, mountain and hill density, primary stone block, ground structure, and parent biomes. Each property is explicitly set to configure how this biome will generate within the game world.
+This chunk defines the configuration for a specific snowy rock tundra biome in Cubyz. The biome has a radius of 16, a generation chance of 0%, and is generated between heights 1500 and 3000. The probability of keeping the original terrain is set to 99%. This biome includes mountains with a density of 50 and hills with a density of 20. The primary stone block used in this biome is 'cubyz:glacite/smooth'. Additionally, it has a ground structure consisting solely of snow ('1 cubyz:snow'). The snowy rock tundra biome also inherits properties from the parent biome 'cubyz:tundra/snowy/base' with a generation chance of 16%.
 
 ## Related Questions
 - What is the radius of the snowy rock tundra biome?

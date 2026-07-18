@@ -8,7 +8,14 @@
 Defines properties for a cut ruby block in the Cubyz voxel engine.
 
 ## Explanation
-This chunk specifies configuration data for a cut ruby block, including its tags, health, resistance, drop behavior, rotation model, and texture. The block is marked as mineable with specific attributes that define how it interacts within the game world.
+This chunk specifies configuration data for a cut ruby block in the Cubyz voxel engine. The block is marked as mineable with specific attributes that define how it interacts within the game world. It has the following properties:
+- Tags: .mineable
+- Health: 55
+- Resistance: 9
+- Drops: auto (drops itself)
+- Rotation model: cubyz:stairs
+- Model: cubyz:cube
+- Texture: cubyz:cut_ruby_block
 
 ## Related Questions
 - What are the tags assigned to the cut ruby block?

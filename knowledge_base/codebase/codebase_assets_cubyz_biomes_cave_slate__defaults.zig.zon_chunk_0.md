@@ -9,7 +9,21 @@
 Cave slate biome defaults configuration
 
 ## Explanation
-This chunk defines the default settings for a cave slate biome, including cave layer tags, fog density, cave noise strength, music track, and structures with specific IDs, chances, block types, sizes, and size variances.
+This chunk defines the default settings for a cave slate biome. The biome is marked as a cave with tags including 'cave_layer'. It has a fog density of 2 and a cave noise strength of 10. The music track associated with this biome is 'cubyz:totaldemented/vitreous'. Two structures are defined within the biome, each with specific IDs, chances, block types, sizes, and size variances:
+
+- **Boulder Structure (Rough Slate)**
+  - ID: cubyz:boulder
+  - Chance: 0.016
+  - Block Type: cubyz:slate/rough
+  - Size: 4 blocks
+  - Size Variance: 3 blocks
+
+- **Boulder Structure (Smooth Slate)**
+  - ID: cubyz:boulder
+  - Chance: 0.016
+  - Block Type: cubyz:slate/smooth
+  - Size: 4 blocks
+  - Size Variance: 4 blocks
 
 ## Related Questions
 - What is the fog density for this cave slate biome?

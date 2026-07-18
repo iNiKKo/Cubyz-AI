@@ -9,7 +9,7 @@
 Block configuration for palm branch in Cubyz
 
 ## Explanation
-This chunk defines the properties of a palm branch block in the Cubyz voxel engine. It includes tags, update behavior, health, textures, item details, and decay prohibition settings.
+This chunk defines the properties of a palm branch block in the Cubyz voxel engine. The block has tags for choppable, wood, and branch. Its update type is set to decay. The block health value is 4. It uses specific textures including 'cubyz:branch/palm/dot', 'cubyz:branch/palm/half_line', 'cubyz:branch/palm/line', 'cubyz:branch/palm/bend', 'cubyz:branch/palm/intersection', and 'cubyz:branch/palm/cross'. The item has a durability of 31, mass damage of 1.15, hardness damage of 0.51, swing speed of 4.7, texture roughness of 0.7, and colors defined as {0xff6d4f33, 0xff865f3d, 0xff9f6c46, 0xffb47f51, 0xff9f6c46}. The item also has a durability modifier with an ID of 'durable' and strength of 0.45. There is a decay prohibition setting for the palm branch block.
 
 ## Related Questions
 - What are the tags associated with the palm branch block?

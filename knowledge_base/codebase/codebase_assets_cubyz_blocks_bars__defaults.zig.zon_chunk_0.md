@@ -8,7 +8,7 @@
 Defines default properties for Cubyz bars block.
 
 ## Explanation
-This chunk defines the default properties of a Cubyz bars block, including tags, drops, absorbed light level, rotation model, and visual model. The block is marked as mineable and has a specific light absorption value. It uses predefined models for both its rotation and appearance.
+This chunk defines the default properties of a Cubyz bars block, including tags, drops, absorbed light level, rotation model, and visual model. The block is marked as mineable with the tag `.mineable`. It has one drop item specified by `.items = .{ .auto }`, which means it auto-generates an item upon destruction. The absorbed light level is set to `0x202830`. For its appearance and rotation, it uses predefined models named `cubyz:bars` and `cubyz:fence`, respectively.
 
 ## Related Questions
 - What tags are assigned to the Cubyz bars block?

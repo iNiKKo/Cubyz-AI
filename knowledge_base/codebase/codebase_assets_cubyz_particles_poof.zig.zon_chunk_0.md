@@ -8,7 +8,7 @@
 Defines configuration for a poof particle effect.
 
 ## Explanation
-This chunk contains a configuration object for a poof particle effect in the Cubyz voxel engine. The configuration specifies the texture used for the particles, their density range, rotation velocity range, and drag coefficient range. These settings control how the particles appear, move, and interact with the environment.
+This chunk contains a configuration object for a poof particle effect in the Cubyz voxel engine. The configuration specifies the texture used for the particles as 'cubyz:poof'. The density range is set to {0.001, 0.001}, indicating uniform density across the range. The rotation velocity range is defined as {60, 80} units per second, and the drag coefficient range is specified as {0.7, 0.8}. These settings control how the particles appear, move, and interact with the environment.
 
 ## Related Questions
 - What texture is used for the poof particles?

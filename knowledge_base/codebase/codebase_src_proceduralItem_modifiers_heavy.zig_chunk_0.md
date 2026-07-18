@@ -9,7 +9,23 @@
 Heavy procedural item modifier
 
 ## Explanation
-This chunk defines a heavy procedural item modifier that modifies the strength of a procedural item. It includes functions to load data, combine modifiers, change procedural item parameters, and print a tooltip.
+This chunk defines a heavy procedural item modifier that modifies the strength of a procedural item. It includes functions to load data from a ZonElement, combine modifiers using a specific mathematical operation, change procedural item parameters based on the calculated swing speed reduction, and print a tooltip with detailed information about the modifier's effect.
+
+The `Data` struct contains a `strength` field which is loaded from a `ZonElement`. The strength value is determined by taking the maximum of 0 and the value retrieved from the ZonElement. If no value is provided, it defaults to 0.
+
+The `combineModifiers` function combines two modifier instances using the formula: 
+
+```zig
+1 - 1/(1 + std.math.hypot(1/(1 - data1.strength) - 1, 1/(1 - data2.strength) - 1))
+```
+
+The `changeProceduralItemParameters` function modifies the swing speed of a procedural item based on the strength value. The new swing speed is calculated as:
+
+```zig
+proceduralItem.getProperty(.swingSpeed)*(1 - data.strength)
+```
+
+The `printTooltip` function displays information about the heavy procedural item modifier, including the percentage reduction in swing speed.
 
 ## Code Example
 ```zig

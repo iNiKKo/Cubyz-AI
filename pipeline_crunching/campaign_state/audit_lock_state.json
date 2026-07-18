@@ -1,20 +1,20 @@
 {
   "locked": {
-    "codebase_assets_cubyz_tools_sickle.zig.zon_chunk_0": {
-      "user_id": "Nickc",
-      "timestamp": 1784390623.547907
-    },
-    "codebase_assets_cubyz_blocks_ferrock_pillar.zig.zon_chunk_0": {
+    "codebase_assets_cubyz_blocks_chalk_viridian.zig.zon_chunk_0": {
       "user_id": "NickMac",
-      "timestamp": 1784390635.2597966
+      "timestamp": 1784391038.9237144
     },
-    "codebase_assets_cubyz_blocks_bars__defaults.zig.zon_chunk_0": {
+    "codebase_assets_cubyz_blocks_slate__defaults.zig.zon_chunk_0": {
       "user_id": "NickSRVR",
-      "timestamp": 1784390635.2644768
+      "timestamp": 1784391074.253336
     },
-    "codebase_assets_cubyz_biomes_cave_void_rare_phantasmal_streamer.zig.zon_chunk_0": {
+    "codebase_src_server_terrain_simple_structures_SimpleVegetation.zig_chunk_0": {
+      "user_id": "Nickc",
+      "timestamp": 1784391093.6416786
+    },
+    "codebase_assets_cubyz_sbb_tree_coniferous_pine_eastern_white_2_branched_trunk.zig.zon_chunk_0": {
       "user_id": "Nick",
-      "timestamp": 1784390641.6224334
+      "timestamp": 1784391098.8210828
     }
   },
   "completed": [
@@ -135,6 +135,62 @@
     "codebase_assets_cubyz_blocks_slate_pillar.zig.zon_chunk_0",
     "codebase_assets_cubyz_sbb_candy_cane_thin_top_small.zig.zon_chunk_0",
     "codebase_assets_cubyz_sbb_rare_triclops_statue_root_extension2.zig.zon_chunk_0",
-    "docs_docs_gameplay_index.md_chunk_0"
+    "docs_docs_gameplay_index.md_chunk_0",
+    "codebase_assets_cubyz_blocks_coal_ore.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_branch_palm.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_branch_leafy_palm.zig.zon_chunk_0",
+    "codebase_assets_cubyz_biomes_snowcapped_hill__defaults.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_nimbusite__defaults.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_bars__defaults.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_copper_block.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_slate_bricks.zig.zon_chunk_0",
+    "codebase_assets_cubyz_biomes_cave_slate_base.zig.zon_chunk_0",
+    "codebase_assets_cubyz_structure_tables_snowy.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_glacite_tile.zig.zon_chunk_0",
+    "codebase_assets_cubyz_tools_sickle.zig.zon_chunk_0",
+    "codebase_assets_cubyz_biomes_cave_mushroom_big__defaults.zig.zon_chunk_0",
+    "codebase_src_callbacks_callbacks.zig_chunk_0",
+    "codebase_assets_cubyz_sbb_cactus_saguaro_upper.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_grass_dry.zig.zon_chunk_0",
+    "codebase_assets_cubyz_sbb_candy_cane_thick_top.zig.zon_chunk_0",
+    "codebase_assets_cubyz_biomes_beach_warm_wide.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_glacite_rough.zig.zon_chunk_0",
+    "codebase_assets_cubyz_sbb_tree_mahogany_khaya_ivorensis_medium.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_sbb_child_viridian.zig.zon_chunk_0",
+    "codebase_src_callbacks_block_client_open_chest.zig_chunk_0",
+    "codebase_assets_cubyz_blocks_branch__defaults.zig.zon_chunk_0",
+    "codebase_assets_cubyz_biomes_forest_palm__defaults.zig.zon_chunk_0",
+    "codebase_src_server_terrain_simple_structures_Stalagmite.zig_chunk_0",
+    "codebase_assets_cubyz_blocks_bars_meteorite.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_glass_pink.zig.zon_chunk_0",
+    "codebase_assets_cubyz_biomes_ocean_warm_base.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_nimbusite_tile.zig.zon_chunk_0",
+    "codebase_assets_cubyz_sbb_tree_oak_white_stub.zig.zon_chunk_0",
+    "codebase_src_entityComponent_model.zig_chunk_0",
+    "codebase_assets_cubyz_biomes_cave_sky.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_cut_ruby_block.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_leaves_pine.zig.zon_chunk_0",
+    "codebase_assets_cubyz_sbb_tree_oak_old_growth_root.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_willow_top.zig.zon_chunk_0",
+    "codebase_assets_cubyz_biomes_swamp_base.zig.zon_chunk_0",
+    "codebase_assets_cubyz_sbb_tree_birch_silver_small_branch.zig.zon_chunk_0",
+    "codebase_assets_cubyz_sbb_phantasmal_pillar_top_top.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_fog_red.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_basalt_tile.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_cloth_block_black.zig.zon_chunk_0",
+    "codebase_src_callbacks_block_server_vine_decay.zig_chunk_0",
+    "codebase_assets_cubyz_blocks_nimbusite_pillar.zig.zon_chunk_0",
+    "codebase_assets_cubyz_cave_layers_surface_caves.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_kiln.zig.zon_chunk_0",
+    "codebase_assets_cubyz_biomes_tundra_snowy_rock.zig.zon_chunk_0",
+    "codebase_src_proceduralItem_modifiers_heavy.zig_chunk_0",
+    "codebase_assets_cubyz_blocks_lantern_sulfur.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_ferrock_rough.zig.zon_chunk_0",
+    "codebase_assets_cubyz_biomes_plateau_cold.zig.zon_chunk_0",
+    "codebase_assets_cubyz_biomes_cave_mantle_ash.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_sign_willow.zig.zon_chunk_0",
+    "codebase_assets_cubyz_biomes_cave_slate__defaults.zig.zon_chunk_0",
+    "codebase_assets_cubyz_blocks_toadstool.zig.zon_chunk_0",
+    "codebase_assets_cubyz_particles_poof.zig.zon_chunk_0"
   ]
 }

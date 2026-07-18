@@ -8,7 +8,7 @@
 Defines blueprints and children for an oak old growth root in the Cubyz voxel engine.
 
 ## Explanation
-This chunk defines a configuration for an oak old growth root, specifying its blueprints with IDs and chances, and listing its child elements. The blueprints include several variations of the root, each with a unique ID and a chance of being selected. The children section specifies that the red element is associated with a decoration blueprint.
+This chunk defines a configuration for an oak old growth root in Cubyz. It specifies several blueprints with unique IDs and associated probabilities: one blueprint has no ID (null) with a chance of 0.4, while four other blueprints have IDs 'cubyz:tree/oak/old_growth/root/0', 'cubyz:tree/oak/old_growth/root/1', 'cubyz:tree/oak/old_growth/root/2', and 'cubyz:tree/oak/old_growth/root/3' each with a chance of 0.4. Additionally, the children section specifies that the red element is associated with the decoration blueprint 'cubyz:tree/oak/old_growth/deco'.
 
 ## Related Questions
 - What are the IDs of the blueprints defined for the oak old growth root?

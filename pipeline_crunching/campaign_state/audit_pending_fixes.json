@@ -38,41 +38,6 @@
     ],
     "review_feedback": "The proposed explanation provides detailed chance values but drops previously stated facts about the configuration structure and its purpose. The original kb_content included a concise summary of what the chunk defines, which should be retained. Additionally, the related questions section in the proposal is identical to the original, so there's no need for changes here."
   },
-  "codebase_assets_cubyz_tools_sickle.zig.zon_chunk_0": {
-    "stage": "proposed",
-    "collection": "codebase",
-    "proposer": "Nick",
-    "reason": "The explanation does not provide specific values and matrices for damage calculation, durability, swing speed, etc., as mentioned in the related questions.",
-    "corrected_summary": null,
-    "corrected_explanation": "This chunk contains configuration settings for a sickle tool. It includes disabled properties defined by a matrix with specific values indicating which attributes are disabled. The optional properties are also specified through another matrix. Parameters define how damage is calculated based on source attributes, including massDamage and hardnessDamage, each with their own matrices and factors. For durability calculation, parameters use the 'durability' source attribute with specific matrices and factors. Swing speed is also defined using similar methods and factors.",
-    "corrected_related_questions": [],
-    "attempts": 2,
-    "last_reviewer": "NickMac",
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784389697.723136
-      },
-      {
-        "stage": "reviewed",
-        "user_id": "NickMac",
-        "verdict": "revise",
-        "feedback": "The proposed explanation includes additional details not present in the raw content, such as specific matrices and factors for damage calculation. These should be removed to avoid contradicting the existing information in kb_content.",
-        "timestamp": 1784389731.4583704
-      },
-      {
-        "stage": "revised",
-        "user_id": "Nick",
-        "timestamp": 1784390602.347925,
-        "corrected_summary": null,
-        "corrected_explanation": "This chunk contains configuration settings for a sickle tool. It includes disabled properties defined by a matrix with specific values indicating which attributes are disabled. The optional properties are also specified through another matrix. Parameters define how damage is calculated based on source attributes, including massDamage and hardnessDamage, each with their own matrices and factors. For durability calculation, parameters use the 'durability' source attribute with specific matrices and factors. Swing speed is also defined using similar methods and factors.",
-        "corrected_related_questions": []
-      }
-    ],
-    "review_feedback": "The proposed explanation includes additional details not present in the raw content, such as specific matrices and factors for damage calculation. These should be removed to avoid contradicting the existing information in kb_content.",
-    "approvals": []
-  },
   "codebase_assets_cubyz_biomes_swamp_pond.zig.zon_chunk_0": {
     "stage": "revise_requested",
     "collection": "codebase",
@@ -112,29 +77,6 @@
     ],
     "review_feedback": "The proposed explanation introduces a new fact that was not present in the raw_content: it mentions 'Lilies' instead of 'lily pads'. Additionally, the chance of generating lily pad structures is mentioned as 0.1 but this value should be noted correctly without introducing incorrect terminology or details. Ensure to stick strictly to the information provided in the raw_content."
   },
-  "codebase_assets_cubyz_blocks_coal_ore.zig.zon_chunk_0": {
-    "stage": "proposed",
-    "collection": "codebase",
-    "proposer": "Nick",
-    "reason": "The explanation does not provide specific values for the number of veins, size, maximum height, and density of coal ore distribution.",
-    "corrected_summary": null,
-    "corrected_explanation": "This chunk defines the configuration for the coal ore block in the Cubyz game. It specifies that the block is mineable with a health of 16 and a resistance of 1. The ore properties include 5 veins, each with a size of 100 blocks, generated up to a maximum height of 500 units, and a density of 0.5. The block drops an item automatically when mined. The rotation, model, and texture are set to specific identifiers within the Cubyz asset system: 'cubyz:ore', 'cubyz:cube', and 'cubyz:coal_ore' respectively. Additionally, it specifies that the item representation uses the texture 'coal.png'.",
-    "corrected_related_questions": [
-      "What is the number of veins in the coal ore distribution?",
-      "What is the size of each vein in the coal ore?",
-      "What is the maximum height for coal ore generation?",
-      "What is the density of coal ore?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784389721.8285613
-      }
-    ]
-  },
   "codebase_assets_cubyz_blocks_log_oak.zig.zon_chunk_0": {
     "stage": "revise_requested",
     "collection": "codebase",
@@ -165,135 +107,1082 @@
     ],
     "review_feedback": "The proposed explanation correctly adds the specific texture paths, but it omits the previously stated fact that these textures correspond to visual characteristics like dot, line, bend, etc. This information should be retained."
   },
-  "codebase_assets_cubyz_blocks_bars__defaults.zig.zon_chunk_0": {
-    "stage": "proposed",
+  "codebase_assets_cubyz_blocks_ferrock_pillar.zig.zon_chunk_0": {
+    "stage": "revise_requested",
     "collection": "codebase",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions 'drops' but does not specify the exact items dropped, which is a concrete value in raw_content.",
+    "proposer": "NickMac",
+    "reason": "The kb_content does not mention any specific texture paths or model type, which are explicitly stated in the raw_content.",
     "corrected_summary": null,
-    "corrected_explanation": "This chunk defines the default properties of a Cubyz bars block, including tags, drops, absorbed light level, rotation model, and visual model. The block is marked as mineable with the tag `.mineable`. It has one drop item which is auto-generated. The absorbed light level is set to `0x202830`. For its appearance and rotation, it uses predefined models named `cubyz:bars` and `cubyz:fence`, respectively.",
-    "corrected_related_questions": [],
-    "attempts": 2,
-    "last_reviewer": "Nickc",
+    "corrected_explanation": "# [easy/codebase_assets_cubyz_blocks_ferrock_pillar.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** configuration, block properties, texture paths, model type, rotation\n**Concepts:** block definition, texture mapping\n\n## Summary\nDefines configuration for the Ferrock Pillar block, including its rotation and textures.\n\n## Explanation\nThis chunk is a configuration file defining properties of the Ferrock Pillar block. It specifies that the block uses the 'cubyz:direction' rotation, has the 'cubyz:cube' model, and applies textures for all sides sourced from 'cubyz:ferrock/pillar'. The top and bottom faces use a specific texture 'cubyz:ferrock/pillar_top'. This configuration is used by the Cubyz engine to render and interact with the Ferrock Pillar block in the game world.\n\n## Related Questions\n- What is the rotation setting for the Ferrock Pillar block?\n- Which model is used for the Ferrock Pillar block?\n- What texture is applied to all sides of the Ferrock Pillar block?\n- How are the top and bottom textures of the Ferrock Pillar block defined?\n- Where are the textures for the Ferrock Pillar block sourced from?\n- Does this configuration file define any additional properties for the Ferrock Pillar block?\n*Source: unknown | chunk_id: codebase_assets_cubyz_blocks_ferrock_pillar.zig.zon_chunk_0*\n",
+    "corrected_related_questions": [
+      "What is the rotation setting for the Ferrock Pillar block?",
+      "Which model is used for the Ferrock Pillar block?",
+      "What texture is applied to all sides of the Ferrock Pillar block?",
+      "How are the top and bottom textures of the Ferrock Pillar block defined?",
+      "Where are the textures for the Ferrock Pillar block sourced from?"
+    ],
+    "attempts": 3,
+    "last_reviewer": "Nick",
     "approvals": [],
     "history": [
       {
         "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784390609.614752,
-        "reason": "The kb_content mentions 'drops' but does not specify the exact items dropped, which is a concrete value in raw_content.",
+        "user_id": "NickMac",
+        "timestamp": 1784390660.01641,
+        "reason": "The kb_content does not mention any specific texture paths or model type, which are explicitly stated in the raw_content.",
         "corrected_summary": null,
-        "corrected_explanation": "This chunk defines the default properties of a Cubyz bars block, including tags, drops, absorbed light level, rotation model, and visual model. The block is marked as mineable with the tag `.mineable`. It has one drop item which is auto-generated. The absorbed light level is set to `0x202830`. For its appearance and rotation, it uses predefined models named `cubyz:bars` and `cubyz:fence`, respectively.",
+        "corrected_explanation": "# [easy/codebase_assets_cubyz_blocks_ferrock_pillar.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** configuration, block properties, texture paths, model type, rotation\n**Concepts:** block definition, texture mapping\n\n## Summary\nDefines configuration for the Ferrock Pillar block, including its rotation, model, and textures.\n\n## Explanation\nThis chunk is a configuration file defining properties of the Ferrock Pillar block. It specifies that the block uses the 'cubyz:direction' rotation, the 'cubyz:cube' model, and has textures for all sides sourced from 'cubyz:ferrock/pillar'. The top and bottom faces use a specific texture 'cubyz:ferrock/pillar_top'. This configuration is used by the Cubyz engine to render and interact with the Ferrock Pillar block in the game world.\n\n## Related Questions\n- What is the rotation setting for the Ferrock Pillar block?\n- Which model is used for the Ferrock Pillar block?\n- What texture is applied to all sides of the Ferrock Pillar block?\n- How is the top and bottom texture of the Ferrock Pillar block defined?\n- Where are the textures for the Ferrock Pillar block sourced from?\n- Does this configuration file define any additional properties for the Ferrock Pillar block?\n*Source: unknown | chunk_id: codebase_assets_cubyz_blocks_ferrock_pillar.zig.zon_chunk_0*\n",
         "corrected_related_questions": [
-          "What items does the Cubyz bars block drop by default?",
-          "Which model is used for the rotation of the Cubyz bars block?"
+          "What is the rotation setting for the Ferrock Pillar block?",
+          "Which model is used for the Ferrock Pillar block?",
+          "What texture is applied to all sides of the Ferrock Pillar block?",
+          "How is the top and bottom texture of the Ferrock Pillar block defined?",
+          "Where are the textures for the Ferrock Pillar block sourced from?"
         ]
       },
       {
         "stage": "reviewed",
-        "user_id": "Nickc",
-        "verdict": "revise",
-        "feedback": "The proposed fix correctly adds the specific item dropped, but it regresses by removing the correct fact that the absorbed light level is `0x202830`. The original kb_content accurately stated this value, which should be preserved.",
-        "timestamp": 1784390622.5406032
+        "user_id": "Nick",
+        "verdict": "reject",
+        "feedback": "The proposer's diagnosis is incorrect. The kb_content already mentions specific texture paths ('cubyz:ferrock/pillar') and model type ('cubyz:cube'). The proposed_explanation does not introduce any new information that was missing from the original explanation.",
+        "timestamp": 1784390667.9250133
       },
       {
-        "stage": "revised",
-        "user_id": "Nick",
-        "timestamp": 1784390629.0723124,
-        "corrected_summary": null,
-        "corrected_explanation": "This chunk defines the default properties of a Cubyz bars block, including tags, drops, absorbed light level, rotation model, and visual model. The block is marked as mineable with the tag `.mineable`. It has one drop item which is auto-generated. The absorbed light level is set to `0x202830`. For its appearance and rotation, it uses predefined models named `cubyz:bars` and `cubyz:fence`, respectively.",
-        "corrected_related_questions": []
-      }
-    ],
-    "review_feedback": "The proposed fix correctly adds the specific item dropped, but it regresses by removing the correct fact that the absorbed light level is `0x202830`. The original kb_content accurately stated this value, which should be preserved."
-  },
-  "codebase_assets_cubyz_blocks_branch_palm.zig.zon_chunk_0": {
-    "stage": "proposed",
-    "collection": "codebase",
-    "proposer": "Nick",
-    "reason": "The explanation does not provide specific values for several properties such as durability, swing speed, texture roughness, and the exact decay behavior. It also omits details about the material modifiers.",
-    "corrected_summary": null,
-    "corrected_explanation": "This chunk defines the properties of a palm branch block in the Cubyz voxel engine. The block has tags for choppable, wood, and branch. Its update type is set to decay. The block health value is 4. It uses specific textures including 'cubyz:branch/palm/dot', 'cubyz:branch/palm/half_line', 'cubyz:branch/palm/line', 'cubyz:branch/palm/bend', 'cubyz:branch/palm/intersection', and 'cubyz:branch/palm/cross'. The item has a durability of 31, mass damage of 1.15, hardness damage of 0.51, swing speed of 4.7, texture roughness of 0.7, and colors defined as {0xff6d4f33, 0xff865f3d, 0xff9f6c46, 0xffb47f51, 0xff9f6c46}. The item also has a durability modifier with an ID of 'durable' and strength of 0.45. There is a decay prohibition setting for the palm branch block.",
-    "corrected_related_questions": [],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
         "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784390617.2075062,
-        "reason": "The explanation does not provide specific values for several properties such as durability, swing speed, texture roughness, and the exact decay behavior. It also omits details about the material modifiers.",
+        "user_id": "NickMac",
+        "timestamp": 1784390712.4719691,
+        "reason": "The kb_content does not mention any specific texture paths or model type, which are explicitly stated in the raw_content.",
         "corrected_summary": null,
-        "corrected_explanation": "This chunk defines the properties of a palm branch block in the Cubyz voxel engine. The block has tags for choppable, wood, and branch. Its update type is set to decay. The block health value is 4. It uses specific textures including 'cubyz:branch/palm/dot', 'cubyz:branch/palm/half_line', 'cubyz:branch/palm/line', 'cubyz:branch/palm/bend', 'cubyz:branch/palm/intersection', and 'cubyz:branch/palm/cross'. The item has a durability of 31, mass damage of 1.15, hardness damage of 0.51, swing speed of 4.7, texture roughness of 0.7, and colors defined as {0xff6d4f33, 0xff865f3d, 0xff9f6c46, 0xffb47f51, 0xff9f6c46}. The item also has a durability modifier with an ID of 'durable' and strength of 0.45. There is a decay prohibition setting for the palm branch block.",
-        "corrected_related_questions": []
-      }
-    ]
-  },
-  "codebase_assets_cubyz_biomes_cave_mushroom_big__defaults.zig.zon_chunk_0": {
-    "stage": "proposed",
-    "collection": "codebase",
-    "proposer": "Nick",
-    "reason": "The explanation does not provide specific values for maxHeight, music, ground_structure, structures, and caveModels.",
-    "corrected_summary": null,
-    "corrected_explanation": "This chunk defines the configuration for the Cave Mushroom Big biome. It specifies that it is a cave layer with tags .{.cave_layer}. The maximum height of this biome is -512 cubyz. The music track used in this biome is 'cubyz:totaldemented/mycelia'.\n\nThe ground structure consists of 2 to 3 blocks of cubyz:soil. There are structures defined for the Cave Mushroom Big biome, including one with an ID of 'cubyz:ground_patch', which uses clay as the block type and has a generation chance of 0.3. The width is set to 5 cubyz with a variation of 5 cubyz, depth of 2 cubyz, and smoothness of 0.5.\n\nCave models are also defined for this biome, including one partial sphere model that can generate between 10 to 30 instances, with minimum and maximum radii set at 10 and 20 cubyz respectively.",
-    "corrected_related_questions": [],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784390624.8780665,
-        "reason": "The explanation does not provide specific values for maxHeight, music, ground_structure, structures, and caveModels.",
-        "corrected_summary": null,
-        "corrected_explanation": "This chunk defines the configuration for the Cave Mushroom Big biome. It specifies that it is a cave layer with tags .{.cave_layer}. The maximum height of this biome is -512 cubyz. The music track used in this biome is 'cubyz:totaldemented/mycelia'.\n\nThe ground structure consists of 2 to 3 blocks of cubyz:soil. There are structures defined for the Cave Mushroom Big biome, including one with an ID of 'cubyz:ground_patch', which uses clay as the block type and has a generation chance of 0.3. The width is set to 5 cubyz with a variation of 5 cubyz, depth of 2 cubyz, and smoothness of 0.5.\n\nCave models are also defined for this biome, including one partial sphere model that can generate between 10 to 30 instances, with minimum and maximum radii set at 10 and 20 cubyz respectively.",
-        "corrected_related_questions": []
-      }
-    ]
-  },
-  "codebase_assets_cubyz_blocks_branch_leafy_palm.zig.zon_chunk_0": {
-    "stage": "proposed",
-    "collection": "codebase",
-    "proposer": "Nick",
-    "reason": "The explanation does not provide specific values and details for the Leafy Palm block configuration, such as exact drop items, allowed tool tags, shell model, texture slot offset, etc.",
-    "corrected_summary": null,
-    "corrected_explanation": "This chunk defines the configuration for a Leafy Palm block in Cubyz. It includes properties such as model with radius of 4 and shellModel 'cubyz:cube_hanging_planes' using textureSlotOffset 6, update behavior with decay type dropping items 'cubyz:branch/palm', drop items including 'cubyz:branch/palm' and 'cubyz:leaves/palm' when cuttable tool is used, textures such as 'cubyz:leaves/palm', 'cubyz:leaves/palm_hanging', 'cubyz:branch/palm/dot', 'cubyz:branch/palm/half_line', 'cubyz:branch/palm/line', 'cubyz:branch/palm/bend', 'cubyz:branch/palm/intersection', and 'cubyz:branch/palm/cross', LOD replacement texture 'cubyz:leaves/opaque/palm', and opaque variant 'cubyz:leaves/opaque/palm'.",
-    "corrected_related_questions": [
-      "What is the radius of the Leafy Palm block model?",
-      "How does the Leafy Palm block update its state?",
-      "What items can be dropped when the Leafy Palm block is broken?",
-      "Which textures are associated with the Leafy Palm block?",
-      "What is the LOD replacement texture for the Leafy Palm block?",
-      "What is the opaque variant of the Leafy Palm block?",
-      "How many drop items does the Leafy Palm block have?",
-      "What are the allowed tool tags for dropping leaves from the Leafy Palm block?",
-      "What is the model used for the shell of the Leafy Palm block?",
-      "What texture slot offset is used for the Leafy Palm block?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784390640.3411279,
-        "reason": "The explanation does not provide specific values and details for the Leafy Palm block configuration, such as exact drop items, allowed tool tags, shell model, texture slot offset, etc.",
-        "corrected_summary": null,
-        "corrected_explanation": "This chunk defines the configuration for a Leafy Palm block in Cubyz. It includes properties such as model with radius of 4 and shellModel 'cubyz:cube_hanging_planes' using textureSlotOffset 6, update behavior with decay type dropping items 'cubyz:branch/palm', drop items including 'cubyz:branch/palm' and 'cubyz:leaves/palm' when cuttable tool is used, textures such as 'cubyz:leaves/palm', 'cubyz:leaves/palm_hanging', 'cubyz:branch/palm/dot', 'cubyz:branch/palm/half_line', 'cubyz:branch/palm/line', 'cubyz:branch/palm/bend', 'cubyz:branch/palm/intersection', and 'cubyz:branch/palm/cross', LOD replacement texture 'cubyz:leaves/opaque/palm', and opaque variant 'cubyz:leaves/opaque/palm'.",
+        "corrected_explanation": "# [easy/codebase_assets_cubyz_blocks_ferrock_pillar.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** configuration, block properties, texture paths, model type, rotation\n**Concepts:** block definition, texture mapping\n\n## Summary\nDefines configuration for the Ferrock Pillar block, including its rotation and textures.\n\n## Explanation\nThis chunk is a configuration file defining properties of the Ferrock Pillar block. It specifies that the block uses the 'cubyz:direction' rotation, has the 'cubyz:cube' model, and applies textures for all sides sourced from 'cubyz:ferrock/pillar'. The top and bottom faces use a specific texture 'cubyz:ferrock/pillar_top'. This configuration is used by the Cubyz engine to render and interact with the Ferrock Pillar block in the game world.\n\n## Related Questions\n- What is the rotation setting for the Ferrock Pillar block?\n- Which model is used for the Ferrock Pillar block?\n- What texture is applied to all sides of the Ferrock Pillar block?\n- How are the top and bottom textures of the Ferrock Pillar block defined?\n- Where are the textures for the Ferrock Pillar block sourced from?\n- Does this configuration file define any additional properties for the Ferrock Pillar block?\n*Source: unknown | chunk_id: codebase_assets_cubyz_blocks_ferrock_pillar.zig.zon_chunk_0*\n",
         "corrected_related_questions": [
-          "What is the radius of the Leafy Palm block model?",
-          "How does the Leafy Palm block update its state?",
-          "What items can be dropped when the Leafy Palm block is broken?",
-          "Which textures are associated with the Leafy Palm block?",
-          "What is the LOD replacement texture for the Leafy Palm block?",
-          "What is the opaque variant of the Leafy Palm block?",
-          "How many drop items does the Leafy Palm block have?",
-          "What are the allowed tool tags for dropping leaves from the Leafy Palm block?",
-          "What is the model used for the shell of the Leafy Palm block?",
-          "What texture slot offset is used for the Leafy Palm block?"
+          "What is the rotation setting for the Ferrock Pillar block?",
+          "Which model is used for the Ferrock Pillar block?",
+          "What texture is applied to all sides of the Ferrock Pillar block?",
+          "How are the top and bottom textures of the Ferrock Pillar block defined?",
+          "Where are the textures for the Ferrock Pillar block sourced from?"
+        ]
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nick",
+        "verdict": "revise",
+        "feedback": "The proposed explanation correctly includes the specific texture paths and model type, but it drops the fact that the top and bottom faces use a specific texture ('cubyz:ferrock/pillar_top'). This detail must be kept in the Explanation to accurately reflect the raw_content.",
+        "timestamp": 1784390721.190093
+      }
+    ],
+    "review_feedback": "The proposed explanation correctly includes the specific texture paths and model type, but it drops the fact that the top and bottom faces use a specific texture ('cubyz:ferrock/pillar_top'). This detail must be kept in the Explanation to accurately reflect the raw_content."
+  },
+  "codebase_assets_cubyz_blocks_mahogany_log.zig.zon_chunk_0": {
+    "stage": "revise_requested",
+    "collection": "codebase",
+    "proposer": "NickMac",
+    "reason": "kb_content states that the Mahogany Log does not decay over time, which contradicts raw_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "# [easy/codebase_assets_cubyz_blocks_mahogany_log.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** block configuration, choppable, wood, log, drop items, rotation, model, textures, decay prohibition\n**Concepts:** block properties, item drops, texture mapping\n\n## Summary\nDefines properties for the Mahogany Log block in Cubyz.\n\n## Explanation\nThis chunk defines a configuration object for the Mahogany Log block, specifying its tags, health, drop items, rotation behavior, model, textures, decay properties, and item status. The tags indicate that the block is choppable, made of wood, and is a log. It has 8 health points, drops Mahogany logs when broken, can be rotated in any direction, uses a cube model, and has specific top and bottom textures. The block does not decay over time.\n\n## Related Questions\n- What are the tags associated with the Mahogany Log block?\n- How many health points does the Mahogany Log have?\n- What items does the Mahogany Log drop when broken?\n- Can the Mahogany Log be rotated in any direction?\n- What model is used for the Mahogany Log?\n- What textures are applied to the top and bottom of the Mahogany Log?",
+    "corrected_related_questions": [
+      "What are the tags associated with the Mahogany Log block?"
+    ],
+    "attempts": 2,
+    "last_reviewer": "Nick",
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickMac",
+        "timestamp": 1784390758.956205,
+        "reason": "kb_content states that the Mahogany Log does not decay over time, which contradicts raw_content.",
+        "corrected_summary": null,
+        "corrected_explanation": "# [easy/codebase_assets_cubyz_blocks_mahogany_log.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** block configuration, choppable, wood, log, drop items, rotation, model, textures, decay prohibition\n**Concepts:** block properties, item drops, texture mapping\n\n## Summary\nDefines properties for the Mahogany Log block in Cubyz.\n\n## Explanation\nThis chunk defines a configuration object for the Mahogany Log block, specifying its tags, health, drop items, rotation behavior, model, textures, decay properties, and item status. The tags indicate that the block is choppable, made of wood, and is a log. It has 8 health points, drops Mahogany logs when broken, can be rotated in any direction, uses a cube model, and has specific top and bottom textures. The block does not decay over time.\n\n## Related Questions\n- What are the tags associated with the Mahogany Log block?\n- How many health points does the Mahogany Log have?\n- What items does the Mahogany Log drop when broken?\n- Can the Mahogany Log be rotated in any direction?\n- What model is used for the Mahogany Log?\n- What textures are applied to the top and bottom of the Mahogany Log?",
+        "corrected_related_questions": [
+          "What are the tags associated with the Mahogany Log block?"
+        ]
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nick",
+        "verdict": "revise",
+        "feedback": "The proposed explanation incorrectly states that the Mahogany Log does not decay over time. According to raw_content, `decayProhibitor = true` indicates that the block does prohibit decay. The current kb_content correctly reflects this by stating it does not decay over time. This must be kept while addressing any other issues.",
+        "timestamp": 1784390768.2938082
+      }
+    ],
+    "review_feedback": "The proposed explanation incorrectly states that the Mahogany Log does not decay over time. According to raw_content, `decayProhibitor = true` indicates that the block does prohibit decay. The current kb_content correctly reflects this by stating it does not decay over time. This must be kept while addressing any other issues."
+  },
+  "codebase_src_server_terrain_noise_RandomlyWeightedFractalNoise.zig_chunk_0": {
+    "stage": "revise_requested",
+    "collection": "codebase",
+    "proposer": "NickMac",
+    "reason": "The kb_content mentions that `setSeed` sets a seed, but does not state the actual value for it. The raw_content explicitly states that the function initializes a random seed using `main.random.initSeed2D(worldSeed*%(scale*maxResolution | 1), .{(offsetX +% x)*%maxResolution, (offsetY +% y)*%maxResolution});`.",
+    "corrected_summary": null,
+    "corrected_explanation": "\n## Summary\nThis chunk implements fractal terrain generation using a randomly weighted interpolation method.\n\n## Explanation\nThe chunk contains functions for generating fractal terrain. `generateFractalTerrain` initializes the terrain by setting seeds and generating corner points, then iteratively interpolates new points with random weights to create a smooth height map. `generateInitializedFractalTerrain` handles the iterative interpolation process, adjusting randomness scale to reduce noise. `generateSparseFractalTerrain` generates a lower resolution version of the terrain.\n\n## Code Example\n```zig\ndef setSeed(x: i32, y: i32, offsetX: i32, offsetY: i32, seed: *u64, worldSeed: u64, scale: u31, maxResolution: u31) void {\n\tseed.* = main.random.initSeed2D(worldSeed*%(scale*maxResolution | 1), .{(offsetX +% x)*%maxResolution, (offsetY +% y)*%maxResolution});\n}\n```",
+    "corrected_related_questions": [
+      "What is the purpose of the `setSeed` function?",
+      "How does `generateFractalTerrain` initialize the terrain?",
+      "What is the role of randomness in the fractal generation process?",
+      "How does `generateInitializedFractalTerrain` adjust the height map?",
+      "What is the difference between `generateFractalTerrain` and `generateSparseFractalTerrain`?"
+    ],
+    "attempts": 2,
+    "last_reviewer": "Nick",
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickMac",
+        "timestamp": 1784390788.3870604,
+        "reason": "The kb_content mentions that `setSeed` sets a seed, but does not state the actual value for it. The raw_content explicitly states that the function initializes a random seed using `main.random.initSeed2D(worldSeed*%(scale*maxResolution | 1), .{(offsetX +% x)*%maxResolution, (offsetY +% y)*%maxResolution});`.",
+        "corrected_summary": null,
+        "corrected_explanation": "\n## Summary\nThis chunk implements fractal terrain generation using a randomly weighted interpolation method.\n\n## Explanation\nThe chunk contains functions for generating fractal terrain. `generateFractalTerrain` initializes the terrain by setting seeds and generating corner points, then iteratively interpolates new points with random weights to create a smooth height map. `generateInitializedFractalTerrain` handles the iterative interpolation process, adjusting randomness scale to reduce noise. `generateSparseFractalTerrain` generates a lower resolution version of the terrain.\n\n## Code Example\n```zig\ndef setSeed(x: i32, y: i32, offsetX: i32, offsetY: i32, seed: *u64, worldSeed: u64, scale: u31, maxResolution: u31) void {\n\tseed.* = main.random.initSeed2D(worldSeed*%(scale*maxResolution | 1), .{(offsetX +% x)*%maxResolution, (offsetY +% y)*%maxResolution});\n}\n```",
+        "corrected_related_questions": [
+          "What is the purpose of the `setSeed` function?",
+          "How does `generateFractalTerrain` initialize the terrain?",
+          "What is the role of randomness in the fractal generation process?",
+          "How does `generateInitializedFractalTerrain` adjust the height map?",
+          "What is the difference between `generateFractalTerrain` and `generateSparseFractalTerrain`?"
+        ]
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nick",
+        "verdict": "revise",
+        "feedback": "The proposed fix attempts to add the specific value initialization for `setSeed`, but it incorrectly changes the language from Zig to Python in the code example. Additionally, the explanation does not explicitly state what the function initializes the seed with. The correct approach should be to keep the code example in Zig and clearly describe the initialization process.",
+        "timestamp": 1784390796.0604086
+      }
+    ],
+    "review_feedback": "The proposed fix attempts to add the specific value initialization for `setSeed`, but it incorrectly changes the language from Zig to Python in the code example. Additionally, the explanation does not explicitly state what the function initializes the seed with. The correct approach should be to keep the code example in Zig and clearly describe the initialization process."
+  },
+  "codebase_assets_cubyz_blocks_soil.zig.zon_chunk_0": {
+    "stage": "revise_requested",
+    "collection": "codebase",
+    "proposer": "NickMac",
+    "reason": "The kb_content summary and related_questions do not fully capture all concrete facts from the raw_content. Specifically, the model, rotation, and texture are described generically without providing specific values.",
+    "corrected_summary": null,
+    "corrected_explanation": "# [easy/codebase_assets_cubyz_blocks_soil.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** diggable, block health, drops, model, rotation, texture\n**Concepts:** block configuration, game assets\n\n## Summary\nDefines properties for a soil block in the Cubyz game.\n\n## Explanation\nThis chunk defines the configuration for a soil block, including its tags (diggable), health value of 6.5, drops items automatically when broken, model 'cubyz:cube', rotation property specifying 'cubyz:stairs' indicating it can be rotated like stairs, and texture applied to the block is 'cubyz:soil'.\n\n## Related Questions\n- What are the tags associated with the soil block?\n- How much health does the soil block have?\n- What items does the soil block drop when broken?\n- Which model is used for the soil block?\n- How can the soil block be rotated?\n- What texture is applied to the soil block?",
+    "corrected_related_questions": [
+      "What are the tags associated with the soil block?"
+    ],
+    "attempts": 2,
+    "last_reviewer": "Nick",
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickMac",
+        "timestamp": 1784390804.235551,
+        "reason": "The kb_content summary and related_questions do not fully capture all concrete facts from the raw_content. Specifically, the model, rotation, and texture are described generically without providing specific values.",
+        "corrected_summary": null,
+        "corrected_explanation": "# [easy/codebase_assets_cubyz_blocks_soil.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** diggable, block health, drops, model, rotation, texture\n**Concepts:** block configuration, game assets\n\n## Summary\nDefines properties for a soil block in the Cubyz game.\n\n## Explanation\nThis chunk defines the configuration for a soil block, including its tags (diggable), health value of 6.5, drops items automatically when broken, model 'cubyz:cube', rotation property specifying 'cubyz:stairs' indicating it can be rotated like stairs, and texture applied to the block is 'cubyz:soil'.\n\n## Related Questions\n- What are the tags associated with the soil block?\n- How much health does the soil block have?\n- What items does the soil block drop when broken?\n- Which model is used for the soil block?\n- How can the soil block be rotated?\n- What texture is applied to the soil block?",
+        "corrected_related_questions": [
+          "What are the tags associated with the soil block?"
+        ]
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nick",
+        "verdict": "revise",
+        "feedback": "The proposed explanation correctly adds specific values for model, rotation, and texture. However, it regresses by dropping previously correct facts such as 'defines properties for a soil block in the Cubyz game' and 'the soil block is marked as diggable with a health value of 6.5'. Ensure these details are retained.",
+        "timestamp": 1784390807.7790031
+      }
+    ],
+    "review_feedback": "The proposed explanation correctly adds specific values for model, rotation, and texture. However, it regresses by dropping previously correct facts such as 'defines properties for a soil block in the Cubyz game' and 'the soil block is marked as diggable with a health value of 6.5'. Ensure these details are retained."
+  },
+  "codebase_assets_cubyz_sbb_candy_cane_thin_big.zig.zon_chunk_0": {
+    "stage": "revise_requested",
+    "collection": "codebase",
+    "proposer": "NickMac",
+    "reason": "The kb_content summary and related_questions do not accurately reflect the raw_content. The raw_content defines specific IDs for blueprints, but the kb_content only mentions 'blueprint' generically.",
+    "corrected_summary": null,
+    "corrected_explanation": "# [easy/codebase_assets_cubyz_sbb_candy_cane_thin_big.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** blueprint, child component, asset structure, ID identification, configuration data\n**Concepts:** asset definition\n\n## Summary\nDefines blueprints and children for a candy cane asset. The blueprints are identified by specific IDs: `cubyz:candy_cane/thin/stem/5`, `cubyz:candy_cane/thin/stem/6`, and `cubyz:candy_cane/thin/stem/7`. There is one child component with the ID `cubyz:candy_cane/thin/top/big`.\n\n## Explanation\nThis chunk defines the structure of a candy cane asset, including its blueprints and child components. The blueprints are identified by specific IDs: `cubyz:candy_cane/thin/stem/5`, `cubyz:candy_cane/thin/stem/6`, and `cubyz:candy_cane/thin/stem/7`. There is one child component with the ID `cubyz:candy_cane/thin/top/big`.",
+    "corrected_related_questions": [
+      "What are the IDs of the blueprints defined for the candy cane asset?",
+      "Which child component is associated with the candy cane asset?",
+      "How many blueprints are defined for this candy cane asset?",
+      "What is the structure of the candy cane asset as defined in this chunk?"
+    ],
+    "attempts": 2,
+    "last_reviewer": "Nick",
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickMac",
+        "timestamp": 1784390859.0403512,
+        "reason": "The kb_content summary and related_questions do not accurately reflect the raw_content. The raw_content defines specific IDs for blueprints, but the kb_content only mentions 'blueprint' generically.",
+        "corrected_summary": null,
+        "corrected_explanation": "# [easy/codebase_assets_cubyz_sbb_candy_cane_thin_big.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** blueprint, child component, asset structure, ID identification, configuration data\n**Concepts:** asset definition\n\n## Summary\nDefines blueprints and children for a candy cane asset. The blueprints are identified by specific IDs: `cubyz:candy_cane/thin/stem/5`, `cubyz:candy_cane/thin/stem/6`, and `cubyz:candy_cane/thin/stem/7`. There is one child component with the ID `cubyz:candy_cane/thin/top/big`.\n\n## Explanation\nThis chunk defines the structure of a candy cane asset, including its blueprints and child components. The blueprints are identified by specific IDs: `cubyz:candy_cane/thin/stem/5`, `cubyz:candy_cane/thin/stem/6`, and `cubyz:candy_cane/thin/stem/7`. There is one child component with the ID `cubyz:candy_cane/thin/top/big`.",
+        "corrected_related_questions": [
+          "What are the IDs of the blueprints defined for the candy cane asset?",
+          "Which child component is associated with the candy cane asset?",
+          "How many blueprints are defined for this candy cane asset?",
+          "What is the structure of the candy cane asset as defined in this chunk?"
+        ]
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nick",
+        "verdict": "revise",
+        "feedback": "The proposed explanation correctly adds the specific blueprint IDs, but it drops the previously correct information that there are three blueprints. The current kb_content states 'There is one child component with the ID cubyz:candy_cane/thin/top/big', which should be preserved along with the count of blueprints.",
+        "timestamp": 1784390861.841052
+      }
+    ],
+    "review_feedback": "The proposed explanation correctly adds the specific blueprint IDs, but it drops the previously correct information that there are three blueprints. The current kb_content states 'There is one child component with the ID cubyz:candy_cane/thin/top/big', which should be preserved along with the count of blueprints."
+  },
+  "codebase_assets_cubyz_biomes_plateau_stacked__defaults.zig.zon_chunk_0": {
+    "stage": "revise_requested",
+    "collection": "codebase",
+    "proposer": "NickMac",
+    "reason": "kb_content states 'structures' are defined, but raw_content does not list any structures.",
+    "corrected_summary": null,
+    "corrected_explanation": "# [easy/codebase_assets_cubyz_biomes_plateau_stacked__defaults.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** keepOriginalTerrain, minHeightLimit, maxHeight, roughness, hills, structures\n**Symbols:** keepOriginalTerrain, minHeightLimit, minHeight, maxHeight, smoothBeaches, minRadius, maxRadius, roughness, hills, chance, soilCreep, validPlayerSpawn, structures\n**Concepts:** biome configuration, structure generation, terrain properties\n\n## Summary\nBiome configuration for Plateau Stacked biome\n\nThis chunk defines the default settings for the Plateau Stacked biome, including properties like keepOriginalTerrain, minHeightLimit, maxHeight, roughness, hills, and validPlayerSpawn. It specifies details such as block IDs, sizes, chances, and variations for different structures.\n\n## Explanation\nThis chunk defines the default settings for the Plateau Stacked biome, including properties like keepOriginalTerrain (set to 0.99), minHeightLimit (set to 60), maxHeight (set to 2000), smoothBeaches (true), minRadius (16), maxRadius (40), roughness (1), hills (8), and validPlayerSpawn (true). It also defines the structures for this biome, including a boulder structure with specific block ID ('cubyz:slate/smooth'), size (5), chance (0.003), width (5), variation (1), and priority (0.1); and two flower patch structures with different blocks ('cubyz:daisies' and 'cubyz:dandelions') with specific block ID ('cubyz:slate/smooth'), size (6-10), chance (0.003 and 0.002), width (5-10), variation (4-6), and priority (0.1).",
+    "corrected_related_questions": [
+      "What is the minimum height limit for the Plateau Stacked biome?",
+      "How many structures are defined for the Plateau Stacked biome?",
+      "What block ID and size are used for the boulder structure in the Plateau Stacked biome?",
+      "What is the chance of generating a flower patch with daisies in the Plateau Stacked biome?",
+      "What is the width of the flower patch with dandelions in the Plateau Stacked biome?",
+      "How many hills are generated for the Plateau Stacked biome?",
+      "Is it valid to spawn players on the Plateau Stacked biome?"
+    ],
+    "attempts": 2,
+    "last_reviewer": "Nick",
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickMac",
+        "timestamp": 1784390887.7079458,
+        "reason": "kb_content states 'structures' are defined, but raw_content does not list any structures.",
+        "corrected_summary": null,
+        "corrected_explanation": "# [easy/codebase_assets_cubyz_biomes_plateau_stacked__defaults.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** keepOriginalTerrain, minHeightLimit, maxHeight, roughness, hills, structures\n**Symbols:** keepOriginalTerrain, minHeightLimit, minHeight, maxHeight, smoothBeaches, minRadius, maxRadius, roughness, hills, chance, soilCreep, validPlayerSpawn, structures\n**Concepts:** biome configuration, structure generation, terrain properties\n\n## Summary\nBiome configuration for Plateau Stacked biome\n\nThis chunk defines the default settings for the Plateau Stacked biome, including properties like keepOriginalTerrain, minHeightLimit, maxHeight, roughness, hills, and validPlayerSpawn. It specifies details such as block IDs, sizes, chances, and variations for different structures.\n\n## Explanation\nThis chunk defines the default settings for the Plateau Stacked biome, including properties like keepOriginalTerrain (set to 0.99), minHeightLimit (set to 60), maxHeight (set to 2000), smoothBeaches (true), minRadius (16), maxRadius (40), roughness (1), hills (8), and validPlayerSpawn (true). It also defines the structures for this biome, including a boulder structure with specific block ID ('cubyz:slate/smooth'), size (5), chance (0.003), width (5), variation (1), and priority (0.1); and two flower patch structures with different blocks ('cubyz:daisies' and 'cubyz:dandelions') with specific block ID ('cubyz:slate/smooth'), size (6-10), chance (0.003 and 0.002), width (5-10), variation (4-6), and priority (0.1).",
+        "corrected_related_questions": [
+          "What is the minimum height limit for the Plateau Stacked biome?",
+          "How many structures are defined for the Plateau Stacked biome?",
+          "What block ID and size are used for the boulder structure in the Plateau Stacked biome?",
+          "What is the chance of generating a flower patch with daisies in the Plateau Stacked biome?",
+          "What is the width of the flower patch with dandelions in the Plateau Stacked biome?",
+          "How many hills are generated for the Plateau Stacked biome?",
+          "Is it valid to spawn players on the Plateau Stacked biome?"
+        ]
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nick",
+        "verdict": "revise",
+        "feedback": "The proposed explanation incorrectly states that the boulder structure has a width and variation, which are not defined in raw_content. Additionally, the flower patch structures have different sizes and variations as per raw_content, but these details are generalized away or incorrect in the proposal. The correct values should be included without fabricating non-existent properties.",
+        "timestamp": 1784390896.2846985
+      }
+    ],
+    "review_feedback": "The proposed explanation incorrectly states that the boulder structure has a width and variation, which are not defined in raw_content. Additionally, the flower patch structures have different sizes and variations as per raw_content, but these details are generalized away or incorrect in the proposal. The correct values should be included without fabricating non-existent properties."
+  },
+  "codebase_assets_cubyz_blocks_cloth__defaults.zig.zon_chunk_0": {
+    "stage": "revise_requested",
+    "collection": "codebase",
+    "proposer": "NickMac",
+    "reason": "The kb_content summary and related_questions do not accurately reflect the raw_content. The `collide` property is set to false in raw_content, but this value is not mentioned or explained in the kb_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "# [easy/codebase_assets_cubyz_blocks_cloth__defaults.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** tags, health, drops, collision, model, rotation, degradability\n**Concepts:** block configuration, item drops\n\n## Summary\nDefines default properties for the cloth block in Cubyz.\n\n## Explanation\nThis chunk specifies the configuration settings for a cloth block within the Cubyz game engine. It sets various attributes such as tags, health, drop items, collision behavior, model, rotation, and degradability. The `.tags` field includes identifiers like 'cloth' and 'cuttable'. The `blockHealth` is set to 2, indicating the durability of the block. The `drops` array specifies that the block will automatically drop its own item when broken. The `collide` property is set to false, meaning the block does not obstruct movement or interactions. The `model` and `rotation` fields both reference 'cubyz:carpet', suggesting a visual representation of a carpet. Lastly, the `degradable` property is true, indicating that the block can degrade over time.",
+    "corrected_related_questions": [
+      "What are the tags assigned to the cloth block?",
+      "How much health does the cloth block have?",
+      "What items will drop when the cloth block is broken?",
+      "Does the cloth block obstruct movement?",
+      "Which model and rotation settings are used for the cloth block?",
+      "Is the cloth block degradable?"
+    ],
+    "attempts": 2,
+    "last_reviewer": "Nick",
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickMac",
+        "timestamp": 1784390907.1964524,
+        "reason": "The kb_content summary and related_questions do not accurately reflect the raw_content. The `collide` property is set to false in raw_content, but this value is not mentioned or explained in the kb_content.",
+        "corrected_summary": null,
+        "corrected_explanation": "# [easy/codebase_assets_cubyz_blocks_cloth__defaults.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** tags, health, drops, collision, model, rotation, degradability\n**Concepts:** block configuration, item drops\n\n## Summary\nDefines default properties for the cloth block in Cubyz.\n\n## Explanation\nThis chunk specifies the configuration settings for a cloth block within the Cubyz game engine. It sets various attributes such as tags, health, drop items, collision behavior, model, rotation, and degradability. The `.tags` field includes identifiers like 'cloth' and 'cuttable'. The `blockHealth` is set to 2, indicating the durability of the block. The `drops` array specifies that the block will automatically drop its own item when broken. The `collide` property is set to false, meaning the block does not obstruct movement or interactions. The `model` and `rotation` fields both reference 'cubyz:carpet', suggesting a visual representation of a carpet. Lastly, the `degradable` property is true, indicating that the block can degrade over time.",
+        "corrected_related_questions": [
+          "What are the tags assigned to the cloth block?",
+          "How much health does the cloth block have?",
+          "What items will drop when the cloth block is broken?",
+          "Does the cloth block obstruct movement?",
+          "Which model and rotation settings are used for the cloth block?",
+          "Is the cloth block degradable?"
+        ]
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nick",
+        "verdict": "revise",
+        "feedback": "The proposed_explanation correctly includes the `collide` property set to false, but it does not address the related_questions section. The related_questions should explicitly include a question about whether the cloth block obstructs movement or interactions.",
+        "timestamp": 1784390914.8582864
+      }
+    ],
+    "review_feedback": "The proposed_explanation correctly includes the `collide` property set to false, but it does not address the related_questions section. The related_questions should explicitly include a question about whether the cloth block obstructs movement or interactions."
+  },
+  "codebase_src_proceduralItem_modifiers_restrictions_not.zig_chunk_0": {
+    "stage": "revise_requested",
+    "collection": "codebase",
+    "proposer": "NickMac",
+    "reason": "The kb_content does not mention the specific method `satisfied` and its functionality, which is a concrete fact from raw_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "\n## Explanation\nThis chunk defines a `Not` struct that represents the negation of another `ModifierRestriction`. It provides a method `satisfied` to check if a procedural item does not satisfy the child restriction, and a `loadFromZon` function to deserialize it from a ZonElement. The `printTooltip` function generates a tooltip for the `Not` modifier.\n\n## Code Example\n```zig\nconst Not = struct {\n    child: ModifierRestriction,\n}\n```\n\nThe method `satisfied` is used to determine if an item does not satisfy the child restriction, which is a specific implementation detail.",
+    "corrected_related_questions": [
+      "What is the purpose of the Not struct?",
+      "How does the satisfied function work?",
+      "What is the loadFromZon function used for?",
+      "What does the printTooltip function do?",
+      "Can you explain how the child restriction is accessed within the Not struct?",
+      "What are the types of data structures used in this chunk?",
+      "How is memory allocated and deallocated in this chunk?",
+      "What are the error handling mechanisms used in this chunk?",
+      "What are the concurrency considerations in this chunk?",
+      "What are the dependencies between different parts of this chunk?",
+      "Can you describe how the Not struct interacts with other components or modules?"
+    ],
+    "attempts": 2,
+    "last_reviewer": "Nick",
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickMac",
+        "timestamp": 1784390925.510053,
+        "reason": "The kb_content does not mention the specific method `satisfied` and its functionality, which is a concrete fact from raw_content.",
+        "corrected_summary": null,
+        "corrected_explanation": "\n## Explanation\nThis chunk defines a `Not` struct that represents the negation of another `ModifierRestriction`. It provides a method `satisfied` to check if a procedural item does not satisfy the child restriction, and a `loadFromZon` function to deserialize it from a ZonElement. The `printTooltip` function generates a tooltip for the `Not` modifier.\n\n## Code Example\n```zig\nconst Not = struct {\n    child: ModifierRestriction,\n}\n```\n\nThe method `satisfied` is used to determine if an item does not satisfy the child restriction, which is a specific implementation detail.",
+        "corrected_related_questions": [
+          "What is the purpose of the Not struct?",
+          "How does the satisfied function work?",
+          "What is the loadFromZon function used for?",
+          "What does the printTooltip function do?",
+          "Can you explain how the child restriction is accessed within the Not struct?",
+          "What are the types of data structures used in this chunk?",
+          "How is memory allocated and deallocated in this chunk?",
+          "What are the error handling mechanisms used in this chunk?",
+          "What are the concurrency considerations in this chunk?",
+          "What are the dependencies between different parts of this chunk?",
+          "Can you describe how the Not struct interacts with other components or modules?"
+        ]
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nick",
+        "verdict": "revise",
+        "feedback": "The proposed explanation correctly adds information about the `satisfied` method, but it omits mentioning that `loadFromZon` and `printTooltip` are also provided in the chunk. Additionally, the current kb_content already states the functionality of these methods without needing to be generalized away or contradicted. Therefore, the proposed explanation should include all mentioned functionalities explicitly.",
+        "timestamp": 1784390932.324201
+      }
+    ],
+    "review_feedback": "The proposed explanation correctly adds information about the `satisfied` method, but it omits mentioning that `loadFromZon` and `printTooltip` are also provided in the chunk. Additionally, the current kb_content already states the functionality of these methods without needing to be generalized away or contradicted. Therefore, the proposed explanation should include all mentioned functionalities explicitly."
+  },
+  "codebase_assets_cubyz_blocks_slate__defaults.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation mentions several properties but does not provide specific values for block health, resistance, durability, damage values, swing speed, texture roughness, and modifiers.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk specifies the configuration for the Slate block within the Cubyz game engine. It includes various properties such as tags (stone, mineable, slate), block health of 30, resistance of 1, drop behavior that yields an auto item, and material attributes including durability of 60, mass damage of 1.0, hardness damage of 3.9, swing speed of 3.2, texture roughness of 1.0, color palette (0xff444444, 0xff626262, 0xff7A7876, 0xff878583, 0xff9c9996), and a modifier that increases strength by 0.5 when used on encased precious blocks.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784390929.5540543,
+        "reason": "The explanation mentions several properties but does not provide specific values for block health, resistance, durability, damage values, swing speed, texture roughness, and modifiers.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk specifies the configuration for the Slate block within the Cubyz game engine. It includes various properties such as tags (stone, mineable, slate), block health of 30, resistance of 1, drop behavior that yields an auto item, and material attributes including durability of 60, mass damage of 1.0, hardness damage of 3.9, swing speed of 3.2, texture roughness of 1.0, color palette (0xff444444, 0xff626262, 0xff7A7876, 0xff878583, 0xff9c9996), and a modifier that increases strength by 0.5 when used on encased precious blocks.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_assets_cubyz_blocks_glass_indigo.zig.zon_chunk_0": {
+    "stage": "revise_requested",
+    "collection": "codebase",
+    "proposer": "NickMac",
+    "reason": "kb_content does not state the actual value for 'absorbedLight', which is explicitly stated in raw_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "# [easy/codebase_assets_cubyz_blocks_glass_indigo.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** light absorption, texture path, configuration data, block definition, color specification\n**Concepts:** block properties, texture mapping\n\n## Summary\nDefines properties for the indigo glass block.\n\n## Explanation\nThis chunk defines a configuration object for an indigo glass block in the Cubyz voxel engine. It specifies the block's absorbed light color (0xd0c16d) and its texture path (`codebase_assets_cubyz_blocks_glass_indigo.zig.zon_chunk_0`).\n\n## Related Questions\n- What is the absorbed light color of the indigo glass block?\n- Where is the texture for the indigo glass block located?\n- How is the configuration data structured for the indigo glass block?\n- Is there any additional properties defined for the indigo glass block in this chunk?\n- Can this chunk be used to define other types of blocks as well?\n- What is the purpose of the 'absorbedLight' property in this configuration?",
+    "corrected_related_questions": [
+      "What is the absorbed light color of the indigo glass block?"
+    ],
+    "attempts": 2,
+    "last_reviewer": "Nick",
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickMac",
+        "timestamp": 1784390941.378464,
+        "reason": "kb_content does not state the actual value for 'absorbedLight', which is explicitly stated in raw_content.",
+        "corrected_summary": null,
+        "corrected_explanation": "# [easy/codebase_assets_cubyz_blocks_glass_indigo.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** light absorption, texture path, configuration data, block definition, color specification\n**Concepts:** block properties, texture mapping\n\n## Summary\nDefines properties for the indigo glass block.\n\n## Explanation\nThis chunk defines a configuration object for an indigo glass block in the Cubyz voxel engine. It specifies the block's absorbed light color (0xd0c16d) and its texture path (`codebase_assets_cubyz_blocks_glass_indigo.zig.zon_chunk_0`).\n\n## Related Questions\n- What is the absorbed light color of the indigo glass block?\n- Where is the texture for the indigo glass block located?\n- How is the configuration data structured for the indigo glass block?\n- Is there any additional properties defined for the indigo glass block in this chunk?\n- Can this chunk be used to define other types of blocks as well?\n- What is the purpose of the 'absorbedLight' property in this configuration?",
+        "corrected_related_questions": [
+          "What is the absorbed light color of the indigo glass block?"
+        ]
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nick",
+        "verdict": "revise",
+        "feedback": "The proposed explanation incorrectly states the texture path as `codebase_assets_cubyz_blocks_glass_indigo.zig.zon_chunk_0` instead of `cubyz:glass/indigo`. The correct value for the absorbed light color is also provided, but the texture path must be accurate and should remain `cubyz:glass/indigo`.",
+        "timestamp": 1784390946.7864735
+      }
+    ],
+    "review_feedback": "The proposed explanation incorrectly states the texture path as `codebase_assets_cubyz_blocks_glass_indigo.zig.zon_chunk_0` instead of `cubyz:glass/indigo`. The correct value for the absorbed light color is also provided, but the texture path must be accurate and should remain `cubyz:glass/indigo`."
+  },
+  "codebase_src_server_terrain_simple_structures_SimpleVegetation.zig_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not specify the exact values for 'height' and 'height_variation' defaults, nor does it mention the specific error message when height is set to zero.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines a simple vegetation model for terrain generation. It includes a struct `SimpleVegetation` with fields for block type (`block`), base height (`height0`), and height variation (`deltaHeight`). The `loadModel` function initializes this struct from configuration parameters, setting default values of 1 for `height0` and 0 for `deltaHeight`. If the specified `height0` is zero, an error message is logged indicating that empty structures would be generated and suggesting to set it to at least 1. The `generate` method places the specified block in a vertical column within a chunk, considering height variations and ensuring it fits within available space as determined by the cave map.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784390958.065973,
+        "reason": "The explanation does not specify the exact values for 'height' and 'height_variation' defaults, nor does it mention the specific error message when height is set to zero.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines a simple vegetation model for terrain generation. It includes a struct `SimpleVegetation` with fields for block type (`block`), base height (`height0`), and height variation (`deltaHeight`). The `loadModel` function initializes this struct from configuration parameters, setting default values of 1 for `height0` and 0 for `deltaHeight`. If the specified `height0` is zero, an error message is logged indicating that empty structures would be generated and suggesting to set it to at least 1. The `generate` method places the specified block in a vertical column within a chunk, considering height variations and ensuring it fits within available space as determined by the cave map.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_assets_cubyz_sbb_tree_oak_old_growth_small_branch.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific IDs and chance values for each blueprint as stated in the raw_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines a set of tree branch blueprints for the Cubyz voxel engine. Each blueprint specifies an ID and a chance for selection. The following are the detailed specifications:\n\n1. `.id = \"cubyz:tree/oak/young/branch/1\"`, `.chance = 0.2`\n2. `.id = \"cubyz:tree/oak/young/branch/2\"`, `.chance = 0.2`\n3. `.id = \"cubyz:tree/oak/young/branch/3\"`, `.chance = 0.2`\n4. `.id = \"cubyz:tree/oak/young/branch/4\"`, `.chance = 0.2`\n5. `.id = \"cubyz:tree/oak/young/branch/5\"`, `.chance = 0.2`\n6. `.id = \"cubyz:tree/oak/young/branch/7\"`, `.chance = 0.2`\n7. `.id = \"cubyz:deco/bolete_side\"`, `.chance = 0.2`\n8. `.id = null`, `.chance = 0.2`",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784390965.6892426,
+        "reason": "The explanation does not provide specific IDs and chance values for each blueprint as stated in the raw_content.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines a set of tree branch blueprints for the Cubyz voxel engine. Each blueprint specifies an ID and a chance for selection. The following are the detailed specifications:\n\n1. `.id = \"cubyz:tree/oak/young/branch/1\"`, `.chance = 0.2`\n2. `.id = \"cubyz:tree/oak/young/branch/2\"`, `.chance = 0.2`\n3. `.id = \"cubyz:tree/oak/young/branch/3\"`, `.chance = 0.2`\n4. `.id = \"cubyz:tree/oak/young/branch/4\"`, `.chance = 0.2`\n5. `.id = \"cubyz:tree/oak/young/branch/5\"`, `.chance = 0.2`\n6. `.id = \"cubyz:tree/oak/young/branch/7\"`, `.chance = 0.2`\n7. `.id = \"cubyz:deco/bolete_side\"`, `.chance = 0.2`\n8. `.id = null`, `.chance = 0.2`",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_assets_cubyz_biomes_cave_void_rare_phantasmal_streamer.zig.zon_chunk_0": {
+    "stage": "revise_requested",
+    "collection": "codebase",
+    "proposer": "NickMac",
+    "reason": "kb_content does not state the actual values for `chance` and `minAmount`, which are provided in raw_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "# [easy/codebase_assets_cubyz_biomes_cave_void_rare_phantasmal_streamer.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** structure configuration, cave model, chance, rotation, amount, radius\n**Symbols:** cubyz:sbb, cubyz:phantasmal/auroras/high, cubyz:phantasmal/auroras/low, cubyz:partial_sphere\n**Concepts:** configuration, cave void, phantasmal streamer\n\n## Summary\nCave void rare phantasmal streamer configuration\n\n## Explanation\nThis chunk defines the configuration for cave void rare phantasmal streamers. It specifies structures and cave models with their respective IDs (`cubyz:sbb`), chances (0.03 and 0.04), rotations, minimum and maximum amounts (5 to 10 partial sphere cave models per structure), and radii (30 to 40).\n\n## Related Questions\n- What are the IDs of the structures for cave void rare phantasmal streamers?\n- How many different cave models are defined in this configuration?\n- What is the minimum amount of partial sphere cave models that can be generated per structure?\n- What is the maximum radius of the partial sphere cave models per structure?\n- What is the chance of generating a high aurora structure for cave void rare phantasmal streamers?\n- What is the rotation angle for the low aurora structure in cave void rare phantasmal streamers?\n- How many structures are defined in total for cave void rare phantasmal streamers?\n- What is the minimum amount of partial sphere cave models that can be generated per structure?\n- What is the maximum radius of the partial sphere cave models per structure?\n- What is the chance of generating a low aurora structure for cave void rare phantasmal streamers?\n- How many different rotation angles are defined for the structures in cave void rare phantasmal streamers?",
+    "corrected_related_questions": [
+      "What are the IDs of the structures for cave void rare phantasmal streamers?",
+      "How many different cave models are defined in this configuration?",
+      "What is the chance of generating a high aurora structure for cave void rare phantasmal streamers?",
+      "What is the rotation angle for the low aurora structure in cave void rare phantasmal streamers?",
+      "How many structures are defined in total for cave void rare phantasmal streamers?",
+      "What is the chance of generating a low aurora structure for cave void rare phantasmal streamers?"
+    ],
+    "attempts": 2,
+    "last_reviewer": "Nick",
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickMac",
+        "timestamp": 1784390970.7687206,
+        "reason": "kb_content does not state the actual values for `chance` and `minAmount`, which are provided in raw_content.",
+        "corrected_summary": null,
+        "corrected_explanation": "# [easy/codebase_assets_cubyz_biomes_cave_void_rare_phantasmal_streamer.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** structure configuration, cave model, chance, rotation, amount, radius\n**Symbols:** cubyz:sbb, cubyz:phantasmal/auroras/high, cubyz:phantasmal/auroras/low, cubyz:partial_sphere\n**Concepts:** configuration, cave void, phantasmal streamer\n\n## Summary\nCave void rare phantasmal streamer configuration\n\n## Explanation\nThis chunk defines the configuration for cave void rare phantasmal streamers. It specifies structures and cave models with their respective IDs (`cubyz:sbb`), chances (0.03 and 0.04), rotations, minimum and maximum amounts (5 to 10 partial sphere cave models per structure), and radii (30 to 40).\n\n## Related Questions\n- What are the IDs of the structures for cave void rare phantasmal streamers?\n- How many different cave models are defined in this configuration?\n- What is the minimum amount of partial sphere cave models that can be generated per structure?\n- What is the maximum radius of the partial sphere cave models per structure?\n- What is the chance of generating a high aurora structure for cave void rare phantasmal streamers?\n- What is the rotation angle for the low aurora structure in cave void rare phantasmal streamers?\n- How many structures are defined in total for cave void rare phantasmal streamers?\n- What is the minimum amount of partial sphere cave models that can be generated per structure?\n- What is the maximum radius of the partial sphere cave models per structure?\n- What is the chance of generating a low aurora structure for cave void rare phantasmal streamers?\n- How many different rotation angles are defined for the structures in cave void rare phantasmal streamers?",
+        "corrected_related_questions": [
+          "What are the IDs of the structures for cave void rare phantasmal streamers?",
+          "How many different cave models are defined in this configuration?",
+          "What is the chance of generating a high aurora structure for cave void rare phantasmal streamers?",
+          "What is the rotation angle for the low aurora structure in cave void rare phantasmal streamers?",
+          "How many structures are defined in total for cave void rare phantasmal streamers?",
+          "What is the chance of generating a low aurora structure for cave void rare phantasmal streamers?"
+        ]
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nick",
+        "verdict": "revise",
+        "feedback": "The proposed explanation correctly adds the missing values for `chance` and `minAmount`, but it generalizes away some specific details that were previously stated. Specifically, the original kb_content mentions 'minimum amount of partial sphere cave models' and 'maximum radius of the partial sphere cave models', which are now combined into a single statement about ranges without specifying per-structure values. Additionally, the rotation value for both structures is 0, but this detail is omitted in the proposed explanation.",
+        "timestamp": 1784390976.1666958
+      }
+    ],
+    "review_feedback": "The proposed explanation correctly adds the missing values for `chance` and `minAmount`, but it generalizes away some specific details that were previously stated. Specifically, the original kb_content mentions 'minimum amount of partial sphere cave models' and 'maximum radius of the partial sphere cave models', which are now combined into a single statement about ranges without specifying per-structure values. Additionally, the rotation value for both structures is 0, but this detail is omitted in the proposed explanation."
+  },
+  "codebase_assets_cubyz_biomes_cave_lava_cave.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific values for several attributes mentioned in the raw_content, such as maxHeight, fogDensity, and exact structure parameters.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines the configuration for a lava cave biome in Cubyz. The biome is identified by the tag `.cave_layer` and has a maximum height of -1500. It features a fog density of 20 with a color of `0x51240c`. The music that plays in this biome is `",
+    "corrected_related_questions": [
+      "What is the maximum height of the lava cave biome?",
+      "What is the fog density and color in the lava cave biome?",
+      "Which block types are used in the lava cave biome?",
+      "How many different structures can appear in this biome?",
+      "What is the chance of a stalagmite appearing in the lava cave biome?",
+      "What type of music plays in the lava cave biome?"
+    ],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784390972.6954367,
+        "reason": "The explanation does not provide specific values for several attributes mentioned in the raw_content, such as maxHeight, fogDensity, and exact structure parameters.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines the configuration for a lava cave biome in Cubyz. The biome is identified by the tag `.cave_layer` and has a maximum height of -1500. It features a fog density of 20 with a color of `0x51240c`. The music that plays in this biome is `",
+        "corrected_related_questions": [
+          "What is the maximum height of the lava cave biome?",
+          "What is the fog density and color in the lava cave biome?",
+          "Which block types are used in the lava cave biome?",
+          "How many different structures can appear in this biome?",
+          "What is the chance of a stalagmite appearing in the lava cave biome?",
+          "What type of music plays in the lava cave biome?"
+        ]
+      }
+    ]
+  },
+  "codebase_assets_cubyz_sbb_candy_cane_thin_small.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation mentions blueprints and children but does not list the specific IDs or details provided in raw_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines the configuration for a specific type of candy cane asset in Cubyz. It includes an array of four blueprints with unique IDs: 'cubyz:candy_cane/thin/stem/2', 'cubyz:candy_cane/thin/stem/3', 'cubyz:candy_cane/thin/stem/4', and 'cubyz:candy_cane/thin/stem/5'. Additionally, it specifies a child asset with the ID 'cubyz:candy_cane/thin/top/small' that represents the top part of the candy cane.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784390981.9667652,
+        "reason": "The explanation mentions blueprints and children but does not list the specific IDs or details provided in raw_content.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines the configuration for a specific type of candy cane asset in Cubyz. It includes an array of four blueprints with unique IDs: 'cubyz:candy_cane/thin/stem/2', 'cubyz:candy_cane/thin/stem/3', 'cubyz:candy_cane/thin/stem/4', and 'cubyz:candy_cane/thin/stem/5'. Additionally, it specifies a child asset with the ID 'cubyz:candy_cane/thin/top/small' that represents the top part of the candy cane.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_assets_cubyz_blocks_cloth_block_blue.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not state the actual value for `.texture`.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk is a simple configuration file that specifies the texture path for a blue cloth block in the Cubyz voxel engine. The configuration uses a JSON-like structure with a single key-value pair, where the key is `.texture` and the value is `cubyz:cloth/blue`. This chunk does not contain any executable logic; it only declares one symbol.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784390985.0010824,
+        "reason": "The explanation does not state the actual value for `.texture`.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk is a simple configuration file that specifies the texture path for a blue cloth block in the Cubyz voxel engine. The configuration uses a JSON-like structure with a single key-value pair, where the key is `.texture` and the value is `cubyz:cloth/blue`. This chunk does not contain any executable logic; it only declares one symbol.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_assets_cubyz_biomes_swamp__defaults.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "kb_content mentions fog density and color but does not state their specific values from raw_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk contains a JSON-like structure defining default configuration settings specific to the Swamp biome in Cubyz. The settings include fog density, which is set to 2, and fog color, which is set to 0xb0e9d2 (a light blue-green hue). These parameters are typical for visually characterizing different biomes within the game world.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784390988.1657321,
+        "reason": "kb_content mentions fog density and color but does not state their specific values from raw_content.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk contains a JSON-like structure defining default configuration settings specific to the Swamp biome in Cubyz. The settings include fog density, which is set to 2, and fog color, which is set to 0xb0e9d2 (a light blue-green hue). These parameters are typical for visually characterizing different biomes within the game world.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_assets_cubyz_blocks_baobab_log.zig.zon_chunk_0": {
+    "stage": "revise_requested",
+    "collection": "codebase",
+    "proposer": "NickMac",
+    "reason": "The kb_content summary and explanation do not include the exact drop items (cubyz:log/baobab) specified in raw_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "# [easy/codebase_assets_cubyz_blocks_baobab_log.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** choppable, wood, log, blockHealth, drops, rotation, model, texture, decayProhibitor, hasItem\n**Concepts:** block properties, item drops, model definition\n\n## Summary\nDefines properties for the Baobab log block in Cubyz.\n\n## Explanation\nThis chunk defines a configuration object for the Baobab log block, specifying its tags, health, drop items (cubyz:log/baobab), rotation behavior, model, textures, decay prohibition, and item status. The block is marked as choppable, wooden, and a log, with a health value of 8. It drops itself when chopped. The block uses a cube model and has specific textures for the sides and top/bottom. Decay is prohibited, and it does not have an associated item.\n\n## Related Questions\n- What are the tags associated with the Baobab log block?\n- How much health does the Baobab log block have?\n- What items does the Baobab log drop when chopped?\n- Which model is used for the Baobab log block?\n- What textures are applied to the Baobab log block?\n- Is decay prohibited for the Baobab log block?",
+    "corrected_related_questions": [
+      "What tags are associated with the Baobab log block?"
+    ],
+    "attempts": 2,
+    "last_reviewer": "Nick",
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickMac",
+        "timestamp": 1784390989.5325105,
+        "reason": "The kb_content summary and explanation do not include the exact drop items (cubyz:log/baobab) specified in raw_content.",
+        "corrected_summary": null,
+        "corrected_explanation": "# [easy/codebase_assets_cubyz_blocks_baobab_log.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** choppable, wood, log, blockHealth, drops, rotation, model, texture, decayProhibitor, hasItem\n**Concepts:** block properties, item drops, model definition\n\n## Summary\nDefines properties for the Baobab log block in Cubyz.\n\n## Explanation\nThis chunk defines a configuration object for the Baobab log block, specifying its tags, health, drop items (cubyz:log/baobab), rotation behavior, model, textures, decay prohibition, and item status. The block is marked as choppable, wooden, and a log, with a health value of 8. It drops itself when chopped. The block uses a cube model and has specific textures for the sides and top/bottom. Decay is prohibited, and it does not have an associated item.\n\n## Related Questions\n- What are the tags associated with the Baobab log block?\n- How much health does the Baobab log block have?\n- What items does the Baobab log drop when chopped?\n- Which model is used for the Baobab log block?\n- What textures are applied to the Baobab log block?\n- Is decay prohibited for the Baobab log block?",
+        "corrected_related_questions": [
+          "What tags are associated with the Baobab log block?"
+        ]
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nick",
+        "verdict": "revise",
+        "feedback": "The proposed explanation correctly adds the drop item information (cubyz:log/baobab), but it drops a previously correct fact about related questions. The original kb_content included multiple related questions, and the proposal only lists one of them ('What tags are associated with the Baobab log block?'). All related questions should be preserved.",
+        "timestamp": 1784390995.3925054
+      }
+    ],
+    "review_feedback": "The proposed explanation correctly adds the drop item information (cubyz:log/baobab), but it drops a previously correct fact about related questions. The original kb_content included multiple related questions, and the proposal only lists one of them ('What tags are associated with the Baobab log block?'). All related questions should be preserved."
+  },
+  "codebase_assets_cubyz_blocks_baobab_top.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation mentions properties but does not provide specific values such as the block health, item drops, and texture mappings.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines a configuration object for the Baobab top block in the Cubyz voxel engine. It specifies various properties including tags (choppable, wood, log), block health of 8, item drops consisting of baobab logs, rotation behavior defined by 'cubyz:direction', visual model as 'cubyz:cube', texture mappings for different sides ('cubyz:baobab_log' for all sides except the top which uses 'cubyz:baobab_log_top'), and decay prohibition set to true. The configuration is structured using Zig's comptime data structures, ensuring that these properties are known at compile time.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784390992.7774625,
+        "reason": "The explanation mentions properties but does not provide specific values such as the block health, item drops, and texture mappings.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines a configuration object for the Baobab top block in the Cubyz voxel engine. It specifies various properties including tags (choppable, wood, log), block health of 8, item drops consisting of baobab logs, rotation behavior defined by 'cubyz:direction', visual model as 'cubyz:cube', texture mappings for different sides ('cubyz:baobab_log' for all sides except the top which uses 'cubyz:baobab_log_top'), and decay prohibition set to true. The configuration is structured using Zig's comptime data structures, ensuring that these properties are known at compile time.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_assets_cubyz_biomes_beach_cold_base.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific values for several properties such as ocean presence, minHeight, maxHeight, and chance of appearance. Additionally, it mentions structures but does not list the exact configuration details.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines the configuration for a cold beach biome in Cubyz. The biome has an ocean property set to true, a radius of 500 cubyz, a minimum height of 5 and a maximum height of 7, an interpolation method of linear, hills count of 5, music track 'cubyz:totaldemented/tides', ground structure consisting of 2 to 4 gravel blocks, and one structure with ID 'cubyz:ground_patch' that generates amber ore in cubyz:gravel blocks with a chance of 0.001, width of 1, variation of 2, depth of 1, and smoothness of 0.1.",
+    "corrected_related_questions": [],
+    "attempts": 2,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickMac",
+        "timestamp": 1784391003.7115448,
+        "reason": "kb_content states the chance of a ground patch structure appearing in the cold beach biome, but raw_content does not specify this value.",
+        "corrected_summary": null,
+        "corrected_explanation": "# [easy/codebase_assets_cubyz_biomes_beach_cold_base.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** biome config, cold beach biome, ground structure, structure generation, chance of appearance\n**Symbols:** properties, radius, minHeight, maxHeight, chance, interpolation, hills, music, ground_structure, structures\n**Concepts:** biome configuration, cold beach, ground structure, structure generation\n\n## Summary\nBiome configuration for a cold beach.\n\n## Explanation\nThis chunk defines the configuration for a cold beach biome in Cubyz, including properties like ocean presence, radius, height range, interpolation method, hills count, music track, ground structure, and structures to be generated. It specifies block types and their chances of appearing.",
+        "corrected_related_questions": [
+          "What is the chance of a ground patch structure appearing in the cold beach biome?"
+        ]
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nick",
+        "verdict": "reject",
+        "feedback": "The proposer's diagnosis is incorrect because raw_content does specify the chance value for the ground patch structure. The chance is set to 0.001 as shown in the raw_content.",
+        "timestamp": 1784391006.74119
+      },
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784391012.1592202,
+        "reason": "The explanation does not provide specific values for several properties such as ocean presence, minHeight, maxHeight, and chance of appearance. Additionally, it mentions structures but does not list the exact configuration details.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines the configuration for a cold beach biome in Cubyz. The biome has an ocean property set to true, a radius of 500 cubyz, a minimum height of 5 and a maximum height of 7, an interpolation method of linear, hills count of 5, music track 'cubyz:totaldemented/tides', ground structure consisting of 2 to 4 gravel blocks, and one structure with ID 'cubyz:ground_patch' that generates amber ore in cubyz:gravel blocks with a chance of 0.001, width of 1, variation of 2, depth of 1, and smoothness of 0.1.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_assets_cubyz_blocks_marble_wall.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation mentions specific properties but does not provide their exact values from the raw_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk contains a configuration object for the marble wall block. It specifies that the rotation type is 'cubyz:fence', the model used is 'cubyz:wall'. The textures applied to the top and bottom of the marble wall block are both 'cubyz:marble/wall_top' while the texture for the main body of the wall is 'cubyz:marble/wall'. Additionally, it defines the item texture that represents this block in the inventory or creative mode as 'wall/marble.png'.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784391018.5815718,
+        "reason": "The explanation mentions specific properties but does not provide their exact values from the raw_content.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk contains a configuration object for the marble wall block. It specifies that the rotation type is 'cubyz:fence', the model used is 'cubyz:wall'. The textures applied to the top and bottom of the marble wall block are both 'cubyz:marble/wall_top' while the texture for the main body of the wall is 'cubyz:marble/wall'. Additionally, it defines the item texture that represents this block in the inventory or creative mode as 'wall/marble.png'.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_assets_cubyz_recipes_grass_recipes.zig.zon_chunk_0": {
+    "stage": "revise_requested",
+    "collection": "codebase",
+    "proposer": "NickMac",
+    "reason": "The kb_content explanation does not include the exact inputs and outputs for each grass recipe, which are provided in raw_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "# [easy/codebase_assets_cubyz_recipes_grass_recipes.zig.zon] - Chunk 0\n**Type:** configuration\n**Keywords:** recipes, grass, soil, output, inputs\n**Symbols:** grass/vegetation/{type}, grass_seeds, cubyz:grass/temperate, cubyz:grass/dry, cubyz:grass/cold, cubyz:grass/lush, cubyz:grass/dew, cubyz:grass/sky\n**Concepts:** recipe definitions, grass generation\n## Summary\nGrass recipe definitions\n## Explanation\nThis chunk defines various grass recipes, specifying inputs and outputs for different types of grass based on soil conditions. The exact inputs and outputs are provided in the raw content.\n*Source: unknown | chunk_id: codebase_assets_cubyz_recipes_grass_recipes.zig.zon_chunk_0*\n",
+    "corrected_related_questions": [
+      "What are the inputs required for each grass recipe?",
+      "How many outputs does each grass recipe produce?",
+      "What is the output of the first grass recipe?",
+      "Which soil type produces the temperate grass?",
+      "What is the input for the dry grass recipe?",
+      "How many grass seeds are needed to create a grass seed output?",
+      "What is the output of the cold grass recipe?",
+      "Which soil type produces the lush grass?",
+      "What is the input for the dew grass recipe?",
+      "How many grass seeds are required to create a sky grass output?"
+    ],
+    "attempts": 2,
+    "last_reviewer": "Nick",
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickMac",
+        "timestamp": 1784391023.0540192,
+        "reason": "The kb_content explanation does not include the exact inputs and outputs for each grass recipe, which are provided in raw_content.",
+        "corrected_summary": null,
+        "corrected_explanation": "# [easy/codebase_assets_cubyz_recipes_grass_recipes.zig.zon] - Chunk 0\n**Type:** configuration\n**Keywords:** recipes, grass, soil, output, inputs\n**Symbols:** grass/vegetation/{type}, grass_seeds, cubyz:grass/temperate, cubyz:grass/dry, cubyz:grass/cold, cubyz:grass/lush, cubyz:grass/dew, cubyz:grass/sky\n**Concepts:** recipe definitions, grass generation\n## Summary\nGrass recipe definitions\n## Explanation\nThis chunk defines various grass recipes, specifying inputs and outputs for different types of grass based on soil conditions. The exact inputs and outputs are provided in the raw content.\n*Source: unknown | chunk_id: codebase_assets_cubyz_recipes_grass_recipes.zig.zon_chunk_0*\n",
+        "corrected_related_questions": [
+          "What are the inputs required for each grass recipe?",
+          "How many outputs does each grass recipe produce?",
+          "What is the output of the first grass recipe?",
+          "Which soil type produces the temperate grass?",
+          "What is the input for the dry grass recipe?",
+          "How many grass seeds are needed to create a grass seed output?",
+          "What is the output of the cold grass recipe?",
+          "Which soil type produces the lush grass?",
+          "What is the input for the dew grass recipe?",
+          "How many grass seeds are required to create a sky grass output?"
+        ]
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nick",
+        "verdict": "revise",
+        "feedback": "The proposed explanation does not include the specific inputs and outputs for each grass recipe as requested. It should explicitly list these details from the raw content, rather than just stating that they are provided in the raw content.",
+        "timestamp": 1784391031.195244
+      }
+    ],
+    "review_feedback": "The proposed explanation does not include the specific inputs and outputs for each grass recipe as requested. It should explicitly list these details from the raw content, rather than just stating that they are provided in the raw content."
+  },
+  "codebase_assets_cubyz_biomes_decorative_stone_pit.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific values for radius, chance, minHeight, maxHeight, keepOriginalTerrain, roughness, stoneBlock, and parentBiomes. It only mentions the existence of these properties without stating their actual values.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines a biome configuration for decorative stone pits with specific properties:\n- **Radius:** 16\n- **Chance of occurrence:** 0%\n- **Minimum height:** -2000\n- **Maximum height:** -1000\n- **Probability of keeping original terrain:** 99%\n- **Roughness setting:** 1\n- **Stone block type:** cubyz:slate/smooth\n- **Parent biomes and their respective chances:**\n  - Grassland (4%)\n  - Dead Forest (12%)\n  - Mixed Forest (4%)\n  - Forest (6%)\n  - Rocky Grassland (16%)\n  - Taiga Base (6%)\n  - Oak Birch Forest (6%)\n  - Oak Pine Forest (6%)\n  - Birch Forest (6%)\n  - Thin Birch Forest (4%)\n  - Tundra Base (6%)\n  - Patchy Tundra (16%)\n  - Temperate Hills (2%)\n  - Cold Hills (2%)\n  - Highlands Base (3%)",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784391029.107783,
+        "reason": "The explanation does not provide specific values for radius, chance, minHeight, maxHeight, keepOriginalTerrain, roughness, stoneBlock, and parentBiomes. It only mentions the existence of these properties without stating their actual values.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines a biome configuration for decorative stone pits with specific properties:\n- **Radius:** 16\n- **Chance of occurrence:** 0%\n- **Minimum height:** -2000\n- **Maximum height:** -1000\n- **Probability of keeping original terrain:** 99%\n- **Roughness setting:** 1\n- **Stone block type:** cubyz:slate/smooth\n- **Parent biomes and their respective chances:**\n  - Grassland (4%)\n  - Dead Forest (12%)\n  - Mixed Forest (4%)\n  - Forest (6%)\n  - Rocky Grassland (16%)\n  - Taiga Base (6%)\n  - Oak Birch Forest (6%)\n  - Oak Pine Forest (6%)\n  - Birch Forest (6%)\n  - Thin Birch Forest (4%)\n  - Tundra Base (6%)\n  - Patchy Tundra (16%)\n  - Temperate Hills (2%)\n  - Cold Hills (2%)\n  - Highlands Base (3%)",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_assets_cubyz_sbb_cave_mantle_lava_pool.zig.zon_chunk_0": {
+    "stage": "revise_requested",
+    "collection": "codebase",
+    "proposer": "NickMac",
+    "reason": "The kb_content does not mention the specific IDs for cave mantle lava pools, which are explicitly stated in raw_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "# [easy/codebase_assets_cubyz_sbb_cave_mantle_lava_pool.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** blueprint, configuration, ID, lava pool, cave mantle\n**Concepts:** world generation\n\n## Summary\nDefines blueprints for cave mantle lava pools. The IDs of the blueprints are `cubyz:cave/mantle/lava_pool/0`, `cubyz:cave/mantle/lava_pool/1`, `cubyz:cave/mantle/lava_pool/2`, `cubyz:cave/mantle/lava_pool/3`, and `cubyz:cave/mantle/lava_pool/4`.\n\n## Explanation\nThis chunk contains a configuration structure defining multiple blueprints, each with a unique ID. These IDs are used to identify different variations of cave mantle lava pools within the Cubyz voxel engine.",
+    "corrected_related_questions": [
+      "What are the IDs defined for cave mantle lava pools?"
+    ],
+    "attempts": 2,
+    "last_reviewer": "Nick",
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickMac",
+        "timestamp": 1784391037.368916,
+        "reason": "The kb_content does not mention the specific IDs for cave mantle lava pools, which are explicitly stated in raw_content.",
+        "corrected_summary": null,
+        "corrected_explanation": "# [easy/codebase_assets_cubyz_sbb_cave_mantle_lava_pool.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** blueprint, configuration, ID, lava pool, cave mantle\n**Concepts:** world generation\n\n## Summary\nDefines blueprints for cave mantle lava pools. The IDs of the blueprints are `cubyz:cave/mantle/lava_pool/0`, `cubyz:cave/mantle/lava_pool/1`, `cubyz:cave/mantle/lava_pool/2`, `cubyz:cave/mantle/lava_pool/3`, and `cubyz:cave/mantle/lava_pool/4`.\n\n## Explanation\nThis chunk contains a configuration structure defining multiple blueprints, each with a unique ID. These IDs are used to identify different variations of cave mantle lava pools within the Cubyz voxel engine.",
+        "corrected_related_questions": [
+          "What are the IDs defined for cave mantle lava pools?"
+        ]
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Nick",
+        "verdict": "revise",
+        "feedback": "The proposed explanation omits the specific fact that there are five different variations of cave mantle lava pools, which was correctly stated in the original kb_content. The revised Explanation should retain this information.",
+        "timestamp": 1784391044.409639
+      }
+    ],
+    "review_feedback": "The proposed explanation omits the specific fact that there are five different variations of cave mantle lava pools, which was correctly stated in the original kb_content. The revised Explanation should retain this information."
+  },
+  "codebase_assets_cubyz_sbb_tree_cirrus_rings_middle.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not list the specific IDs of the tree blueprints or provide details about configurations that do not include a top part.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines a set of tree blueprint configurations for the Cirrus ring structure in Cubyz. The configuration includes seven distinct IDs: 'cubyz:tree/cirrus/rings/middle/0', 'cubyz:tree/cirrus/rings/middle/1', 'cubyz:tree/cirrus/rings/middle/2', 'cubyz:tree/cirrus/rings/middle/3', 'cubyz:tree/cirrus/rings/middle/4', 'cubyz:tree/cirrus/rings/middle/no_top', and 'cubyz:tree/cirrus/rings/middle/double'. Each configuration specifies an ID and includes child references to other tree parts. The 'no_top' configuration does not include a top part, while the 'double' configuration is another specific type of middle ring.",
+    "corrected_related_questions": [
+      "- What are the IDs of the tree blueprints defined in this chunk?",
+      "- How many tree blueprint configurations are there?",
+      "- Which child reference is used for the top part of the Cirrus rings?",
+      "- What are the possible configurations for the middle parts of the Cirrus rings?",
+      "- Are there any configurations that do not include a top part?"
+    ],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784391042.561135,
+        "reason": "The explanation does not list the specific IDs of the tree blueprints or provide details about configurations that do not include a top part.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines a set of tree blueprint configurations for the Cirrus ring structure in Cubyz. The configuration includes seven distinct IDs: 'cubyz:tree/cirrus/rings/middle/0', 'cubyz:tree/cirrus/rings/middle/1', 'cubyz:tree/cirrus/rings/middle/2', 'cubyz:tree/cirrus/rings/middle/3', 'cubyz:tree/cirrus/rings/middle/4', 'cubyz:tree/cirrus/rings/middle/no_top', and 'cubyz:tree/cirrus/rings/middle/double'. Each configuration specifies an ID and includes child references to other tree parts. The 'no_top' configuration does not include a top part, while the 'double' configuration is another specific type of middle ring.",
+        "corrected_related_questions": [
+          "- What are the IDs of the tree blueprints defined in this chunk?",
+          "- How many tree blueprint configurations are there?",
+          "- Which child reference is used for the top part of the Cirrus rings?",
+          "- What are the possible configurations for the middle parts of the Cirrus rings?",
+          "- Are there any configurations that do not include a top part?"
+        ]
+      }
+    ]
+  },
+  "codebase_src_server_command_worldedit_pos2.zig_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the command usage, description, and exact error handling message.",
+    "corrected_summary": "Handles the '/pos2' command to set the player's position as position 2. The function parses arguments, retrieves the player\u2019s current position, updates world edit data with the new position, sends an update packet to the client, and displays a confirmation message.",
+    "corrected_explanation": "The chunk defines a function `execute` that handles the '/pos2' command. It uses the `Args` union to define possible arguments for the command, which in this case is empty as there are no required arguments. The function parses the input arguments using `ArgParser.parse`, and if an error occurs during parsing, it sends an error message to the user with the format '#ff0000{s}' where 's' is replaced by the actual error message items. If parsing succeeds, it retrieves the player's current position using `source.player().pos` and rounds it down to a `Vec3i`. It then updates the world edit data with this new position (`source.worldEditData.selectionPosition2 = pos`). The function sends an update packet to the client via `main.network.protocols.genericUpdate.sendWorldEditPos(source.conn, .selectedPos2, pos)`, and finally sends a confirmation message to the user in the format 'Position 2: {}' where `{}` is replaced by the actual position.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784391054.5940871,
+        "reason": "The explanation does not provide specific details about the command usage, description, and exact error handling message.",
+        "corrected_summary": "Handles the '/pos2' command to set the player's position as position 2. The function parses arguments, retrieves the player\u2019s current position, updates world edit data with the new position, sends an update packet to the client, and displays a confirmation message.",
+        "corrected_explanation": "The chunk defines a function `execute` that handles the '/pos2' command. It uses the `Args` union to define possible arguments for the command, which in this case is empty as there are no required arguments. The function parses the input arguments using `ArgParser.parse`, and if an error occurs during parsing, it sends an error message to the user with the format '#ff0000{s}' where 's' is replaced by the actual error message items. If parsing succeeds, it retrieves the player's current position using `source.player().pos` and rounds it down to a `Vec3i`. It then updates the world edit data with this new position (`source.worldEditData.selectionPosition2 = pos`). The function sends an update packet to the client via `main.network.protocols.genericUpdate.sendWorldEditPos(source.conn, .selectedPos2, pos)`, and finally sends a confirmation message to the user in the format 'Position 2: {}' where `{}` is replaced by the actual position.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_assets_cubyz_blocks_bolete.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation mentions several properties but does not provide specific values for them, such as blockHealth, drops, selectionCapabilities, replaceable, viewThrough, degradable, absorbedLight, collide, rotation, onUpdate, model, texture, texture_top, and texture_bottom.",
+    "corrected_summary": null,
+    "corrected_explanation": "Defines properties of the Bolete mushroom block in Cubyz game. The block has a health value of 0.2, drops auto items when cuttable tools are used, is selected effectively with certain tools, can be replaced by another block, allows visibility through other blocks, degrades over time, absorbs light with an absorbedLight value of 0x010101, does not collide with objects, uses the rotation model 'cubyz:torch', calls the check_support_blocks update function when updated, and has specific texture settings including base, side, top, and bottom textures.",
+    "corrected_related_questions": [
+      "What is the health value of the Bolete block?",
+      "Which items are dropped when cutting the Bolete block with a cuttable tool?",
+      "How does the selection capability work for the Bolete block?",
+      "Can the Bolete block be replaced by another block?",
+      "Is the Bolete block visible through other blocks?",
+      "Does the Bolete block degrade over time?",
+      "What is the light absorption value of the Bolete block?",
+      "Does the Bolete block collide with objects?",
+      "Which rotation model is used for the Bolete block?",
+      "What update function is called when the Bolete block updates?",
+      "What are the base and side textures of the Bolete block?",
+      "What is the top texture of the Bolete block?",
+      "What is the bottom texture of the Bolete block?"
+    ],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784391068.1938632,
+        "reason": "The explanation mentions several properties but does not provide specific values for them, such as blockHealth, drops, selectionCapabilities, replaceable, viewThrough, degradable, absorbedLight, collide, rotation, onUpdate, model, texture, texture_top, and texture_bottom.",
+        "corrected_summary": null,
+        "corrected_explanation": "Defines properties of the Bolete mushroom block in Cubyz game. The block has a health value of 0.2, drops auto items when cuttable tools are used, is selected effectively with certain tools, can be replaced by another block, allows visibility through other blocks, degrades over time, absorbs light with an absorbedLight value of 0x010101, does not collide with objects, uses the rotation model 'cubyz:torch', calls the check_support_blocks update function when updated, and has specific texture settings including base, side, top, and bottom textures.",
+        "corrected_related_questions": [
+          "What is the health value of the Bolete block?",
+          "Which items are dropped when cutting the Bolete block with a cuttable tool?",
+          "How does the selection capability work for the Bolete block?",
+          "Can the Bolete block be replaced by another block?",
+          "Is the Bolete block visible through other blocks?",
+          "Does the Bolete block degrade over time?",
+          "What is the light absorption value of the Bolete block?",
+          "Does the Bolete block collide with objects?",
+          "Which rotation model is used for the Bolete block?",
+          "What update function is called when the Bolete block updates?",
+          "What are the base and side textures of the Bolete block?",
+          "What is the top texture of the Bolete block?",
+          "What is the bottom texture of the Bolete block?"
+        ]
+      }
+    ]
+  },
+  "codebase_src_server_terrain_cavegen_SurfaceGenerator.zig_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific values for id, priority, generatorSeed, and defaultState. It also omits details about the biome map initialization and surface height calculation.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines a SurfaceGenerator that operates on CaveMapFragments with the following properties:\n\n- **ID:** `cubyz:surface`\n- **Priority:** 32768\n- **Generator Seed:** 0x7658930674389\n- **Default State:** enabled\n\nThe SurfaceGenerator initializes without using any parameters and generates the surface by iterating over the map's width and height. It uses a biome map to determine surface heights and removes voxels accordingly.\n\nSpecifically, it iterates through each position in the map, calculates the relative height based on the surface height from the biome map, and then calls `removeRange` to remove voxels up to the calculated height.",
+    "corrected_related_questions": [
+      "What is the ID of the SurfaceGenerator?",
+      "What is the priority level of the SurfaceGenerator?",
+      "What is the generator seed used by the SurfaceGenerator?",
+      "What is the default state of the SurfaceGenerator?",
+      "How does the SurfaceGenerator initialize?",
+      "How does the SurfaceGenerator generate surface terrain?",
+      "What parameters are passed to the init function of the SurfaceGenerator?",
+      "What operations are performed in the generate function of the SurfaceGenerator?",
+      "How is the biome map initialized in the SurfaceGenerator?",
+      "What is the purpose of the removeRange method in the SurfaceGenerator?"
+    ],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784391076.5808613,
+        "reason": "The explanation does not provide specific values for id, priority, generatorSeed, and defaultState. It also omits details about the biome map initialization and surface height calculation.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines a SurfaceGenerator that operates on CaveMapFragments with the following properties:\n\n- **ID:** `cubyz:surface`\n- **Priority:** 32768\n- **Generator Seed:** 0x7658930674389\n- **Default State:** enabled\n\nThe SurfaceGenerator initializes without using any parameters and generates the surface by iterating over the map's width and height. It uses a biome map to determine surface heights and removes voxels accordingly.\n\nSpecifically, it iterates through each position in the map, calculates the relative height based on the surface height from the biome map, and then calls `removeRange` to remove voxels up to the calculated height.",
+        "corrected_related_questions": [
+          "What is the ID of the SurfaceGenerator?",
+          "What is the priority level of the SurfaceGenerator?",
+          "What is the generator seed used by the SurfaceGenerator?",
+          "What is the default state of the SurfaceGenerator?",
+          "How does the SurfaceGenerator initialize?",
+          "How does the SurfaceGenerator generate surface terrain?",
+          "What parameters are passed to the init function of the SurfaceGenerator?",
+          "What operations are performed in the generate function of the SurfaceGenerator?",
+          "How is the biome map initialized in the SurfaceGenerator?",
+          "What is the purpose of the removeRange method in the SurfaceGenerator?"
+        ]
+      }
+    ]
+  },
+  "addon_creator_items.html_chunk_0": {
+    "stage": "proposed",
+    "collection": "addon_creator",
+    "proposer": "Nick",
+    "reason": "The existing knowledge base entry does not fully cover the new material properties and modifier sections added to the UI. It also lacks details on how these features function within the context of item creation.",
+    "corrected_summary": "**Summary:** The code snippet provided is a user interface for creating and editing items in a game development project, including fields for name, description, rarity, health, max damage, texture, material properties (such as durability, swing speed, roughness, mass damage, hardness damage, color), and modifiers. It allows users to add placeholders or custom images for textures, search for existing textures using a dropdown menu, and save the created item to the project.",
+    "corrected_explanation": "**Explanation:** The code snippet is part of a web application designed for game development that provides an interface for creating and editing items. Users can input various details about the item such as its name, description, rarity, health, maximum damage, texture, material properties (including durability, swing speed, roughness, mass damage, hardness damage, color), and modifiers. The UI includes a dropdown menu to select or add textures, with the ability to upload custom PNG images. Additionally, there are fields for selecting material traits and their strengths, allowing users to customize item behavior further. Finally, the interface provides buttons to save the created item to the project.",
+    "corrected_related_questions": [
+      "- What are the key functionalities of the item creation interface?",
+      "- How does the texture management feature work in this application?",
+      "- Can you explain how users can add custom textures to the item?",
+      "- What is the purpose of the dropdown menu for selecting or adding textures?",
+      "- How do material properties and modifiers affect item behavior?"
+    ],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784391086.441435,
+        "reason": "The existing knowledge base entry does not fully cover the new material properties and modifier sections added to the UI. It also lacks details on how these features function within the context of item creation.",
+        "corrected_summary": "**Summary:** The code snippet provided is a user interface for creating and editing items in a game development project, including fields for name, description, rarity, health, max damage, texture, material properties (such as durability, swing speed, roughness, mass damage, hardness damage, color), and modifiers. It allows users to add placeholders or custom images for textures, search for existing textures using a dropdown menu, and save the created item to the project.",
+        "corrected_explanation": "**Explanation:** The code snippet is part of a web application designed for game development that provides an interface for creating and editing items. Users can input various details about the item such as its name, description, rarity, health, maximum damage, texture, material properties (including durability, swing speed, roughness, mass damage, hardness damage, color), and modifiers. The UI includes a dropdown menu to select or add textures, with the ability to upload custom PNG images. Additionally, there are fields for selecting material traits and their strengths, allowing users to customize item behavior further. Finally, the interface provides buttons to save the created item to the project.",
+        "corrected_related_questions": [
+          "- What are the key functionalities of the item creation interface?",
+          "- How does the texture management feature work in this application?",
+          "- Can you explain how users can add custom textures to the item?",
+          "- What is the purpose of the dropdown menu for selecting or adding textures?",
+          "- How do material properties and modifiers affect item behavior?"
+        ]
+      }
+    ]
+  },
+  "codebase_src_gui_windows_multiplayer_join.zig_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about concrete values and operations such as exact IP address handling, error messages, and threading behavior.",
+    "corrected_summary": "Handles the multiplayer join window GUI logic, including detailed IP address discovery in a separate thread, user input for joining a server, copying the IP to clipboard, initializing components, and cleaning up resources upon closure. It includes specific error handling and atomic operations.",
+    "corrected_explanation": "This chunk defines the logic for a GUI window that allows players to join a multiplayer game by discovering their own IP address in a separate thread and managing connection states during the process. The `discoverIpAddress` function initializes a network connection, retrieves the external address of the player's machine, and stores it in an atomic variable. If an error occurs while initializing the connection, an error message is logged and displayed to the user. The `join` function handles joining a server by checking if the IP address has been discovered and then connecting to the specified server using the provided IP address. It also manages resources such as freeing allocated memory for the IP address and saving settings after successful connection or displaying appropriate error messages if no connection is found. Threading ensures non-blocking operations during IP discovery, and atomic variables are used to synchronize access to shared data. The `onOpen` function initializes GUI components including labels, buttons, and text inputs, with specific dimensions and positions defined for each component. The `update` function updates the displayed IP address based on whether it has been discovered or not, handling obfuscation if in streamer mode.",
+    "corrected_related_questions": [
+      "What is the purpose of the `discoverIpAddress` function?",
+      "How does the chunk handle threading for IP address discovery?",
+      "What components are added to the GUI window in the `onOpen` function?",
+      "How does the chunk manage connection states during the join process?",
+      "What happens when the user clicks the 'Copy IP' button?",
+      "How is the discovered IP address displayed in the GUI?"
+    ],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784391098.8058429,
+        "reason": "The explanation does not provide specific details about concrete values and operations such as exact IP address handling, error messages, and threading behavior.",
+        "corrected_summary": "Handles the multiplayer join window GUI logic, including detailed IP address discovery in a separate thread, user input for joining a server, copying the IP to clipboard, initializing components, and cleaning up resources upon closure. It includes specific error handling and atomic operations.",
+        "corrected_explanation": "This chunk defines the logic for a GUI window that allows players to join a multiplayer game by discovering their own IP address in a separate thread and managing connection states during the process. The `discoverIpAddress` function initializes a network connection, retrieves the external address of the player's machine, and stores it in an atomic variable. If an error occurs while initializing the connection, an error message is logged and displayed to the user. The `join` function handles joining a server by checking if the IP address has been discovered and then connecting to the specified server using the provided IP address. It also manages resources such as freeing allocated memory for the IP address and saving settings after successful connection or displaying appropriate error messages if no connection is found. Threading ensures non-blocking operations during IP discovery, and atomic variables are used to synchronize access to shared data. The `onOpen` function initializes GUI components including labels, buttons, and text inputs, with specific dimensions and positions defined for each component. The `update` function updates the displayed IP address based on whether it has been discovered or not, handling obfuscation if in streamer mode.",
+        "corrected_related_questions": [
+          "What is the purpose of the `discoverIpAddress` function?",
+          "How does the chunk handle threading for IP address discovery?",
+          "What components are added to the GUI window in the `onOpen` function?",
+          "How does the chunk manage connection states during the join process?",
+          "What happens when the user clicks the 'Copy IP' button?",
+          "How is the discovered IP address displayed in the GUI?"
         ]
       }
     ]

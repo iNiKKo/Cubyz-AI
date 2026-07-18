@@ -416,6 +416,34 @@ retrieval logs directly rather than assuming -- and is left as a known residual 
 chased further with prompt tweaks, since two dedicated attempts (increasing `GLOBAL_TOP_K`, checking
 in isolation) didn't resolve it and risked destabilizing already-verified behavior elsewhere.
 
+**Distributed audit mode -- catching this bug class going forward, not just this once:** every fix
+above was found and applied by hand. A third campaign mode, `audit` (alongside `rag`/`finetune`,
+same `pipeline_crunching/server.py` + `CUBYZ_FOLDING.py` infrastructure), automates that process as
+an ongoing background job instead of a one-off manual pass: one volunteer's LLM checks an
+already-published `knowledge_base/*.md` chunk against its real source and proposes a fix if it
+finds the same "topic mentioned, value dropped" pattern; a *different* volunteer's LLM
+independently reviews that specific proposal -- verifying the diagnosis, checking the fix, and
+explicitly checking for regressions (did fixing one thing quietly break another?) -- and can
+approve, reject, or request revision with specific feedback, capped at 3 rounds before escalating
+to a human instead of looping forever. Model assignment is server-managed and tiered by hardware
+capability, cycling concurrent volunteers through a roster spanning multiple vendors (Qwen, Llama,
+Gemma, Mistral/Mixtral, DeepSeek) -- not just different sizes of one family -- so concurrent
+reviews aren't all blind spots of the same model; the server prefers a model a volunteer already
+has pulled when that doesn't break the diversity guarantee, only pulling a new one when necessary.
+
+The first live 3-machine test (Nick's PC dual-lane CPU+GPU + a dedicated server + a MacBook -- 4
+concurrent participants, since dual-lane gives CPU/GPU separate identities) surfaced a real,
+useful problem rather than a hypothetical one: the weakest roster model (`qwen2.5:3b`, the
+MacBook's "easy"-tier assignment) turned out to be an unreliable reviewer -- 56% of its review
+actions ended up on chunks that never converged, including literally self-contradictory feedback
+across rounds on the same chunk (round 1: "don't add this value, it's already there"; round 3:
+"you're missing this value, add it" -- for content verified against real raw source to have never
+stated it either way). Fixed by gating review/revise work to medium+ hardware tier -- "easy" tier
+can still propose, just isn't trusted as the final word on approving a fix -- and, separately,
+requiring 2 independent approvals (not 1) before a fix lands on `docs` collection chunks
+specifically, since that's the most user-facing, highest-consequence content and where every
+severe bug this session was found.
+
 ---
 
 ## Summary
@@ -426,7 +454,7 @@ in isolation) didn't resolve it and risked destabilizing already-verified behavi
 | 2 | RAG only, single-file KB | Facts good, code examples wrong |
 | 3 | Distributed crunching | 1,134/1,134 chunks, bigger KB (introduced a fact-loss bug found later) |
 | 4 | Fine-tune + RAG hybrid | 89% on 96-question benchmark, general capability fully intact |
-| 5 | Consolidation & cleanup | RAG (3,247) + fine-tune (2,193) campaigns both complete; dual-lane crunching; 89%->71.9% regression found, corrected root cause (live crunching fact-loss bugs + context ordering/list-format issues, not corpus dilution); systematic RAG-side fixes plus a benchmark expansion to 144 questions (exposing the same bug systemically in policy-style docs) brought it to 138/144 (95.8%); new training round in progress to beat that on the fine-tune side |
+| 5 | Consolidation & cleanup | RAG (3,247) + fine-tune (2,193) campaigns both complete; dual-lane crunching; 89%->71.9% regression found, corrected root cause (live crunching fact-loss bugs + context ordering/list-format issues, not corpus dilution); systematic RAG-side fixes plus a benchmark expansion to 144 questions brought it to 138/144 (95.8%); new distributed `audit` campaign mode (propose/review/apply LLM conversation) now catches this bug class on an ongoing basis, live-testing across 3 machines; new fine-tune training round in progress to beat 95.8% on the adapter side |
 
 Everything upstream of the current system is kept in `archive/`, organized by prototype, because
 each dead end is the reason the current one works.

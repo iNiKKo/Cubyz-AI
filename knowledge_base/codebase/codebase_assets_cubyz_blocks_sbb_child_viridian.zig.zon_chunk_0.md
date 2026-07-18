@@ -8,7 +8,7 @@
 Defines texture paths for the Viridian block variant.
 
 ## Explanation
-This chunk specifies the file paths for the textures used by the Viridian block variant. It includes three fields: `texture`, `texture_top`, and `texture_bottom`, each pointing to a different image file that represents the side, top, and bottom of the block respectively.
+This chunk specifies the exact file paths for the textures used by the Viridian block variant. The fields are as follows: `texture = "cubyz:sbb/child/side/viridian"`, `texture_top = "cubyz:sbb/child/top/viridian"`, and `texture_bottom = "cubyz:sbb/child/bottom/viridian"`. These paths define the side, top, and bottom textures for the block respectively.
 
 ## Related Questions
 - What is the file path for the side texture of the Viridian block?

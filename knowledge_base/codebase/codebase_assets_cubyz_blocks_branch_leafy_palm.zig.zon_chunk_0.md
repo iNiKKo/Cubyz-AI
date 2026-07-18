@@ -9,7 +9,7 @@
 Leafy Palm Block Configuration
 
 ## Explanation
-This chunk defines the configuration for a Leafy Palm block in Cubyz. It includes properties such as model, update behavior, drop items, textures, LOD replacement, and opaque variant.
+This chunk defines the configuration for a Leafy Palm block in Cubyz. It includes properties such as model with radius of 4 and shellModel 'cubyz:cube_hanging_planes' using textureSlotOffset 6, update behavior with decay type dropping items 'cubyz:branch/palm', drop items including 'cubyz:branch/palm' and 'cubyz:leaves/palm' when cuttable tool is used, textures such as 'cubyz:leaves/palm', 'cubyz:leaves/palm_hanging', 'cubyz:branch/palm/dot', 'cubyz:branch/palm/half_line', 'cubyz:branch/palm/line', 'cubyz:branch/palm/bend', 'cubyz:branch/palm/intersection', and 'cubyz:branch/palm/cross', LOD replacement texture 'cubyz:leaves/opaque/palm', and opaque variant 'cubyz:leaves/opaque/palm'.
 
 ## Related Questions
 - What is the radius of the Leafy Palm block model?

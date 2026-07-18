@@ -8,7 +8,7 @@
 Defines the texture and item properties for a willow sign block.
 
 ## Explanation
-This chunk configures the visual appearance of a willow sign block in the Cubyz voxel engine. It specifies the texture used for rendering the block itself and the texture for its corresponding item representation. The configuration is structured as a JSON-like object with nested properties for the block and its associated item.
+This chunk configures the visual appearance of a willow sign block in the Cubyz voxel engine. It specifies that the texture for rendering the block itself is `"cubyz:sign/willow"` and the texture for its corresponding item representation is `"sign/willow.png"`. The configuration is structured as a JSON-like object with nested properties for the block and its associated item, where `.texture = "cubyz:sign/willow"` for the block and `.texture = "sign/willow.png"` for the item.
 
 ## Related Questions
 - What is the texture file used for rendering the willow sign block?

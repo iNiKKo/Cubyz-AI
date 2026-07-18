@@ -9,7 +9,7 @@
 Beach biome configuration
 
 ## Explanation
-This chunk defines the properties, tags, and generation parameters for a warm wide beach biome in Cubyz. It includes ocean properties, palm tags, radius, height range, chance of generation, interpolation method, hill count, music track, stone block, ground structure, and various structures with specific IDs, blocks, chances, widths, variations, depths, smoothness, and other parameters.
+This chunk defines the properties, tags, and generation parameters for a warm wide beach biome in Cubyz. It includes ocean properties, palm tags, a radius of 500 cubyz, height range from minHeight = 5 to maxHeight = 7, chance of generation set to 0, linear interpolation method, hill count of 5, music track 'cubyz:totaldemented/tides', stone block 'cubyz:sandstone/rough', ground structure consisting of 2 to 4 cubyz:sand blocks, and various structures with specific IDs, blocks, chances, widths, variations, depths, smoothness, density, priority. The structures include an amber ore patch (id: 'cubyz:ground_patch', block: 'cubyz:amber_ore:cubyz:sand', chance: 0.002, width: 1, variation: 2, depth: 1, smoothness: 0.1), a palm tree with coconut structure (id: 'cubyz:sbb', structure: 'cubyz:tree/palm/coconut', placeMode: degradable, chance: 0.015), and a tussock flower patch (id: 'cubyz:flower_patch', blocks: ['cubyz:tussock'], chance: 0.07, width: 4, variation: 4, density: 0.3, priority: 0.1).
 
 ## Related Questions
 - What are the properties of the beach biome?
