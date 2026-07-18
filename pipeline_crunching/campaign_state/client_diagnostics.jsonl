@@ -18,3 +18,15 @@
 {"event": "task_gave_up", "mode": "finetune", "chunk_id": "some_finetune_chunk", "final_reason": "x", "received_at": 1784357505.971672}
 {"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_src_TEST_CANCEL_chunk_0", "received_at": 1784357505.9718077}
 {"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_src_gui_windows_hotbar.zig_chunk_0", "timestamp": 1784359297.718925, "received_at": 1784359297.811484}
+{"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_assets_cubyz_blocks_glacite_wall.zig.zon_chunk_0", "timestamp": 1784359431.7124286, "received_at": 1784359431.7168458}
+{"event": "task_gave_up", "mode": "rag", "chunk_id": "codebase_src_server_terrain_simple_structures__list.zig_chunk_0", "final_reason": "TimeoutError: timed out", "timestamp": 1784359973.6002803, "received_at": 1784359973.6366563}
+{"event": "task_gave_up", "mode": "rag", "chunk_id": "codebase_assets_cubyz_blocks_toadstool_stem.zig.zon_chunk_0", "final_reason": "TimeoutError: timed out", "timestamp": 1784359973.6096115, "received_at": 1784359973.6367342}
+{"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_assets_cubyz_blocks_sandstone_wall.zig.zon_chunk_0", "timestamp": 1784359990.9461448, "received_at": 1784359990.9505262}
+{"event": "task_gave_up", "mode": "rag", "chunk_id": "codebase_src_server_command_tickspeed.zig_chunk_0", "final_reason": "TimeoutError: timed out", "timestamp": 1784360524.9599636, "received_at": 1784360524.9983792}
+{"event": "task_gave_up", "mode": "rag", "chunk_id": "codebase_assets_cubyz_blocks_chalk__defaults.zig.zon_chunk_0", "final_reason": "TimeoutError: timed out", "timestamp": 1784360524.9659607, "received_at": 1784360524.9988418}
+{"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_assets_cubyz_biomes_cave_ice_cave.zig.zon_chunk_0", "timestamp": 1784360675.7286882, "received_at": 1784360675.7320974}
+{"event": "task_cancelled", "mode": "rag", "chunk_id": "addon_creator_particles.html_chunk_0", "timestamp": 1784360718.1723645, "received_at": 1784360718.1757016}
+{"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_assets_cubyz_biomes_tall_mountain_slope8.zig.zon_chunk_0", "timestamp": 1784360782.980604, "received_at": 1784360782.9833493}
+{"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_assets_cubyz_sbb_rare_triclops_statue_root_base.zig.zon_chunk_0", "timestamp": 1784360813.5033364, "received_at": 1784360813.5444028}
+{"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_assets_cubyz_biomes_tall_mountain_slope8.zig.zon_chunk_0", "timestamp": 1784361083.4619184, "received_at": 1784361083.465295}
+{"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_assets_cubyz_blocks_cloth_block_pink.zig.zon_chunk_0", "timestamp": 1784361102.974931, "received_at": 1784361102.978949}
