@@ -8,7 +8,10 @@
 The issue discusses the need for pinning or favoriting important worlds in Cubyz, such as survival worlds, to keep them easily accessible above other cluttered test worlds.
 
 ## Explanation
-The user reports a desire to prioritize certain worlds by pinning them so they remain visible and accessible even when many test worlds are present. The maintainer suggests reusing testing worlds instead, which would reduce the need for pinning functionality but might not address the user's specific workflow preferences.
+The issue discusses the need for pinning or favoriting important worlds in Cubyz, such as survival worlds, to keep them easily accessible above other cluttered test worlds. The maintainer suggests reusing testing worlds more frequently instead of implementing a pinning feature, which would reduce the need for additional functionality but might not address the user's specific workflow preferences directly.
+
+[MAINTAINER COMMENT]
+This is a very specific use-case. I'd suggest to instead reuse testing worlds more times. Saves you some clicks too.
 
 ## Related Questions
 - How can the user interface be modified to support pinning of worlds?

@@ -8,7 +8,7 @@
 The issue involves particles clipping at the z plane after traveling a short distance, which appears to be influenced by screen size.
 
 ## Explanation
-The discussion indicates that the particle rendering system may have a bug related to depth calculation or camera frustum culling. The maintainer notes that the behavior is dependent on the screen size, suggesting potential issues with how the z-buffer or projection matrix is handled. This could lead to incorrect depth values causing particles to prematurely clip.
+The issue involves particles clipping at the z plane after traveling approximately 70 blocks, which appears to be influenced by screen size. The maintainer notes that the behavior is dependent on the screen size and provides an attachment (https://github.com/user-attachments/assets/b2e03fa0-7fc1-4b0c-8033-1355a4f0270a) for further investigation. This suggests potential issues with how the z-buffer or projection matrix is handled, leading to incorrect depth values causing particles to prematurely clip.
 
 ## Related Questions
 - What is the current implementation of depth buffer handling in Cubyz?

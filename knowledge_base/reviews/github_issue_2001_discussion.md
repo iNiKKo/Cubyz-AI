@@ -9,7 +9,7 @@
 The menu background rendering is proposed to be split into two separate functions to prevent unnecessary framebuffer updates when changing the FOV.
 
 ## Explanation
-The discussion revolves around optimizing the rendering process by separating concerns. The reviewer suggests that updating the framebuffer should not occur every time the Field of View (FOV) changes, as this could lead to performance issues such as halved FPS when the UI is open. The maintainer confirms that this change would address the issue without introducing any regressions.
+The discussion revolves around optimizing the rendering process by separating concerns. The reviewer suggests that updating the framebuffer should not occur every time the Field of View (FOV) changes, as this could lead to performance issues such as halved FPS when the UI is open. However, the maintainer confirms that changing the FOV does not actually cause halved FPS with the UI open (see their comment on the issue). The maintainer's confirmation clarifies that the proposed change would address unnecessary framebuffer updates without introducing any regressions.
 
 ## Related Questions
 - What is the impact of changing FOV on framebuffer updates?

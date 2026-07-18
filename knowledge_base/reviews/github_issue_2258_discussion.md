@@ -9,18 +9,11 @@
 Discussion on making block entities more modular to allow for greater flexibility and addon compatibility.
 
 ## Explanation
-The issue discusses the current hardcoded nature of block entities in Cubyz, particularly for chests and signs. The proposal is to implement block entities similarly to how items, biomes, and blocks are currently implemented, which would enable more complex behaviors like furnaces and interactive blocks. The discussion includes considerations for modular callbacks, data storage modes, and interaction events. There's also a suggestion to start with implementing click events and interfaces for regular blocks first, as this will be essential for block entities later on.
+Discussion on making block entities more modular to allow for greater flexibility and addon compatibility. The issue highlights that currently, block entities are hardcoded for chests and signs, which limits the ability of addon developers to add new block entities or complex behaviors like furnaces. Proposals include implementing a zon data structure for creating interfaces, defining modular callbacks for these interfaces, and establishing different modes of block entity data storage (e.g., 'inventory' or 'text'). Additionally, there is a suggestion to start with click events and interfaces for regular blocks first, as this will be essential for block entities later on. The discussion also mentions the potential benefits of adding an `onGameTick` event and specific callbacks for when blocks are interacted with in various ways. Examples include crops that grow over time until they can be harvested or utility blocks that replace nearby blocks with themselves every tick, though it is noted that such behaviors may already be achievable through existing events like `onTick`. The current implementation of block entities limits their complexity and addon compatibility.
 
 ## Related Questions
-- What is the current implementation of block entities in Cubyz?
-- How would implementing a modular form of block entity data storage benefit addon developers?
-- Can you provide examples of how to use the `onTick` and `replaceBlock` events in a mod?
-- What are the potential challenges in making block entities more modular?
-- How does the event system currently support complex behaviors like replacing nearby blocks?
-- What is the proposed structure for creating interfaces with the zon data structure?
+- What are the specific requirements for implementing a modular form of block entity data storage?
 - How would adding an `onGameTick` event enhance the functionality of block entities?
-- Can you explain the difference between random ticks and game ticks in Cubyz?
-- What are some examples of utility blocks that could benefit from modular block entities?
-- How does the current implementation of block entities limit their complexity?
+- Can you provide examples of how to use the `onTick` and `replaceBlock` events in a mod?
 
 *Source: unknown | chunk_id: github_issue_2258_discussion*

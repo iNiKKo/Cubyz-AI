@@ -9,7 +9,7 @@
 Discussion on providing modding support for custom ray tracing renderers in Cubyz, focusing on potential solutions and architectural considerations.
 
 ## Explanation
-The discussion revolves around the feasibility and methods to allow third-party ray tracing implementations through modding. The maintainer suggests that while rewriting the rendering engine to Vulkan is being considered (#102), it's a complex task with significant maintenance overhead. Users propose several options, including sharing GPU memory between Vulkan and OpenGL, blitting Vulkan images into OpenGL textures, and abstracting the rendering at higher levels. The maintainer notes that for screenshots, a separate Vulkan renderer could suffice, but integration with the existing UI is crucial for real-time rendering.
+Discussion on providing modding support for custom ray tracing renderers in Cubyz, focusing on potential solutions and architectural considerations. The maintainer suggests that while rewriting the rendering engine to Vulkan is being considered (#102), it's a complex task with significant maintenance overhead. Users propose several options including sharing GPU memory between Vulkan and OpenGL (option 2), blitting Vulkan images into OpenGL textures (option 3), and abstracting the rendering at higher levels (option 6). The maintainer notes that for screenshots, a separate Vulkan renderer could suffice but integration with the existing UI is crucial for real-time rendering. Specifically, users propose disabling OpenGL world rendering while still using it for presentation, obtaining relevant CPU data needed for custom rendering implementations, and implementing GPU->GPU copy as an optional optimization (option 3). The current status of the Vulkan rewrite project in Cubyz is that some setup stuff is already done but significant work remains.
 
 ## Related Questions
 - What are the potential performance implications of blitting Vulkan images into OpenGL textures?
@@ -19,8 +19,5 @@ The discussion revolves around the feasibility and methods to allow third-party 
 - What is the current status of the Vulkan rewrite project in Cubyz?
 - How can modders disable OpenGL world rendering while still using it for presentation?
 - What are the potential challenges in implementing GPU->CPU->GPU copy for rendering purposes?
-- How can developers contribute to the ongoing Vulkan rewrite project in Cubyz?
-- What are the benefits of keeping the current rendering engine in OpenGL but using Vulkan for presentation?
-- How can modders obtain relevant CPU data needed for custom rendering implementations?
 
 *Source: unknown | chunk_id: github_issue_1543_discussion*

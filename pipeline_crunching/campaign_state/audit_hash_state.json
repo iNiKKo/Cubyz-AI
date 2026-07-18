@@ -751,5 +751,9 @@
   "github_issue_2529_discussion": "18a80625293330ab4401cd1ad12c00a749ca716e060a5379c7f5d763dafffaf7",
   "github_issue_2040_discussion": "f862f1822a846c31564f407d9bc02ff66a083a358e22aadb8109e6b00aaa5dfc",
   "codebase_src_utils.zig_chunk_5": "104b5152e1144f7626ecf7a06cdc6994936aae02fc7cf272d440613154e3ef8d",
-  "codebase_src_utils.zig_chunk_6": "32cb431be323b95368b30c1fb888a94cce1e2826e443742c6bb0accffa23a6d1"
+  "codebase_src_utils.zig_chunk_6": "32cb431be323b95368b30c1fb888a94cce1e2826e443742c6bb0accffa23a6d1",
+  "codebase_src_network.zig_chunk_0": "5822ab172d1b3d797beb7ae974b9dd8b61e0ac2ba5a4df16a371b47e73fc43b8",
+  "codebase_src_network.zig_chunk_3": "f2ff50a64e6feb12937948bf4ab253f94ff960e9b67710c9f0b850c5ce0511c1",
+  "codebase_src_network.zig_chunk_5": "07975ae81353ceb0f796dde122eb8189bc1a13d14f9eb63cf5d4c64813d5378f",
+  "codebase_src_network.zig_chunk_14": "e1c54f8661829dc254273020ae494d57fa64a3516b7a663a2be02cf739fe121a"
 }

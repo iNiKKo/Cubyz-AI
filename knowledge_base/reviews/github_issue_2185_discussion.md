@@ -9,7 +9,7 @@
 The issue involves a bug where players cannot fall off ledges when force-sneaking due to a gap, as the `Player.crouching` update is conditionally executed based on collision detection.
 
 ## Explanation
-The root cause of the bug is that the `Player.crouching` state is only updated when the player is not colliding with objects, which affects whether the camera position is adjusted to account for being under a short ceiling. The reviewer suggests moving the `Player.crouching` update outside of the collision check to allow players to fall off ledges while force-sneaking.
+The issue involves a bug where players cannot fall off ledges when force-sneaking due to a 1.5 block-high gap, as the `Player.crouching` state is only updated when not colliding with objects. The root cause of this behavior is that the `Player.crouching` update is conditionally executed based on collision detection and does not depend on whether the sneak key is pressed or not. This results in players being unable to fall off ledges while under a short ceiling, as the camera position adjustment for crouching is not properly handled when force-sneaking. The reviewer suggests moving the `Player.crouching` update outside of the collision check so that it can be updated regardless of whether the player is colliding with objects, allowing players to fall off ledges while force-sneaking.
 
 ## Related Questions
 - What is the condition under which `Player.crouching` is updated?

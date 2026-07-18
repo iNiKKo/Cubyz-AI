@@ -8,7 +8,7 @@
 Discussion on whether items with a max stack size of 1 should display a count.
 
 ## Explanation
-The issue discusses the display behavior of item counts for stackable items in the game. The maintainer points out that all items are technically stackable, but some have a stack size of 1. There is agreement that if an item's max stack size is greater than 1, its current count should always be displayed.
+The issue discusses the display behavior of item counts for stackable items in the game. The maintainer points out that every item is technically stackable, but some have a stack size of 1. There is agreement that if an item's max stack size is greater than 1, its current count should always be displayed; however, if the max stack size is 1, the item will display '1' even when it is alone.
 
 ## Related Questions
 - What is the current behavior of item count display for items with a max stack size of 1?

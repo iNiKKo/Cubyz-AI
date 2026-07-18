@@ -8,7 +8,7 @@
 Discussion on implementing a whitelist-based .gitignore strategy for Cubyz, with concerns about ignoring all newly created files and suggestions to follow Zig's approach of using global .gitignore for IDE-specific files.
 
 ## Explanation
-The discussion revolves around the proposal to use a whitelist-based .gitignore strategy in Cubyz by adding `*` to ignore everything and then explicitly whitelisting necessary files with `!file`. The maintainer expresses reservations about ignoring all newly created files, suggesting that it might lead to unintended consequences. The user proposes aligning with Zig's philosophy of managing IDE-specific files through a global .gitignore and suggests documenting this approach in the contribution guidelines or as a comment within the .gitignore file.
+Discussion on implementing a whitelist-based .gitignore strategy for Cubyz, with concerns about ignoring all newly created files and suggestions to follow Zig's approach of using a global .gitignore for IDE-specific files. The maintainer expresses reservations about the proposal, suggesting that it might lead to unintended consequences such as ignoring necessary files. The user proposes aligning with Zig's philosophy by managing IDE-specific files through a global .gitignore file (https://github.com/ziglang/zig/blob/master/.gitignore) and suggests documenting this approach in the contribution guidelines or as a comment within the .gitignore file.
 
 ## Related Questions
 - What are the potential drawbacks of using a whitelist-based .gitignore strategy?

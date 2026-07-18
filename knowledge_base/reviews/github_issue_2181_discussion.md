@@ -8,7 +8,19 @@
 The issue discusses changing the CI compile target from `baseline` x86_64 to Sandybridge or building a legacy package for older CPUs, based on performance comparisons.
 
 ## Explanation
-The discussion revolves around optimizing Cubyz's compilation targets to leverage newer CPU features, which could potentially improve performance. The user provides benchmarks showing that targeting Sandybridge or native (Alderlake) processors results in faster chunk loading and less fluctuation in opaque faces counter compared to the baseline target. The maintainer suggests focusing on real optimizations like improving render thread performance instead of changing compilation targets, emphasizing that users can compile for their specific hardware with a mod loader.
+The discussion revolves around optimizing Cubyz's compilation targets to leverage newer CPU features, which could potentially improve performance. The user provides benchmarks showing that targeting Sandybridge or native (Alderlake) processors results in faster chunk loading and less fluctuation in opaque faces counter compared to the baseline target. Specifically, for a 24 render distance setup, the following performance metrics are observed:
+
+- **Baseline:**
+  - Starts at ~2200 microseconds per task, climbs to ~5800 microseconds per task by the end.
+  - Takes 2 minutes and 22 seconds from world enter to chunks fully loaded.
+- **Sandybridge:**
+  - Starts at ~1800 microseconds per task, climbs to ~5300 microseconds per task by the end.
+  - Takes 2 minutes and 11 seconds from world enter to chunks fully loaded.
+- **Native (Alderlake):**
+  - Starts at ~1800 microseconds per task, climbs to ~5300 microseconds per task by the end.
+  - Takes 2 minutes and 9 seconds from world enter to chunks fully loaded.
+
+The user also provides F4 overlay screenshots showing performance differences in terms of opaque faces counter fluctuations. The maintainer suggests focusing on real optimizations like improving render thread performance instead of changing compilation targets, emphasizing that users can compile for their specific hardware with a mod loader.
 
 ## Related Questions
 - What are the potential benefits of changing the CI compile target to Sandybridge?

@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.32"
+VERSION = "1.1.33"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -2266,6 +2266,28 @@ def run_live_gpu_diagnostic():
                 break
         if not ran_something:
             print(f"  {Colors.YELLOW}⚠ Neither rocm-smi nor amd-smi found on PATH -- can't confirm driver-level GPU health this way.{Colors.RESET}")
+
+        # The single most common reason Ollama silently can't use a real, detected AMD GPU: ROCm
+        # only officially lists specific gfx architectures as supported, and anything outside that
+        # list gets silently skipped (no loud error) unless HSA_OVERRIDE_GFX_VERSION tells ROCm to
+        # treat the card as a similar supported one instead. rocminfo reports the card's real gfx
+        # architecture string directly -- surfaced here instead of leaving the volunteer to dig for
+        # it themselves, since a wrong override guessed blind can make things worse (crash) rather
+        # than better, so this deliberately reports the real value without guessing a fix for them.
+        if shutil.which('rocminfo'):
+            try:
+                res = subprocess.run(['rocminfo'], capture_output=True, text=True, timeout=15)
+                gfx_versions = sorted(set(re.findall(r'gfx[0-9a-fA-F]+', res.stdout)))
+                if gfx_versions:
+                    print(f"  {Colors.CYAN}Detected GPU architecture(s) via rocminfo: {', '.join(gfx_versions)}{Colors.RESET}")
+                    print(f"  {Colors.YELLOW}→ If Ollama isn't using this GPU, check whether this architecture is in Ollama's/ROCm's supported")
+                    print(f"    list. If not, setting the environment variable HSA_OVERRIDE_GFX_VERSION to the closest supported")
+                    print(f"    architecture (then restarting Ollama) is the standard fix -- but pick that value from ROCm's own")
+                    print(f"    documentation for your card, not a guess; a wrong override can crash Ollama instead of fixing it.{Colors.RESET}")
+            except Exception as e:
+                print(f"  {Colors.YELLOW}⚠ Could not run rocminfo: {e}{Colors.RESET}")
+        else:
+            print(f"  {Colors.YELLOW}⚠ rocminfo not found on PATH -- can't report the real GPU architecture string.{Colors.RESET}")
     else:
         print(f"{Colors.CYAN}[3/4] Skipped (no smi-style tool wired up for {gpu_type} cards yet).{Colors.RESET}")
 

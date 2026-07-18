@@ -8,7 +8,7 @@
 The issue discusses a bug where the JumpCooldown decreases slowly while the UI is open, but the maintainer questions whether it's a real problem.
 
 ## Explanation
-The discussion revolves around a reported bug where the JumpCooldown value decreases gradually when the user interface (UI) is active. The maintainer raises doubts about the significance of this issue, suggesting that if the system functions correctly overall, the specific behavior of the cooldown numbers may not be critical.
+The issue discusses a reported bug where the JumpCooldown value decreases gradually when the user interface (UI) is active. The maintainer raises doubts about the significance of this issue, stating that if the system functions correctly overall, the specific behavior of the cooldown numbers may not be critical. Specifically, the maintainer comments: 'Is this real problem? If everything works correctly then it doesn't matter what those numbers say.'
 
 ## Related Questions
 - Is there a known issue with JumpCooldown decreasing while the UI is open?

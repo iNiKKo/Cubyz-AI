@@ -5,17 +5,16 @@
 **Concepts:** gameplay balance, player experience, resource management
 
 ## Summary
-The issue discusses the decision to prevent breaking blocks with any tool, arguing that it enhances gameplay by ensuring optimal tool usage and preventing resource loss. The user argues for more flexibility in block breaking, citing Minecraft's approach as a reference.
+This issue discusses whether Cubyz should allow players to break blocks with any tool or restrict it to specific tools. The maintainer argues that restricting block breaking prevents misuse of tools and ensures new players do not lose valuable resources by mistake, while the user advocates for more flexibility in block breaking similar to Minecraft's approach.
 
 ## Explanation
-The discussion revolves around the intentional design choice in Cubyz to restrict block breaking to specific tools, aiming to guide players towards using appropriate tools for different materials. This decision is intended to prevent tool misuse and ensure that players understand the importance of resource management. The user counterarguments by pointing out that Minecraft allows breaking blocks with any tool, emphasizing the game's focus on exploration and player freedom. The maintainer defends the design choice by highlighting the potential negative experiences for new players if they break valuable resources with incorrect tools. The issue was eventually resolved in the master branch.
+The discussion revolves around the intentional design choice in Cubyz to restrict block breaking to specific tools. The maintainer argues that this decision is intended to prevent tool misuse and ensure players understand the importance of resource management, citing examples like breaking obsidian with a wooden pickaxe or losing diamonds by mistake as poor player experiences. The user counters by pointing out that Minecraft allows breaking blocks with any tool, emphasizing exploration and player freedom. They also mention common scenarios in Minecraft where players find valuable resources before necessary materials, highlighting the annoyance of switching tools frequently. The maintainer defends the design choice by stating Cubyz aims to guide new players through the world without needing tutorials or random experimentation. A user proposes a toggle to automatically switch tools as a potential solution to address the issue of switching tools being annoying. This issue was eventually resolved in the master branch.
 
 ## Related Questions
 - What is the main argument for restricting block breaking to specific tools in Cubyz?
-- How does the user justify their stance on allowing unrestricted block breaking?
-- What are the potential negative experiences mentioned by the maintainer if players break valuable resources with incorrect tools?
-- What solution does the user propose to address the issue of switching tools being annoying?
-- Why does the maintainer believe that preventing tool misuse is important for new players in Cubyz?
-- How does the discussion reflect on the balance between gameplay freedom and player guidance?
+- How does the maintainer justify their stance on preventing tool misuse?
+- What are the examples given by the maintainer of poor player experiences from using incorrect tools?
+- Why does the user argue that Minecraft's approach allows more flexibility and exploration?
+- What solution does a user propose to address the issue of switching tools being annoying?
 
 *Source: unknown | chunk_id: github_issue_2362_discussion*

@@ -8,7 +8,7 @@
 A suggestion to add procedurally crafted torches with customizable base blocks and different colored lights.
 
 ## Explanation
-The issue proposes adding a new feature that allows players to craft torches using any block as the base and coal or glowing crystals as the top, resulting in torches with various colors. The maintainer has requested that the proposer follow content guidelines and provide more details about the feasibility and implementation of this idea.
+A suggestion to add procedurally crafted torches with customizable base blocks and different colored lights. The maintainer has requested that the proposer follow the steps in the [content guidelines](https://github.com/PixelGuys/Cubyz/blob/master/docs/CONTENT_SUGGESTIONS.md) before making a proposal to add new content, as the implementation details are missing and it's unclear if it's even possible at all.
 
 ## Related Questions
 - What are the steps in the content guidelines that need to be followed?

@@ -8,7 +8,7 @@
 Discussion on implementing a speed boost for block breaking based on leftover damage.
 
 ## Explanation
-The discussion revolves around the implementation of a feature where the swing time for breaking blocks is reduced based on leftover damage. The main concern is whether this mechanic should be applied to just the next swing or if it could lead to unintended consequences such as infinite stacking of swing times. There are also considerations about player visibility and understanding of the mechanic, as well as its impact on gameplay rhythm and tool crafting metrics.
+Discussion on implementing a speed boost for block breaking based on leftover damage. The proposed mechanism involves reducing the next swing's duration by a percentage of the leftover damage compared to the tool's full damage output. For example, if a tool deals 50 damage per second and breaks a block with 10 health, the remaining 40 damage would reduce the next swing time by 80% (from 1 second to 0.2 seconds). The main concern is whether this mechanic should be applied only to the next swing or if it could lead to unintended consequences such as infinite stacking of swing times. There are also considerations about player visibility and understanding of the mechanic, as well as its impact on gameplay rhythm and tool crafting metrics.
 
 ## Related Questions
 - What is the proposed mechanism for reducing swing time based on leftover damage?

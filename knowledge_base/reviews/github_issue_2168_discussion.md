@@ -8,7 +8,7 @@
 Discussion about rendering air differently based on biome, focusing on fog colors and feasibility.
 
 ## Explanation
-The issue discusses the possibility of modifying the greedy mesher to render air faces differently depending on the biome. The main focus is on implementing biome-specific fog colors. The maintainers note that while biome fog colors already exist, extending this effect to models that don't fill their cubes (like stairs) would require complex raymarching, which is not feasible due to performance constraints.
+Discussion about rendering air differently based on biome, focusing on implementing biome-specific fog colors. The maintainers note that while biome fog colors already exist and separate Fog blocks are available, extending this effect to models that don't fill their cubes (like stairs) would require complex raymarching, which is not feasible due to performance constraints.
 
 ## Related Questions
 - What is the current implementation of biome fog colors in Cubyz?
