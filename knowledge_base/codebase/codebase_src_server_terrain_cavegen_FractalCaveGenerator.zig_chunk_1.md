@@ -6,10 +6,36 @@
 **Concepts:** Fractal noise generation, Random branching cave system, Biome property influence on cave shape and size, Recursive function for cave generation, Parameters controlling cave complexity and realism
 
 ## Summary
-This code generates a cave system within a chunk of a game world. It uses fractal noise and random branching to create complex cave structures based on biome properties. The `generateCaveBetween` function creates a cave between two points with specified radii, while the `generateBranchingCaveBetween` function recursively adds branches to the cave system, increasing complexity and realism.
+This Zig code generates complex cave systems within chunks of a game world using fractal noise and random branching. It includes functions for recursively splitting cave segments into smaller branches with variations in direction and radius, influenced by biome properties to ensure realistic distribution and shape.
 
 ## Explanation
-The code defines functions for generating caves within a chunk of a game world. The main function, `generateCaveBetween`, creates a cave between two points with specified radii using fractal noise and biome properties to determine the shape and size of the cave. The `generateBranchingCaveBetween` function recursively adds branches to the cave system, increasing complexity and realism by introducing random splits and variations in direction and radius. The code uses various parameters such as bias, randomness, and branch length to control the generation process and ensure a diverse range of cave structures.
+The provided Zig code snippet focuses on generating intricate cave systems within chunks of a game world using fractal noise and random branching techniques. The main function `generateBranchingCaveBetween` recursively splits cave segments into smaller branches with variations in direction, radius, and biome influence to create complex and diverse cave structures.
+
+### Key Functions:
+- **generateBranchingCaveBetween:** This function takes parameters such as start and end positions (`startRelPos`, `endRelPos`), bias vector (`bias`), radii at the start and end points (`startRadius`, `endRadius`), seed position, branch length, randomness factor, and boolean flags indicating if this is a starting or ending segment. It recursively splits cave segments into smaller branches to create intricate cave structures.
+- **Unnamed Helper Function:** This function handles splitting of cave segments by calculating midpoints, bias offsets, and new radii for the split segments. It ensures that each branch introduces randomness in direction and size, contributing to a more natural look.
+
+### Key Concepts:
+- **Fractal Noise Generation:** The code uses fractal noise to determine the shape and size of cave segments, ensuring a realistic distribution of caves within the game world. Fractal noise is applied to introduce variations in the cave's path and radius as it branches out.
+- **Random Branching Cave System:** By recursively splitting cave segments into smaller branches with random variations in direction and radius, the algorithm creates complex and diverse cave structures that mimic natural cave systems.
+- **Biome Property Influence:** Biomes influence the generation process by modifying the radii based on biome properties. For example, caves may be larger or more intricate in certain biomes compared to others, ensuring that caves are shaped differently depending on the surrounding environment.
+
+### Code Example:
+The provided code snippet demonstrates how to recursively split a cave segment into two branches with variations in direction and radius. It calculates midpoints, bias offsets, and new radii for each branch, introducing randomness to create natural-looking cave structures. Here is an example of using these functions within the context of generating caves in a game world:
+
+```zig
+fn generateCaveSystem(seed: u64, map: *CaveMapFragment, biomeMap: *const CaveBiomeMapView) void {
+    const startRelPos = Vec3f{ 0.5, 0.5, -1 };
+    const endRelPos = Vec3f{ 0.5, 0.5, 1 };
+    const bias = Vec3f{ 0, 0, 0 };
+    const startRadius = 2.0;
+    const endRadius = 2.0;
+    const randomness = 0.1;
+
+    generateBranchingCaveBetween(seed, map, biomeMap, startRelPos, endRelPos, bias, startRadius, endRadius, Vec3i{ 0, 0, 0 }, 5, randomness, true, true);
+}
+```
+This example initializes the cave generation process by specifying a starting and ending position within the chunk, setting initial radii for the cave entrance and exit, and defining the level of randomness. The `generateBranchingCaveBetween` function is then called to recursively generate branches based on these parameters.
 
 ## Code Example
 ```zig
@@ -39,6 +65,5 @@ fn generateCaveBetweenAndCheckBiomeProperties(_seed: u64, map: *CaveMapFragment,
 - How does the code ensure that caves do not extend beyond the chunk boundaries?
 - What are some potential optimizations for improving the performance of this cave generation algorithm?
 - How could the code be modified to generate different types of caves, such as lava tubes or underground rivers?
-- Can you provide an example of how to use these functions in a game world?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_cavegen_FractalCaveGenerator.zig_chunk_1*

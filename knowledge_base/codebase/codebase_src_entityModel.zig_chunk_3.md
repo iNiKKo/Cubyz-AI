@@ -9,7 +9,7 @@
 The chunk implements entity model loading and binding using GLTF format.
 
 ## Explanation
-This chunk defines the `EntityModel` struct, which handles the loading of 3D models in the GLTF format. It includes methods for processing primitives, reading attributes like position, normal, and UV coordinates, converting them to engine-specific formats, and binding the model for rendering. The `getHierarchyDepth` function calculates the depth of a node in the scene graph, while `getGltfError` maps CGltf error codes to Zig errors. The `bind` method prepares the model for rendering by binding the vertex array object and texture.
+This chunk defines the `EntityModel` struct, which handles the loading of 3D models in the GLTF format. It includes methods for processing primitives, reading attributes like position, normal, and UV coordinates, converting them to engine-specific formats, and binding the model for rendering. The process involves creating vertex and index buffers from primitive data, where each vertex is assigned a position, normal, and texture coordinate based on the GLTF accessor data. Specifically, the `loadFromGltf` method iterates through primitives, reads their attributes, converts vectors to engine-specific formats using `coordinateSystem.convertVec`, and assigns them to vertices in the buffer. The index buffer is created by adding indices from primitive indices accessors and adjusting for base vertex offset. Additionally, the chunk includes methods for calculating node hierarchy depth (`getHierarchyDepth`) and mapping CGltf error codes to Zig errors (`getGltfError`). The `bind` method prepares the model for rendering by binding the vertex array object and texture.
 
 ## Code Example
 ```zig

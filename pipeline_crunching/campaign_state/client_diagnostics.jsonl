@@ -63,3 +63,5 @@
 {"event": "task_cancelled", "mode": "audit", "chunk_id": "github_issue_733_discussion", "timestamp": 1784404055.042151, "received_at": 1784404055.2147985}
 {"event": "task_cancelled", "mode": "audit", "chunk_id": "codebase_src_rotation.zig_chunk_1", "timestamp": 1784404099.7938178, "received_at": 1784404099.8080268}
 {"event": "task_cancelled", "mode": "audit", "chunk_id": "github_issue_639_discussion", "timestamp": 1784404101.5266957, "received_at": 1784404102.0104125}
+{"event": "task_gave_up", "mode": "audit", "chunk_id": "github_issue_96_discussion", "final_reason": "Self-check failed: verdict is needs_fix but corrected_explanation is empty", "timestamp": 1784404476.223694, "received_at": 1784404476.6953673}
+{"event": "task_gave_up", "mode": "audit", "chunk_id": "github_issue_96_discussion", "final_reason": "Self-check failed: verdict is needs_fix but corrected_explanation is empty", "timestamp": 1784404769.4756753, "received_at": 1784404769.9302328}

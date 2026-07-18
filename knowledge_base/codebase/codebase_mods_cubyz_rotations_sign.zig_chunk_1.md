@@ -9,7 +9,14 @@
 The chunk defines a function to update block data based on neighbor direction and rotation state.
 
 ## Explanation
-This chunk contains a single public function `updateData` which takes three parameters: a pointer to a `Block`, a `Neighbor`, and another `Block`. The function determines if the block should be broken based on its current data and the direction of the neighbor. If the conditions are met, it sets the block's type and data to zero and returns true; otherwise, it returns false.
+This chunk contains a single public function `updateData` which takes three parameters: a pointer to a `Block`, a `Neighbor`, and another `Block`. The function determines if the block should be broken based on its current data and the direction of the neighbor. Specifically, it checks the following conditions:
+- For `dirNegX`: `block.data == 2*centerRotations`
+- For `dirNegY`: `block.data == 2*centerRotations + 1`
+- For `dirPosX`: `block.data == 2*centerRotations + 2`
+- For `dirPosY`: `block.data == 2*centerRotations + 3`
+- For `dirDown`: `block.data < centerRotations`
+- For `dirUp`: `block.data >= centerRotations and block.data < 2*centerRotations`
+If the conditions are met, it sets the block's type and data to zero and returns true; otherwise, it returns false.
 
 ## Code Example
 ```zig
@@ -32,8 +39,5 @@ pub fn updateData(block: *Block, neighbor: Neighbor, _: Block) bool {
 - What is the purpose of the `updateData` function?
 - How does the function determine if a block should be broken?
 - What happens to the block's data and type if it should be broken?
-- What are the possible values for the `Neighbor` parameter in this function?
-- How many conditions are checked within the switch statement of the `updateData` function?
-- What is the role of `centerRotations` in the conditional checks?
 
 *Source: unknown | chunk_id: codebase_mods_cubyz_rotations_sign.zig_chunk_1*

@@ -138,80 +138,118 @@ def _format_progress_line(mode: str, stats: dict) -> str:
         return f"{stats.get('chunks_completed', 0)} chunks  •  {stats.get('pairs_generated', 0)} pairs generated"
     return f"{stats.get('chunks_completed', 0)} chunks  •  {stats.get('lines_crunched', 0)} lines crunched"
 
+def _truncate(text: str, width: int) -> str:
+    """Truncates PLAIN text (no ANSI codes inside it -- callers wrap the result in color AFTER
+    calling this) to fit width, since counting an escape sequence's raw characters against a
+    visible-width budget would truncate way too early or mid-sequence."""
+    if width <= 1 or len(text) <= width:
+        return text
+    return text[:width - 1].rstrip() + "…"
+
+# Dashboard-specific online threshold -- separate from ONLINE_STALE_SECONDS (used elsewhere, e.g.
+# the leaderboard endpoint) because a single slow-hardware task cycle (dispatch -> generate ->
+# submit -> next poll) can legitimately take several minutes on a weak "easy"-tier machine, and
+# 60s was confirmed live to flip a genuinely-still-working node to OFFLINE and back repeatedly.
+DASHBOARD_ONLINE_STALE_SECONDS = 300
+
 def render_dashboard():
     """Redraws the whole admin console as a set of per-user panels (status/hardware/lane/joined/
     progress/errors) instead of an ever-scrolling line-per-event log -- the old format made it
     genuinely hard to answer "what is THIS specific user doing right now" at a glance on a live
     multi-node campaign, since their last line could be scrolled dozens of lines up by the time you
     looked. A compact "recent events" tail is kept at the bottom so individual applies/rejections/
-    escalations are still visible, just no longer the ONLY view."""
+    escalations are still visible, just no longer the ONLY view. Only online volunteers get a
+    panel -- offline history is still reflected in the header count, but a wall of stale panels for
+    everyone who's ever connected isn't what an admin watching a LIVE campaign wants to scroll past."""
     mode = CURRENT_MODE
     stats_file = _mode_stats_file(mode)
     user_stats = read_json_file(stats_file, {}) if stats_file else {}
 
+    # Real terminal width, not a hardcoded guess -- confirmed live that a fixed 68/78-char box
+    # both overflowed on a narrower terminal and left long status messages spilling past the
+    # right border instead of being truncated to fit. Clamped to a sane range so an extremely
+    # wide or narrow terminal doesn't produce something absurd.
+    term_width = max(60, min(shutil.get_terminal_size((100, 24)).columns, 160))
+    box_w = term_width - 2  # leaves room for the leading 2-space indent on content lines
+
     now = time.time()
     known = set(online_clients.keys()) | set(user_stats.keys())
-    online = sorted(u for u in known if u in online_clients and now - online_clients[u]["timestamp"] < ONLINE_STALE_SECONDS)
-    offline = sorted(known - set(online))
+    online = sorted(u for u in known if u in online_clients and now - online_clients[u]["timestamp"] < DASHBOARD_ONLINE_STALE_SECONDS)
+    offline_count = len(known) - len(online)
 
     lines = []
     lines.append("\033[2J\033[H")  # clear screen, cursor home
     mode_color, mode_label = _MODE_BADGES.get(mode, (Colors.WHITE, mode.upper()))
     header = f" CUBYZ DISTRIBUTED SERVER {Colors.DIM}·{Colors.RESET} {mode_color}{Colors.BOLD}{mode_label} MODE{Colors.RESET} {Colors.DIM}·{Colors.RESET} {datetime.now().strftime('%H:%M:%S')} "
-    lines.append(f"{mode_color}{'═' * 78}{Colors.RESET}")
+    lines.append(f"{mode_color}{'═' * term_width}{Colors.RESET}")
     lines.append(header)
-    lines.append(f"{mode_color}{'═' * 78}{Colors.RESET}")
-    lines.append(f"  {Colors.GREEN}{len(online)} online{Colors.RESET}  •  {Colors.GRAY}{len(offline)} offline{Colors.RESET}  •  {len(known)} known volunteers")
+    lines.append(f"{mode_color}{'═' * term_width}{Colors.RESET}")
+    lines.append(f"  {Colors.GREEN}{len(online)} online{Colors.RESET}  •  {Colors.GRAY}{offline_count} offline{Colors.RESET}  •  {len(known)} known volunteers")
     lines.append("")
 
-    for user_id in online + offline:
-        is_online = user_id in online
+    for user_id in online:
         info = online_clients.get(user_id, {})
         u_color = _user_color(user_id)
-        status_word = f"{Colors.GREEN}ONLINE{Colors.RESET}" if is_online else f"{Colors.GRAY}OFFLINE{Colors.RESET}"
-        lines.append(f"{u_color}┌─ {Colors.BOLD}{user_id}{Colors.RESET}{u_color} {'─' * max(1, 55 - len(user_id))} {status_word} {u_color}─┐{Colors.RESET}")
+        title = f"─ {user_id} "
+        fill = max(1, box_w - len(title) - len("ONLINE ─") - 2)
+        lines.append(f"{u_color}┌{title}{'─' * fill} {Colors.GREEN}ONLINE{Colors.RESET} {u_color}─┐{Colors.RESET}")
 
         tier = info.get("tier", "?")
-        model = info.get("model") or "-"
+        # audit mode assigns each user a specific model from its diversity roster (see
+        # _assign_audit_model), independent of whatever model the client itself locally defaults
+        # to -- info["model"] (from online_clients, i.e. the client's own self-reported "model"
+        # query param) reflects the LATTER, not what audit mode actually dispatched, so it was
+        # showing e.g. "qwen2.5-coder:3b" for a user whose real assigned model was something else
+        # entirely (confirmed live). audit_model_assignments is the authoritative source here.
+        if mode == "audit" and user_id in audit_model_assignments:
+            model = audit_model_assignments[user_id].get("model") or "-"
+        else:
+            model = info.get("model") or "-"
         lane = info.get("lane") or "-"
-        lines.append(f"  Hardware : {tier} tier  •  {model}  •  lane: {Colors.BOLD}{lane}{Colors.RESET}")
+        lines.append(_truncate(f"  Hardware : {tier} tier  •  {model}  •  lane: {lane}", box_w))
 
         last = _user_last_status.get(user_id)
+        prefix = "  Status   : "
         if last:
             age = _relative_time(now - last["timestamp"])
-            lines.append(f"  Status   : {last['symbol_color']}{last['symbol']}{Colors.RESET} {last['message'][:90]}  {Colors.DIM}({age}){Colors.RESET}")
+            suffix = f"  ({age})"
+            msg = _truncate(last["message"], max(10, box_w - len(prefix) - 1 - len(suffix)))
+            lines.append(f"{prefix}{last['symbol_color']}{last['symbol']}{Colors.RESET} {msg}{Colors.DIM}{suffix}{Colors.RESET}")
         else:
-            lines.append(f"  Status   : {Colors.GRAY}(no activity yet this session){Colors.RESET}")
+            lines.append(f"{prefix}{Colors.GRAY}(no activity yet this session){Colors.RESET}")
 
         joined = _user_first_seen.get(user_id)
         joined_text = _relative_time(now - joined) if joined else "unknown"
         lines.append(f"  Joined   : {joined_text}")
 
-        lines.append(f"  Progress : {_format_progress_line(mode, user_stats.get(user_id, {}))}")
+        lines.append(_truncate(f"  Progress : {_format_progress_line(mode, user_stats.get(user_id, {}))}", box_w))
 
         speed = info.get("speed")
         speed_text = f"{speed:.1f}s/task avg" if isinstance(speed, (int, float)) else "calculating..."
         errors = _user_error_counts.get(user_id, 0)
-        errors_text = f"{Colors.RED}{errors} error{'s' if errors != 1 else ''}{Colors.RESET}" if errors else f"{Colors.GRAY}0 errors{Colors.RESET}"
-        lines.append(f"  Speed    : {speed_text}  •  Errors: {errors_text}")
+        errors_text = f"{errors} error{'s' if errors != 1 else ''}" if errors else "0 errors"
+        errors_color = Colors.RED if errors else Colors.GRAY
+        lines.append(f"  Speed    : {speed_text}  •  Errors: {errors_color}{errors_text}{Colors.RESET}")
 
-        lines.append(f"{u_color}└{'─' * 68}┘{Colors.RESET}")
+        lines.append(f"{u_color}└{'─' * box_w}┘{Colors.RESET}")
         lines.append("")
 
-    if not known:
-        lines.append(f"  {Colors.GRAY}No volunteers have connected yet.{Colors.RESET}")
+    if not online:
+        msg = "No volunteers online right now." if known else "No volunteers have connected yet."
+        lines.append(f"  {Colors.GRAY}{msg}{Colors.RESET}")
         lines.append("")
 
-    lines.append(f"{Colors.DIM}{'─' * 78}{Colors.RESET}")
+    lines.append(f"{Colors.DIM}{'─' * term_width}{Colors.RESET}")
     lines.append(f" {Colors.BOLD}Recent Events{Colors.RESET}")
     if not _recent_events:
         lines.append(f"  {Colors.GRAY}(none yet){Colors.RESET}")
+    event_prefix_len = len("  HH:MM:SS ") + 11  # timestamp + fixed-width user field
     for ts, ev_mode, ev_user, symbol, symbol_color, message in list(_recent_events)[::-1]:
-        ev_mode_color, _ = _MODE_BADGES.get(ev_mode, (Colors.WHITE, ev_mode.upper()))
         u_color = _user_color(ev_user)
         user_field = f"{u_color}{ev_user:<10}{Colors.RESET}" if ev_user else " " * 10
         ts_text = f"{Colors.DIM}{datetime.fromtimestamp(ts).strftime('%H:%M:%S')}{Colors.RESET}"
-        lines.append(f"  {ts_text} {user_field} {symbol_color}{symbol}{Colors.RESET} {message[:80]}")
+        msg = _truncate(message, max(10, box_w - event_prefix_len - 2))
+        lines.append(f"  {ts_text} {user_field} {symbol_color}{symbol}{Colors.RESET} {msg}")
 
     sys.stdout.write("\n".join(lines) + "\n")
     sys.stdout.flush()
@@ -380,7 +418,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.1.2"
-LATEST_CLIENT_VERSION = "1.1.24"
+LATEST_CLIENT_VERSION = "1.1.25"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:

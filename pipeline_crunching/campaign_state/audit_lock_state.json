@@ -1,32 +1,32 @@
 {
   "locked": {
-    "github_issue_733_discussion": {
-      "user_id": "NickMac",
-      "timestamp": 1784404039.356974
-    },
-    "github_issue_639_discussion": {
-      "user_id": "Caleb",
-      "timestamp": 1784404040.4713972
-    },
-    "codebase_src_rotation.zig_chunk_1": {
-      "user_id": "NickSRVR",
-      "timestamp": 1784404081.9569657
-    },
-    "codebase_src_items_recipes.zig_chunk_0": {
-      "user_id": "NickSRVR",
-      "timestamp": 1784404234.2275205
-    },
-    "codebase_src_gui_windows_chat.zig_chunk_1": {
+    "codebase_mods_cubyz_rotations_sign.zig_chunk_0": {
       "user_id": "Nickc",
-      "timestamp": 1784404274.471627
+      "timestamp": 1784404595.0593913
     },
-    "github_issue_378_discussion": {
-      "user_id": "Caleb",
-      "timestamp": 1784404275.545161
-    },
-    "github_issue_373_discussion": {
+    "github_issue_1115_discussion": {
       "user_id": "Nick",
-      "timestamp": 1784404278.118863
+      "timestamp": 1784404629.9123023
+    },
+    "github_issue_96_discussion": {
+      "user_id": "Caleb",
+      "timestamp": 1784404674.4850965
+    },
+    "codebase_src_gui_components_DiscreteSlider.zig_chunk_0": {
+      "user_id": "NickSRVR",
+      "timestamp": 1784404839.3101263
+    },
+    "github_issue_428_discussion": {
+      "user_id": "Caleb",
+      "timestamp": 1784404857.1644275
+    },
+    "github_issue_311_discussion": {
+      "user_id": "Nick",
+      "timestamp": 1784404887.4666617
+    },
+    "codebase_src_gui_windows_controls.zig_chunk_0": {
+      "user_id": "Nickc",
+      "timestamp": 1784404891.7469387
     }
   },
   "completed": [
@@ -1224,8 +1224,41 @@
     "codebase_src_argparse.zig_chunk_3",
     "codebase_src_items_recipes.zig_chunk_1",
     "codebase_src_items_recipes.zig_chunk_2",
-    "codebase_src_gui_windows_chat.zig_chunk_0"
+    "codebase_src_gui_windows_chat.zig_chunk_0",
+    "codebase_src_items_recipes.zig_chunk_0",
+    "github_issue_279_discussion",
+    "codebase_src_server_terrain_cavegen_FractalCaveGenerator.zig_chunk_0",
+    "github_issue_239_discussion",
+    "github_issue_85_discussion",
+    "codebase_src_rotation.zig_chunk_1",
+    "github_issue_1385_discussion",
+    "github_issue_1079_discussion",
+    "github_issue_835_discussion",
+    "codebase_src_server_terrain_cavegen_FractalCaveGenerator.zig_chunk_1",
+    "github_issue_1777_discussion",
+    "github_issue_1704_discussion",
+    "github_issue_1659_discussion",
+    "codebase_src_entityModel.zig_chunk_2",
+    "codebase_src_server_terrain_cavegen_FractalCaveGenerator.zig_chunk_2",
+    "codebase_src_entityModel.zig_chunk_3",
+    "codebase_src_entityModel.zig_chunk_1",
+    "github_issue_1178_discussion",
+    "codebase_mods_cubyz_rotations_sign.zig_chunk_1",
+    "github_issue_1093_discussion",
+    "github_issue_1065_discussion",
+    "github_issue_1047_discussion",
+    "github_issue_1034_discussion",
+    "codebase_src_entityModel.zig_chunk_4",
+    "github_issue_1000_discussion",
+    "codebase_src_gui_windows_chat.zig_chunk_1",
+    "github_issue_942_discussion",
+    "github_issue_729_discussion",
+    "codebase_src_gui_components_ItemSlot.zig_chunk_0",
+    "codebase_mods_cubyz_rotations_log.zig_chunk_1",
+    "codebase_mods_cubyz_rotations_log.zig_chunk_0",
+    "github_issue_592_discussion",
+    "codebase_src_gui_components_DiscreteSlider.zig_chunk_1"
   ],
   "actions_baseline_completed": 543,
-  "actions_count": 2485
+  "actions_count": 2619
 }

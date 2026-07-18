@@ -9,7 +9,7 @@
 The ItemSlot component handles the rendering and interaction logic for inventory slots in the GUI.
 
 ## Explanation
-This chunk defines the `ItemSlot` struct, which represents an individual slot in a graphical user interface (GUI) inventory. It includes methods for initialization, deinitialization, text refreshment, and handling user interactions such as hovering and button presses. The component uses textures to visually represent different states of the slot, such as default, immutable, or crafting result slots. It also manages text rendering for displaying item quantities within the slot.
+This chunk defines the `ItemSlot` struct, which represents an individual slot in a graphical user interface (GUI) inventory. It includes methods for initialization, deinitialization, text refreshment, and handling user interactions such as hovering and button presses. The component uses textures to visually represent different states of the slot: default (`assets/cubyz/ui/inventory/slot.png`), immutable (`assets/cubyz/ui/inventory/immutable_slot.png`), or crafting result (`assets/cubyz/ui/inventory/crafting_result_slot.png`). It also manages text rendering for displaying item quantities within the slot. The `border` variable is set to 2, and the size of an ItemSlot with border is defined as `32 + 2*border`. This ensures that each slot has a consistent appearance and functionality.
 
 ## Code Example
 ```zig

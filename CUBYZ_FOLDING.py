@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.24"
+VERSION = "1.1.25"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -3048,7 +3048,13 @@ def main():
         # startup snapshot) meant a dual-capable machine's fancy_ui was permanently False, so
         # toggling dual mode off left it with no fallback at all -- board (via current_board())
         # correctly went away, but so did the box, leaving nothing but plain text.
-        lane_tag="GPU" if dual_capable else "MAIN", user_id=user_id, hardware_tier=hardware_tier,
+        # "MAIN" used to be reported here for any non-dual-lane machine, GPU or CPU-only alike --
+        # ambiguous on the server's admin dashboard (a volunteer showed as lane "MAIN" with no way
+        # to tell what that actually meant). primary_is_gpu is already known at this exact point
+        # (force_cpu below is derived from it too), so report the real answer instead of a vague
+        # placeholder. Dual-lane's primary is always GPU by construction (see the dual-lane
+        # eligibility check above -- a benchmark-rejected or CPU-beaten GPU never becomes primary).
+        lane_tag="GPU" if primary_is_gpu else "CPU", user_id=user_id, hardware_tier=hardware_tier,
         chosen_model=chosen_model, max_threads=max_threads, cooldown=cooldown, mode_desc=mode_desc,
         hardware_label=primary_hardware_label, force_cpu=not primary_is_gpu, fancy_ui=True,
         pause_event=dual_controller.pause_event if dual_controller is not None else None,
