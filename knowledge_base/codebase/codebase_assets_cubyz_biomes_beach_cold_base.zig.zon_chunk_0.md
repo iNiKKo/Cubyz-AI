@@ -9,7 +9,7 @@
 Biome configuration for a cold beach
 
 ## Explanation
-This chunk defines the configuration for a cold beach biome in Cubyz, including properties like ocean presence, radius, height range, interpolation method, hills count, music track, ground structure, and structures to be generated. It specifies block types and their chances of appearing.
+This chunk defines the configuration for a cold beach biome in Cubyz. The biome has an ocean property set to true (as implied by its presence), a radius of 500 cubyz, a minimum height of 5 and a maximum height of 7, an interpolation method of linear, hills count of 5, music track 'cubyz:totaldemented/tides', ground structure consisting of 2 to 4 gravel blocks, and one structure with ID 'cubyz:ground_patch' that generates amber ore in cubyz:gravel blocks with a chance of 0.001, width of 1, variation of 2, depth of 1, and smoothness of 0.1.
 
 ## Related Questions
 - What is the radius of the cold beach biome?

@@ -8,7 +8,7 @@
 Defines configuration for a grey cloth block in Cubyz.
 
 ## Explanation
-This chunk is a configuration file defining the properties of a grey cloth block. It specifies the texture used for rendering the block and the item associated with it, including its texture.
+This chunk is a configuration file defining the properties of a grey cloth block. It specifies the texture used for rendering the block as `cubyz:cloth/grey` and includes an item associated with it, which has its own texture path set to `cloth/grey.png`. The 'item' field within this block's configuration provides details about the item representation of the grey cloth.
 
 ## Related Questions
 - What is the texture used for rendering the grey cloth block?

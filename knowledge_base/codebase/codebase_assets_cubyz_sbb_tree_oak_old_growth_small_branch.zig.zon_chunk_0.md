@@ -9,7 +9,16 @@
 Tree branch blueprint configuration
 
 ## Explanation
-This chunk defines a set of tree branch blueprints for the Cubyz voxel engine. Each blueprint specifies an ID and a chance for selection.
+This chunk defines a set of tree branch blueprints for the Cubyz voxel engine. Each blueprint specifies an ID and a chance for selection. The following are the detailed specifications:
+
+1. `.id = "cubyz:tree/oak/young/branch/1"`, `.chance = 0.2`
+2. `.id = "cubyz:tree/oak/young/branch/2"`, `.chance = 0.2`
+3. `.id = "cubyz:tree/oak/young/branch/3"`, `.chance = 0.2`
+4. `.id = "cubyz:tree/oak/young/branch/4"`, `.chance = 0.2`
+5. `.id = "cubyz:tree/oak/young/branch/5"`, `.chance = 0.2`
+6. `.id = "cubyz:tree/oak/young/branch/7"`, `.chance = 0.2`
+7. `.id = "cubyz:deco/bolete_side"`, `.chance = 0.2`
+8. `.id = null`, `.chance = 0.2`
 
 ## Related Questions
 - What is the purpose of this chunk in the Cubyz voxel engine?

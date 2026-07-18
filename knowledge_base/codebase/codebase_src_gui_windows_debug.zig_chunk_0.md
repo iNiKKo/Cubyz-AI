@@ -6,10 +6,10 @@
 **Concepts:** debugging, performance monitoring, world state display, thread pool metrics, mesh memory usage, light memory usage, biome properties, particle count
 
 ## Summary
-Debug window rendering function
+Debug window rendering function that displays FPS, frame time, window size, player position and velocity, game world state, thread pool performance metrics, mesh memory usage, light memory usage, biome properties, particle count, and quad counts.
 
 ## Explanation
-This function renders various debug information on the game window. It includes FPS, frame time, window size, player position and velocity, game world state, thread pool performance metrics, mesh memory usage, light memory usage, biome properties, and particle count.
+This function renders various debug information on the game window. It includes FPS, frame time, window size, player position and velocity, game world state, thread pool performance metrics, mesh memory usage, light memory usage, biome properties, particle count, and opaque/transparent face counts.
 
 ## Code Example
 ```zig
@@ -120,5 +120,6 @@ pub fn render() void {
 - How is particle count displayed in the debug window?
 - How many items and entities are displayed in the debug window?
 - What is the purpose of the `draw.print` function used in the `render` function?
+- How are opaque and transparent face counts displayed in the debug window?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_debug.zig_chunk_0*

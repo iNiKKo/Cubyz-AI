@@ -9,7 +9,30 @@
 Biome configuration for decorative stone pit.
 
 ## Explanation
-This chunk defines a biome configuration for decorative stone pits. It specifies properties such as radius, chance of occurrence, minimum and maximum heights, keeping original terrain probability, roughness, stone block type, and parent biomes with their respective chances.
+This chunk defines a biome configuration for decorative stone pits with specific properties:
+- **Radius:** 16
+- **Chance of occurrence:** 0%
+- **Minimum height:** -2000
+- **Maximum height:** -1000
+- **Probability of keeping original terrain:** 99%
+- **Roughness setting:** 1
+- **Stone block type:** cubyz:slate/smooth
+- **Parent biomes and their respective chances:**
+  - Grassland (4%)
+  - Dead Forest (12%)
+  - Mixed Forest (4%)
+  - Forest (6%)
+  - Rocky Grassland (16%)
+  - Taiga Base (6%)
+  - Oak Birch Forest (6%)
+  - Oak Pine Forest (6%)
+  - Birch Forest (6%)
+  - Thin Birch Forest (4%)
+  - Tundra Base (6%)
+  - Patchy Tundra (16%)
+  - Temperate Hills (2%)
+  - Cold Hills (2%)
+  - Highlands Base (3%)
 
 ## Related Questions
 - What is the radius of the decorative stone pit biome?

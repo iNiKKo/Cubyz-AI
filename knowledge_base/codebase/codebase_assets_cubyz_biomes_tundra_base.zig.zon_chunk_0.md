@@ -8,7 +8,7 @@
 Defines properties and structures for the Tundra biome in Cubyz.
 
 ## Explanation
-This chunk configures the Tundra biome, specifying its environmental properties such as temperature, humidity, height limits, radius, roughness, and terrain features like hills and mountains. It also defines various structures that can appear within this biome, including flower patches with different types of grass and osier, as well as ground patches with specific blocks.
+This chunk configures the Tundra biome in Cubyz by specifying its environmental properties including cold and dry conditions. The minimum height limit is set to 7 cubyz with a minHeight of 22 cubyz and a maxHeight of 40 cubyz, while the maximum height limit is 60 cubyz. The radius for the biome ranges from a minRadius of 256 cubyz to a maxRadius of 320 cubyz. The roughness value is set to 2, with hills defined at an elevation of 15 and mountains at 20 cubyz. Additionally, it defines various structures within this biome: two types of flower patches with different grass blocks ('cubyz:grass/vegetation/dry' and 'cubyz:grass/vegetation/cold') each having a chance of 0.03 and 0.04 respectively, along with an osier patch with a chance of 0.04. The ground patches include one with 'cubyz:grass/cold' at a chance of 0.1 and another with 'cubyz:grass/dry' at a chance of 0.09.
 
 ## Related Questions
 - What are the minimum and maximum height limits for the Tundra biome?

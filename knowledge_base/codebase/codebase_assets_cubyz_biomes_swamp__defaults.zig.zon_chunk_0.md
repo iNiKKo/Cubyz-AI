@@ -8,7 +8,7 @@
 Defines default configuration settings for the Swamp biome.
 
 ## Explanation
-This chunk contains a JSON-like structure defining default configuration settings specific to the Swamp biome in Cubyz. The settings include fog density and color, which are typical parameters used to visually characterize different biomes within the game world.
+This chunk contains a JSON-like structure defining default configuration settings specific to the Swamp biome in Cubyz. The settings include fog density, which is set to 2, and fog color, which is set to 0xb0e9d2 (a light blue-green hue). These parameters are typical for visually characterizing different biomes within the game world.
 
 ## Related Questions
 - What is the fog density for the Swamp biome?

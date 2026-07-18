@@ -9,10 +9,10 @@
 Defines a blueprint for a coniferous pine loblolly tree branch asset.
 
 ## Explanation
-This chunk contains configuration data for an asset in the Cubyz voxel engine. It defines a single blueprint with an ID that identifies the specific type of tree branch. The blueprint is part of the easy module, which likely handles basic or common assets.
+This chunk contains configuration data for an asset in the Cubyz voxel engine. It defines a single blueprint with the ID 'cubyz:tree/coniferous/branch/lushy/2/0'. The blueprint is part of the easy module, which likely handles basic or common assets.
 
 ## Related Questions
-- What is the ID of the defined blueprint?
+- What is the specific ID of the defined blueprint?
 - Which module does this asset configuration belong to?
 - How many blueprints are defined in this chunk?
 - Is there any executable logic in this chunk?

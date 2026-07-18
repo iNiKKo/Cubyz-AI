@@ -8,7 +8,7 @@
 Defines blueprints for cave mantle ruins assets.
 
 ## Explanation
-This chunk contains a configuration structure defining three blueprints for different variants of cave mantle ruins. Each blueprint is identified by a unique string ID within the Cubyz asset system.
+This chunk contains a configuration structure defining three blueprints for different variants of cave mantle ruins. The specific blueprint IDs are 'cubyz:cave/mantle/ruins/0', 'cubyz:cave/mantle/ruins/1', and 'cubyz:cave/mantle/ruins/2'. Each blueprint is identified by a unique string ID within the Cubyz asset system.
 
 ## Related Questions
 - What are the IDs of the cave mantle ruins blueprints defined in this chunk?

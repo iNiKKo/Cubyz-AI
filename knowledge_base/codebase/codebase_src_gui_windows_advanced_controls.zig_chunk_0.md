@@ -6,10 +6,10 @@
 **Concepts:** GUI window management, user interface controls, settings adjustment
 
 ## Summary
-Defines a GUI window for advanced controls with sliders for delay and speed settings.
+Defines a GUI window named 'window' with ContinuousSliders for adjusting repeat delay and speed settings. The window has a fixed content size of (128, 256) and contains sliders that adjust settings.updateRepeatDelay.nanoseconds and settings.updateRepeatSpeed.nanoseconds within specified ranges.
 
 ## Explanation
-This chunk defines a GUI window named 'window' that contains advanced control components such as ContinuousSliders for adjusting repeat delay and speed. The `onOpen` function initializes these components, sets up their callbacks and formatters, and positions them within the window. The `onClose` function deinitializes the root component when the window is closed. The chunk also imports various GUI components and settings from other modules.
+This chunk defines a GUI window named 'window' with a fixed content size of Vec2f{128, 256}. The `onOpen` function initializes two ContinuousSliders for adjusting repeat delay and speed. The first slider adjusts the settings.updateRepeatDelay.nanoseconds value within the range of 1.0e6 to 1.0e9 nanoseconds (1ms to 1s). The second slider adjusts the settings.updateRepeatSpeed.nanoseconds value within the range of 1.0e6 to 0.5e9 nanoseconds (1ms to 500ms). Each slider has a callback function (`delayCallback` and `speedCallback`) that updates the corresponding setting and saves it, as well as a formatter function (`delayFormatter` and `speedFormatter`) that formats the displayed value in milliseconds. The padding constant is set to 8 for layout purposes. The `onClose` function deinitializes the root component when the window is closed.
 
 ## Code Example
 ```zig

@@ -8,7 +8,7 @@
 Defines configuration for the marble wall block in Cubyz.
 
 ## Explanation
-This chunk contains a configuration object for the marble wall block. It specifies the rotation, model, and textures used for the block in different orientations (top and bottom). Additionally, it defines the item texture that represents this block in the inventory or creative mode.
+This chunk contains a configuration object for the marble wall block. It specifies that the rotation type is 'cubyz:fence', the model used is 'cubyz:wall'. The textures applied to the top and bottom of the marble wall block are both 'cubyz:marble/wall_top' while the texture for the main body of the wall is 'cubyz:marble/wall'. Additionally, it defines the item texture that represents this block in the inventory or creative mode as 'wall/marble.png'.
 
 ## Related Questions
 - What is the rotation type for the marble wall block?

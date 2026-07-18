@@ -8,7 +8,7 @@
 Defines default properties for the Slate block in Cubyz, including tags, health, resistance, drops, and item material attributes.
 
 ## Explanation
-This chunk specifies the configuration for the Slate block within the Cubyz game engine. It includes various properties such as tags (stone, mineable, slate), block health, resistance, and drop behavior. The item section further details the material properties of the Slate block, including durability, damage values, swing speed, texture roughness, color palette, and modifiers that affect its performance in specific contexts.
+This chunk specifies the configuration for the Slate block within the Cubyz game engine. It includes various properties such as tags (stone, mineable, slate), block health of 30, resistance of 1, drop behavior that yields an auto item, and material attributes including durability of 60, mass damage of 1.0, hardness damage of 3.9, swing speed of 3.2, texture roughness of 1.0, color palette (0xff444444, 0xff626262, 0xff7A7876, 0xff878583, 0xff9c9996), and a modifier that increases strength by 0.5 when used on encased precious blocks.
 
 ## Related Questions
 - What are the tags associated with the Slate block?

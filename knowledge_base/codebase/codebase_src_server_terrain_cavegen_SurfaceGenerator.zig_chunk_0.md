@@ -9,7 +9,16 @@
 The SurfaceGenerator module is responsible for generating surface terrain in cave maps.
 
 ## Explanation
-This chunk defines a SurfaceGenerator that operates on CaveMapFragments. It initializes with parameters and generates the surface by iterating over the map's width and height, using a biome map to determine surface heights and removing voxels accordingly.
+This chunk defines a SurfaceGenerator that operates on CaveMapFragments with the following properties:
+
+- **ID:** `cubyz:surface`
+- **Priority:** 32768
+- **Generator Seed:** 0x7658930674389
+- **Default State:** enabled
+
+The SurfaceGenerator initializes without using any parameters and generates the surface by iterating over the map's width and height. It uses a biome map to determine surface heights and removes voxels accordingly.
+
+Specifically, it iterates through each position in the map, calculates the relative height based on the surface height from the biome map, and then calls `removeRange` to remove voxels up to the calculated height.
 
 ## Code Example
 ```zig

@@ -8,20 +8,11 @@
 Defines properties for the Duckweed block in Cubyz, including tags, health, drops, and textures.
 
 ## Explanation
-This chunk defines the configuration for the Duckweed block in the Cubyz game. It specifies various properties such as tags (cuttable, sliceable), block health, drop behavior, selection capabilities, replaceability, degradability, collision settings, light absorption, model details, rotation method, texture paths, item appearance, and level of detail replacement.
+This chunk defines the configuration for the Duckweed block in the Cubyz game. It specifies various properties including tags (cuttable, sliceable), block health of 0.1, drop behavior where items are automatically dropped with allowed tool tags being cuttable, selection capabilities indicating tools effective on this block, replaceability set to true, degradability also set to true, collision settings disabled (collide = false), always view-through enabled (alwaysViewThrough = true), absorbed light color of 0x000000, model details using 'cubyz:plane' with states = 4, rotation method specified as 'cubyz:texture_pile', texture paths including 'duckweed/0', 'duckweed/1', 'duckweed/2', and 'duckweed/3', item appearance with the texture 'duckweed.png' and tags fluidPlaceable, and level of detail replacement set to 'cubyz:air'.
 
 ## Related Questions
-- What tags are associated with the Duckweed block?
-- How much health does the Duckweed block have?
-- What items can be dropped from the Duckweed block?
-- Are there any specific tools required to cut or slice the Duckweed block?
-- Is the Duckweed block replaceable?
-- Does the Duckweed block degrade over time?
-- Can the Duckweed block collide with other objects?
-- Does the Duckweed block always allow view-through?
-- What is the absorbed light color of the Duckweed block?
-- Which model and states are used for the Duckweed block?
-- How does the Duckweed block rotate?
-- What textures are associated with the Duckweed block?
+- What is the exact block health value for Duckweed?
+- Which items are dropped from the Duckweed block and under what conditions?
+- How many states does the model have?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_blocks_duckweed.zig.zon_chunk_0*

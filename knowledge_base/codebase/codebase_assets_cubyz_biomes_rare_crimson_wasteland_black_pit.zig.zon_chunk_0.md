@@ -8,7 +8,7 @@
 Defines configuration for the Crimson Wasteland Black Pit biome.
 
 ## Explanation
-This chunk contains a configuration object for the Crimson Wasteland Black Pit biome, specifying properties like radius range, generation chance, height range, roughness, number of hills, stone block type, and parent biomes with their respective chances. The configuration is structured as a JSON-like object with various fields that define the biome's characteristics.
+This chunk contains a configuration object for the Crimson Wasteland Black Pit biome, specifying concrete properties such as minimum radius (16), maximum radius (24), generation chance (0%), minimum height (5), maximum height (10), roughness (3), number of hills (3), stone block type ('cubyz:chalk/black'), and parent biomes with their respective chances. The configuration is structured as a JSON-like object with fields that define the biome's characteristics, including a parent biome with ID 'cubyz:rare/crimson_wasteland/base' having a generation chance of 24%.
 
 ## Related Questions
 - What is the minimum radius for the Crimson Wasteland Black Pit biome?

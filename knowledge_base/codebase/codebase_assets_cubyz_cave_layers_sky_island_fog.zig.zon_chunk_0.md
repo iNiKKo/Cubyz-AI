@@ -8,7 +8,7 @@
 Defines configuration for a sky island fog layer in the Cubyz voxel engine.
 
 ## Explanation
-This chunk is a configuration file defining properties of a specific atmospheric effect, specifically a sky island fog layer. It sets parameters such as the height at which this layer begins (.layerHeight), how deep it extends (.depthHint), and the density of caves within this layer (.caveDensity). The .tags field identifies the type of layer for categorization or processing elsewhere in the engine.
+This chunk is a configuration file defining properties of a sky island fog layer in the Cubyz voxel engine. It sets parameters such as the height at which this layer begins (.layerHeight = 3000), how deep it extends (.depthHint = 7000), and the density of caves within this layer (.caveDensity = 0). The .tags field identifies the type of layer for categorization or processing elsewhere in the engine.
 
 ## Related Questions
 - What is the height at which the sky island fog layer begins?

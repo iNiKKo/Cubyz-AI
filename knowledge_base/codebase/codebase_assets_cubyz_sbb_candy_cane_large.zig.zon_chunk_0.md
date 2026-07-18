@@ -8,14 +8,10 @@
 Defines blueprints and children for a large candy cane asset.
 
 ## Explanation
-This chunk defines the structure of a large candy cane asset in Cubyz. It specifies multiple blueprints, each with a unique ID corresponding to different segments of the stem. Additionally, it lists a child asset, 'red', which represents the top part of the candy cane.
+This chunk defines the structure of a large candy cane asset in Cubyz. Specifically, it lists six blueprints with unique IDs for different segments of the stem: 'cubyz:candy_cane/large/stem/8', 'cubyz:candy_cane/large/stem/9', 'cubyz:candy_cane/large/stem/10', 'cubyz:candy_cane/large/stem/11', 'cubyz:candy_cane/large/stem/12', and 'cubyz:candy_cane/large/stem/13'. Additionally, it specifies a child asset under the key 'red' with the ID 'cubyz:candy_cane/large/top', representing the top part of the candy cane.
 
 ## Related Questions
-- What are the IDs of the blueprints defined for the large candy cane stem?
-- Which asset is listed as a child under 'red' in the candy cane configuration?
-- How many different segments of the stem are defined for the large candy cane?
-- Is there any specific function or method defined in this chunk to manipulate these assets?
-- What is the purpose of the 'children' field in the candy cane asset definition?
-- Are there any other assets referenced in this configuration besides the stem and top?
+- - What are the IDs of the blueprints defined for the large candy cane stem?
+- - Which asset is listed as a child under 'red' in the candy cane configuration?
 
 *Source: unknown | chunk_id: codebase_assets_cubyz_sbb_candy_cane_large.zig.zon_chunk_0*

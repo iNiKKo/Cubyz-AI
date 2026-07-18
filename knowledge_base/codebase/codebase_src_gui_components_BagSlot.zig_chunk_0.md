@@ -9,7 +9,7 @@
 BagSlot component for inventory management in Cubyz
 
 ## Explanation
-The BagSlot component manages a single slot in the player's bag. It handles hover and button press events to interact with items, updates the UI based on item counts, and renders the slot with an image and stack size text.
+The BagSlot component manages a single slot in the player's bag. It handles hover and button press events to interact with items, updates the UI based on item counts, and renders the slot with an image and stack size text. The `sizeWithBorder` is calculated as `32 + 2*border`, where `border` is set to `2`. The texture for the BagSlot is initialized from a file named 'assets/cubyz/ui/inventory/bag_slot.png' using the `Texture.initFromFile` method in the `globalInit` function. When hovered, the `hovered` flag is set to true and a rectangle around the slot is rendered if the `hovered` flag is true. Press events trigger actions such as moving items to or from the player's bag based on shift key status. The exact logic of how items are handled during press events includes checking for carried item amounts, executing commands to move items between inventories, and handling shift key presses to take all items from the player's bag.
 
 ## Code Example
 ```zig

@@ -8,7 +8,7 @@
 Defines blueprints and children for a thin candy cane asset.
 
 ## Explanation
-This chunk defines the configuration for a specific type of candy cane asset in Cubyz. It includes an array of blueprints, each with a unique ID, and specifies a child asset that represents the top part of the candy cane.
+This chunk defines the configuration for a specific type of candy cane asset in Cubyz. It includes an array of four blueprints with unique IDs: 'cubyz:candy_cane/thin/stem/2', 'cubyz:candy_cane/thin/stem/3', 'cubyz:candy_cane/thin/stem/4', and 'cubyz:candy_cane/thin/stem/5'. Additionally, it specifies a child asset with the ID 'cubyz:candy_cane/thin/top/small' that represents the top part of the candy cane.
 
 ## Related Questions
 - What are the IDs of the blueprints defined for this candy cane asset?

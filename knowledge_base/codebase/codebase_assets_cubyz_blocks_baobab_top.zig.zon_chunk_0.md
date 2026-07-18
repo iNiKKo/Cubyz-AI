@@ -8,7 +8,7 @@
 Defines properties for the Baobab top block in Cubyz, including tags, health, drops, rotation, model, textures, and decay behavior.
 
 ## Explanation
-This chunk defines a configuration object for the Baobab top block in the Cubyz voxel engine. It specifies various properties such as tags (choppable, wood, log), block health, item drops, rotation behavior, visual model, texture mappings for different sides, and decay prohibition. The configuration is structured using Zig's comptime data structures, ensuring that these properties are known at compile time.
+This chunk defines a configuration object for the Baobab top block in the Cubyz voxel engine. It specifies various properties including tags (choppable, wood, log), block health of 8, item drops consisting of baobab logs, rotation behavior defined by 'cubyz:direction', visual model as 'cubyz:cube', texture mappings for different sides ('cubyz:baobab_log' for all sides except the top which uses 'cubyz:baobab_log_top'), and decay prohibition set to true. The configuration is structured using Zig's comptime data structures, ensuring that these properties are known at compile time.
 
 ## Related Questions
 - What are the tags associated with the Baobab top block?

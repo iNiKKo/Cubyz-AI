@@ -8,7 +8,13 @@
 Defines texture paths for the Mahogany log block.
 
 ## Explanation
-This chunk contains a configuration object with six fields, each representing a different texture used for rendering various parts of the Mahogany log block. The textures are specified as strings pointing to resource locations within the Cubyz asset system.
+This chunk contains a configuration object with six fields, each representing a different texture used for rendering various parts of the Mahogany log block. The textures are specified as strings pointing to resource locations within the Cubyz asset system:
+- `texture0` = "cubyz:log/mahogany/dot"
+- `texture1` = "cubyz:log/mahogany/line"
+- `texture2` = "cubyz:log/mahogany/bend"
+- `texture3` = "cubyz:log/mahogany/intersection"
+- `texture4` = "cubyz:log/mahogany/cross"
+- `texture5` = "cubyz:log/mahogany/top"
 
 ## Related Questions
 - What are the texture paths defined for the Mahogany log block?

@@ -8,7 +8,7 @@
 Defines configuration for a blue cloth block texture.
 
 ## Explanation
-This chunk is a simple configuration file that specifies the texture path for a blue cloth block in the Cubyz voxel engine. The configuration uses a JSON-like structure with a single key-value pair, where the key is `.texture` and the value is the string `
+This chunk is a simple configuration file that specifies the texture path for a blue cloth block in the Cubyz voxel engine. The configuration uses a JSON-like structure with a single key-value pair, where the key is `.texture` and the value is `cubyz:cloth/blue`. This chunk does not contain any executable logic; it only declares one symbol.
 
 ## Related Questions
 - What is the texture path for the blue cloth block?

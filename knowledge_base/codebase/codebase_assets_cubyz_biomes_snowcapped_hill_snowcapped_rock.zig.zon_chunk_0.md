@@ -8,7 +8,7 @@
 Defines configuration for a snowcapped hill biome with specific terrain properties and block types.
 
 ## Explanation
-This chunk defines the configuration for a snowcapped hill biome in the Cubyz engine. It specifies various properties such as radius, chance of occurrence, height range, terrain roughness, and the presence of mountains and hills. The ground structure is defined to include layers of snow blocks, and the stone block used is glacite. It also references a parent biome with its own ID and chance of inheritance.
+This chunk defines the configuration for a snowcapped hill biome in the Cubyz engine with specific properties such as radius (20 cubyz), chance of occurrence (0%), height range from 3000 to 4500 cubyz, terrain roughness set to 1, and presence of mountains at 70% and hills at 20%. The ground structure includes layers of snow blocks ranging from 2 to 4 cubyz. The stone block used is glacite (cubyz:glacite/smooth). Additionally, it references a parent biome with ID 'cubyz:snowcapped_hill/base' and a chance of inheritance set at 20%. Furthermore, the keepOriginalTerrain property is set to 0.99.
 
 ## Related Questions
 - What is the radius of the snowcapped hill biome?

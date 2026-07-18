@@ -8,7 +8,7 @@
 Defines blueprints for birch tree top assets.
 
 ## Explanation
-This chunk contains a configuration structure defining two blueprints for birch tree top assets. Each blueprint has an unique identifier (id) that specifies the asset's type and variant.
+This chunk contains a configuration structure defining two blueprints for birch tree top assets. The identifiers for these assets are 'cubyz:tree/birch/top/1' and 'cubyz:tree/birch/top/2'. Each blueprint has an unique identifier (id) that specifies the asset's type and variant.
 
 ## Related Questions
 - What are the identifiers for the birch tree top assets defined in this chunk?

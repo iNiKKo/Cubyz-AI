@@ -8,7 +8,7 @@
 Defines configuration for a limestone tile block.
 
 ## Explanation
-This chunk contains a single anonymous struct with three fields: .rotation, .model, and .texture. Each field is assigned a string value that specifies the rotation type, model, and texture of the limestone tile block respectively. This configuration data is used to define how the block should be rendered and interact within the game world.
+This chunk contains a single anonymous struct with three fields: .rotation, .model, and .texture. The .rotation field is set to "cubyz:stairs", the .model field is set to "cubyz:cube", and the .texture field is set to "cubyz:limestone/tile". This configuration data specifies how the limestone tile block should be rendered and interact within the game world.
 
 ## Related Questions
 - What is the rotation type of the limestone tile block?

@@ -8,7 +8,14 @@
 Defines blueprints for different variants of the snow snale entity.
 
 ## Explanation
-This chunk contains a configuration for various blueprints related to the snow snale entity in Cubyz. Each blueprint has an ID that uniquely identifies it, and some blueprints have an associated chance value which likely influences their spawn probability or generation likelihood within the game world.
+This chunk contains a configuration for various blueprints related to the snow snale entity in Cubyz. Each blueprint has an ID that uniquely identifies it, and some blueprints have an associated chance value which influences their spawn probability or generation likelihood within the game world. The specific IDs and chances are as follows:
+
+- `cubyz:rare/snow_snale/small/0`
+- `cubyz:rare/snow_snale/small/1`
+- `cubyz:rare/snow_snale/baby` (no chance value)
+- `cubyz:rare/snow_snale/shelled` (no chance value)
+- `cubyz:rare/snow_snale/medium`, with a spawn chance of 0.8
+- `cubyz:rare/snow_snale/large`, with a spawn chance of 0.4
 
 ## Related Questions
 - What are the different IDs defined for the snow snale blueprints?

@@ -8,7 +8,7 @@
 Defines configuration for the Lush Thicket biome in Cubyz, specifying terrain generation and structure placement probabilities.
 
 ## Explanation
-This chunk is a configuration file defining properties of the Lush Thicket biome. It specifies parameters such as generation chance, radius constraints, tags, ground structures, various tree and plant structures with their respective chances, and parent biomes. The configuration uses a structured format to detail how different elements should be placed within the biome during world generation.
+This chunk is a configuration file defining properties of the Lush Thicket biome in Cubyz. It specifies parameters such as generation chance (0), radius constraints (minRadius: 16, maxRadius: 48), tags (.oak and .pine), ground structures (2 to 3 cubyz:soil), various tree and plant structures with their respective chances, and parent biomes (cubyz:forest/lush/base with a chance of 10). The configuration uses a structured format to detail how different elements should be placed within the biome during world generation. Specifically, it includes oak trees such as white oak and young oak, pine trees like loblolly pine, eastern white pine, and young coniferous tree, standalone roots, clay ground patches with specific dimensions and smoothness, and ivy flower patches.
 
 ## Related Questions
 - What is the chance of generating a Lush Thicket biome?

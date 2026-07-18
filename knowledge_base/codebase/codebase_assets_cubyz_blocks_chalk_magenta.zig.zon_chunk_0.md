@@ -8,7 +8,7 @@
 Defines configuration for the magenta chalk block texture.
 
 ## Explanation
-This chunk is a simple configuration file that specifies the texture path for the magenta chalk block in the Cubyz voxel engine. It uses a JSON-like structure to map the `.texture` key to the string value `
+This chunk is a simple configuration file that specifies the texture path for the magenta chalk block in the Cubyz voxel engine. It uses a JSON-like structure to map the `.texture` key to the string value `cubyz:chalk/magenta`. This ensures that the correct visual representation of the magenta chalk block is loaded within the game environment.
 
 ## Related Questions
 - What is the texture path for the magenta chalk block?

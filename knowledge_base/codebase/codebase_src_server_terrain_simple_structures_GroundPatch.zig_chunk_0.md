@@ -6,10 +6,25 @@
 **Concepts:** terrain generation, block placement, elliptical distribution
 
 ## Summary
-GroundPatch generation logic for Cubyz terrain
+GroundPatch generation logic in Cubyz terrain that defines elliptical distribution of blocks with specified dimensions and orientation based on parameters loaded from a ZonElement.
 
 ## Explanation
-This chunk defines the GroundPatch structure and its generation logic. It loads parameters from a ZonElement, calculates the patch's dimensions and orientation, and then iterates over a specified area in the chunk to apply the block at different heights based on an elliptical distribution.
+This chunk defines the GroundPatch structure and its generation logic. It loads parameters such as block type, width, variation, depth, and smoothness from a ZonElement. The generate function calculates the patch's dimensions and orientation using these parameters and iterates over a specified area in the chunk to apply the block at different heights based on an elliptical distribution.
+
+The GroundPatch structure is defined with the following fields:
+- `block`: main.blocks.Block (default value loaded from ZonElement)
+- `width`: f32 (default 5.0 if not specified)
+- `variation`: f32 (default 1.0 if not specified)
+- `depth`: i32 (default 2 if not specified)
+- `smoothness`: f32 (default 0.0 if not specified)
+
+The generate function calculates the width and orientation of the ellipse, then iterates over a specified area in the chunk to apply the block at different heights based on an elliptical distribution. The smoothness parameter affects the placement of blocks within the ellipse.
+
+Specifically:
+- `width`: Determines the size of the patch.
+- `variation`: Adds randomness to the width.
+- `depth`: Controls how deep into the chunk the blocks are placed.
+- `smoothness`: Influences the density and distribution of blocks within the ellipse.
 
 ## Code Example
 ```zig
@@ -79,17 +94,9 @@ pub fn generate(self: *GroundPatch, mode: GenerationMode, x: i32, y: i32, z: i32
 ```
 
 ## Related Questions
-- What is the purpose of the GroundPatch structure?
-- How does the generate function determine the start height for block placement?
-- What is the logic for applying the block based on the distance from the center of the ellipse?
-- How does the smoothness parameter affect the block placement?
-- What is the minimum and maximum height range for the block placement within the chunk?
-- How does the function handle water surface generation mode?
-- What is the purpose of the caveMap.findTerrainChangeAbove and findTerrainChangeBelow functions?
-- What is the logic for updating the block in the chunk during generation?
-- How does the function determine if a block should be placed based on the distance from the center of the ellipse and smoothness parameter?
-- What is the purpose of the random.nextFloat(seed) function used in the generate function?
-- What is the logic for calculating the major and minor axes of the ellipse based on the orientation?
-- How does the function handle cases where the block placement exceeds the chunk boundaries?
+- What is the default value for the width parameter if not specified?
+- How does the variation parameter affect the placement of blocks?
+- What is the purpose of the depth parameter in GroundPatch generation?
+- How does the smoothness parameter influence block distribution within the ellipse?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_simple_structures_GroundPatch.zig_chunk_0*

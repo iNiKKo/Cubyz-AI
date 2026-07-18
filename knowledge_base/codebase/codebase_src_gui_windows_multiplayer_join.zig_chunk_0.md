@@ -6,10 +6,10 @@
 **Concepts:** GUI window management, multiplayer connection, IP address discovery, threading for non-blocking operations
 
 ## Summary
-Handles the multiplayer join window GUI logic, including IP address discovery and connection management.
+Handles the multiplayer join window GUI logic, including detailed IP address discovery in a separate thread, user input for joining a server, copying the IP to clipboard, initializing components, and cleaning up resources upon closure. It includes specific error handling and atomic operations.
 
 ## Explanation
-This chunk defines the logic for a GUI window that allows players to join a multiplayer game. It includes functions for discovering the player's IP address in a separate thread, handling user input for joining a server, copying the IP address to the clipboard, initializing the window components, and cleaning up resources when the window is closed. The chunk uses threading for non-blocking IP discovery, manages connection states, and updates the GUI based on the discovered IP address.
+This chunk defines the logic for a GUI window that allows players to join a multiplayer game by discovering their own IP address in a separate thread and managing connection states during the process. The `discoverIpAddress` function initializes a network connection, retrieves the external address of the player's machine, and stores it in an atomic variable. If an error occurs while initializing the connection, an error message is logged and displayed to the user. The `join` function handles joining a server by checking if the IP address has been discovered and then connecting to the specified server using the provided IP address. It also manages resources such as freeing allocated memory for the IP address and saving settings after successful connection or displaying appropriate error messages if no connection is found. Threading ensures non-blocking operations during IP discovery, and atomic variables are used to synchronize access to shared data. The `onOpen` function initializes GUI components including labels, buttons, and text inputs, with specific dimensions and positions defined for each component. The `update` function updates the displayed IP address based on whether it has been discovered or not, handling obfuscation if in streamer mode.
 
 ## Code Example
 ```zig
