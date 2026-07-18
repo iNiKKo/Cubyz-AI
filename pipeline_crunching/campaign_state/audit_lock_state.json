@@ -1,24 +1,20 @@
 {
   "locked": {
-    "github_issue_3364_discussion": {
-      "user_id": "Caleb",
-      "timestamp": 1784405976.1075733
-    },
-    "github_issue_2097_discussion": {
-      "user_id": "Caleb",
-      "timestamp": 1784406196.1222057
-    },
-    "codebase_src_server_server.zig_chunk_7": {
+    "codebase_src_items.zig_chunk_8": {
       "user_id": "NickSRVR",
-      "timestamp": 1784406233.8506746
+      "timestamp": 1784406657.1652524
     },
-    "codebase_src_game.zig_chunk_2": {
-      "user_id": "Nickc",
-      "timestamp": 1784406241.0583615
-    },
-    "github_issue_670_discussion": {
+    "codebase_src_items.zig_chunk_6": {
       "user_id": "Nick",
-      "timestamp": 1784406244.8596601
+      "timestamp": 1784406708.5955358
+    },
+    "github_issue_546_discussion": {
+      "user_id": "Caleb",
+      "timestamp": 1784406711.5264628
+    },
+    "codebase_src_items.zig_chunk_9": {
+      "user_id": "Nickc",
+      "timestamp": 1784406712.8186414
     }
   },
   "completed": [
@@ -1331,8 +1327,28 @@
     "codebase_src_server_server.zig_chunk_2",
     "github_issue_836_discussion",
     "codebase_src_game.zig_chunk_0",
-    "codebase_src_game.zig_chunk_1"
+    "codebase_src_game.zig_chunk_1",
+    "codebase_src_game.zig_chunk_3",
+    "codebase_src_server_server.zig_chunk_7",
+    "codebase_src_game.zig_chunk_4",
+    "github_issue_1643_discussion",
+    "codebase_mods_cubyz_rotations_branch.zig_chunk_2",
+    "codebase_mods_cubyz_rotations_branch.zig_chunk_3",
+    "codebase_mods_cubyz_rotations_branch.zig_chunk_1",
+    "codebase_src_items.zig_chunk_0",
+    "codebase_mods_cubyz_rotations_branch.zig_chunk_0",
+    "github_issue_2700_discussion",
+    "codebase_src_items.zig_chunk_3",
+    "codebase_src_game.zig_chunk_2",
+    "github_issue_651_discussion",
+    "codebase_src_items.zig_chunk_2",
+    "github_issue_2960_discussion",
+    "codebase_src_items.zig_chunk_1",
+    "codebase_src_items.zig_chunk_5",
+    "github_issue_3099_discussion",
+    "github_issue_2607_discussion",
+    "codebase_src_items.zig_chunk_4"
   ],
   "actions_baseline_completed": 543,
-  "actions_count": 2906
+  "actions_count": 2994
 }

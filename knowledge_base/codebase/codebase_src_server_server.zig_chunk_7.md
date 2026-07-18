@@ -9,7 +9,22 @@
 Handles player connection, disconnection, and messaging in the server.
 
 ## Explanation
-This chunk contains functions to manage player connections and communications within a server environment. It includes methods for removing a player (`removePlayer`), connecting a player (`connect`, `connectInternal`), handling incoming messages from players (`messageFrom`), sending raw messages (`sendRawMessage`), sending formatted messages (`sendMessage`), and retrieving users by index with reference counting (`getUserByIndexAndIncreaseRefCount`). The chunk uses mutexes for thread safety, particularly around user lists. It also interacts with network protocols to send player data and updates to other clients.
+This chunk contains functions to manage player connections and communications within a server environment. Specifically, it includes methods for removing a player (`removePlayer`), connecting a player (`connect`, `connectInternal`), handling incoming messages from players (`messageFrom`), sending raw messages (`sendRawMessage`), sending formatted messages (`sendMessage`), and retrieving users by index with reference counting (`getUserByIndexAndIncreaseRefCount`). The chunk uses mutexes for thread safety, particularly around user lists. It also interacts with network protocols to send player data and updates to other clients.
+
+### Detailed Explanation:
+- **removePlayer(user: *User) void**: This function removes a player from the server if they are disconnected. If the player is still connected, it sends a message indicating that the player has left and broadcasts this information to all other connected clients using `main.network.protocols.entity.send`. The function uses a block statement (`blk`) with mutex locking and unlocking around the user list operations.
+
+- **connect(user: *User) void**: Increases the reference count of the user and adds them to the connection list (`userConnectList`).
+
+- **connectInternal(user: *User) void**: Initializes the player, sends server player data via `main.network.protocols.handShake.sendServerPlayerData`, checks for duplicate players in non-testing mode by iterating through the user list, broadcasts new player information to other clients using `main.network.protocols.entity.send`, and sends an initial entity list to the newly connected client.
+
+- **messageFrom(msg: []const u8, source: *User) void**: Sends a formatted message indicating that a user has sent a message. This function uses `sendMessage` internally.
+
+- **sendRawMessage(msg: []const u8) void**: Locks the chat mutex and sends raw messages to all connected clients using `user.sendRawMessage`. It also logs the message in the server's log system.
+
+- **sendMessage(comptime fmt: []const u8, args: anytype) void**: Allocates a formatted string from the provided format and arguments, frees it after use, and sends the message to all connected clients via `sendRawMessage`.
+
+- **getUserByIndexAndIncreaseRefCount(index: usize) ?*User**: Retrieves a user by their player index and increases their reference count. It returns null if no such user is found.
 
 ## Code Example
 ```zig

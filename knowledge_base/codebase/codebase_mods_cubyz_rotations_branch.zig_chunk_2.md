@@ -9,7 +9,7 @@
 This chunk handles the creation and manipulation of block models, including rotation and data generation for branch-like structures.
 
 ## Explanation
-The chunk defines several functions related to block model management in a voxel engine. `createBlockModel` initializes a model based on configuration data from a ZonElement, handling shell models and collision boxes. `model` retrieves the model index for a given block. `rotateZ` computes a rotated version of branch data based on an angle. `generateData` determines how to connect branches based on neighboring blocks and placement conditions.
+This chunk handles the creation and manipulation of block models, including rotation and data generation for branch-like structures. The `createBlockModel` function initializes a model based on configuration data from a ZonElement, handling shell models and collision boxes. It sets the radius to 4 if not specified in the ZonElement, calculates `radiusForComparisons`, and uses this value to determine the model index. If a shell model ID is provided, it retrieves the corresponding model and its raw faces for quads and collisions. The function also generates innerBox based on the calculated radius and iterates through 64 possible branch data configurations to create quads and collision boxes accordingly. `model` retrieves the model index for a given block by adding the block's data (masked with 0x3F) to the base model index of the block type. The `rotateZ` function computes a rotated version of branch data based on an angle using precomputed rotation tables. It handles up-down flags and returns the appropriate rotated data value. Finally, `generateData` determines how to connect branches based on neighboring blocks and placement conditions, ensuring proper neighbor connections if applicable.
 
 ## Code Example
 ```zig
@@ -42,11 +42,8 @@ pub fn rotateZ(data: u16, angle: Degrees) u16 {
 ```
 
 ## Related Questions
-- How does the `createBlockModel` function initialize a block model?
-- What is the purpose of the `rotateZ` function in this chunk?
-- How does the `generateData` function determine neighbor connections?
-- What data structure is used to store branch models in this code?
-- How are collision boxes generated for branch models?
-- What conditions trigger a block's rotation in this implementation?
+- How does the `createBlockModel` function initialize a block model with specific radius and shell model configurations?
+- What is the purpose of the `rotateZ` function in this chunk, including how it uses precomputed rotation tables?
+- How does the `generateData` function determine neighbor connections based on placement conditions and neighboring blocks?
 
 *Source: unknown | chunk_id: codebase_mods_cubyz_rotations_branch.zig_chunk_2*

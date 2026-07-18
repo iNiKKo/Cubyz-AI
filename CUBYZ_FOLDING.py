@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.28"
+VERSION = "1.1.29"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -1138,8 +1138,13 @@ def benchmark_lane(model: str, force_cpu: bool):
     format constraint and a similarly-shaped prompt as real work is what makes this predictive of
     real usability rather than just "can it echo a sentence back quickly."
 
-    Returns elapsed seconds (lower is better), or None if the lane failed outright or didn't
-    finish within BENCHMARK_TIMEOUT.
+    Returns (elapsed_seconds, None) on success, or (None, error_description) if the lane failed
+    outright or didn't finish within BENCHMARK_TIMEOUT. error_description used to just be
+    discarded entirely (a bare `except Exception: return None`) -- confirmed live, this made a
+    failed GPU benchmark completely unexplainable from the outside: "FAILED or timed out" could
+    mean Ollama isn't running, the GPU driver crashed, the model doesn't fit in VRAM, a real
+    request timeout, or something else, and there was no way to tell which without the volunteer
+    manually digging through their own machine.
     """
     payload = {
         "model": model,
@@ -1153,9 +1158,11 @@ def benchmark_lane(model: str, force_cpu: bool):
     start = time.time()
     try:
         make_request(OLLAMA_URL, payload, timeout=BENCHMARK_TIMEOUT)
-    except Exception:
-        return None
-    return time.time() - start
+    except Exception as e:
+        elapsed = time.time() - start
+        kind = "timeout" if elapsed >= BENCHMARK_TIMEOUT - 1 else type(e).__name__
+        return None, f"{kind}: {e}"[:200]
+    return time.time() - start, None
 
 # ============================================================
 # RAG MODE -- task processing (from pipeline_crunching/RAG_FOLDING.py)
@@ -2185,6 +2192,58 @@ def fetch_and_show_userlist():
         print(f"  {status_color}{label:<13}{Colors.RESET}: {u.get('user_id','?')} • {stat_text}")
     print(f"{Colors.CYAN}────────────────────────────────────────────────────────────────────────{Colors.RESET}")
 
+def run_live_gpu_diagnostic():
+    """Step-by-step live checks, printed directly to THIS machine's own terminal in real time --
+    added because the server-side dashboard can only ever show the final captured error, not walk
+    through what's actually happening on a volunteer's machine. Re-detects hardware fresh (cheap,
+    no side effects) rather than reusing any cached benchmark result, so this always reflects the
+    current moment, not a stale verdict from whenever the last real benchmark ran."""
+    print(f"\n{Colors.CYAN}{Colors.BOLD}─── [ LIVE GPU DIAGNOSTIC ] ──────────────────────────────────────────{Colors.RESET}")
+
+    print(f"{Colors.CYAN}[1/4] Checking Ollama is reachable...{Colors.RESET}")
+    try:
+        make_request(f"{OLLAMA_HOST}/api/tags", timeout=10)
+        print(f"  {Colors.GREEN}✓ Ollama responded.{Colors.RESET}")
+    except Exception as e:
+        print(f"  {Colors.RED}✗ Ollama did NOT respond: {e}{Colors.RESET}")
+        print(f"  {Colors.YELLOW}→ Ollama itself may not be running, or is stuck. Nothing past this point will work until it responds.{Colors.RESET}")
+        print(f"{Colors.CYAN}{'─' * 74}{Colors.RESET}\n")
+        return
+
+    print(f"{Colors.CYAN}[2/4] Detecting GPU (fresh, not cached)...{Colors.RESET}")
+    chosen_model, gpu_type, total_vram_gb = get_vram_and_choose_model()
+    if gpu_type == "cpu":
+        print(f"  {Colors.YELLOW}No GPU detected at all -- this machine is CPU-only by detection, not by a failed benchmark.{Colors.RESET}")
+        print(f"{Colors.CYAN}{'─' * 74}{Colors.RESET}\n")
+        return
+    print(f"  {Colors.GREEN}✓ Detected: {gpu_type}, {total_vram_gb:.1f} GB VRAM -- would pick '{chosen_model}'.{Colors.RESET}")
+
+    if gpu_type == "nvidia":
+        print(f"{Colors.CYAN}[3/4] Raw nvidia-smi output (checking driver health / current VRAM usage / stuck processes):{Colors.RESET}")
+        try:
+            res = subprocess.run(['nvidia-smi'], capture_output=True, text=True, timeout=15)
+            for line in (res.stdout or res.stderr).splitlines():
+                print(f"  {line}")
+        except Exception as e:
+            print(f"  {Colors.RED}✗ Could not run nvidia-smi: {e}{Colors.RESET}")
+    else:
+        print(f"{Colors.CYAN}[3/4] Skipped (nvidia-smi output is only meaningful for NVIDIA cards; this is {gpu_type}).{Colors.RESET}")
+
+    print(f"{Colors.CYAN}[4/4] Running a LIVE benchmark call now (up to {BENCHMARK_TIMEOUT:.0f}s, real schema-constrained generation, same as a real crunching task)...{Colors.RESET}")
+    ensure_ollama_running_and_model_pulled(chosen_model)
+    gpu_time, gpu_error = benchmark_lane(chosen_model, force_cpu=False)
+    if gpu_time is not None:
+        print(f"  {Colors.GREEN}✓ GPU generation completed in {gpu_time:.1f}s.{Colors.RESET}")
+        print(f"  {Colors.YELLOW}→ This actually worked just now. If the dashboard still shows a cached failure, use [B] to clear the cache and restart.{Colors.RESET}")
+    else:
+        print(f"  {Colors.RED}✗ GPU generation failed: {gpu_error}{Colors.RESET}")
+        if gpu_error and gpu_error.startswith("timeout"):
+            print(f"  {Colors.YELLOW}→ Ollama responded to /api/tags but this specific model never finished generating within {BENCHMARK_TIMEOUT:.0f}s on the GPU.")
+            print(f"    Likely causes: the model doesn't actually fit in VRAM and Ollama is silently spilling to CPU/swap (very slow), a stuck/zombie Ollama process from a previous run, or a driver issue letting Ollama see the GPU but not use it properly.{Colors.RESET}")
+        else:
+            print(f"  {Colors.YELLOW}→ This wasn't a timeout -- Ollama itself rejected or errored on this request. Check Ollama's own logs for the real cause.{Colors.RESET}")
+    print(f"{Colors.CYAN}{'─' * 74}{Colors.RESET}\n")
+
 def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None):
     print(f"\n\n{Colors.YELLOW}{Colors.BOLD}[||] Node Execution Paused via User Action.{Colors.RESET}")
     while True:
@@ -2198,7 +2257,7 @@ def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None):
             dual_status_color = Colors.GREEN if dual_controller.active else Colors.GRAY
             dual_status = f"{dual_status_color}{'ON' if dual_controller.active else 'OFF'}{Colors.RESET}"
             dual_option = f", [D] to toggle the secondary CPU lane (currently {dual_status})"
-        choice = input(f"Enter [R] to resume, [L] to view the leaderboard, [U] to view active users, [A] to toggle auto-update (currently {auto_status}){dual_option}, [B] to force a fresh hardware benchmark, or [Q] to safely exit: ").strip().lower()
+        choice = input(f"Enter [R] to resume, [L] to view the leaderboard, [U] to view active users, [A] to toggle auto-update (currently {auto_status}){dual_option}, [B] to force a fresh hardware benchmark, [G] to run a live GPU diagnostic, or [Q] to safely exit: ").strip().lower()
         if choice == 'r': return
         elif choice == 'l': fetch_and_show_leaderboard()
         elif choice == 'u': fetch_and_show_userlist()
@@ -2226,6 +2285,8 @@ def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None):
             save_benchmark_result({})
             print(f"{Colors.CYAN}[~] Cleared cached hardware benchmark -- restarting to measure CPU vs. GPU throughput fresh...{Colors.RESET}")
             os.execv(sys.executable, [sys.executable] + sys.argv)
+        elif choice == 'g':
+            run_live_gpu_diagnostic()
         elif choice == 'q': sys.exit(f"{Colors.CYAN}[X] Disconnecting safely. Thank you for your computational contributions!{Colors.RESET}")
 
 def interruptible_sleep(seconds, dual_controller: "DualLaneController | None" = None):
@@ -2925,12 +2986,14 @@ def main():
     # fingerprint so a real hardware change re-triggers it) and let the measured result decide.
     primary_is_gpu = gpu_type != "cpu"
     gpu_time = cpu_time = None
+    gpu_error = cpu_error = None
     if gpu_type != "cpu":
         fingerprint = f"v{BENCHMARK_VERSION}:{gpu_type}:{round(total_vram_gb, 1)}:{os.cpu_count()}:{round(system_ram_gb, 1)}:{chosen_model}:{cpu_model}"
         cached = load_benchmark_result()
         if cached.get("fingerprint") == fingerprint:
             primary_is_gpu = cached["primary_is_gpu"]
             gpu_time, cpu_time = cached.get("gpu_time"), cached.get("cpu_time")
+            gpu_error, cpu_error = cached.get("gpu_error"), cached.get("cpu_error")
         else:
             # Run both lanes' benchmark calls concurrently rather than one after the other --
             # sequential was up to BENCHMARK_TIMEOUT*2 (3 minutes) in the worst case, which
@@ -2945,11 +3008,12 @@ def main():
             _bench_cpu_thread.start()
             _bench_gpu_thread.join()
             _bench_cpu_thread.join()
-            gpu_time, cpu_time = _bench_results.get("gpu"), _bench_results.get("cpu")
+            gpu_time, gpu_error = _bench_results.get("gpu", (None, None))
+            cpu_time, cpu_error = _bench_results.get("cpu", (None, None))
             gpu_tier_for_compare = gpu_tier_from_vram(total_vram_gb)
             if gpu_time is None:
                 primary_is_gpu = False
-                print(f"{Colors.YELLOW}[!] GPU benchmark failed or timed out -- this GPU doesn't appear usable for inference here. Falling back to CPU.{Colors.RESET}")
+                print(f"{Colors.YELLOW}[!] GPU benchmark failed or timed out -- this GPU doesn't appear usable for inference here. Falling back to CPU. Reason: {gpu_error}{Colors.RESET}")
             elif cpu_time is None:
                 primary_is_gpu = True
                 print(f"{Colors.GREEN}[✓] GPU benchmarked successfully; CPU benchmark failed or timed out -- using GPU as the primary lane.{Colors.RESET}")
@@ -2976,6 +3040,7 @@ def main():
             save_benchmark_result({
                 "fingerprint": fingerprint, "primary_is_gpu": primary_is_gpu,
                 "gpu_time": gpu_time, "cpu_time": cpu_time,
+                "gpu_error": gpu_error, "cpu_error": cpu_error,
             })
 
     if not primary_is_gpu:
@@ -3021,6 +3086,7 @@ def main():
         "chosen_model": chosen_model, "hardware_tier": hardware_tier, "client_version": VERSION,
         "dual_lane": dual_capable, "primary_is_gpu": primary_is_gpu,
         "benchmark_gpu_time": gpu_time, "benchmark_cpu_time": cpu_time,
+        "benchmark_gpu_error": gpu_error, "benchmark_cpu_error": cpu_error,
     }
     log_diagnostic(session_start_event)
     # This used to be logged locally only -- the operator's server had no OS/GPU-vendor/VRAM/RAM
@@ -3064,6 +3130,7 @@ def main():
             "chosen_model": cpu_model, "hardware_tier": cpu_tier, "client_version": VERSION,
             "dual_lane": True, "primary_is_gpu": False,
             "benchmark_gpu_time": None, "benchmark_cpu_time": cpu_time,
+            "benchmark_gpu_error": None, "benchmark_cpu_error": cpu_error,
         })
         dual_controller = DualLaneController(board=board, cpu_lane_kwargs=dict(
             lane_tag="CPU", user_id=cpu_user_id, hardware_tier=cpu_tier, chosen_model=cpu_model,

@@ -9,7 +9,13 @@
 This chunk defines functions for determining and adding branch patterns based on connectivity data.
 
 ## Explanation
-The chunk contains two main functions: `addQuads` and `getPattern`. The `addQuads` function takes a pattern, side, radius, output list, and texture slot offset to add rotated quads to the output list. The `getPattern` function determines the branch pattern based on connectivity data for different directions (positive and negative X and Y). It returns a pattern or null if no valid pattern is found.
+This chunk defines functions for determining and adding branch patterns based on connectivity data. The `addQuads` function takes a pattern, side, radius, output list, and texture slot offset to add rotated quads to the output list. It uses specific coordinates and dimensions to define each quad shape depending on the pattern type (dot, halfLine, line, bend, intersection, cross). The `getPattern` function determines the branch pattern based on connectivity data for different directions (positive and negative X and Y) as follows:
+
+- For zero connections (`count == 0`), if the side is not connected, it returns `.dot`. Otherwise, it returns null.
+- For one connection (`count == 1`), it determines the direction based on which neighbor is connected and returns `.halfLine` with that direction.
+- For two connections (`count == 2`), if both positive and negative X or Y are connected, it returns `.line`. Otherwise, it calculates a bend pattern based on connectivity data.
+- For three connections (`count == 3`), it determines the direction by checking which neighbor is not connected and returns `.intersection` with that direction.
+- For four connections (`count == 4`), it returns `.cross`.
 
 ## Code Example
 ```zig

@@ -6,10 +6,10 @@
 **Concepts:** item properties, material initialization, hashing mechanism, tooltip generation
 
 ## Summary
-Defines the Material struct and its methods for initialization, hashing, property retrieval, and tooltip printing.
+Defines the Material struct and its methods for initialization with default fallbacks, hashing, property retrieval, and tooltip printing. Initialization includes setting massDamage, hardnessDamage, durability, swingSpeed, textureRoughness, colorPalette, and modifiers from a ZonElement, handling missing attributes by logging errors.
 
 ## Explanation
-The chunk defines a `Material` struct with fields such as massDamage, hardnessDamage, durability, swingSpeed, textureRoughness, colorPalette, and modifiers. It includes methods like `init`, which initializes the material from a ZonElement, `hashCode`, which computes a hash code for the material, `getProperty`, which retrieves a property value based on an enum, and `printTooltip`, which appends a tooltip string to a list managed by the main module.
+The chunk defines a `Material` struct with fields such as massDamage, hardnessDamage, durability, swingSpeed, textureRoughness, colorPalette, and modifiers. It includes methods like `init`, which initializes the material from a ZonElement, setting default values for missing attributes; `hashCode`, which computes a hash code for the material based on its properties; `getProperty`, which retrieves a property value based on an enum; and `printTooltip`, which appends a tooltip string to a list managed by the main module. The `init` method handles errors by logging them if required attributes are missing, setting default values such as 0 or fallback modifiers.
 
 ## Code Example
 ```zig
@@ -26,9 +26,9 @@ pub fn hashCode(self: Material) u32 {
 ```
 
 ## Related Questions
-- How is the Material struct initialized?
-- What does the hashCode method compute for a Material instance?
-- How are properties accessed in the Material struct?
+- How is the Material struct initialized with error handling for missing attributes?
+- What specific properties and their types are included in the Material struct?
+- How does the hashCode method compute a hash code for a Material instance?
 - What happens if a required attribute is missing during initialization?
 - How are tooltips generated for materials with modifiers?
 - What is the purpose of the colorPalette field in Material?

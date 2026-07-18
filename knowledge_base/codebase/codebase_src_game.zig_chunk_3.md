@@ -9,7 +9,17 @@
 Handles player input for block placement, breaking, flying, ghost mode, and hyper speed toggles.
 
 ## Explanation
-This chunk manages player interactions with the game world through various key presses. It includes functions to handle placing and breaking blocks, toggling flying and ghost modes, and enabling hyper speed. The `getBlockWithSide` function retrieves a block from either the client's render thread or the server's world based on the specified side.
+This chunk manages player interactions with the game world through various key presses. It includes functions to handle placing and breaking blocks, toggling flying and ghost modes, and enabling hyper speed. The `getBlockWithSide` function retrieves a block from either the client's render thread or the server's world based on the specified side. Specifically:
+
+- The `projectionMatrix` is initialized as an identity matrix.
+- `nextBlockPlaceTime` and `nextBlockBreakTime` are timestamps that track when blocks can be placed or broken again after a delay defined by `main.settings.updateRepeatDelay`.
+- The `pressPlace` function sets the next block placement time and calls `Player.placeBlock(mods)` to place a block.
+- The `releasePlace` function resets the `nextBlockPlaceTime` to null.
+- The `pressBreak` function sets the next block breaking time and calls `Player.breakBlock(0)` to break a block.
+- The `releaseBreak` function resets the `nextBlockBreakTime` to null.
+- The `flyToggle` function toggles flying mode for creative players, setting `isFlying` and `isGhost` accordingly.
+- The `ghostToggle` function toggles ghost mode for creative players, setting both `isGhost` and `isFlying` based on the current state of `isGhost`.
+- The `hyperSpeedToggle` function toggles hyper speed for creative players by flipping the value of `Player.hyperSpeed`.
 
 ## Code Example
 ```zig

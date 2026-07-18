@@ -169,7 +169,13 @@ def _format_benchmark_note(hw: dict):
         return None
     gpu_time, cpu_time = hw.get("benchmark_gpu_time"), hw.get("benchmark_cpu_time")
     if gpu_time is None:
-        return f"{Colors.YELLOW}⚠ GPU benchmark FAILED or timed out{Colors.RESET} -- falling back to CPU (CPU: {cpu_time:.1f}s)" if isinstance(cpu_time, (int, float)) else f"{Colors.YELLOW}⚠ GPU benchmark FAILED or timed out{Colors.RESET} -- falling back to CPU"
+        gpu_error = hw.get("benchmark_gpu_error")
+        # Truncated here (plain text, before any color wrapping) rather than left to run past a
+        # narrow terminal -- the raw exception message is already capped at 200 chars client-side,
+        # which can still be wider than a normal terminal once the panel's indent/label are added.
+        reason = f" -- {_truncate(gpu_error, 90)}" if gpu_error else " (no error detail -- pre-1.1.28 client)"
+        cpu_text = f" (CPU: {cpu_time:.1f}s)" if isinstance(cpu_time, (int, float)) else ""
+        return f"{Colors.YELLOW}⚠ GPU benchmark FAILED{Colors.RESET}{reason}{cpu_text}"
     return f"{Colors.YELLOW}⚠ GPU benchmark succeeded ({gpu_time:.1f}s) but CPU was faster/chosen instead ({cpu_time:.1f}s){Colors.RESET}" if isinstance(cpu_time, (int, float)) else f"{Colors.YELLOW}⚠ GPU benchmark succeeded ({gpu_time:.1f}s) but CPU was chosen instead{Colors.RESET}"
 
 def _format_progress_line(mode: str, stats: dict) -> str:
@@ -473,7 +479,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.1.2"
-LATEST_CLIENT_VERSION = "1.1.28"
+LATEST_CLIENT_VERSION = "1.1.29"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:
@@ -2240,6 +2246,11 @@ def submit_diagnostics(payload: dict):
             "primary_is_gpu": payload.get("primary_is_gpu"),
             "benchmark_gpu_time": payload.get("benchmark_gpu_time"),
             "benchmark_cpu_time": payload.get("benchmark_cpu_time"),
+            # The actual exception (timeout vs connection error vs Ollama-side error, etc.) --
+            # benchmark_lane() used to swallow this into a bare None, so a failed GPU benchmark
+            # was completely unexplainable from the dashboard beyond "FAILED or timed out".
+            "benchmark_gpu_error": payload.get("benchmark_gpu_error"),
+            "benchmark_cpu_error": payload.get("benchmark_cpu_error"),
         }
 
     if payload.get("event") == "task_gave_up" and payload.get("mode") == "rag":

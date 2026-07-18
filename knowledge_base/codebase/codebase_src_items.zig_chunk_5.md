@@ -9,7 +9,17 @@
 Defines the structure and methods for procedural item types in Cubyz.
 
 ## Explanation
-This chunk defines an enum `ProceduralItemTypeIndex` representing indices of procedural item types, along with a struct `ProceduralItemProperty` for properties of items. It includes methods for serialization (`toBytes`, `fromBytes`), iteration (`iterator`, `next`), and accessing various attributes of items such as ID, tags, properties, slot information, pixel sources, and overlays. The chunk also defines a struct `ProceduralItemType` that holds detailed data about each item type.
+This chunk defines an enum `ProceduralItemTypeIndex` representing indices of procedural item types, along with a struct `ProceduralItemType` that holds detailed data about each item type. The enum includes methods for serialization (`toBytes`, `fromBytes`), iteration (`iterator`, `next`), and accessing various attributes such as ID, tags, properties, slot information, pixel sources, and overlays. Additionally, it defines a struct `ProceduralItemProperty` with specific properties like damage, maxDurability, and swingSpeed. The chunk also includes methods for converting strings to enum values (`fromString`).
+
+The `ProceduralItemTypeIndex` enum has the following methods:
+- `next`: Iterates over procedural item types.
+- `toBytes`: Serializes an index to bytes.
+- `fromBytes`: Deserializes bytes back into an index, with error handling for invalid tags.
+- `iterator`: Returns a ProceduralItemTypeIterator instance.
+- `fromId`: Converts an ID string to an enum value.
+- `id`, `tags`, `properties`, `slotInfos`, `pixelSources`, and `pixelSourcesOverlay`: Accessor methods for retrieving item data.
+
+The `ProceduralItemProperty` struct includes properties such as damage, maxDurability, and swingSpeed. It also has a method `fromString` to convert string representations of these properties into enum values.
 
 ## Code Example
 ```zig

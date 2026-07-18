@@ -5,10 +5,10 @@
 **Concepts:** game balance, player experience, mechanic design
 
 ## Summary
-The discussion revolves around the block damage per swing mechanic in Cubyz, highlighting issues with mining efficiency, smoothness of breaking animations, and player learning curves. Maintainers suggest potential solutions like swinging animations, periodic modifiers, and alternative tools like explosives to address these concerns.
+The main issue discussed in the Cubyz community forum is the inefficiency and lack of intuitive design of the block damage per swing mechanic. Players find it challenging to mine blocks effectively due to the need for precise health and resistance calculations. The discussion explores potential solutions such as swinging animations for smoother transitions, periodic modifiers for additional effects, and alternative tools like explosives for bulk mining. However, there is also a suggestion to remove this mechanic entirely.
 
 ## Explanation
-The issue primarily focuses on the inefficiency and lack of intuitiveness in the block damage per swing mechanic within Cubyz. Players find it challenging to mine blocks effectively due to the need for precise health and resistance calculations. The discussion explores various solutions, including swinging animations for smoother transitions, periodic modifiers for additional effects, and alternative tools like explosives for bulk mining. Maintainers argue that these changes could enhance gameplay by providing more engaging mechanics and better player feedback. However, there are concerns about balancing the game to ensure it remains accessible and enjoyable for all players.
+The main issue revolves around the inefficiency and lack of intuitive design of the block damage per swing mechanic in Cubyz. Players find it challenging to mine blocks effectively due to the need for precise health and resistance calculations. The discussion explores potential solutions such as swinging animations for smoother transitions, periodic modifiers for additional effects, and alternative tools like explosives for bulk mining. However, there is also a suggestion to remove this mechanic entirely.
 
 ## Related Questions
 - What are the main issues with the block damage per swing mechanic in Cubyz?

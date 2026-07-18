@@ -9,7 +9,9 @@
 The TextureGenerator struct generates textures for ProceduralItems based on material information and crafting grid data.
 
 ## Explanation
-The TextureGenerator struct contains two main functions: generateHeightMap and generate. The generateHeightMap function creates a height map from the itemGrid, considering neighbor items and their materials to determine texture roughness. The generate function initializes the materialGrid based on the crafting grid and seed, then uses the height map to calculate lighting for each pixel, setting colors in the proceduralItem's image accordingly.
+The TextureGenerator struct contains two main functions: generateHeightMap and generate. The generateHeightMap function creates a height map from the itemGrid by considering neighbor items and their materials to determine texture roughness. Specifically, it initializes a 17x17 height map array and iterates through each pixel, calculating its value based on neighboring items' material properties and random factors. If there are different neighbors at a junction, the height is adjusted inward to make embedded parts stick out more. Further neighbors with lower priority also influence the height calculation.
+
+The generate function initializes the materialGrid based on the crafting grid and seed by setting each pixel's material according to its source or overlay value in the proceduralItem's type. It then uses the height map generated from this materialGrid to calculate lighting for each pixel, setting colors in the proceduralItem's image accordingly. The lighting calculation involves determining the nearest free space using the height map values, adjusting light based on a formula that typically ranges from -7 to 5 and normalizing it to near-normalized values between 0 and 1. This normalized value is then used to index into the material's color palette for setting pixel colors.
 
 ## Code Example
 ```zig
