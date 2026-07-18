@@ -9,14 +9,11 @@
 Discussion on requiring sickles for collecting various plant types in Cubyz, focusing on inventory management and player experience.
 
 ## Explanation
-The discussion revolves around the requirement of using sickles to collect different plant types such as leaves, grass, ferns, tussocks, duckweed, and ivy. The main points include reducing inventory clutter by making players intentionally use a tool for collection, distinguishing between common and rare plants for item drop behavior, and ensuring that foliage remains selectable only when holding a sickle. There is also a consideration to prevent accidental loss of flowers and other special plants.
+Discussion on requiring sickles for collecting various plant types in Cubyz to reduce inventory clutter and improve player experience. Blocks that would require a sickle include all leaves, leaf piles, grass vegetation, ferns, tussocks, duckweed, and ivy. The main points include distinguishing between common plants (like leaves) which should not drop items when broken by placing or breaking blocks, and rare plants (such as flowers) which may still drop items under certain conditions to prevent accidental loss. Selection of foliage is controlled so that it remains selectable only when holding a sickle, preventing accidental collection without the tool. The goal is to make players intentionally use tools for specific tasks, enhancing inventory management and player experience.
 
 ## Related Questions
-- How does the current implementation handle item drops when a block is replaced?
-- What is the rationale behind distinguishing between common and rare plants for item drop behavior?
+- Which blocks require a sickle for collection?
+- How does item drop behavior differ between common and rare plants when broken by placing or breaking blocks?
 - Can you explain how the selection of foliage is controlled based on tool usage?
-- What are the potential implications of not dropping items when foliage is broken by replacing a block?
-- How does the proposed solution address the issue of accidental loss of flowers?
-- What considerations are made for player experience when implementing tool requirements for plant collection?
 
 *Source: unknown | chunk_id: github_issue_1558_discussion*

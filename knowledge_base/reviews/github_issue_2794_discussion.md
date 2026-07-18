@@ -9,7 +9,7 @@
 The change introduces distinct types for server and client inventory IDs to prevent misuse.
 
 ## Explanation
-The reviewer points out that while the intention of making it harder to misuse inventory IDs by introducing distinct types is noble, the implementation faces challenges. The issue arises because the ID is present in shared structs like Inventory, which complicates the separation of server and client inventory IDs. This highlights a potential architectural challenge where shared data structures need careful handling to maintain consistency across different components.
+The change introduces distinct types for server and client inventory IDs to prevent misuse. However, this faces challenges due to the ID being present in shared structs like the Inventory struct. The maintainer notes that introducing distinct types does not work easily because of these shared structures, complicating the separation of server and client inventory IDs.
 
 ## Related Questions
 - How does the current implementation handle shared inventory structs?

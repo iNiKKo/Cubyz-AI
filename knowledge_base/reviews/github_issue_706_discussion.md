@@ -8,7 +8,7 @@
 The issue of a missing face when placing a block at a chunk border due to neighbor chunk meshes not being uploaded in the same frame has been addressed by ensuring remeshing happens on a separate thread.
 
 ## Explanation
-The original problem was caused by the delay in uploading neighbor chunk meshes, which led to visual artifacts like missing faces when blocks were placed near chunk borders. The solution involves moving the remeshing process to a separate thread, reducing the likelihood of such issues occurring. This change leverages multi-threading to improve performance and ensure smoother rendering.
+The issue of a missing face when placing a block at a chunk border due to neighbor chunk meshes not being uploaded in the same frame has been addressed. The original problem was caused by delays in uploading neighbor chunk meshes, leading to visual artifacts like missing faces near chunk borders. The solution involves moving the remeshing process to a separate thread, which significantly reduces the likelihood of such issues occurring. Since this change now happens on a separate thread, the maintainer has commented that we can close this issue as it is much less likely to occur.
 
 ## Related Questions
 - How does the remeshing process work in Cubyz?

@@ -8,14 +8,10 @@
 The issue involves a secondary child biome spawning outside of its intended parent biome despite having a chance of 0.
 
 ## Explanation
-The problem arises when a secondary child biome is nested inside a primary child biome. Despite both biomes having a spawn chance of 0, the secondary child biome frequently spawns directly inside the parent biome or even spills into neighboring biomes. This behavior suggests a bug in the biome generation algorithm that fails to properly enforce the hierarchical relationship between biomes.
+The issue involves a secondary child biome spawning outside its intended parent biome despite having a spawn chance of 0. When a secondary child biome is nested inside a primary child biome, it frequently spawns directly inside the parent biome or even spills into neighboring biomes. This behavior suggests a bug in the biome generation algorithm that fails to properly enforce the hierarchical relationship between biomes. The problem can be observed more clearly with specific ground blocks: the primary child biome has its ground block set to cyan chalk and the secondary child biome has its ground block set to red chalk, making it easier to see where each biome is supposed to spawn. An attached test datapack (oasis_test.zip) demonstrates this issue in a simple addon containing two biomes - oasis and oasis_water. Both biomes have a chance of 0 but still spawn outside their intended parent biome.
 
 ## Related Questions
-- What is the current algorithm for determining the spawn location of child biomes?
-- Are there any known issues with biome generation in Cubyz that could cause this behavior?
-- How does the spawn chance setting interact with the hierarchy of biomes during generation?
-- Is there a specific condition or edge case where the secondary child biome might spawn outside its intended parent?
-- What changes need to be made to ensure that child biomes respect their parent's boundaries during generation?
-- Are there any existing tests for biome generation that could help identify and fix this issue?
+- What specific ground blocks were used to make the problem more visible?
+- Where can I find the attached test datapack for this issue?
 
 *Source: unknown | chunk_id: github_issue_2044_discussion*

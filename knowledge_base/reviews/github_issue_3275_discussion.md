@@ -8,7 +8,7 @@
 Discussion about adding apples as an ore and their placement in the game.
 
 ## Explanation
-The discussion revolves around the idea of incorporating apples into the game as an ore. The maintainer suggests that instead of placing apples directly on leaves, they should hang from branches, which is related to another issue (#2498). This change would likely involve modifying the game's terrain generation and rendering code to support hanging objects.
+Discussion about adding apples as an ore and their placement in the game. The discussion requires issue #1821. The maintainer suggests that instead of placing apples directly on leaves, they should hang from branches, which is related to another issue (#2498). This change would likely involve modifying the game's terrain generation and rendering code to support hanging objects. Specifically, the maintainer prefers a hanging apple together with #2498 so it could hang directly on the branch.
 
 ## Related Questions
 - What changes are required to make apples an ore in the game?

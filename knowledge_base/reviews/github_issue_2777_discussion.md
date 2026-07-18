@@ -8,7 +8,7 @@
 Discussion on adding support for loading block models with different coordinate systems by including optional zon metadata files.
 
 ## Explanation
-The discussion revolves around enhancing Cubyz's ability to load block models from various coordinate systems. The maintainer suggests introducing optional zon metadata files that specify the model orientation, allowing adjustments during the loading process. This approach would not only address the current issue but also provide flexibility for future enhancements related to mesh metadata.
+Discussion on adding support for loading block models with different coordinate systems by including optional zon metadata files. The maintainer suggests introducing optional zon metadata files that specify the model orientation, allowing adjustments during the loading process. Specific examples of orientation values include `.blender_default`, `.blockbench_default`, and `.right_hand_z_up`. This approach would not only address the current issue but also provide flexibility for future enhancements related to mesh metadata.
 
 ## Related Questions
 - How can the zon metadata files be structured to support multiple coordinate systems?

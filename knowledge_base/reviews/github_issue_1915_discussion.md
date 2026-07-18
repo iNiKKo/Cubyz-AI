@@ -9,14 +9,24 @@
 The player data corruption issue was reported with extreme position values and a lag spike. The maintainer noted that the issue is no longer reproducible with recent changes.
 
 ## Explanation
-The issue involves player data corruption where the player's position values become extremely high, leading to a crash. The maintainer reviewed the provided log and noted that while there were significant lag spikes, the extreme values suggest a deeper issue. Despite this, the maintainer concluded that recent changes have made the issue non-reproducible for now.
+The player data corruption issue was reported with extremely high position values and a lag spike, leading to a crash. The maintainer reviewed the provided log and noted that while there were significant lag spikes (server lagging behind by 162.6 ms), the extreme position values suggest a deeper issue: 
+
+```
+{
+	.entity = {
+		.position = {
+			-1.3335808012825433e26,
+			-1.4280661955554763e26,
+			7.940002435588171e26
+		},
+	}
+}
+```
+
+The maintainer concluded that recent changes have made the issue non-reproducible for now, but the extreme position values indicate a potential thread safety or data corruption problem. Despite this, no specific part of the code was identified as causing the lag spike.
 
 ## Related Questions
-- What was the cause of the extreme position values in the player data?
-- How did recent changes address the issue of player data corruption?
-- Is there a specific part of the code that could be causing the lag spike?
-- What measures are in place to prevent similar data corruption issues in the future?
-- Can the game handle large lag spikes without corrupting player data?
-- Are there any known limitations or edge cases with the current implementation?
+- What were the exact numerical values of the player's position when the crash occurred?
+- How did recent changes address the issue of extreme position values in player data?
 
 *Source: unknown | chunk_id: github_issue_1915_discussion*

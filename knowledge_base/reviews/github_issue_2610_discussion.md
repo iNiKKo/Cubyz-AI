@@ -8,7 +8,7 @@
 Discussion about stripping formatting characters from log messages and converting them to ANSI for terminal display.
 
 ## Explanation
-The issue discusses the difficulty of reading log messages with embedded color codes. The user proposes stripping these codes or converting them to ANSI escape sequences for better readability in terminals. This could improve the usability of log outputs, especially in development environments where logs are frequently viewed in terminal windows.
+The issue discusses the difficulty of reading log messages with embedded color codes. The user provides an example where `Chat: #ff7700H#ffb800a#fff900l#c4ff00o#83ff00g#42ff00e#00ff00n_#ffff00 left` is hard to read and suggests an alternative format `Chat: #ff7700H#ffb800a#fff900l#c4ff00o#83ff00g#42ff00e#00ff00n (Halogen) left`. Additionally, a user comment proposes converting the log messages into ANSI escape sequences for better terminal display. This could improve usability in development environments where logs are frequently viewed in terminal windows.
 
 ## Related Questions
 - How can we strip color codes from log messages?

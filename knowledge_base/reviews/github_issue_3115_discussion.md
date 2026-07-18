@@ -8,14 +8,11 @@
 Discussion about adding array/slice support to argparse, with clarification that some commands already accept multiple arguments.
 
 ## Explanation
-The discussion revolves around the necessity of adding support for an unlimited number of arguments in the argument parser. The maintainer initially questioned the need for this feature, but a user clarified that certain commands like 'help' can already handle multiple arguments (e.g., `/help time invite`). This clarification suggests that the current implementation might be more flexible than initially perceived.
+The discussion centers around adding support for an unlimited number of arguments to argparse. The maintainer initially questioned whether commands like 'help' accept multiple arguments, but a user clarified that `/help time invite` works as expected and prints the help information for both `time` and `invite`. This example demonstrates that certain commands can indeed handle multiple arguments. However, the maintainer still expressed doubt about the necessity of this feature.
 
 ## Related Questions
 - How does the current argparse handle multiple arguments?
-- What commands in Cubyz currently support multiple arguments?
-- Why was there a misunderstanding about the 'help' command's argument handling?
-- Is there a need to standardize how commands handle multiple arguments?
-- Could adding array/slice support improve the flexibility of argparse?
-- Are there any potential performance implications of supporting unlimited arguments?
+- What specific example shows that 'help' supports multiple arguments?
+- Why did the maintainer question the need for supporting unlimited arguments?
 
 *Source: unknown | chunk_id: github_issue_3115_discussion*

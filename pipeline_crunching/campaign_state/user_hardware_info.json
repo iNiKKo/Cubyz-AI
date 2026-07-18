@@ -5,11 +5,12 @@
     "total_vram_gb": 12.0,
     "system_ram_gb": 15.95,
     "dual_lane": false,
-    "primary_is_gpu": false,
-    "benchmark_gpu_time": null,
-    "benchmark_cpu_time": 70.63924717903137,
+    "primary_is_gpu": true,
+    "hardware_tier": "hard",
+    "benchmark_gpu_time": 49.72841215133667,
+    "benchmark_cpu_time": null,
     "benchmark_gpu_error": null,
-    "benchmark_cpu_error": null
+    "benchmark_cpu_error": "timeout: timed out"
   },
   "nick": {
     "platform": "linux",
@@ -18,6 +19,7 @@
     "system_ram_gb": 30.75,
     "dual_lane": true,
     "primary_is_gpu": true,
+    "hardware_tier": "hard",
     "benchmark_gpu_time": 22.026955604553223,
     "benchmark_cpu_time": 47.19681429862976,
     "benchmark_gpu_error": null,
@@ -29,11 +31,12 @@
     "total_vram_gb": 4.0,
     "system_ram_gb": 62.67,
     "dual_lane": false,
-    "primary_is_gpu": false,
-    "benchmark_gpu_time": 42.86975979804993,
-    "benchmark_cpu_time": 81.01830291748047,
+    "primary_is_gpu": true,
+    "hardware_tier": "easy",
+    "benchmark_gpu_time": 80.96531438827515,
+    "benchmark_cpu_time": null,
     "benchmark_gpu_error": null,
-    "benchmark_cpu_error": null
+    "benchmark_cpu_error": "timeout: timed out"
   },
   "nickc": {
     "platform": "linux",
@@ -42,6 +45,7 @@
     "system_ram_gb": 30.75,
     "dual_lane": true,
     "primary_is_gpu": false,
+    "hardware_tier": "medium",
     "benchmark_gpu_time": null,
     "benchmark_cpu_time": 47.19681429862976,
     "benchmark_gpu_error": null,

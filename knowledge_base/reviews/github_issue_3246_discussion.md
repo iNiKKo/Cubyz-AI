@@ -8,7 +8,7 @@
 Discussion about improving water reflections in Cubyz, with concerns over performance and maintaining a consistent graphics experience across all players.
 
 ## Explanation
-The issue revolves around enhancing the current reflection shader to include highlights and mirroring effects. The maintainer expresses uncertainty about the feasibility of proper reflections due to potential performance issues, such as screen-space reflections looking bad and world-space reflections being laggy. There is a preference for a uniform graphics experience across all players to simplify implementation, especially before the Vulkan rewrite. However, there is an acknowledgment that future developments may include more graphics options and custom shader support. The maintainer also emphasizes the importance of designing assets to look good at lower settings to ensure consistency.
+Discussion about improving water reflections in Cubyz, with concerns over performance and maintaining a consistent graphics experience across all players. The maintainer expresses uncertainty about implementing proper reflections due to potential issues such as screen-space reflections looking bad and world-space reflections being laggy. There is a preference for a uniform graphics experience to simplify implementation effort, especially before the Vulkan rewrite when having too many options complicates development. Future developments may include more graphics options and custom shader support. The maintainer emphasizes that assets should be designed to look good at the lowest settings to ensure consistency across all players.
 
 ## Related Questions
 - What are the potential performance impacts of implementing proper water reflections in Cubyz?

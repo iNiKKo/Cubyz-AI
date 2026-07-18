@@ -8,7 +8,7 @@
 The issue discusses allowing multi-output recipes, particularly for block entities, but notes potential UI challenges and suggests alternative approaches.
 
 ## Explanation
-The discussion revolves around enabling recipes that produce multiple outputs. While the primary focus is on block entities, the possibility of crafting these items by hand is also mentioned. The maintainer raises concerns about the intuitiveness of implementing such recipes in the user interface (UI), suggesting that block entities requiring multi-output recipes might need to use different recipes instead.
+The issue discusses allowing multi-output recipes, particularly for block entities. The maintainer notes that such recipes would not work intuitively in the UI and suggests that block entities requiring multi-output recipes will use different recipes instead of a single multi-output recipe.
 
 ## Related Questions
 - What are the potential UI challenges of implementing multi-output recipes?

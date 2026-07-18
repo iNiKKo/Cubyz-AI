@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.30"
+VERSION = "1.1.31"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -2322,15 +2322,14 @@ MODE_BANNERS = {
 DUAL_LANE_MIN_RAM_GB = 12.0
 
 # Minimum GPU VRAM required before dual-lane is even offered -- not about system RAM at all, but
-# whether the GPU itself has headroom to spare. Below this (matching the same 6.0 threshold the
-# 7b model tier already uses elsewhere as "a GPU that can comfortably run its own model"), the
-# GPU is already fully committed just running its OWN (lowest-tier, 3b) model; a second lane's
-# concurrent request to the same Ollama server -- even one forced off-GPU via num_gpu=0 -- still
-# has to share that server's scheduling, and confirmed live, on a 2-4 GB card this contention
-# stalled BOTH lanes (the GPU lane stuck at "Generating analysis..." indefinitely, the CPU lane
-# completing exactly one task and then nothing). Plenty of system RAM doesn't fix a GPU that's
-# already maxed out on its own.
-DUAL_LANE_MIN_VRAM_GB = 6.0
+# whether the GPU itself has headroom to spare. This used to be 6.0 GB, based on a real, confirmed-
+# live failure on a 2-4 GB card: forcing a second lane's concurrent request onto the same Ollama
+# server (even one forced off-GPU via num_gpu=0) stalled BOTH lanes when the GPU had nothing left
+# to share. Lowered to 4.0 GB on explicit request (a real dedicated GPU should dual-lane whenever
+# it has at least this much VRAM, even a weak one) -- accepting that this specific 2-4 GB stalling
+# risk may resurface right at this new floor and needs live confirmation it doesn't, rather than
+# assuming the original failure was specific to something below 4.0 GB.
+DUAL_LANE_MIN_VRAM_GB = 4.0
 
 class DualStatusBoard:
     """One shared, redrawing status window covering BOTH lanes at once, used instead of each

@@ -8,7 +8,7 @@
 The issue reports that the game accepts a custom procedural tool created by copying an existing one, but the maintainer disputes this claim.
 
 ## Explanation
-The discussion revolves around whether the game correctly recognizes and processes a custom procedural tool when it is created by copying an existing one. The maintainer's comment suggests that the observed behavior is not accurate, implying that the client might be misreporting or hallucinating the success of the operation.
+The issue reports that a custom procedural tool created by copying an existing one is accepted by the game, but the maintainer disputes this claim. The maintainer's comment explicitly states: 'No it doesn't. Your client is just hallucinating that it works.' This implies that while the client might report success in creating and using the custom procedural tool, the server does not actually recognize or process it correctly.
 
 ## Related Questions
 - What is the expected behavior when a custom procedural tool is created by copying an existing one?

@@ -8,7 +8,7 @@
 The issue discusses allowing the loading of SDF models from files to enhance biome creation freedom, referencing a related discussion in #2751.
 
 ## Explanation
-The issue highlights the need for supporting SDF (Signed Distance Function) model file loading to provide greater flexibility in creating biomes. The maintainer notes that this use case is already addressed in another issue (#2751), indicating potential overlap or redundancy between the two issues.
+The issue discusses allowing the loading of SDF (Signed Distance Function) models from files to enhance biome creation freedom. The maintainer notes that this use case is already addressed in another issue (#2751), indicating potential overlap or redundancy between the two issues. However, no specific details about how SDF model file loading is implemented or what standards are used for SDFs are provided within the context of #2593.
 
 ## Related Questions
 - What is the standard format for SDFs?
