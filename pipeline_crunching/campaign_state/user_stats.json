@@ -1,11 +1,11 @@
 {
   "nick": {
-    "chunks_completed": 2942,
-    "lines_crunched": 147375
+    "chunks_completed": 3177,
+    "lines_crunched": 152831
   },
   "nickmac": {
-    "chunks_completed": 17,
-    "lines_crunched": 805
+    "chunks_completed": 60,
+    "lines_crunched": 3102
   },
   "orng": {
     "chunks_completed": 19,

@@ -9,3 +9,11 @@
 {"event": "task_gave_up", "mode": "rag", "chunk_id": "codebase_src_graphics.zig_chunk_20", "final_reason": "Self-check failed: code_example doesn't look like a function/struct/enum body", "timestamp": 1784356527.2858298, "received_at": 1784356527.2982595}
 {"event": "task_gave_up", "mode": "rag", "chunk_id": "codebase_src_graphics.zig_chunk_20", "final_reason": "Self-check failed: code_example doesn't look like a function/struct/enum body", "timestamp": 1784356843.311039, "received_at": 1784356843.316547}
 {"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_assets_cubyz_blocks_glow_crystal_indigo.zig.zon_chunk_0", "timestamp": 1784356993.703086, "received_at": 1784356993.7062018}
+{"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_src_graphics.zig_chunk_20", "timestamp": 1784357113.007502, "received_at": 1784357113.0130608}
+{"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_assets_cubyz_blocks_leaves_mahogany.zig.zon_chunk_0", "timestamp": 1784357152.9196713, "received_at": 1784357152.9224734}
+{"event": "task_gave_up", "mode": "rag", "chunk_id": "codebase_src_TEST_FAKE_chunk_0", "final_reason": "test failure", "received_at": 1784357505.9695725}
+{"event": "task_gave_up", "mode": "rag", "chunk_id": "codebase_src_TEST_FAKE_chunk_0", "final_reason": "test failure", "received_at": 1784357505.9701993}
+{"event": "task_gave_up", "mode": "rag", "chunk_id": "codebase_src_TEST_FAKE_chunk_0", "final_reason": "test failure", "received_at": 1784357505.9707837}
+{"event": "task_gave_up", "mode": "rag", "chunk_id": "codebase_src_TEST_FAKE_chunk_0", "final_reason": "test failure", "received_at": 1784357505.971373}
+{"event": "task_gave_up", "mode": "finetune", "chunk_id": "some_finetune_chunk", "final_reason": "x", "received_at": 1784357505.971672}
+{"event": "task_cancelled", "mode": "rag", "chunk_id": "codebase_src_TEST_CANCEL_chunk_0", "received_at": 1784357505.9718077}
