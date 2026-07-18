@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.19"
+VERSION = "1.1.20"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -761,6 +761,17 @@ def get_vram_and_choose_model() -> tuple:
 
     return model, gpu_type, total_vram_gb
 
+def gpu_tier_from_vram(total_vram_gb: float) -> str:
+    """The hardware_tier a GPU lane would run at, from VRAM alone -- factored out of main()'s
+    profile-selection logic so it can also be used for the capability-vs-speed benchmark
+    comparison (see main()'s use of TIER_RANK) without duplicating the same thresholds twice."""
+    return "easy" if total_vram_gb <= 4.5 else ("medium" if total_vram_gb <= 8.5 else "hard")
+
+# Ordinal ranking for hardware_tier -- lower means a smaller/less capable model. Used to compare
+# the GPU lane's tier against the CPU lane's tier (see get_cpu_model_tier) when both benchmark as
+# viable, so a slower-but-more-capable lane isn't dismissed just for losing on raw speed.
+TIER_RANK = {"easy": 0, "medium": 1, "hard": 2}
+
 def get_cpu_model_tier(ram_gb: float) -> tuple:
     """Picks a model/hardware_tier for running on CPU, from system RAM -- used for any lane that
     ends up actually running on CPU: a machine with no GPU at all, a GPU that benchmark_lane()
@@ -1047,13 +1058,14 @@ def make_request(url, payload=None, timeout=180):
 # for sustained real work either -- treated the same as an outright failure, not just "slow."
 BENCHMARK_TIMEOUT = 90.0
 
-# Bumped whenever benchmark_lane()'s own methodology changes (prompt shape, format constraint,
-# timeout, etc.) and included in main()'s cache fingerprint -- otherwise a machine with an
-# already-cached result from an older, less representative benchmark would keep reusing that
-# stale verdict forever, never re-measuring under the improved method. Confirmed live: a GPU
-# whose trivial 40-token benchmark (version 1) completed in ~5s and "won" against CPU went on to
-# hang indefinitely on real crunching work -- the fix only means anything if it forces a re-run.
-BENCHMARK_VERSION = 2
+# Bumped whenever benchmark_lane()'s own methodology OR the decision logic derived from its
+# results changes, and included in main()'s cache fingerprint -- otherwise a machine with an
+# already-cached result would keep reusing a stale verdict forever, never re-measuring/re-deciding
+# under the improved version. Confirmed live twice: v1->v2 fixed a trivial 40-token benchmark that
+# passed on a GPU which then hung on real crunching work; v2->v3 fixed the decision itself always
+# favoring raw speed even when the slower lane could run a meaningfully more capable model tier
+# (a GPU capped at "easy" by low VRAM kept winning over a CPU that could reach "medium").
+BENCHMARK_VERSION = 3
 
 # A small but real Zig-shaped snippet, used only to give the benchmark call something structurally
 # similar to a real chunk to work with -- not from the actual corpus, just representative in
@@ -2387,15 +2399,33 @@ def main():
             print(f"{Colors.CYAN}[~] First-time hardware benchmark: measuring real CPU vs. GPU throughput on this machine (one-time, well under a minute)...{Colors.RESET}")
             gpu_time = benchmark_lane(chosen_model, force_cpu=False)
             cpu_time = benchmark_lane(cpu_model, force_cpu=True)
+            gpu_tier_for_compare = gpu_tier_from_vram(total_vram_gb)
             if gpu_time is None:
                 primary_is_gpu = False
                 print(f"{Colors.YELLOW}[!] GPU benchmark failed or timed out -- this GPU doesn't appear usable for inference here. Falling back to CPU.{Colors.RESET}")
-            elif cpu_time is not None and cpu_time < gpu_time:
-                primary_is_gpu = False
-                print(f"{Colors.YELLOW}[i] Benchmark: CPU ({cpu_time:.1f}s) outperformed GPU ({gpu_time:.1f}s) on this machine -- using CPU as the primary lane instead.{Colors.RESET}")
-            else:
+            elif cpu_time is None:
                 primary_is_gpu = True
-                print(f"{Colors.GREEN}[✓] Benchmark: GPU ({gpu_time:.1f}s) vs. CPU ({f'{cpu_time:.1f}s' if cpu_time is not None else 'failed'}) -- using GPU as the primary lane.{Colors.RESET}")
+                print(f"{Colors.GREEN}[✓] GPU benchmarked successfully; CPU benchmark failed or timed out -- using GPU as the primary lane.{Colors.RESET}")
+            elif TIER_RANK[cpu_tier] != TIER_RANK[gpu_tier_for_compare]:
+                # Capability beats raw speed once both lanes are confirmed to actually work --
+                # a slower lane that can run a genuinely bigger/more capable model is worth more
+                # than a faster lane stuck on the smallest tier (which, for fine-tune campaigns
+                # specifically, can't even get assigned work at all -- see _get_finetune_work's
+                # "easy" tier exclusion). This does NOT make CPU win by default on a normal
+                # machine: get_cpu_model_tier caps out at 7b/"medium" regardless of how much RAM
+                # is available, so a GPU with real VRAM (>=6 GB, already reaching "medium" or
+                # "hard" on its own) still wins or ties here -- this only overrides speed for a
+                # GPU weak enough that CPU's capped ceiling beats it outright.
+                primary_is_gpu = TIER_RANK[gpu_tier_for_compare] > TIER_RANK[cpu_tier]
+                winner, w_tier, loser, l_tier = (
+                    ("GPU", gpu_tier_for_compare, "CPU", cpu_tier) if primary_is_gpu
+                    else ("CPU", cpu_tier, "GPU", gpu_tier_for_compare)
+                )
+                print(f"{Colors.GREEN}[✓] Benchmark: {winner} can run a more capable model tier than {loser} on this machine ({w_tier} vs {l_tier}) -- using {winner} as the primary lane regardless of raw speed.{Colors.RESET}")
+            else:
+                # Same tier either way -- capability is a tie, so speed decides.
+                primary_is_gpu = gpu_time <= cpu_time
+                print(f"{Colors.GREEN}[✓] Benchmark: GPU ({gpu_time:.1f}s) vs. CPU ({cpu_time:.1f}s), same {gpu_tier_for_compare} tier either way -- using {'GPU' if primary_is_gpu else 'CPU'} (faster).{Colors.RESET}")
             save_benchmark_result({
                 "fingerprint": fingerprint, "primary_is_gpu": primary_is_gpu,
                 "gpu_time": gpu_time, "cpu_time": cpu_time,
@@ -2411,7 +2441,7 @@ def main():
         cooldown, max_threads = 4.0, max(2, (os.cpu_count() or 4) - 1)
         primary_hardware_label = f"CPU Engine ({system_ram_gb:.1f} GB RAM)"
     else:
-        hardware_tier = "easy" if total_vram_gb <= 4.5 else ("medium" if total_vram_gb <= 8.5 else "hard")
+        hardware_tier = gpu_tier_from_vram(total_vram_gb)
         if total_vram_gb > 8.0:
             mode_desc = "Performance Profile (Automated: High-memory Apple Silicon or discrete GPU detected)" if PLATFORM == "darwin" else "Performance Profile (Automated: High VRAM GPU detected)"
             cooldown, max_threads = 0.0, None
