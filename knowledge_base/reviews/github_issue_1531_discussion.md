@@ -8,14 +8,12 @@
 Discussion about implementing an 'over-mining' feature where leftover damage from a swing can be applied to the next block, enhancing mining strategy and satisfaction.
 
 ## Explanation
-The discussion revolves around the idea of allowing players to apply leftover damage from one swing to the next block they target, effectively enabling 'over-mining'. The maintainers explore various aspects of this feature, including its implementation details, potential impact on gameplay, and integration with existing systems like ore generation. They consider both manual and automatic modes for over-mining, with a focus on adding strategic depth and enhancing player satisfaction through visual indicators and satisfying sounds.
+Discussion around implementing an 'over-mining' feature where players can apply leftover damage from one swing to the next block they target, enhancing mining strategy and player satisfaction. The maintainers explore manual and automatic modes for over-mining, with a focus on strategic depth and visual indicators. Specifically, clicking right as the swing hits the block applies the remaining damage to the targeted block rather than behind it. Visual indicators would show the leftover damage amount, and satisfying sounds enhance the experience. This feature also interacts with ore generation systems, leaving leftover damage on the block where the ore was generated.
 
 ## Related Questions
-- How does the over-mining feature apply leftover damage to the next block?
-- What are the potential impacts of implementing over-mining on gameplay strategy?
-- Can you explain the difference between manual and automatic modes for over-mining?
-- How would visual indicators enhance player experience during over-mining?
+- How does over-mining apply leftover damage to the next block you are pointing at?
+- What is the difference between manual and automatic modes for over-mining?
+- How do visual indicators enhance player experience during over-mining?
 - What considerations should be made for integrating over-mining with ore generation systems?
-- How does the timing of clicks affect the application of leftover damage in over-mining?
 
 *Source: unknown | chunk_id: github_issue_1531_discussion*

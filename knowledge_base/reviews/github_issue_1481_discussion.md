@@ -8,7 +8,7 @@
 The discussion revolves around a creature called 'Mossmans' with unique burrowing and attacking behaviors, but ultimately, the maintainer decides to scrap it.
 
 ## Explanation
-The Mossmans creature was designed with specific behaviors such as burrowing into the ground, observing entities, and engaging in an attack pattern involving spitting. However, despite having a well-defined behavior, the maintainer found that the visual design of the creature was lacking. This led to the decision to scrap the Mossmans for now, although its behavior might be reused in future designs.
+The Mossmans creature was designed with unique burrowing and attacking behaviors. They spawn individually and cannot move traditionally; instead, they burrow into the ground and pop out up to 16 blocks away from their initial position. Their idle behavior includes observing other entities, wiggling, and self-grooming, occasionally relocating within their chunk. When an entity approaches that they are uncomfortable with, Mossmans enter attack mode: unburrowing near the target, looking at it for about three seconds, spitting, then burrowing again to relocate before repeating the cycle. They will always try to relocate to a spot within line-of-sight of their target and may give up if the target is out of range or moves too far away from their territory. Mossmans also join in attacks on other targets they observe being attacked for fun. The purpose of this enemy is to be a bother at long distances but easy to deal with otherwise, incidentally supporting other enemies by knocking down fleeing targets. However, despite having well-defined behavior, the visual design was lacking, leading to the decision to scrap the Mossmans for now, although its behavior might be reused in future designs.
 
 ## Related Questions
 - What specific behaviors were implemented for the Mossmans creature?
@@ -20,6 +20,5 @@ The Mossmans creature was designed with specific behaviors such as burrowing int
 - Is there a limit to how far Mossmans will follow their target?
 - Can Mossmans be influenced by observing other entities being targeted?
 - What are the health and damage characteristics of Mossmans?
-- Why was the decision made to scrap the Mossmans creature?
 
 *Source: unknown | chunk_id: github_issue_1481_discussion*

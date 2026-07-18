@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.34"
+VERSION = "1.1.35"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -2308,6 +2308,44 @@ def run_live_gpu_diagnostic():
                     print(f"  {Colors.YELLOW}⚠ No GPU/ROCm-related lines found in the last 200 log lines.{Colors.RESET}")
             except Exception as e:
                 print(f"  {Colors.YELLOW}⚠ Could not check the Ollama service log: {e}{Colors.RESET}")
+
+        # Zero GPU/ROCm-related log lines (see above) is itself a real signal, not just "nothing
+        # to report" -- it suggests Ollama isn't even ATTEMPTING GPU initialization, which is the
+        # signature of a device-permission failure (ROCm needs read/write access to /dev/kfd and
+        # /dev/dri/renderD*; a systemd-run "ollama" service user not in the render/video group is
+        # a very common, silent way for this to fail with no loud error at all, since the failure
+        # happens before Ollama's own GPU-detection logging path is reached). Checked directly here
+        # rather than left as a guess.
+        if PLATFORM == "linux":
+            print(f"  {Colors.CYAN}Checking GPU device node permissions (/dev/kfd, /dev/dri/render*)...{Colors.RESET}")
+            import glob as _glob
+            device_paths = (['/dev/kfd'] if os.path.exists('/dev/kfd') else []) + sorted(_glob.glob('/dev/dri/renderD*'))
+            if not device_paths:
+                print(f"  {Colors.RED}✗ Neither /dev/kfd nor any /dev/dri/renderD* device exists at all -- the ROCm kernel driver (amdgpu) may not be loaded, or this GPU isn't recognized by the kernel as ROCm-capable.{Colors.RESET}")
+            else:
+                for path in device_paths:
+                    try:
+                        st = os.stat(path)
+                        import grp as _grp
+                        try:
+                            group_name = _grp.getgrgid(st.st_gid).gr_name
+                        except Exception:
+                            group_name = str(st.st_gid)
+                        mode = oct(st.st_mode)[-3:]
+                        print(f"  {path}: group={group_name}, mode={mode}")
+                    except Exception as e:
+                        print(f"  {Colors.YELLOW}⚠ Could not stat {path}: {e}{Colors.RESET}")
+                try:
+                    my_groups = subprocess.run(['id', '-nG'], capture_output=True, text=True, timeout=5).stdout.split()
+                    print(f"  This user's groups: {', '.join(my_groups)}")
+                    if 'render' not in my_groups and 'video' not in my_groups:
+                        print(f"  {Colors.YELLOW}⚠ This user is in neither 'render' nor 'video' -- if Ollama runs as this same user, that's")
+                        print(f"    very likely why it can't touch the GPU at all. If Ollama instead runs as a separate systemd service")
+                        print(f"    user (e.g. 'ollama'), check THAT user's groups instead (id ollama), not this one's. Fix: add the")
+                        print(f"    relevant user to the render/video group (e.g. sudo usermod -aG render,video ollama), then restart")
+                        print(f"    both that service and this client.{Colors.RESET}")
+                except Exception:
+                    pass
     else:
         print(f"{Colors.CYAN}[3/4] Skipped (no smi-style tool wired up for {gpu_type} cards yet).{Colors.RESET}")
 

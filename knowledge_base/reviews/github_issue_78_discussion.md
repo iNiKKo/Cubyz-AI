@@ -8,7 +8,7 @@
 Discussion on storing inventories for each chunk in Cubyz, considering storage format (chunk data vs. separate files) and item ID representation (string vs. numeric).
 
 ## Explanation
-The discussion revolves around the implementation of block-based inventory systems in Cubyz. The maintainers are evaluating whether to integrate inventory data directly into chunk data or store it separately in either zon or binary format. There is also a debate on how items should be identified—through string IDs for human readability or numeric IDs for efficiency. The maintainers conclude that a global item palette, similar to the existing systems for blocks and biomes, is the preferred approach.
+Discussion on storing inventories for each chunk in Cubyz, considering whether to integrate inventory data directly into chunk data or store it separately in either zon or binary format. The maintainers concluded that files not requiring human-editability should be stored in binary format. There is also a debate on how items should be identified—through string IDs for human readability or numeric IDs for efficiency. The maintainers conclude that a global item palette, similar to the existing systems for blocks and biomes, using numeric IDs, is the preferred approach.
 
 ## Related Questions
 - What are the advantages and disadvantages of storing inventories as part of chunk data versus separate files?

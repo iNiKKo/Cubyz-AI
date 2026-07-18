@@ -1,15 +1,15 @@
 {
   "nick": {
-    "chunks_audited": 2170,
-    "issues_found": 1536,
-    "fixes_applied": 884,
+    "chunks_audited": 2186,
+    "issues_found": 1548,
+    "fixes_applied": 896,
     "reviews_done": 877
   },
   "nickc": {
     "chunks_audited": 4,
     "issues_found": 4,
     "fixes_applied": 0,
-    "reviews_done": 1033
+    "reviews_done": 1045
   },
   "nickmac": {
     "chunks_audited": 147,

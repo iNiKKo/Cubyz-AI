@@ -5,10 +5,10 @@
 **Concepts:** color model, lighting, quantization
 
 ## Summary
-Discussion about implementing a new color model, OKLCH, for lighting in Cubyz.
+Discussion about implementing a new color model, OKLCH, for lighting in Cubyz. The maintainer seeks clarification on where and how this model should be applied, specifically regarding fading values by 8 or rounding them during quantization processes. There is mention of a previous issue (#225) that tracks an unspecified problem occurring after quantization.
 
 ## Explanation
-The discussion revolves around the potential implementation of the OKLCH color model for lighting effects in Cubyz. The maintainer seeks clarification on where and how this model should be applied, specifically regarding color mixing and quantization processes. There is mention of a previous issue (#225) that tracks an unspecified problem occurring after quantization.
+The discussion revolves around the potential implementation of the OKLCH color model for lighting effects in Cubyz. The maintainer seeks clarification on where and how this model should be applied, specifically regarding fading values by 8 or rounding them during quantization processes. There is mention of a previous issue (#225) that tracks an unspecified problem occurring after quantization.
 
 ## Related Questions
 - What are the specific requirements for implementing OKLCH in Cubyz?

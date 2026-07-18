@@ -760,5 +760,9 @@
   "github_issue_1596_discussion": "5e2caf12a0717330753ea6040f5a832985b308617b8e43f423de71ce28549fe0",
   "codebase_src_server_terrain_SurfaceMap.zig_chunk_4": "52448d2a1d9617625d52ceefe66ca6a4d004e1b0ed16f4e321a233643904f8a9",
   "codebase_src_server_terrain_climategen_NoiseBasedVoronoi.zig_chunk_3": "2bea8e838f7a4d85c386d04b167ecd654f639e41c10c1e4617834233dfaf24da",
-  "codebase_src_utils_Futex.zig_chunk_5": "64d46a8dfec1e5c47d264562110daa80db85b142b0c20d75307994117a8f3f3e"
+  "codebase_src_utils_Futex.zig_chunk_5": "64d46a8dfec1e5c47d264562110daa80db85b142b0c20d75307994117a8f3f3e",
+  "addon_creator_app-studio.js_chunk_6": "34b856311e8c2a1479a411d2d56681a349ca659f9987c35f43382b89e1e7ab4f",
+  "codebase_src_particles.zig_chunk_0": "f4d32d22dd83e52ff57ba14f4130fb962e2364e542e5c1e46c2339fe0b15d17d",
+  "codebase_src_particles.zig_chunk_5": "c4948bbdd87eab2dfaa1651e3b5e34910a1a923ef40f1aeb80e80d72746e4856",
+  "codebase_src_chunk.zig_chunk_4": "ab24d88a5f3d8a863869205f8e7651cadd44c41fa1c37e1f5b063e78cd2fb32d"
 }

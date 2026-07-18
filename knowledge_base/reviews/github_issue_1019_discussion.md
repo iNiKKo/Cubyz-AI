@@ -8,7 +8,7 @@
 Discussion about adding a warning for higher render distances in Cubyz.
 
 ## Explanation
-The discussion revolves around whether to implement a warning or tooltip when players increase the render distance beyond 12. The maintainer argues that there is no harm in increasing render distance, especially in singleplayer mode, and suggests that a warning might not be sufficient for multiplayer scenarios.
+Discussion about adding a warning for higher render distances in Cubyz. The issue report suggests having a message or tooltip pop-up when going beyond a render distance of 12. However, the maintainer argues that there is no harm in increasing the render distance, especially in singleplayer mode, and suggests that a warning might not be sufficient for multiplayer scenarios.
 
 ## Related Questions
 - What are the potential benefits of adding a render distance warning?

@@ -8,7 +8,7 @@
 Discussion on reducing LOD chunk generation by capping height limits, with a maintainer suggesting a simpler alternative of filling missing chunks with uniform materials.
 
 ## Explanation
-The issue discusses optimizing Level of Detail (LOD) chunk generation to reduce the number of chunks generated and traversed for rendering and lighting. The challenge is determining appropriate height limits since player-generated structures can vary greatly in size. A maintainer proposes a simpler solution where missing or not-generated chunks are filled with uniform materials like stone or air, which would be easier to implement while still achieving similar benefits.
+Discussion on optimizing Level of Detail (LOD) chunk generation by reducing the number of chunks generated and traversed for rendering and lighting. The challenge lies in setting appropriate height limits due to player-generated structures like large mountains or deep craters. A maintainer suggests a simpler solution where missing or not-generated chunks are filled with uniform materials such as stone or air, which would be easier to implement while still achieving similar benefits.
 
 ## Related Questions
 - What are the potential performance improvements from reducing LOD chunk generation?

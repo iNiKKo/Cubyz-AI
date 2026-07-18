@@ -8,7 +8,7 @@
 The issue 'Crouching is Bouncy' is discussed, with a maintainer asking if it persists after the fix in PR #1769.
 
 ## Explanation
-The discussion revolves around a reported bug where crouching behavior in Cubyz is described as bouncy. The maintainer seeks to verify whether this issue has been resolved by a previous pull request (#1769). There are no explicit mentions of code changes, architectural considerations, or performance impacts in this chunk.
+The issue 'Crouching is Bouncy' is discussed, with a maintainer asking if it persists after the fix in PR #1769. The reported bug involves crouching behavior described as bouncy, and there are specific steps to reproduce this issue available at https://github.com/user-attachments/assets/e017a2c2-7ec9-4a03-98ff-c3e77bedf5e4. There is no mention of code changes or architectural considerations in the discussion.
 
 ## Related Questions
 - What was the fix introduced in PR #1769 that might have addressed the crouching issue?

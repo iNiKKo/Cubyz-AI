@@ -9,7 +9,7 @@
 The issue discusses the potential for breaking the game by changing the system time during runtime due to non-monotonic timestamp usage.
 
 ## Explanation
-The discussion centers around the use of `std.time.nanoTimestamp`, `microTimestamp`, and `milliTimestamp` in the Cubyz codebase. The maintainer suggests that if users alter their system time while the game is running, it's a user error rather than a bug to be addressed immediately. The issue is currently on hold until it becomes a significant problem or there is a straightforward way to implement monotonic timestamps using Zig's standard library.
+The issue discusses the potential for breaking the game by changing the system time during runtime due to non-monotonic timestamp usage. The maintainer suggests that if users alter their system time while the game is running, it's a user error rather than a bug to be addressed immediately. This affects all uses of `std.time.nanoTimestamp`, `std.time.microTimestamp`, and `std.time.milliTimestamp`. The issue is currently on hold until it becomes a significant problem or there is a straightforward way to implement monotonic timestamps using Zig's standard library.
 
 ## Related Questions
 - What are the potential consequences of using non-monotonic timestamps in a game?

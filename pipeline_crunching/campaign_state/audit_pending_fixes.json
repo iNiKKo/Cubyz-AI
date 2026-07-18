@@ -5304,43 +5304,6 @@
     ],
     "review_feedback": "The proposed explanation removes important details that were correctly stated in the current kb_content. Specifically, it omits mentioning why odd-numbered pixel dimensions cause distortions and how using a 4x4 pixel size addresses this issue. The fix should retain these points while incorporating the maintainer's adjustment to the window size."
   },
-  "github_issue_1770_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions a maintainer's question but fails to provide the actual steps to reproduce and observed behavior from raw_content.",
-    "corrected_summary": null,
-    "corrected_explanation": "The issue 'Crouching is Bouncy' is discussed, with a maintainer asking if it persists after the fix in PR #1769. The reported bug involves crouching behavior described as bouncy, and there are specific steps to reproduce this issue available at https://github.com/user-attachments/assets/e017a2c2-7ec9-4a03-98ff-c3e77bedf5e4. There is no mention of code changes or architectural considerations in the discussion.",
-    "corrected_related_questions": [
-      "What was the fix introduced in PR #1769 that might have addressed the crouching issue?",
-      "Are there any logs or test cases available to verify if the crouching behavior is no longer bouncy after PR #1769?",
-      "How does the crouching physics work in Cubyz, and what could cause it to be bouncy?",
-      "Was there a specific commit in PR #1769 that targeted crouching mechanics?",
-      "Are there any other issues or pull requests related to character movement or physics in Cubyz?",
-      "How can we ensure that the fix for this issue does not introduce new bugs or regressions?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404337.4566054,
-        "reason": "The kb_content mentions a maintainer's question but fails to provide the actual steps to reproduce and observed behavior from raw_content.",
-        "corrected_summary": null,
-        "corrected_explanation": "The issue 'Crouching is Bouncy' is discussed, with a maintainer asking if it persists after the fix in PR #1769. The reported bug involves crouching behavior described as bouncy, and there are specific steps to reproduce this issue available at https://github.com/user-attachments/assets/e017a2c2-7ec9-4a03-98ff-c3e77bedf5e4. There is no mention of code changes or architectural considerations in the discussion.",
-        "corrected_related_questions": [
-          "What was the fix introduced in PR #1769 that might have addressed the crouching issue?",
-          "Are there any logs or test cases available to verify if the crouching behavior is no longer bouncy after PR #1769?",
-          "How does the crouching physics work in Cubyz, and what could cause it to be bouncy?",
-          "Was there a specific commit in PR #1769 that targeted crouching mechanics?",
-          "Are there any other issues or pull requests related to character movement or physics in Cubyz?",
-          "How can we ensure that the fix for this issue does not introduce new bugs or regressions?"
-        ]
-      }
-    ]
-  },
   "github_issue_1706_discussion": {
     "stage": "proposed",
     "collection": "reviews",
@@ -5373,29 +5336,6 @@
           "How was this issue resolved?",
           "Are there any other areas in the physics engine that might need similar adjustments?"
         ]
-      }
-    ]
-  },
-  "github_issue_135_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions the maintainer's suggestion to fill missing chunks with uniform materials but does not specify that these materials are 'stone or air' as stated in raw_content.",
-    "corrected_summary": null,
-    "corrected_explanation": "Discussion on optimizing Level of Detail (LOD) chunk generation by reducing the number of chunks generated and traversed for rendering and lighting. The challenge lies in setting appropriate height limits due to player-generated structures like large mountains or deep craters. A maintainer suggests a simpler solution where missing or not-generated chunks are filled with uniform materials such as stone or air, which would be easier to implement while still achieving similar benefits.",
-    "corrected_related_questions": [],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404362.0455213,
-        "reason": "The kb_content mentions the maintainer's suggestion to fill missing chunks with uniform materials but does not specify that these materials are 'stone or air' as stated in raw_content.",
-        "corrected_summary": null,
-        "corrected_explanation": "Discussion on optimizing Level of Detail (LOD) chunk generation by reducing the number of chunks generated and traversed for rendering and lighting. The challenge lies in setting appropriate height limits due to player-generated structures like large mountains or deep craters. A maintainer suggests a simpler solution where missing or not-generated chunks are filled with uniform materials such as stone or air, which would be easier to implement while still achieving similar benefits.",
-        "corrected_related_questions": []
       }
     ]
   },
@@ -5454,269 +5394,6 @@
         "corrected_summary": null,
         "corrected_explanation": "Discussion on implementing resolution up-/downscaling in Cubyz, focusing on shader handling and sampling techniques. The maintainers suggest using a resolution scale from 25% (downscaling) to 200% (upscaling). For downscaling, the viewport size is adjusted proportionally; for example, if the window size is 800x600, a 75% downscale would result in a viewport size of 600x450. Fog calculations should be done before downscaling to avoid issues with linear interpolation. A new shader might be needed for manual sampling and interpolation during downscaling due to the complexity of fog calculations. The maintainers emphasize using nearest-neighbor sampling for upscaling, as they prefer it over linear sampling because it looks sharper. They also consider limiting scaling factors to powers of 2 (1/4, 1/2, 1, 2) for simplicity and performance reasons.",
         "corrected_related_questions": []
-      }
-    ]
-  },
-  "github_issue_78_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions the debate on storage format but does not specify that binary is preferred for non-human-editable files. It also omits the exact conclusion about item IDs being numeric in a global palette.",
-    "corrected_summary": null,
-    "corrected_explanation": "Discussion on storing inventories for each chunk in Cubyz, considering whether to integrate inventory data directly into chunk data or store it separately in either zon or binary format. The maintainers concluded that files not requiring human-editability should be stored in binary format. There is also a debate on how items should be identified\u2014through string IDs for human readability or numeric IDs for efficiency. The maintainers conclude that a global item palette, similar to the existing systems for blocks and biomes, using numeric IDs, is the preferred approach.",
-    "corrected_related_questions": [],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404378.7957177,
-        "reason": "The kb_content mentions the debate on storage format but does not specify that binary is preferred for non-human-editable files. It also omits the exact conclusion about item IDs being numeric in a global palette.",
-        "corrected_summary": null,
-        "corrected_explanation": "Discussion on storing inventories for each chunk in Cubyz, considering whether to integrate inventory data directly into chunk data or store it separately in either zon or binary format. The maintainers concluded that files not requiring human-editability should be stored in binary format. There is also a debate on how items should be identified\u2014through string IDs for human readability or numeric IDs for efficiency. The maintainers conclude that a global item palette, similar to the existing systems for blocks and biomes, using numeric IDs, is the preferred approach.",
-        "corrected_related_questions": []
-      }
-    ]
-  },
-  "github_issue_1598_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions that breaking logs can achieve the same effect but does not include the specific statement from the maintainer about automatic connection to neighbors.",
-    "corrected_summary": null,
-    "corrected_explanation": "Discussion about adding a 'Bark Item' that re-applies bark to logs. The maintainers argue against cluttering the game with unnecessary items and suggest that breaking logs can achieve the same effect by automatically connecting to neighboring logs, thus questioning the necessity of adding this new item.",
-    "corrected_related_questions": [
-      "Can breaking logs automatically connect to neighboring logs, as suggested by the maintainers?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404382.3414109,
-        "reason": "The kb_content mentions that breaking logs can achieve the same effect but does not include the specific statement from the maintainer about automatic connection to neighbors.",
-        "corrected_summary": null,
-        "corrected_explanation": "Discussion about adding a 'Bark Item' that re-applies bark to logs. The maintainers argue against cluttering the game with unnecessary items and suggest that breaking logs can achieve the same effect by automatically connecting to neighboring logs, thus questioning the necessity of adding this new item.",
-        "corrected_related_questions": [
-          "Can breaking logs automatically connect to neighboring logs, as suggested by the maintainers?"
-        ]
-      }
-    ]
-  },
-  "github_issue_1531_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions 'over-mining' but does not specify that it applies the leftover damage to the next block you are pointing at, rather than behind it. It also omits specific details about visual indicators and sound effects.",
-    "corrected_summary": null,
-    "corrected_explanation": "Discussion around implementing an 'over-mining' feature where players can apply leftover damage from one swing to the next block they target, enhancing mining strategy and player satisfaction. The maintainers explore manual and automatic modes for over-mining, with a focus on strategic depth and visual indicators. Specifically, clicking right as the swing hits the block applies the remaining damage to the targeted block rather than behind it. Visual indicators would show the leftover damage amount, and satisfying sounds enhance the experience. This feature also interacts with ore generation systems, leaving leftover damage on the block where the ore was generated.",
-    "corrected_related_questions": [
-      "How does over-mining apply leftover damage to the next block you are pointing at?",
-      "What is the difference between manual and automatic modes for over-mining?",
-      "How do visual indicators enhance player experience during over-mining?",
-      "What considerations should be made for integrating over-mining with ore generation systems?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404398.001816,
-        "reason": "The kb_content mentions 'over-mining' but does not specify that it applies the leftover damage to the next block you are pointing at, rather than behind it. It also omits specific details about visual indicators and sound effects.",
-        "corrected_summary": null,
-        "corrected_explanation": "Discussion around implementing an 'over-mining' feature where players can apply leftover damage from one swing to the next block they target, enhancing mining strategy and player satisfaction. The maintainers explore manual and automatic modes for over-mining, with a focus on strategic depth and visual indicators. Specifically, clicking right as the swing hits the block applies the remaining damage to the targeted block rather than behind it. Visual indicators would show the leftover damage amount, and satisfying sounds enhance the experience. This feature also interacts with ore generation systems, leaving leftover damage on the block where the ore was generated.",
-        "corrected_related_questions": [
-          "How does over-mining apply leftover damage to the next block you are pointing at?",
-          "What is the difference between manual and automatic modes for over-mining?",
-          "How do visual indicators enhance player experience during over-mining?",
-          "What considerations should be made for integrating over-mining with ore generation systems?"
-        ]
-      }
-    ]
-  },
-  "github_issue_1481_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions specific behaviors but omits concrete details such as movement range, attack pattern specifics, and health/damage stats.",
-    "corrected_summary": null,
-    "corrected_explanation": "The Mossmans creature was designed with unique burrowing and attacking behaviors. They spawn individually and cannot move traditionally; instead, they burrow into the ground and pop out up to 16 blocks away from their initial position. Their idle behavior includes observing other entities, wiggling, and self-grooming, occasionally relocating within their chunk. When an entity approaches that they are uncomfortable with, Mossmans enter attack mode: unburrowing near the target, looking at it for about three seconds, spitting, then burrowing again to relocate before repeating the cycle. They will always try to relocate to a spot within line-of-sight of their target and may give up if the target is out of range or moves too far away from their territory. Mossmans also join in attacks on other targets they observe being attacked for fun. The purpose of this enemy is to be a bother at long distances but easy to deal with otherwise, incidentally supporting other enemies by knocking down fleeing targets. However, despite having well-defined behavior, the visual design was lacking, leading to the decision to scrap the Mossmans for now, although its behavior might be reused in future designs.",
-    "corrected_related_questions": [
-      "What specific behaviors were implemented for the Mossmans creature?",
-      "Why was the visual design of the Mossmans considered lacking?",
-      "How does the attack mode of Mossmans work?",
-      "Was there any consideration given to reusing the behavior of Mossmans in future designs?",
-      "What is the purpose of the Mossmans creature in the game?",
-      "How does the Mossmans' spit interact with other enemies?",
-      "Is there a limit to how far Mossmans will follow their target?",
-      "Can Mossmans be influenced by observing other entities being targeted?",
-      "What are the health and damage characteristics of Mossmans?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404429.6270828,
-        "reason": "The kb_content mentions specific behaviors but omits concrete details such as movement range, attack pattern specifics, and health/damage stats.",
-        "corrected_summary": null,
-        "corrected_explanation": "The Mossmans creature was designed with unique burrowing and attacking behaviors. They spawn individually and cannot move traditionally; instead, they burrow into the ground and pop out up to 16 blocks away from their initial position. Their idle behavior includes observing other entities, wiggling, and self-grooming, occasionally relocating within their chunk. When an entity approaches that they are uncomfortable with, Mossmans enter attack mode: unburrowing near the target, looking at it for about three seconds, spitting, then burrowing again to relocate before repeating the cycle. They will always try to relocate to a spot within line-of-sight of their target and may give up if the target is out of range or moves too far away from their territory. Mossmans also join in attacks on other targets they observe being attacked for fun. The purpose of this enemy is to be a bother at long distances but easy to deal with otherwise, incidentally supporting other enemies by knocking down fleeing targets. However, despite having well-defined behavior, the visual design was lacking, leading to the decision to scrap the Mossmans for now, although its behavior might be reused in future designs.",
-        "corrected_related_questions": [
-          "What specific behaviors were implemented for the Mossmans creature?",
-          "Why was the visual design of the Mossmans considered lacking?",
-          "How does the attack mode of Mossmans work?",
-          "Was there any consideration given to reusing the behavior of Mossmans in future designs?",
-          "What is the purpose of the Mossmans creature in the game?",
-          "How does the Mossmans' spit interact with other enemies?",
-          "Is there a limit to how far Mossmans will follow their target?",
-          "Can Mossmans be influenced by observing other entities being targeted?",
-          "What are the health and damage characteristics of Mossmans?"
-        ]
-      }
-    ]
-  },
-  "github_issue_1314_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions that changing the system time during runtime can break the game but does not explicitly state that this is due to non-monotonic timestamp usage and lists specific functions affected.",
-    "corrected_summary": null,
-    "corrected_explanation": "The issue discusses the potential for breaking the game by changing the system time during runtime due to non-monotonic timestamp usage. The maintainer suggests that if users alter their system time while the game is running, it's a user error rather than a bug to be addressed immediately. This affects all uses of `std.time.nanoTimestamp`, `std.time.microTimestamp`, and `std.time.milliTimestamp`. The issue is currently on hold until it becomes a significant problem or there is a straightforward way to implement monotonic timestamps using Zig's standard library.",
-    "corrected_related_questions": [],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404435.757161,
-        "reason": "The kb_content mentions that changing the system time during runtime can break the game but does not explicitly state that this is due to non-monotonic timestamp usage and lists specific functions affected.",
-        "corrected_summary": null,
-        "corrected_explanation": "The issue discusses the potential for breaking the game by changing the system time during runtime due to non-monotonic timestamp usage. The maintainer suggests that if users alter their system time while the game is running, it's a user error rather than a bug to be addressed immediately. This affects all uses of `std.time.nanoTimestamp`, `std.time.microTimestamp`, and `std.time.milliTimestamp`. The issue is currently on hold until it becomes a significant problem or there is a straightforward way to implement monotonic timestamps using Zig's standard library.",
-        "corrected_related_questions": []
-      }
-    ]
-  },
-  "github_issue_1235_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions specific requirements and processes but does not provide the exact details from raw_content, such as how colors would fade by 8 or be rounded.",
-    "corrected_summary": "Discussion about implementing a new color model, OKLCH, for lighting in Cubyz. The maintainer seeks clarification on where and how this model should be applied, specifically regarding fading values by 8 or rounding them during quantization processes. There is mention of a previous issue (#225) that tracks an unspecified problem occurring after quantization.",
-    "corrected_explanation": "The discussion revolves around the potential implementation of the OKLCH color model for lighting effects in Cubyz. The maintainer seeks clarification on where and how this model should be applied, specifically regarding fading values by 8 or rounding them during quantization processes. There is mention of a previous issue (#225) that tracks an unspecified problem occurring after quantization.",
-    "corrected_related_questions": [],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404440.8525076,
-        "reason": "The kb_content mentions specific requirements and processes but does not provide the exact details from raw_content, such as how colors would fade by 8 or be rounded.",
-        "corrected_summary": "Discussion about implementing a new color model, OKLCH, for lighting in Cubyz. The maintainer seeks clarification on where and how this model should be applied, specifically regarding fading values by 8 or rounding them during quantization processes. There is mention of a previous issue (#225) that tracks an unspecified problem occurring after quantization.",
-        "corrected_explanation": "The discussion revolves around the potential implementation of the OKLCH color model for lighting effects in Cubyz. The maintainer seeks clarification on where and how this model should be applied, specifically regarding fading values by 8 or rounding them during quantization processes. There is mention of a previous issue (#225) that tracks an unspecified problem occurring after quantization.",
-        "corrected_related_questions": []
-      }
-    ]
-  },
-  "github_issue_1192_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions the idea of a 'brightness' value but does not state the maintainers' definitive conclusion that it won't work due to performance issues.",
-    "corrected_summary": null,
-    "corrected_explanation": "Discussion about improving light mixing and cascades in Cubyz, focusing on limitations of flood-fill lighting. The inherent limitation is that multiple identical light sources do not increase brightness. Maintainers explore an alternative approach involving a 'brightness' value that multiplies with RGB values to create an overexposure effect but dismiss this idea due to potential performance issues. Specifically, adding a 'brightness' value would require repropagating all light sources in the area whenever a block is placed, which is computationally expensive.",
-    "corrected_related_questions": [],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404445.1757324,
-        "reason": "The kb_content mentions the idea of a 'brightness' value but does not state the maintainers' definitive conclusion that it won't work due to performance issues.",
-        "corrected_summary": null,
-        "corrected_explanation": "Discussion about improving light mixing and cascades in Cubyz, focusing on limitations of flood-fill lighting. The inherent limitation is that multiple identical light sources do not increase brightness. Maintainers explore an alternative approach involving a 'brightness' value that multiplies with RGB values to create an overexposure effect but dismiss this idea due to potential performance issues. Specifically, adding a 'brightness' value would require repropagating all light sources in the area whenever a block is placed, which is computationally expensive.",
-        "corrected_related_questions": []
-      }
-    ]
-  },
-  "github_issue_1138_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions that the uranium grenade destroys organic matter but omits specific details about its usage and effects. Additionally, it does not provide concrete information on sulfur's potential as an alternative material for crafting explosives.",
-    "corrected_summary": "Discussion about the uranium grenade's usage and potential alternatives, including suggestions to use sulfur instead of uranium due to cost and destructive power considerations.",
-    "corrected_explanation": "The discussion centers around the current implementation of the uranium grenade, which is described as throwable and capable of destroying organic matter in a small radius. The primary usage mentioned for this grenade is destroying floating leaves. A user suggests that sulfur could be used as an alternative material for crafting explosives due to its lower cost compared to uranium, implying that uranium-based explosives are more destructive than necessary for tasks such as removing floating leaves.",
-    "corrected_related_questions": [
-      "What specific materials can be destroyed by the uranium grenade?",
-      "How does the destruction radius of the uranium grenade compare to other explosive items in Cubyz?",
-      "Why is sulfur suggested as an alternative material for crafting explosives instead of uranium?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404450.9114857,
-        "reason": "The kb_content mentions that the uranium grenade destroys organic matter but omits specific details about its usage and effects. Additionally, it does not provide concrete information on sulfur's potential as an alternative material for crafting explosives.",
-        "corrected_summary": "Discussion about the uranium grenade's usage and potential alternatives, including suggestions to use sulfur instead of uranium due to cost and destructive power considerations.",
-        "corrected_explanation": "The discussion centers around the current implementation of the uranium grenade, which is described as throwable and capable of destroying organic matter in a small radius. The primary usage mentioned for this grenade is destroying floating leaves. A user suggests that sulfur could be used as an alternative material for crafting explosives due to its lower cost compared to uranium, implying that uranium-based explosives are more destructive than necessary for tasks such as removing floating leaves.",
-        "corrected_related_questions": [
-          "What specific materials can be destroyed by the uranium grenade?",
-          "How does the destruction radius of the uranium grenade compare to other explosive items in Cubyz?",
-          "Why is sulfur suggested as an alternative material for crafting explosives instead of uranium?"
-        ]
-      }
-    ]
-  },
-  "github_issue_1019_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions a specific number (render distance beyond 12) but does not explicitly state it in the explanation.",
-    "corrected_summary": null,
-    "corrected_explanation": "Discussion about adding a warning for higher render distances in Cubyz. The issue report suggests having a message or tooltip pop-up when going beyond a render distance of 12. However, the maintainer argues that there is no harm in increasing the render distance, especially in singleplayer mode, and suggests that a warning might not be sufficient for multiplayer scenarios.",
-    "corrected_related_questions": [
-      "What are the potential benefits of adding a render distance warning?",
-      "How might the warning impact multiplayer gameplay?",
-      "Are there any technical limitations to implementing such a feature?",
-      "What alternative solutions could be considered for handling high render distances?",
-      "How would the warning message be designed and implemented in Cubyz?",
-      "What are the potential performance implications of increasing render distance?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404457.3876004,
-        "reason": "The kb_content mentions a specific number (render distance beyond 12) but does not explicitly state it in the explanation.",
-        "corrected_summary": null,
-        "corrected_explanation": "Discussion about adding a warning for higher render distances in Cubyz. The issue report suggests having a message or tooltip pop-up when going beyond a render distance of 12. However, the maintainer argues that there is no harm in increasing the render distance, especially in singleplayer mode, and suggests that a warning might not be sufficient for multiplayer scenarios.",
-        "corrected_related_questions": [
-          "What are the potential benefits of adding a render distance warning?",
-          "How might the warning impact multiplayer gameplay?",
-          "Are there any technical limitations to implementing such a feature?",
-          "What alternative solutions could be considered for handling high render distances?",
-          "How would the warning message be designed and implemented in Cubyz?",
-          "What are the potential performance implications of increasing render distance?"
-        ]
       }
     ]
   },
@@ -7397,43 +7074,6 @@
           "What is the user's proposal to make the sharpening system more flexible with attributes?",
           "What concerns does the maintainer have about adding complexity to the game systems?",
           "How could attributes be used to customize tool behavior during sharpening?"
-        ]
-      }
-    ]
-  },
-  "github_issue_96_discussion": {
-    "stage": "proposed",
-    "collection": "reviews",
-    "proposer": "Nick",
-    "reason": "The kb_content mentions several optimizations but does not provide specific details about the exact numbers or configurations mentioned in raw_content, such as the number of triangles and ms times.",
-    "corrected_summary": null,
-    "corrected_explanation": "The issue discusses and addresses performance bottlenecks in Cubyz, focusing on FPS and GPU time. The maintainer notes that a forest scene initially had 43 fps with 20 ms GPU time, indicating poor performance. Specific optimizations were identified: disabling bloom by default due to its high cost (working on multiple full f16 framebuffers), optimizing the fragment shader for opaque geometry, reducing triangle count from 4 million triangles, and improving vertex shader execution frequency. After implementing these changes, the maintainer reported that while bloom passes became faster, downsampling remained slow at around <3 ms post-processing time. Further optimizations are suggested for chunk rendering (reducing triangle count) and CPU-side processing to address lag spikes.",
-    "corrected_related_questions": [
-      "What specific changes were made to the bloom effect in commit 72e27e85003ddd8d32852cbae75200f36b6c7e34?",
-      "How does the fragment shader optimization impact the overall performance of Cubyz?",
-      "What are the potential implications of reducing the triangle count from 4 million triangles in Cubyz?",
-      "Can you provide more details on how CPU-side optimizations were implemented to address lag spikes?",
-      "How does downsampling contribute to the current GPU time issues, and what further improvements can be made?",
-      "What is the relationship between the vertex shader execution frequency and overall performance?"
-    ],
-    "attempts": 1,
-    "last_reviewer": null,
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "Nick",
-        "timestamp": 1784404987.3768907,
-        "reason": "The kb_content mentions several optimizations but does not provide specific details about the exact numbers or configurations mentioned in raw_content, such as the number of triangles and ms times.",
-        "corrected_summary": null,
-        "corrected_explanation": "The issue discusses and addresses performance bottlenecks in Cubyz, focusing on FPS and GPU time. The maintainer notes that a forest scene initially had 43 fps with 20 ms GPU time, indicating poor performance. Specific optimizations were identified: disabling bloom by default due to its high cost (working on multiple full f16 framebuffers), optimizing the fragment shader for opaque geometry, reducing triangle count from 4 million triangles, and improving vertex shader execution frequency. After implementing these changes, the maintainer reported that while bloom passes became faster, downsampling remained slow at around <3 ms post-processing time. Further optimizations are suggested for chunk rendering (reducing triangle count) and CPU-side processing to address lag spikes.",
-        "corrected_related_questions": [
-          "What specific changes were made to the bloom effect in commit 72e27e85003ddd8d32852cbae75200f36b6c7e34?",
-          "How does the fragment shader optimization impact the overall performance of Cubyz?",
-          "What are the potential implications of reducing the triangle count from 4 million triangles in Cubyz?",
-          "Can you provide more details on how CPU-side optimizations were implemented to address lag spikes?",
-          "How does downsampling contribute to the current GPU time issues, and what further improvements can be made?",
-          "What is the relationship between the vertex shader execution frequency and overall performance?"
         ]
       }
     ]
@@ -23919,6 +23559,298 @@
           "- How does the script ensure that only valid player spawn biomes are displayed?",
           "- Can you explain how the `loadItemPreset` function sets values for item properties like durability and texture?",
           "- What is the significance of the `markFormAsDirty` function call in the preset loading functions?"
+        ]
+      }
+    ]
+  },
+  "addon_creator_app-studio.js_chunk_4": {
+    "stage": "proposed",
+    "collection": "addon_creator",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the values set by `loadRecipePreset` and `loadBiomePreset`, nor does it cover the exact recipe or biome settings. Additionally, the related questions are not answered in the explanation.",
+    "corrected_summary": null,
+    "corrected_explanation": "**Type:** ui\n**Keywords:** recipe presets, biome settings, block face previews, custom entity models, texture uploads, DOM manipulation, event handling\n**Symbols:** loadRecipePreset, loadBiomePreset, updateBlockFacePreviews, handleCustomEntityModel, handleCustomEntityTexture\n**Concepts:** data-binding, form validation, live preview\n\n## Summary\nThe script provides functions to load recipe and biome presets, update block face previews, handle custom entity models and textures, and mark forms as dirty.\n\n## Explanation\nThis JavaScript file contains several functions that manage different aspects of the Cubyz Addon Creator UI. The `loadRecipePreset` function sets default values for recipe inputs based on a selected preset ('planks' or 'workbench'). For the 'planks' preset, it assigns the filename 'oak_planks_crafting', sets the input search to 'cubyz:oak_log', and sets the output search to 'cubyz:planks/oak' with an output count of 4. For the 'workbench' preset, it assigns the filename 'workbench_production', sets the input search to 'cubyz:planks/oak' with a count of 4, and sets the output search to 'cubyz:workbench'.\n\nSimilarly, `loadBiomePreset` configures biome settings for predefined biomes ('mountain' or 'cave'). For the 'mountain' preset, it assigns the biome ID 'misty_peaks', sets the minimum height to 100, maximum height to 150, surface block to 'cubyz:cold_grass', sub-block to 'cubyz:permafrost', stone block to 'cubyz:glacite/smooth', and adds structures like 'cubyz:sbb', 'cubyz:sbb', 'cubyz:ground_patch', 'cubyz:flower_patch', and 'cubyz:boulder' with a chance of 0.01 each. For the 'cave' preset, it assigns the biome ID 'deep_abyss_caves', sets the minimum height to -600, maximum height to -512, surface block to 'cubyz:slate/rough', and marks it as a cave.\n\nThe `updateBlockFacePreviews` function updates texture previews for block faces based on user input. It maps each face (up, front, left, right, bottom, back) to the corresponding search value or base value if not specified. It then finds the appropriate texture from `window.serverTextures` and updates the image source accordingly.\n\nFunctions like `handleCustomEntityModel` and `handleCustomEntityTexture` manage file uploads for custom entity models and textures, updating the UI accordingly. Each of these functions interacts with the DOM to set values, update images, and mark forms as dirty to indicate changes.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784410727.5897098,
+        "reason": "The explanation does not provide specific details about the values set by `loadRecipePreset` and `loadBiomePreset`, nor does it cover the exact recipe or biome settings. Additionally, the related questions are not answered in the explanation.",
+        "corrected_summary": null,
+        "corrected_explanation": "**Type:** ui\n**Keywords:** recipe presets, biome settings, block face previews, custom entity models, texture uploads, DOM manipulation, event handling\n**Symbols:** loadRecipePreset, loadBiomePreset, updateBlockFacePreviews, handleCustomEntityModel, handleCustomEntityTexture\n**Concepts:** data-binding, form validation, live preview\n\n## Summary\nThe script provides functions to load recipe and biome presets, update block face previews, handle custom entity models and textures, and mark forms as dirty.\n\n## Explanation\nThis JavaScript file contains several functions that manage different aspects of the Cubyz Addon Creator UI. The `loadRecipePreset` function sets default values for recipe inputs based on a selected preset ('planks' or 'workbench'). For the 'planks' preset, it assigns the filename 'oak_planks_crafting', sets the input search to 'cubyz:oak_log', and sets the output search to 'cubyz:planks/oak' with an output count of 4. For the 'workbench' preset, it assigns the filename 'workbench_production', sets the input search to 'cubyz:planks/oak' with a count of 4, and sets the output search to 'cubyz:workbench'.\n\nSimilarly, `loadBiomePreset` configures biome settings for predefined biomes ('mountain' or 'cave'). For the 'mountain' preset, it assigns the biome ID 'misty_peaks', sets the minimum height to 100, maximum height to 150, surface block to 'cubyz:cold_grass', sub-block to 'cubyz:permafrost', stone block to 'cubyz:glacite/smooth', and adds structures like 'cubyz:sbb', 'cubyz:sbb', 'cubyz:ground_patch', 'cubyz:flower_patch', and 'cubyz:boulder' with a chance of 0.01 each. For the 'cave' preset, it assigns the biome ID 'deep_abyss_caves', sets the minimum height to -600, maximum height to -512, surface block to 'cubyz:slate/rough', and marks it as a cave.\n\nThe `updateBlockFacePreviews` function updates texture previews for block faces based on user input. It maps each face (up, front, left, right, bottom, back) to the corresponding search value or base value if not specified. It then finds the appropriate texture from `window.serverTextures` and updates the image source accordingly.\n\nFunctions like `handleCustomEntityModel` and `handleCustomEntityTexture` manage file uploads for custom entity models and textures, updating the UI accordingly. Each of these functions interacts with the DOM to set values, update images, and mark forms as dirty to indicate changes.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "addon_creator_app-studio.js_chunk_5": {
+    "stage": "proposed",
+    "collection": "addon_creator",
+    "proposer": "Nick",
+    "reason": "The explanation omits specific details about the structure types, their parameters, and how the dropdown options are dynamically generated. It also fails to mention the exact values for various input fields and the role of the `displayLabels` object.",
+    "corrected_summary": null,
+    "corrected_explanation": "This JavaScript code snippet defines three primary functions: `handleCustomBlockTexture`, `addStructureRow`, and `toggleStructSubFields`. The `handleCustomBlockTexture` function handles file input for custom block textures, reading the file, processing it into a data URL, and updating relevant UI elements. The `addStructureRow` function dynamically adds new structure rows to the UI, each containing dropdowns for selecting structure types, inputs for spawn chances, and additional subfields based on the selected structure type. These subfields allow users to specify detailed parameters for each structure type, such as log blocks, foliage sprites, or SBB asset paths.\n\nThe `toggleStructSubFields` function is responsible for dynamically generating the subfields based on the selected structure type. It uses a series of conditional statements to determine which subfields to display and what values they should have. The `displayLabels` object maps each structure type ID to its corresponding display label, which is used to populate the dropdown options.\n\nThe code also includes event listeners for managing user input and ensuring that the form remains marked as dirty after any changes are made.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784410736.9419832,
+        "reason": "The explanation omits specific details about the structure types, their parameters, and how the dropdown options are dynamically generated. It also fails to mention the exact values for various input fields and the role of the `displayLabels` object.",
+        "corrected_summary": null,
+        "corrected_explanation": "This JavaScript code snippet defines three primary functions: `handleCustomBlockTexture`, `addStructureRow`, and `toggleStructSubFields`. The `handleCustomBlockTexture` function handles file input for custom block textures, reading the file, processing it into a data URL, and updating relevant UI elements. The `addStructureRow` function dynamically adds new structure rows to the UI, each containing dropdowns for selecting structure types, inputs for spawn chances, and additional subfields based on the selected structure type. These subfields allow users to specify detailed parameters for each structure type, such as log blocks, foliage sprites, or SBB asset paths.\n\nThe `toggleStructSubFields` function is responsible for dynamically generating the subfields based on the selected structure type. It uses a series of conditional statements to determine which subfields to display and what values they should have. The `displayLabels` object maps each structure type ID to its corresponding display label, which is used to populate the dropdown options.\n\nThe code also includes event listeners for managing user input and ensuring that the form remains marked as dirty after any changes are made.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_particles.zig_chunk_1": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the fields and methods of the `ParticleManager` struct, such as the types of data stored in each field or the exact parameters and return values of each method. Additionally, it omits important information about error handling and texture processing.",
+    "corrected_summary": null,
+    "corrected_explanation": "The `ParticleManager` struct is responsible for managing particle types and their associated textures. It includes several fields such as `particleTypesSSBO`, `types`, `typesLocal`, `textures`, `emissionTextures`, `textureArray`, `emissionTextureArray`, `ParticleIndex`, and `particleTypeHashmap`. The methods of the `ParticleManager` struct include `init`, `deinit`, `reset`, `register`, `readTextureDataAndParticleType`, `readTexture`, `createAnimationFrames`, `extractAnimationSlice`, and `generateTextureArray`. The `init` method initializes the texture arrays, SSBO, and particle system. The `deinit` method deinitializes these components. The `reset` method resets the particle types and textures. The `register` method registers new particle types by reading texture data and parsing configuration from a ZonElement. Errors are logged if required fields are missing or if texture dimensions are incorrect. The `readTextureDataAndParticleType` function reads base and emission textures, checks for errors, and creates animation frames. The `generateTextureArray` method generates texture arrays for both base and emission textures and binds the particle types SSBO.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784410761.3483944,
+        "reason": "The explanation does not provide specific details about the fields and methods of the `ParticleManager` struct, such as the types of data stored in each field or the exact parameters and return values of each method. Additionally, it omits important information about error handling and texture processing.",
+        "corrected_summary": null,
+        "corrected_explanation": "The `ParticleManager` struct is responsible for managing particle types and their associated textures. It includes several fields such as `particleTypesSSBO`, `types`, `typesLocal`, `textures`, `emissionTextures`, `textureArray`, `emissionTextureArray`, `ParticleIndex`, and `particleTypeHashmap`. The methods of the `ParticleManager` struct include `init`, `deinit`, `reset`, `register`, `readTextureDataAndParticleType`, `readTexture`, `createAnimationFrames`, `extractAnimationSlice`, and `generateTextureArray`. The `init` method initializes the texture arrays, SSBO, and particle system. The `deinit` method deinitializes these components. The `reset` method resets the particle types and textures. The `register` method registers new particle types by reading texture data and parsing configuration from a ZonElement. Errors are logged if required fields are missing or if texture dimensions are incorrect. The `readTextureDataAndParticleType` function reads base and emission textures, checks for errors, and creates animation frames. The `generateTextureArray` method generates texture arrays for both base and emission textures and binds the particle types SSBO.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_particles.zig_chunk_2": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation omits several concrete facts from the raw_content, including specific values for maxCapacity, the structure of UniformStruct, and details about how particles are updated and rendered.",
+    "corrected_summary": null,
+    "corrected_explanation": "The ParticleSystem struct manages particle creation, updating, and rendering in the Cubyz engine. It initializes a graphics pipeline with shaders located at 'assets/cubyz/shaders/particles/particles.vert' and 'assets/cubyz/shaders/particles/particles.frag'. The pipeline is configured with depth testing enabled and no blending attachments. An SSBO (Shader Storage Buffer Object) is created with a dynamic buffer of size `maxCapacity` (524288), which holds particle data. The system uses a mutex to synchronize access to the network creation queue, ensuring thread safety when adding particles from network messages.\n\nThe update method processes each particle's movement, collision detection, and lifetime. Particles are added through the addParticle method, where their initial properties such as position, rotation, velocity, density, drag coefficient, and collision status are set based on random values and emitter settings. The render method binds necessary textures and draws particles using OpenGL commands, applying a billboard transformation to align particles with the camera.\n\nThe ParticleSystem also manages a network creation queue to handle particle spawning from network messages. This ensures that particles can be synchronized across different clients in a multiplayer environment.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784410770.649939,
+        "reason": "The explanation omits several concrete facts from the raw_content, including specific values for maxCapacity, the structure of UniformStruct, and details about how particles are updated and rendered.",
+        "corrected_summary": null,
+        "corrected_explanation": "The ParticleSystem struct manages particle creation, updating, and rendering in the Cubyz engine. It initializes a graphics pipeline with shaders located at 'assets/cubyz/shaders/particles/particles.vert' and 'assets/cubyz/shaders/particles/particles.frag'. The pipeline is configured with depth testing enabled and no blending attachments. An SSBO (Shader Storage Buffer Object) is created with a dynamic buffer of size `maxCapacity` (524288), which holds particle data. The system uses a mutex to synchronize access to the network creation queue, ensuring thread safety when adding particles from network messages.\n\nThe update method processes each particle's movement, collision detection, and lifetime. Particles are added through the addParticle method, where their initial properties such as position, rotation, velocity, density, drag coefficient, and collision status are set based on random values and emitter settings. The render method binds necessary textures and draws particles using OpenGL commands, applying a billboard transformation to align particles with the camera.\n\nThe ParticleSystem also manages a network creation queue to handle particle spawning from network messages. This ensures that particles can be synchronized across different clients in a multiplayer environment.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_particles.zig_chunk_3": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific default values for the fields in EmitterProperties and does not detail the exact parsing logic for DirectionMode.",
+    "corrected_summary": null,
+    "corrected_explanation": "The chunk defines two main structures: `EmitterProperties` and `DirectionMode`. `EmitterProperties` includes fields for speed, lifetime, and rotation randomization. The `speed` field is parsed from a Zon element with a default value of `RandomRange(f32).init(1, 1.5)` if parsing fails. The `lifeTime` field is parsed with a default value of `RandomRange(f32).init(0.75, 1)` if parsing fails. The `randomizeRotation` field is parsed as a boolean with a default value of `true` if parsing fails. The `parse` method in `EmitterProperties` initializes these fields using data from the Zon element or the specified default values if parsing fails.\n\n`DirectionMode` is an enum union with three variants: spread, scatter, and direction. Each variant has its own parsing logic in the `parse` method. If the mode is 'direction', it parses a Vec3f value; otherwise, it initializes the appropriate variant's value based on the string tag. The `parse` method can return an error if an invalid mode is specified.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784410778.1554646,
+        "reason": "The explanation does not provide specific default values for the fields in EmitterProperties and does not detail the exact parsing logic for DirectionMode.",
+        "corrected_summary": null,
+        "corrected_explanation": "The chunk defines two main structures: `EmitterProperties` and `DirectionMode`. `EmitterProperties` includes fields for speed, lifetime, and rotation randomization. The `speed` field is parsed from a Zon element with a default value of `RandomRange(f32).init(1, 1.5)` if parsing fails. The `lifeTime` field is parsed with a default value of `RandomRange(f32).init(0.75, 1)` if parsing fails. The `randomizeRotation` field is parsed as a boolean with a default value of `true` if parsing fails. The `parse` method in `EmitterProperties` initializes these fields using data from the Zon element or the specified default values if parsing fails.\n\n`DirectionMode` is an enum union with three variants: spread, scatter, and direction. Each variant has its own parsing logic in the `parse` method. If the mode is 'direction', it parses a Vec3f value; otherwise, it initializes the appropriate variant's value based on the string tag. The `parse` method can return an error if an invalid mode is specified.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_particles.zig_chunk_4": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the `spawn` method for each spawn shape (point, sphere, cube) and omits concrete values such as the radius in `SpawnSphere` and size in `SpawnCube`. Additionally, it does not cover how errors are handled during parsing of direction mode and spawn data.",
+    "corrected_summary": null,
+    "corrected_explanation": "The code defines an `Emitter` struct that manages particle spawning properties, including shape, speed, direction mode, and collision settings. It includes nested structs like `SpawnPoint`, `SpawnSphere`, and `SpawnCube` to handle different spawn shapes. Each spawn type has a `spawn` method to calculate particle position and velocity based on the emitter's properties and mode.\n\n- **SpawnPoint**: The `spawn` method for `SpawnPoint` calculates the particle position as the same as the emitter's position (`pos`) and generates a random direction vector (`dir`). The speed is determined by the emitter's properties, and the particle velocity (`particleVel`) is calculated by multiplying the direction vector by the speed.\n\n- **SpawnSphere**: The `spawn` method for `SpawnSphere` calculates the particle position within a sphere defined by the radius. It generates a random offset vector (`offsetPos`) within a unit sphere and scales it by the radius to get the final particle position. The speed is determined by the emitter's properties, and the direction vector (`dir`) is calculated based on the mode (direction, scatter, spread).\n\n- **SpawnCube**: The `spawn` method for `SpawnCube` calculates the particle position within a cube defined by the size. It generates a random offset vector (`offsetPos`) within a unit cube and scales it by the size to get the final particle position. The speed is determined by the emitter's properties, and the direction vector (`dir`) is calculated based on the mode (direction, scatter, spread).\n\nThe `Emitter` struct also provides methods for initialization from configuration (`initFromZon`) and for spawning particles (`spawnParticles`). Additionally, it defines a `ParticleType` struct to manage particle visual and behavior properties.\n\nError handling during parsing of direction mode and spawn data is managed by logging an error message and providing default values. For example, if the direction mode cannot be parsed, it defaults to `.spread`. If the spawn shape cannot be parsed, it defaults to a `SpawnPoint`.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784410791.4445748,
+        "reason": "The explanation does not provide specific details about the `spawn` method for each spawn shape (point, sphere, cube) and omits concrete values such as the radius in `SpawnSphere` and size in `SpawnCube`. Additionally, it does not cover how errors are handled during parsing of direction mode and spawn data.",
+        "corrected_summary": null,
+        "corrected_explanation": "The code defines an `Emitter` struct that manages particle spawning properties, including shape, speed, direction mode, and collision settings. It includes nested structs like `SpawnPoint`, `SpawnSphere`, and `SpawnCube` to handle different spawn shapes. Each spawn type has a `spawn` method to calculate particle position and velocity based on the emitter's properties and mode.\n\n- **SpawnPoint**: The `spawn` method for `SpawnPoint` calculates the particle position as the same as the emitter's position (`pos`) and generates a random direction vector (`dir`). The speed is determined by the emitter's properties, and the particle velocity (`particleVel`) is calculated by multiplying the direction vector by the speed.\n\n- **SpawnSphere**: The `spawn` method for `SpawnSphere` calculates the particle position within a sphere defined by the radius. It generates a random offset vector (`offsetPos`) within a unit sphere and scales it by the radius to get the final particle position. The speed is determined by the emitter's properties, and the direction vector (`dir`) is calculated based on the mode (direction, scatter, spread).\n\n- **SpawnCube**: The `spawn` method for `SpawnCube` calculates the particle position within a cube defined by the size. It generates a random offset vector (`offsetPos`) within a unit cube and scales it by the size to get the final particle position. The speed is determined by the emitter's properties, and the direction vector (`dir`) is calculated based on the mode (direction, scatter, spread).\n\nThe `Emitter` struct also provides methods for initialization from configuration (`initFromZon`) and for spawning particles (`spawnParticles`). Additionally, it defines a `ParticleType` struct to manage particle visual and behavior properties.\n\nError handling during parsing of direction mode and spawn data is managed by logging an error message and providing default values. For example, if the direction mode cannot be parsed, it defaults to `.spread`. If the spawn shape cannot be parsed, it defaults to a `SpawnPoint`.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_chunk.zig_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific values for several constants and methods mentioned in raw_content, such as the exact values of `chunkShift`, `chunkSize`, `chunkVolume`, and the detailed behavior of methods like `relX`, `relY`, `relZ`, `fromRelPos`, etc.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines several constants related to chunk dimensions and a Neighbor enum that describes the six possible directions of neighboring blocks. The Neighbor enum includes methods to convert between direction and relative positions, bitmasks, and texture coordinates. It also provides utility functions for reversing directions, checking positivity, extracting vector components, rotating around the z-axis, and iterating over all neighbors. Additionally, it declares memory pools for managing Chunk and ServerChunk instances using a global arena allocator.\n\n**Constants:**\n- `chunkShift`: 5\n- `chunkSize`: 1 << chunkShift (32)\n- `chunkVolume`: 1 << 3*chunkShift (32768)\n- `chunkMask`: chunkSize - 1 (31)\n\n**Neighbor Enum:**\n- `dirUp`: 0\n- `dirDown`: 1\n- `dirPosX`: 2\n- `dirNegX`: 3\n- `dirPosY`: 4\n- `dirNegY`: 5\n\n**Methods:**\n- `toInt(self: Neighbor) u3`: Converts the enum to an integer.\n- `relX(self: Neighbor) i32`: Returns the relative X position of the neighbor.\n- `relY(self: Neighbor) i32`: Returns the relative Y position of the neighbor.\n- `relZ(self: Neighbor) i32`: Returns the relative Z position of the neighbor.\n- `relPos(self: Neighbor) Vec3i`: Returns the relative position as a vector.\n- `fromRelPos(pos: Vec3i) ?Neighbor`: Converts a relative position to a Neighbor enum value if valid.\n- `bitMask(self: Neighbor) u6`: Returns the bitmask for bitmap direction data.\n- `iterable`: An array of all Neighbor values for easy iteration.\n- `orthogonalComponents(self: Neighbor) Vec3i`: Marks the two dimensions that are orthogonal to the neighbor.\n- `textureX(self: Neighbor) Vec3i`: Returns the texture X coordinate relative to the neighbor.\n- `textureY(self: Neighbor) Vec3i`: Returns the texture Y coordinate relative to the neighbor.\n- `reverse(self: Neighbor) Neighbor`: Reverses the direction of the neighbor.\n- `isPositive(self: Neighbor) bool`: Checks if the neighbor is positive.\n- `vectorComponent(self: Neighbor) VectorComponentEnum`: Extracts the vector component of the neighbor.\n- `extractDirectionComponent(self: Neighbor, in: anytype) @TypeOf(in[0])`: Extracts the direction component from a given input.\n- `rotateZ(self: Neighbor) Neighbor`: Rotates the neighbor by 90 degrees counterclockwise around the z-axis.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784410809.2995167,
+        "reason": "The explanation does not provide specific values for several constants and methods mentioned in raw_content, such as the exact values of `chunkShift`, `chunkSize`, `chunkVolume`, and the detailed behavior of methods like `relX`, `relY`, `relZ`, `fromRelPos`, etc.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines several constants related to chunk dimensions and a Neighbor enum that describes the six possible directions of neighboring blocks. The Neighbor enum includes methods to convert between direction and relative positions, bitmasks, and texture coordinates. It also provides utility functions for reversing directions, checking positivity, extracting vector components, rotating around the z-axis, and iterating over all neighbors. Additionally, it declares memory pools for managing Chunk and ServerChunk instances using a global arena allocator.\n\n**Constants:**\n- `chunkShift`: 5\n- `chunkSize`: 1 << chunkShift (32)\n- `chunkVolume`: 1 << 3*chunkShift (32768)\n- `chunkMask`: chunkSize - 1 (31)\n\n**Neighbor Enum:**\n- `dirUp`: 0\n- `dirDown`: 1\n- `dirPosX`: 2\n- `dirNegX`: 3\n- `dirPosY`: 4\n- `dirNegY`: 5\n\n**Methods:**\n- `toInt(self: Neighbor) u3`: Converts the enum to an integer.\n- `relX(self: Neighbor) i32`: Returns the relative X position of the neighbor.\n- `relY(self: Neighbor) i32`: Returns the relative Y position of the neighbor.\n- `relZ(self: Neighbor) i32`: Returns the relative Z position of the neighbor.\n- `relPos(self: Neighbor) Vec3i`: Returns the relative position as a vector.\n- `fromRelPos(pos: Vec3i) ?Neighbor`: Converts a relative position to a Neighbor enum value if valid.\n- `bitMask(self: Neighbor) u6`: Returns the bitmask for bitmap direction data.\n- `iterable`: An array of all Neighbor values for easy iteration.\n- `orthogonalComponents(self: Neighbor) Vec3i`: Marks the two dimensions that are orthogonal to the neighbor.\n- `textureX(self: Neighbor) Vec3i`: Returns the texture X coordinate relative to the neighbor.\n- `textureY(self: Neighbor) Vec3i`: Returns the texture Y coordinate relative to the neighbor.\n- `reverse(self: Neighbor) Neighbor`: Reverses the direction of the neighbor.\n- `isPositive(self: Neighbor) bool`: Checks if the neighbor is positive.\n- `vectorComponent(self: Neighbor) VectorComponentEnum`: Extracts the vector component of the neighbor.\n- `extractDirectionComponent(self: Neighbor, in: anytype) @TypeOf(in[0])`: Extracts the direction component from a given input.\n- `rotateZ(self: Neighbor) Neighbor`: Rotates the neighbor by 90 degrees counterclockwise around the z-axis.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_chunk.zig_chunk_1": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The kb_content omits specific values and details from the raw_content, such as the exact integer values of the Lod enum, the calculations for voxel sizes and chunk widths, and the binary masks used in various methods.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines an enum `Lod` representing different levels of detail (LOD) with specific integer values: 1, 2, 4, 8, 16, and 32. The enum includes methods to navigate between LODs (`next`, `previous`), convert LODs to integers (`toInt`), calculate voxel sizes (`voxelSize`), determine chunk widths (`chunkWidth`), and provide masks for converting global coordinates to LOD resolution and chunk local coordinates (`voxelSizeMask`, `localMask`). The minimum LOD value is 1 with a voxel size of 1, and the maximum LOD value is 32 with a voxel size of 32. The `next` method returns the next LOD level by incrementing the integer value, while the `previous` method decrements it. The `voxelSize` method calculates the voxel size as 2 raised to the power of the LOD's integer value. The `chunkWidth` method calculates the chunk width by multiplying the voxel size by a constant `chunkSize`. The `voxelSizeShift` method returns the integer value of the LOD, which is used in bitwise operations. The `voxelSizeMask` method creates a mask for converting global coordinates to LOD resolution coordinates, and the `localMask` method creates a mask for converting global coordinates to chunk local coordinates. The chunk also contains unit tests verifying the correctness of these methods, such as checking the minimum and maximum values for voxel sizes, chunk widths, and masks.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784410818.8581643,
+        "reason": "The kb_content omits specific values and details from the raw_content, such as the exact integer values of the Lod enum, the calculations for voxel sizes and chunk widths, and the binary masks used in various methods.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines an enum `Lod` representing different levels of detail (LOD) with specific integer values: 1, 2, 4, 8, 16, and 32. The enum includes methods to navigate between LODs (`next`, `previous`), convert LODs to integers (`toInt`), calculate voxel sizes (`voxelSize`), determine chunk widths (`chunkWidth`), and provide masks for converting global coordinates to LOD resolution and chunk local coordinates (`voxelSizeMask`, `localMask`). The minimum LOD value is 1 with a voxel size of 1, and the maximum LOD value is 32 with a voxel size of 32. The `next` method returns the next LOD level by incrementing the integer value, while the `previous` method decrements it. The `voxelSize` method calculates the voxel size as 2 raised to the power of the LOD's integer value. The `chunkWidth` method calculates the chunk width by multiplying the voxel size by a constant `chunkSize`. The `voxelSizeShift` method returns the integer value of the LOD, which is used in bitwise operations. The `voxelSizeMask` method creates a mask for converting global coordinates to LOD resolution coordinates, and the `localMask` method creates a mask for converting global coordinates to chunk local coordinates. The chunk also contains unit tests verifying the correctness of these methods, such as checking the minimum and maximum values for voxel sizes, chunk widths, and masks.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_chunk.zig_chunk_2": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the methods and fields of the `ChunkPosition` and `BlockPos` structs, such as their exact implementations and purposes. Additionally, it omits important information about the `chunkSize` constant and its role in calculations.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines two main structures: `ChunkPosition` and `BlockPos`. The `ChunkPosition` struct represents the position of a chunk in the world, including its voxel size. It provides methods for initializing from world coordinates (`initFromWorldPos`), calculating hash codes (`hashCode`), checking equality with other positions (`equals`), determining distances to a player's position (`getMinDistanceSquared`, `getMinDistanceSquaredFloat`, `getMaxDistanceSquared`, `getCenterDistanceSquared`), and calculating priority (`getPriority`). The `BlockPos` struct represents the position of a block within a chunk using relative coordinates. It includes methods for converting between different coordinate systems (`fromCoords`, `fromWorldCoords`, `fromLodCoords`, `fromIndex`, `toIndex`), accessing neighboring blocks (`neighbor`), and converting to/from an index.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784410826.6948087,
+        "reason": "The explanation does not provide specific details about the methods and fields of the `ChunkPosition` and `BlockPos` structs, such as their exact implementations and purposes. Additionally, it omits important information about the `chunkSize` constant and its role in calculations.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines two main structures: `ChunkPosition` and `BlockPos`. The `ChunkPosition` struct represents the position of a chunk in the world, including its voxel size. It provides methods for initializing from world coordinates (`initFromWorldPos`), calculating hash codes (`hashCode`), checking equality with other positions (`equals`), determining distances to a player's position (`getMinDistanceSquared`, `getMinDistanceSquaredFloat`, `getMaxDistanceSquared`, `getCenterDistanceSquared`), and calculating priority (`getPriority`). The `BlockPos` struct represents the position of a block within a chunk using relative coordinates. It includes methods for converting between different coordinate systems (`fromCoords`, `fromWorldCoords`, `fromLodCoords`, `fromIndex`, `toIndex`), accessing neighboring blocks (`neighbor`), and converting to/from an index.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_chunk.zig_chunk_3": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation omits several concrete facts from raw_content, such as specific values for `width`, `voxelSizeShift`, and `voxelSizeMask`. It also fails to provide answers to the related questions about these specific details.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines the `Chunk` struct, which represents a section of the world in the Cubyz engine. The struct includes several fields such as `pos`, `data`, `width`, `voxelSizeShift`, and `voxelSizeMask`. The `init` method initializes the chunk with specific values for these fields, including calculating `voxelSizeShift` using the logarithm base 2 of `pos.voxelSize`. The `deinitContent` function ensures proper cleanup by deinitializing the block entity map and deferring the destruction of voxel data. The `blockPosToEntityDataMapMutex` is used to manage concurrent access to the block position-to-entity data map. The `updateBlock` method updates a block within the chunk if it lies within bounds, and the `getBlock` method retrieves a block at a specified position. The `liesInChunk` method checks if given coordinates lie within the chunk's bounds. The Chunk struct also includes methods for converting between local and global positions using `getLocalBlockPos` and `localToGlobalPosition`. Additionally, the `unloadBlockEntities` method unloads block entities based on the client or server side.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784410835.8784587,
+        "reason": "The explanation omits several concrete facts from raw_content, such as specific values for `width`, `voxelSizeShift`, and `voxelSizeMask`. It also fails to provide answers to the related questions about these specific details.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines the `Chunk` struct, which represents a section of the world in the Cubyz engine. The struct includes several fields such as `pos`, `data`, `width`, `voxelSizeShift`, and `voxelSizeMask`. The `init` method initializes the chunk with specific values for these fields, including calculating `voxelSizeShift` using the logarithm base 2 of `pos.voxelSize`. The `deinitContent` function ensures proper cleanup by deinitializing the block entity map and deferring the destruction of voxel data. The `blockPosToEntityDataMapMutex` is used to manage concurrent access to the block position-to-entity data map. The `updateBlock` method updates a block within the chunk if it lies within bounds, and the `getBlock` method retrieves a block at a specified position. The `liesInChunk` method checks if given coordinates lie within the chunk's bounds. The Chunk struct also includes methods for converting between local and global positions using `getLocalBlockPos` and `localToGlobalPosition`. Additionally, the `unloadBlockEntities` method unloads block entities based on the client or server side.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_models.zig_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation does not provide specific details about the values and structures defined in the raw content, such as the exact fields of `QuadInfo`, `LightSample`, `ExtraQuadInfo`, and other constants. Additionally, it omits specific questions from the related questions list without answering them.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines several key data structures used in the Cubyz voxel engine's model representation. It includes `QuadInfo` which holds information about a quad face, such as its normal vector (`[3]f32`), corner positions (`[4][3]f32`), texture coordinates (`[4][2]f32`), and texture slot (`u32`). The `ExtraQuadInfo` struct contains additional details like neighboring faces (`?Neighbor`), lighting samples (`[]LightSample`), and alignment flags (`bool`). The chunk also defines types for triangles and quads, along with enums for model and quad indices that provide methods to access the underlying data. Functions like `snapToGrid` are used for grid snapping operations, where `gridSize` is set to 4096 and `collisionGridSize` is set to 16.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784410852.8616786,
+        "reason": "The explanation does not provide specific details about the values and structures defined in the raw content, such as the exact fields of `QuadInfo`, `LightSample`, `ExtraQuadInfo`, and other constants. Additionally, it omits specific questions from the related questions list without answering them.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines several key data structures used in the Cubyz voxel engine's model representation. It includes `QuadInfo` which holds information about a quad face, such as its normal vector (`[3]f32`), corner positions (`[4][3]f32`), texture coordinates (`[4][2]f32`), and texture slot (`u32`). The `ExtraQuadInfo` struct contains additional details like neighboring faces (`?Neighbor`), lighting samples (`[]LightSample`), and alignment flags (`bool`). The chunk also defines types for triangles and quads, along with enums for model and quad indices that provide methods to access the underlying data. Functions like `snapToGrid` are used for grid snapping operations, where `gridSize` is set to 4096 and `collisionGridSize` is set to 16.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "codebase_src_models.zig_chunk_1": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "Nick",
+    "reason": "The explanation omits specific details about the fields and methods of the `Model` struct, such as their exact purposes and how they interact. It also fails to provide concrete examples or explanations for some of the functions, like `getFaceNeighbor`, `fullyOccludesNeighbor`, `initWithCollisionModel`, `init`, `edgeInterp`, `solveDepth`, and `rasterize`. Additionally, the related questions are not answered in the explanation.",
+    "corrected_summary": null,
+    "corrected_explanation": "**Explanation**\nThe `Model` struct manages model data including its bounding box (`min`, `max`), internal quads (`internalQuads`), neighbor-facing quads (`neighborFacingQuads`), occlusion status of neighbors (`isNeighborOccluded`), overall occlusion flags (`allNeighborsOccluded`, `noNeighborsOccluded`), presence of neighbor-facing quads (`hasNeighborFacingQuads`), and collision boxes (`collision`). The struct provides methods to initialize models with or without collision data and to rasterize triangles.\n\n- **Fields**:\n  - `min`: Minimum coordinates of the model's bounding box.\n  - `max`: Maximum coordinates of the model's bounding box.\n  - `internalQuads`: Array of indices for internal quads.\n  - `neighborFacingQuads`: Array of arrays, each containing indices for neighbor-facing quads in a specific direction (0-5).\n  - `isNeighborOccluded`: Boolean array indicating if neighbors are occluded in each direction (0-5).\n  - `allNeighborsOccluded`: Boolean flag indicating if all neighbors are occluded.\n  - `noNeighborsOccluded`: Boolean flag indicating if no neighbors are occluded.\n  - `hasNeighborFacingQuads`: Boolean flag indicating if there are any neighbor-facing quads.\n  - `collision`: Array of collision boxes.\n\n- **Methods**:\n  - `getFaceNeighbor(quad: *const QuadInfo) ?chunk.Neighbor`: Determines the neighboring direction based on quad corners. It checks if all corners in a specific axis are either 0 or 1 to identify the neighbor direction (negX, negY, down, posX, posY, up).\n  - `fullyOccludesNeighbor(quad: *const QuadInfo) bool`: Checks if a quad fully occludes a neighbor by counting the number of corners that are either all 0 or all 1 in two out of three axes.\n  - `initWithCollisionModel(quadInfos: []const QuadInfo, collisionModel: ?[]const Box) ModelIndex`: Initializes a model with given quad information and optional collision data. It adjusts quads to a fixed-point grid, categorizes them into internal or neighbor-facing quads, and sets occlusion flags.\n  - `init(quadInfos: []const QuadInfo) ModelIndex`: Convenience wrapper that calls `initWithCollisionModel` without collision data.\n\n- **Functions**:\n  - `edgeInterp(y: f32, x0: f32, y0: f32, x1: f32, y1: f32) f32`: Interpolates the x-value based on the given y-value and two points (x0, y0) and (x1, y1).\n  - `solveDepth(normal: Vec3f, v0: Vec3f, xIndex: usize, yIndex: usize, zIndex: usize, u: f32, v: f32) f32`: Solves the depth of a point on a plane defined by a normal vector and a point (`v0`). It calculates the depth based on the normal components and the plane offset.\n  - `rasterize(triangle: [3]Vec3f, grid: *[collisionGridSize][collisionGridSize]CollisionGridInteger, normal: Vec3f) void`: Rasterizes a triangle by interpolating edges, solving depth, and updating the collision grid. It converts triangle vertices to grid coordinates, calculates edge intersections, and updates the grid based on the triangle's normal.\n\nThese methods and functions work together to manage model data, determine neighbor relationships, check occlusion, initialize models with or without collision data, and handle triangle rasterization for collision detection.",
+    "corrected_related_questions": [
+      "- What is the purpose of the `getFaceNeighbor` function? It determines the neighboring direction based on quad corners by checking if all corners in a specific axis are either all 0 or all 1.",
+      "- How does the `fullyOccludesNeighbor` function determine if a quad fully occludes a neighbor? It checks if a quad has corners that are all 0 or all 1 in two out of three axes.",
+      "- What steps are involved in initializing a model with collision data using `initWithCollisionModel`? It adjusts quads to a fixed-point grid, categorizes them into internal or neighbor-facing quads, and sets occlusion flags.",
+      "- What is the role of the `init` method in the `Model` struct? It is a convenience wrapper that calls `initWithCollisionModel` without collision data.",
+      "- How does the `edgeInterp` function work to interpolate edge values? It calculates the x-value based on the given y-value and two points (x0, y0) and (x1, y1).",
+      "- What is the purpose of the `solveDepth` function in the context of triangle rasterization? It solves the depth of a point on a plane defined by a normal vector and a point (`v0`).",
+      "- How does the `rasterize` function update the collision grid with triangle information? It converts triangle vertices to grid coordinates, calculates edge intersections, and updates the grid based on the triangle's normal."
+    ],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "Nick",
+        "timestamp": 1784410884.3846948,
+        "reason": "The explanation omits specific details about the fields and methods of the `Model` struct, such as their exact purposes and how they interact. It also fails to provide concrete examples or explanations for some of the functions, like `getFaceNeighbor`, `fullyOccludesNeighbor`, `initWithCollisionModel`, `init`, `edgeInterp`, `solveDepth`, and `rasterize`. Additionally, the related questions are not answered in the explanation.",
+        "corrected_summary": null,
+        "corrected_explanation": "**Explanation**\nThe `Model` struct manages model data including its bounding box (`min`, `max`), internal quads (`internalQuads`), neighbor-facing quads (`neighborFacingQuads`), occlusion status of neighbors (`isNeighborOccluded`), overall occlusion flags (`allNeighborsOccluded`, `noNeighborsOccluded`), presence of neighbor-facing quads (`hasNeighborFacingQuads`), and collision boxes (`collision`). The struct provides methods to initialize models with or without collision data and to rasterize triangles.\n\n- **Fields**:\n  - `min`: Minimum coordinates of the model's bounding box.\n  - `max`: Maximum coordinates of the model's bounding box.\n  - `internalQuads`: Array of indices for internal quads.\n  - `neighborFacingQuads`: Array of arrays, each containing indices for neighbor-facing quads in a specific direction (0-5).\n  - `isNeighborOccluded`: Boolean array indicating if neighbors are occluded in each direction (0-5).\n  - `allNeighborsOccluded`: Boolean flag indicating if all neighbors are occluded.\n  - `noNeighborsOccluded`: Boolean flag indicating if no neighbors are occluded.\n  - `hasNeighborFacingQuads`: Boolean flag indicating if there are any neighbor-facing quads.\n  - `collision`: Array of collision boxes.\n\n- **Methods**:\n  - `getFaceNeighbor(quad: *const QuadInfo) ?chunk.Neighbor`: Determines the neighboring direction based on quad corners. It checks if all corners in a specific axis are either 0 or 1 to identify the neighbor direction (negX, negY, down, posX, posY, up).\n  - `fullyOccludesNeighbor(quad: *const QuadInfo) bool`: Checks if a quad fully occludes a neighbor by counting the number of corners that are either all 0 or all 1 in two out of three axes.\n  - `initWithCollisionModel(quadInfos: []const QuadInfo, collisionModel: ?[]const Box) ModelIndex`: Initializes a model with given quad information and optional collision data. It adjusts quads to a fixed-point grid, categorizes them into internal or neighbor-facing quads, and sets occlusion flags.\n  - `init(quadInfos: []const QuadInfo) ModelIndex`: Convenience wrapper that calls `initWithCollisionModel` without collision data.\n\n- **Functions**:\n  - `edgeInterp(y: f32, x0: f32, y0: f32, x1: f32, y1: f32) f32`: Interpolates the x-value based on the given y-value and two points (x0, y0) and (x1, y1).\n  - `solveDepth(normal: Vec3f, v0: Vec3f, xIndex: usize, yIndex: usize, zIndex: usize, u: f32, v: f32) f32`: Solves the depth of a point on a plane defined by a normal vector and a point (`v0`). It calculates the depth based on the normal components and the plane offset.\n  - `rasterize(triangle: [3]Vec3f, grid: *[collisionGridSize][collisionGridSize]CollisionGridInteger, normal: Vec3f) void`: Rasterizes a triangle by interpolating edges, solving depth, and updating the collision grid. It converts triangle vertices to grid coordinates, calculates edge intersections, and updates the grid based on the triangle's normal.\n\nThese methods and functions work together to manage model data, determine neighbor relationships, check occlusion, initialize models with or without collision data, and handle triangle rasterization for collision detection.",
+        "corrected_related_questions": [
+          "- What is the purpose of the `getFaceNeighbor` function? It determines the neighboring direction based on quad corners by checking if all corners in a specific axis are either all 0 or all 1.",
+          "- How does the `fullyOccludesNeighbor` function determine if a quad fully occludes a neighbor? It checks if a quad has corners that are all 0 or all 1 in two out of three axes.",
+          "- What steps are involved in initializing a model with collision data using `initWithCollisionModel`? It adjusts quads to a fixed-point grid, categorizes them into internal or neighbor-facing quads, and sets occlusion flags.",
+          "- What is the role of the `init` method in the `Model` struct? It is a convenience wrapper that calls `initWithCollisionModel` without collision data.",
+          "- How does the `edgeInterp` function work to interpolate edge values? It calculates the x-value based on the given y-value and two points (x0, y0) and (x1, y1).",
+          "- What is the purpose of the `solveDepth` function in the context of triangle rasterization? It solves the depth of a point on a plane defined by a normal vector and a point (`v0`).",
+          "- How does the `rasterize` function update the collision grid with triangle information? It converts triangle vertices to grid coordinates, calculates edge intersections, and updates the grid based on the triangle's normal."
         ]
       }
     ]
