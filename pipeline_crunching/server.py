@@ -152,6 +152,18 @@ def _format_hardware_info(hw: dict) -> str:
     dual_text = f"  •  {Colors.CYAN}{Colors.BOLD}DUAL-LANE{Colors.RESET}" if hw.get("dual_lane") else ""
     return f"{os_label}  •  {gpu_label}{vram_text}  •  {ram_text}{dual_text}"
 
+def _format_benchmark_note(hw: dict):
+    """A real, correctly-detected GPU sitting unused while the client runs on CPU looks like a
+    dashboard bug until you know WHY -- benchmark_lane() (a real timed inference call, see its own
+    comment) is what actually decides GPU vs CPU, not VRAM detection alone. Returns None when
+    there's nothing surprising to explain (no GPU present at all, or the GPU IS the active lane)."""
+    if not hw or hw.get("gpu_type") in (None, "cpu") or hw.get("primary_is_gpu"):
+        return None
+    gpu_time, cpu_time = hw.get("benchmark_gpu_time"), hw.get("benchmark_cpu_time")
+    if gpu_time is None:
+        return f"{Colors.YELLOW}⚠ GPU benchmark FAILED or timed out{Colors.RESET} -- falling back to CPU (CPU: {cpu_time:.1f}s)" if isinstance(cpu_time, (int, float)) else f"{Colors.YELLOW}⚠ GPU benchmark FAILED or timed out{Colors.RESET} -- falling back to CPU"
+    return f"{Colors.YELLOW}⚠ GPU benchmark succeeded ({gpu_time:.1f}s) but CPU was faster/chosen instead ({cpu_time:.1f}s){Colors.RESET}" if isinstance(cpu_time, (int, float)) else f"{Colors.YELLOW}⚠ GPU benchmark succeeded ({gpu_time:.1f}s) but CPU was chosen instead{Colors.RESET}"
+
 def _format_progress_line(mode: str, stats: dict) -> str:
     if mode == "audit":
         return (f"{stats.get('chunks_audited', 0)} audited  •  {stats.get('issues_found', 0)} issues found  •  "
@@ -236,6 +248,9 @@ def render_dashboard():
         # (OS + GPU label + VRAM + RAM + an optional DUAL-LANE flag) that overflow in practice
         # would only happen on an extremely narrow terminal, where it just wraps instead.
         lines.append(f"  System   : {_format_hardware_info(_user_hardware_info.get(user_id))}")
+        benchmark_note = _format_benchmark_note(_user_hardware_info.get(user_id))
+        if benchmark_note:
+            lines.append(f"             {benchmark_note}")
 
         last = _user_last_status.get(user_id)
         prefix = "  Status   : "
@@ -450,7 +465,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.1.2"
-LATEST_CLIENT_VERSION = "1.1.26"
+LATEST_CLIENT_VERSION = "1.1.27"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:
@@ -2207,6 +2222,16 @@ def submit_diagnostics(payload: dict):
             "platform": payload.get("platform"), "gpu_type": payload.get("gpu_type"),
             "total_vram_gb": payload.get("total_vram_gb"), "system_ram_gb": payload.get("system_ram_gb"),
             "dual_lane": payload.get("dual_lane"),
+            # primary_is_gpu/benchmark_*_time were already being sent in this same event and
+            # silently dropped -- exactly the data needed to explain the confusing-looking case of
+            # a real, correctly-detected GPU sitting unused while the client runs on CPU: VRAM
+            # detection succeeding just means the card exists, not that benchmark_lane() (a real
+            # inference call, not a guess) found it fast/working enough to actually use. Confirmed
+            # live: a volunteer's dashboard panel showed "NVIDIA GPU (12GB VRAM)" right next to
+            # "lane: CPU" with nothing explaining the gap.
+            "primary_is_gpu": payload.get("primary_is_gpu"),
+            "benchmark_gpu_time": payload.get("benchmark_gpu_time"),
+            "benchmark_cpu_time": payload.get("benchmark_cpu_time"),
         }
 
     if payload.get("event") == "task_gave_up" and payload.get("mode") == "rag":

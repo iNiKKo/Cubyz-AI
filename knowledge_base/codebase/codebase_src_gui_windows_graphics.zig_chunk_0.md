@@ -9,7 +9,7 @@
 This chunk defines a GUI window for graphics settings with various sliders and checkboxes to adjust rendering parameters.
 
 ## Explanation
-The code initializes a `GuiWindow` named `window` with specific content size and behavior. It declares several arrays of configuration options such as render distances, LOD values, anisotropy levels, resolutions, leaves qualities, FPS presets, and more. The chunk includes callback functions for each setting to update the corresponding settings in the `settings` module when a user interacts with the GUI components. These callbacks handle saving changes and reloading resources where necessary. Additionally, there are formatter functions that generate display text for certain settings values.
+This chunk defines a GUI window named `window` with content size of (128, 256) and behavior to close if the mouse is grabbed. It declares several arrays for configuration options: render distances (`renderDistances`) ranging from 5 to 24 in increments of 1; LOD values (`lodValues`) as strings representing levels from '0.5' to '9'; anisotropy levels (`anisotropy`) with values [1, 2, 4, 8, 16]; resolutions (`resolutions`) at 25, 50, and 100; leaves qualities (`leavesQualities`) from 0 to 4; FPS presets (`fpsPresetsValue`) ranging from 5 to 360 in increments of 5 with an 'unlimited' option. The chunk includes callback functions for each setting to update the corresponding settings in the `settings` module when a user interacts with GUI components, handling saving changes and reloading resources where necessary. Additionally, there are formatter functions that generate display text for certain settings values.
 
 ## Code Example
 ```zig
@@ -29,6 +29,6 @@ fn fpsCapGetIndex(fpsOptional: ?u32) u16 {
 - What formatter function is used for displaying FOV values?
 - How are changes to anisotropic filtering applied in the code?
 - What happens when a user adjusts the resolution scale setting?
-- How are FPS presets stored and displayed in the GUI?
+- What are the specific FPS presets stored and displayed in the GUI?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_graphics.zig_chunk_0*

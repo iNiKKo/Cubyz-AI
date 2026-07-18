@@ -1,15 +1,15 @@
 {
   "nick": {
-    "chunks_audited": 1601,
-    "issues_found": 1075,
-    "fixes_applied": 614,
-    "reviews_done": 844
+    "chunks_audited": 1672,
+    "issues_found": 1128,
+    "fixes_applied": 627,
+    "reviews_done": 851
   },
   "nickc": {
     "chunks_audited": 4,
     "issues_found": 4,
     "fixes_applied": 0,
-    "reviews_done": 755
+    "reviews_done": 777
   },
   "nickmac": {
     "chunks_audited": 147,
@@ -21,11 +21,11 @@
     "chunks_audited": 1,
     "issues_found": 0,
     "fixes_applied": 0,
-    "reviews_done": 238
+    "reviews_done": 244
   },
   "caleb": {
-    "chunks_audited": 44,
-    "issues_found": 42,
+    "chunks_audited": 52,
+    "issues_found": 49,
     "fixes_applied": 1,
     "reviews_done": 0
   }

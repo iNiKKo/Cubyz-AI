@@ -9,7 +9,14 @@
 Handles logging to standard error with optional ANSI color formatting.
 
 ## Explanation
-The chunk defines functions for logging messages at different levels (server and chat) to standard error. It uses a fixed buffer allocator to format messages, optionally converting text colors to ANSI escape codes if supported. The `logToStdErr` function manages the allocation, formatting, and writing of log messages, while `convertColorToANSI` handles the conversion of font effects to ANSI sequences.
+The chunk defines functions for logging messages at different levels (server and chat) to standard error. It uses a fixed buffer allocator with a predefined buffer size of 65536 bytes to format messages, optionally converting text colors to ANSI escape codes if supported. The `logToStdErr` function manages the allocation, formatting, and writing of log messages using this buffer. The `convertColorToANSI` function handles the conversion of font effects to ANSI sequences by iterating through parsed text and applying appropriate ANSI escape codes based on color, bold, italic, strikethrough, and underline attributes. Specific details include:
+- Buffer size: 65536 bytes
+- Allocator type: `std.heap.FixedBufferAllocator`
+- ANSI escape code generation for colors uses RGB values encoded as '38;2;r;g;b'
+- Bold attribute is toggled with '1;' or '22;'
+- Italic attribute is toggled with '3;' or '23;'
+- Strikethrough attribute is toggled with '9;' or '29;'
+- Underline attribute is toggled with '4;' or '24;'
 
 ## Code Example
 ```zig

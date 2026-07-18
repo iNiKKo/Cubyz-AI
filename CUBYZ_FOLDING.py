@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.26"
+VERSION = "1.1.27"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -3039,6 +3039,20 @@ def main():
         # suffix would otherwise just silently reproduce the original id) while staying within
         # that same 3-9 range the server itself validates against.
         cpu_user_id = user_id[:8] + "c"
+        # The CPU lane is a fully separate user_id on the server (see cpu_user_id's own comment)
+        # but used to never get its own session_start report at all -- only the primary lane's
+        # user_id ever sent one, tagged with ITS OWN specs -- so the admin dashboard showed the
+        # primary lane correctly (real GPU, DUAL-LANE flag) and the CPU lane's panel as "unknown"
+        # forever, confirmed live. Sends the CPU lane's own event, describing this specific lane
+        # (no GPU from its own point of view, same machine's RAM/OS, its own chosen model/tier),
+        # reusing the CPU benchmark time already measured above rather than re-benchmarking.
+        submit_diagnostic_to_server({
+            "event": "session_start", "user_id": cpu_user_id, "platform": PLATFORM, "gpu_type": "cpu",
+            "total_vram_gb": 0.0, "system_ram_gb": round(system_ram_gb, 2),
+            "chosen_model": cpu_model, "hardware_tier": cpu_tier, "client_version": VERSION,
+            "dual_lane": True, "primary_is_gpu": False,
+            "benchmark_gpu_time": None, "benchmark_cpu_time": cpu_time,
+        })
         dual_controller = DualLaneController(board=board, cpu_lane_kwargs=dict(
             lane_tag="CPU", user_id=cpu_user_id, hardware_tier=cpu_tier, chosen_model=cpu_model,
             max_threads=cpu_lane_threads, cooldown=1.0, mode_desc="Eco Profile (Automated: Secondary CPU lane, running alongside the primary GPU lane)",

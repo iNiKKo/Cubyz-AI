@@ -9,7 +9,18 @@
 The chunk implements collision detection and response for entities within the game world, including box intersection checks and surface property calculations.
 
 ## Explanation
-This chunk defines a `collision` struct containing various functions related to collision detection. The `Box` struct represents an axis-aligned bounding box with methods to calculate its center and extent, as well as checking for intersections with other boxes. The `collideWithBlock` function determines if an entity collides with a block and calculates the distance of collision. The `collides` function checks for collisions in a specific direction and amount, iterating over potential blocks in that direction. The `calculateSurfaceProperties` function computes friction and bounciness properties based on the surface entities are interacting with.
+This chunk defines a `collision` struct containing various functions related to collision detection. The `Box` struct represents an axis-aligned bounding box with the following properties and methods:
+- `min`: Minimum coordinates of the box.
+- `max`: Maximum coordinates of the box.
+- `center()`: Calculates the center point of the box as `(self.min + self.max) * @as(Vec3d, @splat(0.5))`.
+- `extent()`: Calculates half the size of the box in each dimension as `(self.max - self.min) * @as(Vec3d, @splat(0.5))`.
+- `intersects(other: Box) bool`: Checks if this box intersects with another box by comparing their minimum and maximum coordinates.
+
+The `collideWithBlock` function determines if an entity collides with a block and calculates the distance of collision. It iterates over each block's collision model to check for intersections, adjusting positions based on direction vectors and distances.
+
+The `collides` function checks for collisions in a specific direction (x, y, z) and amount, iterating over potential blocks in that direction. It updates bounding box coordinates accordingly and returns the resulting collision box if found.
+
+The `calculateSurfaceProperties` function computes friction and bounciness properties based on the surface entities are interacting with. It calculates the bounding box for the entity's hitbox and iterates through adjacent blocks to determine surface properties, adjusting for block positions and models.
 
 ## Code Example
 ```zig

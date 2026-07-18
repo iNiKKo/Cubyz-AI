@@ -9,7 +9,7 @@
 Handles chunk compression and decompression for storage to disk or client transmission.
 
 ## Explanation
-The `ChunkCompression` struct provides methods to compress and decompress chunk data, including both block data and block entity data. It supports multiple compression algorithms tailored to different scenarios, such as lossless and lossy compression based on the palette size and block properties. The `storeChunk` function compresses a chunk's data into a byte slice suitable for storage or transmission, while the `loadChunk` function decompresses this data back into a chunk structure. The `compressBlockData` and `decompressBlockData` methods handle the compression and decompression of block data using various algorithms, optimizing for different cases like uniform palettes or large palettes. Similarly, `compressBlockEntityData` and `decompressBlockEntityData` manage the serialization and deserialization of block entity data, ensuring that entities are correctly stored and loaded with their respective states.
+The `ChunkCompression` struct provides methods to compress and decompress chunk data, including both block data and block entity data. It supports multiple compression algorithms tailored to different scenarios, such as lossless and lossy compression based on the palette size and block properties. The specific compression algorithms are defined in enums: `ChunkCompressionAlgo` (e.g., `deflate_with_position_no_block_entities`, `uniform`) and `BlockEntityCompressionAlgo` (`raw`). The `storeChunk` function compresses a chunk's data into a byte slice suitable for storage or transmission, while the `loadChunk` function decompresses this data back into a chunk structure. The `compressBlockData` method handles the compression of block data using various algorithms, optimizing for different cases like uniform palettes or large palettes. Similarly, `decompressBlockData` manages the decompression of block data based on the specified algorithm. The `compressBlockEntityData` and `decompressBlockEntityData` methods manage the serialization and deserialization of block entity data, ensuring that entities are correctly stored and loaded with their respective states. Additionally, thread safety is ensured through mutex locking when handling block entities.
 
 ## Code Example
 ```zig
@@ -24,15 +24,11 @@ pub fn storeChunk(allocator: main.heap.NeverFailingAllocator, ch: *chunk.Chunk, 
 ```
 
 ## Related Questions
-- What are the different compression algorithms supported by ChunkCompression?
+- What specific compression algorithms are supported by ChunkCompression?
 - How does ChunkCompression handle block entity data during storage and loading?
 - What is the role of the `allowLossy` parameter in compressBlockData?
 - How does ChunkCompression ensure thread safety when handling block entities?
-- Can you explain the process of decompressing block data in more detail?
+- Can you explain the process of decompressing block data in more detail, including specific algorithms used?
 - What error handling is implemented during the decompression of block entity data?
-- How does ChunkCompression optimize storage for chunks with uniform palettes?
-- What are the differences between `storeChunk` and `loadChunk` methods?
-- Can you describe the use of mutexes in the compression and decompression process?
-- How does ChunkCompression manage memory allocation during compression and decompression?
 
 *Source: unknown | chunk_id: codebase_src_server_storage.zig_chunk_3*

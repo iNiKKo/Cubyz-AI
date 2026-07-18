@@ -9,7 +9,7 @@
 Handles rotation logic for carpet blocks in the Cubyz voxel engine.
 
 ## Explanation
-This chunk manages the rotation of carpet blocks within the Cubyz engine. It includes functions to rotate block models based on given angles and data, initialize and deinitialize resources, and reset the state. The `rotateZ` function uses a precomputed table to efficiently handle rotations. The `createBlockModel` function generates rotated models for different orientations and stores them in a hashmap for quick retrieval. The `model` function retrieves the model index for a given block based on its data.
+This chunk manages the rotation of carpet blocks within the Cubyz engine. It includes functions to handle block model rotations based on given angles and data, initialize and deinitialize resources, and reset the state. The `rotateZ` function uses a precomputed table generated at compile time for each angle from 0 to 360 degrees in increments of 90 degrees (i.e., 0°, 90°, 180°, 270°). This table maps each bit pattern representing different orientations to its corresponding rotated orientation. The `createBlockModel` function generates rotated models for different orientations based on the CarpetData structure which defines boolean flags for negX, posX, negY, posY, negZ, and posZ. It stores these models in a hashmap (`rotatedModels`) for quick retrieval using model IDs. If an invalid model ID is encountered, it logs an error and defaults to 'cubyz:cube'. The `model` function retrieves the model index for a given block based on its data.
 
 ## Code Example
 ```zig

@@ -9,7 +9,7 @@
 This chunk implements logic for handling carpet blocks in the Cubyz voxel engine, including generation, ray intersection, breaking, and connectivity updates.
 
 ## Explanation
-The chunk defines several functions to manage carpet blocks. `generateData` determines how a carpet block should be placed based on its neighbors and player interaction. `closestRay` calculates the closest intersection point or bit for a given block and direction. `rayIntersection` uses `closestRay` to find intersections with items. `onBlockBreaking` handles breaking logic by removing bits from the block's data. `canBeChangedInto` checks if one block can be changed into another, delegating to another module. `itemDropsOnChange` calculates the number of items that should drop when a block changes. `updateBlockFromNeighborConnectivity` updates a carpet block's connectivity based on its neighbors.
+This chunk implements logic for handling carpet blocks in the Cubyz voxel engine, including generation, ray intersection, breaking, and connectivity updates. The `generateData` function determines how a carpet block should be placed based on its neighbors and player interaction by checking specific bits (1, 2, 4, 8, 16, 32) for each direction relative to the player's position. If any of these bits are set in the neighbor data and match the player's direction, it breaks out of the loop; otherwise, it updates the block data accordingly. The `closestRay` function calculates the closest intersection point or bit by iterating over specific bits (1, 2, 4, 8, 16, 32) for a given block and direction. If an intersection is found, it returns the corresponding bit. The `rayIntersection` function uses `closestRay` to find intersections with items. The `onBlockBreaking` function handles breaking logic by removing bits from the block's data based on player interaction. The `canBeChangedInto` function checks if one block can be changed into another and delegates this check to the `torch` module. The `itemDropsOnChange` function calculates the number of items that should drop when a block changes, considering the difference in bit counts between old and new blocks. Finally, the `updateBlockFromNeighborConnectivity` function updates a carpet block's connectivity based on its neighbors by checking specific directions (negX, posX, negY, posY, negZ, posZ) and updating the corresponding bits if necessary.
 
 ## Code Example
 ```zig
@@ -19,11 +19,8 @@ pub fn rayIntersection(block: Block, item: main.items.Item, relativePlayerPos: V
 ```
 
 ## Related Questions
-- How does the `generateData` function determine if a carpet block should be placed?
-- What is the purpose of the `closestRay` function in this chunk?
-- How does the `onBlockBreaking` function handle breaking a carpet block?
-- What does the `canBeChangedInto` function delegate to?
-- How are item drops calculated when a block changes in this chunk?
-- What specific neighbor directions are checked in `updateBlockFromNeighborConnectivity`?
+- How does the `generateData` function determine which bits to set or unset for each direction?
+- What are the exact bits checked by the `closestRay` function?
+- How does the `updateBlockFromNeighborConnectivity` function update block data based on neighbor connectivity?
 
 *Source: unknown | chunk_id: codebase_mods_cubyz_rotations_carpet.zig_chunk_1*

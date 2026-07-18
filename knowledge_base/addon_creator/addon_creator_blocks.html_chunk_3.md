@@ -9,7 +9,7 @@
 The UI component provides a button to save blocks to the project and styles for block layout grids.
 
 ## Explanation
-This chunk includes a primary button with an onclick event handler that triggers `window.saveBlockToProject()` when clicked. The button is styled with specific background color, margin, and width. Additionally, there are CSS styles defined for hint text, tag descriptions, field explanations, block layout grids, and layout face boxes. These styles manage the appearance of block faces, including images and labels.
+This chunk includes a primary button with an onclick event handler that triggers `window.saveBlockToProject()` when clicked. The button is styled with the following attributes: background color (`#28a745`), margin-top (`20px`), and width (`100%`). Additionally, there are CSS styles defined for hint text (`.hint-text`), tag descriptions (`.tag-desc`), field explanations (`.field-explanation`), block layout grids (`.block-layout-cross-grid`), and layout face boxes (`.layout-face-box`). The `.block-layout-cross-grid` class defines a grid with 3 columns of `70px` each and 4 rows of `70px`, with gaps of `6px`. Each layout face box has a background color (`#252526`), border style (`1px solid #3c3c3c`), rounded corners, and dimensions of `70x70px`. The images within the block faces are styled to cover their containers with pixelated rendering. Face labels have specific styling: positioned at the bottom center, font size (`9px`), white text color, semi-transparent black background, padding (`1px 0`), bold font weight, and uppercase text transformation.
 
 ## Related Questions
 - What is the function of the 'Save Block to Project' button?
