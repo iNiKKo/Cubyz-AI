@@ -110,7 +110,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.11"
+VERSION = "1.1.12"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -2234,9 +2234,16 @@ def main():
         dual_controller.start()  # on by default, same as before this toggle existed -- just now reversible
 
     crunch_lane(
+        # fancy_ui is always True here, even on a dual-capable machine -- it means "fall back to
+        # my own solo box whenever current_board() has nothing to report into," which is true
+        # both for a genuinely solo machine AND a dual-capable one that's toggled the CPU lane
+        # off via the pause menu's [D] option. Fixing this at "not dual_capable" (a one-time
+        # startup snapshot) meant a dual-capable machine's fancy_ui was permanently False, so
+        # toggling dual mode off left it with no fallback at all -- board (via current_board())
+        # correctly went away, but so did the box, leaving nothing but plain text.
         lane_tag="GPU" if dual_capable else "MAIN", user_id=user_id, hardware_tier=hardware_tier,
         chosen_model=chosen_model, max_threads=max_threads, cooldown=cooldown, mode_desc=mode_desc,
-        hardware_label=hardware_label_for(gpu_type), force_cpu=False, fancy_ui=not dual_capable,
+        hardware_label=hardware_label_for(gpu_type), force_cpu=False, fancy_ui=True,
         pause_event=dual_controller.pause_event if dual_controller is not None else None,
         dual_controller=dual_controller,
     )
