@@ -111,7 +111,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.2.4"
+VERSION = "1.2.5"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -2608,13 +2608,32 @@ def _print_interrupt_menu(dual_controller, parallel_controller, has_gpu):
     print(f"  [G] Run a live GPU diagnostic")
     print()
 
+def _menu_input(prompt: str) -> str:
+    """input() wrapped for use ANYWHERE inside the already-open pause menu -- a second Ctrl+C
+    landing here (the menu itself is only reachable via a first Ctrl+C already caught by
+    crunch_lane's own try/except) was previously not caught by anything: it's a NEW
+    KeyboardInterrupt raised while the first one is still being handled, so crunch_lane's own
+    `except KeyboardInterrupt` (which only guards its `try`) never sees it, and it propagates
+    all the way up and kills the entire process -- confirmed live as "Ctrl+C just straight up
+    stops the client" the moment parallel workers made the menu's scrolling-while-open UX bad
+    enough that a frustrated repeat Ctrl+C became likely. A second Ctrl+C while already paused is
+    an unambiguous "I want out NOW," not a malfunction -- treated the same as picking [Q] rather
+    than crashing with a raw traceback. Returns the raw stripped input (case preserved) -- callers
+    that need case-insensitive comparison (the main menu's own single-letter choice) lower() it
+    themselves; a free-text answer (a chosen volunteer name, a rename confirmation) must NOT be
+    forced to lowercase here, or it would silently change what the user actually typed."""
+    try:
+        return input(prompt).strip()
+    except KeyboardInterrupt:
+        sys.exit(f"\n{Colors.CYAN}[X] Disconnecting safely. Thank you for your computational contributions!{Colors.RESET}")
+
 def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None,
                            parallel_controller: "ParallelWorkerPoolController | None" = None,
                            has_gpu: bool = False):
     print(f"\n\n{Colors.YELLOW}{Colors.BOLD}[||] Node Execution Paused via User Action.{Colors.RESET}")
     while True:
         _print_interrupt_menu(dual_controller, parallel_controller, has_gpu)
-        choice = input("Enter your choice: ").strip().lower()
+        choice = _menu_input("Enter your choice: ").lower()
         if choice == 'r': return
         elif choice == 'l': fetch_and_show_leaderboard()
         elif choice == 'u': fetch_and_show_userlist()
@@ -2643,7 +2662,7 @@ def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None,
                     print(f"{Colors.RED}[X] Not enough headroom to enable parallel workers: {reason}. Staying at a single request at a time.{Colors.RESET}")
         elif choice == 'n':
             current = load_saved_user()
-            new_id = input(f"Current volunteer name: {current}. Enter a new one (3-12 letters), or leave blank to cancel: ").strip()
+            new_id = _menu_input(f"Current volunteer name: {current}. Enter a new one (3-12 letters), or leave blank to cancel: ")
             if not new_id:
                 print(f"{Colors.GRAY}[~] Rename cancelled.{Colors.RESET}")
             elif not is_valid_user_id(new_id):
@@ -2670,9 +2689,9 @@ def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None,
                 os.execv(sys.executable, [sys.executable] + sys.argv)
         elif choice == 'x':
             current = load_saved_user()
-            confirm = input(f"{Colors.RED}This permanently deletes '{current}' from the server -- stats, leaderboard entry, "
+            confirm = _menu_input(f"{Colors.RED}This permanently deletes '{current}' from the server -- stats, leaderboard entry, "
                              f"hardware info, and releases any chunk currently locked to you. Type the name again to "
-                             f"confirm, or leave blank to cancel: {Colors.RESET}").strip()
+                             f"confirm, or leave blank to cancel: {Colors.RESET}")
             if not confirm:
                 print(f"{Colors.GRAY}[~] Cancelled -- nothing deleted.{Colors.RESET}")
             elif confirm != current:
@@ -2698,7 +2717,7 @@ def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None,
             current_labels = {"gpu": "GPU ONLY", "cpu": "CPU ONLY", "auto": "DUAL MODE"}
             current_override = load_lane_override() or "auto"
             print(f"Current setting: {current_labels[current_override]}" + (" (this machine has no GPU, so CPU ONLY is the only real option)" if not has_gpu else ""))
-            pick = input("Enter [G] for GPU ONLY, [P] for CPU ONLY, [D] for DUAL MODE (auto-picks primary; both lanes run if this machine qualifies), or leave blank to cancel: ").strip().lower()
+            pick = _menu_input("Enter [G] for GPU ONLY, [P] for CPU ONLY, [D] for DUAL MODE (auto-picks primary; both lanes run if this machine qualifies), or leave blank to cancel: ").lower()
             if not pick:
                 print(f"{Colors.GRAY}[~] Cancelled.{Colors.RESET}")
             elif pick == 'g' and not has_gpu:
@@ -2806,21 +2825,29 @@ PARALLEL_WORKERS_VRAM_HEADROOM_PER_WORKER_GB = {"easy": 1.0, "medium": 2.0, "har
 PARALLEL_WORKERS_RAM_HEADROOM_PER_WORKER_GB = {"easy": 1.5, "medium": 3.0}
 
 class DualStatusBoard:
-    """One shared, redrawing status window covering BOTH lanes at once, used instead of each
-    lane's own independent box in dual-lane mode. A single lane's box (print_terminal_status
-    inside crunch_lane) assumes it's the only thing touching the terminal -- true for a solo
-    lane, but with two lanes running, whichever one drew last would tear/stack over the other's
-    box the moment the other lane printed anything in between (confirmed live). Routing both
-    lanes' updates through this one object means there's only ever one piece of code doing
-    cursor math, so it can always know exactly how many lines it drew last time.
+    """One shared, redrawing status window covering EVERY concurrent lane on this machine at
+    once -- the primary lane, its dual-lane secondary if active, and any parallel workers if
+    active -- instead of each one fighting the others for the terminal. A lane's own solo box
+    (print_terminal_status inside crunch_lane) or a worker's own plain printed line assumes it's
+    the only thing touching the terminal; the moment a second lane's output lands in between,
+    whichever drew last tears/stacks over the other's (confirmed live, independently, for both
+    dual-lane and parallel workers). Routing every lane's updates through this one object means
+    there's only ever one piece of code doing cursor math, so it always knows exactly how many
+    lines it drew last time.
+
+    Lanes are NOT fixed to a GPU/CPU pair -- each one (the primary's own tag, a dual-lane
+    secondary's tag, or a parallel worker's P1/P2/... tag) is added as its own row the first time
+    it's given a label or reports a status, since the exact set of active lanes isn't known at
+    construction time (parallel workers can be toggled on/off later from the pause menu, and
+    dual-lane can be too).
     """
 
-    def __init__(self, gpu_label: str, cpu_label: str):
-        self.labels = {"GPU": gpu_label, "CPU": cpu_label}
-        self.state = {
-            "GPU": {"task": "(waiting for a task...)", "status": "Starting...", "speed": "calculating..."},
-            "CPU": {"task": "(waiting for a task...)", "status": "Starting...", "speed": "calculating..."},
-        }
+    _LANE_COLORS = [Colors.CYAN, Colors.MAGENTA, Colors.YELLOW, Colors.BLUE, Colors.GREEN, Colors.RED]
+
+    def __init__(self):
+        self.labels = {}
+        self.order = []
+        self.state = {}
         self.comp = 0
         self.tot = 0
         self.eta = None
@@ -2828,13 +2855,40 @@ class DualStatusBoard:
         self.last_line_count = 0
         self.last_announced_mode = None
 
+    def set_label(self, lane_tag: str, label: str):
+        """Registers a lane with a real hardware label right when it's known to exist (primary
+        at startup, a dual-lane secondary when it starts, a parallel worker when it starts) --
+        without this, a freshly-added lane's first render would show a placeholder instead of
+        real hardware info for the few seconds before its first actual status update arrives."""
+        with print_lock:
+            self.labels[lane_tag] = label
+            if lane_tag not in self.order:
+                self.order.append(lane_tag)
+                self.state[lane_tag] = {"task": "(waiting for a task...)", "status": "Starting...", "speed": "calculating..."}
+
+    def drop_lane(self, lane_tag: str):
+        """Removes a lane's row entirely (a parallel worker stopped, or dual-lane toggled off) --
+        without this, a stopped lane's LAST status would just sit there forever looking like it's
+        still active."""
+        with print_lock:
+            if lane_tag in self.order:
+                self.order.remove(lane_tag)
+            self.labels.pop(lane_tag, None)
+            self.state.pop(lane_tag, None)
+            self.rendered_once = False
+
+    def _lane_color(self, lane_tag: str) -> str:
+        if lane_tag not in self.order:
+            return Colors.WHITE
+        return self._LANE_COLORS[self.order.index(lane_tag) % len(self._LANE_COLORS)]
+
     def should_announce_mode(self, mode: str) -> bool:
-        """The campaign mode (rag/finetune/idle) is server-global, not per-lane -- both lanes'
-        own `current_mode != mode` checks fire independently, typically within moments of each
-        other at startup (both transitioning from their own initial None), which without this
-        would print the "MODE ACTIVATED" banner twice and force two redundant full-box reprints
-        in a row (confirmed live). Only the first lane to notice a given transition actually
-        announces it; the other just updates its own current_mode silently."""
+        """The campaign mode (rag/finetune/idle) is server-global, not per-lane -- every lane's
+        own `current_mode != mode` check fires independently, typically within moments of each
+        other at startup (all transitioning from their own initial None), which without this
+        would print the "MODE ACTIVATED" banner once per lane and force redundant full-box
+        reprints in a row (confirmed live). Only the first lane to notice a given transition
+        actually announces it; the rest just update their own current_mode silently."""
         with print_lock:
             if mode == self.last_announced_mode:
                 return False
@@ -2856,10 +2910,12 @@ class DualStatusBoard:
         fill_len = max(0, min(bar_len, int(round(bar_len * self.comp / float(self.tot))))) if self.tot else 0
         p_bar = '█' * fill_len + '░' * (bar_len - fill_len)
 
-        lines = [f"{Colors.BOLD}─── [ DUAL-LANE CRUNCHING ] ─────────────────────────────────────────{Colors.RESET}"]
-        for tag, color in (("GPU", Colors.CYAN), ("CPU", Colors.MAGENTA)):
+        title = "DUAL-LANE CRUNCHING" if len(self.order) == 2 else f"{len(self.order)}-LANE CRUNCHING"
+        lines = [f"{Colors.BOLD}─── [ {title} ] {'─' * max(1, 68 - len(title))}{Colors.RESET}"]
+        for tag in self.order:
             s = self.state[tag]
-            lines.append(f" {color}{tag}{Colors.RESET} │ {self.labels[tag]}")
+            color = self._lane_color(tag)
+            lines.append(f" {color}{tag}{Colors.RESET} │ {self.labels.get(tag, tag)}")
             lines.append(f"     │ Task  : {s['task']}")
             lines.append(f"     │ Status: {self._status_color(s['status'])}{s['status']}{Colors.RESET}")
             lines.append(f"     │ Speed : {s['speed']}")
@@ -2881,6 +2937,9 @@ class DualStatusBoard:
 
     def update(self, lane_tag: str, task_desc: str, step_msg: str, comp: int, tot: int, eta, speed: str):
         with print_lock:
+            if lane_tag not in self.order:
+                self.order.append(lane_tag)
+                self.labels.setdefault(lane_tag, lane_tag)
             self.state[lane_tag] = {"task": task_desc, "status": step_msg, "speed": speed}
             self.comp, self.tot, self.eta = comp, tot, eta
             self._render_locked()
@@ -2919,8 +2978,13 @@ class DualLaneController:
     def start(self):
         if self.active:
             return
+        # Re-registers this lane's row every start() (idempotent -- set_label just re-adds it if
+        # drop_lane() removed it on a previous stop()), so a stopped-then-restarted secondary
+        # shows its real hardware label again immediately instead of a placeholder.
+        self.board.set_label(self.cpu_lane_kwargs["lane_tag"], self.cpu_lane_kwargs["hardware_label"])
         self._stop_event = threading.Event()
-        kwargs = dict(self.cpu_lane_kwargs, board=self.board, pause_event=self.pause_event, stop_event=self._stop_event)
+        kwargs = dict(self.cpu_lane_kwargs, board=self.board, always_use_board=True,
+                      pause_event=self.pause_event, stop_event=self._stop_event)
         self._thread = threading.Thread(target=_background_lane, kwargs=kwargs, daemon=True)
         self._thread.start()
         self.active = True
@@ -2934,6 +2998,9 @@ class DualLaneController:
             return
         self._stop_event.set()
         self.active = False
+        # Drops this lane's row from the shared board -- without this, its LAST status would just
+        # sit there looking like it's still actively crunching even after the thread is gone.
+        self.board.drop_lane(self.cpu_lane_kwargs["lane_tag"])
         # Same reasoning as start() -- the primary lane's next report() switches back to its own
         # solo box, which has no idea how many lines the board last drew.
         self.board.rendered_once = False
@@ -2956,17 +3023,19 @@ class ParallelWorkerPoolController:
     """
 
     def __init__(self, worker_kwargs: dict, user_id: str, hardware_tier: str,
-                 total_vram_gb: float, system_ram_gb: float, force_cpu: bool):
+                 total_vram_gb: float, system_ram_gb: float, force_cpu: bool, board: "DualStatusBoard"):
         self.worker_kwargs = worker_kwargs
         self.user_id = user_id
         self.hardware_tier = hardware_tier
         self.total_vram_gb = total_vram_gb
         self.system_ram_gb = system_ram_gb
         self.force_cpu = force_cpu
+        self.board = board
         self.worker_count = PARALLEL_WORKERS_BY_TIER.get(hardware_tier, 1)
         self.active = False
         self._threads = []
         self._stop_events = []
+        self._lane_tags = []
 
     def check_headroom(self) -> tuple:
         """Returns (has_enough, reason). See PARALLEL_WORKERS_VRAM_HEADROOM_PER_WORKER_GB's
@@ -3002,6 +3071,7 @@ class ParallelWorkerPoolController:
             return False, reason
         self._threads = []
         self._stop_events = []
+        self._lane_tags = []
         # Distinct suffix letters per worker, never "c"/"g" (already used by a dual-lane secondary
         # on this same machine, if any) -- truncated the same way secondary_user_id is, so every
         # worker's synthetic id stays within the 3-12 char / letters-only range the server itself
@@ -3010,17 +3080,27 @@ class ParallelWorkerPoolController:
         for i in range(self.worker_count):
             stop_event = threading.Event()
             worker_id = self.user_id[:11] + suffixes[i % len(suffixes)]
-            kwargs = dict(self.worker_kwargs, user_id=worker_id, lane_tag=f"P{i + 1}", stop_event=stop_event)
+            lane_tag = f"P{i + 1}"
+            # Registered on the shared board BEFORE the thread starts, so the very first render
+            # after enabling parallel workers already shows a real row for each one instead of
+            # them popping in one at a time as their own first status update happens to arrive.
+            self.board.set_label(lane_tag, f"Parallel worker {i + 1}")
+            kwargs = dict(self.worker_kwargs, user_id=worker_id, lane_tag=lane_tag, stop_event=stop_event,
+                          board=self.board, always_use_board=True)
             t = threading.Thread(target=_background_lane, kwargs=kwargs, daemon=True)
             t.start()
             self._threads.append(t)
             self._stop_events.append(stop_event)
+            self._lane_tags.append(lane_tag)
         self.active = True
         return True, ""
 
     def stop(self):
         if not self.active:
             return
+        for tag in self._lane_tags:
+            self.board.drop_lane(tag)
+        self._lane_tags = []
         for e in self._stop_events:
             e.set()
         self._threads = []
@@ -3033,7 +3113,7 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
                  board: "DualStatusBoard | None" = None, stop_event: "threading.Event | None" = None,
                  dual_controller: "DualLaneController | None" = None,
                  parallel_controller: "ParallelWorkerPoolController | None" = None,
-                 has_gpu: bool = False):
+                 has_gpu: bool = False, always_use_board: bool = False):
     """Runs the poll -> crunch -> submit cycle forever for one lane. A "lane" is one independent
     identity polling /get_work and calling Ollama on its own -- there's normally just one (the
     whole client, as before dual-lane support existed), but a machine with both a real GPU and
@@ -3043,12 +3123,16 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
     Ollama calls through num_gpu=0 so it never competes with the GPU lane for VRAM).
 
     fancy_ui (this lane's own independent redrawing box) is only ever used for a genuinely solo
-    lane. In dual-lane mode both lanes instead report into a single shared `board`
-    (DualStatusBoard) -- one lane's own box assumes it's the only thing touching the terminal,
-    which a second lane drawing its own box (or even just printing plain lines) would break no
-    matter how the printing itself is locked, since a lock only stops characters from
-    interleaving, not the cursor math from landing in the wrong place. `board` is None for solo
-    runs, in which case fancy_ui's own box is used exactly as before dual-lane support existed.
+    lane with nothing else concurrently active on this machine. Whenever a second lane exists at
+    all -- a dual-lane secondary, or any parallel worker -- every lane instead reports into one
+    shared `board` (DualStatusBoard): a lane's own box (or even just printing plain lines)
+    assumes it's the only thing touching the terminal, which a second lane's output would break
+    no matter how the printing itself is locked, since a lock only stops characters from
+    interleaving, not the cursor math from landing in the wrong place. `always_use_board=True` is
+    given to any lane whose entire lifetime already implies multi-lane mode is active (a dual-lane
+    secondary, or a parallel worker) -- for those, board presence alone is authoritative. The
+    PRIMARY lane persists regardless of what's toggled on/off around it, so its own board usage is
+    decided dynamically instead, from dual_controller.active / parallel_controller.active.
 
     pause_event coordinates the two lanes without needing the background thread to handle Ctrl+C
     itself (Python only ever delivers SIGINT/KeyboardInterrupt to the main thread, so a background
@@ -3074,9 +3158,13 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
             print(msg)
 
     def current_board():
-        if dual_controller is not None and dual_controller.active:
-            return dual_controller.board
-        return board
+        if board is None:
+            return None
+        if always_use_board:
+            return board
+        dual_active = dual_controller is not None and dual_controller.active
+        parallel_active = parallel_controller is not None and parallel_controller.active
+        return board if (dual_active or parallel_active) else None
 
     # Rolling window of this lane's own last few *successful* task times (dispatch -> confirmed
     # submitted) -- retried/abandoned attempts don't count, they'd skew this toward "how slow is
@@ -3746,6 +3834,17 @@ def main():
     # worker_kwargs mirrors the primary lane's own config (same model/tier/force_cpu) so every
     # worker is a genuine peer of the primary lane, just another identity hitting the same local
     # Ollama instance.
+    # Shared by every concurrent lane on this machine -- the primary, a dual-lane secondary if
+    # this machine qualifies, and any parallel workers if enabled -- so they all redraw through
+    # ONE coordinated box instead of fighting each other for the terminal (see DualStatusBoard's
+    # own comment). Built unconditionally, not just for dual-capable machines, since parallel
+    # workers are available at every tier and need this too, even on a machine with no secondary
+    # lane at all -- current_board() (inside crunch_lane) only actually routes through it once
+    # dual-lane or parallel workers are ACTIVE; a genuinely solo machine still gets its familiar
+    # standalone box exactly as before.
+    board = DualStatusBoard()
+    board.set_label("GPU" if primary_is_gpu else "CPU", primary_hardware_label)
+
     parallel_controller = ParallelWorkerPoolController(
         worker_kwargs=dict(
             hardware_tier=hardware_tier, chosen_model=chosen_model, max_threads=max_threads,
@@ -3757,6 +3856,7 @@ def main():
         total_vram_gb=total_vram_gb,
         system_ram_gb=system_ram_gb,
         force_cpu=not primary_is_gpu,
+        board=board,
     )
 
     dual_controller = None
@@ -3792,8 +3892,7 @@ def main():
             secondary_hardware_label = f"{gpu_type.upper()} ({total_vram_gb:.1f} GB VRAM)"
             secondary_desc = "Performance Profile (Automated: Secondary GPU lane, running alongside the primary CPU lane -- this GPU lost PRIMARY only on capability tier, not because it doesn't work)"
         print(f"{Colors.CYAN}[✓] Dual-lane mode: {primary_hardware_label} (primary) + a secondary {secondary_lane_tag} lane ({secondary_model}, {secondary_hardware_label}) will crunch two tasks at once. Toggle it off/on anytime from the pause menu.{Colors.RESET}\n")
-        board = DualStatusBoard(gpu_label=primary_hardware_label if primary_is_gpu else secondary_hardware_label,
-                                 cpu_label=secondary_hardware_label if primary_is_gpu else primary_hardware_label)
+        board.set_label(secondary_lane_tag, secondary_hardware_label)
         # user_id is 3-12 alpha chars (enforced at login); truncating to 11 and appending a suffix
         # that's never "c" for a GPU secondary (avoids colliding with what a CPU-secondary run on
         # this same machine would have used) always differs from the primary lane's own id (even
@@ -3847,6 +3946,7 @@ def main():
         chosen_model=chosen_model, max_threads=max_threads, cooldown=cooldown, mode_desc=mode_desc,
         hardware_label=primary_hardware_label, force_cpu=not primary_is_gpu, fancy_ui=True,
         pause_event=dual_controller.pause_event if dual_controller is not None else None,
+        board=board,
         dual_controller=dual_controller,
         parallel_controller=parallel_controller,
         has_gpu=(gpu_type != "cpu"),

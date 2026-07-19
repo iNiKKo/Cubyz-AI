@@ -28,6 +28,7 @@ This chunk is a configuration file defining various properties and structures sp
   - `simple_tree` with yellow leaves and birch logs, chance = 0.1
     - Height: 8, height_variation: 5
     - LeafRadius: 3, leafRadius_variation: 1.5
+    - LeafElongation: 1.7, deltaLeafElongation: 0.2
   - Fallen tree with oak logs, chance = 0.005
     - Height: 6, height_variation: 3
   - Fallen tree with birch logs, chance = 0.002

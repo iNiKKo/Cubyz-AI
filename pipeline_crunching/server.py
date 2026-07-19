@@ -21,6 +21,31 @@ from typing import List, Optional, Literal
 # the same shape (timestamp, mode badge, a fixed-width colored username field, a severity symbol,
 # then the message), auto-disabled (no ANSI codes) when stdout isn't a real terminal.
 # ============================================================
+# Windows' legacy console host does NOT interpret ANSI cursor-movement escape codes (\033[nA,
+# \033[J, \033[F, \033[2J\033[H, etc.) unless ENABLE_VIRTUAL_TERMINAL_PROCESSING is explicitly
+# turned on via SetConsoleMode -- SGR color codes (\033[91m and friends) go through a completely
+# separate, much older code path and render correctly regardless, which is exactly why colors
+# always looked right here while THREE different admin-dashboard redraw strategies in a row
+# (full-screen clear, then a per-line cursor-up erase, then a cursor-up + erase-to-end-of-screen)
+# all failed identically: on an unpatched Windows console none of those are cursor-movement at
+# all, they're inert bytes the console just doesn't act on, so every redraw landed as fresh
+# scrolled-down text instead of overwriting in place -- confirmed live as the dashboard stacking a
+# fresh full copy of itself every single 2-second cycle. Best-effort and silent on failure (e.g.
+# stdout isn't a real Windows console handle, running inside some wrapper that doesn't expose
+# one) -- this is a startup nicety, not something that should ever be able to crash the server.
+if sys.platform == "win32":
+    try:
+        import ctypes
+        _kernel32 = ctypes.windll.kernel32
+        _STD_OUTPUT_HANDLE = -11
+        _ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004
+        _stdout_handle = _kernel32.GetStdHandle(_STD_OUTPUT_HANDLE)
+        _console_mode = ctypes.c_uint32()
+        if _kernel32.GetConsoleMode(_stdout_handle, ctypes.byref(_console_mode)):
+            _kernel32.SetConsoleMode(_stdout_handle, _console_mode.value | _ENABLE_VIRTUAL_TERMINAL_PROCESSING)
+    except Exception:
+        pass
+
 _TTY = sys.stdout.isatty()
 
 # Every attribute is a real escape code on a real terminal, or "" everywhere else -- defined
@@ -603,7 +628,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.1.2"
-LATEST_CLIENT_VERSION = "1.2.4"
+LATEST_CLIENT_VERSION = "1.2.5"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:
@@ -1548,7 +1573,14 @@ def _get_audit_work(user_id: str, hardware_tier: str, client_local_models: set =
     assigned_model = _assign_audit_model(user_id, hardware_tier, client_local_models)
 
     total_chunks = audit_total_chunks  # true campaign size -- see audit_initialize_chunks's comment
-    completed_chunks = len(state["completed"])
+    # NOT len(state["completed"]) -- that's a LIFETIME count of unique chunks ever resolved, which
+    # doesn't move during a re-audit pass over already-completed chunks (they're already in that
+    # list from their first pass) even while real work is actively happening. audit_chunk_queue
+    # now correctly SHRINKS as chunks resolve (see _mark_done's comment), so total minus whatever's
+    # still queued is a live, honest "how much of the CURRENT pass is actually done" -- confirmed
+    # live as the fix for a real, confusing symptom: the progress bar sat frozen at 3247/3247
+    # (100%) for an entire re-audit pass while every volunteer was visibly still working.
+    completed_chunks = total_chunks - len(audit_chunk_queue)
 
     # Three kinds of work can exist for a given chunk right now: a fresh chunk nobody's looked at
     # yet (propose), a chunk sitting with an unreviewed (or not-yet-fully-approved) proposal
@@ -1679,6 +1711,20 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
             audit_hashes = read_json_file(AUDIT_HASH_FILE, {})
             audit_hashes[submission.chunk_id] = content_hash
             write_json_file(AUDIT_HASH_FILE, audit_hashes, "audit hash state")
+        # audit_chunk_queue is built once at startup/mode-switch and NEVER otherwise pruned as
+        # chunks resolve -- removing the "chunk_id in state['completed']" dispatch check (see
+        # _get_audit_work's comment, needed so a hash-changed chunk becomes reachable again at
+        # all) meant a chunk that just resolved was immediately offered right back out as a fresh
+        # "propose" candidate on the very next poll, forever, since pending.pop() below already
+        # cleared its in-flight state and nothing else excluded it. Confirmed live with a direct
+        # dispatch->resolve->dispatch-again test: without this line the SAME already-settled
+        # chunk_id kept coming back every single time. This is what "100%/3247 complete but every
+        # client is still working" actually was -- clients weren't doing new re-audit work, they
+        # were stuck looping on chunks that had already resolved moments earlier. Removing it here
+        # (not from state["completed"], which stays permanent) only affects THIS session's live
+        # queue; whether it's offered again in a FUTURE session is decided fresh by
+        # audit_initialize_chunks()'s own hash comparison at next restart, same as always.
+        audit_chunk_queue[:] = [t for t in audit_chunk_queue if t["chunk_id"] != submission.chunk_id]
         pending.pop(submission.chunk_id, None)
         write_json_file(AUDIT_PENDING_FILE, pending, "audit pending fixes")
         save_user_stats(AUDIT_STATS_FILE, user_stats)
@@ -2164,6 +2210,14 @@ def _submit_rag_work(submission: UnifiedSubmission) -> dict:
     if submission.chunk_id not in state["completed"]:
         state["completed"].append(submission.chunk_id)
     save_lock_state(RAG_LOCK_FILE, state)
+    # rag_chunk_queue is built once at startup and never otherwise pruned as chunks complete --
+    # removing the completed-list dispatch check above (needed so a hash-changed re-queued chunk
+    # is reachable at all) means a chunk that just finished would be immediately offered right
+    # back out on the very next poll if it weren't also dropped from the live queue here.
+    # Confirmed as a real, live infinite-loop bug for the identical pattern in audit mode (see
+    # _mark_done's comment) -- fixed here too before it was ever actually hit for RAG, since RAG
+    # rarely re-queues a chunk mid-session, but it's the exact same latent bug either way.
+    rag_chunk_queue[:] = [t for t in rag_chunk_queue if t["chunk_id"] != submission.chunk_id]
     _record_completion(rag_completion_log)
 
     user_stats = load_user_stats(RAG_STATS_FILE)
@@ -2236,6 +2290,11 @@ def _submit_finetune_work(submission: UnifiedSubmission) -> dict:
     if submission.chunk_id not in state["completed"]:
         state["completed"].append(submission.chunk_id)
     save_lock_state(FINETUNE_LOCK_FILE, state)
+    # finetune_chunk_queue is built once at startup and never otherwise pruned as chunks
+    # complete -- see _mark_done's comment (the identical bug, confirmed live there) for why a
+    # chunk that just resolved needs to be dropped from the live queue too, not just left to the
+    # completed-list check that was removed above to make re-queued chunks reachable at all.
+    finetune_chunk_queue[:] = [t for t in finetune_chunk_queue if t["chunk_id"] != submission.chunk_id]
     _record_completion(finetune_completion_log)
 
     user_stats = load_user_stats(FINETUNE_STATS_FILE)
@@ -2414,7 +2473,9 @@ def _audit_leaderboard() -> dict:
     state = load_lock_state(AUDIT_LOCK_FILE)
     user_stats = load_user_stats(AUDIT_STATS_FILE)
     total_chunks = audit_total_chunks  # true campaign size -- see audit_initialize_chunks's comment
-    completed_chunks = len(state["completed"])
+    # See _get_audit_work's comment -- same fix, same reasoning: a live "how much of THIS pass is
+    # done" number, not a lifetime count that sits frozen during a re-audit pass.
+    completed_chunks = total_chunks - len(audit_chunk_queue)
     global_pct = (completed_chunks / total_chunks * 100) if total_chunks > 0 else 0.0
 
     known_users = set(user_stats.keys()) | set(online_clients.keys())

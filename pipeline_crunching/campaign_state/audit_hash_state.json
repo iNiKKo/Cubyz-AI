@@ -42,8 +42,8 @@
   "codebase_src_callbacks_block_client__list.zig_chunk_0": "7fe53627e7664eaebff4a3c5e8cdf79f92e83a93e15abb35ec65499113aac3fe",
   "docs_docs_development_addons_index.md_chunk_0": "a3fbfbde2bae6b92210811df970c5d52392a0c579e64faff9fbf4b13132a2ac6",
   "codebase_assets_cubyz_blocks_cactus.zig.zon_chunk_0": "046ccf72b436dd270f7a822a9e13cd03da7899f76c6ed8e502d6f57f82263068",
-  "codebase_src_gui_windows_main.zig_chunk_0": "9ff1f7e23bdfc9cda347917518ad24f14dafe9e9d7872c3e83fc60fb71acc801",
-  "codebase_src_gui_windows_chest.zig_chunk_0": "fc39fee646da38fa53d1c4180c8f08cec1080a8e29a7b26b6a67997217137d2f",
+  "codebase_src_gui_windows_main.zig_chunk_0": "8b462dae38a37c3009c4acd3f1c970afdb6ed263e92d2d042cdfc3910731db98",
+  "codebase_src_gui_windows_chest.zig_chunk_0": "1ebbb3822015228542c6ed82c6d6c0096052de1895db7c9c400fd0f2da3f0519",
   "codebase_assets_cubyz_blocks_gold_block.zig.zon_chunk_0": "ccb051914ffca6d52e3fb362e097a748b4186ae12cf6ba568feb9fa1f0c320d5",
   "codebase_assets_cubyz_blocks_vine_glimmer_worms.zig.zon_chunk_0": "cd43b6011f4d32bf797c0db285c38e01adbc9a54c9a28231b1c7770ac117b7a8",
   "codebase_src_proceduralItem_modifiers_restrictions_always.zig_chunk_0": "e101fa43807d80d9455ea7110d1717ca18d5a65f019bb093f5cac0d1312234d1",
@@ -993,7 +993,14 @@
   "addon_creator_app-save.js_chunk_4": "3223de7b3ff30870f510ac1a566208d309b721e1c3c364a8a07e1f27a1188eea",
   "codebase_assets_cubyz_sbb_mushroom_small_toadstool.zig.zon_chunk_0": "a45e5113b9cf637078b2561937e6367741ed58cc70568d4f9d0a164a45d47f2d",
   "codebase_assets_cubyz_biomes_tundra_snowy_pit.zig.zon_chunk_0": "b9d6a93dd2a5918068a9377f2e2a4bf5412c6b00d23acccdec6361a7ecb6119f",
-  "codebase_assets_cubyz_biomes_autumn_mixed_forest.zig.zon_chunk_0": "61c41eaad989da2402fbed4be36debbd0fe51d0773aeacd5dfd859f8f523f81f",
-  "codebase_assets_cubyz_biomes_bog_pond.zig.zon_chunk_0": "22f2172560c5604cbe3c8ad4916b244a2d1c39ab1407482f8b66640046fc1ed7",
-  "codebase_src_server_terrain_chunkgen_StructureGenerator.zig_chunk_0": "cb84aad9c90c847536446ffb3f21d3acdbbfa56f0b2b43e8cd1d6a51e8127a4c"
+  "codebase_assets_cubyz_biomes_autumn_mixed_forest.zig.zon_chunk_0": "1f1a54f82078f401c847c14fb9e596710e86a01779ee8d394f61f651b17583de",
+  "codebase_assets_cubyz_biomes_bog_pond.zig.zon_chunk_0": "b1a600a89928bacc756587143ba1209ba74f91e11773f1e36f18af0816d9c4dd",
+  "codebase_src_server_terrain_chunkgen_StructureGenerator.zig_chunk_0": "2e6440cdc1bdc90345b7673f7c8fc0334dfba96b533ba2f8eba1408f2de7283b",
+  "codebase_assets_cubyz_blocks_sbb_child_crimson.zig.zon_chunk_0": "e63d82b089708d028d68cfd11fa3a88b0a770fc1b521bdac0a99eb34e4c21db3",
+  "codebase_assets_cubyz_sbb_tree_coniferous_pine_eastern_white_branches_normal_1_bottom_middle.zig.zon_chunk_0": "fc67fc5d6b3c8b65c4c9054ef8376ff0c6888e80fe3a457590cb2887c130d6f0",
+  "codebase_assets_cubyz_biomes_hills__defaults.zig.zon_chunk_0": "5bd31c7dbadfc77140c2b0e535fe243e37894d00c97294ec6d6d47077576c890",
+  "codebase_src_server_command_worldedit_rotate.zig_chunk_0": "f73f7e049f1529609bf882958c6a00bf7bf80435484ffd28af9f6f7da42581eb",
+  "codebase_assets_cubyz_sbb_tree_oak_white.zig.zon_chunk_0": "5a0a357b43cdd362a712549808f83f4940fb707695a7c0fd870aef5ec6ed07f2",
+  "codebase_assets_cubyz_blocks_leaves_opaque_dead.zig.zon_chunk_0": "4676e3ee544205e1f2f48d4928f9cb493a5b7aac997d6ee4f807c286c236bf90",
+  "codebase_mods_cubyz_rotations_texture_pile.zig_chunk_0": "147516bbb9febcfda404139e5d60363fcc8edcb5d0c1c642a08d49b99ffb9b7a"
 }
