@@ -38,6 +38,13 @@ This chunk is a configuration file defining various properties and structures sp
     - Width: 10, variation: 6, density: 0.6, priority: 0.1
   - Coniferous pine trees (loblolly, eastern_white, young_tree), chance = 0.06 each
     - Place mode: degradable
+  - `simple_tree` with red leaves and oak logs, chance = 0.1
+    - Height: 8, height_variation: 5
+    - LeafRadius: 3, leafRadius_variation: 1.5
+  - `sbb` structure for coniferous pine trees (loblolly), place mode: degradable, chance = 0.06
+  - `sbb` structure for coniferous pine trees (eastern_white), place mode: degradable, chance = 0.06
+  - `sbb` structure for coniferous pine trees (young_tree), place mode: degradable, chance = 0.06
+  - `sbb` structure for standalone roots, place mode: degradable, chance = 0.02
 
 ## Related Questions
 - What are the tags associated with the Autumn Mixed Forest biome?

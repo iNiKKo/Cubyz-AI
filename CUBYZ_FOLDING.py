@@ -111,7 +111,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.2.3"
+VERSION = "1.2.4"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -3130,10 +3130,24 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
             sys.stdout.flush()
 
     def report(task_desc, step_msg, is_first, comp, tot, eta):
+        # Both print_terminal_status (solo box) and DualStatusBoard.update() (dual-lane's shared
+        # box) assume they're the ONLY thing touching the terminal -- each redraws by erasing
+        # exactly as many lines as it drew last time, which breaks the instant anything else
+        # prints in between. Confirmed live for the solo box (enabling parallel workers on a
+        # single-lane primary turned it into a scrolling mess); the shared DualStatusBoard has the
+        # identical fragility, just not yet confirmed broken the same way -- both get the same
+        # guard here rather than waiting for a second live report. Falls back to the same
+        # plain-line safe_print every worker already uses whenever THIS MACHINE's parallel workers
+        # are active (checked on parallel_controller, which the CPU secondary lane now receives
+        # the same shared instance of as the primary -- see main()'s dual_controller construction
+        # -- so both lanes agree on this at once, not just whichever one happens to notice first),
+        # so everything sharing this terminal goes through the one print_lock-guarded path instead
+        # of incompatible redraw strategies fighting over the same lines.
+        parallel_active = parallel_controller is not None and parallel_controller.active
         b = current_board()
-        if b is not None:
+        if b is not None and not parallel_active:
             b.update(lane_tag, task_desc, step_msg, comp, tot, eta, speed_str())
-        elif fancy_ui:
+        elif fancy_ui and not parallel_active:
             print_terminal_status(task_desc, step_msg, is_first, comp, tot, eta)
         else:
             suffix = f" ({speed_str()})" if step_msg.startswith("✓") else ""
@@ -3437,6 +3451,15 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
             handle_interrupt_menu(dual_controller, parallel_controller, has_gpu)
             if pause_event is not None:
                 pause_event.clear()
+            # Mirrors first_stat_print above but for the SHARED board's own "erase my last frame"
+            # tracking -- without this, toggling parallel workers off from the menu (or anything
+            # else that printed plain lines below the board while it wasn't being redrawn) left
+            # the board trying to erase self.last_line_count lines up on its next update(), which
+            # no longer matches the real cursor position once other output has landed in between.
+            # Resetting here means it always redraws fresh (no erase) on the very next update
+            # after ANY pause-menu visit, the same guarantee is_first already gives the solo box.
+            if dual_controller is not None:
+                dual_controller.board.rendered_once = False
         except urllib.error.HTTPError as he:
             first_stat_print = True
             if he.code == 426:
@@ -3714,6 +3737,28 @@ def main():
     else:
         print(f"{Colors.YELLOW}[!] Server unreachable -- entering offline-retry mode. Will connect once it's back.{Colors.RESET}\n")
 
+    # Built before dual_controller (not after, like before) specifically so it can be handed to
+    # the CPU secondary lane's own kwargs below -- see the parallel_active guard in crunch_lane's
+    # report() for why the secondary needs its own reference to this, not just the primary lane.
+    # Available at every tier -- see PARALLEL_WORKERS_BY_TIER's comment for why the worker count
+    # itself (not whether this is offered at all) is what scales down for a bigger model. Built
+    # but NOT started here (off by default, opt-in from the pause menu's [P] option) --
+    # worker_kwargs mirrors the primary lane's own config (same model/tier/force_cpu) so every
+    # worker is a genuine peer of the primary lane, just another identity hitting the same local
+    # Ollama instance.
+    parallel_controller = ParallelWorkerPoolController(
+        worker_kwargs=dict(
+            hardware_tier=hardware_tier, chosen_model=chosen_model, max_threads=max_threads,
+            cooldown=cooldown, mode_desc=mode_desc, hardware_label=primary_hardware_label,
+            force_cpu=not primary_is_gpu, fancy_ui=False,
+        ),
+        user_id=user_id,
+        hardware_tier=hardware_tier,
+        total_vram_gb=total_vram_gb,
+        system_ram_gb=system_ram_gb,
+        force_cpu=not primary_is_gpu,
+    )
+
     dual_controller = None
     if dual_capable:
         # The secondary lane is whichever one ISN'T primary -- see dual_capable's comment. Most of
@@ -3777,27 +3822,12 @@ def main():
             lane_tag=secondary_lane_tag, user_id=secondary_user_id, hardware_tier=secondary_tier, chosen_model=secondary_model,
             max_threads=secondary_threads, cooldown=secondary_cooldown, mode_desc=secondary_desc,
             hardware_label=secondary_hardware_label, force_cpu=secondary_force_cpu, fancy_ui=False,
+            # Same object as the primary lane's own parallel_controller (not a separate one) --
+            # both lanes need to see the SAME .active flag, since toggling parallel workers from
+            # the pause menu is a whole-machine decision, not per-lane.
+            parallel_controller=parallel_controller,
         ))
         dual_controller.start()  # on by default, same as before this toggle existed -- just now reversible
-
-    # Available at every tier -- see PARALLEL_WORKERS_BY_TIER's comment for why the worker count
-    # itself (not whether this is offered at all) is what scales down for a bigger model. Built
-    # but NOT started here (off by default, opt-in from the pause menu's [P] option) --
-    # worker_kwargs mirrors the primary lane's own config (same model/tier/force_cpu) so every
-    # worker is a genuine peer of the primary lane, just another identity hitting the same local
-    # Ollama instance.
-    parallel_controller = ParallelWorkerPoolController(
-        worker_kwargs=dict(
-            hardware_tier=hardware_tier, chosen_model=chosen_model, max_threads=max_threads,
-            cooldown=cooldown, mode_desc=mode_desc, hardware_label=primary_hardware_label,
-            force_cpu=not primary_is_gpu, fancy_ui=False,
-        ),
-        user_id=user_id,
-        hardware_tier=hardware_tier,
-        total_vram_gb=total_vram_gb,
-        system_ram_gb=system_ram_gb,
-        force_cpu=not primary_is_gpu,
-    )
 
     crunch_lane(
         # fancy_ui is always True here, even on a dual-capable machine -- it means "fall back to
