@@ -420,16 +420,18 @@ def render_dashboard():
         msg = _truncate(message, max(10, box_w - event_prefix_len - 2))
         lines.append(f"  {ts_text} {user_field} {symbol_color}{symbol}{Colors.RESET} {msg}")
 
-    # Erases exactly as many lines as the PREVIOUS redraw wrote, then writes the new frame --
-    # not a blanket "\033[2J\033[H" full-screen clear, which was confirmed live to not clear
-    # cleanly on at least one real setup: instead of redrawing in place, every 2-second cycle
-    # appended a whole new full frame to the visible scrollback, so the console just filled up
-    # with dozens of stacked copies of the dashboard rather than one that updates live. Same
-    # cursor-up-and-erase technique DualStatusBoard/print_terminal_status already use successfully
-    # elsewhere in this file for exactly this reason.
+    # Moves the cursor up over the PREVIOUS redraw's lines, then erases everything from there to
+    # the end of the screen in one shot, before writing the new frame -- confirmed live that BOTH
+    # a blanket "\033[2J\033[H" full-screen clear AND a per-line "\033[F\033[K" repeated erase
+    # still left every 2-second cycle stacking a fresh copy instead of redrawing in place on at
+    # least one real setup. "\033[{n}A" (Cursor Up, CUU) + "\033[J" (Erase in Display from cursor
+    # to end of screen, ED 0) is a more universally-supported combination than either of those --
+    # CUU alone is about as basic as ANSI cursor movement gets, and one ED call correctly clears
+    # everything below even if this frame is SHORTER than the last one (no per-line bookkeeping
+    # needed for that case, unlike the "\033[F\033[K" approach it replaces).
     global _dashboard_last_line_count
     if _dashboard_last_line_count:
-        sys.stdout.write("\033[F\033[K" * _dashboard_last_line_count)
+        sys.stdout.write(f"\033[{_dashboard_last_line_count}A\r\033[J")
     sys.stdout.write("\n".join(lines) + "\n")
     sys.stdout.flush()
     _dashboard_last_line_count = len(lines)
