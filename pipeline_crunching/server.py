@@ -115,6 +115,7 @@ def _save_user_hardware_info():
         pass
 
 _DASHBOARD_ACTIVE = False  # flipped true once the background render thread actually starts
+_dashboard_last_line_count = 0  # see render_dashboard()'s redraw comment
 
 def log_event(mode: str, user_id: str, symbol: str, symbol_color: str, message: str):
     """The one place every campaign event flows through. Always updates the live dashboard state
@@ -228,6 +229,40 @@ def _format_progress_line(mode: str, stats: dict) -> str:
         return f"{stats.get('chunks_completed', 0)} chunks  •  {stats.get('pairs_generated', 0)} pairs generated"
     return f"{stats.get('chunks_completed', 0)} chunks  •  {stats.get('lines_crunched', 0)} lines crunched"
 
+_PROGRESS_SUM_KEYS = {
+    "rag": ["chunks_completed", "lines_crunched"],
+    "finetune": ["chunks_completed", "pairs_generated"],
+    "audit": ["chunks_audited", "issues_found", "reviews_done", "fixes_applied"],
+}
+
+# c/g = a dual-lane secondary (see DualLaneController's secondary_user_id); p through z = a
+# parallel worker (see ParallelWorkerPoolController's suffix pool). Both build their synthetic id
+# the same way: user_id[:11] + one of these letters. Shared by _group_online_by_machine (this
+# dashboard) and _merge_lane_children (the leaderboard) -- same underlying identities, two
+# different views of them.
+_LANE_CHILD_SUFFIXES = "cgpqrstuvwxyz"
+
+def _group_online_by_machine(online: list) -> dict:
+    """Clusters online lane identities (a dual-lane secondary, or a parallel worker) under their
+    real physical-machine parent instead of each getting its own top-level dashboard panel --
+    confirmed live as confusing: a machine running dual-lane or parallel workers showed up as 2-4
+    separate boxes (e.g. "nickpc" and "nickpcc") that all describe the same physical hardware.
+    Uses the exact same structural reconstruction _merge_lane_children uses for the leaderboard
+    (child == parent[:11] + suffix) -- see that function's comment for why this is safe by
+    construction. Returns {parent_id: [child_id, ...]} for every online identity that isn't
+    itself a child (a genuine standalone machine gets an empty list)."""
+    online_set = set(online)
+    children_of = {}
+    is_child = set()
+    for user_id in online:
+        if len(user_id) < 2 or user_id[-1] not in _LANE_CHILD_SUFFIXES:
+            continue
+        parent_id = user_id[:-1]
+        if parent_id != user_id and parent_id in online_set and parent_id[:11] + user_id[-1] == user_id:
+            children_of.setdefault(parent_id, []).append(user_id)
+            is_child.add(user_id)
+    return {u: sorted(children_of.get(u, [])) for u in online if u not in is_child}
+
 def _truncate(text: str, width: int) -> str:
     """Truncates PLAIN text (no ANSI codes inside it -- callers wrap the result in color AFTER
     calling this) to fit width, since counting an escape sequence's raw characters against a
@@ -268,7 +303,6 @@ def render_dashboard():
     offline_count = len(known) - len(online)
 
     lines = []
-    lines.append("\033[2J\033[H")  # clear screen, cursor home
     mode_color, mode_label = _MODE_BADGES.get(mode, (Colors.WHITE, mode.upper()))
     header = f" CUBYZ DISTRIBUTED SERVER {Colors.DIM}·{Colors.RESET} {mode_color}{Colors.BOLD}{mode_label} MODE{Colors.RESET} {Colors.DIM}·{Colors.RESET} {datetime.now().strftime('%H:%M:%S')} "
     lines.append(f"{mode_color}{'═' * term_width}{Colors.RESET}")
@@ -277,62 +311,94 @@ def render_dashboard():
     lines.append(f"  {Colors.GREEN}{len(online)} online{Colors.RESET}  •  {Colors.GRAY}{offline_count} offline{Colors.RESET}  •  {len(known)} known volunteers")
     lines.append("")
 
-    for user_id in online:
-        info = online_clients.get(user_id, {})
-        u_color = _user_color(user_id)
-        title = f"─ {user_id} "
+    # A dual-lane secondary or parallel worker gets its own online_clients/user_stats entry (they
+    # ARE independent identities server-side, e.g. for per-lane audit model diversity), but they're
+    # the same physical machine as their parent -- see _group_online_by_machine's comment. Grouped
+    # into one panel per machine here so "nickpc" and "nickpcc" don't look like two volunteers.
+    clusters = _group_online_by_machine(online)
+
+    for parent_id in sorted(clusters):
+        lane_ids = [parent_id] + clusters[parent_id]
+        u_color = _user_color(parent_id)
+        title = f"─ {parent_id}" + (f" ({len(lane_ids)} lanes)" if len(lane_ids) > 1 else "") + " "
         fill = max(1, box_w - len(title) - len("ONLINE ─") - 2)
         lines.append(f"{u_color}┌{title}{'─' * fill} {Colors.GREEN}ONLINE{Colors.RESET} {u_color}─┐{Colors.RESET}")
 
-        tier = info.get("tier", "?")
-        # audit mode assigns each user a specific model from its diversity roster (see
-        # _assign_audit_model), independent of whatever model the client itself locally defaults
-        # to -- info["model"] (from online_clients, i.e. the client's own self-reported "model"
-        # query param) reflects the LATTER, not what audit mode actually dispatched, so it was
-        # showing e.g. "qwen2.5-coder:3b" for a user whose real assigned model was something else
-        # entirely (confirmed live). audit_model_assignments is the authoritative source here.
-        if mode == "audit" and user_id in audit_model_assignments:
-            model = audit_model_assignments[user_id].get("model") or "-"
-        else:
-            model = info.get("model") or "-"
-        lane = info.get("lane") or "-"
-        lines.append(_truncate(f"  Hardware : {tier} tier  •  {model}  •  lane: {lane}", box_w))
+        multi_lane = len(lane_ids) > 1
+        # Per-lane fields (Hardware/Status/Speed) indent one level deeper than a solo panel's --
+        # "    " instead of "  " -- so they read as nested under their own "· lane_id" label
+        # instead of sitting at the same indent as the shared System/Joined/Progress footer below,
+        # which applies to the whole machine, not any one lane.
+        field_indent = "    " if multi_lane else "  "
+        for lane_id in lane_ids:
+            if multi_lane:
+                lines.append(f"  {Colors.DIM}{Colors.BOLD}· {lane_id}{Colors.RESET}")
+            info = online_clients.get(lane_id, {})
+            tier = info.get("tier", "?")
+            # audit mode assigns each user a specific model from its diversity roster (see
+            # _assign_audit_model), independent of whatever model the client itself locally
+            # defaults to -- info["model"] (the client's own self-reported "model" query param)
+            # reflects the LATTER, not what audit mode actually dispatched, so it was showing
+            # e.g. "qwen2.5-coder:3b" for a lane whose real assigned model was something else
+            # entirely (confirmed live). audit_model_assignments is the authoritative source here.
+            if mode == "audit" and lane_id in audit_model_assignments:
+                model = audit_model_assignments[lane_id].get("model") or "-"
+            else:
+                model = info.get("model") or "-"
+            lane_tag = info.get("lane") or "-"
+            lines.append(_truncate(f"{field_indent}Hardware : {tier} tier  •  {model}  •  lane: {lane_tag}", box_w))
+
+            last = _user_last_status.get(lane_id)
+            prefix = f"{field_indent}Status   : "
+            if last:
+                age_seconds = now - last["timestamp"]
+                # No "(just now)" -- that's true for nearly every line on a live, fast-moving
+                # campaign, so it was just noise repeated on almost every panel. The age is only
+                # actually informative once a status has sat for a while.
+                suffix = f"  ({_relative_time(age_seconds)})" if age_seconds >= 60 else ""
+                msg = _truncate(last["message"], max(10, box_w - len(prefix) - 1 - len(suffix)))
+                lines.append(f"{prefix}{last['symbol_color']}{last['symbol']}{Colors.RESET} {msg}{Colors.DIM}{suffix}{Colors.RESET}")
+            else:
+                lines.append(f"{prefix}{Colors.GRAY}(no activity yet this session){Colors.RESET}")
+
+            speed = info.get("speed")
+            speed_text = f"{speed:.1f}s/task avg" if isinstance(speed, (int, float)) else "calculating..."
+            errors = _user_error_counts.get(lane_id, 0)
+            errors_text = f"{errors} error{'s' if errors != 1 else ''}" if errors else "0 errors"
+            errors_color = Colors.RED if errors else Colors.GRAY
+            lines.append(f"{field_indent}Speed    : {speed_text}  •  Errors: {errors_color}{errors_text}{Colors.RESET}")
+            if multi_lane:
+                lines.append("")
+
+        # One shared System/Joined/Progress for the whole cluster -- same physical machine, so
+        # repeating it per lane would just be noise (and a non-primary lane doesn't always send
+        # its own session_start at all). Uses whichever lane actually reported hardware info
+        # (normally the parent, but falls through to a child if the parent hasn't reported yet).
+        # A blank line already separates this from the last lane block when multi_lane (added
+        # unconditionally above, including after the final lane -- keeps the shared footer visually
+        # distinct from "belonging" to whichever lane happened to be listed last).
+        hw = next((_user_hardware_info[lid] for lid in lane_ids if _user_hardware_info.get(lid)), None)
         # Not run through _truncate() -- unlike the other panel lines, this one has ANSI color
         # codes already embedded in it (see _format_hardware_info), and truncating by raw
         # character count risks cutting a line off mid-escape-sequence, corrupting the terminal's
         # color state for everything printed after it. Its content is short and bounded enough
         # (OS + GPU label + VRAM + RAM + an optional DUAL-LANE flag) that overflow in practice
         # would only happen on an extremely narrow terminal, where it just wraps instead.
-        lines.append(f"  System   : {_format_hardware_info(_user_hardware_info.get(user_id))}")
-        benchmark_note = _format_benchmark_note(_user_hardware_info.get(user_id))
+        lines.append(f"  System   : {_format_hardware_info(hw)}")
+        benchmark_note = _format_benchmark_note(hw)
         if benchmark_note:
             lines.append(f"             {benchmark_note}")
 
-        last = _user_last_status.get(user_id)
-        prefix = "  Status   : "
-        if last:
-            age_seconds = now - last["timestamp"]
-            # No "(just now)" -- that's true for nearly every line on a live, fast-moving
-            # campaign, so it was just noise repeated on almost every panel. The age is only
-            # actually informative once a status has sat for a while.
-            suffix = f"  ({_relative_time(age_seconds)})" if age_seconds >= 60 else ""
-            msg = _truncate(last["message"], max(10, box_w - len(prefix) - 1 - len(suffix)))
-            lines.append(f"{prefix}{last['symbol_color']}{last['symbol']}{Colors.RESET} {msg}{Colors.DIM}{suffix}{Colors.RESET}")
-        else:
-            lines.append(f"{prefix}{Colors.GRAY}(no activity yet this session){Colors.RESET}")
-
-        joined = _user_first_seen.get(user_id)
+        joined = min((_user_first_seen[lid] for lid in lane_ids if lid in _user_first_seen), default=None)
         joined_text = _relative_time(now - joined) if joined else "unknown"
         lines.append(f"  Joined   : {joined_text}")
 
-        lines.append(_truncate(f"  Progress : {_format_progress_line(mode, user_stats.get(user_id, {}))}", box_w))
-
-        speed = info.get("speed")
-        speed_text = f"{speed:.1f}s/task avg" if isinstance(speed, (int, float)) else "calculating..."
-        errors = _user_error_counts.get(user_id, 0)
-        errors_text = f"{errors} error{'s' if errors != 1 else ''}" if errors else "0 errors"
-        errors_color = Colors.RED if errors else Colors.GRAY
-        lines.append(f"  Speed    : {speed_text}  •  Errors: {errors_color}{errors_text}{Colors.RESET}")
+        combined_stats = {}
+        for lid in lane_ids:
+            lane_stats = user_stats.get(lid, {})
+            for k in _PROGRESS_SUM_KEYS.get(mode, []):
+                combined_stats[k] = combined_stats.get(k, 0) + lane_stats.get(k, 0)
+        lines.append(_truncate(f"  Progress : {_format_progress_line(mode, combined_stats)}", box_w))
 
         lines.append(f"{u_color}└{'─' * box_w}┘{Colors.RESET}")
         lines.append("")
@@ -354,8 +420,19 @@ def render_dashboard():
         msg = _truncate(message, max(10, box_w - event_prefix_len - 2))
         lines.append(f"  {ts_text} {user_field} {symbol_color}{symbol}{Colors.RESET} {msg}")
 
+    # Erases exactly as many lines as the PREVIOUS redraw wrote, then writes the new frame --
+    # not a blanket "\033[2J\033[H" full-screen clear, which was confirmed live to not clear
+    # cleanly on at least one real setup: instead of redrawing in place, every 2-second cycle
+    # appended a whole new full frame to the visible scrollback, so the console just filled up
+    # with dozens of stacked copies of the dashboard rather than one that updates live. Same
+    # cursor-up-and-erase technique DualStatusBoard/print_terminal_status already use successfully
+    # elsewhere in this file for exactly this reason.
+    global _dashboard_last_line_count
+    if _dashboard_last_line_count:
+        sys.stdout.write("\033[F\033[K" * _dashboard_last_line_count)
     sys.stdout.write("\n".join(lines) + "\n")
     sys.stdout.flush()
+    _dashboard_last_line_count = len(lines)
 
 def _dashboard_loop():
     global _DASHBOARD_ACTIVE
@@ -524,7 +601,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.1.2"
-LATEST_CLIENT_VERSION = "1.2.2"
+LATEST_CLIENT_VERSION = "1.2.3"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:
@@ -2206,11 +2283,6 @@ def submit_work(submission: UnifiedSubmission):
         if submission.mode == "audit":
             return _submit_audit_work(submission)
         return _submit_rag_work(submission)
-
-# c/g = a dual-lane secondary (see DualLaneController's secondary_user_id); p through z = a
-# parallel worker (see ParallelWorkerPoolController's suffix pool). Both build their synthetic id
-# the same way: user_id[:11] + one of these letters.
-_LANE_CHILD_SUFFIXES = "cgpqrstuvwxyz"
 
 def _merge_lane_children(rankings: list, sum_keys: list) -> list:
     """Folds a dual-lane secondary's or parallel worker's synthetic identity into its real
