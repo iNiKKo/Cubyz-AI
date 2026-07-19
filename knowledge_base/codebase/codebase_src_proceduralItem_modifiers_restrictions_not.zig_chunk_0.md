@@ -11,6 +11,12 @@ Not modifier restriction implementation
 ## Explanation
 This chunk defines a `Not` struct that represents the negation of another `ModifierRestriction`. It provides three key methods: `satisfied`, `loadFromZon`, and `printTooltip`. The `satisfied` method checks if a procedural item does not satisfy the child restriction. The `loadFromZon` function deserializes the `Not` struct from a ZonElement, creating a new instance of `Not` with its child restriction loaded from the provided ZonElement. The `printTooltip` function generates a tooltip for the `Not` modifier, indicating that it negates the tooltip of the child restriction.
 
+The types of data structures used in this chunk include `NeverFailingAllocator`, `ModifierRestriction`, `ProceduralItem`, and `ZonElement`. Memory allocation is handled by the `allocator.create(Not)` method, which creates a new instance of `Not` on the heap. There are no explicit error handling mechanisms in this chunk, as it uses `NeverFailingAllocator` which guarantees successful allocations. Concurrency considerations are not relevant to this chunk, as it does not involve any shared mutable state or asynchronous operations.
+
+The dependencies between different parts of this chunk include the `ModifierRestriction` struct and the `ZonElement` type, both of which are imported from other modules. The `Not` struct interacts with these components by calling their methods (`satisfied`, `loadFromZon`, and `printTooltip`) to perform its operations.
+
+Serialization and deserialization are handled by the `loadFromZon` function, which reads data from a ZonElement and creates an instance of `Not`. Deserialization is performed when loading the child restriction from the ZonElement.
+
 ## Code Example
 ```zig
 const Not = struct {

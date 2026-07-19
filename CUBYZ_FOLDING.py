@@ -111,7 +111,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.2.6"
+VERSION = "1.2.7"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -2865,6 +2865,14 @@ class DualStatusBoard:
             if lane_tag not in self.order:
                 self.order.append(lane_tag)
                 self.state[lane_tag] = {"task": "(waiting for a task...)", "status": "Starting...", "speed": "calculating..."}
+                # A newly-added lane makes the NEXT frame longer than the one on screen right
+                # now -- without this, that next update()'s erase still uses the OLD (smaller)
+                # last_line_count, undershooting how much it actually needs to erase and leaving
+                # stale lines (confirmed live: the box header duplicated repeatedly, once per
+                # lane that joined, before finally catching up once a correctly-sized frame's own
+                # last_line_count took over). Same fix drop_lane() already applies when a lane
+                # LEAVES and the frame gets shorter -- this is the missing "gets longer" half.
+                self.rendered_once = False
 
     def drop_lane(self, lane_tag: str):
         """Removes a lane's row entirely (a parallel worker stopped, or dual-lane toggled off) --
@@ -2940,6 +2948,13 @@ class DualStatusBoard:
             if lane_tag not in self.order:
                 self.order.append(lane_tag)
                 self.labels.setdefault(lane_tag, lane_tag)
+                # Same reasoning as set_label()'s own comment -- this call is about to make the
+                # frame longer than what's on screen, so the upcoming _render_locked() must print
+                # fresh rather than erase based on the shorter previous frame's line count. This
+                # is the fallback path for a lane whose very first report is an update() with no
+                # prior set_label() call at all (defensive; every real caller does call
+                # set_label() first, but nothing should silently corrupt the box if one doesn't).
+                self.rendered_once = False
             self.state[lane_tag] = {"task": task_desc, "status": step_msg, "speed": speed}
             self.comp, self.tot, self.eta = comp, tot, eta
             self._render_locked()

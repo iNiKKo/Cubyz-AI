@@ -9,7 +9,7 @@
 Manages the GUI window for a chest inventory, initializing and deinitializing item slots and handling open/close events.
 
 ## Explanation
-This chunk defines the logic for a GUI window that represents a chest inventory. The window has a `contentSize` of `{64*10, 64*3}` and a `scale` of `0.75`. It is positioned attached above the player's inventory window with specific attachment points: `.middle` to `.middle` and `.upper` to `.lower`. The `deinit` function clears and frees the memory used by item slots. The `setInventory` function sets the currently selected inventory. The `onOpen` function creates a **2-row by 10-column grid of item slots (20 total)**, one `HorizontalList` row per `y` (0-1), 10 slots per row indexed `y*10 + x`, bound to `openInventory`. The `onClose` function deinitializes the open inventory, clears item slots while retaining capacity, and deinitializes the root component of the window. The `padding` constant is used for spacing in the GUI layout.
+This chunk defines the logic for a GUI window that represents a chest inventory. The window has a `contentSize` of `{64*10, 64*3}` and a `scale` of `0.75`. It is positioned attached above the player's inventory window with specific attachment points: `.middle` to `.middle` and `.upper` to `.lower`. The `deinit` function clears and frees the memory used by item slots. The `setInventory` function sets the currently selected inventory. The `onOpen` function creates a **2-row by 10-column grid of item slots (20 total)**, one `HorizontalList` row per `y` (0-1), 10 slots per row indexed `y*10 + x`, bound to `openInventory`. Each slot is initialized with default settings. The `onClose` function deinitializes the open inventory, clears item slots while retaining capacity, and deinitializes the root component of the window. The `padding` constant is used for spacing in the GUI layout.
 
 ## Code Example
 ```zig
@@ -19,11 +19,7 @@ pub fn deinit() void {
 ```
 
 ## Related Questions
-- How is the chest inventory window initialized?
-- What function sets the currently selected inventory?
-- How are item slots created when the inventory window opens?
-- What happens to the open inventory when the window closes?
-- How is memory managed for item slots in this module?
-- What is the role of the `padding` constant in the GUI layout?
+- How many item slots are created when the inventory window opens?
+- What specific code is used to create each item slot?
 
 *Source: unknown | chunk_id: codebase_src_gui_windows_chest.zig_chunk_0*

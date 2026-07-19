@@ -9,7 +9,7 @@
 This chunk implements a semaphore using mutex and condition variable for synchronization.
 
 ## Explanation
-The Semaphore struct uses a Mutex and Condition to manage `permits`, which defaults to `0` (it's explicitly OK to initialize it to any value). It supports static initialization and needs no deinitialization. The `wait` function blocks the calling thread while `permits == 0`, then decrements it by 1 and signals another waiter if permits remain. `timedWait` does the same but returns `error.Timeout` if the timeout elapses first. The `post` function increments `permits` and signals one waiting thread.
+This chunk implements a semaphore using mutex and condition variable for synchronization. The Semaphore struct uses a Mutex and Condition to manage `permits`, which defaults to `0` (it's explicitly OK to initialize it to any value). It supports static initialization and needs no deinitialization. The `wait` function blocks the calling thread while `permits == 0`, then decrements it by 1 and signals another waiter if permits remain. The `timedWait` function does the same but returns `error.Timeout` if the timeout elapses first, calculated as the difference between the start time and the current timestamp. The `post` function increments `permits` and signals one waiting thread.
 
 ## Code Example
 ```zig

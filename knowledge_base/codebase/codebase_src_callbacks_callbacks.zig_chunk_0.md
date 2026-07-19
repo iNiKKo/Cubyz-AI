@@ -15,7 +15,9 @@ This chunk defines various callback structures and functions used to handle bloc
 - **ServerBlockCallback**: Takes a struct with fields `block: Block`, `chunk: *main.chunk.ServerChunk`, and `blockPos: main.chunk.BlockPos`. The function also returns an enum value of `Result`.
 - **BlockTouchCallback**: Takes a struct with fields `entity: *main.server.Entity`, `source: Block`, `blockPos: Vec3i`, and `deltaTime: f64`. This callback also returns an enum value of `Result`.
 
-The `init` function initializes global callback maps for each type, ensuring that the necessary vtables are set up. It checks for a required `
+The `init` function initializes global callback maps for each type, ensuring that the necessary vtables are set up. It checks for a required field `type` in the `zon` element to determine which event handler to initialize. If the `type` is missing or unknown, it logs an error and returns null.
+
+The `Callback` function template includes methods for initializing and running callbacks, as well as handling no-operation (noop) callbacks. The `SimpleCallback` struct provides a simpler callback mechanism with support for different types of callback functions.
 
 ## Code Example
 ```zig

@@ -9,7 +9,32 @@
 Defines the model component for entities, handling both client and server logic including initialization, deinitialization, loading, unloading, and data serialization.
 
 ## Explanation
-This chunk defines the model component for entities in the Cubyz engine, with `entityComponentVersion = 0` -- `load`/`loadFromData` both return `error.InvalidComponentVersion` if the given version doesn't match 0. It includes separate structures and functions for client-side and server-side operations. The client structure manages rendering-related data such as matrices and nodes (deinit frees both, plus releases the model's buffer allocation from `modelRenderer.client.nodeBuffer`), while the server holds just an `entityModel` index; `server.put` stores/overwrites a component and calls `main.entity.server.transmitChange(Self, entity)` to notify clients of the change. Both sides use a `SparseSet` to map entities to their respective components. Functions like `init`, `deinit`, `load`, `unload`, and `get` are provided for managing component lifecycle and access.
+This chunk defines the model component for entities in the Cubyz engine, with `entityComponentVersion = 0` -- `load`/`loadFromData` both return `error.InvalidComponentVersion` if the given version doesn't match 0. It includes separate structures and functions for client-side and server-side operations.
+
+The client structure (`client.Component`) manages rendering-related data such as matrices and nodes. The struct contains:
+- `entityModel`: an index to the entity model.
+- `bufferAllocation`: a sub-allocation for node buffer.
+- `matrices`: an array of transformation matrices.
+- `nodes`: an array of entity model nodes.
+
+The client structure provides functions like:
+- `deinit`: frees matrices, nodes, and releases the buffer allocation from `modelRenderer.client.nodeBuffer`.
+- `init`: initializes the client-side model component system.
+- `deinit`: deinitializes the client-side model component system.
+- `clear`: clears all components.
+- `load`: loads a component from binary data, initializing or updating the component as needed.
+- `unload`: unloads a component by freeing its resources and removing it from the sparse set.
+- `get`: retrieves a component for an entity.
+
+The server structure (`server.Component`) holds just an `entityModel` index. The server provides functions like:
+- `init`: initializes the server-side model component system.
+- `deinit`: deinitializes the server-side model component system.
+- `loadFromData`: loads a component from binary data, initializing or updating the component as needed.
+- `unload`: unloads a component by removing it from the sparse set.
+- `put`: stores/overwrites a component and calls `main.entity.server.transmitChange(Self, entity)` to notify clients of the change.
+- `get`: retrieves a component for an entity.
+
+Both sides use a `SparseSet` to map entities to their respective components. Functions like `init`, `deinit`, `load`, `unload`, and `get` are provided for managing component lifecycle and access.
 
 ## Code Example
 ```zig

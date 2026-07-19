@@ -23,6 +23,8 @@ The bounding box for the cylinder SDF model is calculated based on these paramet
 
 The final distance is calculated as the length of the maximum vector between these two values and their minimum value, adjusted for cases where the sample point is outside the cylinder's bounds.
 
+The `Instance` struct contains fields for `radius` and `halfHeight`, which are used to store the random values generated in the `instantiate` function. The `SdfInstance` struct returned by the `instantiate` function includes these fields along with other metadata such as `minBounds`, `maxBounds`, and `centerPosOffset`.
+
 ## Code Example
 ```zig
 pub fn initAndGetExtend(zon: ZonElement) sdf.SdfModel.InitResult {

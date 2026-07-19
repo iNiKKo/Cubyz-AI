@@ -9,7 +9,27 @@
 Configuration data for a sickle tool
 
 ## Explanation
-This chunk contains configuration settings for a sickle tool: `tags = .{.cuttable}`, plus 5x5 `disabled`/`optional` matrices controlling which material-slot combinations are usable. It defines 7 damage/durability/speed parameters:
+This chunk contains configuration settings for a sickle tool: `tags = .{.cuttable}`, plus 5x5 `disabled`/`optional` matrices controlling which material-slot combinations are usable. The `disabled` matrix is as follows:
+
+```
+1, 0, 0, 0, 1,
+0, 0, 0, 0, 0,
+0, 1, 1, 0, 0,
+1, 1, 1, 0, 1,
+1, 1, 1, 1, 0,
+```
+
+The `optional` matrix is as follows:
+
+```
+0, 1, 1, 1, 0,
+1, 1, 1, 1, 1,
+0, 0, 0, 1, 1,
+0, 0, 0, 1, 0,
+0, 0, 0, 0, 0,
+```
+
+It defines 7 damage/durability/speed parameters:
 - `massDamage` -> `damage`, factor `0.06`, method `.sum`
 - `massDamage` -> `damage`, factor `0.24`, method `.average`
 - `hardnessDamage` -> `damage`, factor `0.2`, method `.average`
@@ -17,6 +37,8 @@ This chunk contains configuration settings for a sickle tool: `tags = .{.cuttabl
 - `durability` -> `maxDurability`, factor `0.8`, method `.average`
 - `swingSpeed` -> `swingSpeed`, factor `-0.2`, method `.sum`
 - `swingSpeed` -> `swingSpeed`, factor `1.2`, method `.average`
+
+The explanation now includes the actual values for the `disabled` and `optional` matrices, which were previously omitted.
 
 ## Related Questions
 - What are the disabled properties of the sickle tool?

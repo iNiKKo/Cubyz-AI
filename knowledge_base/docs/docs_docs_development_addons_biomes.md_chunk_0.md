@@ -16,16 +16,37 @@ The table lists various properties like `isCave`, `radius`, `minHeight`, `maxHei
 - `radius`: Size of the biome. Use `minRadius` and `maxRadius` for variable sizes. Default: 256
 - `minHeight`: Lowest terrain height the biome can generate. Default: —
 - `maxHeight`: Highest terrain height the biome can generate. Default: —
+- `minRadius`: Minimum biome radius. Default: —
+- `maxRadius`: Maximum biome radius. Default: —
+- `minHeightLimit`: Hard lower terrain limit, even after interpolation. Default: —
+- `maxHeightLimit`: Hard upper terrain limit, even after interpolation. Default: —
 - `smoothBeaches`: Enables smooth beach generation. Default: false
 - `interpolation`: Border interpolation method (`none`, `linear`, or `square`). Default: square
+- `interpolationWeight`: Strength of biome interpolation. Minimum is `std.math.floatMin(f32)`. Default: 1
 - `roughness`: Applies terrain roughness by scattering blocks. Default: —
 - `hills`: Controls rolling hill generation. Default: —
 - `mountains`: Controls spiky mountain generation. Default: —
+- `keepOriginalTerrain`: Amount of the parent biome's terrain preserved in a sub-biome (`1` = all, `0.5` = 50%). Default: —
+- `caves`: Cave generation factor. Default: —
+- `caveRadiusFactor`: Multiplier for cave radius. Default: —
+- `crystals`: Average number of randomly placed Glow Crystals. Default: —
+- `soilCreep`: Controls erosion of surface blocks based on terrain slope. Default: —
 - `stoneBlock`: Base block the biome is constructed from (e.g., slate). Default: slate
+- `fogLower`: Lower fog boundary. Default: —
+- `fogHigher`: Upper fog boundary. Default: —
+- `fogDensity`: Density of biome fog. Default: —
 - `fogColor`: Fog color in RGB format. Default: —
 - `skyColor`: Sky color in RGB format. Default: {0.46, 0.7, 1.0}
+- `stripes`: Stripe definitions used by the biome. Default: —
 - `subBiomes`: Collection of sub-biomes. Default: —
 - `parentBiomes`: Parent biomes this biome can generate within. Default: —
+- `transitionBiomes`: Transition biome definitions. Default: —
+- `ground_structure`: Ground structure definitions. Default: —
+- `structures`: Structures that can generate in the biome. Default: —
+- `maxSubBiomeCount`: Maximum number of sub-biomes allowed per biome instance. Default: —
+- `music`: Music file that loops while the player is in the biome. Default: —
+- `isValidPlayerSpawn`: Whether players can spawn in this biome. Used to ensure the player starts in a biome with trees. Default: —
+- `chance`: Generation chance or weight. Default: —
 
 Each property has a specific type and default value that allows precise customization of biome generation.
 

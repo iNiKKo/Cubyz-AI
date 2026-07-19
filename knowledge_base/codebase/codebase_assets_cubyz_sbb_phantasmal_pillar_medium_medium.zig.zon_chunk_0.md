@@ -9,7 +9,7 @@
 Pillar blueprint configuration with random selection and child entities.
 
 ## Explanation
-This chunk defines the configuration for a medium-sized pillar in the Cubyz voxel engine. It includes eight blueprints with IDs 'cubyz:phantasmal/pillar/medium/0' to 'cubyz:phantasmal/pillar/medium/6', each having a chance of 1. Additionally, it specifies two children entities that will be spawned when this pillar is created: white offshoots ('cubyz:phantasmal/pillar/offshoot/offshoot') and purple tops ('cubyz:phantasmal/pillar/top/top').
+This chunk defines the configuration for a medium-sized pillar in the Cubyz voxel engine. It includes nine blueprints: eight with IDs 'cubyz:phantasmal/pillar/medium/0' to 'cubyz:phantasmal/pillar/medium/6', each having a chance of 1, and one blueprint with ID null having a chance of 0.6. Additionally, it specifies two children entities that will be spawned when this pillar is created: white offshoots ('cubyz:phantasmal/pillar/offshoot/offshoot') and purple tops ('cubyz:phantasmal/pillar/top/top'). The random selection process uses the specified chances to determine which blueprint to select, with blueprints having a chance of 1 being more likely to be chosen than the one with a chance of 0.6.
 
 ## Related Questions
 - What are the IDs of the blueprints defined in this configuration?
