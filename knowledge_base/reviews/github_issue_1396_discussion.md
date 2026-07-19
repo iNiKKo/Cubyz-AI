@@ -9,7 +9,44 @@
 The issue tracks progress on revamping various tree types in Cubyz, with some tasks completed and others pending. Maintainers discuss adding sapling-like trees and resin functionality.
 
 ## Explanation
-This issue document outlines the ongoing work to revamp different types of trees within the Cubyz game environment. The task list includes various tree species across different biomes, with some items marked as completed (e.g., Pine Trees, Baobab Trees) and others still pending (e.g., Oak Trees, Birch Trees). Maintainers have engaged in discussions about adding sapling-like representations for young trees and the possibility of integrating resin functionality into trees. However, it is noted that only legacy logs can currently support resin application, with specific rotation constraints.
+This issue document outlines the ongoing work to revamp different types of tree species within Cubyz across various biomes. The task list includes specific trees and their statuses as follows:
+
+### **Oak**
+- Tall Oaks (Plains): Pending
+- Oak Trees (Forest, Plains): Need redo with new logs
+- Small Oaks (Prairie, Mountains, Limestone Mountains, etc): Pending
+
+### **Birch**
+- Thin Birches (Thin Birch Forest, Birch Forest): Pending
+- Birch Trees (Birch Forest, Forest): Need redo with new logs
+
+### **Pine**
+- Pine Trees (Taiga): Completed
+- Tall Pines (Taiga): Completed
+
+### **Mahogany**
+- Tall Mahogany (Jungle): Pending
+- Mahogany Trees (Jungle): Pending
+
+### **Baobab**
+- Baobab Trees (Savannah, Limestone Mountains): Completed
+- Acacia-styled Baobabs (Savannah): Pending
+
+### **Willow**
+- Willow Trees (Swamp): Pending
+- Wetland Willows (Wetlands): Pending
+
+### **General / Substitutional**
+- Cacti (Desert): Completed
+- Bushes (Bushlands, Mountains, etc): Pending
+- Small Bushes (Bushlands, Mountains, Prairie, etc): Pending
+- Saplings: Pending
+- Dead Trees: Pending
+- Fallen Trees: Pending
+- Giant Mushrooms (Savannah, Limestone Mountains): Completed
+- Autumn Trees (Block replacements will be used): Pending
+
+Maintainers have engaged in discussions about adding sapling-like representations for young trees and the possibility of integrating resin functionality into trees. However, it is noted that only legacy logs can currently support resin application, specifically in the up-right rotation.
 
 ## Related Questions
 - What are the remaining tasks for revamping Oak trees?

@@ -11,6 +11,14 @@ Renamed the 'placeBlock' action to 'use and place', updating associated function
 ## Explanation
 The change renames the keyboard/mouse/gamepad action from 'placeBlock' to 'use and place'. This update involves modifying the struct definition in `src/main.zig` to reflect the new name. The reviewer suggests renaming it further to 'use or place', indicating a potential need for more nuanced behavior between using and placing items. The primary concern is ensuring that the updated action names do not introduce regressions in game functionality, particularly around player interactions with the environment.
 
+The specific changes made include:
+- Renaming the action from 'placeBlock' to 'use and place'.
+- Updating the `mouseButton` to `c.GLFW_MOUSE_BUTTON_RIGHT`.
+- Updating the `gamepadAxis` to `.axis = c.GLFW_GAMEPAD_AXIS_LEFT_TRIGGER`.
+- Changing the `pressAction` from `&game.pressPlace` to `&game.pressSecondary`.
+- Changing the `releaseAction` from `&game.releasePlace` to `&game.releaseSecondary`.
+- Keeping the `notifyRequirement` as `.inGame`.
+
 ## Related Questions
 - What are the potential impacts of renaming 'placeBlock' to 'use and place' on existing game mechanics?
 - How does this change affect player interactions with the environment in Cubyz?

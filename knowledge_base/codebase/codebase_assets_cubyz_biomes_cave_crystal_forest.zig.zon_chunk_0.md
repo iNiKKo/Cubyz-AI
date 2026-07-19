@@ -18,7 +18,7 @@ This chunk contains a configuration object for a specific biome type in the Cuby
 - **stoneBlock:** cubyz:slate/smooth
 - **ground_structure:** consists of `cubyz:grass/temperate` and 2 to 3 layers of `cubyz:soil`
 - **structures:** includes a young oak tree with an ID of `cubyz:sbb`, placed in degradable mode, and generation chance of 0.32
-- **caveModels:** represented by partial spheres with IDs ranging from 10 to 20, minimum radius of 20, and maximum radius of 30
+- **caveModels:** partial spheres, generated between 10 and 20 times per cave (minAmount/maxAmount), with a minimum radius of 20 and maximum radius of 30
 
 ## Related Questions
 - What is the maximum height of the cave crystal forest biome?

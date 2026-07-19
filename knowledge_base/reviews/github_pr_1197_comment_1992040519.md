@@ -9,7 +9,9 @@
 The code introduces an inline function `rotateX` in `rotation.zig` to handle rotation logic for stairs, utilizing trigonometric functions and a precomputed rotation table.
 
 ## Explanation
-The change involves adding a new function `rotateX` that calculates the rotated state of stair subblocks. The function uses a precomputed rotation table to map original coordinates to their rotated counterparts. Reviewer notes suggest that using multiplication might hinder optimization, as it could prevent the compiler from utilizing efficient conditional move (`cmov`) instructions.
+The change involves adding a new function `rotateX` that calculates the rotated state of stair subblocks. The function uses a precomputed rotation table to map original coordinates to their rotated counterparts. The `rotateTable` is initialized using nested loops that iterate over all possible combinations of x, y, and z coordinates (0 to 1). For each combination, it calculates the new coordinates after applying a 90-degree rotation around the X-axis using trigonometric functions (`sin` and `cos`). The coordinates are scaled by a factor of 2.0 before rotation to ensure they fit within the expected range.
+
+The reviewer notes suggest that using multiplication might hinder optimization, as it could prevent the compiler from utilizing efficient conditional move (`cmov`) instructions. However, most optimizers will likely use `cmov` instructions anyway, making this concern less critical.
 
 ## Related Questions
 - What is the purpose of the `rotateTable` in the `rotateX` function?

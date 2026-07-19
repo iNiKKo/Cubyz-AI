@@ -8,7 +8,7 @@
 The issue report describes a problem titled 'Rapture' with no clear steps to reproduce or observed behavior provided. The maintainer suggests taking higher resolution screenshots for better clarity.
 
 ## Explanation
-The issue report lacks specific details about the problem, making it difficult to diagnose or address. The maintainer's comment highlights the need for more detailed information, such as higher quality images, to understand the exact nature of the issue. This is a common practice in software development to ensure that issues can be accurately identified and resolved.
+The issue report describes a problem titled 'Rapture' with no clear steps to reproduce or observed behavior provided. The maintainer suggests taking higher resolution screenshots for better clarity. A higher resolution screenshot of the problem could be helpful, as it's hard to see what's going on exactly if everything is blurred and filled with compression artifacts.
 
 ## Related Questions
 - What specific details are missing from the issue report?

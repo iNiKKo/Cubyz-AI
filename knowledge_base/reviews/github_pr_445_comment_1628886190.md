@@ -9,7 +9,7 @@
 Added a taskType field to ChunkMesh and assigned it to .lighting.
 
 ## Explanation
-The change introduces a new field 'taskType' in the ChunkMesh struct and assigns it the value '.lighting'. The reviewer points out that there are multiple tasks with the same tag, which can obscure performance issues. Specifically, they mention that the LightRefreshTask is relatively fast, which might skew the average mesh generation time.
+The change introduces a new field 'taskType' in the ChunkMesh struct and assigns it the value '.lighting'. The reviewer points out that there are multiple tasks with the same tag, which can obscure performance issues. Specifically, they mention that the LightRefreshTask is relatively fast, which might skew the average mesh generation time. Additionally, there are three .lighting tasks, but they do completely different things. This can hide performance problems because having multiple tasks with the same tag can make it difficult to identify and address specific issues related to each task. For example, if one of the .lighting tasks is significantly slower than others, it might not be noticed if all tasks are grouped under the same tag.
 
 ## Related Questions
 - What are the other tasks with the .lighting tag?

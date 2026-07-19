@@ -9,7 +9,7 @@
 The reviewer suggests replacing an `AutoHashMap` with a `List` for entity ID mapping due to the expectation that IDs are small numbers.
 
 ## Explanation
-The original code used an `AutoHashMap` to map entity IDs to their corresponding entities. The reviewer argues that since IDs are generally small, using a list might be more efficient and appropriate. This change could potentially reduce memory overhead and improve access times for small ID ranges. However, the reviewer's concern about the necessity of this change should be addressed to ensure it aligns with the actual distribution of entity IDs in the application.
+The original code used an `AutoHashMap` to map entity IDs to their corresponding entities. The reviewer suggests replacing this with `main.List(?*main.client.Entity)` because IDs are generally small numbers, which could potentially reduce memory overhead and improve access times for small ID ranges. However, the necessity of this change should be evaluated based on the actual distribution of entity IDs in the application.
 
 ## Related Questions
 - What are the potential memory savings from using a List instead of an AutoHashMap for entity ID mapping?

@@ -9,18 +9,11 @@
 Discussion on improving tool restriction display in crafting grids by visualizing relevant slots and tooltips.
 
 ## Explanation
-The issue revolves around enhancing user understanding of tool restrictions in the game's crafting interface. The maintainer suggests a complex solution involving visual cues like colored slots and additional icons to indicate positive or neutral contributions to modifier activation. However, the complexity arises from handling multiple modifiers with different restrictions, which complicates the implementation.
+The issue revolves around enhancing user understanding of tool restrictions in the game's crafting interface. The maintainer suggests a complex solution involving visual cues like colored slots and additional icons to indicate positive or neutral contributions to modifier activation when an item is held in the hand slot and hovered over a crafting grid slot. Specifically, green indicators would show for slots that contribute positively, while red indicators would denote neutral contributions. Additionally, the maintainer proposes displaying secondary tooltips with more detailed information about these interactions. Another suggestion involves subtle visual cues such as small circles in player inventory items to indicate potential interactions when held and hovered over crafting slots. The complexity arises from handling multiple modifiers with different restrictions, which complicates the implementation.
 
 ## Related Questions
-- How can we implement multiple modifier restrictions in the crafting grid?
-- What are potential performance impacts of adding complex visual feedback to the UI?
-- How can we ensure that the additional tooltips do not clutter the user interface?
-- Can you provide a mockup of how the colored slots and icons would look in the crafting grid?
-- What is the feasibility of detecting when an item is held in the hand slot and hovered over a crafting grid slot?
-- How will the system handle cases where multiple modifiers interact with the same item?
-- Are there any existing UI components that can be reused for implementing these visual cues?
-- What are the accessibility considerations for users who rely on screen readers or have color vision deficiencies?
-- How can we test the user experience of this new feature to ensure it meets usability standards?
-- What are the potential regressions in other parts of the UI when adding these new visual elements?
+- How can we implement colored slots and icons for positive or neutral contributions to modifier activation?
+- What are the exact visual cues proposed for player inventory interactions?
+- Can you provide a mockup of how these visual cues would look in practice?
 
 *Source: unknown | chunk_id: github_issue_2818_discussion*

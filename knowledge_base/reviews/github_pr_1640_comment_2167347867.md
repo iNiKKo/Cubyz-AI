@@ -11,6 +11,13 @@ The change updates the way item indices are stored by converting them to an enum
 ## Explanation
 The reviewer suggests refactoring the code to encapsulate global variables within an enum and introduces a `nextIndex` function. This architectural change aims to improve code organization and potentially enhance type safety by leveraging Zig's enum capabilities. The current modification changes how item indices are stored, converting them from integers to enums using `@enumFromInt`. This could prevent certain types of errors related to invalid index values and make the code more robust.
 
+The specific line of code that was changed is:
+```zig
+- reverseIndices.put(newItem.id, .{.index = itemListSize}) catch unreachable;
++ reverseIndices.put(newItem.id, @enumFromInt(itemListSize)) catch unreachable;
+```
+The `nextIndex` function is intended to provide a way to get the next available index in the enum, which can help prevent errors related to invalid index values.
+
 ## Related Questions
 - What is the purpose of converting item indices to enums?
 - How does this change improve type safety in the code?

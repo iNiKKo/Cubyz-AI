@@ -11,6 +11,16 @@ The code was modified to consistently use `.0` for floating-point literals and t
 ## Explanation
 The reviewer pointed out that the original code used a mix of `.0` and no decimal point for floating-point numbers, which is inconsistent. The reviewer also noted a potential issue with the mathematical formula inside the `combineModifiers` function. The suggested change corrects both issues by ensuring all floating-point literals use `.0` and adjusting the formula to avoid division by zero or other numerical inaccuracies.
 
+The original formula in the `combineModifiers` function was:
+```zig
+return .{.strength = 1.0 - 1.0/std.math.hypot(1.0/(1.0 - data1.strength), 1.0/(1.0 - data2.strength)), .tag = data1.tag};
+```
+The corrected formula is:
+```zig
+return .{.strength = 1.0 - 1.0/(1 + std.math.hypot(1.0/(1.0 - data1.strength) - 1, 1.0/(1.0 - data2.strength) - 1)), .tag = data1.tag};
+```
+This change ensures that the calculation is more numerically stable and avoids potential division by zero issues.
+
 ## Related Questions
 - Why was it necessary to consistently use `.0` for floating-point literals?
 - What was the original issue with the `combineModifiers` function's formula?

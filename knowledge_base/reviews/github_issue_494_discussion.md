@@ -8,7 +8,7 @@
 The issue of momentum-based flying being hard to control has been resolved with the fix in #492.
 
 ## Explanation
-The discussion indicates that the problem described in the issue report, where momentum-based flying felt difficult to control, has been addressed by a previous commit (#492). The maintainer's comment confirms that this issue is no longer present, suggesting that the fix implemented in #492 effectively resolved the control issues associated with momentum-based flying.
+The discussion indicates that the problem described in the issue report, where momentum-based flying felt difficult to control, has been addressed by a fix implemented in commit #492. The maintainer's comment confirms that this issue is no longer present and suggests that the previous system was reverted due to improvements made in #492. However, specific details about the changes made or why it was reverted are not provided.
 
 ## Related Questions
 - What changes were made in #492 to fix the momentum-based flying control issues?

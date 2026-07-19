@@ -9,7 +9,9 @@
 A new struct `ReadWriteTest` is introduced with initialization and deinitialization functions, but the reviewer suggests modifying `main.zig` to assign testing allocators conditionally during test builds.
 
 ## Explanation
-The change introduces a new struct `ReadWriteTest` with methods for initializing and deinitializing thread locals. The reviewer points out that requiring these initializations for every test is cumbersome and proposes an alternative approach by setting up the testing allocator in `main.zig` when building for tests. This would simplify future tests and avoid repetitive setup code.
+**Explanation**
+
+A new struct `ReadWriteTest` is introduced with methods for initializing (`init`) and deinitializing (`deinit`) thread locals. The `init` method calls `main.initThreadLocals()`, while the `deinit` method calls `main.deinitThreadLocals()`. The reviewer suggests modifying `main.zig` to assign testing allocators conditionally during test builds using `if(builtin.is_test)`. This approach would simplify future tests by avoiding repetitive setup code and align with Cubyz's overall testing strategy.
 
 ## Related Questions
 - How does the `ReadWriteTest` struct impact test execution?

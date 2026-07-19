@@ -9,7 +9,7 @@
 The review discusses issues with allocator usage in the `recipe_parser.zig` file, suggesting a more consistent approach.
 
 ## Explanation
-The reviewer points out that the current implementation uses different allocators for temporary and result allocations, which is confusing and can lead to memory leaks. The reviewer recommends using an arena allocator per function, inheriting from the stack allocator for efficiency, and avoiding explicit memory freeing since it complicates the code.
+The review discusses issues with allocator usage in the `recipe_parser.zig` file, suggesting a more consistent approach. The reviewer points out that the current implementation uses different allocators for temporary and result allocations, which is confusing and can lead to memory leaks. Specifically, the function `parseRecipeItem` takes an allocator for temporary allocations while using the implicitly passed `list.allocator` for the result data. This inconsistency can cause memory management issues. The reviewer recommends using an arena allocator per function, inheriting from the stack allocator for efficiency, and avoiding explicit memory freeing since it complicates the code. By doing so, the allocation process would be simplified, and the code would become more readable and maintainable.
 
 ## Related Questions
 - How does the current implementation handle memory allocation and deallocation?

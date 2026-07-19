@@ -9,7 +9,24 @@
 Configuration data for pillar offshoot blueprint generation
 
 ## Explanation
-This chunk defines a configuration structure for generating pillar offshoots in the Cubyz voxel engine. It contains an array of blueprints, each with an ID and a chance value. The IDs correspond to specific types of pillar offshoots, and the chances determine their likelihood of being generated.
+This chunk defines a configuration structure for generating pillar offshoots in the Cubyz voxel engine. It contains an array of blueprints, each with an ID and a chance value. The IDs correspond to specific types of pillar offshoots, and the chances determine their likelihood of being generated. The exact chance values are as follows:
+
+- `cubyz:phantasmal/pillar/offshoot/0` has a chance of 0.08.
+- `cubyz:phantasmal/pillar/offshoot/1` has a chance of 0.08.
+- `cubyz:phantasmal/pillar/offshoot/2` has a chance of 0.08.
+- `cubyz:phantasmal/pillar/offshoot/3` has a chance of 0.08.
+- `cubyz:phantasmal/pillar/offshoot/4` has a chance of 0.08.
+- `cubyz:phantasmal/pillar/offshoot/5` has a chance of 0.08.
+- `cubyz:phantasmal/pillar/offshoot/6` has a chance of 0.5.
+- `cubyz:phantasmal/pillar/offshoot/7` has a chance of 0.08.
+- `cubyz:phantasmal/pillar/offshoot/8` has a chance of 0.08.
+- `cubyz:phantasmal/pillar/offshoot/9` has a chance of 0.08.
+- `cubyz:phantasmal/pillar/offshoot/10` has a chance of 0.08.
+- `cubyz:phantasmal/pillar/offshoot/11` has a chance of 0.08.
+- `cubyz:phantasmal/pillar/offshoot/12` has a chance of 0.08.
+- `cubyz:phantasmal/pillar/offshoot/13` has a chance of 1.2.
+- `cubyz:phantasmal/pillar/offshoot/14` has a chance of 0.8.
+- The blueprint with ID `null` has a chance of 0.3.
 
 ## Related Questions
 - What is the total number of blueprint entries in this configuration?

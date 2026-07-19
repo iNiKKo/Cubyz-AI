@@ -11,6 +11,8 @@ Defines a dynamic packed integer array with variable bit size and provides metho
 ## Explanation
 The chunk defines a `DynamicPackedIntArray` type that allows storing integers in a compact format using a variable number of bits per integer. It includes methods for initializing the storage (`initCapacity`), deinitializing it (`deinit`), resizing from another array (`resizeOnceFrom`), and getting or setting values at specific indices (`getValue`, `setValue`, `setAndGetValue`). The implementation uses an atomic allocator to manage memory and ensures that bit sizes are powers of two. It also includes a helper function `bitInterleave` for interleaving bits during resizing.
 
+The `dynamicIntArrayAllocator` is initialized using the `initDynamicIntArrayStorage` function, which initializes the power of two pool allocator with parameters based on the chunk volume and bit size of specific types (`u8` and `u16`). The `bitInterleave` function is used to interleave bits during the resizing process to ensure that the data is correctly packed. The `resizeOnceFrom` method resizes the array by doubling the bit size and copying the data from another array, ensuring that the new bit size is a power of two. If an invalid bit size is provided to `initCapacity`, the function will assert that the bit size must be a power of two. Values are retrieved from the `DynamicPackedIntArray` using the `getValue` method, which calculates the correct index and offset based on the bit size and retrieves the value using atomic operations.
+
 ## Code Example
 ```zig
 pub fn initCapacity(bitSize: u5) Self {

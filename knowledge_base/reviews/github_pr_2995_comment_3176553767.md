@@ -9,7 +9,9 @@
 Added a `print` method to the `ListUnmanaged` struct in Zig, allowing formatted string printing directly into the list. Included tests for single call, with a string, multiple writes, and buffer preservation.
 
 ## Explanation
-The change introduces a new method `print` within the `ListUnmanaged` struct, enabling users to append formatted strings directly to the list. The implementation uses an `std.ArrayList` to handle dynamic resizing and formatting. Reviewer concerns focused on ensuring that the original buffer address is preserved when printing, which was verified through additional tests. This change enhances the utility of `ListUnmanaged` by providing a convenient way to build strings dynamically within the list structure.
+The change introduces a new method `print` within the `ListUnmanaged` struct, enabling users to append formatted strings directly to the list. The implementation uses an `std.ArrayList` to handle dynamic resizing and formatting. The `print` method takes an allocator, a format string (`fmt`), and arguments (`args`). It creates an `std.ArrayList` from the current items of the list and uses `std.Io.Writer.Allocating.fromArrayList` to create a writer that writes into this buffer. The formatted string is printed using the writer, and the buffer is updated with the new contents. The original buffer address is preserved when printing, which was verified through additional tests. This change enhances the utility of `ListUnmanaged` by providing a convenient way to build strings dynamically within the list structure.
+
+The test `ListUnmanaged.print single call` checks if the formatted string is correctly appended and if the buffer address changes after printing with a different format specifier (`{d:.1}`). The test `ListUnmanaged.print with a string` verifies that a string can be printed correctly. The test `ListUnmanaged.print multiple writes` ensures that multiple print calls work as expected, and the test `ListUnmanaged.print buffer preserved` checks if the buffer address is preserved during printing.
 
 ## Related Questions
 - What is the purpose of the `print` method in `ListUnmanaged`?

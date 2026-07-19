@@ -8,14 +8,11 @@
 Discussion about allowing biomes to have multiple, non-looping songs with intervals and random selection.
 
 ## Explanation
-The discussion revolves around adding features to allow biomes in Cubyz to play multiple non-looping songs with adjustable intervals between them. The maintainers are concerned about the complexity of implementing random song selection without breaking looped songs. They also discuss the possibility of allowing add-ons to add music, but express uncertainty about adding a system specifically designed for non-looping songs due to the base game's requirement for looping songs in all biomes.
+Discussion about allowing biomes in Cubyz to play multiple non-looping songs with adjustable intervals between them, as well as implementing random song choices and add-ons for user-added music. The maintainers are concerned that random selection might break looped songs and suggest a player situation-based selection system instead. They also express uncertainty about adding a system specifically designed for non-looping songs due to the base game's requirement for looping songs in all biomes. Specifically, one maintainer mentioned that 'song interval times' should be adjustable for non-looping songs, while another expressed concern that random song selection could disrupt the flow of looped songs. The maintainers also discussed the possibility of allowing add-ons to add music but were unsure if it was feasible to implement a system that supports both looping and non-looping songs with intervals without affecting performance.
 
 ## Related Questions
-- What are the potential issues with implementing random song selection for non-looping songs?
-- How can add-ons be integrated to allow users to add their own music?
-- Why is it important for the base game to have looping songs in all biomes?
-- Can you provide examples of how other games handle multiple, non-looping songs in different environments?
-- What are the technical challenges in implementing a system that supports both looping and non-looping songs with intervals?
-- How might the addition of non-looping song systems affect performance in Cubyz?
+- What are the specific concerns raised by the maintainers about 'song interval times' for non-looping songs?
+- How might the addition of player situation-based song selection affect the implementation of random song choices?
+- Why is it important to maintain looping songs in all biomes, and how could this impact the addition of non-looping songs with intervals?
 
 *Source: unknown | chunk_id: github_issue_534_discussion*

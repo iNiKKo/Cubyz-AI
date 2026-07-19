@@ -9,7 +9,7 @@
 Implemented a command to change an avatar's entity model ID, with validation for input arguments and error handling.
 
 ## Explanation
-The code introduces a new command `/avatar` that allows users to change their avatar's entity model ID. It includes checks for the correct number of arguments and validates whether the provided entity model ID exists. The command sends appropriate messages back to the user based on the outcome. The networking aspect is abstracted into the EntityComponent, and the transmission logic is planned to be handled in a separate PR.
+The code introduces a new command `/avatar` that allows users to change their avatar's entity model ID. The command is defined in `src/server/command/entity/avatar.zig` and uses the Zig programming language. It includes checks for the correct number of arguments and validates whether the provided entity model ID exists. If no arguments are provided, the command returns the current entity model ID or indicates that the user is invisible. If an invalid entity model ID is provided, an error message is sent back to the user. The networking aspect is abstracted into the EntityComponent, and the transmission logic is planned to be handled in a separate PR (https://github.com/PixelGuys/Cubyz/issues/3140). The command uses `BinaryWriter` for data serialization and sends appropriate messages back to the user based on the outcome. The ECS11 readiness mentioned in the review indicates that the implementation is ready for further review.
 
 ## Related Questions
 - What is the purpose of the `/avatar` command?

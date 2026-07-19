@@ -9,7 +9,7 @@
 The game crashes when a blueprint is not found due to a panic in `loadModel`.
 
 ## Explanation
-The issue arises because the `loadModel` function does not handle errors gracefully, leading to a panic when a structure building block (SBB) with a specified ID cannot be found. The maintainer suggests either adding an `isBroken` flag to skip generating broken SBBs or modifying the interface to allow returning errors. The current behavior is deemed unacceptable as it crashes the game without providing user feedback. The maintainer also proposes dropping such structures during loading time to prevent runtime issues and improve user experience.
+The game crashes when a blueprint is not found due to a panic in `loadModel`. The issue arises because the `loadModel` function does not handle errors gracefully, leading to a panic with the message 'Could not find structure building block with id '{s}' when a structure building block (SBB) with a specified ID cannot be found. The maintainer suggests either adding an `isBroken` flag to skip generating broken SBBs or modifying the interface to allow returning errors. The current behavior is deemed unacceptable as it crashes the game without providing user feedback. The maintainer also proposes dropping such structures during loading time to prevent runtime issues and improve user experience.
 
 ## Related Questions
 - How can we modify `loadModel` to handle missing SBBs gracefully?

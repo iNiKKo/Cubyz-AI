@@ -8,7 +8,7 @@
 The discussion revolves around adding permission layers and administrative features to Cubyz, with a maintainer seeking clarification on what is missing before the 0.2.0 release.
 
 ## Explanation
-The issue report highlights the need for hosts to have access to commands and assign moderator functions to other players, even when they are not online. The maintainer asks for a detailed description of what features are still needed to address this requirement. Users suggest that while issues #2587 and #2540 are important, their absence should not prevent the closure of the main issue.
+The issue report highlights the need for hosts to have access to commands and assign moderator functions to other players, even when they are not online. The maintainer asks for a detailed description of what features are still needed to address this requirement. Users suggest that while issues #2587 and #2540 are important, their absence should not prevent the closure of the main issue. Specifically, @Wunka is requested to describe what's missing in order to decide on necessary actions before the 0.2.0 release.
 
 ## Related Questions
 - What specific features are still needed for permission layers and administration in Cubyz?

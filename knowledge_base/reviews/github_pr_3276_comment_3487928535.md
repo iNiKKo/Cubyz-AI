@@ -9,7 +9,28 @@
 Added tooltip rendering functionality in `tooltip.zig`, including texture initialization, position calculation, and rendering logic.
 
 ## Explanation
-The change introduces a new module for handling tooltips in the GUI system. It includes functions for initializing and deinitializing tooltip textures, calculating positions based on alignment, and rendering the tooltip with proper bounds checking to ensure it stays within the window. The reviewer notes that the `defer deinit` call should be placed immediately after the corresponding initialization function for better resource management.
+The change introduces a new module for handling tooltips in the GUI system (`tooltip.zig`). It includes functions for initializing and deinitializing tooltip textures, calculating positions based on alignment, and rendering the tooltip with proper bounds checking to ensure it stays within the window. The reviewer notes that the `defer deinit` call should be placed immediately after the corresponding initialization function for better resource management.
+
+**Constants and Values:**
+- `fontSize`: 16 (the font size used for the tooltip text)
+- `offsetFromMouse`: 4 (the offset from the mouse cursor where the tooltip is positioned)
+
+**Initialization and Deinitialization:*
+- `globalInit()`: Initializes the tooltip texture from a file and calculates the corner size.
+- `globalDeinit()`: Deinitializes the tooltip texture to free resources.
+
+**Position Calculation:**
+- `posFromAlignment(pos: Vec2f, size: Vec2f, alignment: graphics.TextBuffer.Alignment) Vec2f`: Determines the position of the tooltip based on the specified alignment (left, right, center).
+
+**Rendering Logic:**
+- `render(guicomponent: *GuiComponent, pos: Vec2f, alignment: graphics.TextBuffer.Alignment) void`: Renders the tooltip with a 9-slice image and ensures it stays within the window boundaries.
+- `renderFromText(text: []const u8, pos: Vec2f, alignment: graphics.TextBuffer.Alignment) void`: Calculates the size of the tooltip text based on line breaks and renders it using a GUI component.
+
+**Bounds Checking:**
+The code includes logic to handle cases where the tooltip would extend beyond the window width or height by adjusting its position accordingly.
+
+**Resource Management:**
+The reviewer notes that `defer deinit` should be placed immediately after the corresponding initialization function (`globalInit`) for better resource management.
 
 ## Related Questions
 - What is the purpose of the `globalInit` function in `tooltip.zig`?

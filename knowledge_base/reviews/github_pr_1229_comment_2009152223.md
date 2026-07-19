@@ -9,7 +9,8 @@
 The review discusses the creation of asset string IDs and raises concerns about using dots in file extensions and allowing whitespace in IDs.
 
 ## Explanation
-The reviewer is concerned about the use of dots in file extensions, suggesting that they are arbitrary separators and proposing a regex constraint for block names to include only alphanumeric characters, hyphens, and underscores. The reviewer also points out potential issues with case sensitivity in block IDs when transferring between Windows and Unix systems.
+**Explanation**
+The reviewer is concerned about the use of dots in file extensions, suggesting that they are arbitrary separators and proposing a regex constraint for block names to include only alphanumeric characters, hyphens, and underscores (`[a-zA-Z0-9-_]+`). The reviewer also points out potential issues with case sensitivity in block IDs when transferring between Windows and Unix systems. For example, `addon:Stone` and `addon:stone` behave differently on these operating systems. Allowing whitespace in IDs complicates parameter parsing, as commands must account for this during parsing. The proposed regex constraint simplifies reasoning about how block names should be parsed.
 
 ## Related Questions
 - What are the potential issues with using dots as separators in file extensions?

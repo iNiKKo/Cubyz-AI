@@ -6,10 +6,14 @@
 **Concepts:** Vulkan graphics pipeline, OpenGL settings, Shader management, Resource cleanup
 
 ## Summary
-The Pipeline struct manages the creation, binding, and destruction of Vulkan graphics pipelines.
+The Pipeline struct manages the creation, binding, and destruction of Vulkan graphics pipelines. It includes methods to initialize a pipeline from shader paths, define rasterization, depth-stencil, and blend states, and bind the pipeline for rendering. The `initVulkan` method sets up the Vulkan-specific components like descriptor set layouts and pipeline layouts. The `bind` method configures OpenGL settings based on the pipeline's state. The struct also provides a deinitialization method to clean up resources.
 
 ## Explanation
 The Pipeline struct encapsulates the logic for creating and managing Vulkan graphics pipelines. It includes methods to initialize a pipeline from shader paths, define rasterization, depth-stencil, and blend states, and bind the pipeline for rendering. The `initVulkan` method sets up the Vulkan-specific components like descriptor set layouts and pipeline layouts. The `bind` method configures OpenGL settings based on the pipeline's state. The struct also provides a deinitialization method to clean up resources.
+
+The `conditionalEnable` function is used to enable or disable OpenGL features based on boolean values, simplifying the configuration of various OpenGL states.
+
+During initialization, Vulkan-specific components such as shader modules, shader stages, dynamic states, pipeline layouts, and render passes are created. The `bind` method configures OpenGL settings like scissor test, rasterization state, depth-stencil state, and blend state based on the pipeline's configuration. Resource cleanup is ensured by deinitializing shaders and destroying Vulkan resources in the `deinit` method.
 
 ## Code Example
 ```zig

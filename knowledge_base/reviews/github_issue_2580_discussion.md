@@ -8,7 +8,7 @@
 Proposes incentivizing players to connect items of the same material during tool crafting by adjusting material compatibility.
 
 ## Explanation
-The issue suggests modifying the game mechanics to encourage players to use materials of the same type when crafting tools. This change would involve altering the way tool properties are calculated based on material compatibility, potentially making tools more effective when crafted from similar materials. The proposer notes that this is a significant change and has placed it in the Long-term goals category, pending further discussion.
+Proposes incentivizing players to connect items of the same material during tool crafting by adjusting material compatibility. The issue suggests modifying the game mechanics to encourage players to use materials of the same type when crafting tools, which would involve altering the way tool properties are calculated based on material compatibility. This change is noted as significant and has been placed in the Long-term goals category pending further discussion from QD vetos.
 
 ## Related Questions
 - What is the current method for calculating tool properties in Cubyz?

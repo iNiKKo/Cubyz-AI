@@ -9,7 +9,7 @@
 A new protocol handler for explosions is added to the network module.
 
 ## Explanation
-The change introduces a new protocol handler named 'explode' within the Protocols struct in the network.zig file. This handler processes incoming packets related to explosions, reads the position from the packet, checks if the user is valid and if explosives are allowed in the server world, and then calls the doExplode function to handle the explosion logic. The reviewer suggests that this functionality should be integrated with block entities and possibly moved to a more centralized interaction handling mechanism like onInteract, due to architectural concerns about trust in client-side data and potential redesign implications.
+A new protocol handler for explosions is added to the network module within the Protocols struct in the network.zig file. This handler has an ID of 14 and is synchronous. The 'receive' function processes incoming packets related to explosions by reading the position from the packet using Vec3i, checking if the user is valid and if explosives are allowed in the server world, and then calls the doExplode function to handle the explosion logic. The reviewer suggests that this functionality should be integrated with block entities and possibly moved to a more centralized interaction handling mechanism like onInteract, due to architectural concerns about trust in client-side data and potential redesign implications.
 
 ## Related Questions
 - What is the purpose of the 'explode' protocol handler in network.zig?

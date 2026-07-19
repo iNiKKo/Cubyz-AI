@@ -8,7 +8,7 @@
 Defines configuration for the Snela entity model, including tags, model path, texture, height, and coordinate system.
 
 ## Explanation
-This chunk is a configuration file in ZON format that specifies details about an entity model named 'Snela'. It includes tags to categorize the model as a player model, references the model and default texture files, sets the model's height, and defines the coordinate system used. The configuration does not contain any executable logic but rather static data used by other parts of the Cubyz engine.
+This chunk is a configuration file in ZON format that specifies details about an entity model named 'Snela'. It includes tags to categorize the model as a player model, references the model and default texture files ('cubyz:snela'), sets the model's height to 2, defines the coordinate system used (left-handed y-up), and does not contain any executable logic. The configuration is used by other parts of the Cubyz engine.
 
 ## Related Questions
 - What tags are associated with the Snela entity model?

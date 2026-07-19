@@ -9,7 +9,31 @@
 Handles network connection states and packet management.
 
 ## Explanation
-This chunk manages the lifecycle of a network connection, including sending packets based on connection state, handling packet loss, adjusting send timing, and disconnecting. It uses atomic operations for thread-safe state transitions and employs a mutex to synchronize access to shared resources. The `disconnect` function sends a disconnection message, updates the connection state, and cleans up resources.
+This chunk manages the lifecycle of a network connection, including sending packets based on connection state, handling packet loss, adjusting send timing, and disconnecting. It uses atomic operations for thread-safe state transitions and employs a mutex to synchronize access to shared resources.
+
+### Connection States
+The `Connection` struct has several states managed by `connectionState`, such as `.awaitingClientConnection`, `.awaitingServerResponse`, `.awaitingClientAcknowledgement`, `.connected`, `.disconnected`, and `.paused`. Depending on the state, different actions are taken:
+- **.awaitingClientConnection**: Sends a keepalive packet every 100 ms.
+- **.awaitingServerResponse** and **.awaitingClientAcknowledgement**: Sends an initialization packet with connection details (identifier, fully confirmed indices) every 100 ms.
+- **.connected**: No action is taken.
+- **.disconnected** and **.paused**: The function returns immediately without further processing.
+
+### Packet Management
+Packets are sent based on the current state and timing:
+- **Packet Loss Handling**: Calls `handlePacketLoss` for each channel (`lossyChannel`, `secureChannel`, `slowChannel`) to check for packet losses.
+- **Idle Time Calculation**: Adjusts `relativeIdleTime` if there is a period of no traffic.
+- **Confirmation Packets**: Sends confirmation packets based on the difference between `relativeIdleTime` and `relativeSendTime` compared to `rttEstimate`.
+
+### Bandwidth Estimation and Congestion Control
+The chunk manages bandwidth estimation and congestion control by:
+- Calculating packet time based on network length (`dataLen + headerOverhead`) divided by the estimated bandwidth (`bandwidthEstimateInBytesPerRtt`) multiplied by `rttEstimate`.
+- Updating `nextPacketTimestamp` and `relativeSendTime` accordingly.
+
+### Disconnection Process
+The `disconnect` function sends a disconnection message, updates the connection state to `.disconnected`, and cleans up resources. If the operating system is Windows, it introduces a delay to prevent immediate socket closure, which can cause a `ConnectionResetByPeer` error on the other side.
+
+### Thread Safety
+Thread safety is ensured using atomic operations for state transitions and a mutex (`mutex`) to synchronize access to shared resources.
 
 ## Code Example
 ```zig

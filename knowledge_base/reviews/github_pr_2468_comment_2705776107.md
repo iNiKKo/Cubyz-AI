@@ -11,6 +11,10 @@ The `generate` function in `SbbGen.zig` was modified to remove the `Neighbor.dir
 ## Explanation
 The reviewer identified an issue where unused structures did not have an upwards origin block, causing trouble during generation. The change allows for more flexible placement of structures, enabling natural formations like hanging vines or directional structures. This modification also supports reusing existing intermediate models, enhancing modularity and reducing redundancy.
 
+Previously, the `generate` function required a specific upwards origin block (`Neighbor.dirUp`) for structure placement. This limitation made it difficult to generate structures that naturally hang from ceilings or other surfaces without an upward-facing starting point. By removing this restriction, the new implementation allows any block to serve as the origin, providing greater flexibility in structure design and placement.
+
+With this change, structures such as vine clusters can now hang directly from cave ceilings or tree branches, creating more natural and varied environments. Additionally, existing intermediate models can be reused for different orientations and placements, reducing redundancy and improving modularity.
+
 ## Related Questions
 - What was the previous behavior of the `generate` function regarding the origin block?
 - How does the removal of `Neighbor.dirUp` parameter affect structure placement?

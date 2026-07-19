@@ -9,7 +9,7 @@
 Added a new function `panicToLog` to handle panics by logging them with a maximum buffer size of 64KB.
 
 ## Explanation
-The change introduces a new function `panicToLog` in the `main.zig` file. This function is designed to log panic messages with a specified buffer size, which helps in managing memory usage effectively during error handling. The reviewer suggested minor punctuation changes for clarity and consistency in the error message format.
+The change introduces a new function `panicToLog` in the `main.zig` file. This function is designed to log panic messages with a specified buffer size of 64KB, which helps in managing memory usage effectively during error handling. The exact buffer size is set to 64 << 10 bytes (64KB). The reviewer suggested minor punctuation changes for clarity and consistency in the error message format. The function logs the panic message along with an error return trace using `std.log.err`. The error return trace includes the address of the first trace or the return address if no trace is available.
 
 ## Related Questions
 - What is the purpose of the `panicToLog` function?

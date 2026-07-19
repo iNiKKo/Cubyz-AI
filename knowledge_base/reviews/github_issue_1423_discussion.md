@@ -8,14 +8,10 @@
 The maintainer suggests breaking down the particle checklist into separate issues to reduce clutter on the issue tracker.
 
 ## Explanation
-The maintainer is concerned that having multiple items in a single issue can make it difficult to manage and track progress. By splitting each particle effect into its own issue, the team can focus on individual tasks more effectively and maintain better visibility into the completion status of each feature.
+The maintainer suggests breaking down the particle checklist into separate issues to reduce clutter on the issue tracker. The checklist includes several specific particle effects such as Snow, Volumetric Fog, Smoke, Tumbleweeds (if applicable), Falling leaves/needles, Fireflies (or equivalent creature in Cubyz), and Tool Breaking. By splitting each particle effect into its own issue, the team can focus on individual tasks more effectively and maintain better visibility into the completion status of each feature.
 
 ## Related Questions
-- What is the purpose of breaking down the particle checklist into separate issues?
-- How does splitting each particle effect into its own issue improve task management?
-- Why is it important to maintain better visibility into the completion status of each feature?
-- What are the potential benefits of reducing clutter on the issue tracker?
-- How can the team effectively manage and track progress with individual tasks?
-- What are the advantages of having separate issues for each particle effect?
+- What specific items are included in the particle checklist?
+- Why does the maintainer suggest breaking down the particle checklist into separate issues?
 
 *Source: unknown | chunk_id: github_issue_1423_discussion*

@@ -8,14 +8,13 @@
 The issue discusses visual artifacts (squares near water) that are identified as T-junction pixel errors exacerbated by bloom and fog effects.
 
 ## Explanation
-The discussion revolves around a visual bug where squares appear near water in the game. The maintainers confirm that these are T-junction pixel errors, which occur when two adjacent triangles share an edge but do not perfectly align, leading to visible artifacts. The presence of bloom and fog effects amplifies these errors, making them more noticeable. The maintainer also mentions a broken video link, suggesting potential issues with media attachments or playback compatibility.
+The issue discusses visual artifacts (squares near water) that are identified as T-junction pixel errors exacerbated by bloom and fog effects. The maintainers confirm these issues based on specific observations from videos provided in the GitHub repository, where a blue square is visible at the end of one video. Additionally, there is a comment about a broken video link due to playback compatibility issues with Firefox.
 
 ## Related Questions
-- What are the known causes of T-junction pixel errors in game rendering?
-- How do bloom and fog effects interact to amplify visual artifacts?
-- Why is the video link broken, and how can it be fixed?
-- Are there any existing issues or pull requests addressing T-junction pixel errors?
-- Can updating the browser resolve media playback issues?
-- What steps can be taken to prevent T-junction pixel errors in future game development?
+- What are the exact visual artifacts observed near water?
+- How do T-junction pixel errors manifest in the game environment?
+- Why does the presence of bloom and fog effects amplify these errors?
+- Can you provide the specific video links mentioned in the issue report?
+- What steps can be taken to resolve media playback issues with Firefox?
 
 *Source: unknown | chunk_id: github_issue_861_discussion*

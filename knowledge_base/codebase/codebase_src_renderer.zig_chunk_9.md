@@ -9,7 +9,7 @@
 Handles rendering of selected blocks and cubes in the game world.
 
 ## Explanation
-This chunk contains functions for drawing cubes and handling block breaking animations. The `drawCube` function sets up OpenGL uniforms and draws a cube using vertex array objects (VAOs). The `render` function checks if the GUI is hidden and then calls `drawCube` to render selected blocks or areas based on player selection positions.
+This chunk contains functions for drawing cubes and handling block breaking animations. The `drawCube` function sets up OpenGL uniforms and draws a cube using vertex array objects (VAOs). The `updateBlockAndSendUpdate` function updates the block at a given position and sends an update to the server. The `render` function checks if the GUI is hidden and then calls `drawCube` to render selected blocks or areas based on player selection positions.
 
 ## Code Example
 ```zig

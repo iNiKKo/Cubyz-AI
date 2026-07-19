@@ -9,7 +9,7 @@
 Added initialization and deinitialization functions to manage memory for the disconnected window component.
 
 ## Explanation
-The reviewer added `setDisconnectedReason` and `showDisconnectReason` functions to handle setting and displaying the disconnection reason. The `ack` function is used to close the window and free the allocated memory for the reason string. This change ensures proper memory management, aligning with other window components' practices. The review emphasizes the importance of managing memory to prevent leaks and ensure correct resource handling.
+The reviewer added initialization and deinitialization functions to manage memory for the disconnected window component. The `window` variable is initialized with a `contentSize` of `Vec2f{128, 256}`. The `padding` is set to `16` and `width` to `256`. The `setDisconnectedReason` function sets the disconnection reason, freeing any previously allocated memory if necessary. The `showDisconnectReason` function opens the window if a reason is set. The `ack` function closes the window and frees the allocated memory for the reason string. This change ensures proper memory management, aligning with other window components' practices. The review emphasizes the importance of managing memory to prevent leaks and ensure correct resource handling. Additionally, the code includes an init and deinit to manage memory like other window components.
 
 ## Related Questions
 - What is the purpose of the `setDisconnectedReason` function?

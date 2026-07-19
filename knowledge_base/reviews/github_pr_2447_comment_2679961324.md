@@ -9,7 +9,7 @@
 Removed the `kill` function from the Player struct. Considered adding a global/world flag for setting spawn points, but deferred this change.
 
 ## Explanation
-The review discusses the removal of the `kill` function from the Player struct in the game.zig file. The reviewer notes that while removing this function, they considered enhancing its functionality to include a global or world flag for setting spawn points instead of just resetting the player's position. However, due to time constraints and other ongoing refactoring tasks, the reviewer decided to open an issue for this enhancement rather than implementing it immediately in the current pull request.
+The review discusses the removal of the `kill` function from the Player struct in the game.zig file. The original purpose of the `kill` function was to reset the player's position to the world's spawn point using `Player.super.pos = world.?.spawn`. Removing this function impacts player behavior by preventing immediate respawning at the world's spawn point upon death. The reviewer considered enhancing its functionality to include a global or world flag for setting spawn points instead of just resetting the player's position. However, due to time constraints and other ongoing refactoring tasks, the reviewer decided to open an issue for this enhancement rather than implementing it immediately in the current pull request.
 
 ## Related Questions
 - What was the original purpose of the `kill` function in the Player struct?

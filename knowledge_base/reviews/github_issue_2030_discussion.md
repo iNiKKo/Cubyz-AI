@@ -8,7 +8,7 @@
 The issue discusses implementing a pile rotation mode for ores to allow denser ore blocks that can be mined multiple times. The current storage in blocks is insufficient, blocking the implementation.
 
 ## Explanation
-The discussion revolves around enhancing the game by allowing players to mine denser ore blocks that yield multiple resources upon repeated mining. However, the current block storage system does not support this feature, as indicated by issue #1821. The maintainer expresses enthusiasm for the idea but acknowledges that it is currently blocked due to limitations in the existing block storage mechanism.
+The discussion revolves around implementing a pile rotation mode for ores that would allow players to mine denser ore blocks yielding multiple resources upon repeated mining. The current block storage system does not support this feature due to limitations mentioned in issue #1821, which is currently blocking the implementation. The maintainer expresses enthusiasm for the idea but acknowledges that it is blocked by the existing storage limitation. The proposal includes an example texture of a copper ore block with multiple layers, indicating how such denser ore blocks could be visually represented.
 
 ## Related Questions
 - What is the current block storage capacity in Cubyz?

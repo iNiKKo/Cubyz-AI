@@ -9,7 +9,7 @@
 The review highlights a potential memory leak issue with the `AliasTable` not freeing allocated entries.
 
 ## Explanation
-The reviewer points out that the `AliasTable` might be leaking memory because it does not automatically free the pointers it manages. This could lead to a memory leak if the table is not properly cleaned up in its deinitialization function. The reviewer suggests either manually cleaning up the entries or adding functionality to transfer ownership of the pointers to the `AliasTable`.
+The reviewer points out that the `AliasTable` might be leaking memory because it does not automatically free the pointers it manages. This could lead to a memory leak if the table is not properly cleaned up in its deinitialization function. The reviewer suggests either manually cleaning up the entries or adding functionality to transfer ownership of the pointers to the `AliasTable`. Furthermore, the reviewer notes that the `initFromString` function handles syntax errors by returning `error.PatternSyntaxError` when the input format is incorrect.
 
 ## Related Questions
 - How does the `AliasTable` handle memory allocation and deallocation?

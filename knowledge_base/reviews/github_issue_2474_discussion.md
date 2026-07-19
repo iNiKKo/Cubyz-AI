@@ -8,7 +8,7 @@
 The issue proposes adding functionality to flip Structures By Blocks (SBBs) upside-down when generating on ceilings, to allow the creation of stalactites without duplicating structures.
 
 ## Explanation
-The request aims to enhance the flexibility of structure generation in Cubyz by allowing SBBs to be flipped upside-down when placed on ceilings. This would enable users to create stalactites directly from stalagmite templates without manually creating separate models for each orientation. The maintainer's comment suggests that implementing this feature will require significant effort, possibly due to the complexity of handling rotations and ensuring structural integrity in different orientations.
+The issue proposes adding functionality to flip Structures By Blocks (SBBs) upside-down when generating on ceilings, allowing users to create stalactites directly from stalagmite templates without manually duplicating structures. The maintainer's comment indicates that implementing this feature will be a significant undertaking due to the complexity involved in handling rotations and ensuring structural integrity in different orientations.
 
 ## Related Questions
 - What are the potential issues with flipping SBBs upside-down in different rotation modes?

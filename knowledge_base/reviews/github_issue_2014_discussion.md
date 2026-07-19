@@ -8,7 +8,7 @@
 Discussion about setting Cubyz binary icon during self-compiles.
 
 ## Explanation
-The issue revolves around the discrepancy between the application icon displayed in the window versus the one shown in the filesystem and Windows task bar for self-compiled versions of Cubyz. The precompiled version correctly displays the Cubyz logo, but this is not the case for builds done by users themselves.
+Discussion about setting the Cubyz binary icon during self-compilation. The issue is that for self-compiled versions of Cubyz, the application icon displayed in the filesystem and Windows task bar shows as the default executable icon rather than the Cubyz logo. In contrast, precompiled versions correctly display the Cubyz logo. This discrepancy only occurs with user-built binaries and not with precompiled distributions.
 
 ## Related Questions
 - What is the current behavior of the Cubyz icon in self-compiled versions?
@@ -16,6 +16,5 @@ The issue revolves around the discrepancy between the application icon displayed
 - Are there any known issues with setting icons for self-compiled applications?
 - What steps can be taken to ensure consistent icon display across different build types?
 - Is there a specific configuration or code change needed to address this issue in self-compiles?
-- How does the operating system handle application icons differently between precompiled and user-built binaries?
 
 *Source: unknown | chunk_id: github_issue_2014_discussion*

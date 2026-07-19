@@ -9,7 +9,23 @@
 The addition of a new file `blueprint.zig` introduces a blueprint system with compression support for Cubyz. The reviewer discusses the potential benefits and drawbacks of using explicit serialization versus automatic serialization, emphasizing the importance of clarity and maintainability in code.
 
 ## Explanation
-The review focuses on the architectural implications of adding a new blueprint system to Cubyz. The reviewer points out that while automatic serialization (referred to as 'magic') can simplify code, it may lead to unforeseen consequences and difficulties in debugging. In contrast, explicit serialization, though more verbose, provides better control and clarity, making it easier to spot mistakes and ensure compatibility with changes over time. The reviewer also mentions the potential for file size reduction through compression but questions its necessity given that the palette and block array are already compressed using deflate.
+The addition of a new file `blueprint.zig` introduces a blueprint system with compression support for Cubyz. The reviewer discusses the potential benefits and drawbacks of using explicit serialization versus automatic serialization, emphasizing the importance of clarity and maintainability in code.
+
+The `FileHeader` struct is defined as follows:
+
+```zig
+pub const FileHeader = packed struct {
+    version: u16 = 0,
+    compression: BlueprintCompression = .deflate,
+    paletteSizeBytes: u32 = 0,
+    paletteBlockCount: u16 = 0,
+    blockArraySizeX: u16 = 0,
+    blockArraySizeY: u16 = 0,
+    blockArraySizeZ: u16 = 0,
+};
+```
+
+The reviewer points out that while automatic serialization (referred to as 'magic') can simplify code, it may lead to unforeseen consequences and difficulties in debugging. In contrast, explicit serialization, though more verbose, provides better control and clarity, making it easier to spot mistakes and ensure compatibility with changes over time. The reviewer also mentions the potential for file size reduction through compression but questions its necessity given that the palette and block array are already compressed using deflate.
 
 ## Related Questions
 - What is the purpose of the `blueprint.zig` file in Cubyz?

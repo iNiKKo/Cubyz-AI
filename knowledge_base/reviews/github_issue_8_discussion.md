@@ -6,10 +6,10 @@
 **Concepts:** Asset Management, Texture Design, 3D Modeling, Sound Design, Game Art
 
 ## Summary
-The issue discusses the current state of assets in Cubyz, including textures for blocks, items, entities, and other elements. It also lists needed 3D models and sounds.
+This document outlines the current state of assets in Cubyz, including textures for blocks, items, entities, and other elements. It also lists needed 3D models and sounds. User-submitted textures were designed to better fit the dirt/grass block in the rocky hills biome, specifically referencing stone, gravel, and cobblestone.
 
 ## Explanation
-This document outlines the existing and required assets for Cubyz, categorizing them into textures (blocks, items, entities, other), 3D models, and sounds. The textures are listed with their current status (completed or pending) and images where available. The discussion section includes user-submitted textures for cobblestone, gravel, and stone, which were designed to better fit the dirt/grass block in the rocky hills biome. The maintainer's comment suggests that the issue is outdated, overly broad, and lacks precision.
+The issue discusses the current state of assets in Cubyz, including textures for blocks, items, entities, and other elements. It also lists needed 3D models and sounds. The textures are listed with their current status (completed or pending) and images where available. User-submitted textures were designed to better fit the dirt/grass block in the rocky hills biome, specifically referencing stone, gravel, and cobblestone.
 
 ## Related Questions
 - What are the current status of textures in Cubyz?

@@ -8,7 +8,7 @@
 Discussion about redirecting stdout/stderr or using a dummy process to store stack traces in log files.
 
 ## Explanation
-The discussion revolves around finding a solution to capture and store stack traces in log files. The maintainers consider redirecting stdout/stderr as an option, but express concerns about contributor friendliness. They also mention that the issue aims to find a viable solution now rather than waiting for another large topic.
+Discussion about capturing stack traces in log files by redirecting stdout/stderr or using a dummy process. The maintainers suggest that while redirecting stdout/stderr could work as an interim solution (referencing #227), it may not be contributor-friendly. They emphasize finding a viable solution now rather than waiting for another large topic.
 
 ## Related Questions
 - How can we redirect stdout/stderr to store stack traces in log files?

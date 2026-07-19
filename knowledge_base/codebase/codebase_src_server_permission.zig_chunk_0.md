@@ -11,6 +11,8 @@ The chunk implements permission management for server operations, handling white
 ## Explanation
 This chunk defines a `PermissionMap` struct to manage individual permissions using a string hash map. It includes methods to convert between ZonElement format and the internal representation, as well as adding and removing permissions. The `Permissions` struct manages both whitelists and blacklists using `PermissionMap`, providing initialization, deinitialization, and methods to add/remove permissions, check permission status, and serialize/deserialize from/to ZonElement.
 
+The `PermissionMap` struct uses a `std.StringHashMapUnmanaged(void)` to store permissions internally. Memory allocation is handled by the `NeverFailingAllocator` and `NeverFailingArenaAllocator`. The `fromZon` method converts a `ZonElement` to a string hash map, while the `toZon` method converts the internal representation back to a `ZonElement`. Permissions are added using the `put` method, which ensures that each key is duplicated in the arena allocator. The `hasPermission` method returns `.no` if a permission path is found in the blacklist, `.yes` if it is found in the whitelist, and `.neutral` otherwise. Thread context assertion is performed using `sync.threadContext.assertCorrectContext(.server)` in various methods.
+
 ## Code Example
 ```zig
 pub fn init(allocator: NeverFailingAllocator) Permissions {

@@ -8,7 +8,7 @@
 Defines properties for the Mahogany Log block in Cubyz.
 
 ## Explanation
-This chunk defines a configuration object for the Mahogany Log block, specifying its tags, health, drop items, rotation behavior, model, textures, decay properties, and item status. The tags indicate that the block is choppable, made of wood, and is a log. It has 8 health points, drops Mahogany logs when broken, can be rotated in any direction, uses a cube model, and has specific top and bottom textures. The block does not decay over time and does not correspond to an item.
+This chunk defines a configuration object for the Mahogany Log block, specifying its tags, health, drop items, rotation behavior, model, textures, decay properties, and item status. The tags indicate that the block is choppable, made of wood, and is a log. It has 8 health points, drops Mahogany logs when broken, can be rotated in any direction, uses a cube model, and has specific top and bottom textures. The block does not decay over time because `decayProhibitor` is set to true. The block does not correspond to an item.
 
 ## Related Questions
 - What are the tags associated with the Mahogany Log block?

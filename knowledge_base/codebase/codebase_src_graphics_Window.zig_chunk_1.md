@@ -6,10 +6,19 @@
 **Concepts:** gamepad input processing, controller mapping downloads
 
 ## Summary
-Handles gamepad input processing and controller mapping downloads.
+Handles gamepad input processing and controller mapping downloads. The `Gamepad` struct manages gamepad state, including deadzone application and button/axis event handling. It updates the gamepad state each frame, checks for connected controllers, and schedules controller mappings downloads if necessary. The `update` method processes input from all connected gamepads, applies deadzones to axes, and triggers callbacks for button presses. The `ControllerMappingDownloadTask` struct handles asynchronous downloading of controller mappings using a thread pool.
 
 ## Explanation
 The `Gamepad` struct manages gamepad state, including deadzone application and button/axis event handling. It updates the gamepad state each frame, checks for connected controllers, and schedules controller mappings downloads if necessary. The `update` method processes input from all connected gamepads, applies deadzones to axes, and triggers callbacks for button presses. The `ControllerMappingDownloadTask` struct handles asynchronous downloading of controller mappings using a thread pool.
+
+### Deadzone Application
+The `applyDeadzone` and `applyDeadzones2D` methods are responsible for applying deadzones to gamepad axes. This ensures that small movements on the joystick do not register as input, improving user experience.
+
+### Button/Axis Event Handling
+The `update` method processes button presses and axis movements. It checks for changes in button states and triggers callbacks when a button is pressed or released. For axes, it applies deadzones and updates the key values accordingly.
+
+### Thread Pool Role
+The thread pool is used to handle asynchronous downloading of controller mappings. The `ControllerMappingDownloadTask` struct schedules tasks using the thread pool, ensuring that controller mappings are downloaded in the background without blocking the main game loop.
 
 ## Code Example
 ```zig
@@ -112,11 +121,11 @@ pub fn update(delta: f64) void {
 ```
 
 ## Related Questions
-- How does the `Gamepad` struct handle deadzone application?
-- What is the purpose of the `ControllerMappingDownloadTask` struct?
-- How does the `update` method process gamepad input?
+- How does the `Gamepad` struct apply deadzones to axes?
+- What is the purpose of the `ControllerMappingDownloadTask` struct and how does it use the thread pool?
+- How does the `update` method process gamepad input, including button presses and axis movements?
 - What conditions trigger a controller mapping download task?
-- How are button presses and axis movements handled in the `update` method?
+- How are deadzones applied to axes in the `update` method?
 - What role does the thread pool play in downloading controller mappings?
 
 *Source: unknown | chunk_id: codebase_src_graphics_Window.zig_chunk_1*

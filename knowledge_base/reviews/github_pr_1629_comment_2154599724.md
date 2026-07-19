@@ -9,7 +9,18 @@
 Added calculation for fontUnitPerPixel to convert font units to pixels.
 
 ## Explanation
-The change introduces a new variable `fontUnitPerPixel` which calculates the ratio of font units per pixel by dividing the number of units per EM in the FreeType face by the texture height. This addition is necessary to ensure accurate scaling and rendering of text, preventing potential errors related to incorrect unit conversions. The reviewer noted that accessing fields without dereferencing the pointer type `[c]cimport.struct_FT_FaceRec_` would result in a compilation error, emphasizing the importance of proper pointer handling.
+The change introduces a new variable `fontUnitPerPixel`, which calculates the ratio of font units per pixel by dividing the number of units per EM in the FreeType face (`freetypeFace.*.units_per_EM`) by the texture height (`textureHeight`). This addition is necessary to ensure accurate scaling and rendering of text, preventing potential errors related to incorrect unit conversions.
+
+The specific calculation formula added is:
+```zig
+fontUnitPerPixel = @as(f32, @floatFromInt(freetypeFace.*.units_per_EM)) / @as(f32, @floatFromInt(textureHeight));
+```
+
+The reviewer noted that accessing fields without dereferencing the pointer type `[c]cimport.struct_FT_FaceRec_` would result in a compilation error:
+```zig
+type '[*c]cimport.struct_FT_FaceRec_' does not support field access
+```
+This emphasizes the importance of proper pointer handling to avoid such errors.
 
 ## Related Questions
 - What is the purpose of calculating fontUnitPerPixel in the TextRendering struct?

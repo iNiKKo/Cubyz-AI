@@ -11,6 +11,12 @@ The code changes the way the inventory is initialized to use a struct with an in
 ## Explanation
 The reviewer points out that changing the inventory initialization to use a struct with an index instead of the tool type ID introduces a risk of breaking functionality silently when separate crafting stations are implemented. The reviewer also notes that this change relies on an implementation detail of the tool type iterator, which could lead to potential issues if the iterator's behavior changes.
 
+The specific code changes include:
+- Line 49: `toolButton.child.label.updateText(toolTypes.items[currentToolType].id());`
+- Line 51: `inv = Inventory.init(main.globalAllocator, 26, .{.workbench = .{.index = @intCast(currentToolType)}}, .other);`
+
+The reviewer emphasizes that the inventory initialization must remain an index into the array to avoid silent breaks when separate crafting stations are implemented. Additionally, the change relies on an implementation detail of the tool type iterator, which could lead to potential issues if the iterator's behavior changes.
+
 ## Related Questions
 - What is the potential impact of changing the inventory initialization to use a struct with an index?
 - How does this change affect the implementation detail of the tool type iterator?

@@ -8,14 +8,13 @@
 Proposes adding 'Cut Ruby' as a new item with enhanced properties compared to Ruby Ore.
 
 ## Explanation
-The proposal introduces 'Cut Ruby', which has similar modifiers to Ruby Ore but is stronger and lighter. The discussion revolves around the motivation for processing gems, the potential obsolescence of uncut rubies, and alternative ideas such as gem encasing or alloys. Maintainers suggest considering more complex ore processing mechanisms and exploring different ways to enhance gemstones' effects.
+Proposes adding 'Cut Ruby' as a new item with enhanced properties compared to Ruby Ore. The proposal suggests that Cut Ruby has the same modifiers as Ruby Ore but is slightly stronger and lighter. Currently, it can be crafted through a simple recipe, though more complex processing setups might be required in future updates. The discussion highlights concerns about uncut rubies becoming obsolete if processed gems are introduced, with suggestions for alternative methods such as gem encasing or alloys to enhance the effects of gemstones. Maintainers suggest considering more complex ore processing mechanisms and exploring different ways to integrate these enhancements into the game mechanics.
 
 ## Related Questions
-- What are the proposed properties of Cut Ruby compared to Ruby Ore?
-- Why is there a discussion about processing gems in the game?
-- How might uncut rubies become obsolete if processed gems are introduced?
-- What alternative ideas were suggested for enhancing gemstones' effects?
-- Are there any plans to implement more complex ore processing mechanisms?
-- How could gem encasing be integrated into the game mechanics?
+- What are the exact modifiers and properties of Cut Ruby compared to Ruby Ore?
+- How is the current crafting recipe for Cut Ruby defined, and what might future processing setups look like?
+- Why is there a discussion about uncut rubies becoming obsolete if processed gems are introduced?
+- What alternative ideas were suggested for enhancing gemstones' effects, such as gem encasing or alloys?
+- Are there any plans to implement more complex ore processing mechanisms in the game?
 
 *Source: unknown | chunk_id: github_issue_1407_discussion*

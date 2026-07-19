@@ -9,7 +9,7 @@
 The issue discusses a problem where rotation SDFs do not stack their offsets, causing incorrect positioning. The user suggests fixing this to enable easier creation of rotationally symmetric shapes.
 
 ## Explanation
-The core problem is that the current implementation of rotation SDFs does not accumulate offsets from nested transformations, leading to incorrect positioning of objects in space. This prevents users from easily creating complex, rotationally symmetric structures without manually calculating offsets using trigonometry. The user provides an example file and image to illustrate the issue. The reviewer notes that while the `rotated` object has a position offset in its memory, it does not utilize this information correctly.
+The issue discusses a problem where rotation SDFs do not stack their offsets, causing incorrect positioning. The user suggests fixing this to enable easier creation of rotationally symmetric shapes without manually calculating offsets using trigonometry. Specifically, the current implementation sets the offset by the lowest level rotation sdf object rather than stacking them together. This prevents users from easily creating complex, rotationally symmetric structures. The user provides an example file and image to illustrate the issue. The reviewer notes that while the `rotated` object has a position offset in its memory, it does not utilize this information correctly for stacking offsets.
 
 ## Related Questions
 - What is the current implementation of rotation SDFs in Cubyz?

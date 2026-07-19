@@ -9,7 +9,7 @@
 The review suggests moving the `taskType` field from the `Task` struct to its `VTable`, arguing that storing a copy in each task is unnecessary.
 
 ## Explanation
-The reviewer points out that the `taskType` field, which identifies the type of task (e.g., chunk generation, lighting, mesh generation, miscellaneous), is currently stored within each `Task` instance. The review questions this design choice, suggesting instead that `taskType` should be part of the `VTable`. This change would eliminate redundancy by avoiding multiple copies of the same information across different tasks, potentially improving memory usage and reducing overhead. The reviewer's concern is primarily about architectural efficiency and minimizing unnecessary data duplication.
+The review suggests moving the `taskType` field from the `Task` struct to its `VTable`, arguing that storing a copy in each task is unnecessary. The `TaskType` enum includes several options: `chunkgen`, `lighting`, `meshgen`, and `misc`. The reviewer points out that the `taskType` field, which identifies the type of task (e.g., chunk generation, lighting, mesh generation, miscellaneous), is currently stored within each `Task` instance. The review questions this design choice, suggesting instead that `taskType` should be part of the `VTable`. This change would eliminate redundancy by avoiding multiple copies of the same information across different tasks, potentially improving memory usage and reducing overhead. The reviewer's concern is primarily about architectural efficiency and minimizing unnecessary data duplication.
 
 ## Related Questions
 - What is the purpose of the `TaskType` enum in the `ThreadPool` struct?

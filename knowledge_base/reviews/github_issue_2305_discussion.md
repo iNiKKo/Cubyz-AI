@@ -8,7 +8,7 @@
 The issue discusses improving the quality of leaves around the player to enhance graphics and prevent x-ray effects.
 
 ## Explanation
-The discussion revolves around enhancing the visual quality of leaves in the game environment, specifically focusing on their appearance around the player. The maintainer raises a concern about potential performance implications due to increased remeshing requirements.
+The discussion centers on improving the visual quality of leaves around the player to enhance graphics and prevent x-ray effects as described in issue #906. The maintainer raises a concern that this enhancement might require significant remeshing, which could have performance implications.
 
 ## Related Questions
 - What are the potential performance impacts of increasing leaf quality around the player?
@@ -16,6 +16,5 @@ The discussion revolves around enhancing the visual quality of leaves in the gam
 - Are there any existing solutions to prevent x-ray effects without altering leaf quality?
 - Can the leaf quality enhancement be implemented without significant changes to the rendering pipeline?
 - What is the current state of the remeshing algorithm in Cubyz?
-- How does increasing leaf quality interact with other graphical features in the game?
 
 *Source: unknown | chunk_id: github_issue_2305_discussion*

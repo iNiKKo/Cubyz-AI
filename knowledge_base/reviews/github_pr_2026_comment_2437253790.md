@@ -9,7 +9,7 @@
 Modified the `sprint` key mapping in the `KeyBoard` struct to include press and release actions.
 
 ## Explanation
-The change involves updating the `sprint` key entry in the `KeyBoard` struct to include both press and release action callbacks. The reviewer suggests integrating these actions directly into the `Key` struct to eliminate the need for external code, aiming for a more streamlined and efficient architecture.
+Modified the `sprint` key mapping in the `KeyBoard` struct to include both press and release action callbacks. The change involves updating the `sprint` key entry in the `KeyBoard` struct to include `.pressAction = &game.pressSprint` and `.releaseAction = &game.releaseSprint`. The reviewer suggests integrating these actions directly into the `Key` struct to eliminate the need for external code, aiming for a more streamlined and efficient architecture.
 
 ## Related Questions
 - What are the potential performance implications of integrating action callbacks directly into the `Key` struct?

@@ -9,7 +9,7 @@
 The change initializes the server and entity manager, with a critical architectural review suggesting maintaining a pointer to the player entity in `User` for better synchronization.
 
 ## Explanation
-The code diff shows the addition of calls to initialize the main sync server and the entity manager. The reviewer emphasizes that adding just a mutex is not sufficient for protecting access to Entity data, highlighting the need for more robust synchronization mechanisms. This review underscores the importance of thread safety and proper architectural design in managing concurrent access to shared resources.
+The code diff shows the addition of calls to initialize the main sync server (`main.sync.server.init()`) and the entity manager (`entity_manager.init()`). The reviewer emphasizes that adding just a mutex is not sufficient for protecting access to Entity data, highlighting the need for more robust synchronization mechanisms. This review underscores the importance of thread safety and proper architectural design in managing concurrent access to shared resources.
 
 ## Related Questions
 - What is the purpose of initializing the main sync server and entity manager?

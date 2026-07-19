@@ -8,11 +8,11 @@
 Discussion on improving fog rendering to avoid skybox issues and enhance visual experience.
 
 ## Explanation
-The issue revolves around the current fog rendering technique, which fades out total fog as altitude increases. The maintainer suggests an alternative approach where the fog start is faded out while keeping the fog end constant. This could potentially resolve existing skybox issues. The discussion also explores future enhancements by increasing render distance and mapping heightmaps onto a sphere to improve terrain visibility.
+The issue discusses improving fog rendering to avoid skybox issues by fading out only the fog start while keeping the fog end constant. The maintainer suggests this approach could resolve existing skybox issues and enhance visual experience. Future enhancements include increasing render distance and mapping heightmaps onto a sphere as mentioned in Issue #647 (https://github.com/PixelGuys/Cubyz/issues/647#issuecomment-2533327184). The maintainer also notes that the problem could be resolved with larger render distances using heightmap terrain and mapping the heightmap onto a sphere to make it disappear.
 
 ## Related Questions
 - How does the current fog rendering technique affect skybox visibility?
-- What are the potential benefits of fading out only the fog start?
+- What are the potential benefits of fading out only the fog start while keeping the fog end constant?
 - How could increasing render distance improve terrain visualization?
 - Can mapping heightmaps onto a sphere enhance the visual experience in Cubyz?
 - What specific method was mentioned for improving fog rendering in issue #647?

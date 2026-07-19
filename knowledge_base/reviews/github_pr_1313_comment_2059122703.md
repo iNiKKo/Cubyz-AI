@@ -9,7 +9,37 @@
 The change refactors the block update handling in the network protocol to use a loop that processes all remaining data, improving symmetry and robustness.
 
 ## Explanation
-The original code read three integers (x, y, z) and a block ID, then updated the renderer's mesh storage. The reviewer suggests modifying this to process all available data in a loop until there is no more data left. This change ensures that any extra bytes are handled gracefully, preventing potential issues with packet truncation or corruption. The symmetry of using `reader.remaining.len != 0` as the loop condition makes the code cleaner and easier to understand.
+The change refactors the block update handling in the network protocol to use a loop that processes all remaining data, improving symmetry and robustness. The original code read three integers (x, y, z) and a block ID, then updated the renderer's mesh storage. The reviewer suggests modifying this to process all available data in a loop until there is no more data left. This change ensures that any extra bytes are handled gracefully, preventing potential issues with packet truncation or corruption. The symmetry of using `reader.remaining.len != 0` as the loop condition makes the code cleaner and easier to understand.
+
+The original code snippet read:
+```zig
+const x = try reader.readInt(i32);
+const y = try reader.readInt(i32);
+const z = try reader.readInt(i32);
+const newBlock = Block.fromInt(try reader.readInt(u32));
+if(conn.user != null) {
+    return error.InvalidPacket;
+} else {
+    renderer.mesh_storage.updateBlock(x, y, z, newBlock);
+}
+```
+The updated code snippet reads:
+```zig
+while(true) {
+    const update: BlockUpdate = .{
+        .x = reader.readInt(i32) catch break,
+        // Additional fields would be read here
+    };
+    // Process the block update
+}
+```
+The `while(true)` loop in the updated code is used to continuously read and process block updates until there is no more data left. The loop condition `reader.remaining.len != 0` ensures that all data is processed by checking if there are any remaining bytes in the reader. If there are no more bytes, the loop breaks.
+
+The original code did not handle extra bytes gracefully, which could lead to potential issues with packet truncation or corruption. The updated code addresses this by processing all available data in a loop until there is no more data left.
+
+This change improves the robustness of the network protocol by ensuring that any extra bytes are handled gracefully, preventing potential issues with packet truncation or corruption. The symmetry of using `reader.remaining.len != 0` as the loop condition makes the code cleaner and easier to understand.
+
+The impact on performance is minimal, as the change primarily involves restructuring the data processing loop without introducing additional computational overhead.
 
 ## Related Questions
 - What is the purpose of the `while(true)` loop in the updated code?

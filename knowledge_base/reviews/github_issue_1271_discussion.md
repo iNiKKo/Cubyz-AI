@@ -8,7 +8,7 @@
 The issue proposes adding steel to the game with specific physical and in-game properties. The maintainer suggests making iron stronger instead.
 
 ## Explanation
-This discussion revolves around the addition of a new material, steel, to the Cubyz game. The proposal includes detailed physical properties such as hardness and density, as well as in-game characteristics like durability and swing times. However, the maintainer argues against adding steel, citing that its primary difference from iron is merely increased strength with more coal, which could be achieved by enhancing iron directly. This highlights a consideration of resource balance and gameplay simplicity.
+This discussion revolves around the addition of a new material, steel, to the Cubyz game. The proposal includes detailed physical properties such as a hardness range of 4-5 on the Mohs scale and a density of 7.86 g/cm3 at 20°C. In-game characteristics include increased durability compared to iron, lower swing times due to its lighter weight, and the same damage output as iron equivalents. The maintainer argues against adding steel, citing that its primary difference from iron is merely increased strength with more coal, which could be achieved by enhancing iron directly. This highlights a consideration of resource balance and gameplay simplicity.
 
 ## Related Questions
 - What are the potential impacts of adding steel to the game?

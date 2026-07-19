@@ -9,7 +9,7 @@
 The reviewer suggests that using `initCapacity` might lead to unnecessary allocations.
 
 ## Explanation
-The reviewer points out a potential issue with the use of `initCapacity` in the Vulkan initialization code. The concern is that `initCapacity` could result in more allocations than necessary, which could impact performance. This review highlights the importance of careful memory management and efficient allocation strategies in graphics programming.
+The reviewer suggests that using `initCapacity` might lead to unnecessary allocations. The concern is that `initCapacity` could result in more allocations than necessary, which could impact performance. This review highlights the importance of careful memory management and efficient allocation strategies in graphics programming. Specifically, the line `var extensions = std.ArrayList([*c]const u8).initCapacity(main.stackAllocator.allocator, glfwExtensionCount) catch unreachable;` uses `initCapacity`, which might lead to more allocations than needed. Additionally, the variable `createFlags` is initialized to `0` before this line.
 
 ## Related Questions
 - What is the purpose of using `initCapacity` in this context?

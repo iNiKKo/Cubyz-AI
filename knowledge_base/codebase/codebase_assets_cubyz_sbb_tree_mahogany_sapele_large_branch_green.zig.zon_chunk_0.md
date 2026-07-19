@@ -8,7 +8,7 @@
 Defines blueprints for large green mahogany and sapele tree branches.
 
 ## Explanation
-This chunk contains a configuration structure defining two blueprints for large green mahogany and sapele tree branches. Each blueprint is identified by a unique string ID within the Cubyz asset system.
+This chunk contains a configuration structure defining two blueprints for large green mahogany and sapele tree branches. Each blueprint is identified by a unique string ID within the Cubyz asset system. The specific IDs of these blueprints are 'cubyz:tree/mahogany/sapele/large/branch/green/0' and 'cubyz:tree/mahogany/sapele/large/branch/green/1'.
 
 ## Related Questions
 - What are the IDs of the blueprints defined in this chunk?

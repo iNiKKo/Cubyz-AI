@@ -9,7 +9,7 @@
 The code changes the initialization of `gamemode` to use a default value from `WorldSettings` instead of hardcoding it.
 
 ## Explanation
-The reviewer suggests using the `WorldSettings` struct directly for initializing `gamemode`. This change aligns with the architectural principle of centralizing configuration settings, potentially improving maintainability and consistency. The reviewer notes that `WorldSettings` already includes all necessary configurations except for the seed, making it a suitable candidate for managing default game modes.
+The code changes the initialization of `gamemode` from a hardcoded value of `.creative` to use a default value from `WorldSettings.defaults.defaultGamemode`. The reviewer suggests using the `WorldSettings` struct directly for initializing `gamemode`, which aligns with the architectural principle of centralizing configuration settings, potentially improving maintainability and consistency. The reviewer notes that `WorldSettings` already includes all necessary configurations except for the seed, making it a suitable candidate for managing default game modes.
 
 ## Related Questions
 - What is the purpose of using `WorldSettings` for initializing `gamemode`?

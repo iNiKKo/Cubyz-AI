@@ -9,7 +9,15 @@
 The maintainer attempted to resolve block drop visual artifacts by removing specific lines from the item drop shader, but the issue persisted.
 
 ## Explanation
-The maintainer initially suspected that the issue might be related to raymarching code used in item drops. They suggested removing lines 89 and 176 from the `item_drop.fs` shader file, which handle fragment depth calculations. However, after testing these changes, the user reported no noticeable difference. The maintainer then identified a potential problem but did not provide further details on what was found or how it might resolve the issue.
+The maintainer attempted to resolve block drop visual artifacts by removing specific lines from the item drop shader, but the issue persisted. The maintainer initially suspected that the issue might be related to raymarching code used in item drops. They suggested removing lines 89 and 176 from the `item_drop.fs` shader file, which handle fragment depth calculations as follows:
+
+```diff
+-- 89	gl_FragDepth = gl_FragCoord.z;
+
+-- 176	gl_FragDepth = ((gl_DepthRange.diff * depth) + gl_DepthRange.near + gl_DepthRange.far)/2.0;
+```
+
+However, after testing these changes, the user reported no noticeable difference. The maintainer then identified a potential problem but did not provide further details on what was found or how it might resolve the issue.
 
 ## Related Questions
 - What is the purpose of lines 89 and 176 in `item_drop.fs`?

@@ -8,7 +8,7 @@
 Discussion on whether branches should appear as full blocks in LODs or disappear due to their thinness.
 
 ## Explanation
-The maintainers are debating whether to render branches as full blocks in Level of Detail (LOD) representations. They note that branches are quite thin and suggest considering making them disappear instead of enlarging them, which could cause flickering issues when viewed from a distance.
+Discussion on whether branches should appear as full blocks in Level of Detail (LOD) representations. The maintainers note that branches are quite thin, suggesting it would make more sense to make them disappear rather than enlarge them by a factor of 4× due to flickering issues when viewed from a distance.
 
 ## Related Questions
 - What are the potential visual effects of making branches disappear in LODs?

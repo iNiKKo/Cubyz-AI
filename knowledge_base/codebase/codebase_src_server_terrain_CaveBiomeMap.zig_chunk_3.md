@@ -9,7 +9,7 @@
 Handles cave biome mapping and retrieval for the server terrain.
 
 ## Explanation
-This chunk defines methods for retrieving cave biomes based on world coordinates. It includes functions to calculate grid points, get rough biomes, and determine exact biomes with optional seed generation. The code uses assertions for coordinate bounds checking and performs bitwise operations for efficient calculations. It also interacts with other components like `MapFragment` and `Biome`.
+This chunk defines methods for retrieving cave biomes based on world coordinates. The `getCaveBiomeOffset` function calculates the offset for a given position, using bitwise operations to determine the index in the surface fragments array. The `_getBiome` function retrieves the biome at a specific grid point, using assertions for coordinate bounds checking. The `getGridPointFromPrerotated` and `getGridPoint` functions calculate the grid point from a rotated position, while `getGridPointAndHeight` also determines the height of the grid point. The `getRoughBiome` and `getRoughBiomeAndHeight` methods return a rough biome based on the world coordinates, with optional seed generation. The `getBiome` function retrieves the exact biome at a given position, while `getBiomeAndSeed` also returns a unique seed for each biome position. The `getBiomeColumnAndSeed` method is similar to `getBiomeAndSeed`, but it also determines the height of the biome column. The code uses bitwise operations and assertions for efficient calculations and interacts with other components like `MapFragment` and `Biome`. It also generates unique seeds using a custom hash function that combines the grid point coordinates and the world seed.
 
 ## Code Example
 ```zig

@@ -8,7 +8,7 @@
 The proposal discusses adding the gem 'amber' to the game, detailing its physical and in-game properties, modifiers, and spawn rules.
 
 ## Explanation
-The issue proposes introducing amber as a new gemstone with specific physical attributes such as hardness and density. In terms of gameplay, amber is intended to provide special effects rather than stat bonuses. The proposal includes a modifier for light and specifies that amber should primarily spawn on beaches as an ore in sand. Additionally, there's a suggestion to allow amber to be found in sandstone caves and below deserts, contingent upon the resolution of issue #556. The user comment emphasizes the need for amber to be rare on beaches.
+The issue proposes introducing amber as a new gemstone with physical attributes including a hardness in Mohs scale of 2-2.5 and a density of 1.1 g/cm3 at 20°C. In terms of gameplay, amber is intended to provide special effects rather than stat bonuses. The proposal includes the `light` modifier for amber's behavior in the game. Amber should primarily spawn on beaches as an ore in sand. Additionally, there's a suggestion to allow amber to be found in sandstone caves and below deserts, contingent upon the resolution of issue #556. The user comment emphasizes that amber should be rare on beaches.
 
 ## Related Questions
 - What is the hardness range of amber in the game?

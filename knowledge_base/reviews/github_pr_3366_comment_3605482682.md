@@ -9,7 +9,7 @@
 Added functions for light calculation and material handling in the `items.zig` file.
 
 ## Explanation
-The changes introduce a new function `calculateLight` to compute lighting based on height maps, which involves calculating differences between neighboring points. Additionally, helper functions like `materialAt`, `neighborCoord`, and an incomplete `tipNeighborOffset` are added for material grid operations. The reviewer suggests using arrays consistently in function interfaces, specifically recommending changing the parameter type of `tipNeighborOffset` from separate `x` and `y` parameters to a single `[2]u8` array.
+The changes introduce a new function `calculateLight` to compute lighting based on height maps. The function calculates the difference between neighboring points (`lightTL` and `lightTR`) and then computes an average value, which is adjusted by adding 4 and dividing by 8. The final light value is clamped between 0 and 1. Additionally, helper functions like `materialAt`, `neighborCoord`, and an incomplete `tipNeighborOffset` are added for material grid operations. The reviewer suggests using arrays consistently in function interfaces, specifically recommending changing the parameter type of `tipNeighborOffset` from separate `x` and `y` parameters to a single `[2]u8` array.
 
 ## Related Questions
 - What is the purpose of the `calculateLight` function?

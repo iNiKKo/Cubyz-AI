@@ -9,7 +9,13 @@
 Discussion on adjusting terminal velocity based on altitude to prevent players from falling too far, with considerations for gameplay balance and realism.
 
 ## Explanation
-The discussion revolves around the idea of increasing terminal velocity at higher altitudes to make falling less dangerous but still challenging. The maintainer and users debate the impact on fast-travel methods and propose solutions like heat-proof accessories or specialized equipment for high-altitude environments. A user provides a Desmos model and a code snippet to demonstrate how terminal velocity could be adjusted based on altitude, using realistic physics calculations.
+Discussion on adjusting terminal velocity based on altitude to prevent players from falling too far, with considerations for gameplay balance and realism. The maintainer and users debate the impact on fast-travel methods and propose solutions like heat-proof accessories or specialized equipment for high-altitude environments. A user provides a Desmos model and a code snippet demonstrating how terminal velocity could be adjusted based on altitude using realistic physics calculations. The formula provided is:
+
+```zig
+const terminalVelocity = @sqrt((2.0 * 37.3 * physics.baseGravity) / (0.390625 * 1.0 * std.math.exp(@min(-Player.super.pos[2], 0) / 4150.0) * 0.7));
+```
+
+This formula calculates the terminal velocity based on player mass, cross-sectional area, air density, atmospheric scale height, and drag coefficient. The user's model shows that at height 0, Snale has a terminal velocity of approximately 90 m/s, increasing to about 300 m/s at height 10000.
 
 ## Related Questions
 - How does the proposed terminal velocity formula affect player movement at different altitudes?

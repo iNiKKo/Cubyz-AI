@@ -11,6 +11,14 @@ A new function `format` is added to the `utils.zig` file, which formats strings 
 ## Explanation
 The addition of the `format` function introduces a new utility for string formatting in Cubyz. The reviewer highlights that this change should be discussed further as it represents a significant architectural decision. The function uses a `NeverFailingAllocator` to allocate memory for the formatted string, ensuring that allocation failures are not handled, which could lead to undefined behavior if the allocator fails. The use of `comptime fmt` suggests that the format string is known at compile time, optimizing performance by allowing compile-time checks and optimizations. However, the reviewer cautions against integrating this change without further discussion, emphasizing that it should be part of a larger refactor or decision-making process.
 
+The exact syntax of the `format` function is as follows:
+```zig
+pub fn format(allocator: NeverFailingAllocator, comptime fmt: []const u8, args: anytype) []u8 {
+    // Implementation details
+}
+```
+This function takes an allocator, a compile-time format string, and variadic arguments to produce a formatted string. The use of `NeverFailingAllocator` means that the function assumes allocation will always succeed, which can lead to undefined behavior if the allocator fails.
+
 ## Related Questions
 - What is the purpose of using `NeverFailingAllocator` in the `format` function?
 - How does the use of `comptime fmt` affect performance and error handling?

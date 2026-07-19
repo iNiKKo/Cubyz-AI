@@ -9,7 +9,7 @@
 Added `parseAxis` function to handle axis parsing and updated `parseCoordinates` to use pointers for coordinate values.
 
 ## Explanation
-The change introduces a new function `parseAxis` that parses an axis argument, which can either be a number or a tilde (`~`) indicating relative positioning. The reviewer suggests using a `Vec3d` instead of pointers for coordinates in the `parseCoordinates` function, advocating for returning a vector object to simplify handling and potential future changes.
+The change introduces a new function `parseAxis` that parses an axis argument, which can either be a number or a tilde (`~`) indicating relative positioning. The function checks if the input starts with a tilde and then parses the rest of the string as a floating-point number. If the input is just a tilde, it returns 0. If the input is invalid (i.e., not a number), it sends an error message to the user and returns `error.InvalidNumber`. The reviewer suggests using a `Vec3d` instead of pointers for coordinates in the `parseCoordinates` function, advocating for returning a vector object to simplify handling and potential future changes. This would involve changing the function signature to return a `Vec3d` instead of taking pointers to individual coordinates.
 
 ## Related Questions
 - What is the purpose of the `parseAxis` function?

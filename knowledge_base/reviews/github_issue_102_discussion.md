@@ -9,14 +9,23 @@
 The discussion revolves around transitioning Cubyz from OpenGL to Vulkan, highlighting advantages like better tooling, platform support, and error detection, but also noting potential development costs and bugs in existing Vulkan implementations.
 
 ## Explanation
-The issue discusses the benefits of using Vulkan over OpenGL for Cubyz, including improved tooling, broader platform support (including macOS and mobile GPUs), more consistent performance, and larger buffer sizes. However, it acknowledges that this transition comes with significant development costs. The maintainer expresses concerns about the stability of Zig libraries compared to C libraries and the potential difficulty in maintaining abstraction layers. Users suggest using a Zig-based Vulkan binding library called 'vulkan-zig' for better type safety and error handling, but the maintainer is cautious due to the risk of diverging from official documentation and tutorials. The discussion also touches on the reliability of Vulkan drivers, citing examples of bugs in GTK4's Vulkan renderer and issues with Intel GPUs. Despite these concerns, there is a desire to use Vulkan for its wider support and better extension capabilities.
+The issue discusses the benefits of using Vulkan over OpenGL for Cubyz. Key points include:
+- Better tooling: Vulkan has a GPU profiler from AMD.
+- Broader platform support: Vulkan supports macOS via MoltenVK and mobile GPUs, whereas OpenGL ES is required otherwise.
+- Improved error detection: Vulkan's validation layers provide better error handling compared to inconsistent OpenGL errors.
+- Consistent performance: On Intel laptops, Vulkan avoids buffer copies that OpenGL creates.
+- Future-proofing: Vulkan is more likely to support future hardware features.
+- Larger buffers: SSBOs can be up to 4GB in Vulkan instead of 2GB in OpenGL.
+
+However, the transition comes with significant development costs. The maintainer expresses concerns about using Zig libraries like 'vulkan-zig' due to potential instability and difficulty maintaining abstraction layers compared to C libraries. Users suggest that 'vulkan-zig' offers better type safety and error handling but acknowledges potential issues with diverging from official documentation.
+
+The discussion also highlights reliability concerns with Vulkan drivers, citing bugs in GTK4's Vulkan renderer and performance issues on Intel GPUs. Despite these challenges, there is a desire to use Vulkan for its wider support and better extension capabilities, particularly for macOS compatibility and improved device coverage.
 
 ## Related Questions
-- What are the main advantages of using Vulkan over OpenGL for Cubyz?
-- Why is there a concern about maintaining Zig libraries compared to C libraries?
-- How does 'vulkan-zig' improve upon traditional Vulkan bindings in Zig?
+- What are the specific advantages of using Vulkan over OpenGL for Cubyz?
+- Why does the maintainer have concerns about maintaining Zig libraries compared to C libraries?
+- How does 'vulkan-zig' improve upon traditional Vulkan bindings in terms of type safety and error handling?
 - What specific bugs have been encountered with Vulkan drivers, particularly on Intel GPUs?
-- How does the maintainer view the future of Vulkan driver improvements?
 - What are the potential performance gains from using Vulkan in Cubyz?
 - Why is there a desire to use Vulkan for its wider support and better extension capabilities?
 

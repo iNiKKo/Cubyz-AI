@@ -9,7 +9,7 @@
 The review points out a discrepancy between the command description and its usage, highlighting the issue of redundant or outdated documentation.
 
 ## Explanation
-The reviewer noticed that the `usage` string for the `/kill` command does not match the actual command syntax described in the `description`. This mismatch indicates potential confusion for users and suggests that the documentation should be updated to reflect the correct usage. The review emphasizes the importance of maintaining accurate and up-to-date documentation to prevent user misunderstandings.
+The review points out a discrepancy between the command description and its usage, highlighting the issue of redundant or outdated documentation. The `usage` string for the `/kill` command is '/kill', but the reviewer noticed that this does not match the actual command syntax described in the `description`. This mismatch indicates potential confusion for users and suggests that the documentation should be updated to reflect the correct usage. The review emphasizes the importance of maintaining accurate and up-to-date documentation to prevent user misunderstandings. Additionally, the reviewer mentions that redundant information is bad, suggesting that the description should be concise and not include unnecessary details.
 
 ## Related Questions
 - What is the current implementation of the `/kill` command?

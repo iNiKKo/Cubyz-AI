@@ -8,7 +8,7 @@
 The user reports receiving numerous performance warnings related to redundant state changes in glBindFramebuffer API calls. The maintainer suggests that these warnings are not bugs but driver verbosity and advises finding a way to silence them or fixing the underlying issue.
 
 ## Explanation
-The user is encountering a large number of performance warnings indicating redundant state changes when calling glBindFramebuffer with FBO 0, which is already bound. The maintainer acknowledges that this is not a bug per se but rather an overly verbose driver warning. They suggest two potential solutions: silencing the warnings or addressing the underlying issue if desired.
+The user is encountering a large number of performance warnings related to redundant state changes when calling glBindFramebuffer with FBO 0, which is already bound. The exact warning message is: [warning]: OpenGL API performance: API_ID_REDUNDANT_FBO performance warning has been generated. Redundant state change in glBindFramebuffer API call, FBO 0, "", already bound. The maintainer acknowledges that these warnings are not bugs but rather an overly verbose driver and suggests two potential solutions: silencing the warnings or addressing the underlying issue if desired.
 
 ## Related Questions
 - How can the driver be configured to reduce verbosity?

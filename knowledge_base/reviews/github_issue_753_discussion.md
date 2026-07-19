@@ -8,7 +8,7 @@
 The issue involves a crash occurring when invalid items are placed into the workbench grid.
 
 ## Explanation
-The problem was introduced during the implementation of pull request #643. The reviewer identified that placing invalid items into the workbench grid leads to a game crash, indicating a potential null pointer dereference or improper validation check in the code handling item placement.
+The issue involves a crash occurring when invalid items are placed into the workbench grid. This problem was introduced during the implementation of pull request #643. The reviewer identified that placing invalid items into the workbench grid leads to a game crash, indicating a potential null pointer dereference or improper validation check in the code handling item placement. The specific GitHub issue report can be found at https://github.com/user-attachments/assets/a53713a1-d5b3-4f56-967f-26013be4d68a, and a maintainer comment confirms that this broke in the process of #643.
 
 ## Related Questions
 - What changes were made in pull request #643 that could have caused this issue?

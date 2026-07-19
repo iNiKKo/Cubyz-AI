@@ -9,7 +9,7 @@
 The code replaces `openDirInWindow` with a call to `realpathAlloc`, which is intended to resolve file paths. However, this change introduces potential issues as `realpathAlloc` is scheduled for removal from the standard library.
 
 ## Explanation
-The reviewer points out that using `realpathAlloc` can lead to various problems and is planned to be deprecated, as indicated by issue #1351. This suggests that relying on this function could cause maintenance issues in the future. The architectural concern here is the potential for introducing bugs or compatibility issues if the library changes or removes this functionality. The reviewer's comment highlights the need to consider alternative approaches to path resolution to ensure long-term stability and maintainability of the code.
+The reviewer points out that using `realpathAlloc` can lead to various problems and is planned to be deprecated, as indicated by issue #1351. Specifically, `realpathAlloc` causes all sorts of problems and is scheduled to be removed from the standard library. This suggests that relying on this function could cause maintenance issues in the future. The architectural concern here is the potential for introducing bugs or compatibility issues if the library changes or removes this functionality. The reviewer's comment highlights the need to consider alternative approaches to path resolution to ensure long-term stability and maintainability of the code.
 
 ## Related Questions
 - What are the potential issues with using `realpathAlloc` in this context?

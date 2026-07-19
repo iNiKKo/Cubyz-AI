@@ -9,7 +9,7 @@
 Added `meta` module import to `utils.zig`.
 
 ## Explanation
-The change introduces the `meta` module into the `utils.zig` file, expanding its utility set. The reviewer suggests creating a separate pull request for moving related functionalities like function pointer casts to this new module. This architectural decision aims to organize code better and potentially improve maintainability.
+The change introduces the `meta` module into the `utils.zig` file, expanding its utility set. The reviewer specifically mentions that relevant stuff such as function pointer casts should be moved to this new module in a separate PR. This architectural decision aims to organize code better and potentially improve maintainability.
 
 ## Related Questions
 - What specific functionalities are planned to be moved into the `meta` module?

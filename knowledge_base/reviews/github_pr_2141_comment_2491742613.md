@@ -9,7 +9,11 @@
 The review discusses the need for a pointer to an `EnvMap` in a function, noting that there is no clear way to obtain a non-copy version of the current process's `EnvMap`. The reviewer also mentions that `stdlib.h` is used to set Vulkan environment variables on macOS.
 
 ## Explanation
-The review highlights a critical architectural issue where a function requires access to an `EnvMap` without making a copy. The reviewer points out that there is no straightforward method to obtain a non-copy version of the current process's `EnvMap`. Additionally, the comment indicates that `stdlib.h` is utilized for setting Vulkan environment variables on macOS, suggesting potential platform-specific considerations in the codebase.
+The review discusses a critical architectural issue in the function located at `src/graphics/Window.zig`. The reviewer notes that the function requires a pointer to an `EnvMap`, but there is no clear way to obtain a non-copy version of the current process's `EnvMap`. Additionally, the comment indicates that `stdlib.h` is used for setting Vulkan environment variables on macOS. This suggests potential platform-specific considerations in the codebase.
+
+The reviewer also mentions that `glad/gl.h` and `vulkan/vulkan.h` are included conditionally based on the operating system. Specifically, if the OS is macOS, the Vulkan header from the Vulkan-Headers repository (`vulkan/vulkan.h`) is used instead of the one provided by glad (`glad/vulkan.h`). This change is noted in the code diff context.
+
+The review highlights the need for careful consideration of thread safety and backwards compatibility when dealing with `EnvMap` pointers and cross-platform compatibility issues.
 
 ## Related Questions
 - How can we obtain a non-copy version of the current process's EnvMap?

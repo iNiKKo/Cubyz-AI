@@ -8,7 +8,7 @@
 Discussion about storing block breaking state as a block entity for easier implementation and synchronization.
 
 ## Explanation
-The discussion revolves around whether the block breaking state should be stored as a block entity. The maintainer initially questions the necessity, suggesting that it might be unique behavior better hardcoded into the engine and noting that saving this state is not required. However, another maintainer argues that storing it would make synchronization easier.
+Discussion about whether the block breaking state should be stored as a block entity. The maintainer initially questions the necessity, suggesting that it might be unique behavior better hardcoded into the engine and noting that saving this state is not required. Another maintainer argues that storing it would make synchronization easier.
 
 ## Related Questions
 - What are the potential benefits of storing block breaking state as a block entity?

@@ -9,7 +9,7 @@
 Added a print function to ListUnmanaged that converts the internal buffer to a Zig standard writer for printing.
 
 ## Explanation
-The change introduces a new `print` method in the `ListUnmanaged` struct, which aims to facilitate printing the list's contents. The reviewer suggests using `fromArrayList/toArrayList` methods instead of manually adjusting the buffer and creating a writer, as this approach would be less cumbersome and more aligned with Zig's standard practices.
+The change introduces a new `print` method in the `ListUnmanaged` struct, which aims to facilitate printing the list's contents. The `print` method converts the internal buffer to a Zig standard writer for printing. Specifically, it adjusts the buffer's length to match its capacity and then creates a writer using `std.Io.Writer.Allocating.initOwnedSlice`. The reviewer suggests using `fromArrayList/toArrayList` methods instead of manually adjusting the buffer and creating a writer, as this approach would be less cumbersome and more aligned with Zig's standard practices. However, there is no constructor that allows for using a partially filled buffer directly, so the current implementation involves creating a buffer from a slice and moving the end pointer afterwards.
 
 ## Related Questions
 - What is the purpose of the `print` method in ListUnmanaged?

@@ -9,7 +9,7 @@
 Added initialization and rendering functions for item drops in the `ItemDropRenderer` struct.
 
 ## Explanation
-The changes introduce an `init` function to initialize shaders and uniforms, and a `renderItemDrops` function to handle the rendering of item drops. The reviewer suggests refactoring in a separate PR with justification due to potential architectural implications.
+The changes introduce an `init` function to initialize shaders and uniforms, and a `renderItemDrops` function to handle the rendering of item drops. The `init` function initializes the `itemShader` with vertex and fragment shader files and retrieves its uniform locations. The `deinit` function deinitializes the `itemShader`. The `renderItemDrops` function updates interpolation data for item drops, binds the shader, sets various uniforms such as texture samplers, reflection map size, time, projection matrix, ambient light, view matrix, contrast, and model matrix. It then iterates through item drops, retrieves their positions, rotations, and items, and renders them using a vertex array object and draw elements call. The code handles different types of items by checking if they are base items with specific block types or other items. There is a TODO comment to retrieve the light value from mesh storage.
 
 ## Related Questions
 - What is the purpose of the `init` function in `ItemDropRenderer`?

@@ -9,7 +9,7 @@
 Refactored the `gamemode` command to handle different argument cases more efficiently by using a single variant instead of two.
 
 ## Explanation
-The reviewer suggests consolidating the handling of optional arguments into a single variant to improve performance and reduce redundant parsing. The current approach, with separate variants for each case, leads to unnecessary parsing of the player index twice if the first variant fails. By merging these cases into one, the code becomes more efficient without significantly impacting performance.
+Refactored the `gamemode` command to handle different argument cases more efficiently by using a single variant instead of two. The new usage syntax includes `/gamemode <survival/creative>`, `/gamemode @playerIndex <survival/creative>`, `/gamemode`, and `/gamemode @playerIndex`. The Args union now contains a single variant with optional player index and mode fields. This change improves performance by avoiding redundant parsing of the player index twice if the first variant fails.
 
 ## Related Questions
 - How does the refactored `gamemode` command handle cases where no player index is provided?

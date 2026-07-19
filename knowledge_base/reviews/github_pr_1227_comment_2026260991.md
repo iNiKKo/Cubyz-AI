@@ -9,7 +9,15 @@
 Added a new `pasteInGeneration` function to the Blueprint struct with different paste modes and substitution capabilities.
 
 ## Explanation
-The change introduces a new method `pasteInGeneration` in the Blueprint struct, which allows pasting blueprint blocks into a server chunk with various modes (all, noAir, replaceAir) and optional substitutions. The reviewer suggests optimizing this function by creating a copy of the blueprint with substitution tables applied, which could simplify handling child and origin blocks during loading. However, they recommend deferring these optimizations for future development due to potential code complexity.
+The change introduces a new method `pasteInGeneration` in the Blueprint struct, which allows pasting blueprint blocks into a server chunk with various modes (all, noAir, replaceAir) and optional substitutions. The paste modes include:
+
+- **all**: Pastes all blocks without any restrictions.
+- **noAir**: Does not paste air blocks.
+- **replaceAir**: Replaces existing air blocks with the blueprint's blocks.
+
+The function also supports optional substitutions through a `SubstitutionMap`, which allows replacing block types during the pasting process. The reviewer suggests optimizing this function by creating a copy of the blueprint with substitution tables applied, which could simplify handling child and origin blocks during loading. However, they recommend deferring these optimizations for future development due to potential code complexity.
+
+The `pasteInGeneration` function ensures that blocks are within the chunk's bounds by checking if each block lies in the chunk using the `liesInChunk` method. If a block is outside the chunk's bounds, it skips updating that block.
 
 ## Related Questions
 - What are the different paste modes available in the `pasteInGeneration` function?

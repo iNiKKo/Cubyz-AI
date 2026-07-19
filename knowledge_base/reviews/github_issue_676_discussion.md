@@ -8,7 +8,7 @@
 The player maintains forward momentum when sliding against a block, which was not intended.
 
 ## Explanation
-The issue arises from the player's unexpected behavior while sliding against blocks. The maintainer suspects it might be an unintended side-effect of recent refactoring in pull request #663, suggesting that changes made during this refactoring could have altered the physics or movement logic related to player interactions with blocks.
+The player maintains forward momentum when sliding against a block, which was not intended. The maintainer suspects this might be an unintended side-effect of recent refactoring in pull request #663 and has asked @ITR13 to investigate further. For more details, refer to the GitHub issue at https://github.com/user-attachments/assets/61308997-7641-4015-acc1-a1e14bad1b8b.
 
 ## Related Questions
 - What changes were made in pull request #663 that could affect player movement?

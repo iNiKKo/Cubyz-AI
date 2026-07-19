@@ -9,7 +9,12 @@
 A new constant `deviceFeatures` is introduced in the `vulkan.zig` file to define physical device features for Vulkan.
 
 ## Explanation
-The introduction of `deviceFeatures` suggests an effort to configure specific capabilities of the Vulkan physical device. This change might be necessary to enable certain advanced graphics features or optimizations. The reviewer's question indicates a need to ensure that this addition is sufficient and does not require further modifications, such as additional struct types or function calls.
+**Explanation**
+The introduction of `deviceFeatures` in the `vulkan.zig` file is intended to define specific capabilities of the Vulkan physical device. This change might be necessary to enable certain advanced graphics features or optimizations. The reviewer's question indicates a need to ensure that this addition is sufficient and does not require further modifications, such as additional struct types or function calls.
+
+The `deviceFeatures` constant is defined using the `c.VkPhysicalDeviceFeatures` type, which suggests that it will be used to specify various physical device features required for Vulkan operations. However, the exact features being enabled by `deviceFeatures` are not specified in the provided code snippet. Additionally, there is no mention of a corresponding Vulkan function that needs to be called with this new constant.
+
+The reviewer's question also raises concerns about potential compatibility issues with older Vulkan versions and the implications for thread safety. These aspects are not addressed in the current explanation.
 
 ## Related Questions
 - What specific features are being enabled by `deviceFeatures`?

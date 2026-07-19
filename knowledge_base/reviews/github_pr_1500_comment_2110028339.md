@@ -9,7 +9,7 @@
 Added `initInline` method to `StructureBuildingBlock` for initializing blocks with inline blueprints. Updated `pickChild` to handle cases where no children are defined.
 
 ## Explanation
-The change introduces a new method `initInline` in the `StructureBuildingBlock` struct, which initializes a block using an inline blueprint ID. This method retrieves the blueprint from a cache and sets up the block with the necessary properties. The reviewer notes that the existing `pickChild` function should check for children at load time to avoid runtime costs during structure generation. Additionally, the reviewer suggests considering whether this condition should be treated as an error or if there are valid use cases where it could be useful.
+The change introduces a new method `initInline` in the `StructureBuildingBlock` struct, which initializes a block using an inline blueprint ID. This method retrieves the blueprint from a cache (`blueprintCache`) and sets up the block with the necessary properties. If the blueprint is not found, it logs an error message: `'['{s}'] Could not find blueprint '{s}'` and returns an `error.MissingBlueprint`. The existing `pickChild` function has been updated to handle cases where no children are defined by logging a warning message if `self.children.len == 0`: `[ {s}] Attempting to sample child structure from SBB with no children defined.`. The reviewer notes that this condition should be checked at load time to avoid runtime costs during structure generation. Additionally, the reviewer suggests considering whether this condition should be treated as an error or if there are valid use cases where it could be useful.
 
 ## Related Questions
 - What is the purpose of the `initInline` method in `StructureBuildingBlock`?

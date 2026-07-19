@@ -8,7 +8,7 @@
 Discussion about changing the camera angle for blocks in the inventory from isometric to dimetric.
 
 ## Explanation
-The discussion revolves around whether to switch from an isometric perspective to a dimetric perspective for displaying blocks in the inventory. The maintainer clarifies that the current implementation is not a true isometric camera but rather a perspective camera with offset positions. Users express preferences for both angles, highlighting that isometric provides clear visibility of block faces and smooth lines, while dimetric might be associated more with Minecraft's style. There are also concerns about noise on monitors with the isometric view.
+Discussion about changing the camera angle for blocks in the inventory from isometric to dimetric. The maintainer clarifies that the current implementation uses a perspective camera with offset positions, not a true isometric camera. Users express preferences for both angles: one user likes the clear visibility of block faces and smooth lines provided by isometric view, while another associates dimetric more closely with Minecraft's style. There are also concerns about noise on monitors when using the isometric view due to its non-truly isometric nature.
 
 ## Related Questions
 - What is the current implementation of the camera angle in Cubyz?

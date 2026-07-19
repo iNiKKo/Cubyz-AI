@@ -9,7 +9,15 @@
 Refactored the network protocol handling by replacing `sendImportant` with a more flexible `send` method, and introduced new constants for MTU and buffer sizes. Also added atomic variables for tracking overhead statistics.
 
 ## Explanation
-The refactoring involved changing the `sendImportant` method to a more generic `send` method that accepts an additional parameter specifying the send type (e.g., `.fast`). This change enhances flexibility and potentially improves performance by allowing different types of sends. The introduction of new constants like `maxMtu`, `minMtu`, and `receiveBufferSize` ensures better configuration for network packet sizes and buffer management. Additionally, atomic variables such as `internalMessageOverhead`, `internalHeaderOverhead`, and `externalHeaderOverhead` are added to track overhead statistics, which can be useful for performance monitoring and optimization. The reviewer suggests moving the `RangeBuffer` struct to a more generic location in `utils.zig` to promote code reuse.
+The refactoring involved changing the `sendImportant` method to a more generic `send` method that accepts an additional parameter specifying the send type (e.g., `.fast`). This change enhances flexibility and potentially improves performance by allowing different types of sends. The introduction of new constants like `maxMtu`, `minMtu`, and `receiveBufferSize` ensures better configuration for network packet sizes and buffer management. Additionally, atomic variables such as `internalMessageOverhead`, `internalHeaderOverhead`, and `externalHeaderOverhead` are added to track overhead statistics, which can be useful for performance monitoring and optimization.
+
+The specific changes include:
+- Replacing `conn.sendImportant(id, writer.data.items);` with `conn.send(.fast, id, writer.data.items);` in the `sendInventoryCommand`, `sendConfirmation`, `sendFailure`, and `sendSyncOperation` methods.
+- Introducing a new constant `maxMtu` with a value of `65507` to represent the maximum UDP packet size.
+- Introducing a new constant `minMtu` with a value of `576 - 20 - 8` to represent the minimum MTU size after subtracting IP and UDP headers.
+- Adding an atomic variable `receiveBufferSize` with a value of `8 << 20` (8 MB) for buffer management.
+
+The reviewer suggests moving the `RangeBuffer` struct to a more generic location in `utils.zig` to promote code reuse.
 
 ## Related Questions
 - What is the purpose of the `send` method in the network protocol handling?

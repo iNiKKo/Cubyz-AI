@@ -8,7 +8,7 @@
 Discussion about improving the in-game UI by addressing cluttered windows and proposing a new menu navigation system.
 
 ## Explanation
-The discussion revolves around the issue of UI clutter caused by open windows not closing automatically. The maintainers consider this different from another issue (#608) and explore potential solutions. One user proposes switching menus instead of opening new windows, with an option to open as a new window using middle-click, accompanied by a 'back' button. This proposal aims to reduce clutter and improve navigation but raises concerns about handling varying content sizes across menus.
+Discussion about improving the in-game UI by addressing the issue of open windows not closing automatically, causing clutter. The maintainers consider this different from another issue (#608) and explore potential solutions. One user proposes switching menus instead of opening new windows, with an option to open as a new window using middle-click, accompanied by a 'back' button. This proposal aims to reduce clutter and improve navigation but raises concerns about handling varying content sizes across menus. The solution involves setting a maximum size for the menu and using scroll bars to address content size discrepancies.
 
 ## Related Questions
 - What is the main issue discussed in this review?

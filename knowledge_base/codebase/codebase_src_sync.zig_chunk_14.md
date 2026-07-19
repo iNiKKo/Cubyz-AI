@@ -9,7 +9,9 @@
 This chunk defines serialization and deserialization functions for various game actions such as block updates, health changes, and chat commands.
 
 ## Explanation
-The chunk contains three main structs: UpdateBlock, AddHealth, and ChatCommand. Each struct has methods for serializing its data to a BinaryWriter and deserializing it from a BinaryReader. The serialize methods write the fields of each struct in a specific order, while the deserialize methods read these fields back into new instances of the respective structs. Additionally, the AddHealth and ChatCommand structs have a 'run' method that implements the logic for executing the action on the server side, including checking permissions and updating game state.
+The chunk defines serialization and deserialization functions for various game actions such as block updates, health changes, and chat commands. Each struct has methods for serializing its data to a BinaryWriter and deserializing it from a BinaryReader. The serialize methods write the fields of each struct in a specific order, while the deserialize methods read these fields back into new instances of the respective structs. Additionally, the AddHealth and ChatCommand structs have 'run' methods that implement the logic for executing the action on the server side, including checking permissions and updating game state.
+
+The 'AddHealth' struct includes permission checks to ensure that only users in creative mode can receive health changes. The 'ChatCommand' struct handles deserialization of its message field by reading a variable-length integer followed by the actual message bytes.
 
 ## Code Example
 ```zig

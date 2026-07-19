@@ -9,14 +9,11 @@
 Discussion about implementing an AI system using Goal-Oriented Action Planning (GOAP) for Cubyz. The maintainers are considering the feasibility and performance implications of such a system.
 
 ## Explanation
-The discussion revolves around integrating GOAP into Cubyz, which is described as a powerful but potentially intensive system. Users suggest that while it may require significant initial setup, it offers flexibility and depth in AI behavior. The maintainers express concern about the performance impact on handling multiple entities (50-100+) and propose optimizing the state graph traversal for better efficiency. There's also mention of Layered GOAP as a potential solution to reduce complexity and improve performance.
+Discussion about implementing an AI system using Goal-Oriented Action Planning (GOAP) for Cubyz. The maintainers are considering the feasibility and performance implications of such a system, noting that GOAP is powerful but potentially intensive when computing plans for multiple entities. Users suggest setting up a good debug system to handle complex chains of actions and limiting the speed of executing actions or using timers to stall AI behavior. The maintainers express concern about handling 50-100+ entities efficiently and propose optimizing state graph traversal for better performance. There's also mention of Layered GOAP, where high-level plans make mid-level plans, which in turn make low-level plans, potentially reducing complexity and improving performance.
 
 ## Related Questions
-- What are the potential performance implications of implementing GOAP for 10k+ entities?
+- What are the potential performance implications of implementing GOAP for 50-100+ entities?
 - How can the state graph traversal be optimized to handle a large number of entities efficiently?
 - Can Layered GOAP be effectively integrated into Cubyz's existing architecture?
-- What are the benefits and drawbacks of using GOAP in game development compared to other AI systems?
-- How does the initial setup cost of GOAP compare to its long-term maintainability and flexibility?
-- Are there any specific tools or libraries available for implementing GOAP in Zig that could be beneficial?
 
 *Source: unknown | chunk_id: github_issue_86_discussion*

@@ -8,7 +8,7 @@
 The issue proposes adding huge ore veins deep underground in Cubyz, but it was closed due to content guidelines.
 
 ## Explanation
-The discussion revolves around the idea of introducing large ore deposits below a certain depth (-20k) to enhance gameplay by providing significant rewards for players willing to explore deeper. However, the maintainer decided to close the issue based on the project's content guidelines, which likely outline restrictions or preferences regarding game content additions.
+The discussion revolves around the idea of introducing large ore deposits below a certain depth (-20k) to enhance gameplay by providing significant rewards for players willing to explore deeper. The current implementation of ore generation in Cubyz differs from what is proposed in this issue, as it does not include deep ore veins at -20k. The maintainer decided to close the issue based on the project's content guidelines.
 
 ## Related Questions
 - What are the specific content guidelines that led to the closure of this issue?

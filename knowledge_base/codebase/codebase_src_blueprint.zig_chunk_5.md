@@ -9,7 +9,13 @@
 The Mask struct defines a complex filtering mechanism for blocks based on various criteria like type, tag, and properties.
 
 ## Explanation
-The Mask struct is designed to filter blocks based on multiple logical conditions combined with AND and OR operations. It includes nested structures like AndList and OrList to manage these combinations. The Entry struct represents individual filter criteria, which can be inverted using the '!' operator. The Inner union within Entry handles different types of block properties such as type, tag, and specific property checks. Methods like initFromString parse string specifications into Mask instances, while match methods evaluate whether a given block meets the specified conditions. The deinit method ensures proper memory cleanup, and clone creates a deep copy of the Mask instance.
+The Mask struct defines a complex filtering mechanism for blocks based on various criteria like type, tag, and properties. It includes nested structures like AndList and OrList to manage these combinations. The Entry struct represents individual filter criteria, which can be inverted using the '!' operator. The Inner union within Entry handles different types of block properties such as type, tag, and specific property checks.
+
+The Mask struct uses constants for logical operations: `or_` is '|', `and_` is '&', `inverse` is '!', `tag` is '$', and `property` is '@'. The `initFromString` method parses string specifications into Mask instances, handling different types of block properties. The `match` methods evaluate whether a given block meets the specified conditions. The deinit method ensures proper memory cleanup, and clone creates a deep copy of the Mask instance.
+
+The Entry struct includes an inner union that can represent block type, block tag, or specific property checks. The `initFromString` method in Entry parses string specifications into individual entries, handling inversion with '!' and different types of properties. The `match` method evaluates whether a block matches the specified criteria.
+
+The Mask struct's methods include `initFromString`, which parses a string into a Mask instance, and `deinit`, which cleans up memory. The `clone` method creates a deep copy of the Mask instance. The `match` method evaluates whether a given block meets the specified conditions.
 
 ## Code Example
 ```zig

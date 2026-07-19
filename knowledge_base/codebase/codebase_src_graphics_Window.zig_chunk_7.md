@@ -9,7 +9,7 @@
 Handles window deinitialization, cursor visibility, event processing, and fullscreen toggling.
 
 ## Explanation
-This chunk manages the lifecycle of a graphics window, including its destruction, cursor management, event handling, and switching between windowed and fullscreen modes. The `deinit` function cleans up resources like gamepads and GLFW windows. The `setCursorVisible` method updates the visibility state of the cursor. The `handleEvents` function processes input events and updates the gamepad state. The `toggleFullscreen` method toggles the window between fullscreen and windowed modes, saving and restoring the previous window position and size.
+This chunk manages the lifecycle of a graphics window, including its destruction, cursor management, event handling, and switching between windowed and fullscreen modes. The `deinit` function cleans up resources like gamepads and GLFW windows. The `setCursorVisible` method updates the visibility state of the cursor. The `handleEvents` function processes input events and updates the gamepad state. The `toggleFullscreen` method toggles the window between fullscreen and windowed modes, saving and restoring the previous window position and size by storing the old position (`oldX`, `oldY`) and dimensions (`oldWidth`, `oldHeight`) before entering fullscreen mode and restoring them when exiting.
 
 ## Code Example
 ```zig

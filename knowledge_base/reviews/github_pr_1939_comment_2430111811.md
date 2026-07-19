@@ -9,7 +9,7 @@
 The reviewer questions the use of a union in the `ItemUseEffect` struct, noting increased complexity and potential issues with pointer storage.
 
 ## Explanation
-The reviewer expresses concern about using a union within the `ItemUseEffect` struct. They highlight that this approach complicates the codebase and may lead to subtle bugs related to how data is stored (e.g., as pointers or not). The architectural choice of using a union introduces additional complexity without clear benefits, which could potentially obscure the intent of the code and introduce maintenance challenges.
+The reviewer questions the use of a union within the `ItemUseEffect` struct, noting that this approach complicates the codebase and may lead to subtle bugs related to how data is stored (e.g., as pointers or not). The architectural choice of using a union introduces additional complexity without clear benefits, which could potentially obscure the intent of the code and introduce maintenance challenges. The reviewer also notes that the `ItemUseEffect` struct imports several modules such as `blocks.zig`, `chunk.zig`, `main.zig`, and `vec.zig`, and uses various symbols like `Block`, `Neighbor`, `ModelIndex`, `Vec3i`, `Vec3f`, `Mat4f`, and `ZonElement`. The reviewer questions why a union was used instead of other data structures that might be more appropriate for the intended functionality.
 
 ## Related Questions
 - What are the potential benefits of using a union in `ItemUseEffect`?

@@ -9,7 +9,7 @@
 Handles server-side world updates, chunk management, and block interactions.
 
 ## Explanation
-This chunk manages the server's world state, including updating user lists, handling item entities, storing chunks and regions, and managing blocks. It includes methods for queuing chunks and light maps, retrieving simulation and cached chunks, getting biome data, fetching blocks, comparing and exchanging block states, and handling block entity data. The code ensures proper reference counting and synchronization using mutexes to prevent race conditions.
+This chunk manages the server's world state, including updating user lists, handling item entities, storing chunks and regions, and managing blocks. The `tick` method updates user lists by sending time information to connected users. Item entities are managed by the `itemDropManager`, which is updated with `deltaTime`. Chunks and regions are stored within a specified storage time, ensuring at least one chunk and one region per iteration. Methods like `queueChunkAndDecreaseRefCount` and `queueLightMapAndDecreaseRefCount` queue chunks and light maps for processing. The `getSimulationChunkAndIncreaseRefCount`, `getOrGenerateChunkAndIncreaseRefCount`, and `getChunkFromCacheAndIncreaseRefCount` methods retrieve chunks with increased reference counts. Biome data is fetched using the `CaveBiomeMap`. Blocks are retrieved and compared using methods like `getBlock` and `cmpxchgBlock`, which also handle block entity data. Mutexes ensure proper synchronization to prevent race conditions.
 
 ## Code Example
 ```zig

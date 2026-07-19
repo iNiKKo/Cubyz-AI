@@ -9,7 +9,9 @@
 Added a new `NamedCallbacks` struct with an associated error type and a function to cast function returns to anyopaque. The reviewer questioned the naming of the `Super` constant within the struct.
 
 ## Explanation
-The change introduces a new utility for handling named callbacks, including a custom error type `CallbackError` and a generic struct `NamedCallbacks`. The struct is designed to manage callbacks with specific types. However, the reviewer points out that the naming convention for the current struct instance should typically be `Self` instead of `Super`, which is a common Zig convention to avoid confusion.
+The change introduces a new utility for handling named callbacks, including a custom error type `CallbackError` which can return two errors: `NotFound` and `EmptyName`. A generic struct `NamedCallbacks` is defined to manage callbacks with specific types. However, the reviewer points out that the naming convention for the current struct instance should typically be `Self` instead of `Super`, which is a common Zig convention to avoid confusion.
+
+The `castFunctionReturnToAnyopaque` function is used to cast any function return type to an `anyopaque` pointer. The `NamedCallbacks` struct is designed to handle callbacks with specific types, potentially improving code organization and type safety in Zig applications.
 
 ## Related Questions
 - Why is the `Super` constant used instead of `Self` in the `NamedCallbacks` struct?

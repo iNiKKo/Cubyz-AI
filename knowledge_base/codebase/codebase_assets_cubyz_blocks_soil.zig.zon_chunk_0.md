@@ -8,7 +8,7 @@
 Defines properties for a soil block in the Cubyz game.
 
 ## Explanation
-This chunk defines the configuration for a soil block, including its tags, health, drops, model, rotation, and texture. The soil block is marked as diggable with a health value of 6.5. It drops items automatically when broken. The model used is 'cubyz:cube', indicating it has a standard cubic shape. The rotation property specifies 'cubyz:stairs', suggesting the block can be rotated like stairs. The texture applied to the block is 'cubyz:soil'.
+This chunk defines the configuration for a soil block in the Cubyz game, including its tags (diggable), health value of 6.5, drops items automatically when broken, model 'cubyz:cube', rotation property specifying 'cubyz:stairs' indicating it can be rotated like stairs, and texture applied to the block is 'cubyz:soil'.
 
 ## Related Questions
 - What are the tags associated with the soil block?

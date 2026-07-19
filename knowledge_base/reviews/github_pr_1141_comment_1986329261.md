@@ -11,6 +11,10 @@ The `paste` function attempts to update block data on the server side by directl
 ## Explanation
 The reviewer points out that the `paste` function in the `Blueprint` struct accesses and modifies `mesh_storage`, which is a client-side data structure. This direct access from server-side code is fundamentally flawed because it violates the separation of concerns between client and server. Additionally, this approach could lead to duplicate updates: once through the network interface and again directly on the server side. The reviewer emphasizes that such practices are never allowed and can cause significant architectural issues.
 
+To address these issues, the `paste` function should be modified to ensure that block data is only updated through the network interface, avoiding direct access to client-side structures. This can be achieved by sending update requests to the server, which will then handle the updates appropriately without duplicating them. The architecture should also be adjusted to enforce strict separation between client and server data handling, ensuring that server-side code does not inadvertently access client-side structures.
+
+For example, when a block is pasted, the `paste` function should send a network request to the server with the necessary block update information. The server will then process this request and update the block data accordingly, ensuring that the updates are handled correctly without duplication.
+
 ## Related Questions
 - Why is direct access to client-side structures from server-side code problematic?
 - How can the `paste` function be modified to avoid updating data twice?

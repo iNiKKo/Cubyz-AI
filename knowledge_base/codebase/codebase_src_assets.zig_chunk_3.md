@@ -9,7 +9,13 @@
 This chunk handles reading assets from addon directories and storing them in a BytesHashMap.
 
 ## Explanation
-The chunk contains three public functions: readAllAssets, readAllBlueprints, and readAllModels. Each function reads files from specified subdirectories of an addon, processes them, and stores the results in a BytesHashMap. The readAllAssets function also handles migration files separately. Error handling is included for file operations, with appropriate logging on failure.
+This chunk handles reading assets from addon directories and storing them in a BytesHashMap. It contains three public functions: `readAllAssets`, `readAllBlueprints`, and `readAllModels`. Each function reads files from specified subdirectories of an addon, processes them, and stores the results in a BytesHashMap. The `readAllAssets` function also handles migration files separately. Error handling is included for file operations, with appropriate logging on failure.
+
+The `readAllAssets` function iterates over entries in the assets directory, skipping `_migrations.zig.zon` files. It creates an asset ID using `createAssetStringID`, reads the ZON file into a `zon` object, and merges it with default settings if available. The resulting `zon` object is then stored in the output map.
+
+The `readAllBlueprints` function reads blueprint files (`.blp`) from the specified subdirectory, skipping `_defaults` and `_migrations` prefixed files. It creates an asset ID using `createAssetStringID`, reads the file data, and stores it in the output map.
+
+The `readAllModels` function reads model files with a specific ending (e.g., `.obj`) from the specified subdirectory. It creates an asset ID using `createAssetStringID`, reads the file data, and stores it in the output map.
 
 ## Code Example
 ```zig

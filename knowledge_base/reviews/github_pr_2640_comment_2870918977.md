@@ -9,7 +9,7 @@
 The reviewer suggests using a `StringHashMapUnmanaged` instead of an array of `ZonMapEntry` for better performance and management.
 
 ## Explanation
-The reviewer points out that while `assets.zig` uses `StringHashMapUnmanaged`, the current implementation in `lang.zig` stores entries in an array. The reviewer questions why this approach is chosen, suggesting that using a map would be more efficient, especially if filtering is required. This change could improve performance by leveraging the optimized operations provided by hash maps.
+The reviewer suggests using a `StringHashMapUnmanaged` instead of an array of `ZonMapEntry` for better performance and management. The reviewer points out that while `assets.zig` uses `StringHashMapUnmanaged`, the current implementation in `lang.zig` stores entries in an array. The reviewer questions why this approach is chosen, suggesting that using a map would be more efficient, especially if filtering is required. This change could improve performance by leveraging the optimized operations provided by hash maps. The reviewer specifically mentions that they only see `StringHashMapUnmanaged` being used in `assets.zig`, and they question why an array is used instead of a map in `lang.zig`. The explanation should clarify that the current implementation uses an array, and it does not explicitly state why this choice was made.
 
 ## Related Questions
 - What are the advantages of using `StringHashMapUnmanaged` over an array in this context?

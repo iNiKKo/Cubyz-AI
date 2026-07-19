@@ -9,7 +9,7 @@
 Handles asset unloading and reading.
 
 ## Explanation
-This chunk contains functions for managing assets, including unloading them when they are no longer needed and reading specific assets from the file system. The `unloadAssets` function decrements a reference count and deinitializes various components if the count reaches zero. It also removes paths from asset hot reloading. The `readAsset` function constructs a path based on given parameters, checks for the existence of the file, and reads its contents. The `worldPresets` function returns a pointer to a world presets map.
+This chunk contains functions for managing assets, including unloading them when they are no longer needed and reading specific assets from the file system. The `unloadAssets` function decrements a reference count and deinitializes various components if the count reaches zero. These components include `main.entity`, `sbb`, `blocks`, `items`, `migrations`, `biomes`, `main.server.terrain.cave_layers`, `main.server.terrain.structures`, `main.models`, `main.particles.ParticleManager`, `main.rotation`, and `main.Tag`. It also removes paths from asset hot reloading by iterating over the `assets` directory and removing paths for directories that contain block textures. The `readAsset` function constructs a path based on given parameters (`subPath`, `id`, and `fileEnding`). If the file does not exist in the first constructed path, it tries another path. It reads the contents of the file and returns them. The `worldPresets` function returns a pointer to a world presets map.
 
 ## Code Example
 ```zig

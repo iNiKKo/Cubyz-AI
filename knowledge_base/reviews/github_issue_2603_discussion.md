@@ -5,10 +5,10 @@
 **Concepts:** tool progression, material durability
 
 ## Summary
-Discussion about adding more durable tool materials beyond glimmergill and wood.
+Discussion about adding more durable tool materials beyond glimmergill and wood, noting that glimmergill's durability was an arbitrary choice for mushrooms and there is a desire to improve wood progression.
 
 ## Explanation
-The issue discusses the current limitation in tool material progression where glimmergill is more durable than any surface wood. The maintainer agrees on improving wood progression but notes that glimmergill's stats were arbitrarily chosen for mushrooms.
+The issue discusses the current limitation in tool material progression where glimmergill has greater durability than any surface wood. The maintainer notes that glimmergill’s stats were arbitrarily chosen for mushrooms and expresses interest in improving wood progression beyond this arbitrary choice.
 
 ## Related Questions
 - What are the current limitations in tool material progression?

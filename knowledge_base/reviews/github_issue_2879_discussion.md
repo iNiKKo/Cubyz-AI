@@ -9,7 +9,7 @@
 The issue involves an extra directory being created within the specified save directory, leading to nested directories and causing errors when trying to access save files.
 
 ## Explanation
-The problem arises from the game creating an additional directory structure based on the `cubyzDir` setting. When `.cubyzDir` is set to a value like `
+The issue involves an extra directory being created within the specified save directory, leading to nested directories and causing errors when trying to access save files. Specifically, setting `.cubyzDir` to `test_saves` results in a nested `test_saves` directory containing `saves/test_world/assets`. When `.cubyzDir` is set to `saves`, the game creates an additional level of directories such as `saves/saves/saves/test_world/assets`, which leads to errors like `[error]: Couldn't open save saves/saves/world.zig.zon: FileNotFound` when attempting to access the world file.
 
 ## Related Questions
 - How does the game determine the directory structure for saves?
@@ -21,6 +21,5 @@ The problem arises from the game creating an additional directory structure base
 - How can we ensure that the game correctly identifies the root save directory?
 - Are there any known issues with handling multiple levels of nested directories in Cubyz?
 - Can you explain the logic behind the error message `[error]: Couldn't open save saves/saves/world.zig.zon: FileNotFound`?
-- What steps should be taken to prevent the creation of extra directories in future versions?
 
 *Source: unknown | chunk_id: github_issue_2879_discussion*

@@ -8,7 +8,7 @@
 Investigation into LOD chunk issues suggests a potential cause related to hitting the region file cache size, leading to multiple instances of the same region file.
 
 ## Explanation
-The maintainer investigated an issue where LOD chunks were breaking sometimes. The suspected cause is that the system might be hitting the region file cache size limit, which could result in multiple instances of the same region file being loaded. This explanation aligns with why the issue only started occurring after a significant number of chunks had been built since the last LOD chunk reload.
+The maintainer investigated an issue where LOD chunks were breaking sometimes. The suspected cause is that the system might be hitting the region file cache size limit, which could result in multiple instances of the same region file being loaded. This explanation aligns with why the issue only started occurring after a significant number of chunks had been built since the last LOD chunk reload. Specifically, the maintainer noted that this problem might occur due to the region file cache size limit and the fact that many new chunks have been generated since the previous LOD chunk reload.
 
 ## Related Questions
 - What is the current limit of the region file cache size?

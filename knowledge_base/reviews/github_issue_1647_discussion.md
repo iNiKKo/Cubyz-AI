@@ -8,14 +8,12 @@
 Discussion on implementing biome-specific entity effects and concerns about performance and realism.
 
 ## Explanation
-The discussion revolves around adding biome-specific entity effects, such as overheating when near lava or going deep underground. The maintainer suggests using debuffs instead of stats to simplify the gameplay mechanics. There is a mention that temperature debuffs are already being considered in another issue (#651). The user proposes an extended area of influence for block-on-touch effects but expresses concern about performance, specifically regarding the feasibility of checking for blocks within a radius.
+Discussion on implementing biome-specific entity effects, particularly focusing on overheating when near lava or going deep underground. The original proposal suggests gradual damage and a red tint on the screen to indicate overheating. However, the maintainer prefers using debuffs for temperature-related mechanics instead of player stats to avoid complexity. Temperature debuffs are already being considered in another issue (#651). A user proposes an extended area of influence for block-on-touch effects but raises concerns about performance and clarity regarding damage sources.
 
 ## Related Questions
-- What are the potential performance implications of checking for blocks in a radius?
-- How would biome-specific entity effects be implemented without adding too much complexity to the game?
-- Can debuffs effectively replace stats in gameplay mechanics, and what are the benefits?
+- What specific visual indicators would be used to show overheating?
+- How does the maintainer's preference for debuffs over player stats simplify gameplay mechanics?
+- Can biome-specific entity effects be implemented without adding too much complexity, and what are the benefits of using debuffs?
 - Is there a way to implement extended area of influence visually without causing confusion about damage sources?
-- What are the current considerations for temperature-related mechanics in Cubyz?
-- How would biome-specific effects be balanced to ensure they enhance gameplay rather than complicate it?
 
 *Source: unknown | chunk_id: github_issue_1647_discussion*

@@ -8,7 +8,7 @@
 The user reports encountering Vulkan errors on an old laptop with incompatible drivers. The maintainer suggests switching to Linux for compatibility.
 
 ## Explanation
-The issue revolves around a user's attempt to run a game that requires Vulkan support on an older Intel HD Graphics 5500 GPU, which lacks proper Vulkan drivers for Windows. The maintainer points out that the game only supports OpenGL 4.6 and suggests switching to Linux as a solution, where open-source MESA drivers might provide the necessary Vulkan support.
+The issue revolves around a user attempting to run a game that requires Vulkan support on an older Intel HD Graphics 5500 GPU, which lacks proper Vulkan drivers for Windows. The log indicates several Vulkan-related errors, including `VK_ERROR_INCOMPATIBLE_DRIVER` and `VK_ERROR_EXTENSION_NOT_PRESENT`. The available Vulkan instance extensions are listed as VK_EXT_debug_report, VK_EXT_debug_utils, VK_KHR_portability_enumeration, and VK_LUNARG_direct_driver_loading. The user's laptop is running Windows 10 with an Intel Core i3-5005U CPU and Intel HD Graphics 5500 GPU, which supports OpenGL 4.4 but not Vulkan 1.1 on Windows. The maintainer suggests switching to Linux, where open-source MESA drivers might provide the necessary Vulkan support.
 
 ## Related Questions
 - What are the Vulkan extensions available on the user's system?

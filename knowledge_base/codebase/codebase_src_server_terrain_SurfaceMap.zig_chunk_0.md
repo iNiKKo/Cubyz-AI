@@ -9,7 +9,7 @@
 Defines the MapFragmentPosition struct and its methods for initialization, equality check, hash code generation, distance calculation, and priority determination.
 
 ## Explanation
-The chunk defines a `MapFragmentPosition` struct that represents a position in a map fragment. It includes fields for world coordinates (`wx`, `wy`) and voxel size parameters (`voxelSize`, `voxelSizeShift`). The struct provides methods for initialization, equality check, hash code generation, calculation of the minimum squared distance to a player's position, and determination of priority based on proximity and size.
+Defines the `MapFragmentPosition` struct and its methods for initialization, equality check, hash code generation, distance calculation, and priority determination. The struct includes fields for world coordinates (`wx`, `wy`) and voxel size parameters (`voxelSize`, `voxelSizeShift`). The `init` method initializes a `MapFragmentPosition` instance with assertions ensuring `voxelSize` is a power of 2 and coordinates are aligned to the grid. The `equals` method checks equality based on these fields. The `hashCode` method returns a hash code calculated using bitwise operations on the position and size. The `getMinDistanceSquared` method calculates the minimum squared distance from the player's position, considering the fragment's width. The `getPriority` method determines priority based on proximity and size, with additional factors like log2 of voxel size affecting the result.
 
 ## Code Example
 ```zig

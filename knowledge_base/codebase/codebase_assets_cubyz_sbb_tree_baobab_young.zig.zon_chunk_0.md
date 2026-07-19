@@ -8,7 +8,7 @@
 Defines blueprints and children for a young baobab tree asset.
 
 ## Explanation
-This chunk defines the configuration for a young baobab tree asset in Cubyz. It specifies the blueprints, which are unique identifiers for different parts of the trunk, and the children, which map colors to specific leaf types. The blueprints array contains four entries, each with an 'id' field representing a part of the trunk. The children object maps two color keys ('white' and 'grey') to corresponding leaf asset IDs.
+This chunk defines the configuration for a young baobab tree asset in Cubyz. It specifies the blueprints, which are unique identifiers for different parts of the trunk (id: 'cubyz:tree/baobab/young/trunk/0', id: 'cubyz:tree/baobab/young/trunk/1', id: 'cubyz:tree/baobab/young/trunk/2', id: 'cubyz:tree/baobab/young/trunk/3'), and the children, which map colors to specific leaf types (white: 'cubyz:tree/baobab/young/leaves/side', grey: 'cubyz:tree/baobab/young/leaves/top'). The blueprints array contains four entries, each with an 'id' field representing a part of the trunk.
 
 ## Related Questions
 - What are the IDs of the trunk parts for the young baobab tree?

@@ -9,7 +9,7 @@
 Refactored the condition for rendering stack size text in the ItemSlot component.
 
 ## Explanation
-The reviewer suggests replacing a single-use helper function with an inline conditional check or a named variable. The original code used `self.shouldRenderStackSizeText(item)` to determine if the stack size text should be rendered, but the reviewer believes this makes the code less readable. Instead, they propose using a local constant `shouldRenderStackSizeText` that directly checks the item's stack size and the inventory type. This change aims to improve code readability by reducing abstraction without sacrificing clarity.
+The reviewer suggests replacing a single-use helper function with an inline conditional check or a named variable. The original code used `self.shouldRenderStackSizeText(item)` to determine if the stack size text should be rendered, but the reviewer believes this makes the code less readable. Instead, they propose using a local constant `shouldRenderStackSizeText` that directly checks the item's stack size and the inventory type. Specifically, the condition is `item.stackSize() > 1 and self.inventory.type != .creative`. This change aims to improve code readability by reducing abstraction without sacrificing clarity.
 
 ## Related Questions
 - What is the purpose of the `shouldRenderStackSizeText` variable in the refactored code?

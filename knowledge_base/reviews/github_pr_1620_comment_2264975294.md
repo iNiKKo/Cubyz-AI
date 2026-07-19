@@ -9,7 +9,7 @@
 Added Vulkan error handling and enumeration functions in `vulkan.zig`.
 
 ## Explanation
-The changes introduce a comprehensive set of Vulkan result handling and enumeration functions. The `VkResultEnum` enum maps Vulkan result codes to human-readable strings, aiding in debugging. The `checkResult` function logs errors based on the result code, while `allocEnumerationGeneric` is a generic allocator for Vulkan enumeration functions. The `Instance` struct includes methods for checking validation layer support and initializing the Vulkan instance with specific application information. The reviewer suggests using 'Cubyz Engine' or 'Cubyz' as the engine name for better driver optimization.
+The changes introduce a comprehensive set of Vulkan result handling and enumeration functions. The `VkResultEnum` enum maps Vulkan result codes to human-readable strings, aiding in debugging. The specific Vulkan result codes include `VK_SUCCESS`, `VK_NOT_READY`, `VK_TIMEOUT`, etc., up to `VK_RESULT_MAX_ENUM`. The `checkResult` function logs errors based on the result code, while `allocEnumerationGeneric` is a generic allocator for Vulkan enumeration functions. The `Instance` struct includes methods for checking validation layer support and initializing the Vulkan instance with specific application information. The reviewer suggests using 'Cubyz Engine' or 'Cubyz' as the engine name for better driver optimization. The `applicationVersion` field is set to `c.VK_MAKE_VERSION(0, 0, 0)`, which represents version 0.0.0.
 
 ## Related Questions
 - What is the purpose of the `VkResultEnum` enum?

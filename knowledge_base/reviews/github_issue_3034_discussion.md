@@ -8,7 +8,7 @@
 Discussion about consolidating UI window textures into single images to enhance customizability, with consideration for dynamic-sized windows like inventories.
 
 ## Explanation
-The issue discusses the potential benefits and challenges of merging multiple UI elements (like slots and backgrounds) into a single texture image. The main advantage is increased customizability, allowing users to easily reposition UI elements via configuration files. However, there are concerns about handling dynamic-sized windows, such as inventory crafting, which may require different textures for various sizes. The user suggests mimicking Minecraft's chest texture approach by cutting off parts of the full texture and adding outlines, or creating separate textures for each possible size, though this is seen as less ideal.
+Discussion about consolidating UI window textures into single images to enhance customizability, with consideration for dynamic-sized windows like inventories. The main advantage is increased customizability, allowing users to easily reposition UI elements via configuration files. However, there are concerns about handling dynamic-sized windows, such as inventory crafting, which may require different textures for various sizes (e.g., 9 possible sizes). The user suggests mimicking Minecraft's chest texture approach by cutting off parts of the full texture and adding outlines, or creating separate textures for each possible size, though this is seen as less ideal.
 
 ## Related Questions
 - How can we handle dynamic-sized UI elements with a single texture?

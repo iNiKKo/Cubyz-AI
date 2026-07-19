@@ -8,7 +8,7 @@
 The proposal suggests adding a second bounce of light to the existing lighting algorithm, which currently simulates a single direct bounce.
 
 ## Explanation
-The current lighting algorithm in Cubyz uses floodfill lighting, which is a cheap and simple method that only considers the brightest light source at each block. It does not simulate multiple bounces of light but rather distributes light uniformly as if the room were filled with fog. The proposal aims to enhance realism by adding a second bounce of light, where light reflected off surfaces propagates further. However, the maintainer points out that this would not significantly change the lighting behavior because the existing algorithm already treats incoming light as the brightest source, making additional bounces less noticeable.
+The proposal suggests adding a second bounce of light to the existing lighting algorithm in Cubyz, which currently uses floodfill lighting. Floodfill lighting is a cheap and simple method that only considers the brightest light source at each block and does not simulate multiple bounces of light. Instead, it distributes light uniformly as if the room were filled with fog, making it direction-independent. The maintainer points out that adding secondary light bounces would not significantly change the lighting behavior because the existing algorithm already treats incoming light as the brightest source, making additional bounces less noticeable and potentially redundant.
 
 ## Related Questions
 - How does the current floodfill lighting algorithm handle multiple light sources?
@@ -16,6 +16,5 @@ The current lighting algorithm in Cubyz uses floodfill lighting, which is a chea
 - Can the existing algorithm be modified to simulate more than one bounce of light?
 - How would the addition of secondary light bounces affect ambient occlusion?
 - Is there a way to optimize the lighting calculations for better performance?
-- What are the potential visual artifacts introduced by simulating multiple light bounces?
 
 *Source: unknown | chunk_id: github_issue_288_discussion*

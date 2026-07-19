@@ -9,7 +9,21 @@
 The new `group.zig` file implements command handling for group management and permission modifications in Cubyz, including operations like create, delete, join, leave, whitelist, and blacklist.
 
 ## Explanation
-This code introduces a comprehensive command handler for managing groups and their permissions within the Cubyz server. It defines an `Operation` enum to categorize different commands and a `PathOps` enum for handling add/remove operations on permission paths. The `execute` function parses the input arguments, validates them, and delegates tasks to `handleGroupChanges` or `handleGroupPermissionChanges` based on the operation type. Each handler function checks for argument validity, performs the requested action using the `permission` module, and sends appropriate feedback messages to the user. The reviewer suggests ensuring all code paths end with a return statement to maintain mutual exclusivity and prevent future errors.
+This code introduces a comprehensive command handler for managing groups and their permissions within the Cubyz server. The `group.zig` file defines an `Operation` enum with values such as create, delete, join, leave, whitelist, and blacklist to categorize different commands. It also defines a `PathOps` enum with add and remove operations for handling permission paths. The `execute` function parses the input arguments, validates them, and delegates tasks to either `handleGroupChanges` or `handleGroupPermissionChanges` based on the operation type.
+
+The `usage` string specifies the correct syntax for the /group command as follows:
+```
+/group <create/delete/join/leave> <groupName>
+/group <whitelist/blacklist> <groupName> <add/remove> <permissionPath>
+/group <whitelist/blacklist> <groupName> <permissionPath>
+```
+The `execute` function checks if the number of arguments is correct and sends error messages to the user if not. For example, it sends a message if there are too few or too many arguments.
+
+The `handleGroupChanges` function handles operations like create, delete, join, and leave. It validates that no extra arguments are provided and performs the requested action using the `permission` module. If an error occurs (e.g., trying to create a group that already exists), it sends an appropriate feedback message to the user.
+
+The `handleGroupPermissionChanges` function handles whitelist and blacklist operations. It checks if the permission path starts with a '/' and validates the operation type (add or remove). It then adds or removes the specified permission path from the group's permissions list and sends feedback messages based on the outcome.
+
+The reviewer suggests ensuring all code paths end with a return statement to maintain mutual exclusivity and prevent future errors. This would also flatten the structure by moving else contents directly into the function body.
 
 ## Related Questions
 - What is the purpose of the `Operation` enum in this code?

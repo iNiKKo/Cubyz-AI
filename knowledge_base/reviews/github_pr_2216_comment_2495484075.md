@@ -11,6 +11,8 @@ The review discusses the removal of a global variable `blockyEntityTypes` and me
 ## Explanation
 The reviewer points out that a global variable named `blockyEntityTypes` has been removed. They also note that there is another `BlockEntityTypes` struct, which has been renamed in the current branch. The review suggests that this change might be part of an architectural refactoring to improve code organization or reduce global state.
 
+The specific changes made in the code diff include the removal of lines 528-475 and the renaming of the `BlockEntityTypes` struct from line 186. A critical architectural review image is also mentioned, which provides additional context for these changes.
+
 ## Related Questions
 - What was the purpose of removing `blockyEntityTypes`?
 - Why was the `BlockEntityTypes` struct renamed?

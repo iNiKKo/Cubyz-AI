@@ -9,7 +9,17 @@
 The code checks for directory existence twice: once via iteration and again using `hasDir`. This redundancy is flagged as odd.
 
 ## Explanation
-The reviewer points out that iterating over directories should inherently ensure their existence, making the subsequent check with `hasDir` redundant. This potential redundancy could be optimized to improve code clarity and performance by removing unnecessary checks.
+The reviewer points out that iterating over directories should inherently ensure their existence, making the subsequent check with `hasDir` redundant. This potential redundancy could be optimized to improve code clarity and performance by removing unnecessary checks. The specific lines of code in question are:
+
+```zig
+if(addon.kind == .directory) {
+    const path = std.fmt.allocPrintSentinel(main.stackAllocator.allocator, "assets/{s}/blocks/textures", .{addon.name}, 0) catch unreachable;
+    defer main.stackAllocator.free(path);
+-   std.fs.cwd().access(path, .{}) catch continue;
++   if(!main.files.cwd().hasDir(path)) continue;
+```
+
+The reviewer notes that the `access` function is replaced with a check using `hasDir`, which seems redundant since iterating over directories should already confirm their existence. This redundancy could be optimized to improve code clarity and performance by removing unnecessary checks.
 
 ## Related Questions
 - Why is the directory existence checked twice in this code?

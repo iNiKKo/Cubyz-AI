@@ -8,7 +8,7 @@
 The issue discusses performance lag in caves due to high face count and proposes a multi-step rendering approach for occlusion culling.
 
 ## Explanation
-The discussion revolves around optimizing the rendering process in Cubyz, specifically addressing the lag experienced in cave areas. The maintainer clarifies that while the number of faces is high before occlusion culling, the frame time remains relatively low. A proposed solution involves breaking down the rendering and occlusion culling processes into multiple steps based on render distance. This approach aims to improve performance by managing the complexity of rendering large numbers of faces more efficiently. The maintainer suggests implementing this change after another feature (#823) is completed.
+The issue discusses performance lag in caves due to high face count before occlusion culling. The maintainer clarifies that scenes like this should not draw 2 million faces, but notes that the actual frame time is 1.3 ms and does not consider it problematic. A proposed solution involves breaking down the rendering and occlusion culling processes into multiple steps based on render distance (for(0..renderDistance) |i| { do occlusion culling for chunks at distance i; render chunks at distance i }). This approach aims to improve performance by managing the complexity of rendering large numbers of faces more efficiently. The maintainer suggests implementing this change after another feature (#823) is completed.
 
 ## Related Questions
 - What is the current frame time for cave rendering?

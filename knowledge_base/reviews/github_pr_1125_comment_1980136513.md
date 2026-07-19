@@ -9,7 +9,9 @@
 The code introduces a new variable `localAllocator` using `main.stackAllocator` and modifies the way asset IDs are constructed by incorporating an addon name. The reviewer emphasizes the need for careful handling of duplicates and memory freeing.
 
 ## Explanation
-The change involves adding a local allocator to handle temporary allocations within the function scope. The asset ID construction is updated to include both the addon name and the original migration key, which could be crucial for distinguishing assets from different addons. The reviewer's comment about duplicates and frees suggests concerns over potential memory leaks or incorrect handling of allocated strings, highlighting the importance of ensuring proper resource management in this context.
+The change involves adding a local allocator to handle temporary allocations within the function scope. Specifically, `const localAllocator = main.stackAllocator;` is added at the beginning of the `register` function. This local allocator is then used to allocate memory for the asset ID string using `std.fmt.allocPrint(localAllocator.allocator, "{s}:{s}", .{addonName, migration.key_ptr.*}) catch unreachable;`. The asset ID construction is updated to include both the addon name and the original migration key, which could be crucial for distinguishing assets from different addons.
+
+The reviewer's comment about duplicates and frees suggests concerns over potential memory leaks or incorrect handling of allocated strings. It specifically mentions following duplicates and frees on the two variables `localAllocator` and `migrationZon`. This highlights the importance of ensuring proper resource management in this context to prevent memory leaks.
 
 ## Related Questions
 - How does the introduction of `localAllocator` impact memory usage within this function?

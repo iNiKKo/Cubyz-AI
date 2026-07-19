@@ -8,13 +8,13 @@
 The discussion revolves around the design and mechanics of player cannons, focusing on the materials required for the barrel and the explosives needed to propel the player.
 
 ## Explanation
-The issue proposes adding a cannon as a multiblock structure in Cubyz. The cannon is activated by placing explosives at its base, which then propels the player upwards. The design specifies that only strong materials should be used for the barrel to prevent easy construction using regular stone. The discussion suggests an alternative approach where TNT/Dynamite might be insufficiently powerful to break stronger blocks, and accessories could be used to block damage from explosions. This would allow for a more unified explosive system with varying power levels.
+The issue proposes adding a cannon as a multiblock structure in Cubyz, where the cannon is activated by placing explosives at its base to propel the player upwards. The design specifies that only strong materials should be used for the barrel to prevent easy construction using regular stone. Strong materials include blocks like metal or reinforced concrete. The discussion suggests an alternative approach where TNT/Dynamite might be insufficiently powerful to break stronger blocks, and accessories could be used to block damage from explosions. This would allow for a more unified explosive system with varying power levels. The final height of the player depends on the barrel material, length, type of explosives, and air resistance.
 
 ## Related Questions
 - What are the requirements for the cannon barrel material?
-- How does the explosive power affect the cannon's functionality?
+- How does the barrel length affect the cannon's functionality?
 - Can regular stone be used to build a cannon?
-- What alternative solutions were proposed for making cannons more versatile?
+- Which materials can be used as strong materials for the barrel?
 - How would accessories impact the explosion mechanics in Cubyz?
 - Is there a plan to implement different power levels for explosives?
 

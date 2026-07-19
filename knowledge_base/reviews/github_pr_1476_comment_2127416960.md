@@ -9,7 +9,15 @@
 Refactored the tick function handling mechanism by introducing a new `TickEventVTableMap` struct to replace the previous `tickFunctions` variable and associated functions.
 
 ## Explanation
-The change involves replacing the old `tickFunctions` variable, which was an instance of `utils.NamedCallbacks`, with a new `TickEventVTableMap` struct. This refactoring is aimed at improving the architecture by providing a more flexible and type-safe way to handle tick events for blocks. The reviewer suggests using `TickEventVTableMap` directly in generic structs, indicating a preference for this approach over the previous method. The primary motivation appears to be enhancing code clarity and maintainability while ensuring that the system remains robust and efficient.
+Refactored the tick function handling mechanism by introducing a new `TickEventVTableMap` struct to replace the previous `tickFunctions` variable and associated functions. The old `tickFunctions` was an instance of `utils.NamedCallbacks`, which is now replaced with `TickEventVTableMap`. This refactoring aims to improve architecture by providing a more flexible and type-safe way to handle tick events for blocks. The reviewer suggests using `TickEventVTableMap` directly in generic structs, indicating a preference for this approach over the previous method. The primary motivation appears to be enhancing code clarity and maintainability while ensuring that the system remains robust and efficient.
+
+The specific function `replaceWithCobble` is now part of the `TickEventVTableMap` struct. It logs a debug message and replaces a block with cobblestone using the `parseBlock` function. The syntax for `TickEventVTableMap` is as follows:
+```zig
+pub const TickEventVTableMap = struct {
+    const Self = @This();
+};
+```
+The reviewer advises using `TickEventVTableMap` directly in generic structs, suggesting that this approach offers better flexibility and type safety compared to the previous method.
 
 ## Related Questions
 - What is the purpose of introducing `TickEventVTableMap`?

@@ -11,6 +11,14 @@ The `success` state case was removed to reduce wait time by one frame and avoid 
 ## Explanation
 The reviewer suggests removing the `success` state case from the `update` function in the `connecting.zig` file. This change aims to improve performance by reducing the wait time by one frame and prevent edge cases where the button might be clicked during that extra frame. The removal of this case is considered a critical architectural review as it impacts the flow and responsiveness of the connection process.
 
+The original `success` state case likely handled finalizing the connection and updating the UI. By removing it, the code avoids an unnecessary frame delay, which can improve user experience by making the connection process feel faster and more responsive.
+
+The `connectFuture` variable is used to manage the asynchronous connection task. It holds a reference to the future that represents the ongoing connection attempt. If the connection fails or is canceled, `connectFuture` is set to null to indicate that the task has completed.
+
+The `state.load(.acquire)` call in the `update` function is used to safely read the current state of the connection process. The `.acquire` memory ordering ensures that the most recent value of the state is read, which is crucial for maintaining correct behavior in a multi-threaded environment.
+
+Removing the `success` state case simplifies the code by reducing the number of states and transitions. This can make the code easier to understand and maintain while still achieving the desired performance improvements.
+
 ## Related Questions
 - What is the purpose of removing the `success` state case?
 - How does this change impact the connection process flow?

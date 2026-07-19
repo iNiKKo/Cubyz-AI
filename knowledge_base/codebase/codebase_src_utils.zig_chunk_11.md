@@ -9,7 +9,23 @@
 The chunk defines a generic interpolation system for smooth motion updates.
 
 ## Explanation
-This chunk implements a generic interpolation system that can handle motion updates for any number of elements. It uses cubic Hermite splines to interpolate positions and velocities smoothly over time. The `GenericInterpolation` function is a parameterized type that takes the number of elements as a compile-time constant. The struct returned by this function contains arrays to store past positions, velocities, and times, as well as pointers to the current output position and velocity. Methods include initialization (`init`), updating positions (`updatePosition`), evaluating splines (`evaluateSplineAt`), interpolating individual coordinates (`interpolateCoordinate`), determining the next data point (`determineNextDataPoint`), and updating the system with new time (`update`). The `updateIndexed` method allows for more complex updates based on an array of indices. Error handling includes a warning for detected time travel.
+This chunk implements a generic interpolation system that can handle motion updates for any number of elements. It uses cubic Hermite splines to interpolate positions and velocities smoothly over time. The `GenericInterpolation` function is a parameterized type that takes the number of elements as a compile-time constant. The struct returned by this function contains arrays to store past positions, velocities, and times, as well as pointers to the current output position and velocity. Specifically, it has an array `lastPos` with 8 frames for each element's position, an array `lastVel` with 8 frames for each element's velocity, and an array `lastTimes` with 8 frames for timestamps. The struct also includes a `frontIndex` to track the current frame, a `currentPoint` to indicate the last used data point, and pointers `outPos` and `outVel` to the current output position and velocity.
+
+Methods include initialization (`init`), updating positions (`updatePosition`), evaluating splines (`evaluateSplineAt`), interpolating individual coordinates (`interpolateCoordinate`), determining the next data point (`determineNextDataPoint`), and updating the system with new time (`update`). The `updateIndexed` method allows for more complex updates based on an array of indices. Error handling includes a warning for detected time travel.
+
+The `init` method initializes the interpolation system by setting the output position and velocity pointers, copying initial values to the past positions and velocities arrays, resetting the front index, and setting the current point to null.
+
+The `updatePosition` method updates the position and velocity at a given time by shifting the front index, copying new values to the last positions and velocities arrays, and storing the timestamp.
+
+The `evaluateSplineAt` function calculates spline values using cubic Hermite splines based on the provided parameters.
+
+The `interpolateCoordinate` method interpolates individual coordinates using cubic interpolation if the velocity is non-zero; otherwise, it linearly interpolates.
+
+The `determineNextDataPoint` method determines the next data point to use for interpolation based on the current time and the last times array.
+
+The `update` method updates the system with new time by determining the next data point, calculating delta time, handling time travel detection, and updating positions and velocities either linearly or using cubic interpolation.
+
+The `updateIndexed` method is similar to `update` but allows for more complex updates based on an array of indices.
 
 ## Code Example
 ```zig

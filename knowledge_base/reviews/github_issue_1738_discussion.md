@@ -8,10 +8,10 @@
 Discussion on player disconnection behavior, focusing on implications of leaving bodies and potential solutions like temporary ghost states or logout timers.
 
 ## Explanation
-The issue revolves around modifying player disconnection mechanics to prevent combat logging and base haunting. The discussion explores various solutions such as making disconnected players attackable for a short period, fading ghosts over time, using geiger counters to detect player presence, and implementing logout timers. Maintainers express concerns about the permanence of ghost entities and their potential misuse for griefing. The final decision leans towards server-side mods rather than core game features due to concerns about disrupting cooperative multiplayer experiences.
+The issue revolves around modifying player disconnection mechanics to prevent combat logging and base haunting. The discussion explores various solutions such as making disconnected players attackable for up to a minute after they log off, displaying a ghost player that fades over time, using geiger counters to detect player presence, and implementing logout timers. Maintainers express concerns about the permanence of ghost entities and their potential misuse for griefing. For example, if a player logs out in someone's base, their body will be visible and attackable for up to a minute before fading away. Additionally, maintainers suggest using a geiger counter-like item that can detect players but does not reveal their exact position or name. The final decision leans towards server-side mods rather than core game features due to concerns about disrupting cooperative multiplayer experiences.
 
 ## Related Questions
-- What are the potential implications of making disconnected players attackable for a short period?
+- What are the potential implications of making disconnected players attackable for up to a minute after they log off?
 - How could fading ghosts over time address combat logging and base haunting issues?
 - What is the purpose of implementing a geiger counter in this context?
 - Why was the logout timer solution considered less suitable for the core game experience?

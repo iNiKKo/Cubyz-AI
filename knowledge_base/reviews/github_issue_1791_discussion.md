@@ -8,14 +8,13 @@
 The discussion revolves around moving certain files and folders from the working directory to a global Cubyz directory location, with concerns about handling multiple instances accessing shared resources simultaneously.
 
 ## Explanation
-The issue aims to centralize important files like blueprints and assets/backgrounds into a global Cubyz directory. The reviewer raises a critical concern about potential conflicts when multiple instances of Cubyz attempt to access these shared resources concurrently. The maintainer acknowledges the current behavior where processes use the same folders, which could lead to issues, especially with game instances started from different directories. The maintainer also clarifies that assets/backgrounds need to be migrated and suggests addressing this before version 0.0.0.
+The discussion revolves around moving certain files and folders from the working directory to a global Cubyz directory location. Important files that must be migrated include 'blueprints' and 'assets/backgrounds'. Less important files, which do not need to be migrated, are 'gamecontrollerdb.txt', 'gamecontrollerdb.stamp', 'logs', 'serverAssets', 'assets/cubyz/music', and 'assets/cubyz/fonts'. The maintainer acknowledges that both processes use the same folders when multiple instances of Cubyz attempt to access these shared resources concurrently, which could cause issues. This applies especially to game instances started from different directories. Additionally, assets/backgrounds need to be migrated before version 0.0.0.
 
 ## Related Questions
 - How does the current implementation handle multiple Cubyz instances accessing shared resources?
 - What are the potential issues if multiple Cubyz instances try to write to the same global directory simultaneously?
 - Is there a proposed solution for ensuring thread safety when accessing shared assets in the global directory?
+- Which files and folders need to be migrated, and which ones do not?
 - How will the migration of important files affect backwards compatibility with existing installations?
-- What steps should be taken to prevent data corruption during concurrent access to shared resources?
-- How can we ensure that the global Cubyz directory is properly initialized and secured across different operating systems?
 
 *Source: unknown | chunk_id: github_issue_1791_discussion*

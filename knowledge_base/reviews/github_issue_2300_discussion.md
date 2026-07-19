@@ -8,7 +8,7 @@
 The issue describes a bug where players spawn inside the ground, enabling X-Ray vision, in worlds created with specific seeds like 'QD'. This behavior persists until movement or pressing ESC.
 
 ## Explanation
-The problem arises from an unexpected interaction between world generation algorithms and player spawning logic. The reviewer notes that this issue is consistent for certain seeds but varies based on game mode settings (creative vs. survival) and whether cheats are enabled. The discussion highlights the need to ensure deterministic player spawning regardless of seed or game configuration.
+The issue describes a bug where players spawn inside the ground with X-Ray vision in worlds created with specific seeds like 'QD'. The behavior is consistent for certain seeds but varies based on game mode settings (creative vs. survival) and whether cheats are enabled. For example, with seed 'ReviumReviewloper', spawning inside the ground only occurs in creative mode with cheats enabled, and pressing ESC teleports the player outside the ground. This variability must be preserved. The problem arises from an unexpected interaction between world generation algorithms and player spawning logic. The discussion highlights the need to ensure deterministic player spawning regardless of seed or game configuration.
 
 ## Related Questions
 - What is the code responsible for player spawning in Cubyz?

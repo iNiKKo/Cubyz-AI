@@ -9,7 +9,7 @@
 The TextureArray struct manages the creation and destruction of a texture array in OpenGL, including generating mipmaps with optional alpha correction.
 
 ## Explanation
-The TextureArray struct encapsulates functionality for handling a texture array in OpenGL. It includes methods to initialize (`init`), deinitialize (`deinit`), and bind (`bind`) the texture array. The `generate` method is responsible for creating the GPU buffer, uploading images, and generating mipmaps with optional alpha correction. This involves calculating the maximum dimensions of the input images, ensuring they are powers of two, and then filling a buffer using nearest sampling to create each mipmap level. The `lodColorInterpolation` function computes the color for each pixel in the mipmap levels based on surrounding pixels, applying gamma correction if specified.
+The TextureArray struct manages the creation and destruction of a texture array in OpenGL, including generating mipmaps with optional alpha correction. It includes methods to initialize (`init`), deinitialize (`deinit`), and bind (`bind`) the texture array. The `generate` method is responsible for creating the GPU buffer, uploading images, and generating mipmaps with optional alpha correction. This involves calculating the maximum dimensions of the input images, ensuring they are powers of two, and then filling a buffer using nearest sampling to create each mipmap level. The `lodColorInterpolation` function computes the color for each pixel in the mipmap levels based on surrounding pixels, applying gamma correction if specified. The function takes an array of four colors and a boolean indicating whether alpha correction should be applied, and returns a single interpolated color.
 
 ## Code Example
 ```zig

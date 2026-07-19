@@ -11,6 +11,19 @@ The review suggests simplifying the item filtering logic in the creative invento
 ## Explanation
 The reviewer points out that the current implementation uses an intricate and potentially error-prone inverted logic construct to filter items based on tags. The suggestion is to replace this with a simpler `if(item.hasTag(...) or ...block.hasTag())` condition, which would improve code readability and maintainability without altering functionality.
 
+The original inverted logic construct in the code is as follows:
+```zig
+while(itemIterator.next()) |item| {
+    if(searchString.len != 0 and !std.mem.containsAtLeast(u8, item.id(), 1, searchString)) continue;
+    items.append(Item{.baseItem = item.*});
+}
+```
+The suggested simplification is to replace the complex logic with a simpler conditional check:
+```zig
+if(item.hasTag(...) or ...block.hasTag())
+```
+This change aims to improve code readability and maintainability without altering the functionality of the creative inventory.
+
 ## Related Questions
 - What is the purpose of the `initContent` function in the creative inventory?
 - How does the current item filtering logic work in the creative inventory?

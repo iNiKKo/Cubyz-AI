@@ -11,6 +11,10 @@ The change updates the `register` function in `migrations.zig` to include an add
 ## Explanation
 The reviewer suggests using the arena allocator instead of a stack allocator for creating the asset ID string. The reviewer argues that leaking memory is acceptable due to the rarity of errors and the fact that the arena is reset when leaving the world. This change aims to simplify the code by removing error handling for allocation failures.
 
+The `register` function now takes an additional parameter `addonName` instead of `name`. Inside the function, a local allocator (`localAllocator`) is created using `main.stackAllocator`. The asset ID string is constructed using `std.fmt.allocPrint`, which formats the string as `{s}:{s}` where the first part is the `addonName` and the second part is the migration key. This change ensures that each asset ID uniquely identifies the addon and its associated resource.
+
+The code handles potential errors during memory allocation by using `catch unreachable`. If an error occurs, the program will terminate immediately, which is acceptable given the rarity of such errors and the fact that the arena is reset when leaving the world.
+
 ## Related Questions
 - What is the purpose of using a local allocator in this function?
 - Why does the reviewer suggest using an arena allocator instead of a stack allocator?

@@ -8,7 +8,7 @@
 Discussion on server-side render distance limit to improve stability and resource usage.
 
 ## Explanation
-The discussion revolves around implementing a server-side render distance limit to enhance server stability and reduce resource consumption, particularly network speed. The maintainer notes that improvements in the network protocol have mitigated this issue to some extent.
+Discussion on server-side render distance limit to improve stability and resource usage, particularly addressing network speed issues when sending chunks to newly joined players. The maintainer notes that with improvements to the network protocol, such as more efficient data compression and reduced packet size, this issue is less of a concern now.
 
 ## Related Questions
 - What are the current improvements in the network protocol that have reduced the issue?

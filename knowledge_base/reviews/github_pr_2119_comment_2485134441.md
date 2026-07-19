@@ -9,7 +9,9 @@
 The reviewer suggests adding a check to skip executing base operations for full slots in the destination inventory, potentially reducing performance/network overhead.
 
 ## Explanation
-The code change modifies the condition in the `Command` struct's method to only check if the destination can hold one item instead of the specified amount. The reviewer points out that this could lead to calling `cmd.executeBaseOperation` with an amount of 0 for full slots, which might have unknown performance or network overhead implications. They suggest adding a condition to skip such operations if the amount is zero.
+The code change modifies the condition in the `Command` struct's method from checking if the destination can hold the specified amount (`self.amount`) to checking if it can hold one item. The reviewer points out that this could lead to calling `cmd.executeBaseOperation` with an amount of 0 for full slots, which might have unknown performance or network overhead implications. They suggest adding a condition to skip such operations if the amount is zero.
+
+The critical architectural review mentions that in cases where the destination inventory is nearly full of the same type of item, calling `cmd.executeBaseOperation` with an amount of 0 on each of those full slots could occur. The reviewer has no idea what the performance/network overhead of this is and suggests adding a `if(amount == 0) continue;` condition to skip these operations.
 
 ## Related Questions
 - What is the impact of calling `cmd.executeBaseOperation` with an amount of 0?

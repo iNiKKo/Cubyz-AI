@@ -11,6 +11,21 @@ Handles command execution and finalization for inventory operations in a game.
 ## Explanation
 This chunk defines the `Command` struct and its methods responsible for executing various inventory operations such as moving items, swapping slots, creating items, deleting items, using durability, adding health, and adding energy. It also includes methods for finalizing commands, generating confirmation data, and handling base operations. The code ensures that operations are correctly synchronized between server and client sides and manages item states like durability and stack sizes.
 
+**Key Operations:*
+- **move**: Moves items from one inventory slot to another, updating both inventories.
+- **swap**: Swaps the contents of two inventory slots.
+- **create**: Creates a new item in an inventory slot, ensuring it is correctly initialized.
+- **delete**: Deletes items from an inventory slot, deinitializing them if necessary.
+- **useDurability**: Reduces the durability of an item and deinitializes it if its durability reaches zero.
+- **addHealth**: Sets the player's health to a specified value.
+- **addEnergy**: Sets the player's energy to a specified value.
+
+**Finalization and Synchronization:*
+The `finalize` method ensures that all operations are properly cleaned up, deinitializing items if their durability is exhausted. The `executeAddOperation`, `executeRemoveOperation`, and `executeDurabilityUseOperation` functions handle server-side synchronization by appending corresponding operations to the `syncOperations` list.
+
+**Assertions:*
+The code includes several assertions to ensure data integrity, such as checking that items being moved or swapped are consistent with the expected state. For example, in `executeRemoveOperation`, it asserts that the remaining amount is zero after processing all stacks.
+
 ## Code Example
 ```zig
 fn confirmationData(self: *Command, allocator: NeverFailingAllocator) []const u8 {

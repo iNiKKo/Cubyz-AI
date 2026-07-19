@@ -11,6 +11,8 @@ The change refactors the `loadFromZon` method in the `Inventory.zig` file to han
 ## Explanation
 The reviewer suggests that base64 decoding should be handled externally, specifically in the player data parsing/storing code. This architectural decision aims to prevent code duplication and maintain a clean separation of concerns. By handling base64 decoding outside the inventory synchronization logic, the codebase avoids redundancy and simplifies future modifications, such as when chests are stored differently.
 
+The specific change involves adding a switch statement that checks the type of `zon`. If `zon` is `.object`, it calls `inventory.inv.loadFromZon(zon)`. If `zon` is `.string` or `.stringOwned`, it decodes the base64 string using `inventory.inv.fromBase64(str)`.
+
 ## Related Questions
 - Why is base64 decoding being moved outside the inventory synchronization logic?
 - What are the potential benefits of handling base64 decoding in player data parsing/storing code?

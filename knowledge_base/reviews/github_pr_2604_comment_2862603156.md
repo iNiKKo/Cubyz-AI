@@ -9,7 +9,20 @@
 Refactored particle argument parsing to use a new `parseCoordinates` function, improving code readability and maintainability.
 
 ## Explanation
-The change refactors the parsing of x, y, z coordinates for particles by introducing a new `parseCoordinates` function. This function is designed to handle coordinate parsing more efficiently and cleanly. The reviewer suggests alternative syntaxes for returning multiple values from the function, which could further enhance code clarity. The primary goal is to improve architectural consistency and reduce redundancy in the codebase.
+The change refactors the parsing of x, y, z coordinates for particles by introducing a new `parseCoordinates` function. This function is designed to handle coordinate parsing more efficiently and cleanly. The reviewer suggests alternative syntaxes for returning multiple values from the function, which could further enhance code clarity. Specifically, the suggested syntaxes are:
+
+```zig
+var x: f64 = undefined;
+var y: f64 = undefined;
+z: f64 = undefined;
+x, y, z = try command.parseCoordinates(&split, source);
+```
+or
+
+```zig
+const x, const y, const z = try command.parseCoordinates(&split, source);
+```
+The primary goal is to improve architectural consistency and reduce redundancy in the codebase.
 
 ## Related Questions
 - What is the purpose of the `parseCoordinates` function?

@@ -9,14 +9,17 @@
 The change introduces a new field `_selectionCapabilities` to store block selection capabilities, loaded from a ZonElement. The reviewer suggests passing `main.worldArena` directly for allocation instead of duplicating.
 
 ## Explanation
-The code modification adds support for storing and managing block selection capabilities by loading them from a ZonElement. The reviewer points out that the current implementation duplicates the capabilities array using `main.stackAllocator`, which is unnecessary. By passing `main.worldArena` directly, the allocation can be more efficient and aligned with the intended memory management strategy of the application.
+**Explanation**
+
+The code modification introduces a new field `_selectionCapabilities` to store block selection capabilities, which are loaded from a ZonElement. Specifically, the capabilities are loaded using `SelectionCapability.loadSelectionCapabilitiesFromZon(main.stackAllocator, capabilitiesZon)`. The current implementation then duplicates this array using `main.stackAllocator`, which is unnecessary and inefficient. By passing `main.worldArena` directly for allocation, the allocation can be more efficient and aligned with the intended memory management strategy of the application.
+
+The reviewer suggests that instead of duplicating the capabilities array, it should be allocated directly using `main.worldArena`. This change would eliminate the need for duplication and improve memory efficiency. The use of `main.worldArena` aligns with the overall memory management strategy in Cubyz, ensuring that allocations are managed consistently across the application.
+
+The `_selectionCapabilities` field is used to store the selection capabilities of blocks, allowing for more flexible and dynamic block interactions based on their properties. By loading these capabilities from a ZonElement, the system can be easily extended or modified without changing the core codebase.
 
 ## Related Questions
-- Why is it important to use `main.worldArena` for allocation instead of duplicating the array?
-- What are the potential performance implications of duplicating the capabilities array?
-- How does passing `main.worldArena` for allocation align with the overall memory management strategy in Cubyz?
-- Can you explain the purpose of the `_selectionCapabilities` field and how it is used?
-- What changes would be required to implement the reviewer's suggestion?
-- How might this modification affect backward compatibility with existing block definitions?
+-  How is `_selectionCapabilities` loaded from a ZonElement?
+-  Why is duplicating the capabilities array unnecessary and inefficient?
+-  What are the benefits of using `main.worldArena` for allocation instead of duplicating the array?
 
 *Source: unknown | chunk_id: github_pr_2987_comment_3177694224*

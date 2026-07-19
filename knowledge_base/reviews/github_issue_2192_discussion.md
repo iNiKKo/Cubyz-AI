@@ -9,14 +9,13 @@
 The issue discusses the design and implementation of a Zipline feature in Cubyz, including gameplay mechanics, item requirements, rendering, speed calculation, and user interaction methods.
 
 ## Explanation
-The Zipline feature is proposed as a permanent traversal method between two points with visual appeal. It involves Hooks for attachment and Cables for the zipline itself, which can be extended by chaining multiple hooks. The discussion explores different methods of player interaction, such as using bare hands, existing tools, or dedicated tools, each with its own pros and cons in terms of gameplay balance and inventory management. The rendering is proposed to use lightweight entities representing a 3D line curve between hooks, with LODs for optimization. Speed calculation is based on the angle of the zipline relative to gravity, considering factors like air resistance and friction. The maintainers suggest exploring options like accessory slots or pulley devices for player interaction, emphasizing that the final implementation should balance gameplay and inventory clutter.
+The Zipline feature is proposed as a permanent traversal method between two points with visual appeal. It involves Hooks for attachment and Cables crafted from Metal Blocks (1 ingot yields 8 cables). The amount of cable used depends on the distance between hooks, up to a maximum length. To extend beyond this limit, additional hooks can be added in sequence. Player interaction methods include bare hands, existing tools like pickaxes, or dedicated zipline tools/accessories. Bare hand use is easy but risky and slow; using tools provides better control but consumes durability. The rendering uses lightweight entities representing 3D line curves between hooks with LODs for optimization. Speed calculation considers the angle of the curve relative to gravity, accounting for air resistance and friction. The maintainers suggest exploring options like accessory slots or pulley devices for player interaction, emphasizing that the final implementation should balance gameplay and inventory clutter.
 
 ## Related Questions
-- How does the Zipline feature handle player interaction with different tools?
-- What is the proposed method for rendering the zipline in Cubyz?
-- How is the speed of the zipline calculated based on its angle?
-- What are the potential issues with using bare hands to ride the zipline?
-- How can the zipline be extended beyond its maximum length?
-- What are the considerations for balancing gameplay and inventory clutter with the Zipline feature?
+- How many cables are produced from one metal ingot?
+- What is the maximum length a zipline can cover without additional hooks?
+- How does extending a zipline with multiple hooks work?
+- What are the exact speed calculation factors for a zipline based on its angle?
+- What are the pros and cons of using bare hands versus tools to ride a zipline?
 
 *Source: unknown | chunk_id: github_issue_2192_discussion*

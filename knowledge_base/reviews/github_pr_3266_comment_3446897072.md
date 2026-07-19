@@ -9,7 +9,7 @@
 A new file `rotations.zig` is introduced to import various rotation modules, with a suggestion for a more structured and consolidated approach.
 
 ## Explanation
-The change introduces a central file `rotations.zig` that imports multiple sub-modules related to different types of rotations. The reviewer suggests organizing these into nested structs within a single root struct (`cubyz`) to improve discoverability for addon creators and reduce clutter from generated files. This approach aims to prevent bugs caused by forgetting entries and simplifies the inspection process.
+The change introduces a central file `rotations.zig` that imports multiple sub-modules related to different types of rotations. The imported modules are: `stairs`, `no_rotation`, `texture_pile`, `ore`, `hanging`, `torch`, `decayable`, `direction`, `planar`, `log`, `carpet`, `branch`, `fence`, and `sign`. The reviewer suggests organizing these into nested structs within a single root struct (`cubyz`) to improve discoverability for addon creators and reduce clutter from generated files. This approach aims to prevent bugs caused by forgetting entries and simplifies the inspection process.
 
 ## Related Questions
 - What is the purpose of the `rotations.zig` file?

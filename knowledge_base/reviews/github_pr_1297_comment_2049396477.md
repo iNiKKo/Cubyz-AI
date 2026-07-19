@@ -9,7 +9,13 @@
 Refactored the `send` method calls within the `Protocols` struct to use a new enum parameter, and introduced constants for buffer sizes and sequence indices.
 
 ## Explanation
-The changes involve refactoring the `send` method calls within the `Protocols` struct to include an additional parameter specifying the type of sending (e.g., `.fast`). This modification is aimed at improving the flexibility and clarity of the network communication methods. The reviewer suggests renaming the fields in the `Range` struct from `startInclusive` and `endExclusive` to simply `start` and `end`, aligning with Zig's convention for range definitions. Additionally, new constants for buffer sizes (`receiveBufferSize`) and sequence indices (`SequenceIndex`) have been introduced to enhance the modularity and maintainability of the network module.
+The changes involve refactoring the `send` method calls within the `Protocols` struct to include an additional parameter specifying the type of sending (e.g., `.fast`). This modification is aimed at improving the flexibility and clarity of the network communication methods. The reviewer suggests renaming the fields in the `Range` struct from `startInclusive` and `endExclusive` to simply `start` and `end`, aligning with Zig's convention for range definitions.
+
+The constant `maxMtu` is set to 65507, representing the maximum UDP packet size. The constant `minMtu` is set to 576 - 20 - 8, which is the IPv4 MTU minus IP header and UDP header. The `receiveBufferSize` is set to 8 << 20 (8 MB).
+
+New atomic variables (`packetsSent`, `packetsResent`, `internalMessageOverhead`, `internalHeaderOverhead`, `externalHeaderOverhead`) have been introduced with initial values of 0, enhancing the modularity and maintainability of the network module.
+
+The `send` method calls now include an additional parameter specifying the type of sending (e.g., `.fast`). This change is intended to improve the flexibility and clarity of the network communication methods.
 
 ## Related Questions
 - What is the purpose of the new `send` method parameter in the `Protocols` struct?

@@ -8,7 +8,7 @@
 Discussion about adding sawmills as crafting stations for wood recipes and potential issues with uncrafting tables.
 
 ## Explanation
-The discussion revolves around the idea of using a carpentry table as a workstation for wood recipes, similar to how stone recipes could be moved out of inventory crafting. Maintainers express concerns about the ease of abuse in uncrafting tables, particularly for tools generated in the world, which could disrupt balancing. There is also a suggestion that sawmills and stonecutters could enhance dungeon revisits by providing crafting stations. Users propose a single generic station block for multiple variants of a selected item to avoid clutter, with recipes requiring basic materials.
+Discussion around adding sawmills and stonecutters as crafting stations for wood and stone recipes. The main proposal is to use a carpentry table for wood recipes and move stone recipes out of inventory crafting, similar to the idea of having sawmills and stonecutters in dungeons. Maintainers express concerns about uncrafting tables being too easy to abuse, particularly for tools generated in the world, which could disrupt balancing by allowing players to extract materials from these tools without destroying their balance. There is a suggestion that sawmills and stonecutters could enhance dungeon revisits by providing crafting stations as rewards for completing dungeons. Users propose a single generic station block for multiple variants of selected items to avoid clutter in the game, with recipes requiring basic materials such as planks and iron ingots.
 
 ## Related Questions
 - What are the potential issues with allowing uncrafting of tools generated in the world?

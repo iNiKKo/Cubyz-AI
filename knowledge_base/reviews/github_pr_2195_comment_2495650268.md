@@ -11,6 +11,12 @@ The function `loadModel` now returns an optional pointer (`?*SbbGen`) instead of
 ## Explanation
 The change modifies the return type of `loadModel` from `*SbbGen` to `?*SbbGen`, allowing for the possibility of returning null if an error occurs. The reviewer expresses confusion about a concern regarding potential double storage usage (`2N`) due to list resizes, as the list is managed within a world arena and discarded upon world closure, thus preventing any long-term memory issues.
 
+The original code change introduces a new optional return type for `loadModel`, which can now return null if the `structure` field in `parameters` is missing. The reviewer questions the concern about list storage doubling (`2N`) due to resizes, as the list is discarded after world load, preventing any long-term memory issues.
+
+The function `loadModel` now returns an optional pointer (`?*SbbGen`) instead of a non-optional pointer (`*SbbGen`). This change allows for returning null if an error occurs during model loading. The reviewer questions the concern about list storage doubling (`2N`) due to resizes, as the list is managed within a world arena and discarded upon world closure, thus preventing any long-term memory issues.
+
+The `worldArena` manages the list and discards it upon world closure, preventing long-term memory issues. Returning null indicates an error during model loading, allowing for proper error handling. The role of `ZonElement` in the `loadModel` function is to extract the `structure` field, which is mandatory for loading the generator. The implementation panics with an error message if the `structure` field in `parameters` is missing.
+
 ## Related Questions
 - What is the purpose of changing `loadModel` to return an optional pointer?
 - Why was there a concern about list storage doubling (`2N`) in this context?

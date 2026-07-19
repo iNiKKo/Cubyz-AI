@@ -8,7 +8,7 @@
 Discussion on implementing character model visibility in Cubyz, focusing on avoiding a third-person view to maintain immersion.
 
 ## Explanation
-The discussion revolves around the implementation of character model visibility in Cubyz. Users have expressed concerns about breaking immersion with a third-person perspective and highlighted the importance of maintaining player awareness of their surroundings. The maintainer has concluded that a third-person view is not suitable for the game, aligning with the goal of preserving an immersive experience.
+Discussion on implementing character model visibility in Cubyz, focusing on avoiding a third-person view to maintain immersion. Users have expressed concerns about breaking immersion with a third-person perspective and highlighted the importance of maintaining player awareness of their surroundings. The maintainer has concluded that a third-person view is not suitable for the game, aligning with the goal of preserving an immersive experience. Specifically, the maintainer stated: 'I guess we can definitely rule out third person then.'
 
 ## Related Questions
 - What are the potential drawbacks of implementing a third-person view in Cubyz?

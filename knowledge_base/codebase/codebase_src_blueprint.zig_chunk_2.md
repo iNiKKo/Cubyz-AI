@@ -11,6 +11,10 @@ Handles blueprint loading, storing, and pasting operations in the Cubyz voxel en
 ## Explanation
 This chunk defines the Blueprint struct and its associated methods for loading, storing, and pasting blueprints. The `load` method reads a compressed blueprint from a buffer, decompresses it, and reconstructs the blueprint's blocks using a block palette. The `store` method converts the blueprint's blocks into a compressed format suitable for storage or transmission. The `paste` method places the blueprint's blocks into the world at a specified position, optionally preserving void blocks. Helper functions like `makeBlueprintIdToGameIdMap`, `makeGameIdToBlueprintIdMap`, `loadBlockPalette`, and `storeBlockPalette` manage block mappings and palette serialization.
 
+The Blueprint struct contains fields such as `blocks`, which is a 3D array of blocks, and methods for handling blueprint operations. The `paste` method iterates over the blueprint's blocks and updates the world with these blocks at the specified position. The `load` method reads a compressed buffer, decompresses it, and reconstructs the blueprint using a block palette. The `store` method compresses the blueprint's blocks into a format suitable for storage or transmission.
+
+The PasteFlags struct contains a boolean field `preserveVoid`, which determines whether void blocks should be preserved during pasting. The `load` method handles different versions of blueprints, checking if the version is supported and reading the appropriate data. The `store` method creates a block palette and compresses the blueprint's blocks into a format suitable for storage or transmission.
+
 ## Code Example
 ```zig
 pub fn paste(self: Blueprint, pos: Vec3i, flags: PasteFlags) void {

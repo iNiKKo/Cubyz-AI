@@ -9,7 +9,7 @@
 Refactored `get` function to remove unnecessary optional handling and simplify return types.
 
 ## Explanation
-The original `get` function allowed for optional fields, which led to potential double optional scenarios. The reviewer argues that since the result is already optional by design, allowing optional fields here would introduce redundancy and complexity. The refactored function now directly returns an optional type, simplifying the logic and preventing unnecessary nested optionals.
+Refactored `get` function to remove unnecessary optional handling and simplify return types. The original `get` function allowed for optional fields, which led to potential double optional scenarios. The reviewer argues that since the result is already optional by design, allowing optional fields here would introduce redundancy and complexity. The refactored function now directly returns an optional type (`?T`) instead of using a replacement parameter. This change simplifies the logic and prevents unnecessary nested optionals. Additionally, the architectural review comment emphasizes that optional fields should not be allowed in this context to avoid double optionals.
 
 ## Related Questions
 - Why was the original `get` function allowing for optional fields?

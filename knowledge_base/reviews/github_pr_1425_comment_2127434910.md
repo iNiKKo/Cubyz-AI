@@ -9,7 +9,13 @@
 A new function `format` is added to the `utils.zig` file, which appears to be a copy of an existing `allocPrint` function.
 
 ## Explanation
-The reviewer adds a new function `format` that seems to duplicate the functionality of `allocPrint`. The reviewer mentions not remembering the existence of `allocPrint`, leading them to add a new function instead. This could potentially lead to code duplication and maintenance issues if both functions are used interchangeably without clear distinction.
+The reviewer adds a new function `format` that seems to duplicate the functionality of `allocPrint`. The `format` function is defined as follows:
+```zig
+pub fn format(allocator: NeverFailingAllocator, comptime fmt: []const u8, args: anytype) []u8 {
+    // Implementation details not shown
+}
+```
+The reviewer mentions not remembering the existence of `allocPrint`, leading them to add a new function instead. This could potentially lead to code duplication and maintenance issues if both functions are used interchangeably without clear distinction.
 
 ## Related Questions
 - What is the purpose of the `format` function in `utils.zig`?

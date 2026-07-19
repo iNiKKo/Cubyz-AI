@@ -8,7 +8,7 @@
 The issue discusses a player's inability to perform 1-block jumps without initially holding forward due to the spring system pushing them too far from the block. The maintainer suggests fixing this by removing side springs and implementing cylindrical collisions.
 
 ## Explanation
-The problem arises because the current spring system in Cubyz pushes the player character too far away from a block when standing still, making it impossible to jump onto it without moving forward first. This inconsistency affects gameplay mechanics related to jumping and movement. The maintainer proposes a solution by eliminating side springs and introducing cylindrical collisions, which would allow for more precise control over the player's position relative to blocks during jumps.
+The issue discusses a player's inability to perform 1-block jumps without initially holding forward due to the current behavior of the spring system pushing them too far from the block. The maintainer suggests fixing this by removing side springs and implementing cylindrical collisions. Removing side springs reduces the distance the player is pushed away, while adding cylindrical collisions improves the accuracy of player positioning during jumps. These changes would allow for more precise control over the player's position relative to blocks during jumps, thereby resolving the inconsistency in gameplay mechanics related to jumping and movement.
 
 ## Related Questions
 - What is the current behavior of the spring system when the player stands still?

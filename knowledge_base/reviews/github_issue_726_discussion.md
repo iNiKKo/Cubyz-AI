@@ -8,7 +8,7 @@
 Discussion on adjusting tool swing speeds to improve balance and functionality in the game.
 
 ## Explanation
-The maintainer suggests reverting to slower swing speeds for tools while introducing a new mechanic where breaking a block with one swing could also damage adjacent blocks. This change aims to make powerful tools more effective for mining large veins, trees, and other structures. The maintainer believes this approach will help in better balancing the game's mechanics.
+Discussion on adjusting tool swing speeds to improve balance and functionality in the game. The maintainer suggests reverting to slower swing speeds for tools while introducing a new mechanic where breaking a block with one swing could also damage adjacent blocks, including perpendicular blocks. This change aims to make powerful tools more effective for mining large veins, trees, and other structures. The maintainer believes this approach will help in better balancing the game's mechanics by providing an alternative solution that addresses temporary issues without compromising long-term planning. Images provided illustrate how powerful tools could break blocks behind or perpendicular to the initial block broken, aiding in efficient tree mining and vein mining.
 
 ## Related Questions
 - What are the potential impacts of reverting to slower swing speeds on gameplay?

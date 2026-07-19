@@ -9,7 +9,7 @@
 The ServerWorld struct manages server-side world data, including palettes, chunk management, and player information.
 
 ## Explanation
-The ServerWorld struct is responsible for managing the state of a server-side world. It initializes various palettes (block, item, procedural item, biome, entity model, and entity component) by loading them from files. The struct also manages chunks through a ChunkManager and handles player data using a StringHashMapUnmanaged. The init function sets up these components, while the deinit function ensures proper cleanup by saving configurations and releasing resources.
+The ServerWorld struct manages server-side world data, including palettes, chunk management, and player information. The init function sets up these components by initializing various fields such as itemDropManager, blockPalette, itemPalette, proceduralItemPalette, biomePalette, entityModelPalette, entityComponentPalette, and chunkManager. It also initializes the game time, milliTime, lastUpdateTime, lastUnimportantDataSent, doGameTimeCycle, tickSpeed (set to 12), settings, mode, path, name, spawn, mutex, chunkUpdateQueue (with a size of 256), regionUpdateQueue (with a size of 256), playerDatabase, localPlayerIndex, and nextPlayerIndex. The loadPalette function loads palettes from files, and the deinit function ensures proper cleanup by saving configurations and releasing resources.
 
 ## Code Example
 ```zig

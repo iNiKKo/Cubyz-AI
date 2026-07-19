@@ -9,7 +9,7 @@
 Provides a mechanism for thread synchronization using futexes, supporting various operating systems.
 
 ## Explanation
-The Futex module implements a mechanism to block and unblock threads based on the value of a 32-bit memory address. It includes functions `wait`, `timedWait`, and `wake` for different scenarios of blocking and waking up threads. The implementation varies depending on the operating system, with specific implementations for Windows, Linux, Darwin (macOS), FreeBSD, OpenBSD, WebAssembly, POSIX systems, and a single-threaded environment. The module uses atomic operations to ensure thread safety and sequential consistency in wait/wake operations.
+The Futex module implements a mechanism to block and unblock threads based on the value of a 32-bit memory address using atomic operations. The `wait` function blocks the caller until the value at `ptr` is no longer equal to `expect`, or the caller is unblocked by a matching `wake()`, or spuriously. The `timedWait` function behaves similarly but returns an error if the caller blocks for longer than the given timeout. The `wake` function unblocks at most `max_waiters` callers blocked in a `wait()` call on `ptr`. The implementation varies depending on the operating system, with specific implementations for Windows, Linux, Darwin (macOS), FreeBSD, OpenBSD, WebAssembly, POSIX systems, and a single-threaded environment. The module uses atomic operations to ensure thread safety and sequential consistency in wait/wake operations. If an unsupported operating system is detected, a compile error is generated.
 
 ## Code Example
 ```zig

@@ -9,7 +9,11 @@
 Defines the DepthStencilState struct and its conversion to Vulkan format.
 
 ## Explanation
-The chunk defines a `DepthStencilState` struct that encapsulates depth and stencil testing configurations for graphics pipelines. It includes nested structs like `StencilTest`, `StencilOpState`, and `DepthBoundsTest`. The `toVulkan` method converts the `DepthStencilState` instance into a Vulkan-compatible structure, handling optional fields appropriately.
+The chunk defines a `DepthStencilState` struct that encapsulates depth and stencil testing configurations for graphics pipelines. The struct includes several fields, with default values where applicable. The `depthTest` field is a boolean indicating whether depth testing is enabled. The `depthWrite` field, which defaults to true, indicates whether the depth buffer should be written during rendering. The `depthCompare` field specifies the comparison operation used for depth testing and defaults to `.less`. The `depthBoundsTest` field is an optional struct that allows setting a range of valid depths. The `stencilTest` field is also optional and contains settings for stencil operations, including front and back face configurations.
+
+The nested `StencilTest` struct includes two `StencilOpState` structs for front and back faces. Each `StencilOpState` defines operations to perform based on the outcome of stencil tests (`failOp`, `passOp`, `depthFailOp`) and specifies a comparison operation (`compareOp`). It also includes masks (`compareMask`, `writeMask`) and a reference value (`reference`). The `StencilOp` enum lists possible operations such as keeping the current value, setting it to zero, replacing it with a new value, incrementing or decrementing it with clamping or wrapping.
+
+The `DepthBoundsTest` struct allows setting minimum and maximum depth bounds. The `toVulkan` method converts the `DepthStencilState` instance into a Vulkan-compatible structure (`VkPipelineDepthStencilStateCreateInfo`). It handles optional fields by checking if they are null and appropriately setting Vulkan flags and values.
 
 ## Code Example
 ```zig

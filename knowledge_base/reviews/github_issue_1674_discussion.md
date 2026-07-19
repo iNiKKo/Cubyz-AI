@@ -8,7 +8,7 @@
 The issue discusses an anomaly where ore can be placed on logs except when the log is facing the ground sideways.
 
 ## Explanation
-The problem arises due to technical limitations in encoding both block type and rotation states within the current block data model. The maintainer notes that allowing multiple block models could resolve this but would likely lead to a significant increase in mesh generation times, potentially causing performance issues.
+The issue discusses an anomaly where ore can be placed on logs except when the log is facing the ground sideways. This problem arises due to technical limitations in encoding both block type and rotation states within the current block data model. The maintainer notes that with the current model system, allowing multiple block models would cause a combinatorial explosion potentially leading to millions of separate block models, which may have negative consequences on mesh generation times. To fix it, we'd need to allow returning multiple block models, but this could lead to significant performance issues.
 
 ## Related Questions
 - What is the current block data model that limits ore placement on logs?

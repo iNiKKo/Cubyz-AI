@@ -8,7 +8,7 @@
 A bug in the selection box functionality on Windows was identified and resolved by fixing an issue with the number of indices.
 
 ## Explanation
-The reviewer noted that the new selection box was causing issues on Windows, despite no errors or unusual logs being present. The maintainer acknowledged a mistake involving the number of indices and confirmed that it has been fixed.
+A bug in the selection box functionality on Windows was identified and resolved. The reviewer noted that there were no errors or unusual logs present, despite issues with the new selection box. The maintainer acknowledged a mistake involving the number of indices and confirmed that it has been fixed by correcting the number of indices to the appropriate value.
 
 ## Related Questions
 - What was the specific issue with the number of indices?

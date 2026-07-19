@@ -8,7 +8,7 @@
 Discussion about automating id renaming operations for addon compatibility with older versions.
 
 ## Explanation
-The issue discusses the need for an automated solution to handle id renaming operations in addons to maintain compatibility with older versions of Cubyz. The maintainer asks if there are any missing aspects and mentions that tools for this purpose, as well as handling custom item types migration, are needed but not considered urgent.
+Discussion about automating id renaming operations for addon compatibility with older versions. The issue highlights that currently, id renaming must be done manually in world files and suggests an automated solution to improve this process. The maintainer asks if there are any missing aspects and mentions that tools for handling id renaming operations are needed but not considered urgent. Additionally, the discussion includes speculative points regarding custom item types migration, which is also not urgent. There is no mention of specific tools or APIs being considered for this feature, nor are there details about potential challenges in implementing custom item types migration.
 
 ## Related Questions
 - What is the current manual process for id renaming in world files?

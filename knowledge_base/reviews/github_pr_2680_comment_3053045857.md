@@ -11,6 +11,16 @@ Refactored `EntityModel` struct to store paths instead of directly loading resou
 ## Explanation
 The reviewer suggests modifying the `EntityModel` struct to store file paths rather than loading assets immediately. This change aims to optimize memory usage by deferring resource loading until necessary. The review also notes that the `id` field is already present, which can be used to identify and locate assets within a per-world asset folder managed by the assets store. This architectural adjustment enhances modularity and scalability, allowing for more efficient management of resources across different game worlds.
 
+The changes made to the `EntityModel` struct include:
+- Adding `height: f32`, which represents the height of the entity model.
+- Adding `texturePath: []const u8`, which stores the path to the texture file.
+- Adding `id: []const u8`, which uniquely identifies the entity model.
+- Changing `vao` from `graphics.VertexArray = undefined` to `?graphics.VertexArray = null`, allowing for optional vertex array objects.
+- Adding `defaultTexture: ?main.graphics.Texture`, which stores an optional default texture.
+- Adding `modelFile: []const u8`, which stores the path to the model file.
+
+These changes improve memory management by deferring resource loading until necessary, reducing the initial memory footprint of the game engine. The use of file paths and the `id` field enhances modularity, making it easier to manage assets across different game worlds.
+
 ## Related Questions
 - How does the change in storing file paths instead of directly loading resources affect memory usage?
 - What is the purpose of using the `id` field to identify assets within a per-world asset folder?

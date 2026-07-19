@@ -9,7 +9,9 @@
 Handles block updates and mesh regeneration in a chunk.
 
 ## Explanation
-This chunk manages the process of updating blocks within a chunk, including handling dependencies on neighboring blocks, updating lighting, and scheduling mesh regeneration. It includes functions for appending items to lists without duplication, updating individual blocks, and managing tasks related to block updates. The `BlockUpdateTask` struct defines a task that processes block updates in a thread pool, ensuring efficient execution of update operations.
+This chunk manages the process of updating blocks within a chunk, including handling dependencies on neighboring blocks, updating lighting, and scheduling mesh regeneration. It includes functions for appending items to lists without duplication, updating individual blocks, and managing tasks related to block updates.
+
+The `appendIfNotContained` function checks if a mesh is already in the list before adding it, ensuring no duplicates are present. Block entity data updates are handled by reading the new data and applying it to the block entity, or removing existing data when the block changes. The `BlockUpdateTask` struct defines a task that processes block updates in a thread pool, ensuring efficient execution of update operations. Lighting refresh is scheduled for chunks by marking them as needing a light refresh, which triggers the regeneration of the mesh with updated lighting information.
 
 ## Code Example
 ```zig

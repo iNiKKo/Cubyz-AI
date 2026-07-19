@@ -9,7 +9,7 @@
 The Chunk struct manages voxel data and block entities within a defined spatial region.
 
 ## Explanation
-This chunk defines the `Chunk` struct, which represents a section of the world in the Cubyz engine. It includes methods for initializing and deinitializing the chunk, updating and retrieving blocks, checking if coordinates lie within the chunk bounds, converting between local and global positions, and unloading block entities based on the client or server side.
+This chunk defines the `Chunk` struct, which represents a section of the world in the Cubyz engine. The struct includes several fields such as `pos`, `data`, `width`, `voxelSizeShift`, and `voxelSizeMask`. The `init` method initializes the chunk with specific values for these fields, including calculating `voxelSizeShift` using the logarithm base 2 of `pos.voxelSize`. The `deinitContent` function ensures proper cleanup by deinitializing the block entity map and deferring the destruction of voxel data. The `blockPosToEntityDataMapMutex` is used to manage concurrent access to the block position-to-entity data map. The `updateBlock` method updates a block within the chunk if it lies within bounds, and the `getBlock` method retrieves a block at a specified position. The `liesInChunk` method checks if given coordinates lie within the chunk's bounds. The Chunk struct also includes methods for converting between local and global positions using `getLocalBlockPos` and `localToGlobalPosition`. Additionally, the `unloadBlockEntities` method unloads block entities based on the client or server side.
 
 ## Code Example
 ```zig

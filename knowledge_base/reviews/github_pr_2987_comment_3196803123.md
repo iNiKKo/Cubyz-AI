@@ -9,7 +9,7 @@
 The change introduces a new variable `selectionCapabilities` and modifies the handling of the default selection rule.
 
 ## Explanation
-The reviewer suggests that setting the default selection rule to `.all` when unspecified might be clearer. However, they also point out that allowing `.all` in the configuration could be redundant. The architectural concern here is ensuring that the default behavior is intuitive and that configurations do not introduce unnecessary complexity.
+A new variable `selectionCapabilities` is introduced in the code. The reviewer suggests that setting the default selection rule to `.all` when unspecified might be clearer. However, they also point out that allowing `.all` in the configuration could be redundant. The architectural concern here is ensuring that the default behavior is intuitive and that configurations do not introduce unnecessary complexity.
 
 ## Related Questions
 - What is the purpose of introducing `selectionCapabilities`?

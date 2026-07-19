@@ -9,7 +9,7 @@
 Added a new `onBlockUpdate` function to the `Modifier` struct and its `Defaults`. The reviewer suggests optimizing pointer casting in the initialization of the `VTable`.
 
 ## Explanation
-The change introduces a new method `onBlockUpdate` to handle block updates, which is crucial for procedural item behavior. The reviewer points out that the current implementation casts pointers even when using defaults, which might be unnecessary and could potentially introduce inefficiencies or confusion. The suggestion aims to improve performance by avoiding unnecessary casting operations.
+The change introduces a new method `onBlockUpdate` to handle block updates. This function takes parameters such as `blockUpdate: main.sync.Command.UpdateBlock`, `ctx: main.sync.Command.Context`, and `shouldDropSourceBlockOnSuccess: *bool`. The default implementation of this method does nothing (`_ = blockUpdate; _ = ctx; _ = shouldDropSourceBlockOnSuccess; _ = data; return;`). The reviewer points out that the current implementation casts pointers even when using defaults, which might be unnecessary and could potentially introduce inefficiencies or confusion. The suggestion aims to improve performance by avoiding unnecessary casting operations.
 
 ## Related Questions
 - What is the purpose of the `onBlockUpdate` function in the `Modifier` struct?

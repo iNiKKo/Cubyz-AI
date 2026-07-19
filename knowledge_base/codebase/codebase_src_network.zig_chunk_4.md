@@ -9,7 +9,15 @@
 The ConnectionManager struct manages network connections, handles incoming and outgoing packets, and maintains a list of active connections.
 
 ## Explanation
-The ConnectionManager struct is responsible for managing network connections in the Cubyz engine. It initializes a socket on a specified local port, manages threads for handling network operations, and uses mutexes to synchronize access to shared resources. The struct maintains lists of active connections and pending requests. It provides methods for sending data, handling incoming packets, adding and removing connections, and managing the lifecycle of the network thread. The `run` method is the main loop that processes incoming packets, sends queued packets, and handles connection management.
+The ConnectionManager struct manages network connections, handles incoming and outgoing packets, and maintains a list of active connections. It initializes a socket on a specified local port, manages threads for handling network operations, and uses mutexes to synchronize access to shared resources. The struct maintains lists of active connections and pending requests. It provides methods for sending data, handling incoming packets, adding and removing connections, and managing the lifecycle of the network thread.
+
+The `init` method initializes the ConnectionManager with a local port and options, setting up the socket and starting the network thread. The `@continue` method resumes network operations if they are paused. The `deinit` method properly shuts down the network manager by disconnecting all connections and deinitializing resources. The `pause` method stops network operations and cleans up pending requests and packets.
+
+The `makeOnline` method sets the external address using STUN and marks the connection as online. The `send` method sends data to a target address, either immediately or with a scheduled time. The `sendRequest` method sends a request and waits for a response within a specified timeout. The `addConnection` method adds a new connection if it is not already connected. The `finishCurrentReceive` method ensures that the current receive operation is completed before proceeding. The `removeConnection` method removes a connection from the list.
+
+The `onReceive` method processes incoming packets, either by forwarding them to an existing connection or handling them as part of an active request. If the packet is unknown and new connections are allowed, it attempts to connect a new user. Otherwise, it logs a warning.
+
+The `run` method is the main loop that processes incoming packets, sends queued packets, and handles connection management. It ensures that packets are sent at regular intervals and keeps the network port open by sending periodic messages if there is no activity.
 
 ## Code Example
 ```zig
@@ -19,11 +27,11 @@ fn compare(_: void, a: PacketSendRequest, b: PacketSendRequest) std.math.Order {
 ```
 
 ## Related Questions
-- How does the ConnectionManager handle incoming packets?
-- What is the purpose of the `packetSendRequests` priority queue in ConnectionManager?
-- Can you explain how the ConnectionManager manages multiple connections simultaneously?
-- How does the ConnectionManager ensure thread safety when accessing shared resources?
-- What mechanisms are used to keep the network port open after a period of inactivity?
-- How does the ConnectionManager handle errors during packet reception and transmission?
+-  How does the ConnectionManager handle incoming packets?
+-  What is the purpose of the `packetSendRequests` priority queue in ConnectionManager?
+-  Can you explain how the ConnectionManager manages multiple connections simultaneously?
+-  How does the ConnectionManager ensure thread safety when accessing shared resources?
+-  What mechanisms are used to keep the network port open after a period of inactivity?
+-  How does the ConnectionManager handle errors during packet reception and transmission?
 
 *Source: unknown | chunk_id: codebase_src_network.zig_chunk_4*

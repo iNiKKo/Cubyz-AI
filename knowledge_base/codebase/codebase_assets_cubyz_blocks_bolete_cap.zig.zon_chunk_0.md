@@ -8,7 +8,7 @@
 Defines properties for the Bolete Cap block, including tags, health, bounciness, drops, model, rotation, and texture.
 
 ## Explanation
-This chunk defines a configuration for the Bolete Cap block in the Cubyz voxel engine. It specifies various properties such as tags (choppable, cuttable, sliceable, mushroom), block health, bounciness, drop behavior, model type, rotation style, and texture. These properties determine how the block behaves within the game environment.
+This chunk defines a configuration for the Bolete Cap block in the Cubyz voxel engine. It specifies various properties such as tags (choppable, cuttable, sliceable, mushroom), block health (3), bounciness (0.75), drop behavior (auto), model type (cubyz:cube), rotation style (cubyz:stairs), and texture (cubyz:bolete_cap). These properties determine how the block behaves within the game environment.
 
 ## Related Questions
 - What are the tags associated with the Bolete Cap block?

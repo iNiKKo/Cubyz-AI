@@ -9,7 +9,13 @@
 The update function in game.zig has been modified to include sprinting mechanics for different player states (ghost, flying, normal). The reviewer suggests refactoring to avoid code duplication.
 
 ## Explanation
-The change introduces conditional logic to adjust movement speed and direction based on whether the 'sprint' key is pressed and the player's current state (ghost, flying, or normal). This allows for different speeds in each mode. However, the reviewer points out that the same code block is repeated four times, which could be refactored to improve maintainability and reduce redundancy.
+The change introduces conditional logic to adjust movement speed and direction based on whether the 'sprint' key is pressed and the player's current state (ghost, flying, or normal). Specifically:
+
+- When sprinting as a ghost, the movement speed is set to 128, and the direction is adjusted by -128 for backward and 128 for right.
+- When sprinting while flying, the movement speed is set to 32, and the direction is adjusted by -32 for backward and 32 for right.
+- For normal players, the movement speed remains at 4, with directions adjusted by -4 for backward and 4 for right.
+
+However, the reviewer points out that the same code block is repeated four times, which could be refactored to improve maintainability and reduce redundancy.
 
 ## Related Questions
 - How can the repeated code blocks be refactored to improve maintainability?

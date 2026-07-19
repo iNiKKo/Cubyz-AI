@@ -9,7 +9,11 @@
 The ParticleSystem struct manages particle creation, updating, and rendering in the Cubyz engine.
 
 ## Explanation
-The ParticleSystem struct handles the lifecycle of particles within the game. It initializes a graphics pipeline and an SSBO for dynamic buffer management. The update method processes each particle's movement, collision detection, and lifetime. Particles are added through the addParticle method, which sets their initial properties based on random values and emitter settings. The render method binds necessary textures and draws particles using OpenGL commands. The system also manages a network creation queue to handle particle spawning from network messages.
+The ParticleSystem struct manages particle creation, updating, and rendering in the Cubyz engine. It initializes a graphics pipeline with shaders located at 'assets/cubyz/shaders/particles/particles.vert' and 'assets/cubyz/shaders/particles/particles.frag'. The pipeline is configured with depth testing enabled and no blending attachments. An SSBO (Shader Storage Buffer Object) is created with a dynamic buffer of size `maxCapacity` (524288), which holds particle data. The system uses a mutex to synchronize access to the network creation queue, ensuring thread safety when adding particles from network messages.
+
+The update method processes each particle's movement, collision detection, and lifetime. Particles are added through the addParticle method, where their initial properties such as position, rotation, velocity, density, drag coefficient, and collision status are set based on random values and emitter settings. The render method binds necessary textures and draws particles using OpenGL commands, applying a billboard transformation to align particles with the camera.
+
+The ParticleSystem also manages a network creation queue to handle particle spawning from network messages. This ensures that particles can be synchronized across different clients in a multiplayer environment.
 
 ## Code Example
 ```zig

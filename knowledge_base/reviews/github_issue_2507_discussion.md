@@ -9,7 +9,33 @@
 The issue discusses difficulties in packaging Cubyz for Linux/BSD distributions due to reliance on specific Zig versions, vendored libraries without Wayland support, and precompiled binaries that may not work across different systems.
 
 ## Explanation
-The discussion revolves around the challenges faced by distribution maintainers in packaging Cubyz. The main issues include the use of unreleased Zig versions, which makes it difficult to rely on system-packaged compilers; vendored libraries like GLFW without Wayland support, leading to compatibility problems on systems that require Wayland; and precompiled binaries that may not work across different distributions due to varying dependencies and configurations. The user reports a segmentation fault with the latest binary and an initialization error when trying to build from source using the run script. The maintainer acknowledges these issues but notes that enabling Wayland support in GLFW was previously rejected due to compatibility concerns, and prebuilt binaries must use self-built libraries for maximum compatibility.
+The issue discusses difficulties in packaging Cubyz for Linux/BSD distributions due to reliance on specific Zig versions, vendored libraries without Wayland support, and precompiled binaries that may not work across different systems. The user reports a segmentation fault with the latest binary (version 0.1.1) on void-linux with musl libc:
+
+```
+zsh: segmentation fault ./Cubyz
+``` 
+When using the build script (`run_linux.sh`), it fails due to missing Wayland support in the vendored version of GLFW, resulting in an initialization error:
+
+```
+Starting game with version 0.1.0-dev
+GLFW Error(65550): X11: The DISPLAY environment variable is missing
+thread 30303 panic: Failed to initialize GLFW
+/home/cubyz/Cubyz-0.1.1/src/graphics/Window.zig:714:3: 0x12d1e8c in init (Cubyz)
+  @panic("Failed to initialize GLFW");
+  ^
+/home/cubyz/Cubyz-0.1.1/compiler/zig/lib/std/start.zig:705:22: 0x12c4e3b in callMain (Cubyz)
+            root.main();
+                     ^
+src/env/__libc_start_main.c:95:2: 0x7fe6efa16dca in libc_start_main_stage2 (src/env/__libc_start_main.c)
+Unwind error at address `/lib/ld-musl-x86_64.so.1:0x7fe6efa16dca` (unwind info unavailable), remaining frames may be incorrect
+zsh: abort      zig-out/bin/Cubyz
+```
+The maintainer acknowledges these issues but notes that enabling Wayland support in GLFW was previously rejected due to compatibility concerns, and prebuilt binaries must use self-built libraries for maximum compatibility. The user suggests that building from source with system libraries would resolve the Wayland issue.
+
+The main suggestions include:
+1. Using a released version of Zig for each Cubyz release to allow distribution maintainers to use an already packaged version of Zig if available on the system.
+2. Allowing building using system libraries, as dependencies like GLFW and freetype are often packaged by the distribution maintainer with patches and configurations specific to that system.
+3. Ensuring it is easy to build everything from source, even if some libraries are vendored, to minimize binary blobs in packages.
 
 ## Related Questions
 - What is the impact of using unreleased Zig versions on distribution packaging?

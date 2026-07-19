@@ -11,6 +11,8 @@ Refactored permission path parsing and added user reference handling in the `/pe
 ## Explanation
 The change introduces a new variable `isReference` to track whether a user is being referenced, improving the parsing of player IDs. This refactoring aims to prevent code duplication across different commands by centralizing the logic for increasing reference counts within the `Target` struct. The reviewer notes that this approach enhances architectural consistency and reduces redundancy in handling permission paths.
 
+Additionally, the change ensures that if there are too few arguments for the `/perm` command, a message is sent to the source with the error message `#ff0000Too few arguments for command /perm`. This message is sent when the first argument (`arg`) is not provided. The code also checks if the permission path starts with a `/`, and if not, it sends an error message indicating that permission paths must begin with a `/`.
+
 ## Related Questions
 - What is the purpose of the `isReference` variable in the `/perm` command?
 - How does the refactoring improve parsing of player IDs?

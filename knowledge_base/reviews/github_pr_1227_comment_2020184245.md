@@ -11,6 +11,8 @@ Added a new `pasteInGeneration` function to the Blueprint struct, allowing for d
 ## Explanation
 The change introduces a new method `pasteInGeneration` in the Blueprint struct, which allows pasting blueprint blocks into a server chunk with various modes. The `.all` mode is intended to replace everything, but it should not be used for structures that can overlap. Instead, a `.degradable` mode is suggested for such cases. For now, the `.replaceAir` mode is used as a safer alternative, especially for small houses where air blocks prevent terrain destruction while walls replace existing terrain. The reviewer highlights the need for further polishing when void blocks are introduced.
 
+The function handles block substitutions by checking if a substitution map is provided and replacing the block type accordingly. Origin and child blocks are skipped during pasting. The `liesInChunk` method is used to ensure that only blocks within the chunk bounds are updated.
+
 ## Related Questions
 - What is the purpose of the `.all` paste mode in the `pasteInGeneration` function?
 - How does the `.replaceAir` mode differ from `.all` in terms of functionality?

@@ -9,7 +9,19 @@
 This chunk defines structures and functions for handling inventory operations in a game server, including opening, closing, and depositing/swapping items.
 
 ## Explanation
-The chunk contains several structs representing different types of inventory operations: Open, Close, and DepositOrSwap. Each struct has methods for running the operation, finalizing it, serializing its data, and deserializing from a reader. The `Context` struct provides an execution context for these operations, including an allocator, command reference, side (client/server), user information, and gamemode. Functions like `removeProceduralItemCraftingIngredients` manage specific inventory actions, such as removing crafting ingredients from a workbench.
+**Explanation**
+
+This chunk defines structures and functions for handling inventory operations in a game server, including opening, closing, and depositing/swapping items. The `Command` struct manages base operations, while the `Inventory` struct represents an inventory with methods for adding and removing items. The `Side` enum distinguishes between client and server operations.
+
+The `Context` struct provides an execution context for these operations, including an allocator, command reference, side (client/server), user information, and gamemode. It has a method `execute` that executes base operations using the provided context.
+
+The `Open` struct represents opening an inventory. It has methods for running the operation (`run`), finalizing it (`finalize`), serializing its data (`serialize`), and deserializing from a reader (`deserialize`). The `run` method currently does nothing, while the `finalize` method maps server IDs to client IDs if the side is the client.
+
+The `Close` struct represents closing an inventory. It has methods for running the operation (`run`), finalizing it (`finalize`), serializing its data (`serialize`), and deserializing from a reader (`deserialize`). The `run` method currently does nothing, while the `finalize` method deinitializes the inventory on the client side and unmaps server IDs by client IDs.
+
+The `DepositOrSwap` struct represents depositing or swapping items between two inventories. It has methods for running the operation (`run`), serializing its data (`serialize`), and deserializing from a reader (`deserialize`). The `run` method checks if the destination inventory can accept the item, then either moves or swaps the item based on the conditions.
+
+The `removeProceduralItemCraftingIngredients` function removes crafting ingredients from a workbench by executing base operations to delete items from the inventory.
 
 ## Code Example
 ```zig

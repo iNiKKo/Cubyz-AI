@@ -9,7 +9,9 @@
 The `loadModel` function in `SbbGen.zig` now returns a nullable pointer (`?*SbbGen`) instead of a non-nullable pointer (`*SbbGen`). This change is intended to handle cases where loading fails, preventing unused allocations.
 
 ## Explanation
-The reviewer points out that the original implementation might lead to unused allocations if an error occurs during the loading process. The updated function now returns a nullable pointer, which allows for proper handling of errors and avoids unnecessary memory allocation. This change ensures that resources are managed more efficiently and reduces potential memory leaks.
+The reviewer points out that the original implementation might lead to unused allocations if an error occurs during the loading process. The updated function now returns a nullable pointer (`?*SbbGen`), which allows for proper handling of errors and avoids unnecessary memory allocation. This change ensures that resources are managed more efficiently and reduces potential memory leaks.
+
+Specifically, the function resolves parameters before it ever calls `.initFromZon`. If an error occurs during parameter resolution, the function will not run `.append`, thus avoiding unused allocations altogether.
 
 ## Related Questions
 - What is the purpose of returning a nullable pointer in `loadModel`?

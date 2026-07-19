@@ -9,7 +9,7 @@
 A new function `rayTriangleIntersection` is added to handle ray-triangle intersection calculations.
 
 ## Explanation
-The addition of the `rayTriangleIntersection` function introduces a new capability for determining if a ray intersects with a triangle. The reviewer notes that if the code was copied, it should be linked to its source to ensure proper attribution and maintainability. This function is crucial for applications involving collision detection or rendering.
+A new function `rayTriangleIntersection` is added to handle ray-triangle intersection calculations. This function takes three parameters: `origin`, `direction`, and `triangle`, all of type `Vec3f`. It returns an optional float (`?f32`) representing the distance from the origin to the intersection point if there is an intersection, or null otherwise. The reviewer notes that if the code was copied, it should be linked to its source to ensure proper attribution and maintainability. This function is crucial for applications involving collision detection or rendering.
 
 ## Related Questions
 - What is the purpose of the `rayTriangleIntersection` function?

@@ -9,7 +9,7 @@
 The issue discusses a scenario where pressing ESC after hiding the GUI with F1 does not show the inventory as expected.
 
 ## Explanation
-The discussion revolves around the behavior of the game's GUI when the user hides it using F1 and then attempts to revert this action by pressing ESC. The maintainers acknowledge that while some users rely on this feature for taking screenshots, others find it confusing because pressing ESC does not restore the previous state (e.g., showing the inventory). There is a suggestion to introduce a dedicated screenshot button as an alternative solution.
+The issue discusses a scenario where pressing ESC after hiding the GUI with F1 does not show the inventory as expected. Instead, when the GUI is hidden and ESC is pressed, the user sees only their mouse cursor. This behavior is intended to allow users to take screenshots without any additional elements obscuring the view. The maintainers acknowledge that while some users rely on this feature for taking screenshots, others find it confusing because pressing ESC does not restore the previous state (e.g., showing the inventory). There is a suggestion to introduce a dedicated screenshot button as an alternative solution. Additionally, there is a consideration to revert the effects of F1/F2 when ESC is pressed to prevent accidental key presses and improve user experience.
 
 ## Related Questions
 - What is the current behavior of pressing ESC after hiding the GUI with F1?

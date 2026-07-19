@@ -9,7 +9,7 @@
 Discussion on implementing a game update popup for Cubyz. The team decides to use direct download links instead of the GitHub API due to rate limiting concerns.
 
 ## Explanation
-The discussion revolves around adding a feature to notify users when a new game update is available. Initially, there was a suggestion to use the GitHub API for fetching release information, but this was rejected due to stricter rate limits compared to direct links. The team decides to check if a newer version tag exists by incrementing each part of the current version number. However, this approach is deemed insufficient as it may not correctly identify the latest release in all scenarios. Instead, they opt to link directly to the latest releases page on GitHub, accepting that pre-releases might be included but considering that most pre-releases occur before the final release.
+Discussion on implementing a game update popup for Cubyz. The team decides to use direct download links instead of the GitHub API due to stricter rate limiting concerns with the API. Initially, there was a suggestion to use the GitHub API for fetching release information, but this was rejected because it has stricter rate limits compared to direct links. The team considers checking if a newer version tag exists by incrementing each part of the current version number, but finds this approach insufficient as it may not correctly identify the latest release in all scenarios (e.g., from 0.0.0 to 2.4.1). Instead, they opt to link directly to the latest releases page on GitHub at https://github.com/PixelGuys/Cubyz/releases/latest, accepting that pre-releases might be included but considering that most pre-releases occur before the final release and thus are less likely to cause issues.
 
 ## Related Questions
 - What is the main reason for avoiding the GitHub API?
@@ -17,6 +17,5 @@ The discussion revolves around adding a feature to notify users when a new game 
 - Why is linking directly to the latest releases page acceptable?
 - What are the potential issues with checking version numbers incrementally?
 - How does the team handle pre-releases in this update notification system?
-- Can you explain the rate limiting concerns mentioned in the discussion?
 
 *Source: unknown | chunk_id: github_issue_1485_discussion*

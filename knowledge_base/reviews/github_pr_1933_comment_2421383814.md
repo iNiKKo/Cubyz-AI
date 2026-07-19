@@ -9,7 +9,7 @@
 Added a new boolean setting `streamerModeEnabled` to control streamer mode functionality.
 
 ## Explanation
-The change introduces a new boolean variable `streamerModeEnabled` in the settings module. The reviewer suggests renaming it to `streamerMode` for clarity and consistency, emphasizing that using an enum would be more explicit if there were multiple states beyond just true/false. This addition is likely aimed at providing users with the ability to enable or disable streamer-specific features within the application.
+The change introduces a new boolean variable `streamerModeEnabled` in the settings module. The default value of this variable is set to false. The reviewer suggests renaming it to `streamerMode` for clarity and consistency, emphasizing that using an enum would be more explicit if there were multiple states beyond just true/false. This addition is likely aimed at providing users with the ability to enable or disable streamer-specific features within the application.
 
 ## Related Questions
 - What is the purpose of the `streamerModeEnabled` setting?

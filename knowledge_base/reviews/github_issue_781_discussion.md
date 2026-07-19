@@ -8,7 +8,8 @@
 The issue discusses adding a clear inventory button or trash slot feature, which was previously available in the Java version.
 
 ## Explanation
-The discussion revolves around reintroducing a command that allows users to clear their inventory, specifically mentioning its presence in the Java version. The maintainer emphasizes the quality of life (QOL) benefits associated with having a trash slot or clear inventory button, indicating a desire to bring this feature back into the current version.
+**Explanation**
+The discussion revolves around reintroducing a clear inventory button or trash slot feature, which was previously available in the Java version. The maintainer mentions that there used to be a command for clearing the inventory in the Java version and is bringing this feature back because it provides significant quality of life (QOL) benefits. The maintainer emphasizes the importance of having a trash slot or clear inventory button for enhancing user experience.
 
 ## Related Questions
 - What was the previous command used in the Java version to clear the inventory?

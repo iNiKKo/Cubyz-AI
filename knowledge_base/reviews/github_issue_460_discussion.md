@@ -9,7 +9,28 @@
 The review discusses issues with Cubyz's rpaths during distribution on macOS and Linux, focusing on removing duplicate paths, correcting library paths, and ensuring proper linking.
 
 ## Explanation
-The issue highlights that Cubyz has multiple problems with its rpaths, including duplicates, incorrect build-time evaluation of paths, and unnecessary links to specific libraries like XQuartz. The reviewer suggests ideal rpath configurations but notes Zig's limitations in handling such cases. The maintainer proposes using `root_module.addRPathSpecial` to add necessary rpaths and mentions the discovery of `exe.addObjectFile` for managing static libraries. The user confirms these solutions and removes unnecessary X11 linking.
+The review discusses issues with Cubyz's rpaths during distribution on macOS and Linux. The current rpaths include:
+
+```text
+path /Users/USER/.cache/zig/p/12204ba799cc74baeec8284b8a22cd0b597b58d5fa32c6eac999635fdc1834c950fc/lib (offset 12)
+path /usr/local/GL/lib (offset 12)
+path /Users/USER/Cubyz/Library (offset 12)
+path /opt/homebrew/Cellar/libx11/1.8.9/lib (offset 12)
+path /Users/USER/.cache/zig/p/12204ba799cc74baeec8284b8a22cd0b597b58d5fa32c6eac999635fdc1834c950fc/lib (offset 12)
+```
+
+There are several problems:
+- `cubyz_deps` is listed twice and should be removed since it's a static library.
+- The Library path `/Users/USER/Cubyz/Library` is evaluated at build-time instead of runtime, making it nonsensical for distribution.
+- Cubyz should link against XQuartz X11 rather than homebrew's `libx11`, and X11 doesn't need an RPATH.
+
+Ideally, the rpaths should be:
+```text
+path @executable_path/../Library (if app bundle)
+path /usr/local/GL/lib (if local build)
+```
+
+The maintainer suggests using `root_module.addRPathSpecial` to add necessary rpaths and mentions that `exe.addObjectFile` can manage static libraries like `cubyz_deps`. The user confirms these solutions and removes unnecessary X11 linking.
 
 ## Related Questions
 - How can I remove duplicate rpaths in Cubyz's build process?

@@ -9,7 +9,7 @@
 Discussion on specifying tool consumption behavior in crafting recipes.
 
 ## Explanation
-The discussion revolves around how to specify whether a tool should consume its durability during crafting. The user proposes adding a suffix 'd' to indicate durability, while the maintainer suggests using tags similar to those used for determining which block breaks which tool.
+Discussion on specifying tool consumption behavior in crafting recipes. The user proposes adding a suffix 'd' to indicate durability, such as `[amount[d]] id`. Alternatively, the maintainer suggests using tags similar to those used for determining which block breaks which tool, like `amount .tag` or `.tag` for 1 durability.
 
 ## Related Questions
 - How does the current recipe item specifier look?

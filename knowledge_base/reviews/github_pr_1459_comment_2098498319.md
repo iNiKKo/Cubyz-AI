@@ -9,7 +9,7 @@
 The code was modified to correctly parse and validate weights in block specifiers, ensuring they are greater than zero.
 
 ## Explanation
-The change involves updating the parsing logic for block specifiers in the `initFromString` function of the `Pattern` struct. Previously, the weight check used `<= 0`, which is incorrect since weights should be strictly positive. The reviewer suggests changing this to `> 0` and recommends using more descriptive error messages that are not intended for programmers. The code now splits the specifier string into block ID and weight components, parses the weight as a float, and checks if it is greater than zero. This ensures that the weights are valid and prevents potential errors in pattern initialization.
+The change involves updating the parsing logic for block specifiers in the `initFromString` function of the `Pattern` struct. Previously, the weight check used `<= 0`, which is incorrect since weights should be strictly positive. The reviewer suggests changing this to `> 0` and recommends using more descriptive error messages that are not intended for programmers. Specifically, the code now splits the specifier string into block ID and weight components using `expressionSeparator` (which is a comma) and `weightSeparator` (which is a percent sign). It then parses the weight as a float and checks if it is greater than zero. This ensures that the weights are valid and prevents potential errors in pattern initialization. The exact error messages suggested by the reviewer are 'Weight not a valid number' and 'Weight must be greater than 0'. These changes improve the robustness and clarity of the code.
 
 ## Related Questions
 - What is the purpose of the `expressionSeparator` variable in the code?

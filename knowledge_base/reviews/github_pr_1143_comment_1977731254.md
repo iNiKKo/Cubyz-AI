@@ -11,6 +11,8 @@ Added new methods `checkEntityTouch` and `onEntityTouch` to the Block struct in 
 ## Explanation
 The changes introduce two new functions within the Block struct: `checkEntityTouch` and `onEntityTouch`. The `checkEntityTouch` function checks if a block allows entities to touch it, while `onEntityTouch` is intended to handle actions when an entity touches the block. The reviewer suggests using function pointers for future implementation, indicating a potential need for more dynamic behavior in how blocks interact with entities.
 
+The `onEntityTouch` method currently does not perform any actions; all parameters are ignored and the method simply returns without executing any code. This is indicated by the line `_ = self; _ = entity; _ = posX; _ = posY; _ = posZ; _ = isEntityInside;`, which assigns each parameter to an underscore, effectively ignoring them.
+
 ## Related Questions
 - What is the purpose of the `checkEntityTouch` method in the Block struct?
 - How does the `onEntityTouch` method currently handle entity interactions with blocks?

@@ -8,7 +8,7 @@
 The issue of inverted lava texture and back-face culling problems while inside lava blocks has been resolved.
 
 ## Explanation
-The problem was caused by an error in determining the block the player stands in when the highest LOD is set to 0. This error has been fixed, which resolves both the inverted lava texture issue and the back-face culling problem. The maintainer also noted that similar issues occur with water but only in debug mode.
+The issue of inverted lava texture while inside lava blocks has been resolved by fixing an error in determining the block the player stands in when the highest LOD is set to 0. The maintainer noted that back-face culling was working as intended, meaning the backface of lava should be drawn since players can stick their heads inside it. Additionally, similar issues occur with water but only in debug mode. Sync points are unrelated to this bug and are caused by a different issue (#1708).
 
 ## Related Questions
 - What was the original error causing the inverted lava texture?
@@ -18,8 +18,5 @@ The problem was caused by an error in determining the block the player stands in
 - How does the LOD setting affect block determination in Cubyz?
 - What is the significance of sync points in the game's thread main loop?
 - Is back-face culling intended to be disabled for certain blocks like lava?
-- Can the fix for this issue be applied to similar rendering problems in other parts of the game?
-- How does updating to the latest commit resolve the reported issues?
-- Are there any performance implications from fixing the block determination error?
 
 *Source: unknown | chunk_id: github_issue_1710_discussion*

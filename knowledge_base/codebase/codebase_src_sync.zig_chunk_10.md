@@ -9,7 +9,21 @@
 Defines inventory-related actions such as depositing items, dropping them, and moving between inventories.
 
 ## Explanation
-This chunk defines several structs representing different inventory operations: FillAnyFromCreative, DepositOrDrop, DepositToAny, MoveToPlayerBag, and TakeFromPlayerBag. Each struct includes methods for initialization, finalization, running the operation, serialization, and deserialization. The operations involve moving items between inventories, dropping items in the world, and handling player bags. Memory allocation and deallocation are managed using allocators like main.globalAllocator and main.stackAllocator. Error handling is implemented using Zig's error types, with specific errors like serverFailure and InventoryNotFound being returned where applicable.
+**Explanation**
+
+This chunk defines several structs representing different inventory operations: `FillAnyFromCreative`, `DepositOrDrop`, `DepositToAny`, `MoveToPlayerBag`, and `TakeFromPlayerBag`. Each struct includes methods for initialization, finalization, running the operation, serialization, and deserialization. The operations involve moving items between inventories, dropping items in the world, and handling player bags.
+
+- **FillAnyFromCreative**: Handles deserialization by reading destinations from bytes, an amount, and an item if available. It uses `main.globalAllocator` for memory allocation and deallocates resources using `defer` statements.
+
+- **DepositOrDrop**: Manages the transfer of items from a source inventory to one or more destination inventories. It handles dropping items in the world if they cannot be transferred to any destination. Memory is managed using `main.globalAllocator`, and it uses error handling for operations like reading bytes and initializing items.
+
+- **DepositToAny**: Transfers a specified amount of an item from a source inventory to one or more destination inventories. It ensures that the transfer does not exceed the available amount in the source inventory. Memory is managed using `main.globalAllocator`.
+
+- **MoveToPlayerBag**: Moves a specified amount of an item from a source inventory to the player's bag. It uses different methods for client and server sides to access the player's bag. Memory is managed using `main.globalAllocator`.
+
+- **TakeFromPlayerBag**: (Not fully defined in the provided content) would handle taking items from the player's bag.
+
+Memory allocation and deallocation are managed using allocators like `main.globalAllocator` and `main.stackAllocator`. Error handling is implemented using Zig's error types, with specific errors like `serverFailure` and `InventoryNotFound` being returned where applicable.
 
 ## Code Example
 ```zig

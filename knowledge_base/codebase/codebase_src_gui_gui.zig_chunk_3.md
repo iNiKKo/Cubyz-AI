@@ -9,7 +9,17 @@
 Handles GUI input callbacks and window interactions.
 
 ## Explanation
-This chunk defines a set of callback functions for text input events and mouse button presses/releases. It manages the state of selected text inputs, windows, and inventory updates. The `mainButtonPressed` function processes main button clicks to update inventory, select windows, and toggle game menus. The `mainButtonReleased` function handles main button releases by applying inventory changes and updating window selection. The `secondaryButtonPressed` and `secondaryButtonReleased` functions manage secondary button interactions with the inventory. The `updateWindowPositions` function iteratively updates window positions until no further changes occur.
+This chunk defines a set of callback functions for text input events and mouse button presses/releases. The `textCallbacks` struct includes methods like `char`, `left`, `right`, `down`, `up`, `gotoStart`, `gotoEnd`, `deleteLeft`, `deleteRight`, `selectAll`, `copy`, `paste`, `cut`, and `newline`. Each method checks if a text input is selected and then calls the corresponding method on that input, passing any necessary parameters such as `codepoint` or `mods` (modifiers).
+
+The `mainButtonPressed` function processes main button clicks to update inventory, select windows, and toggle game menus. It first updates the inventory, clears the selected window and text input, calculates the mouse position, and iterates over open windows in reverse order of rendering to find the topmost window under the cursor. If a window is found and its `mainButtonPressed` method returns `.handled`, it removes the window from its current position, appends it to the end of the list (to bring it to the front), selects it, and exits. If no window is found and the game world is not null and the inventory's carried item is null, it toggles the game menu.
+
+The `mainButtonReleased` function handles main button releases by applying inventory changes and updating window selection. It applies changes to the inventory, stores the old selected window, clears the current selection, checks each open window to see if the mouse is within its bounds, updates the selected window accordingly, and unselects it if the mouse left the previously selected window. Finally, it calls `mainButtonReleased` on the old window with the current mouse position.
+
+The `secondaryButtonPressed` function updates the inventory when a secondary button is pressed.
+
+The `secondaryButtonReleased` function applies changes to the inventory without updating it when a secondary button is released.
+
+The `updateWindowPositions` function iteratively updates window positions until no further changes occur. It checks each window's position, updates it, and continues if there was any change.
 
 ## Code Example
 ```zig

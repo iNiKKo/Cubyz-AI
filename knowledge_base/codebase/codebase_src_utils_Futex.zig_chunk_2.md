@@ -9,7 +9,18 @@
 This chunk implements futex-based synchronization primitives for Linux, FreeBSD, and OpenBSD operating systems.
 
 ## Explanation
-The chunk defines three structs, each implementing the `wait` and `wake` functions for a specific operating system: LinuxImpl, FreebsdImpl, and OpenbsdImpl. Each struct uses platform-specific system calls to manage futexes, which are user-space mutexes that can be used for efficient inter-process synchronization without involving the kernel unless necessary. The `wait` function allows a thread to block until a condition is met or a timeout occurs, while the `wake` function unblocks one or more waiting threads. Error handling is implemented to manage various possible outcomes of the system calls, including timeouts and invalid operations.
+This chunk implements futex-based synchronization primitives for Linux, FreeBSD, and OpenBSD operating systems. Each struct uses platform-specific system calls to manage futexes, which are user-space mutexes that can be used for efficient inter-process synchronization without involving the kernel unless necessary.
+
+**LinuxImpl:**
+The `wait` function allows a thread to block until a condition is met or a timeout occurs. It uses the `linux.futex_4arg` system call with the `.WAIT` command and handles various error outcomes, including timeouts and invalid operations. The `wake` function unblocks one or more waiting threads using the `linux.futex_3arg` system call with the `.WAKE` command.
+
+**FreebsdImpl:**
+The `wait` function uses the `_umtx_op` system call with the `UMTX_OP.WAIT_UINT_PRIVATE` command. It handles timeouts by setting up a `c._umtx_time` structure and converting timeout values from nanoseconds to seconds and nanoseconds. The `wake` function unblocks one or more waiting threads using the `_umtx_op` system call with the `UMTX_OP.WAKE_PRIVATE` command.
+
+**OpenbsdImpl:**
+The `wait` function uses the `c.futex` system call with the `FUTEX.WAIT | FUTEX.PRIVATE_FLAG` command. It handles timeouts by setting up a `c.timespec` structure and converting timeout values from nanoseconds to seconds and nanoseconds. The `wake` function unblocks one or more waiting threads using the `c.futex` system call with the `FUTEX.WAKE | FUTEX.PRIVATE_FLAG` command.
+
+In all implementations, error handling is crucial to manage various possible outcomes of the system calls, including timeouts and invalid operations. The `.PRIVATE_FLAG` ensures that futex operations are private to the process, preventing interference from other processes.
 
 ## Code Example
 ```zig

@@ -8,7 +8,7 @@
 Discussion about adding a 'ridges/cliffs' parameter for biomes in Cubyz.
 
 ## Explanation
-The discussion revolves around the idea of introducing a new parameter for biomes that would create ridge or cliff-like terrain within the biome boundaries, similar to setting interpolation to '.none' but confined to the biome. The suggestion involves allowing different post-processing functions on the heightmap and using a smooth rounding function to achieve cliff-like shapes.
+Discussion about adding a 'ridges/cliffs' parameter for biomes in Cubyz. The idea is to introduce a new parameter that would create ridge or cliff-like terrain within the biome boundaries, similar to setting interpolation to '.none' but confined to the biome. A specific suggestion involves allowing different post-processing functions on the heightmap and using a smooth rounding function (see [Desmos link](https://www.desmos.com/calculator/vqqlqh4u5y)) to achieve cliff-like shapes.
 
 ## Related Questions
 - How would the 'ridges/cliffs' parameter be implemented in Cubyz?

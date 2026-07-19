@@ -9,7 +9,8 @@
 The change introduces a new variable `createFlags` and initializes an `ArrayList` to store Vulkan extensions. The reviewer suggests using `main.List` instead of `std.ArrayList` to reduce glue code.
 
 ## Explanation
-The diff adds a new variable `createFlags` which is initialized to zero. It also creates an `ArrayList` to hold the Vulkan extensions, initializing it with capacity based on `glfwExtensionCount`. The reviewer's comment suggests replacing `std.ArrayList` with `main.List` to minimize additional code and potentially improve performance or maintainability.
+**Explanation**
+The diff introduces a new variable `createFlags`, which is explicitly set to zero (`var createFlags: u32 = 0;`). It also initializes an `ArrayList` to store Vulkan extensions, setting its capacity based on the value of `glfwExtensionCount`. The reviewer suggests using `main.List` instead of `std.ArrayList` to reduce glue code. Initializing the `ArrayList` with a specific capacity (`glfwExtensionCount`) can improve performance by reducing reallocations as elements are added. Reducing glue code can lead to cleaner and potentially more maintainable code.
 
 ## Related Questions
 - What is the purpose of `createFlags` in the Vulkan instance creation process?

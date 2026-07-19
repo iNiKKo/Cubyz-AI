@@ -9,7 +9,17 @@
 Defines a memory allocator that manages fixed-size blocks of power-of-two sizes, using a pool-based approach with thread safety.
 
 ## Explanation
-The `PowerOfTwoPoolAllocator` function generates a type that implements an efficient memory allocation strategy for fixed-size blocks. It uses a series of buckets, each managing a specific size class (power of two). The allocator ensures that all allocations and deallocations are aligned to the maximum alignment specified at creation time. Each bucket maintains a free list of nodes, which are reused when possible to reduce memory fragmentation and improve allocation speed. The `deinit` method checks for any leaked allocations and logs relevant statistics. The allocator is thread-safe, using a mutex to synchronize access across multiple threads.
+The `PowerOfTwoPoolAllocator` function generates a type that implements an efficient memory allocation strategy for fixed-size blocks. It uses a series of buckets, each managing a specific size class (power of two). The allocator ensures that all allocations and deallocations are aligned to the maximum alignment specified at creation time (`maxAlignment`). Each bucket maintains a free list of nodes, which are reused when possible to reduce memory fragmentation and improve allocation speed.
+
+The `PowerOfTwoPoolAllocator` function takes three parameters: `minSize`, `maxSize`, and `maxAlignment`. These parameters define the range of block sizes managed by the allocator and the maximum alignment required for allocations. The `minSize` must be a power of two, and it must be greater than or equal to `maxAlignment` and `@sizeOf(usize)`. The `maxSize` must also be a power of two and greater than `minSize`.
+
+The allocator uses a mutex (`mutex`) to synchronize access across multiple threads, ensuring thread safety. Each bucket in the allocator maintains a free list of nodes (`freeLists`). When an allocation is requested, the allocator checks if there are any available nodes in the free list. If not, it allocates a new block from the arena and adds it to the free list.
+
+The `deinit` method checks for any leaked allocations in each bucket and logs relevant statistics. It also deinitializes the arena and sets the bucket to an undefined state.
+
+The `allocNew` function is responsible for allocating a new block of memory from the arena. It increments both `freeAllocations` and `totalAllocations` counters when a new block is allocated.
+
+The `allocator` method returns a `NeverFailingAllocator` that uses the allocator's vtable to handle allocation, resizing, remapping, and freeing operations. The `alloc` function checks alignment constraints and size requirements before allocating a new block. The `resize`, `remap`, and `free` functions are implemented but do not perform any operations in this version of the allocator.
 
 ## Code Example
 ```zig

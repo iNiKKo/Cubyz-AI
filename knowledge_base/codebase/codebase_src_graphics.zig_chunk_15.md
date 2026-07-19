@@ -9,7 +9,34 @@
 The FrameBuffer struct manages OpenGL framebuffers and textures for rendering.
 
 ## Explanation
-The FrameBuffer struct encapsulates the creation, management, and destruction of OpenGL framebuffers and their associated textures. It provides methods to initialize (`init`), deinitialize (`deinit`), update size (`updateSize`), clear (`clear`), validate (`validate`), bind textures (`bindTexture`, `bindDepthTexture`), bind the framebuffer itself (`bind`), and unbind it (`unbind`). The struct maintains state for the framebuffer ID, texture ID, depth texture presence, and depth texture ID. It uses OpenGL functions to manage these resources, ensuring proper setup and teardown of framebuffers and textures.
+The FrameBuffer struct manages OpenGL framebuffers and textures for rendering. It encapsulates the creation, management, and destruction of these resources using OpenGL functions. The struct maintains state for the framebuffer ID (`frameBuffer`), texture ID (`texture`), depth texture presence (`hasDepthTexture`), and depth texture ID (`depthTexture`).
+
+### Initialization (`init`)
+The `init` method initializes a framebuffer with optional depth texture support. It sets up the framebuffer, binds it, and configures textures based on the provided parameters (`hasDepthTexture`, `textureFilter`, `textureWrap`). If depth texture is enabled, it generates and configures a depth texture.
+
+### Deinitialization (`deinit`)
+The `deinit` method deletes the framebuffer and associated textures (both color and depth) to free up resources.
+
+### Update Size (`updateSize`)
+The `updateSize` method resizes the framebuffer and its textures. It ensures that the width and height are at least 1, binds the framebuffer, and updates the texture dimensions using `glTexImage2D`. If a depth texture is present, it also updates the depth texture.
+
+### Clear (`clear`)
+The `clear` method sets up the clear color and clears both the color and depth buffers. It uses OpenGL functions like `glClearColor`, `glClearDepth`, and `glClear` to achieve this.
+
+### Validate (`validate`)
+The `validate` method checks if the framebuffer is complete by calling `glCheckFramebufferStatus`. If the status is not `GL_FRAMEBUFFER_COMPLETE`, it logs an error message.
+
+### Bind Texture (`bindTexture`)
+The `bindTexture` method binds the color texture to a specified OpenGL target using `glActiveTexture` and `glBindTexture`.
+
+### Bind Depth Texture (`bindDepthTexture`)
+The `bindDepthTexture` method binds the depth texture to a specified OpenGL target, ensuring that depth texture support is enabled.
+
+### Bind Framebuffer (`bind`)
+The `bind` method binds the framebuffer using `glBindFramebuffer`.
+
+### Unbind Framebuffer (`unbind`)
+The `unbind` method unbinds the current framebuffer by binding the default framebuffer (ID 0) using `glBindFramebuffer`.
 
 ## Code Example
 ```zig

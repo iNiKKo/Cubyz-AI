@@ -8,14 +8,11 @@
 Discussion on implementing grass seeds functionality without modifying existing code.
 
 ## Explanation
-The maintainer suggests that the current ore rotation mode allows for transforming soil blocks into their grassy variants without additional code. However, they caution that this approach may not be sufficient if more block data is needed for features like grass connectivity.
+Discussion on implementing grass seed functionality without modifying existing code. The maintainer suggests that the current ore rotation mode allows for transforming soil blocks into their grassy variants by using grass seeds, but this approach may not be sufficient if more block data is needed for features like grass connectivity. Specifically, the use of grass seeds involves placing them on any soil block (dirt, soil, mud) to turn it into its grassy variant. The maintainer also notes that ore rotation mode requires all 32 bits of block data and may need additional data for proper grass connectivity.
 
 ## Related Questions
-- How does the ore rotation mode currently handle block transformations?
-- What additional data might be needed for grass connectivity?
-- Can the current implementation support all required features for grass seeds?
-- Are there any potential limitations with using ore rotation mode for this feature?
-- How would adding more block data impact performance?
-- Is there a risk of introducing bugs by relying on ore rotation mode?
+- How does the use of grass seeds transform soil blocks?
+- What are the specific requirements for block data in ore rotation mode?
+- Are there any limitations to using ore rotation mode for grass seed functionality?
 
 *Source: unknown | chunk_id: github_issue_929_discussion*

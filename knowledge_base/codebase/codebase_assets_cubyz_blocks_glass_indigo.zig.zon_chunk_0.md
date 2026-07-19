@@ -8,7 +8,7 @@
 Defines properties for the indigo glass block.
 
 ## Explanation
-This chunk defines a configuration object for an indigo glass block in the Cubyz voxel engine. It specifies the block's absorbed light color and its texture path.
+This chunk defines a configuration object for an indigo glass block in the Cubyz voxel engine. It specifies the block's absorbed light color (`0xd0c16d`) and its texture path (`cubyz:glass/indigo`).
 
 ## Related Questions
 - What is the absorbed light color of the indigo glass block?

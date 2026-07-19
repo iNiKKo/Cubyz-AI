@@ -11,6 +11,24 @@ Added a new function `calculateLight` to compute light values based on height ma
 ## Explanation
 The change introduces a new function `calculateLight` which calculates the light intensity at a given point in a height map by considering neighboring points. The reviewer suggests modifying the `materialAt` function to accept a position as an optional array of two unsigned 8-bit integers, enhancing type safety and potentially simplifying call sites by using a helper function like `neighborCoord`. This refactoring aims to improve code clarity and reduce potential errors related to index calculations.
 
+The `calculateLight` function uses the following formula:
+```zig
+const lightTL = heightMap[x + 1][y + 1] - heightMap[x][y];
+const lightTR = heightMap[x][y + 1] - heightMap[x + 1][y];
+var light = (lightTL*2 + lightTR)/3; // value of this typically ranges from -7 to 5
+light += 4; // illuminate everything by an amount
+light /= 8; // near-normalize the light value
+return @max(@min(light, 1), 0);
+```
+The range of values returned by `calculateLight` function is between 0 and 1.
+
+The constants used in the code are:
+- `eightOffsets`: An array of eight offsets for neighboring points.
+- `diagonalOffsets`: An array of four diagonal offsets.
+- `maxTipWalkSteps`: A constant value set to 5.
+
+The refactoring improves type safety by using optional parameters and ensuring that the function handles null values correctly. The use of `neighborCoord` simplifies call sites for `materialAt` by abstracting the index calculations.
+
 ## Related Questions
 - What is the purpose of the `calculateLight` function?
 - How does the new `materialAt` function differ from the previous implementation?

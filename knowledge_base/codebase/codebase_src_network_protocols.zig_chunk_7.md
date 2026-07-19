@@ -11,6 +11,12 @@ Defines network protocols for light map transmission and inventory operations.
 ## Explanation
 The chunk defines two main network protocols: `lightMapTransmission` and `inventory`. The `lightMapTransmission` protocol handles the sending and receiving of light map data, including decompression and updating the renderer's mesh storage. It uses a thread pool for task management and includes error handling for data integrity issues. The `inventory` protocol manages inventory-related network operations, such as sending commands, confirmations, failures, and synchronization operations. Both protocols use binary readers and writers for data serialization and deserialization.
 
+The `lightMapTransmission` protocol has an ID of 12. It includes a struct `LightMapTask` with fields `wx`, `wy`, `voxelSizeShift`, and `data`. The `getPriority` function returns the maximum float value, indicating high priority. The `isStillNeeded` function checks if the game world is not null or paused. The `run` function decompresses light map data, reads it into a binary reader, initializes a light map fragment, and updates the renderer's mesh storage. The `clean` function frees allocated memory.
+
+The `clientReceive` function in `lightMapTransmission` creates a `LightMapTask`, initializes it with received data, and adds it to the thread pool. The `sendLightMap` function compresses light map data, writes it to a binary writer, and sends it over the network.
+
+The `inventory` protocol has an ID of 13. It includes functions for client and server reception of inventory operations, sending commands, confirmations, failures, and synchronization operations. The `clientReceive` function processes different types of inventory operations based on the received type. The `serverReceive` function receives commands from the server. The `sendCommand`, `sendConfirmation`, `sendFailure`, and `sendSyncOperation` functions send specific types of inventory messages over the network.
+
 ## Code Example
 ```zig
 pub fn getPriority(_: *LightMapTask) f32 {

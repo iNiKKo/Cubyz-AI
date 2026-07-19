@@ -11,6 +11,12 @@ Handles chunk meshing and block updates, including light propagation and neighbo
 ## Explanation
 This chunk manages the process of generating and updating chunk meshes based on voxel data. It includes functions for handling transparent and opaque faces, as well as managing block lighting updates. The `updateBlockLight` function propagates light changes through a block, while `updateBlockLightAndMesh` handles more complex scenarios involving neighboring chunks and blocks that depend on their neighbors' states. The chunk also ensures thread safety by using mutexes to lock access to shared data structures.
 
+The meshing process involves iterating over each block in the chunk and determining whether its faces are transparent or opaque based on the neighbor's properties. Transparent faces are handled separately from opaque ones, ensuring that they are processed correctly during rendering.
+
+During block updates, the code checks if a block depends on its neighbors' states. If it does, the code updates the neighboring blocks accordingly and propagates light changes. The `deadlockFreeDoubleLock` function ensures that mutexes are locked in a consistent order to prevent deadlocks when accessing shared data structures.
+
+Interactions with neighboring chunks during block updates involve checking if a block is on the edge of the chunk. If it is, the code retrieves the corresponding neighbor chunk and updates its blocks and lighting accordingly. This ensures that changes to one chunk are reflected in adjacent chunks, maintaining consistency across the entire world.
+
 ## Code Example
 ```zig
 fn deadlockFreeDoubleLock(m1: *main.utils.Mutex, m2: *main.utils.Mutex) void {

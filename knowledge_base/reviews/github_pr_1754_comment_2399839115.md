@@ -9,7 +9,7 @@
 Refactored the `placeSbb` function in `SbbGen.zig` to use a new method `getBlueprints` for retrieving blueprints, addressing potential null handling issues.
 
 ## Explanation
-The change involves updating the `placeSbb` function to utilize a new method called `getBlueprints`. This method is expected to return an optional value that may be null. The refactoring ensures that if no blueprint is available (`null`), the function returns early, preventing further execution and potential errors. The reviewer notes that while the struct name is legacy, it has been updated to reflect its new functionality by renaming it to `getBlueprints`. This change aims to improve code clarity and robustness by explicitly handling cases where blueprints might not be available.
+The change involves updating the `placeSbb` function to utilize a new method called `getBlueprints`. This method is expected to return an optional value that may be null. The refactoring ensures that if no blueprint is available (`null`), the function returns early, preventing further execution and potential errors. Specifically, the code now checks if `maybeBlueprints.*` is null and returns immediately if it is. If a blueprint is available, it proceeds to use it. The reviewer notes that while the struct name is legacy, it has been updated to reflect its new functionality by renaming it to `getBlueprints`. This change aims to improve code clarity and robustness by explicitly handling cases where blueprints might not be available.
 
 ## Related Questions
 - What is the purpose of the `getBlueprints` method in `SbbGen.zig`?

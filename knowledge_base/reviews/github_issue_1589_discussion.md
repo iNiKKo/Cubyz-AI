@@ -8,7 +8,7 @@
 The discussion revolves around making tool slots in Cubyz optional, focusing on the technical implications and potential impact on balancing.
 
 ## Explanation
-The proposal suggests that only mandatory slots need to be connected based on the tool texture. The maintainer explains that this would involve a flood fill check to ensure all pixels are connected. There is concern about how this might complicate balancing, as it could introduce more 'basic pickaxe' possibilities. The user proposes separating tools into handle and tool_part for clarity, but the maintainer notes that this would not change the location of the tip or handle. The discussion also touches on whether these designs are meant to be viable or just gimmicks, with a potential impact on balance if some designs become viable.
+The proposal suggests that only mandatory slots need to be connected based on the tool texture. The maintainer explains that this would involve a flood fill check to ensure all pixels are connected. Specifically, it checks the texture and makes sure all pixels are connected to each other, then verifies if all pixels are within the flood fill area. There is concern about how this might complicate balancing, as it could introduce more 'basic pickaxe' possibilities. The user proposes separating tools into handle and tool_part for clarity, but the maintainer notes that this would not change the location of the tip or handle. The discussion also touches on whether these designs are meant to be viable or just gimmicks, with a potential impact on balance if some designs become viable.
 
 ## Related Questions
 - What is the technical process for checking if all pixels are connected in the tool texture?

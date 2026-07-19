@@ -9,7 +9,9 @@
 The `loadModel` function now returns an optional pointer to `SbbGen`, allowing for error handling when the structure field is missing. The reviewer highlights potential memory inefficiencies due to repeated allocations and suggests that exact allocation sizes should be known or estimated more accurately.
 
 ## Explanation
-The change in the `loadModel` function from returning a non-optional pointer to an optional pointer (`*SbbGen` to `?*SbbGen`) introduces error handling for cases where the required structure field is missing. The reviewer points out that this could lead to inefficient memory usage if not managed properly, as repeated allocations might result in unused or overestimated capacity, especially depending on the arena implementation's behavior. This inefficiency arises because the current approach does not account for the exact number of entries needed, leading to potential doubling of memory usage in some scenarios.
+The change in the `loadModel` function from returning a non-optional pointer to an optional pointer (`*SbbGen` to `?*SbbGen`) introduces error handling for cases where the required structure field is missing. The reviewer highlights potential memory inefficiencies due to repeated allocations and suggests that exact allocation sizes should be known or estimated more accurately.
+
+The reviewer notes that this will effectively log(N) times, allocating bigger regions every time. Depending on the arena implementation, this will either just pollute the arena with unused allocations or result in doubled memory usage when those allocations are interleaved with different allocations. This is completely unnecessary because 99% of the time you know exactly how many entries you need and in other cases, you will need less than your original estimate.
 
 ## Related Questions
 - How does the change in `loadModel` function affect memory usage?

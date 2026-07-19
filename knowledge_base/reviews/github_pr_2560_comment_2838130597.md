@@ -9,7 +9,9 @@
 The main GUI window has been updated to include a logo and icons instead of text-based buttons. The review highlights architectural concerns about full-screen windows and suggests separating components into individual windows for better flexibility.
 
 ## Explanation
-The changes involve replacing the previous text-based button layout with an icon-based one, using the `Icon` component initialized from a texture loaded from a file. The reviewer emphasizes that full-screen windows should not fill the entire height of the window to avoid issues like text wrapping and content overflow. They also suggest breaking down the main window into smaller, independently movable components such as logo, buttons, and version number for enhanced user experience and flexibility.
+The main GUI window has been updated to include a logo and icons instead of text-based buttons. The changes involve replacing the previous text-based button layout with an icon-based one, using the `Icon` component initialized from a texture loaded from a file (`assets/cubyz/ui/logo.png`). The reviewer emphasizes that full-screen windows should not fill the entire height of the window to avoid issues like text wrapping and content overflow. They also suggest breaking down the main window into smaller, independently movable components such as logo, buttons, and version number for enhanced user experience and flexibility.
+
+The `init` function loads the logo texture from the specified file, while the `deinit` function ensures proper resource management by deinitializing the texture. The new layout includes 2 buttons initialized with icons instead of text.
 
 ## Related Questions
 - What is the purpose of the `init` function in the main GUI window?

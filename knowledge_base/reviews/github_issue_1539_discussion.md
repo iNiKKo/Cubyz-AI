@@ -8,7 +8,7 @@
 The issue proposes allowing loading additional simple structure generator types from the mods directory to enable procedural generation of structures.
 
 ## Explanation
-The discussion suggests extending the current structure loading mechanism to include simple structure generator types from the mods directory. This would allow for more flexibility in generating structures procedurally, leveraging modding capabilities. The maintainer's comment indicates that this should be straightforward since existing structures are loaded from a list file and utilize vtables.
+The issue proposes allowing loading additional simple structure generator types from the mods directory to enable procedural generation of structures. The maintainer's comment indicates that this should be straightforward since existing structures are loaded from a list file and utilize vtables. Additionally, the discussion suggests extending the current structure loading mechanism to include other generator types beyond just simple structure generators, such as complex or custom-defined generator types. This would provide greater flexibility in generating diverse structures procedurally, leveraging modding capabilities.
 
 ## Related Questions
 - What is the current mechanism for loading structures?

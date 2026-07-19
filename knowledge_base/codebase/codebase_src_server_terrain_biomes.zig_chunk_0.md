@@ -9,7 +9,7 @@
 This chunk defines the Stripe struct and a generic hashing function.
 
 ## Explanation
-The chunk contains the definition of the Stripe struct, which represents a stripe in terrain generation with properties like direction, block type, distance, offset, and width. The Stripe struct includes an `init` method that initializes a Stripe instance from a ZonElement configuration. Additionally, the chunk provides a generic hashing function `hashGeneric` that can hash various types, including integers, floats, structs, optionals, pointers, slices, arrays, and vectors. This function uses a switch statement to handle different type categories and employs a helper function `hashCombine` to combine hashes.
+This chunk defines the Stripe struct and a generic hashing function. The Stripe struct represents a stripe in terrain generation with properties like direction (a Vec3d), block type (a Block), distance (minDistance and maxDistance as f64), offset (minOffset and maxOffset as f64), and width (minWidth and maxWidth as f64). The Stripe struct includes an `init` method that initializes a Stripe instance from a ZonElement configuration. This method parses the direction, block type, distance, offset, and width from the ZonElement parameters, handling default values where necessary. Additionally, the chunk provides a generic hashing function `hashGeneric` that can hash various types, including integers, floats, structs, optionals, pointers, slices, arrays, and vectors. This function uses a switch statement to handle different type categories and employs a helper function `hashCombine` to combine hashes. The `blocks.parseBlock` function is used in Stripe initialization to convert a block name from a string to a Block instance.
 
 ## Code Example
 ```zig

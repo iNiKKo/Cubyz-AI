@@ -9,7 +9,7 @@
 Discussion on implementing a 3x3 mining area in Cubyz, exploring tool type, modifier, or accessory options.
 
 ## Explanation
-The discussion revolves around how to implement a 3x3 mining area in Cubyz. The main points include the feasibility of adding slots exclusively for side effects in tools, which could affect tool stats negatively. The maintainer suggests either changing the impact of some slots on tool stats or conditionally excluding items from stat calculations. Another suggestion is using flowers to select multiblock patterns, similar to a previous discussion with Quantum. Additionally, it's proposed that this feature could be implemented as an accessory affecting both mining and placement.
+Discussion on implementing a 3x3 mining area in Cubyz, exploring options such as adding slots exclusively for side effects in tools, which would negatively impact tool stats. The maintainer suggests either reducing the impact of some slots on tool stats to zero or conditionally excluding items from stat calculations. Another suggestion is using flowers to select multiblock patterns, similar to a previous discussion with Quantum. Additionally, it's proposed that this feature could be implemented as an accessory affecting both mining and placement. The maintainer also mentions the possibility of crouching to limit the mining area to only the selected block.
 
 ## Related Questions
 - What are the potential impacts of adding slots exclusively for side effects in tools?
@@ -17,6 +17,5 @@ The discussion revolves around how to implement a 3x3 mining area in Cubyz. The 
 - Can you provide examples of how flowers could be used to select multiblock patterns?
 - What are the benefits and drawbacks of implementing this feature as an accessory?
 - How would crouching affect the mining area in this implementation?
-- Are there any existing game mechanics that could serve as a reference for this feature?
 
 *Source: unknown | chunk_id: github_issue_3031_discussion*

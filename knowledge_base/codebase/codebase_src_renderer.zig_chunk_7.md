@@ -9,7 +9,7 @@
 Handles block selection and placement in the game world.
 
 ## Explanation
-The MeshSelection struct manages the rendering pipeline for block selection and includes methods to initialize and deinitialize the graphics pipeline. It also contains logic for selecting blocks based on player input, checking if a block can be placed, and placing blocks while updating the inventory and sending network updates.
+The MeshSelection struct manages the rendering pipeline for block selection and includes methods to initialize and deinitialize the graphics pipeline. The `init` method initializes the graphics pipeline with specific shaders and settings, while the `deinit` method deinitializes it. The `select` method implements a ray tracing algorithm using the 'A Fast Voxel Traversal Algorithm for Ray Tracing' to determine which block is selected based on player input. The `canPlaceBlock` function checks if a block can be placed at a given position without colliding with other entities or blocks. The `placeBlock` method handles placing a block, updating the inventory, and sending network updates.
 
 ## Code Example
 ```zig

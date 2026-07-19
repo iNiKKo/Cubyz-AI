@@ -9,7 +9,21 @@
 A new Zig file `entity_data.zig` is introduced, defining a struct `EntityDataClass` with methods for handling entity data in both client and server contexts. The struct includes a mutex for thread safety.
 
 ## Explanation
-The review introduces a new module for managing entity data within the Cubyz game engine. The `EntityDataClass` struct is designed to encapsulate various callbacks for different lifecycle events of entities, such as loading, unloading, placing, and breaking blocks. Each method in the vtable corresponds to an event that can occur on both the client and server sides. The inclusion of a mutex ensures thread safety when accessing or modifying entity data concurrently. The reviewer suggests adding documentation comments with triple slashes for better clarity.
+A new Zig file `entity_data.zig` is introduced, defining a struct `EntityDataClass` with methods for handling entity data in both client and server contexts. The struct includes a mutex for thread safety.
+
+The review introduces a new module for managing entity data within the Cubyz game engine. The `EntityDataClass` struct is designed to encapsulate various callbacks for different lifecycle events of entities, such as loading, unloading, placing, and breaking blocks. Each method in the vtable corresponds to an event that can occur on both the client and server sides.
+
+The VTable includes the following methods:
+- `onLoadClient`: Invoked when a chunk is loaded on the client side. It takes parameters `pos` (position) and `chunk` (chunk). The return value indicates if the event was handled (true) and should not be further processed.
+- `onUnloadClient`: Invoked when a chunk is unloaded on the client side. It takes parameters `pos` (position) and `chunk` (chunk). The return value indicates if the event was handled (true) and should not be further processed.
+- `onPlaceClient`: Invoked when a block is placed on the client side. It takes parameters `pos` (position) and `chunk` (chunk). The return value indicates if the event was handled (true) and should not be further processed.
+- `onBreakClient`: Invoked when a block is broken on the client side. It takes parameters `pos` (position) and `chunk` (chunk). The return value indicates if the event was handled (true) and should not be further processed.
+- `onLoadServer`: Invoked when a chunk is loaded on the server side. It takes parameters `pos` (position) and `chunk` (chunk). The return value indicates if the event was handled (true) and should not be further processed.
+- `onUnloadServer`: Invoked when a chunk is unloaded on the server side. It takes parameters `pos` (position) and `chunk` (chunk). The return value indicates if the event was handled (true) and should not be further processed.
+- `onPlaceServer`: Invoked when a block is placed on the server side. It takes parameters `pos` (position) and `chunk` (chunk). The return value indicates if the event was handled (true) and should not be further processed.
+- `onBreakServer`: Invoked when a block is broken on the server side. It takes parameters `pos` (position) and `chunk` (chunk). The return value indicates if the event was handled (true) and should not be further processed.
+
+The inclusion of a mutex ensures thread safety when accessing or modifying entity data concurrently. The reviewer suggests adding documentation comments with triple slashes for better clarity.
 
 ## Related Questions
 - What is the purpose of the `EntityDataClass` struct in Cubyz?

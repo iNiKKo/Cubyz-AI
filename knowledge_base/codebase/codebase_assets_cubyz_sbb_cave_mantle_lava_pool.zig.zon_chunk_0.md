@@ -8,7 +8,13 @@
 Defines blueprints for cave mantle lava pools.
 
 ## Explanation
-This chunk contains a configuration structure defining multiple blueprints, each with a unique ID. These IDs are used to identify different variations of cave mantle lava pools within the Cubyz voxel engine.
+This chunk contains a configuration structure defining multiple blueprints, each with a unique ID. These IDs are used to identify different variations of cave mantle lava pools within the Cubyz voxel engine. Specifically, there are five different variations of cave mantle lava pools, identified by the following IDs:
+
+- `cubyz:cave/mantle/lava_pool/0`
+- `cubyz:cave/mantle/lava_pool/1`
+- `cubyz:cave/mantle/lava_pool/2`
+- `cubyz:cave/mantle/lava_pool/3`
+- `cubyz:cave/mantle/lava_pool/4`
 
 ## Related Questions
 - What are the IDs defined for cave mantle lava pools?

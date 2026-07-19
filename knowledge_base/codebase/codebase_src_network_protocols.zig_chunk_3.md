@@ -9,7 +9,7 @@
 This chunk defines network protocols for player position updates, entity positions, and block updates.
 
 ## Explanation
-The chunk contains three main structs: `playerPosition`, `entityPosition`, and `blockUpdate`. Each struct represents a different type of network protocol. The `playerPosition` struct handles sending and receiving player position data, ensuring that updates are sent no more than once every 50 milliseconds. The `entityPosition` struct manages the serialization and deserialization of entity and item positions, including their velocities and types. The `blockUpdate` struct is responsible for updating block states in the game world, both on the client side and server side.
+This chunk defines network protocols for player position updates, entity positions, and block updates. The `playerPosition` struct handles sending and receiving player position data, ensuring that updates are sent no more than once every 50 milliseconds. It initializes a binary writer with a maximum capacity of 62 bytes. The `entityPosition` struct manages the serialization and deserialization of entity and item positions, including their velocities and types. It distinguishes between entities and items using constants `type_entity` (0) and `type_item` (1). The `blockUpdate` struct is responsible for updating block states in the game world, both on the client side and server side. When sending data, the connection type is specified as `.lossy` or `.secure`. The velocity magnitude thresholds for entities are 1e-6*1e-6 for no velocity and 1000*1000 for f32 velocity.
 
 ## Code Example
 ```zig

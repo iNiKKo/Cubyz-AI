@@ -9,7 +9,7 @@
 Handles registration, loading, and retrieval of biomes in the server terrain system.
 
 ## Explanation
-This chunk contains functions for registering biomes with an ID, palette ID, and configuration data. It manages both surface and cave biomes separately. The `finishLoading` function processes registered biomes, removes those with zero chance, organizes them by type, and sets up transition and sub-biome relationships. Functions like `hasRegistered`, `getById`, `getByIdOptional`, `getByIndex`, and `getPlaceholderBiome` provide ways to query biomes by various identifiers. The `getCaveBiomes` function returns all cave biomes, and `getBiomeCheckSum` provides a checksum for detecting changes in biome configurations.
+This chunk contains functions for registering biomes with an ID, palette ID, and configuration data. The `register` function initializes a biome and appends it to either the surface or cave biomes list based on whether the biome is a cave. The `finishLoading` function processes registered biomes by removing those with zero chance, organizing them by type, and setting up transition and sub-biome relationships. It also ensures that all biomes are indexed correctly and handles any errors related to missing parent biomes or overlapping generation properties in transition biomes. Functions like `hasRegistered`, `getById`, `getByIdOptional`, `getByIndex`, and `getPlaceholderBiome` provide ways to query biomes by various identifiers. The `getCaveBiomes` function returns all cave biomes, and `getBiomeCheckSum` provides a checksum for detecting changes in biome configurations.
 
 ## Code Example
 ```zig

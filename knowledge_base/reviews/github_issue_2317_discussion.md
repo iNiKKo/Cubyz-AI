@@ -9,7 +9,7 @@
 Refactor stone types to consolidate shared attributes and normalize naming conventions.
 
 ## Explanation
-The discussion revolves around refactoring the stone types in Cubyz to share common attributes among different block types like tiles, bricks, and base. The walls are an exception due to their unique model and rotation, making them unsuitable as tool materials. The proposal includes moving all stones into a single folder structure (e.g., `cubyz:stone/slate/base`) to improve organization and readability. Additionally, there's a mention of adding block and item migrations and normalizing tile naming conventions to address issue #2240.
+The discussion revolves around refactoring the stone types in Cubyz to share common attributes among different block types like tiles, bricks, and base. The walls are an exception due to their unique model and rotation, making them unsuitable as tool materials. Most of the stone attributes are shared within the blocks types (tiles/bricks/base), but the exact folder structure is not specified. Additionally, there's a mention of adding block and item migrations and normalizing tile naming conventions to address issue #2240. The maintainer decided to use `cubyz:slate/base` rather than `cubyz:stone/slate/base`. Block and item migrations will be implemented to ensure compatibility with existing stone types, and their relationship to issue #2240 is that they aim to normalize tile naming conventions.
 
 ## Related Questions
 - What are the specific attributes being shared among different stone types?

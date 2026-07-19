@@ -9,7 +9,7 @@
 Refactored feature list generation by replacing `join` with `appendSlice` in a loop, improving memory efficiency.
 
 ## Explanation
-The change involves refactoring the code responsible for generating a list of Zig modules and features. The original implementation used `std.mem.join` to concatenate strings, which resulted in an intermediate allocation. This was deemed unnecessary and inefficient. The refactored code now uses a loop with `appendSlice` to directly append each string to the final list, thus avoiding the extra memory allocation step. This change is aimed at optimizing memory usage and potentially improving performance by reducing the overhead associated with temporary allocations.
+Refactored feature list generation by replacing `std.mem.join` with `appendSlice` in a loop, improving memory efficiency. The original implementation used `std.mem.join` to concatenate strings, which resulted in an intermediate allocation. This was deemed unnecessary and inefficient. The refactored code now uses a loop with `appendSlice` to directly append each string to the final list, thus avoiding the extra memory allocation step. Additionally, the code now includes a sorting function that sorts the feature entries alphabetically before appending them to the final list. This change is aimed at optimizing memory usage and potentially improving performance by reducing the overhead associated with temporary allocations.
 
 ## Related Questions
 - What was the original method of concatenating strings in this code?

@@ -8,7 +8,7 @@
 The discussion revolves around refining the hunger and food mechanics in Cubyz to include passive regeneration, balanced food consumption during battles, and a temporary debuff after eating.
 
 ## Explanation
-The maintainers and users propose changes to the existing hunger bar system. The main ideas include making the hunger bar deplete constantly but refill upon eating, implementing slower passive health regeneration similar to Terraria, allowing food to heal multiple units of health, introducing a temporary debuff post-eating to discourage mid-battle consumption, and ensuring players spawn with an empty hunger bar. Additionally, it's suggested that food should satiate energy and potentially provide status effects like temporary energy regeneration.
+The discussion revolves around refining the hunger and food mechanics in Cubyz to include passive regeneration, balanced food consumption during battles, and a temporary debuff after eating. The maintainers and users propose changes to the existing hunger bar system where the hunger bar constantly depletes but refills upon eating. Passive health regeneration is proposed to be slower, taking at least a few minutes to regenerate the entire health bar. Food should heal multiple units of health (the exact ratio is not specified but could be affected by accessories). Eating provides a temporary debuff such as slowness and weakness to discourage mid-battle consumption. Players spawn with an empty hunger bar (#922). Additionally, food satiates energy and may provide status effects like passive energy regeneration for 5 minutes.
 
 ## Related Questions
 - What is the proposed relationship between food and health regeneration?

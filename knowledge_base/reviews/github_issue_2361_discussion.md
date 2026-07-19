@@ -8,7 +8,7 @@
 The issue describes player physics behavior where holding jump and forward buttons results in inconsistent jumping up steps, including hopping twice or bouncing off solid blocks.
 
 ## Explanation
-The reported issue involves inconsistencies in the player's movement physics when both jump and forward inputs are held simultaneously. The maintainer requests a video to better understand the specific actions causing these issues. The problem likely stems from how the game handles input states and transitions between different movement states, such as jumping and colliding with surfaces.
+The issue describes player physics behavior where holding jump and forward buttons results in inconsistent jumping up steps, including hopping twice or bouncing off solid blocks. Specifically, when attempting to climb stone steps, the player character gets bounced off them. The maintainer requests a video of the effect for better understanding. This problem likely stems from how the game handles input states and transitions between different movement states, such as jumping and colliding with surfaces.
 
 ## Related Questions
 - What specific input states are being handled when the jump and forward buttons are held?
@@ -17,9 +17,5 @@ The reported issue involves inconsistencies in the player's movement physics whe
 - Can you provide a video demonstrating the issue for better understanding?
 - What changes have been made to player physics recently that might be related to this problem?
 - How does the game handle transitions between different movement states, such as jumping and colliding?
-- Are there any configuration options or settings that could affect the player's jump behavior?
-- Can you identify any potential bugs in the collision response system that might cause hopping or bouncing?
-- What is the expected behavior of the player when both jump and forward inputs are held simultaneously?
-- How does the game handle edge cases where the player collides with multiple surfaces while jumping?
 
 *Source: unknown | chunk_id: github_issue_2361_discussion*

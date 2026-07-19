@@ -9,14 +9,9 @@
 The code has been modified to use the `main.heap.GarbageCollector` for freeing entity chunks instead of directly calling `deinit()`, ensuring safe memory management across threads.
 
 ## Explanation
-The reviewer points out that using the `main.heap.GarbageCollector` is crucial for thread safety. Directly calling `deinit()` on an entity chunk could lead to a use-after-free error if another thread still holds a reference to it. By deferring the garbage collection, the system ensures that all references are safely managed and prevents potential memory leaks or undefined behavior in a multi-threaded environment.
+The code has been modified to use the `main.heap.GarbageCollector` for freeing entity chunks instead of directly calling `deinit()`, ensuring safe memory management across threads. Additionally, the removal of `increaseRefCount` and `decreaseRefCount` in favor of using `tryRemoveEntityChunk` to check if an entity chunk can be safely removed before calling `deinit()` has been noted. This change ensures that the system only attempts to deinitialize an entity chunk when it is safe to do so, further enhancing thread safety.
 
 ## Related Questions
-- What is the purpose of using `main.heap.GarbageCollector` instead of direct `deinit()`?
-- How does this change ensure thread safety in the ServerWorld module?
-- Can you explain the potential consequences of not using a garbage collector for memory management in a multi-threaded environment?
-- What other parts of the codebase might benefit from similar changes to improve thread safety?
-- How does the `tryRemoveEntityChunk` function interact with the garbage collection process?
-- Is there any performance impact associated with using a garbage collector instead of direct deallocation?
+- What was the purpose of removing `increaseRefCount` and `decreaseRefCount` in favor of using `tryRemoveEntityChunk`?
 
 *Source: unknown | chunk_id: github_pr_2108_comment_2482688152*

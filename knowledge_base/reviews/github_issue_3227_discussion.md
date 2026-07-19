@@ -8,7 +8,7 @@
 Discussion about allowing wood in anvil crafting and combining ideas from related issues.
 
 ## Explanation
-The discussion revolves around the possibility of allowing wood as a material for crafting tools at an anvil, similar to real-life toolmaking where handles and heads are combined. The maintainers acknowledge this idea but note that it differs from another proposal (issue #197) and suggest combining ideas. They also mention that requiring a furnace for metal bar production might be confusing since furnaces are already necessary for metal crafting.
+Discussion about allowing wood in anvil crafting and combining ideas from related issues. The maintainers acknowledge the idea of using wood for tool handles but note that this differs from another proposal (issue #197) and suggest combining them. They also mention that requiring a furnace for metal bar production might be confusing since furnaces are already necessary for metal crafting. Specifically, the anvil can only use metal and gem materials, meaning unique effects like 'efficient against stone' cannot be added to these tools. Wood is explicitly excluded from anvil crafting due to its downsides.
 
 ## Related Questions
 - How would allowing wood in anvil crafting affect the game's balance?

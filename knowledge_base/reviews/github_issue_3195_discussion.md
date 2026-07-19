@@ -8,7 +8,7 @@
 The issue involves blocks not mirroring tags to their items, causing the item's tags to not be displayed in-game.
 
 ## Explanation
-The user reports that when querying an item's tags in a player's inventory, only the item index is found, and not the associated tags. The maintainer initially questions whether the queried item actually has tags and notes that block tags and item tags are distinct. The user clarifies that they believe such information could be relevant, especially for identifying tools needed to break alien blocks. However, it turns out that the issue is not about irrelevant information but rather that the tags do not render at all in-game.
+The issue involves blocks not mirroring tags to their items, causing the item's tags to not be displayed in-game. The user reports that when querying an item's tags in a player's inventory, only the item index is found, and not the associated tags. The maintainer initially questions whether the queried item actually has tags and notes that block tags and item tags are distinct. Specifically, the maintainer mentions that rendering certain tags such as `.mineable`, `.cuttable`, and `.slate` could fill the tooltip with irrelevant information. However, it turns out that the issue is not about irrelevant information but rather that the tags do not render at all in-game.
 
 ## Related Questions
 - What is the current implementation for mirroring block tags to item tags in Cubyz?

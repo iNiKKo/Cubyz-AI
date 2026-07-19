@@ -9,7 +9,7 @@
 Refactored asset loading and migration handling to separate block and biome migrations, improving code organization and clarity.
 
 ## Explanation
-The change introduces a more modular approach to asset loading by separating block and biome migrations. This refactoring aims to enhance the maintainability and scalability of the codebase. The reviewer notes that the current implementation should free assets immediately after use for better memory management, suggesting further improvements in design.
+Refactored asset loading and migration handling to separate block and biome migrations, improving code organization and clarity. The change introduces a more modular approach by renaming `blocksMigrations` to `blockMigrations` and adding `biomeMigrations`. The new design uses `migrations_zig.registerAll(.block, &blockMigrations)` and `migrations_zig.apply(.block, blockPalette)` for block migrations, and `migrations_zig.registerAll(.biome, &biomeMigrations)` and `migrations_zig.apply(.biome, biomePalette)` for biome migrations. The reviewer notes that the current implementation should free assets immediately after use for better memory management, suggesting further improvements in design.
 
 ## Related Questions
 - What is the purpose of separating block and biome migrations in this refactoring?

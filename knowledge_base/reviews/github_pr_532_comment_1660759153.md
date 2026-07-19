@@ -9,7 +9,7 @@
 The `render` function in `debug.zig` has been modified to conditionally display an FPS limit text based on the `main.settings.fpsCap` setting.
 
 ## Explanation
-This change introduces a conditional rendering of FPS limit information. The reviewer notes that the standard library's data structures depend on certain architectural choices, suggesting that these changes are stable and unlikely to be altered. The use of `std.fmt.allocPrint` with `main.stackAllocator.allocator` ensures efficient memory management for dynamically allocated strings.
+This change introduces a conditional rendering of FPS limit information. The reviewer notes that the standard library's data structures depend on certain architectural choices, suggesting that these changes are stable and unlikely to be altered. The use of `std.fmt.allocPrint` with `main.stackAllocator.allocator` ensures efficient memory management for dynamically allocated strings. Specifically, `std.fmt.allocPrint(main.stackAllocator.allocator, " (limit: {d:.0} Hz)", .{fpsCap})` is used to format the FPS limit text if `main.settings.fpsCap` is set. The original FPS display logic did not include this conditional check for an FPS limit.
 
 ## Related Questions
 - What is the purpose of `std.fmt.allocPrint` in this code snippet?

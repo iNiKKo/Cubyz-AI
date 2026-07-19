@@ -9,7 +9,7 @@
 A reviewer points out that a removed line in the code served an important purpose related to lifetime management.
 
 ## Explanation
-The reviewer emphasizes that the deleted line played a crucial role in managing the lifetime of variables within the algorithm. Removing this line could lead to potential issues with resource management and variable scope, which are critical aspects of ensuring the stability and correctness of the code.
+A reviewer points out that a removed line in the code served an important purpose related to lifetime management, specifically by separating lifetime management from the algorithm. This separation is crucial for managing resources and ensuring variable scope correctly. Removing this line could lead to potential issues with resource management and variable scope, which are critical aspects of ensuring the stability and correctness of the code. The deleted line was responsible for collecting all unique child blocks used in blueprints of the StructureBuildingBlock.
 
 ## Related Questions
 - What was the specific purpose of the removed line in managing variable lifetimes?

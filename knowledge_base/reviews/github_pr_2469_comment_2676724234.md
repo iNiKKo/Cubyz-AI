@@ -11,6 +11,10 @@ The `DepositToAny` struct in `Inventory.zig` has been updated to accept an array
 ## Explanation
 This change refactors the `DepositToAny` command to support depositing items into multiple inventories rather than just one. The introduction of the `owned` field allows the struct to handle its own memory management for the destinations array, ensuring proper cleanup with a deferred free operation. This modification enhances flexibility and correctness by allowing more complex inventory operations while maintaining allocator consistency.
 
+The `DepositToAny` command now accepts an array of destinations (`destinations: []Inventory`) instead of a single destination. The `owned` field is used to manage memory allocation for the destinations array, with a deferred free operation ensuring proper cleanup if `owned` is set to true. The command runs by iterating over the destinations and performing the deposit operation. If any of the destination inventories are of type `.creative`, `.crafting`, or `.workbench`, the command returns early without performing any operations.
+
+This change was made to prevent accidentally using mismatched allocators, as the allocator should be passed on creation rather than using a global allocator in the finalize method. This ensures that memory management is handled correctly and consistently across different inventory operations.
+
 ## Related Questions
 - What is the purpose of the `owned` field in the `DepositToAny` struct?
 - How does the change affect memory management in the `Inventory.zig` file?

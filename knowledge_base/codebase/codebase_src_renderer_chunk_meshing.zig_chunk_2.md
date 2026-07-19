@@ -9,7 +9,13 @@
 Defines data structures for chunk meshing, including face and chunk data.
 
 ## Explanation
-This chunk defines several structs and enums used in the process of chunk meshing. The `FaceData` struct contains information about a single face, including its position, texture, and lighting details. It includes an `init` method for creating instances. The `ChunkData` struct holds metadata about a chunk, such as its position, size, light and vertex counts, and visibility states. The `IndirectData` struct is used for indirect rendering, storing counts and indices. The `FaceGroups` enum categorizes faces into core groups and neighbor LODs, with methods to map neighbors to these categories.
+This chunk defines several structs and enums used in the process of chunk meshing. The `FaceData` struct contains information about a single face, including its position, texture, and lighting details. The `position` field is a packed struct with fields for x, y, z coordinates (each 5 bits), a boolean indicating if it's a back face, and a light index (16 bits). The `blockAndQuad` field is also a packed struct containing a texture ID (16 bits) and a quad index. It includes an `init` method for creating instances, which takes parameters for the texture, quad index, block position, and whether it's a back face.
+
+The `ChunkData` struct holds metadata about a chunk, such as its position (a Vec3i aligned to 16 bytes), minimum and maximum coordinates (Vec3f aligned to 16 bytes), voxel size (an integer), light start index (a 32-bit unsigned integer), vertex start indices for opaque and transparent faces (32-bit unsigned integers), face counts by normal for opaque faces (an array of 14 32-bit unsigned integers), vertex count for transparent faces (a 32-bit unsigned integer), visibility state (a 32-bit unsigned integer), and old visibility state (a 32-bit unsigned integer).
+
+The `IndirectData` struct is used for indirect rendering, storing counts and indices. It contains fields for count (a 32-bit unsigned integer), instance count (a 32-bit unsigned integer), first index (a 32-bit unsigned integer), base vertex (a 32-bit signed integer), and base instance (a 32-bit unsigned integer).
+
+The `FaceGroups` enum categorizes faces into core groups and neighbor LODs, with methods to map neighbors to these categories. It includes values for core, six neighbor levels (0 to 5), six neighbor LOD levels (0 to 5), and an optional group.
 
 ## Code Example
 ```zig

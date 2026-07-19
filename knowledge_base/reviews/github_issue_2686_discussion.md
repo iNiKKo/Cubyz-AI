@@ -8,7 +8,7 @@
 Discussion about the appearance and material of natural bridges between sky islands in Cubyz.
 
 ## Explanation
-The issue revolves around the visual design and composition of bridges that naturally form between sky islands within a certain range. The user proposes using vines and leaves as the material for these bridges, suggesting a lush, organic aesthetic. This proposal is part of enhancing the terrain generation to include more detailed and visually appealing features.
+Discussion about the appearance and material of natural bridges between sky islands in Cubyz. The issue revolves around a terrain feature that generates thin bridges between sky islands within a certain range, as illustrated by an image showing this phenomenon. A user proposes using vines and leaves as the material for these bridges, suggesting a lush, organic aesthetic. This proposal aims to enhance the visual design and composition of such bridges within a specified range.
 
 ## Related Questions
 - What are the proposed materials for the natural bridges between sky islands?

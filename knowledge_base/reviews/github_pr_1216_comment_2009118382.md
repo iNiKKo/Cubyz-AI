@@ -9,7 +9,7 @@
 Added TexturePile struct with stateful rotation management.
 
 ## Explanation
-The change introduces a new struct called TexturePile within the RotationModes namespace. This struct is designed to manage rotated models and their corresponding block states using hash maps. The reviewer highlights that this modification makes some rotations stateful, necessitating the passing of a pointer to the rotation state to all virtual functions that might require it. This architectural decision impacts how state is managed across different components, potentially affecting thread safety and performance.
+The change introduces a new struct called TexturePile within the RotationModes namespace. This struct is designed to manage rotated models and their corresponding block states using hash maps. The TexturePile struct has an id of "texturePile" and uses `std.StringHashMap(ModelIndex)` for `rotatedModels` and `std.AutoHashMapUnmanaged(u16, u16)` for `blockToStateCountMap`. The reviewer highlights that this modification makes some rotations stateful, necessitating the passing of a pointer to the rotation state to all virtual functions that might require it. This architectural decision impacts how state is managed across different components, potentially affecting thread safety and performance.
 
 ## Related Questions
 - What is the purpose of the TexturePile struct in rotation.zig?

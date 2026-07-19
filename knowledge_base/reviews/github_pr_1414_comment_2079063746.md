@@ -9,7 +9,7 @@
 Added a new `SparseSet` data structure in `utils.zig` with methods for initialization, deinitialization, checking containment, and adding elements.
 
 ## Explanation
-The review introduces a `SparseSet` type that manages a collection of values with unique identifiers. The reviewer highlights a critical architectural concern: if the sparse list grows beyond the maximum value representable by the ID type and there are no free IDs available in the free list, casting to an integer could lead to undefined behavior (UB). The reviewer suggests adding a check to handle this scenario by returning an `OutOfMemory` error when appropriate.
+The review introduces a `SparseSet` type that manages a collection of values with unique identifiers. The reviewer highlights a critical architectural concern: if the sparse list grows beyond the maximum value representable by the ID type and there are no free IDs available in the free list, casting to an integer could lead to undefined behavior (UB). The reviewer suggests adding a check to handle this scenario by returning an `OutOfMemory` error when appropriate. The `add` method handles cases where there are no free IDs available by checking if the sparse list size is equal to `std.math.maxInt(idType)`. If it is and the free list is empty, it returns an `OutOfMemory` error. This ensures proper resource cleanup and prevents undefined behavior.
 
 ## Related Questions
 - What is the purpose of the `SparseSet` data structure in this code?

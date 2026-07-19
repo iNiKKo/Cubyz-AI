@@ -9,7 +9,7 @@
 The server no longer crashes but instead kicks the client when requesting block entity data for a non-block entity.
 
 ## Explanation
-The original issue caused the server to crash when a client requested block entity data for a block that was not a block entity. The change now prevents this by kicking the client with an error message 'Invalid' and disconnecting it, which is considered preferable as it stops invalid requests from affecting other clients or the server stability.
+The original issue caused the server to crash when a client requested block entity data for a block that was not a block entity. The change now prevents this by kicking the client with an error message 'Got error while executing user command: Invalid. Disconnecting.' and disconnecting it, which is considered preferable as it stops invalid requests from affecting other clients or the server stability.
 
 ## Related Questions
 - What is the purpose of `main.network.Protocols.blockEntityUpdate.sendClientDataUpdateToServer`?

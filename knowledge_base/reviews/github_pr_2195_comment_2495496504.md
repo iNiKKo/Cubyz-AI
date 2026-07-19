@@ -9,7 +9,11 @@
 Refactored the registration process for structure building blocks by introducing a staging variable and renaming an internal variable for clarity.
 
 ## Explanation
-The reviewer points out that the original code had a critical architectural issue where the `structureList` was being resized in stages, with the first stage being the root cause of a problem. The second stage involved filtering via the `postResolutionChecks` function, which turned out to be unnecessary after addressing the root cause. The reviewer suggests renaming the internal variable to make its purpose more apparent.
+The reviewer points out that the original code had a critical architectural issue where the `structureList` was being resized in stages. The first stage involved resizing the list, which was the root cause of a problem. The second stage involved filtering via the `postResolutionChecks` function, but this step turned out to be unnecessary after addressing the root cause. The reviewer suggests renaming the internal variable to make its purpose more apparent.
+
+The staging variable (`stage1Count`) was introduced to manage the initial resizing of the `structureList`. The second stage filtering function (`postResolutionChecks`) was initially intended to further refine the list, but it became redundant once the root cause was resolved. Renaming the internal variable is necessary to clarify its role in the registration process, making the code more readable and maintainable.
+
+Removing the `postResolutionChecks` function simplifies the structure registration process by eliminating unnecessary steps, thus improving efficiency.
 
 ## Related Questions
 - What was the original purpose of the staging variable in the structure building block registration process?

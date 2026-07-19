@@ -8,18 +8,10 @@
 The issue involves black squares briefly appearing in the distance when looking around, which are attributed to pixel errors amplified by bloom.
 
 ## Explanation
-The user reports experiencing black squares that appear briefly in the distance while playing Cubyz. The maintainer notes that these black squares are a result of pixel errors being exacerbated by the bloom effect. The discussion highlights the distinction between single-pixel errors and this more pronounced issue, suggesting that the problem is related to how bloom interacts with rendering artifacts.
+The issue involves black squares briefly appearing in the distance when looking around, which are attributed to pixel errors amplified by bloom. The user reports experiencing this issue with the following settings: FPS limit set to 80, Render Distance set to 24, Highest LOD set to 5, Leaves Quality set to 4, Opaque leaves set to 200, FOV set to 120, bloom and V-sync enabled, 4x Anisotropic filtering, and a resolution scale of 100%. The maintainer notes that these black squares are a result of pixel errors being exacerbated by the bloom effect. The discussion highlights the distinction between single-pixel errors and this more pronounced issue, suggesting that the problem is related to how bloom interacts with rendering artifacts.
 
 ## Related Questions
-- What settings are most likely to cause pixel errors in Cubyz?
-- How does bloom interact with rendering artifacts in Cubyz?
-- Are there any known issues with the bloom effect in Cubyz that could cause this behavior?
-- Can adjusting the render distance or LOD settings mitigate the appearance of black squares?
-- What is the impact of V-sync on pixel errors and rendering artifacts in Cubyz?
-- How does anisotropic filtering affect the visibility of pixel errors in Cubyz?
-- Are there any other visual effects in Cubyz that could amplify pixel errors like bloom?
-- What are the potential causes of black squares appearing briefly in the distance when looking around in Cubyz?
-- Is this issue related to any specific hardware or driver configurations?
-- How can developers debug and fix issues related to pixel errors and rendering artifacts in Cubyz?
+- What specific settings (FPS limit, Render Distance, Highest LOD, Leaves Quality, Opaque leaves, FOV, V-sync, Anisotropic filtering, resolution scale) are most likely to cause pixel errors in Cubyz?
+- How does bloom interact with rendering artifacts in Cubyz given the user's reported settings?
 
 *Source: unknown | chunk_id: github_issue_1646_discussion*

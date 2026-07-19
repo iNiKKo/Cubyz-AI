@@ -8,7 +8,7 @@
 Reported issues with loot icons getting stuck mid-air and falling into blocks.
 
 ## Explanation
-The issue involves loot items not properly interacting with the game environment, causing them to remain suspended or fall into solid blocks. The maintainer acknowledges the problem and plans to address it before the next release.
+The issue involves loot items not properly interacting with the game environment, causing them to remain suspended in mid-air or fall into solid blocks. Specifically, when looting from low to high, the loot sometimes stays mid-air until all nearby blocks are destroyed. Additionally, when a loot item falls and lands on a stone cube, its icon can become visually hidden within the stone block, although it is still collectible if approached. The maintainer acknowledges these problems and plans to address them before the next release.
 
 ## Related Questions
 - What is the current method used for loot item falling in Cubyz?

@@ -9,7 +9,7 @@
 The review suggests replacing the temporary arena allocator with the stack allocator in the `registerRecipes` function.
 
 ## Explanation
-The reviewer questions the use of a temporary arena allocator, noting that the data is freed within the function. They suggest using the stack allocator instead, which could simplify memory management and potentially improve performance by reducing allocation overhead.
+The reviewer questions the use of a temporary arena allocator in the `registerRecipes` function, noting that the data is freed within the function. They suggest using the stack allocator instead, which could simplify memory management and potentially improve performance by reducing allocation overhead. The code diff shows that the `parseRecipeItem` and `parseRecipe` functions have been removed from the file.
 
 ## Related Questions
 - What are the potential benefits of using the stack allocator instead of the arena allocator in this context?

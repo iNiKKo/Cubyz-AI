@@ -9,7 +9,17 @@
 Refactored the permission command handling to use an argument parser and improved error messages.
 
 ## Explanation
-The change refactors the permission command execution by introducing a structured argument parser (`ArgParser`) that handles different command formats. This improves code readability and maintainability. The `execute` function now uses this parser to validate and process arguments, replacing the previous manual parsing logic. Additionally, error messages are more detailed and use a list unmanaged allocator for better memory management. The refactoring also includes a new `Path` struct with a parse method that checks if permission paths start with a '/'. The reviewer suggests correcting a typo in the error message format string.
+Refactored the permission command handling to use an argument parser and improved error messages.
+
+The change refactors the permission command execution by introducing a structured argument parser (`ArgParser`) that handles different command formats. The new `Args` union defines two variants: one for commands with player indices and another for commands without. This improves code readability and maintainability. The `execute` function now uses this parser to validate and process arguments, replacing the previous manual parsing logic.
+
+The argument formats are as follows:
+- `/perm <action> <list> <playerIndex> <permissionPath>`
+- `/perm <playerIndex> <permissionPath>`
+
+Where `<action>` can be `add` or `remove`, and `<list>` can be `whitelist` or `blacklist`. The `execute` function processes these arguments to add or remove permissions for a player, checking if the permission path starts with a '/'. If not, it sends an error message.
+
+Error messages are more detailed and use a list unmanaged allocator for better memory management. The refactoring also includes a new `Path` struct with a parse method that checks if permission paths start with a '/'. The reviewer suggests correcting a typo in the error message format string.
 
 ## Related Questions
 - What is the purpose of the `ArgParser` in this refactoring?

@@ -11,6 +11,8 @@ A new struct `MaskExpression` is introduced in `command.zig`, but it's flagged f
 ## Explanation
 The introduction of the `MaskExpression` struct aims to provide a mechanism for handling expressions with global allocator guarantees. However, the reviewer raises critical concerns regarding the architecture, suggesting that such functionality should be handled within the command itself rather than in the parser structs. This approach is deemed inappropriate because it introduces unnecessary memory management code into the parser, which is not its primary responsibility. The reviewer emphasizes that the parser should remain agnostic of potential use cases and that specific functionalities like memory management are better suited to the command layer. This separation of concerns is crucial for maintaining clean and manageable code.
 
+The reviewer suggests that memory management for `MaskExpression` should be handled in the command layer through copying, rather than relying on global allocator guarantees within the parser structs. This change aims to keep the parser agnostic of use cases like memory management, ensuring that each layer of the architecture has a clear and specific responsibility.
+
 ## Related Questions
 - What is the purpose of introducing `MaskExpression` in `command.zig`?
 - Why does the reviewer suggest handling memory management in the command layer instead of the parser structs?

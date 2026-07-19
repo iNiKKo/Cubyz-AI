@@ -9,7 +9,7 @@
 The review addresses a critical data corruption issue in the `unlock.zig` file by modifying the error handling mechanism to prevent accessing invalid memory.
 
 ## Explanation
-The reviewer identifies a significant architectural flaw where calling `onClose()` immediately after setting `incorrectPassword` to true leads to data corruption. This is because `onClose()` cleans up components that are still being iterated over, resulting in invalid memory access. The proposed solution involves storing the label text globally and updating it instead of directly closing the window, which prevents accessing invalid memory.
+The review addresses a critical data corruption issue in the `unlock.zig` file by modifying the error handling mechanism to prevent accessing invalid memory. The reviewer identifies a significant architectural flaw where calling `onClose()` immediately after setting `incorrectPassword` to true leads to data corruption. This is because `onClose()` cleans up components that are still being iterated over, resulting in invalid memory access. The proposed solution involves storing the label text globally and updating it instead of directly closing the window, which prevents accessing invalid memory. Specifically, the error handling mechanism now checks if the error is `error.AuthenticationFailed` and sets `incorrectPassword` to true before calling `onClose()`. Additionally, the reviewer suggests storing the label in a global variable and changing only the label text to prevent invalid memory access.
 
 ## Related Questions
 - What is the purpose of the `incorrectPassword` variable in the `unlock.zig` file?

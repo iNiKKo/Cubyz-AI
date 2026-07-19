@@ -9,7 +9,7 @@
 This chunk implements fractal terrain generation using a randomly weighted interpolation method.
 
 ## Explanation
-The chunk contains functions for generating fractal terrain. `generateFractalTerrain` initializes the terrain by setting seeds and generating corner points, then iteratively interpolates new points with random weights to create a smooth height map. `generateInitializedFractalTerrain` handles the iterative interpolation process, adjusting randomness scale to reduce noise. `generateSparseFractalTerrain` generates a lower resolution version of the terrain.
+The chunk contains functions for generating fractal terrain. `generateFractalTerrain` initializes the terrain by setting seeds and generating corner points, then iteratively interpolates new points with random weights to create a smooth height map. The `setSeed` function initializes a seed using `main.random.initSeed2D(worldSeed*%(scale*maxResolution | 1), .{(offsetX +% x)*%maxResolution, (offsetY +% y)*%maxResolution});`. `generateInitializedFractalTerrain` handles the iterative interpolation process, adjusting randomness scale to reduce noise. `generateSparseFractalTerrain` generates a lower resolution version of the terrain.
 
 ## Code Example
 ```zig

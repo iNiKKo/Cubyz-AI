@@ -9,7 +9,13 @@
 Refactored BlueprintSubCommand enum into Args union(enum) with detailed struct fields for each subcommand, including deinit methods.
 
 ## Explanation
-The change refactors the BlueprintSubCommand enum into an Args union(enum) where each subcommand has its own struct containing specific fields. This approach provides more explicit handling of command arguments and includes a deinit method for proper resource management. The reviewer raises concerns about the verbosity of having many structs and suggests simplifying the structure to use a single format for commands, aligning argument names with their intended usage (e.g., 'path' instead of 'file-name'). The review highlights architectural considerations around code clarity and maintainability.
+The change refactors the BlueprintSubCommand enum into an Args union(enum) where each subcommand has its own struct containing specific fields. The subcommands and their corresponding struct fields are as follows:
+
+- `/blueprint save <file-name>`: Contains a `save` enum and a `path` field of type FilePath.
+- `/blueprint delete <file-name>`: Contains a `delete` enum and a `path` field of type FilePath.
+- `/blueprint load <file-name>`: Contains a `load` enum and a `path` field of type FilePath.
+
+Each struct includes a deinit method for proper resource management. The reviewer raises concerns about the verbosity of having many structs and suggests simplifying the structure to use a single format for commands, aligning argument names with their intended usage (e.g., 'path' instead of 'file-name'). The review highlights architectural considerations around code clarity and maintainability.
 
 ## Related Questions
 - What is the purpose of the deinit method in each struct?

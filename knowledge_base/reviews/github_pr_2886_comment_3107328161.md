@@ -9,7 +9,7 @@
 The code now loads allowed tool tags for block drops and checks if they are empty, logging an error if so. It also initializes the `chance` field and uses the `worldArena` for memory allocation.
 
 ## Explanation
-This change introduces functionality to handle allowed tool tags for block drops, ensuring that if the array is empty, an error is logged. The `chance` field is initialized with a default value of 1. The use of `worldArena` for memory allocation is crucial for preventing memory leaks, as it ensures that allocated memory is properly managed and freed when no longer needed.
+This change introduces functionality to handle allowed tool tags for block drops, ensuring that if the array is empty, an error is logged. The specific error message logged is 'Field '.allowedToolTags' is an empty array. No tool can drop this blockDrop'. The `chance` field is initialized with a default value of 1. The use of `worldArena` for memory allocation is crucial for preventing memory leaks, as it ensures that allocated memory is properly managed and freed when no longer needed. Additionally, the code also loads forbidden tool tags using `Tag.loadTagsFromZon`. This ensures that both allowed and forbidden tool tags are correctly handled in the block drop logic.
 
 ## Related Questions
 - What is the purpose of the `allowedToolTags` variable?

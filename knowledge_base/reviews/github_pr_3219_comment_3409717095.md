@@ -9,7 +9,7 @@
 The reviewer questions the necessity of calling `heap.GarbageCollection.forceAllFreeItemsFromList()` in the main function, suggesting it might already be handled elsewhere.
 
 ## Explanation
-The code review highlights a potential redundancy or oversight in the initialization and deinitialization sequence. The reviewer points out that the call to `heap.GarbageCollection.forceAllFreeItemsFromList()` is placed in the `defer` block of the `main` function, which is responsible for cleaning up resources. However, the reviewer questions why this specific garbage collection step is necessary here, as it might already be covered by another deinitialization routine, such as `deinitThreadLocals`. This concern could indicate a need to review the overall resource management strategy to ensure that all cleanup tasks are performed efficiently and without duplication.
+The code review highlights a potential redundancy or oversight in the initialization and deinitialization sequence. The reviewer points out that the call to `heap.GarbageCollection.forceAllFreeItemsFromList()` is placed in the `defer` block of the `main` function, which is responsible for cleaning up resources. However, the reviewer questions why this specific garbage collection step is necessary here, as it might already be covered by another deinitialization routine, such as `deinitThreadLocals`. Additionally, the review notes that `audio.init()` and `audio.deinit()` have been removed from the code. This concern could indicate a need to review the overall resource management strategy to ensure that all cleanup tasks are performed efficiently and without duplication.
 
 ## Related Questions
 - Why is `heap.GarbageCollection.forceAllFreeItemsFromList()` called in the main function?

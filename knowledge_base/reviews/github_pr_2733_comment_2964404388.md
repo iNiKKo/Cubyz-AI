@@ -9,7 +9,7 @@
 Added a new `EntityModel` struct and its initialization function `initFromQuads` in `models.zig`. The function converts quad information into vertex and index data for OpenGL rendering.
 
 ## Explanation
-The change introduces a new `EntityModel` struct to manage model data for entities. The `initFromQuads` function processes quad information, allocating memory for vertices and indices, populating them with data from the quads, and setting up OpenGL buffers. The reviewer suggests using `@fieldParentPtr` to avoid hardcoding offsets in vertex attribute pointers, which could help catch errors related to struct layout changes.
+The change introduces a new `EntityModel` struct to manage model data for entities. The `initFromQuads` function processes quad information, allocating memory for vertices and indices, populating them with data from the quads, and setting up OpenGL buffers. The `EntityVertex` struct contains fields such as position (`pos`), normal (`normal`), UV coordinates (`uv`), texture slot (`textureSlot`), and opaque in LOD (`opaqueInLod`). The function initializes these fields for each vertex based on the quad information provided. Memory allocation is handled using `main.stackAllocator`, and allocated memory is freed at the end of the function. OpenGL functions such as `glGenVertexArrays`, `glBindVertexArray`, `glGenBuffers`, `glBufferData`, and `glVertexAttribPointer` are used to set up vertex and element buffers. The reviewer suggests using `@fieldParentPtr` to avoid hardcoding offsets in vertex attribute pointers, which could help catch errors related to struct layout changes.
 
 ## Related Questions
 - What is the purpose of the `EntityModel` struct?

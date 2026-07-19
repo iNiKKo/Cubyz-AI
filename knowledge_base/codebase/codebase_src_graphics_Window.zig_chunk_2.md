@@ -11,6 +11,12 @@ Handles gamepad and keyboard input, including downloading and updating controlle
 ## Explanation
 This chunk manages gamepad and keyboard inputs within the Cubyz engine. It includes functions to check if a controller is connected (`isControllerConnected`), whether controller mappings have been downloaded (`wereControllerMappingsDownloaded`), and to schedule and execute the download of controller mappings (`downloadControllerMappings`). The `ControllerMappingDownloadTask` struct defines the task for downloading mappings, including scheduling, running the download via HTTP, writing the file, and cleaning up after completion. The `updateControllerMappings` function updates the in-memory gamepad mappings using either a custom configuration or the downloaded mappings file. Initialization (`init`) and deinitialization (`deinit`) functions manage resources related to gamepad state.
 
+The `schedule` method of `ControllerMappingDownloadTask` schedules the download task, ensuring that only one download is running at a time. The `run` method performs the HTTP GET request to fetch controller mappings from a specified URL and writes them to a file. If an error occurs during the download or file writing process, it logs the error. After successful completion, it updates the in-memory mappings.
+
+The `downloadControllerMappings` function checks if the current timestamp is more than 7 days since the last download or if any joystick present is not recognized as a gamepad, triggering a new download. The `updateControllerMappings` function reads the downloaded mappings file and updates the in-memory mappings using GLFW's `glfwUpdateGamepadMappings` function.
+
+Atomic operations are used to manage the state of running tasks and ensure thread safety. The thread pool (`main.threadPool`) is utilized to execute the controller mapping download task asynchronously.
+
 ## Code Example
 ```zig
 pub fn isControllerConnected() bool {

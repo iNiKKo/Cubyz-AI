@@ -9,7 +9,7 @@
 Added language initialization and translation functionality in `lang.zig`.
 
 ## Explanation
-The change introduces a new module for handling language translations. It initializes language data from assets and provides functions to set and load languages, as well as translate strings based on categories. The reviewer suggests optimizing future queries by caching translations if the language remains unchanged, which could improve performance by reducing redundant lookups.
+The change introduces a new module for handling language translations in `lang.zig`. It initializes language data from assets using a `StringHashMapUnmanaged` to store language entries. The `init` function loads languages into this map and sets the initial language based on settings, switching to English if the specified language is not found. The `setLanguage` function changes the current language by loading the new language data and updating the settings. If a translation for a string is not found, it logs an error and returns the original string. The `standardTranslate` function retrieves translations from the ZonElement structure based on categories like blocks, items, labels, etc. The reviewer suggests optimizing future queries by caching translations if the language remains unchanged, which could improve performance by reducing redundant lookups. Memory allocation is handled using Zig's global allocator for dynamic memory management, and deallocation occurs when changing languages or cleaning up resources.
 
 ## Related Questions
 - What is the purpose of the `init` function in `lang.zig`?

@@ -9,7 +9,16 @@
 Proposes a policy for fixing things that aren't broken, focusing on PRs with clear user benefits or bug fixes.
 
 ## Explanation
-The policy aims to ensure that pull requests (PRs) contribute meaningful value by either fixing confirmed bugs or providing measurable improvements such as compatibility, security, performance, or maintainability. It outlines acceptance criteria for non-broken areas and requires PR descriptions to include detailed evidence and risk analysis. The review process involves labeling, a decision tree, and specific approval requirements based on the nature of the changes. Exceptions are made for critical security fixes, CI/build breakages, and documentation/comment-only changes.
+Proposes a policy for fixing things that aren't broken, focusing on pull requests (PRs) with clear user benefits or bug fixes. The policy aims to ensure PRs contribute meaningful value by either fixing confirmed bugs or providing measurable improvements such as compatibility, security, performance, or maintainability. It outlines acceptance criteria for non-broken areas and requires PR descriptions to include detailed evidence and risk analysis. Specifically, a PR that adjusts a non-broken area must satisfy at least one of the following criteria:
+
+1. **Compatibility Proof:** Expands support (e.g., works on more distros/OSes) with evidence (commands, versions, CI matrix, or user reports).
+2. **Security Improvement:** Fixes or mitigates a known vulnerability (CVE, advisory, threat model, etc.).
+3. **Performance Benefit:** Shows measurable wins (benchmarks, before/after numbers) with no regressions.
+4. **Maintenance Reduction:** Simplifies codepath, removes dead code, reduces dependencies, or aligns with a widely adopted, documented standard.
+
+If none apply → prefer Issue discussion first; PR may be closed as *Low Value / No Evidence*.
+
+The policy defines 'broken' as a feature failing on any supported platform/config or contradicting documented behavior. 'Unbroken' means the feature works as documented on all supported targets. The review process involves labeling (e.g., `needs-evidence`, `compat-improvement`, `perf-claim`, `maintenance`), a decision tree, and specific approval requirements based on the nature of the changes. Exceptions are made for critical security fixes, CI/build breakages, and documentation/comment-only changes.
 
 ## Related Questions
 - What are the acceptance criteria for a PR that adjusts a non-broken area?

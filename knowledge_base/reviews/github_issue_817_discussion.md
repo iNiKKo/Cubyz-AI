@@ -9,14 +9,13 @@
 Discussion on optionally using the `ARB_fragment_shader_interlock` extension for volumetric fog, considering performance and compatibility across different hardware.
 
 ## Explanation
-The discussion revolves around implementing an optional feature to use the `ARB_fragment_shader_interlock` extension in Vulkan for improved volumetric fog rendering. The maintainer initially implemented a prototype which resolved visual artifacts but found that the performance gains were marginal due to additional depth buffer copying costs. The user pointed out that modern AMD GPUs support this extension, suggesting it might be worth revisiting in the future as more devices gain support. The fallback path for unsupported hardware would remain the current implementation without significant visual changes.
+Discussion on optionally using the `ARB_fragment_shader_interlock` extension for volumetric fog, considering performance and compatibility across different hardware. The maintainer implemented a prototype which resolved visual artifacts such as blooming pixel errors when looking at the fog backface and issues with large fog strength or distance. Performance testing showed an increase of ~600 µs in transparent rendering on Intel iGPUs but was offset by a depth buffer copying cost of ~500 µs, resulting in only a marginal overall performance improvement (~5-10%). Due to the small difference and additional code complexity, it was decided not to implement this feature for now. Modern AMD GPUs support this extension on Windows (and Linux), particularly Vulkan #102 on Polaris and later GPUs. However, since device coverage is around 40%, a fallback path remains necessary for older hardware, which would be the current implementation without significant visual changes.
 
 ## Related Questions
-- What is the performance impact of using `ARB_fragment_shader_interlock` on Intel iGPUs?
-- How does the depth buffer copying cost affect the overall performance gain?
-- What are the visual improvements expected from using this extension?
+- What specific performance improvements were observed with `ARB_fragment_shader_interlock`?
+- How does the depth buffer copying affect overall performance?
+- What are the exact visual improvements from using this extension?
 - Why was it decided not to implement this feature despite its benefits?
 - What is the current fallback mechanism for unsupported hardware?
-- How will the implementation ensure compatibility with older GPUs?
 
 *Source: unknown | chunk_id: github_issue_817_discussion*

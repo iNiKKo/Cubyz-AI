@@ -8,7 +8,7 @@
 Discussion about creating a curated world for testing, aiming to include all available blocks and data values.
 
 ## Explanation
-The discussion revolves around the need for a curated test world in Cubyz. The goal is to have a comprehensive environment that includes every block and its possible data values. This would serve as a valuable resource for contributors to ensure thorough testing of new features or changes. The suggestion is inspired by Minecraft's test system, although implementing such a system is considered challenging.
+The discussion revolves around creating a curated test world in Cubyz, aiming to include all available blocks and their possible data values. The goal is to have a comprehensive environment that serves as a valuable resource for contributors to ensure thorough testing of new features or changes. The suggestion is inspired by Minecraft's test system, although implementing such a system is considered challenging. Specific guidelines for updating the curated test world need to be determined to inform contributors when updates are necessary.
 
 ## Related Questions
 - What are the specific guidelines for updating the curated test world?

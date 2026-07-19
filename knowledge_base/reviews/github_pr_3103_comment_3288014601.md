@@ -9,7 +9,25 @@
 The reviewer suggests refactoring the `Axis` struct to distinguish between absolute and relative coordinates using an enum union for better type safety and clarity.
 
 ## Explanation
-The reviewer criticizes the current implementation of the `Axis` struct, which combines both absolute and relative coordinate values into a single structure. This approach requires extensive comments to maintain clarity about the intended use of each value. The reviewer proposes using an enum union within a `Coordinate` struct to explicitly differentiate between absolute and relative coordinates. This change aims to improve type safety and code readability by making the distinction explicit in the type system rather than relying on documentation. However, the reviewer acknowledges that this approach may increase code complexity and is open to compromise solutions involving better naming conventions and additional comments.
+The current implementation of the `Axis` struct combines both absolute and relative coordinate values into a single structure. The `value` field is of type `f64`, where its interpretation depends on whether it represents an absolute value or an offset (relative to some origin). This approach requires extensive comments to maintain clarity about the intended use of each value.
+
+The reviewer criticizes this implementation for squishing relative and absolute coordinates into one construct, leading to potential confusion. They propose using a `Coordinate` struct with an enum union to explicitly differentiate between absolute and relative coordinates. The proposed structure would look like this:
+
+```zig
+struct Coordinate {
+    value: union(enum) {
+        absolute: Absolute,
+        relative: Relative,
+    }
+}
+
+struct Absolute {value: f32}
+struct Relative {offset: f32}
+```
+
+This change aims to improve type safety and code readability by making the distinction explicit in the type system rather than relying on documentation. However, the reviewer acknowledges that this approach may increase code complexity and is open to compromise solutions involving better naming conventions and additional comments.
+
+The reviewer also mentions concerns about how the parser might behave with something like this, noting that unions are treated in quite unique ways. They suggest testing the parser behavior with the proposed changes to ensure compatibility.
 
 ## Related Questions
 - How does the current implementation of `Axis` handle absolute and relative coordinates?

@@ -9,7 +9,7 @@
 Added an `initInline` function to initialize `StructureBuildingBlock` with inline blueprints and improved error handling for missing blueprints.
 
 ## Explanation
-The change introduces a new function `initInline` that initializes a `StructureBuildingBlock` using a blueprint from the cache. If the blueprint is not found, it logs an error and returns an error code. The reviewer suggests having one copied `BlueprintEntry` per `SBB` to avoid reusing blueprints, which was previously discussed but not implemented.
+The change introduces a new function `initInline` that initializes a `StructureBuildingBlock` using a blueprint from the cache. The function takes a string slice `sbbId` as input and returns a `StructureBuildingBlock`. If the blueprint is not found in the `blueprintCache`, it logs an error message with the format `['{s}'] Could not find blueprint '{s}'.` and returns an error code `error.MissingBlueprint`. The function also initializes the `children` field to an empty array. Additionally, the `pickChild` function now checks if the `children` array is empty and logs a warning message with the format `[{}] Attempting to sample child structure from SBB with no children defined.` if there are no children defined. The reviewer suggests having one copied `BlueprintEntry` per `SBB` to avoid reusing blueprints, which was previously discussed but not implemented.
 
 ## Related Questions
 - What is the purpose of the `initInline` function in `StructureBuildingBlock`?

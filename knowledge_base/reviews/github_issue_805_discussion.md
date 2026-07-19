@@ -9,14 +9,17 @@
 Discussion on implementing gravity for blocks like sand and gravel, including considerations for rendering, animation, and transformation upon impact.
 
 ## Explanation
-The discussion revolves around how to implement gravity effects for specific blocks such as sand and gravel. The maintainers propose using block entities to render smooth animations during the fall. There is also a suggestion to use a cellular automaton approach to simulate more complex behaviors like piling into pyramids. The transformation of falling blocks back into solid blocks upon hitting the ground is mentioned as a potential feature.
+The discussion focuses on implementing gravity for blocks like sand and gravel, including detailed conditions under which these blocks fall and their behavior during and after falling.
+
+Specifically, blocks with 'Sand Rotation Mode' will fall if there is no solid block directly underneath them. Blocks with 'Loose Rotation Mode' will fall if they are not connected to an adjacent solid block. The maintainers propose using a block entity system for rendering smooth animations during the fall and suggest using the same mechanism as branches and leaves to detect when sand should fall.
+
+Additionally, there is a suggestion that falling blocks could transform back into solid blocks upon hitting the ground. This transformation would be part of the implementation details discussed in the issue.
 
 ## Related Questions
-- What is the proposed condition for a sand block to fall?
-- How will the smooth animation of falling blocks be implemented?
-- Can you explain the cellular automaton approach mentioned for sand behavior?
-- What is the purpose of converting sand to an entity?
-- How will the transformation of falling blocks back into solid blocks upon impact be handled?
-- What are the potential performance implications of using block entities for gravity effects?
+- What are the conditions for a block with Sand Rotation Mode to start falling?
+- What are the conditions for a block with Loose Rotation Mode to start falling?
+- How will smooth animations during the fall of gravity blocks be implemented?
+- Can you explain how the system used for branches and leaves can detect when sand should fall?
+- What is the proposed mechanism for transforming falling blocks back into solid blocks upon impact?
 
 *Source: unknown | chunk_id: github_issue_805_discussion*

@@ -9,7 +9,7 @@
 The code introduces a new module for parsing world edit patterns in Cubyz, handling block specifications and weights. A critical architectural review highlights a memory leak issue with the `AliasTable` initialization.
 
 ## Explanation
-The added code defines a new module responsible for parsing world edit patterns from strings into a structured format using an `AliasTable`. Each entry in the table represents a block with an associated chance or weight. The reviewer points out a significant memory leak issue where elements are not properly deallocated when the `AliasTable` is initialized, suggesting that manual management of allocated slices might be necessary to prevent this.
+The code introduces a new module for parsing world edit patterns in Cubyz, handling block specifications and weights. Each entry in the table represents a block with an associated chance or weight. The reviewer points out a significant memory leak issue where elements are not properly deallocated when the `AliasTable` is initialized, suggesting that manual management of allocated slices might be necessary to prevent this. The code uses `ListUnmanaged` for temporary storage during pattern initialization, and parsing errors, especially with malformed input strings, are handled by returning specific error codes such as `error.PatternSyntaxError`. The performance implications of using `ListUnmanaged` include reduced overhead compared to managed lists but require careful management to avoid leaks.
 
 ## Related Questions
 - How is the memory leak in AliasTable being addressed?

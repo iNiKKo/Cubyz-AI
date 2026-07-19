@@ -9,7 +9,7 @@
 The issue discusses adding a /reload command to resend assets and the entire world to the client, which would be useful for testing modified assets without restarting Cubyz. The maintainer notes that this is also important for reloading settings changes and biome modifications while in-game.
 
 ## Explanation
-The addition of the /reload command aims to enhance the development and testing process by allowing developers to quickly see changes made to assets without needing to restart the application. This feature is particularly beneficial for iterative development and debugging. The maintainer highlights that this command will also support reloading settings and biomes, which can be crucial for real-time adjustments during gameplay.
+The issue discusses adding a '/reload' command to resend assets and the entire world to the client, which would be useful for testing modified assets without restarting Cubyz. The maintainer notes that this is also important for reloading settings changes and biome modifications while in-game. Specifically, the /reload command will address issues such as cached asset loading on startup and provide a way to quickly test changes made during development or gameplay. This feature aims to enhance iterative development by allowing developers to see immediate effects of their changes without needing to restart the application.
 
 ## Related Questions
 - What is the current state of the /server restart command on headfull mode?

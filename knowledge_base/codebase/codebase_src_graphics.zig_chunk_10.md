@@ -11,6 +11,12 @@ Handles text rendering and shadow effects for graphical display.
 ## Explanation
 This chunk contains functions responsible for rendering text with shadows. The `shadowColor` function calculates a shadow color based on the perceived brightness of the original color, making dark colors white for better readability. The `renderShadow` function duplicates much of the logic in the main render function but applies the shadow effect by adjusting colors and positions. It uses OpenGL to set up rendering states, bind textures, and draw glyphs with modified effects.
 
+The `shadowColor` function calculates the perceived brightness using the formula: `@sqrt(0.299*r*r + 0.587*g*g + 0.114*b*b)`, where `r`, `g`, and `b` are the red, green, and blue components of the color, respectively. If the perceived brightness is less than 64, the shadow color is set to white (`0xffffff`). Otherwise, it is set to black (`0x000000`).
+
+The `renderShadow` function sets up the rendering state by translating and scaling the drawing context. It then iterates over each line of text, calculating the start and end positions for each line segment based on line breaks. For each glyph in a line, it retrieves the corresponding font glyph, applies the shadow color modification to the font effect, and draws the glyph at the adjusted position. The function also handles memory allocation for line wraps using `main.stackAllocator.alloc(f32, self.lineBreaks.items.len - 1)` and ensures that the original rendering state is restored after shadow rendering using `defer` statements.
+
+The OpenGL functions used for setting up the render pipeline include `glGetIntegerv`, `glUniform2f`, `glUniform1f`, `glUniform1ui`, `glActiveTexture`, and `glBindTexture`. Uniform variables are used to pass values such as the scene dimensions, aspect ratio, color, and texture to the shader program.
+
 ## Code Example
 ```zig
 fn shadowColor(color: u24) u24 {

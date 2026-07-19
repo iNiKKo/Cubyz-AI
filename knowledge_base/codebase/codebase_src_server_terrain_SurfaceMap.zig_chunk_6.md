@@ -9,7 +9,7 @@
 Manages terrain surface map fragments, initializing and deinitializing them as needed.
 
 ## Explanation
-This chunk defines functions to initialize and deinitialize the terrain surface map. The `init` function sets up the profile for terrain generation. The `deinit` function clears the cache. The `getOrGenerateFragment` function retrieves or generates a map fragment based on given coordinates and voxel size, using a comparison object and a caching mechanism.
+This chunk defines functions to initialize and deinitialize the terrain surface map. The `init` function sets up the profile for terrain generation by assigning the input `_profile` to a global variable `profile`. The `deinit` function clears the cache. The `getOrGenerateFragment` function retrieves or generates a map fragment based on given coordinates (`wx`, `wy`) and voxel size, using a comparison object initialized with specific bitwise operations to align the coordinates to the nearest map fragment boundary. It then uses this comparison object to find or create a map fragment in the cache using the `findOrCreate` method, which initializes new fragments with the `cacheInit` function if they are not already present.
 
 ## Code Example
 ```zig

@@ -9,7 +9,7 @@
 The `JoinFilter` struct was refactored to remove an unused field.
 
 ## Explanation
-During the review of the `whitelist.zig` file, it was noted that the `JoinFilter` struct contained a field that was no longer needed. The reviewer confirmed this observation and suggested removing the field to clean up the codebase. This refactoring ensures that the struct remains lean and relevant, improving maintainability.
+During the review of the `whitelist.zig` file, it was noted that the `JoinFilter` struct contained a field that was no longer needed. The reviewer confirmed this observation and suggested removing the field to clean up the codebase. This refactoring ensures that the struct remains lean and relevant, improving maintainability. The specific field removed was an unused field that was probably from the times when it had a few more fields.
 
 ## Related Questions
 - What was the purpose of the removed field in the JoinFilter struct?

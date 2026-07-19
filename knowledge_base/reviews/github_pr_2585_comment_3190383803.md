@@ -9,7 +9,20 @@
 A new file `sapling.zig` is introduced, defining structures and dependencies for handling saplings in the server terrain.
 
 ## Explanation
-The review comments suggest that the current implementation of loading structures might be storing them indefinitely in memory. The reviewer recommends deferring the callback loading until all other assets are loaded to optimize memory usage and prevent potential memory leaks. This architectural change aims to improve resource management and ensure efficient use of system resources.
+A new file `sapling.zig` is introduced, defining structures and dependencies for handling saplings in the server terrain. The review comments suggest that the current implementation of loading structures might be storing them indefinitely in memory. The reviewer recommends deferring the callback loading until all other assets are loaded to optimize memory usage and prevent potential memory leaks. This architectural change aims to improve resource management and ensure efficient use of system resources.
+
+The file `sapling.zig` includes the following code:
+```zig
+const std = @import("std");
+
+const main = @import("main");
+const Vec3i = main.vec.Vec3i;
+const sbbGen = @import("../../../server/terrain/simple_structures/SbbGen.zig");
+const SimpleStructureModel = main.server.terrain.biomes.SimpleStructureModel;
+
+structures: main.ZonElement,
+```
+The CRITICAL ARCHITECTURAL REVIEW asks whether the structures can be loaded without storing them forever in memory, suggesting that callback loading should be deferred until after all other assets are loaded.
 
 ## Related Questions
 - How can we ensure that structures are not stored indefinitely in memory?

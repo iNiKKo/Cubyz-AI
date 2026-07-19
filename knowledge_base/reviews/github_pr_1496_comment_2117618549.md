@@ -9,7 +9,7 @@
 A new Zig file `log_new.zig` is added with functions and structures for handling log block rotation and rendering.
 
 ## Explanation
-The code introduces a new module for managing log blocks, including their connections to neighboring blocks and their visual representation. The `LogData` struct manages connection states using bit manipulation. The `rotateQuad` function handles the geometric transformation of block corners based on patterns like lines, bends, and intersections. The reviewer suggests optimizing by mapping half-lines to full lines instead of duplicating functions.
+The code introduces a new module for managing log blocks, including their connections to neighboring blocks and their visual representation. The `LogData` struct manages connection states using bit manipulation, where each bit in the `enabledConnections` field represents whether a specific neighbor is connected. The `rotateQuad` function handles the geometric transformation of block corners based on patterns like lines, bends, and intersections. It rotates the corners by specific angles depending on the pattern and the side of the block. The reviewer suggests optimizing by mapping half-lines to full lines instead of duplicating functions. The `Pattern` union includes different types of patterns such as dot, line, bend, intersection, cross, and cut, each with its own handling logic in the `rotateQuad` function.
 
 ## Related Questions
 - What is the purpose of the `LogData` struct in the log_new.zig file?

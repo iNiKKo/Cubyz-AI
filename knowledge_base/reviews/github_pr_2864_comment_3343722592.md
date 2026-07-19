@@ -9,7 +9,7 @@
 A new file `EntityManager.zig` is introduced in the server directory, defining an entity management system with a sparse set for entities.
 
 ## Explanation
-The EntityManager module initializes a sparse set to manage entities. The reviewer notes that a virtual list should be used instead of a direct memory address assumption due to potential changes in memory addresses during quantum interpolation. This architectural decision ensures better flexibility and safety, preventing issues related to memory address immutability assumptions.
+A new file `EntityManager.zig` is introduced in the server directory, defining an entity management system with a sparse set for entities. The EntityManager module initializes a sparse set to manage entities and uses various utilities such as BinaryReader, BinaryWriter, Blueprint, Mask, NeverFailingAllocator, CircularBufferQueue, and Atomic values. It handles network connections through Connection and ConnectionManager, ensuring thread safety by using synchronization mechanisms from the sync module. The use of NeverFailingAllocator ensures that memory allocation is never interrupted, while CircularBufferQueue provides an efficient way to manage data queues. Blueprint and Mask are used for defining entity blueprints and masks, respectively. Binary data reading and writing are handled using BinaryReader and BinaryWriter. The reviewer notes that a virtual list should be used instead of direct memory address assumptions due to potential changes in memory addresses during quantum interpolation. This architectural decision ensures better flexibility and safety, preventing issues related to memory address immutability assumptions.
 
 ## Related Questions
 - What is the purpose of using a SparseSet for entity management?

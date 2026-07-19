@@ -11,6 +11,8 @@ Replaced `VirtualList` with `SparseSet` in entity management to support pointer 
 ## Explanation
 The change from `VirtualList` to `SparseSet` was made to accommodate the need for storing interpolation results by pointer. The reviewer notes that this architectural decision is critical and implies that the previous setup would require significant additional work if not changed. The use of `SparseSet` allows for more efficient memory usage and better support for sparse data structures, which is beneficial for entity management in games where entities can vary greatly in size and complexity.
 
+Previously, there was no smooth lighting shader used for entities due to the fact that entities are sometimes small and sometimes big, making it a lot of work to still use smooth lighting. Therefore, the non-smooth shader was used for those.
+
 ## Related Questions
 - What is the purpose of replacing `VirtualList` with `SparseSet` in entity management?
 - How does this change impact memory usage and performance?

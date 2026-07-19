@@ -8,14 +8,12 @@
 The issue discusses an inaccurate volume slider that does not correctly represent decibels, with a maintainer defending the current logarithmic scale used for amplitude.
 
 ## Explanation
-The discussion revolves around the discrepancy between the perceived volume change and the slider's percentage representation. The maintainer argues that the current logarithmic scale is correct as it aligns with industry standards and highlights the logarithmic nature of the slider. However, the reporter suggests a different formula (dB = 10log_2(slider %)) to better reflect human perception, especially towards the higher end of the slider range. The maintainer counters that this linear approach in amplitude could lead to usability issues, as small changes at low amplitudes would be more noticeable than at high amplitudes.
+The issue discusses an inaccurate volume slider that does not correctly represent decibels, with a maintainer defending the current logarithmic scale used for amplitude. The maintainer explains that the slider shows % amplitude and that 20 dB corresponds to a factor of 10 in amplitude. This means that the formula used is dB = 10 * log10(amplitude / max_amplitude). The reporter suggests using dB = 10log_2(slider %) for better perceived volume accuracy, especially towards the higher end of the slider range. However, the maintainer counters this by stating that a linear scale in amplitude would create usability issues because small changes at low amplitudes (e.g., from 2% to 3%) are more noticeable than larger changes at high amplitudes (e.g., from 99% to 100%). The logarithmic scale is preferred as it aligns with industry standards and highlights the logarithmic nature of sound perception.
 
 ## Related Questions
 - What is the current formula used to calculate decibels in the volume slider?
 - Why does the maintainer believe the logarithmic scale is correct for amplitude representation?
 - How does the reporter suggest changing the formula for better accuracy?
 - What are the potential issues with using a linear scale for amplitude in audio applications?
-- Can you explain why small changes at low amplitudes are more noticeable than at high amplitudes?
-- How does the logarithmic scale help in showing the nature of the slider?
 
 *Source: unknown | chunk_id: github_issue_641_discussion*

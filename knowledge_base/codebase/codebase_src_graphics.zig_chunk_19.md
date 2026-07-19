@@ -9,7 +9,13 @@
 Defines image handling and fog structures with initialization, deinitialization, file I/O, and rendering utilities.
 
 ## Explanation
-The chunk defines an `Image` struct for managing image data, including default images, initialization, deallocation, reading from files, exporting to files, and accessing pixel colors. It also includes a `Fog` struct for fog effects in the graphics engine. The `block_texture` struct initializes and deinitializes rendering pipelines and textures used for block texturing.
+The chunk defines an `Image` struct for managing image data, including default images, initialization, deallocation, reading from files, exporting to files, and accessing pixel colors. The `defaultImageData` array contains four colors: black (0, 0, 0, 255), magenta (255, 0, 255, 255), magenta (255, 0, 255, 255), and black (0, 0, 0, 255). The `emptyImageData` array contains a single color: transparent black (0, 0, 0, 0). The `whiteImageData` array contains a single color: white (255, 255, 255, 255).
+
+The `Image` struct also includes methods for initializing (`init`) and deallocating (`deinit`) image data, reading from files (`readFromFile`), exporting to files (`exportToFile`), and accessing pixel colors (`getRGB`, `setRGB`). The `readFromFile` function can handle different orientations (asIs or openGl) when loading an image. The `exportToFile` method exports the image to a file using PNG format.
+
+The chunk also defines a `Fog` struct for fog effects in the graphics engine, with fields for fog color (`fogColor`), sky color (`skyColor`), density (`density`), and fog boundaries (`fogLower`, `fogHigher`).
+
+The `block_texture` struct initializes and deinitializes rendering pipelines and textures used for block texturing. The pipeline is initialized with specific shaders, vertex array, and settings. The depth texture is set up with a size of 128x128, using R32F format, nearest filtering, and repeat wrapping.
 
 ## Code Example
 ```zig

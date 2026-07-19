@@ -9,7 +9,7 @@
 A new function `validRecipe` is added to validate recipes based on source and result stacks.
 
 ## Explanation
-The reviewer suggests adding deserialize and serialize methods directly to the `Recipe` struct instead of creating a separate validation function. This approach aims to centralize recipe handling logic within the `Recipe` struct, potentially improving maintainability and reducing code duplication. The reviewer's concern is that the current implementation might lead to scattered validation logic across different parts of the codebase.
+A new function `validRecipe` is added to validate recipes based on source and result stacks. The code diff shows that this function takes an array of `ItemStack` as source stacks and an `ItemStack` as the result stack. The reviewer suggests adding deserialize and serialize methods directly to the `Recipe` struct instead of creating a separate validation function. This approach aims to centralize recipe handling logic within the `Recipe` struct, potentially improving maintainability and reducing code duplication. The reviewer's concern is that the current implementation might lead to scattered validation logic across different parts of the codebase.
 
 ## Related Questions
 - What is the purpose of the `validRecipe` function?

@@ -8,14 +8,11 @@
 The issue discusses the behavior of desert dust particles in windy conditions, including their acceleration, gravity effects, and bouncing mechanics.
 
 ## Explanation
-The discussion revolves around how desert dust particles should behave when wind is implemented. The particles are described to start slow, accelerate to match the wind's speed, be affected by gravity, and have specific rules for disappearing or bouncing upon contact with the ground. The maintainer asks if bouncing results in spawning a new particle.
+The issue discusses the behavior of desert dust particles in windy conditions. Specifically, on windy days, sand will produce a 1x1 pixel particle that starts slow and accelerates to match the wind's speed. The particle is affected by gravity and has specific rules for disappearing or bouncing upon contact with the ground: it has a 50% chance of disappearing or bouncing when touching the ground, and after two bounces, it will have a 100% chance of disappearing. When the particle bounces, it loses some velocity but quickly regains speed from the wind.
 
 ## Related Questions
-- How does the particle's velocity change when it bounces?
 - What is the probability of a particle disappearing after touching the ground?
-- Is there any code that currently simulates wind effects on particles?
-- How does gravity affect the particle's trajectory in windy conditions?
-- Does the particle's behavior differ based on the strength of the wind?
-- Are there any plans to implement additional environmental factors for particle interactions?
+- How many times can a particle bounce before it disappears completely?
+- Does the particle lose any velocity when it bounces and how does it regain speed?
 
 *Source: unknown | chunk_id: github_issue_1525_discussion*

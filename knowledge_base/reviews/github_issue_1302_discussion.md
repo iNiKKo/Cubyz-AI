@@ -9,7 +9,7 @@
 The issue discusses red leaf piles generating with an excessively high data value, causing them to drop a large number of leaves upon breaking.
 
 ## Explanation
-The discussion indicates that the problem arises from old chunks where leaves had an older rotation mode. This suggests a potential compatibility or migration issue between different versions of the game's leaf generation logic.
+The issue discusses red leaf piles of `cubyz:red_leaf_pile` generating in forests with too high a data value, causing them to drop approximately 17 leaves during breaking. The discussion indicates that this problem arises from old chunks where leaves had an older rotation mode. This suggests a potential compatibility or migration issue between different versions of the game's leaf generation logic.
 
 ## Related Questions
 - What is the current rotation mode for leaves in Cubyz?

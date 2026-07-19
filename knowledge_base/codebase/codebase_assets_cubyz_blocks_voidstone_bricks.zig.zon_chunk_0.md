@@ -8,7 +8,7 @@
 Defines configuration for Voidstone Bricks block.
 
 ## Explanation
-This chunk contains a JSON-like configuration object defining properties of the Voidstone Bricks block. It specifies the rotation behavior using 'cubyz:stairs', sets the model to 'cubyz:cube', and assigns the texture path 'cubyz:voidstone/bricks'.
+This chunk contains a JSON-like configuration object defining properties of the Voidstone Bricks block. It specifies three properties: rotation behavior ('cubyz:stairs'), model ('cubyz:cube'), and texture path ('cubyz:voidstone/bricks').
 
 ## Related Questions
 - What is the rotation behavior of Voidstone Bricks?

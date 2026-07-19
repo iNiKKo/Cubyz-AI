@@ -9,7 +9,7 @@
 Added a new function `isPlayerInFluid` to determine if a player is submerged in fluid blocks.
 
 ## Explanation
-The change introduces a new function `isPlayerInFluid` which calculates whether a player is inside fluid blocks by iterating over the bounding box of the player and checking each block's class. The reviewer points out that accessing the model of a block should be done through `main.blocks.meshes.model(block)` instead of directly from the `Block` struct, indicating a potential architectural issue with how block data is accessed.
+The change introduces a new function `isPlayerInFluid` which calculates whether a player is inside fluid blocks by iterating over the bounding box of the player and checking each block's class. The function first determines the minimum and maximum coordinates of the player's bounding box relative to their position. It then iterates over each block within this bounding box, checking if the block is of type `.fluid`. If a block is identified as fluid, its body density is added to a counter. The reviewer points out that accessing the model of a block should be done through `main.blocks.meshes.model(block)` instead of directly from the `Block` struct, indicating a potential architectural issue with how block data is accessed.
 
 ## Related Questions
 - What is the purpose of the `isPlayerInFluid` function?

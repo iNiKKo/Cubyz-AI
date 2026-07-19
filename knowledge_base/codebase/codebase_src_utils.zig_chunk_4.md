@@ -9,7 +9,7 @@
 Defines a generic circular buffer queue with methods for initialization, deinitialization, and various operations like push, pop, peek, and slice retrieval.
 
 ## Explanation
-The chunk defines a `CircularBufferQueue` struct that implements a circular buffer using a fixed-size array. It includes methods for initializing and deinitializing the buffer, as well as adding and removing elements from both ends of the queue. The buffer automatically increases its capacity when full. Methods are provided to peek at elements, retrieve slices, and check if the buffer is empty or has reached its capacity.
+The chunk defines a `CircularBufferQueue` struct that implements a circular buffer using a fixed-size array. It includes methods for initializing and deinitializing the buffer, as well as adding and removing elements from both ends of the queue. The buffer automatically increases its capacity when full by allocating a new array with double the previous size and copying the existing elements to the new array. The `mask` field is used to efficiently calculate the index in the circular buffer using bitwise operations. The `pushBackSlice` method ensures that elements are added without overwriting existing data by checking if there is enough space left in the buffer and increasing its capacity if necessary. The `popFront` and `popBack` methods remove elements from the front and back of the queue, respectively, by updating the `startIndex` or adjusting the length of the buffer. The `allocator` field is used to manage memory allocation for the buffer. The `getAtOffset` method retrieves an element at a specific offset from the start of the buffer, handling out-of-bounds errors by returning an error code.
 
 ## Code Example
 ```zig

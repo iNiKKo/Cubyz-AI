@@ -9,7 +9,12 @@
 The Bloom struct manages the bloom post-processing effect, initializing and deinitializing resources, and rendering the effect in multiple passes.
 
 ## Explanation
-The Bloom struct handles the bloom post-processing effect by managing frame buffers, pipelines, and textures. It initializes resources such as frame buffers and pipelines with specific shaders. The `render` method orchestrates the bloom effect by resizing buffers if necessary, executing three passes (extracting image data and downscaling, first pass, and second pass), and measuring GPU performance for each step. The `deinit` method cleans up all allocated resources. The struct also includes methods to bind replacement images and extract image data with downsampling.
+The Bloom struct manages the bloom post-processing effect by handling frame buffers, pipelines, and textures. It initializes resources such as frame buffers and pipelines with specific shaders. The `render` method orchestrates the bloom effect by resizing buffers if necessary, executing three passes (extracting image data and downscaling, first pass, and second pass), and measuring GPU performance for each step. The `deinit` method cleans up all allocated resources. The struct also includes methods to bind replacement images and extract image data with downsampling.
+
+**Shaders Used:**
+- **First Pass:** Shaders located at "assets/cubyz/shaders/bloom/first_pass.vert" and "assets/cubyz/shaders/bloom/first_pass.frag"
+- **Second Pass:** Shaders located at "assets/cubyz/shaders/bloom/second_pass.vert" and "assets/cubyz/shaders/bloom/second_pass.frag"
+- **Color Extract and Downsample:** Shaders located at "assets/cubyz/shaders/bloom/color_extractor_downsample.vert" and "assets/cubyz/shaders/bloom/color_extractor_downsample.frag"
 
 ## Code Example
 ```zig

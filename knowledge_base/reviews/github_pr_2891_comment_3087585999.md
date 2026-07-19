@@ -9,7 +9,7 @@
 Refactored `getProperty` method in `ProceduralItem` to return a value instead of a pointer, and added a new `getPropertyPtr` method. Addressed concerns about multithreading and potential misuse of pointers.
 
 ## Explanation
-The change refactors the `getProperty` method to return an `f32` value directly rather than a pointer to it. This modification aims to prevent issues related to multithreading, where multiple threads might attempt to modify the same property concurrently without proper synchronization. The addition of `getPropertyPtr` provides a way to obtain a pointer if needed, but this is done with caution to avoid potential misuse and threading issues. The reviewer remains concerned about modifying properties after tool creation, indicating that further safeguards or architectural considerations may be necessary.
+The refactoring in PR #2891 modifies the `getProperty` method in the `ProceduralItem` struct to return an `f32` value directly instead of a pointer. This change is aimed at preventing issues related to multithreading, where multiple threads might attempt to modify the same property concurrently without proper synchronization. The addition of a new `getPropertyPtr` method provides a way to obtain a pointer if needed, but this is done with caution to avoid potential misuse and threading issues. The reviewer remains concerned about modifying properties after tool creation, indicating that further safeguards or architectural considerations may be necessary.
 
 ## Related Questions
 - What are the potential risks of using `getPropertyPtr` in a multithreaded environment?

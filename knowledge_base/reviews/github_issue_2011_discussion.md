@@ -8,7 +8,7 @@
 Discussion on adding support for client-side texture packs without replacing files or placing them directly into world assets.
 
 ## Explanation
-The discussion revolves around enhancing Cubyz to allow users to apply texture packs client-side by introducing a new assets folder. This would enable users to use texture packs without modifying existing files or integrating them into world assets, potentially improving modularity and user experience.
+Discussion on adding support for client-side texture packs without replacing files or placing them directly into world assets. The proposal suggests using a new assets folder, such as `assets/cubyz-minecraft-texture-pack`, to avoid conflicts with existing files and improve modularity and user experience.
 
 ## Related Questions
 - How would the new assets folder be structured to avoid conflicts with existing files?

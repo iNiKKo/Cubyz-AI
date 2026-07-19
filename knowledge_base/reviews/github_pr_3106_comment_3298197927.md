@@ -11,6 +11,16 @@ The gamemode command's usage description and argument parsing have been expanded
 ## Explanation
 The reviewer points out that the current implementation of the gamemode command's argument parsing has a bug where the parser misinterprets inputs like `/gamemode survival @0`. The parser mistakenly assigns `null` to `playerIndex` because it does not recognize 'survival' as a valid player index. This issue arises due to the way the command arguments are being parsed and matched against expected patterns.
 
+The updated usage description now includes multiple forms:
+- `/gamemode <survival/creative>`
+- `/gamemode @playerIndex <survival/creative>`
+- `/gamemode`
+- `/gamemode @playerIndex`
+
+The `Args` union defines two cases for parsing arguments:
+1. `@"/gamemode <playerIndex> <mode>": struct { playerIndex: ?command.PlayerIndex, mode: main.game.Gamemode }`
+2. `@"/gamemode <playerIndex>": struct { playerIndex: ?command.PlayerIndex }`
+
 ## Related Questions
 - How does the parser currently handle inputs like `/gamemode survival @0`?
 - What changes are needed to correctly parse player indices in gamemode commands?

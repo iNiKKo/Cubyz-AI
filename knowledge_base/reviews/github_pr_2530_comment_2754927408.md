@@ -9,7 +9,7 @@
 A new file `permissionLayer.zig` is added to handle permission management in the server, using string hash maps and a custom allocator.
 
 ## Explanation
-The code introduces a new module for managing permissions on the server side. It defines functions like `fillMapHelper`, `fillMap`, and `mapToZon` to populate and convert string hash maps. The `Permissions` struct manages white and black lists using these maps. The reviewer suggests using local arena allocators, which could improve performance by reducing memory fragmentation and allocation overhead.
+A new file `permissionLayer.zig` is added to handle permission management in the server, using string hash maps and a custom allocator. The code introduces functions like `fillMapHelper`, which duplicates a given permission path if it does not already exist in the map; `fillMap`, which populates the map with strings from an array of ZonElement items; and `mapToZon`, which converts a string hash map into a ZonElement array. The `Permissions` struct manages white and black lists using these maps, with each list being a `std.StringHashMapUnmanaged(void)`. During deinitialization, the `deinit` function frees all keys in both the white and black lists and deinits the maps themselves. The reviewer suggests using local arena allocators, which could improve performance by reducing memory fragmentation and allocation overhead.
 
 ## Related Questions
 - What is the purpose of the `fillMapHelper` function?

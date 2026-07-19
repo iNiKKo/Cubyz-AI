@@ -11,6 +11,14 @@ Added specific logic for 'notification' window without handling cleanup, causing
 ## Explanation
 The change introduces hardcoded logic to call `onOpenFn()` for a 'notification' window within the `openWindow` function. This approach is criticized as it violates architectural principles by hardcoding behavior for specific windows. Additionally, it leads to memory leaks because the previous window components are not properly deinitialized using the `onClose` method. The reviewer suggests creating a new function `reopenWindow` that first closes the existing window before reopening it, which would address both the architectural issue and prevent memory leaks.
 
+The code change specifically adds:
+```zig
+if (std.mem.eql(u8, id, "notification")) {
+    window.onOpenFn();
+}
+```
+This hardcoded logic is placed within the `openWindow` function. The reviewer points out that this is not the right place for such specific window handling and suggests a better approach to manage window lifecycle more effectively.
+
 ## Related Questions
 - What is the impact of not calling `onClose` on window components?
 - How can memory leaks be prevented in the `openWindow` function?

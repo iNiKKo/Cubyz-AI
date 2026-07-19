@@ -9,7 +9,8 @@
 The change introduces new fields for tool tags in the BlockDrop struct and adds a method to determine if an item can drop a block based on its tool tags. The reviewer suggests making these fields non-optional to simplify behavior and logic.
 
 ## Explanation
-The update to the BlockDrop struct includes two new optional fields, `forbiddenToolTags` and `allowedToolTags`, which are intended to control the conditions under which a block can be dropped based on the tool used. The reviewer points out that the current implementation differentiates between an empty array (`{}`) and a non-existent field (null), suggesting this distinction is unnecessary and could lead to confusion or bugs. By making these fields non-optional, the reviewer proposes simplifying the logic in several areas, including the method `isDroppedWhenBrokenWithItem` and the loading process from Zon files. This change aims to improve code clarity and reduce potential errors related to null handling.
+**Explanation**
+The update to the `BlockDrop` struct includes two new optional fields, `forbiddenToolTags` and `allowedToolTags`, which are intended to control the conditions under which a block can be dropped based on the tool used. The method `isDroppedWhenBrokenWithItem` checks if an item can drop a block by considering these tags. If `item` is not `.proceduralItem`, it returns true only if `allowedToolTags` is null. The reviewer suggests making these fields non-optional to simplify behavior and logic, proposing that both empty arrays (`{}`) and non-existent fields (null) should behave the same by checking `allowedToolTags.len == 0`. This change aims to improve code clarity and reduce potential errors related to null handling. Additionally, it simplifies the loading process from Zon files by removing the need for optional checks.
 
 ## Related Questions
 - What is the purpose of the `forbiddenToolTags` and `allowedToolTags` fields in the BlockDrop struct?

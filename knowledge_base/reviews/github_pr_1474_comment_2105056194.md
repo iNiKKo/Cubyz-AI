@@ -9,7 +9,7 @@
 The review comments suggest removing fields related to ECS from the User struct and recommends either separating this change into a different PR for closer examination or retaining the interpolation field.
 
 ## Explanation
-The reviewer points out that the changes made to the User struct are not aligned with the Entity Component System (ECS) architecture. They advise either isolating these changes in a separate pull request to thoroughly assess their impact or preserving the interpolation field, possibly by using a stable pointer and manually copying data during updates. This recommendation aims to maintain architectural integrity and prevent unintended side effects.
+The reviewer points out that the changes made to the User struct are not aligned with the Entity Component System (ECS) architecture. Specifically, the fields `player` and `interpolation` have been removed. The constants `simulationSize` and `simulationMask` have also been updated to `2*maxSimulationDistance` and `simulationSize - 1`, respectively. They advise either isolating these changes in a separate pull request to thoroughly assess their impact or preserving the interpolation field, possibly by using a stable pointer and manually copying data during updates. This recommendation aims to maintain architectural integrity and prevent unintended side effects.
 
 ## Related Questions
 - What are the potential consequences of removing the interpolation field from the User struct?

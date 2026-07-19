@@ -11,6 +11,10 @@ Added a new `StructureBuildingBlock` struct with methods for initialization and 
 ## Explanation
 The review introduces a new `StructureBuildingBlock` struct designed to manage structure building blocks in the terrain system. This struct includes methods for initializing from ZON data, retrieving blueprints based on rotation, and picking child structures based on a seed. The reviewer suggests moving a log statement to the start of a loop to improve debugging by providing context when an error occurs during initialization.
 
+The `initFromZon` function handles missing blueprint fields by logging an error and returning an error code. The `pickChild` method includes error handling that logs warnings if the children list is empty or if the child node has an empty structure field. The `registerSBB` function ensures that all structures are registered correctly by asserting that the structure cache is empty before starting registration.
+
+The ZON data parsing involves creating a new `StructureBuildingBlock` instance from ZON elements, initializing child tables from ZON arrays, and resolving child structures using the `childrenToResolve` list. The `childrenToResolve` list stores information about unresolved child nodes to be processed later.
+
 ## Related Questions
 - What is the purpose of the `StructureBuildingBlock` struct?
 - How does the `initFromZon` function handle missing blueprint fields?

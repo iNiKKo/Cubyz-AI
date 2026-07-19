@@ -9,7 +9,24 @@
 This chunk defines utility structures and functions for time difference calculation, mutex management, and binary data reading.
 
 ## Explanation
-The chunk includes a `TimeDifference` struct that tracks the difference between two timestamps using atomic operations. It also provides a `Mutex` wrapper to handle OS-specific locking mechanisms. The `BinaryReader` struct is designed for reading various types of data from a byte slice, including integers, floats, enums, booleans, and variable-length integers. Each method in `BinaryReader` handles specific data types or operations, such as reading vectors, handling endianness, and managing buffer state.
+This chunk defines utility structures and functions for time difference calculation, mutex management, and binary data reading.
+
+The `TimeDifference` struct tracks the difference between two timestamps using atomic operations. The `addDataPoint` method calculates the current time difference and updates the stored difference accordingly. If the current time difference is greater than the stored difference, it increments the stored difference by 1; if it's less, it decrements the stored difference by 1.
+
+The `Mutex` wrapper handles OS-specific locking mechanisms. For Windows, it uses a custom mutex implementation from `utils/Mutex.zig`. For other operating systems, it uses Zig's standard library `std.Io.Mutex`. The `tryLock`, `lock`, and `unlock` methods provide thread synchronization functionality, while the `assertLocked` method asserts that the mutex is locked in debug mode.
+
+The `BinaryReader` struct is designed for reading various types of data from a byte slice, including integers, floats, enums, booleans, and variable-length integers. Each method in `BinaryReader` handles specific data types or operations:
+- `readVec`: Reads a vector of values of type T.
+- `readInt`: Reads an integer of type T, handling cases where the bit size is not a multiple of 8.
+- `readVarInt`: Reads a variable-length integer of type T.
+- `readFloat`: Reads a float of type T, ensuring it's finite.
+- `readEnum`: Reads an enum of type T from its tag type.
+- `readBool`: Reads a boolean value.
+- `readUntilDelimiter`: Reads until a specified delimiter is encountered.
+- `readSlice`: Reads a slice of a specified length.
+- `readSliceWithSize`: Reads a slice with a variable-length integer size.
+
+Each method in `BinaryReader` includes error handling for out-of-bounds, integer overflow, invalid enum tags, and invalid floats.
 
 ## Code Example
 ```zig

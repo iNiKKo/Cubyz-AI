@@ -8,13 +8,13 @@
 The issue proposes increasing the hotbar size from 8 to 12 slots, citing Minecraft and Stardew Valley as examples of larger hotbars that provide more convenience during gameplay.
 
 ## Explanation
-The discussion suggests that a larger hotbar would improve usability by providing more space for tools, weapons, food, and building items. The maintainer agrees with the proposal and sees it aligning well with other inventory-related plans they have in mind.
+The issue proposes increasing the hotbar size from 8 slots to 12 slots, citing Minecraft and Stardew Valley as examples of larger hotbars that provide more convenience during gameplay. The maintainer agrees with this proposal, noting that a larger hotbar would improve usability by providing more space for tools, weapons, food, and building items. This change aligns well with other inventory-related plans the maintainer has in mind.
 
 ## Related Questions
 - What are the current plans for inventory management in Cubyz?
-- How does increasing the hotbar size impact gameplay convenience?
+- How does increasing the hotbar size from 8 to 12 slots impact gameplay convenience?
 - Are there any potential drawbacks to expanding the hotbar size?
-- How does the proposed hotbar size compare to other games?
+- How does the proposed hotbar size of 12 slots compare to other games like Minecraft and Stardew Valley?
 - What is the maintainer's rationale behind agreeing with the proposal?
 - Is there a specific timeline for implementing this change?
 - How will this change affect compatibility with existing save files?

@@ -11,6 +11,20 @@ Defines network protocols for block entity and entity component updates.
 ## Explanation
 This chunk defines two main network protocols: `blockEntityUpdate` and `EntityComponentUpdate`. The `blockEntityUpdate` protocol handles updates to block entities, including receiving updates from the server and sending client data to the server. It involves reading and writing binary data using `utils.BinaryReader` and `utils.BinaryWriter`, managing chunk references with reference counting, and locking mutexes for thread safety. The `EntityComponentUpdate` protocol manages loading and unloading of entity components, also involving binary data serialization and deserialization, and sending messages over secure connections.
 
+### Detailed Explanation
+- **blockEntityUpdate Protocol**
+  - **ID**: The ID for block entity updates is `14`.
+  - **Server Receive**: The server receives block entity updates by reading a position vector (`Vec3i`) and a block type (`u16`). It then retrieves the simulation chunk, locks the mutex, and updates the block entity data if the block type matches. Finally, it sends the updated data to clients.
+  - **Send Client Data Update**: The client sends block entity data updates by writing the position vector, block type, and block entity data to a binary writer and sending it over a secure connection.
+  - **Send Server Data Update**: The server sends block entity data updates to clients by writing the block entity data to a binary writer and broadcasting it to all connected users.
+
+- **EntityComponentUpdate Protocol**
+  - **ID**: The ID for entity component updates is `15`.
+  - **Action Types**: The protocol supports two action types: `unload` (0) and `load` (1).
+  - **Client Receive**: The client receives entity component updates by reading the entity ID, component ID, action type, and additional data if the action type is `load`. It then loads or unloads the component accordingly.
+  - **Unload**: The client sends an unload message for an entity component by writing the entity ID, component ID, and action type to a binary writer and sending it over a secure connection.
+  - **Load**: The client sends a load message for an entity component by writing the entity ID, component ID, version, and component data to a binary writer and sending it over a secure connection.
+
 ## Code Example
 ```zig
 const ActionType = enum(u8) {

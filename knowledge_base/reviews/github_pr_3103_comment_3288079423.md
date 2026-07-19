@@ -9,7 +9,7 @@
 A new `Axis` struct is introduced in the `command.zig` file, with fields for `hasTilde` and `value`. The reviewer notes that while this change won't affect the parser directly, it should be considered architecturally.
 
 ## Explanation
-The introduction of the `Axis` struct suggests a new way to handle axis-related data in commands. The struct includes a boolean field `hasTilde` and a floating-point number `value`. The reviewer's comment indicates that although this change does not immediately impact the parser, it is part of a broader architectural consideration. This could imply that future changes might involve modifying how the parser interacts with or processes axis data.
+The introduction of the `Axis` struct in the `command.zig` file includes two fields: `hasTilde` (a boolean) and `value` (a floating-point number). The `hasTilde` field likely indicates whether a tilde (`~`) is present or used in some context related to the axis. The `value` field represents the actual axis value. The reviewer notes that while this change does not immediately impact the parser, it should be considered architecturally. This could imply that future changes might involve modifying how the parser interacts with or processes axis data.
 
 ## Related Questions
 - What is the purpose of the `hasTilde` field in the `Axis` struct?

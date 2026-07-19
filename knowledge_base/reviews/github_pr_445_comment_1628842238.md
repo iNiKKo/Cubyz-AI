@@ -9,7 +9,7 @@
 Added TaskType enum with chunkgen, lighting, misc values in ThreadPool struct.
 
 ## Explanation
-The change introduces a new TaskType enum within the ThreadPool struct to categorize different types of tasks. The reviewer suggests replacing the C-style length field with `std.enums.directEnumArrayLen` for better compatibility and functionality, such as using `@tagName`. This architectural modification aims to enhance type safety and make the code more Zig-like by leveraging Zig's standard library features.
+The change introduces a new TaskType enum within the ThreadPool struct to categorize different types of tasks. The enum includes three specific task types: `chunkgen`, `lighting`, and `misc`. The reviewer suggests replacing the C-style length field with `std.enums.directEnumArrayLen` for better compatibility and functionality, such as using `@tagName`. This architectural modification aims to enhance type safety and make the code more Zig-like by leveraging Zig's standard library features.
 
 ## Related Questions
 - What is the purpose of the TaskType enum in the ThreadPool struct?

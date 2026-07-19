@@ -9,7 +9,7 @@
 The issue discusses allowing block substitution in blueprints using masks and patterns, with inheritance control and a specific data structure for substitutions. It also explores potential caching strategies and the impact on existing SBBs.
 
 ## Explanation
-The discussion centers around implementing block substitution in blueprints, where blocks can be replaced based on specified mappings. The feature allows for optional inheritance of substitutions to child structures unless explicitly disabled. The use of a list of dictionaries with `new` and `old` keys is proposed to prevent ambiguity. The maintainers consider the implications for existing SBBs and suggest potential caching strategies to avoid duplication, but also note concerns about verbosity and complexity in biome definitions.
+The issue discusses allowing block substitution in blueprints using masks and patterns. Substitution mappings can be specified as part of SBB definitions, where each entry is a dictionary containing `new` and `old` keys to avoid ambiguity caused by plain hash maps. The feature allows for optional inheritance of substitutions to child structures unless explicitly disabled with the `inherit_substitutions = false` setting. The maintainers consider potential caching strategies to avoid duplicating identical blueprints but note concerns about verbosity and complexity in biome definitions. Specifically, they propose using a key structure like `struct { old: []const u8, new: []const u8 }` for caching purposes.
 
 ## Related Questions
 - How does the substitution mapping avoid ambiguity?

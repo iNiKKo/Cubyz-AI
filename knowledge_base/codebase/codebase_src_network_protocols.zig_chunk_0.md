@@ -9,7 +9,7 @@
 Handles network protocol initialization and message reception.
 
 ## Explanation
-This chunk manages the initialization of network protocols and processes incoming messages. It maintains lists of receive functions for both clients and servers, indexed by protocol ID. The `init` function registers protocols with their respective receive handlers. The `onReceive` function checks handshake completion and dispatches incoming data to the appropriate handler based on connection type (client or server). The `reload` struct defines a protocol for informing clients and servers about restarts, including writing necessary data using `BinaryWriter` and sending it over different network channels.
+This chunk manages the initialization of network protocols and processes incoming messages. It maintains lists of receive functions for both clients and servers, indexed by protocol ID. The `init` function registers protocols with their respective receive handlers. The `onReceive` function checks handshake completion and dispatches incoming data to the appropriate handler based on connection type (client or server). The `reload` struct defines a protocol for informing clients and servers about restarts. It includes methods `informClientOfRestart` and `informServerOfRestart`, which write necessary data using `BinaryWriter` and send it over three different network channels: `.secure`, `.lossy`, and `.slow`. Each method writes the connection's restart counter and, in the case of `informClientOfRestart`, also writes the user's state. If there is a duplicate protocol ID during initialization, an error message is logged.
 
 ## Code Example
 ```zig

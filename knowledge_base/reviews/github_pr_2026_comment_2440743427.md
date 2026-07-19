@@ -11,6 +11,8 @@ Added `isToggling` field to `Key` struct with optional pointer type.
 ## Explanation
 The change introduces a new field `isToggling` in the `Key` struct, which is an optional pointer to a boolean. The reviewer suggests that instead of using an optional pointer, it could be more straightforward to store and modify this value directly where keybindings are stored, eliminating the need for a pointer. Additionally, the reviewer proposes adding a checkbox in the keybinds menu for toggling functionality, though they acknowledge this might be more complex.
 
+The reviewer also mentions that storing `isToggling` directly in keybindings could have implications for thread safety and backwards compatibility. They suggest that using an optional pointer might lead to potential memory leaks if not handled properly.
+
 ## Related Questions
 - What is the purpose of the `isToggling` field in the `Key` struct?
 - Why was an optional pointer used for `isToggling` instead of a direct boolean value?

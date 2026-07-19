@@ -8,7 +8,7 @@
 Discussion about adding Vulkan support for macOS using MoltenVK.
 
 ## Explanation
-The discussion revolves around the possibility of adding Vulkan support to Cubyz on macOS. The user suggests using KosmicKrisp, while the maintainer indicates that they have already started setting up MoltenVK but face challenges in getting the engine itself to support Vulkan.
+Discussion about adding Vulkan support to Cubyz on macOS using MoltenVK. The user suggests utilizing KosmicKrisp, while the maintainer indicates that they have already initiated setting up MoltenVK but face challenges in getting the engine itself to support Vulkan due to the requirement of switching to Vulkan or adding support for different rendering backends.
 
 ## Related Questions
 - What is the current status of Vulkan support in Cubyz?

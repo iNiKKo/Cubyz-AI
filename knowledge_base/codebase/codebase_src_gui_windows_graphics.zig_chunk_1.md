@@ -11,7 +11,7 @@ Handles the initialization and cleanup of GUI components for window graphics set
 ## Explanation
 The chunk defines two functions, `onOpen` and `onClose`, which manage the setup and teardown of a vertical list containing various sliders and checkboxes for adjusting graphical settings. The `onOpen` function initializes a `VerticalList` and populates it with different types of sliders and checkboxes based on specific values stored in the `settings` variable. It also sets up callbacks for each component to handle user interactions, including:
 
-- **FPS Limit:** A discrete slider ranging from 0 to 128.
+- **FPS Limit:** A discrete slider over the FPS presets (5 to 480, or 'unlimited'), using `fpsPresetsText` for its labels.
 - **LOD1 Distance:** A discrete slider with a value of `@min(@max(settings.renderDistance, renderDistances[0]) - renderDistances[0], renderDistances.len - 1)` in chunks.
 - **Highest LOD:** If the world is null, a discrete slider ranging from 0 to settings.highestSupportedLod.
 - **Leaves Quality (TODO: requires reload):** A discrete slider with a value of `settings.leavesQuality - leavesQualities[0]`.

@@ -8,7 +8,7 @@
 Discussion about adding right-click functionality for collecting leaves and leaf piles, with suggestions to generalize plant-gathering or extend block collection.
 
 ## Explanation
-The discussion revolves around enhancing the game's interaction mechanics by allowing players to collect leaves and leaf piles using a right-click action. The user proposes integrating this feature into a generic plant-gathering scythe to minimize tool diversity on the hotbar. Alternatively, the maintainer suggests extending the right-click functionality to collect blocks similar to other items. This discussion aims to improve player efficiency and streamline the gameplay experience by reducing the number of tools needed for resource collection.
+The discussion revolves around enhancing the game's interaction mechanics by allowing players to collect leaves and leaf piles using a right-click action. The user proposes integrating this feature into a generic plant-gathering scythe to minimize tool diversity on the hotbar. Alternatively, the maintainer suggests extending the right-click functionality specifically for collecting blocks like leaves and leaf piles similar to other items. This discussion aims to improve player efficiency and streamline the gameplay experience by reducing the number of tools needed for resource collection.
 
 ## Related Questions
 - How can the right-click functionality be implemented for collecting leaves and leaf piles?

@@ -9,7 +9,7 @@
 A thread panic occurs due to an integer part of a floating-point value being out of bounds in the map generation process.
 
 ## Explanation
-The error is triggered during the generation of a map fragment using Perlin noise. The specific line in MapGenV1.zig where the issue arises suggests that the parameters passed to generateSmoothNoise are causing an overflow or underflow, leading to an invalid integer value. This could be due to incorrect scaling or range checks for the floating-point values used in the noise generation process. The maintainer has acknowledged the need for a save file to reproduce and diagnose the issue.
+A thread panic occurs due to an integer part of a floating-point value being out of bounds in the map generation process. The specific error message is 'thread 32856 panic: integer part of floating point value out of bounds'. This issue arises from the function `generateMapFragment` in MapGenV1.zig, specifically at line 76 where PerlinNoise's `generateSmoothNoise` method is called with parameters that cause an overflow or underflow. The maintainer has acknowledged the need for a save file to reproduce and diagnose the issue. The exact error stack trace includes calls to `getOrGenerateFragmentAndIncreaseRefCount`, `run`, and `entryFn`. Additionally, another thread panic occurs at 'thread 5116' with similar symptoms. A save file named Save2.zip is provided to help reproduce this issue.
 
 ## Related Questions
 - What is the range of values expected for `map.pos.wx` and `map.pos.wy` in `generateSmoothNoise`?
@@ -20,7 +20,5 @@ The error is triggered during the generation of a map fragment using Perlin nois
 - Is there a possibility of integer overflow in other parts of the map generation code?
 - What steps should be taken to validate input parameters before calling `generateSmoothNoise`?
 - How does the `voxelSize` parameter influence the noise generation and potential out-of-bounds errors?
-- Are there any known issues with Perlin noise implementations that could lead to this type of error?
-- How can we add logging or debugging information to trace the values causing the overflow?
 
 *Source: unknown | chunk_id: github_issue_1117_discussion*

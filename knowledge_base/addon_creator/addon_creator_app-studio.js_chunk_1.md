@@ -9,14 +9,23 @@
 This chunk defines several functions for handling UI interactions in the Cubyz Addon Creator, including environment change handling, dynamic tag management, and custom confirmation dialogs.
 
 ## Explanation
-The chunk includes functions such as `handleSimpleEnvChange`, which manages changes to environment settings by updating form elements and visibility of sub-settings. The `addDynamicTagPill` and `removeDynamicTagPill` functions manage the addition and removal of dynamic tags in a UI component, with associated styling and event handling for tag removal. The `updateTagSuggestionVisibility` function controls the display of buttons based on active tags. Finally, `showCustomConfirm` provides a custom modal dialog for user confirmation with promise-based resolution.
+**Explanation**
+
+This chunk defines several functions for handling UI interactions in the Cubyz Addon Creator, including environment change handling, dynamic tag management, and custom confirmation dialogs.
+
+- **handleSimpleEnvChange**: This function manages changes to environment settings. If `val` is 'none' or 'support', it sets `rawUpdate.value` to 'none' or 'checkSupportBlocks' respectively and hides the decay sub-settings (`decaySub`). For other values, it sets `rawUpdate.value` to `val` and shows/hides the decay sub-settings based on whether `val` is 'decay'. If `val` is 'decay', it sets `decayReplacement` to 'cubyz:air' and `decayPrevention` to '.log, .branch'. It also marks the form as dirty if not initializing.
+
+- **addDynamicTagPill**: This function adds a dynamic tag pill to a container. It trims, lowercases, and cleans the tag input, checks for duplicates, creates a styled pill element with a remove button, and appends it to the container. The pill's removal event handler removes the pill, updates tag suggestion visibility, and marks the form as dirty.
+
+- **removeDynamicTagPill**: This function removes a dynamic tag pill from a container based on the cleaned tag input.
+
+- **updateTagSuggestionVisibility**: This function controls the display of buttons in a form group. It checks if active tags include certain values and hides or shows corresponding buttons accordingly.
+
+- **showCustomConfirm**: This function provides a custom modal dialog for user confirmation. It sets the title and message, displays the modal, and resolves a promise based on user action (OK or Cancel).
 
 ## Related Questions
-- What does the `handleSimpleEnvChange` function do?
-- How are dynamic tags added and removed in the UI?
-- What is the purpose of the `updateTagSuggestionVisibility` function?
-- How does the custom confirmation dialog work?
-- What event handlers are associated with dynamic tag pills?
-- How is form state marked as dirty when changes occur?
+-  What does the `handleSimpleEnvChange` function do when `val` is 'decay'?
+-  How are dynamic tags cleaned before being added to the UI?
+-  What specific values are set for `decayReplacement` and `decayPrevention` when `val` is 'decay'?
 
 *Source: unknown | chunk_id: addon_creator_app-studio.js_chunk_1*

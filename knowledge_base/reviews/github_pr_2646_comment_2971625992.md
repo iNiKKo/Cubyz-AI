@@ -11,6 +11,13 @@ The reviewer suggests modifying the `Encased` struct and its associated function
 ## Explanation
 The current implementation uses a fixed check range of 5 for the grid, which may not align with the actual tool grid size. The reviewer recommends using `main.items.Tool.craftingGridSideLength` to define the grid size, ensuring consistency and potentially simplifying the logic by removing the need for different offsets. This change aims to improve code clarity and maintainability while avoiding potential discrepancies between the assumed grid size and the actual tool grid dimensions.
 
+The `Encased` struct contains the following fields:
+- `sourceTag`: A tag representing the source material.
+- `conductorTag`: A tag representing the conductor material.
+- `amount`: The amount of conductive material required.
+
+The `getIndexInCheckArray` function calculates the index in a check array based on the relative position and check range. The `satisfied` function checks if the conditions for the `Encased` restriction are met by counting the number of blocks that match the conductor tag within a specified range.
+
 ## Related Questions
 - What is the purpose of the `Encased` struct in the `conductedWith.zig` file?
 - How does the current implementation determine the check range for the grid?

@@ -8,7 +8,7 @@
 Proposes using atomic file updates by writing to temporary files and renaming them to prevent region file corruption due to crashes.
 
 ## Explanation
-The issue report highlights that direct writes to region files can lead to corruption if a crash occurs during the write operation. The proposed solution involves replacing direct writes with writes to temporary files followed by a rename operation to replace the original file. This approach ensures atomicity, preventing partial writes and thus avoiding file corruption. Additionally, the maintainer suggests automatically applying temporary files on restart if they exist, which would require including checksums and possibly timestamps in the files to ensure that newer versions are not overwritten with older ones.
+The issue report highlights that direct writes to region files can lead to corruption if a crash occurs during the write operation. The proposed solution involves replacing direct writes with writes to temporary files followed by a rename operation to replace the original file. This approach ensures atomicity, preventing partial writes and thus avoiding file corruption. Additionally, the maintainer suggests automatically applying temporary files on restart if they exist, which would require including checksums and possibly timestamps in the files to ensure that newer versions are not overwritten with older ones. The primary goal of using atomic file updates in Cubyz is to prevent region file corruption due to crashes.
 
 ## Related Questions
 - What is the primary goal of using atomic file updates in Cubyz?

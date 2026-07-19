@@ -9,7 +9,7 @@
 The code now checks if the item is in the hotbar or inventory and handles it accordingly, avoiding unnecessary inventory copies.
 
 ## Explanation
-The reviewer points out a critical architectural issue where creating a copy of an already open inventory causes unnecessary network traffic. The change iterates through all possible slots (hotbar and inventory) to find the item's location and handle it appropriately without duplicating the inventory.
+The reviewer points out a critical architectural issue where creating a copy of an already open inventory causes unnecessary network traffic. The change iterates through all possible slots (hotbar and inventory) to find the item's location and handle it appropriately without duplicating the inventory. Specifically, if the item is in the hotbar, the selected slot is updated directly. If the item is in the inventory, the code looks for an empty slot in the hotbar first; if no empty slot is found, it uses the currently selected slot. This ensures that network traffic is minimized by avoiding unnecessary inventory copies.
 
 ## Related Questions
 - Why is it important to avoid creating a copy of an already open inventory?

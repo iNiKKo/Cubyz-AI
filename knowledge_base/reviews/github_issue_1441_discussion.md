@@ -8,7 +8,7 @@
 Discussion about the design and implementation of surface caves, including their appearance and potential removal due to changes in furnace design.
 
 ## Explanation
-The discussion revolves around the visual aspects of surface caves, such as using regular stone with clay patches instead of gravel, adding hanging vines or roots, and possibly incorporating plants. The maintainer questions the necessity of clay in caves after the redesign of furnaces, suggesting a potential removal to streamline the game's design.
+Discussion about the design and implementation of surface caves, including their appearance with regular stone and clay patches instead of gravel. Hanging vines or roots are suggested for aesthetic purposes, along with possible incorporation of plants. The maintainer questions the necessity of clay in caves after the redesign of furnaces, suggesting a potential removal to streamline the game's design. Additionally, there is an inconvenience noted due to the lack of a direct link to the original discussion screenshot.
 
 ## Related Questions
 - What are the proposed changes to surface caves?

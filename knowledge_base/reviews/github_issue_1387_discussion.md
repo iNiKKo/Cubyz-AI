@@ -8,7 +8,11 @@
 Discussion about adding a special world type in Cubyz to display all available structure building blocks for easier review and refinement.
 
 ## Explanation
-The discussion revolves around the idea of creating a flat world where all root structure building blocks (SBBs) are pasted with signs describing their paths. The maintainers suggest that this could be seen as a workaround for lacking UI features, such as viewing blueprints from assets or editing structures without manual commands. They propose alternative solutions like 2D or 3D previews, using console commands for void block placement, and integrating selection tools with replace wands to improve convenience and accuracy.
+Discussion about adding a special world type in Cubyz to display all available structure building blocks (SBBs) for easier review and refinement. The maintainers suggest that this could be seen as a workaround for lacking UI features, such as viewing blueprints from assets or editing structures without manual commands. They propose alternative solutions like 2D or 3D previews, using console commands for void block placement, and integrating selection tools with replace wands to improve convenience and accuracy.
+
+The special world type should be a flat world where all root SBBs are pasted with signs describing their paths. Child SBBs should be placed above their respective roots, and contained blueprints should be placed below the root SBBs with frames indicating dimensions. All elements should regenerate upon re-entering the world to allow reuse.
+
+The maintainers suggest that a UI preview would have limitations compared to a 3D display but also note practical issues like looking inside closed structures. They recommend using console commands such as `/mask global !cubyz:air\n/set cubyz:void` or `/replace cubyz:air cubyz:void` for void block placement, and integrating selection tools with replace wands for better precision and convenience.
 
 ## Related Questions
 - What are the advantages and disadvantages of creating a special world type for reviewing structures?

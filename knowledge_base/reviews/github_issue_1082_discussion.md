@@ -9,7 +9,7 @@
 The issue requires rendering backfaces of opaque blocks like lava and void to ensure correct visual effects.
 
 ## Explanation
-The discussion indicates that the requirement for drawing backfaces extends beyond just lava to include void blocks introduced in a previous commit (#1324). This change is necessary to achieve the desired visual appearance, particularly for fog effects around opaque blocks. The maintainer's comment suggests that this fix should be applied uniformly across similar block types to maintain consistency and correctness in rendering.
+The issue requires drawing backfaces for opaque blocks such as lava and void to ensure correct visual effects. The discussion indicates that this requirement extends beyond just lava to include void blocks introduced in commit #1324 (issue #1324). This change is necessary to achieve the desired visual appearance, particularly for fog effects around opaque blocks. The maintainer's comment suggests that this fix should be applied uniformly across similar block types to maintain consistency and correctness in rendering.
 
 ## Related Questions
 - What is the impact of enabling backface rendering on performance?

@@ -11,6 +11,8 @@ The review discusses adding a TexturePile struct to handle rotated models and bl
 ## Explanation
 The reviewer suggests passing a pointer to the state to all virtual functions for flexibility and less memory usage by reusing rotations. The author prefers avoiding this due to long function signatures and the potential for code duplication if using generics. The review highlights that a `u16` can be used as an index into a local list, with minimal memory impact (128 kiB) even if added to every block. The reviewer also notes that Zig's handling of generics could lead to significant compile time overhead.
 
+The addition of TexturePile impacts the overall architecture by introducing a new struct that manages rotated models and block state counts. The expected memory footprint of adding this parameter to every block is 128 kiB, which is considered minimal. Passing a state pointer to all virtual functions would increase flexibility but complicate function signatures and potentially lead to code duplication if using generics.
+
 ## Related Questions
 - What is the impact of passing a state pointer to all virtual functions?
 - How does using a `u16` as an index into a local list affect memory usage?

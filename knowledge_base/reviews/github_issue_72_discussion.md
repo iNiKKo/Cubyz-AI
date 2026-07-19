@@ -9,7 +9,7 @@
 Discussion on adding faster ground-based transportation modes in Cubyz, including automated rail building, ziplines, and player-buildable vehicles.
 
 ## Explanation
-The discussion revolves around enhancing player mobility within the vast world of Cubyz. Users suggest various methods such as automated rail construction tools, ziplines for short-distance travel, and player-buildable vehicles inspired by Minecraft mods like Valkyrien Skies and Create. The maintainers express interest in zip lines but have concerns about allowing uphill travel. There's also a suggestion to implement winch systems using rope for raising and lowering platforms, which could serve as a test for moving blocks while maintaining data integrity.
+Discussion on enhancing player mobility within the vast world of Cubyz through faster ground-based transportation modes. Users suggest various methods including automated rail construction tools, ziplines for short-distance travel, and player-buildable vehicles inspired by Minecraft mods like Valkyrien Skies and Create. The fastest land vehicle proposed is the thrust ssc with a speed of 1,228 km/h (763 mph), followed by the Hypersonic Vehicle. Automated rail construction tools are suggested to differentiate abilities such as creating tunnels and setting rails. Ziplines are proposed for easy setup between two poles with automatic line placement and directional travel based on slope. The maintainers express interest in zip lines but have concerns about allowing uphill travel, suggesting a distance limit between poles instead. Winch systems using rope are proposed for raising and lowering platforms up to 5x5x5 dimensions, connected via pulley blocks positioned above the center block(s) of the platform. A winch block can store rope and control the height of the platform, with manual operation required. The system also allows for automated mining solutions that yield less resources but prevent lag from items in large areas.
 
 ## Related Questions
 - What are the proposed methods for faster ground-based transportation in Cubyz?
@@ -17,6 +17,5 @@ The discussion revolves around enhancing player mobility within the vast world o
 - What concerns do maintainers have regarding zip lines?
 - How is the idea of player-buildable vehicles inspired by Minecraft mods like Valkyrien Skies and Create?
 - What are the proposed features for winch systems using rope in Cubyz?
-- How does the discussion address the issue of maintaining data integrity for moving blocks?
 
 *Source: unknown | chunk_id: github_issue_72_discussion*

@@ -9,7 +9,7 @@
 Refactored 'pressPlace' and 'releasePlace' functions to 'pressSecondary' and 'releaseSecondary', respectively.
 
 ## Explanation
-The change renames the existing block placement functions to more generic secondary action names. The reviewer emphasizes that if renaming is done, it should be applied consistently across related functions (like break functions) and suggests this as a separate pull request to maintain clarity and avoid potential regressions.
+The change renames the existing block placement functions to more generic secondary action names. The reviewer emphasizes that if renaming is done, it should be applied consistently across related functions (like break functions) and suggests this as a separate pull request to maintain clarity and avoid potential regressions. Additionally, the 'pressSecondary' function now includes the call to 'Player.useItem(mods);' in addition to 'Player.placeBlock(mods);'.
 
 ## Related Questions
 - What is the purpose of renaming 'pressPlace' to 'pressSecondary'?

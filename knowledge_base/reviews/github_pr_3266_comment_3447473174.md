@@ -9,7 +9,7 @@
 Added imports for various rotation modules into rotations.zig.
 
 ## Explanation
-This change introduces a series of imports for different rotation handling modules within the Cubyz project. The reviewer suggests maintaining the current structure with multiple `@"mod:name"` entries in a single file, indicating a preference for simplicity and ease of management over potentially splitting these into separate files.
+This change introduces a series of imports for different rotation handling modules within the Cubyz project. The imported modules include `stairs`, `no_rotation`, `texture_pile`, `ore`, `hanging`, `torch`, `decayable`, `direction`, `planar`, `log`, `carpet`, `branch`, `fence`, and `sign`. The reviewer suggests maintaining the current structure with multiple `@"mod:name"` entries in a single file, indicating a preference for simplicity and ease of management over potentially splitting these into separate files.
 
 ## Related Questions
 - What is the purpose of each imported module in rotations.zig?

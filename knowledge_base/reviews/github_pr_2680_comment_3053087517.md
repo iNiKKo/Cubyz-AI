@@ -11,6 +11,8 @@ Refactored `initFromObj` to `init`, changed memory allocation strategy from stac
 ## Explanation
 The change refactors the initialization function for `EntityModel` by renaming it to `init` and modifying its parameters. The original function used the stack allocator for temporary storage of model data, which is now replaced with the global allocator to ensure that the entity model persists for the lifetime of the world. This aligns with the architectural recommendation to use the worldArena for long-lived objects. The addition of a `zon` parameter suggests an integration with zone-specific data or configuration.
 
+The new `init` function takes three parameters: `assetFolder`, `id`, and `zon`. The `assetFolder` is used to specify the folder containing assets, `id` is the unique identifier for the entity model, and `zon` is a ZonElement that likely contains zone-specific data or configuration.
+
 ## Related Questions
 - What is the purpose of changing from stack to global allocator in this refactoring?
 - How does the addition of the `zon` parameter affect the functionality of the `EntityModel` initialization?

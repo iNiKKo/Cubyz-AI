@@ -9,7 +9,7 @@
 Discussion about placing torches on partial blocks, considering performance implications during mesh generation.
 
 ## Explanation
-The discussion revolves around the feasibility of placing torches on various partial blocks by offsetting their models into neighboring blocks. The main concern is the potential impact on meshing performance if the proposal involves checking entire blocks instead of just a thin slice of faces. The maintainer points out that this could significantly increase the number of faces requiring neighbor chunk checks, potentially slowing down the meshing process. The user suggests optimizing the check to only involve bounding boxes, but the maintainer emphasizes that even a simple boolean check would necessitate moving the block's handling to the part of the code responsible for neighbor-chunk interactions.
+Discussion about placing torches on various partial blocks by offsetting their models into neighboring blocks. The main concern is the potential impact on meshing performance if the proposal involves checking entire blocks instead of just a thin slice of faces. With 16 bits of rotation data and 5 sides, only 2 bits per side are available for special cases like branches, slabs, fence post sides, wall sides, etc. However, giving up on placing multiple torches in one block would allow for 4 bits per side. The maintainer points out that the current meshing code checks a very thin slice (roughly 1/32th of all faces) and this already takes up significant time; with the proposal, it would need to check an entire plane of blocks (under 6/32th of the faces), potentially slowing down the process. The user suggests optimizing the check to only involve bounding boxes, but the maintainer emphasizes that even a simple boolean check would necessitate moving the block's handling to the part of the code responsible for neighbor-chunk interactions due to potential updates when the neighbor chunk changes.
 
 ## Related Questions
 - How does the current meshing code handle neighbor chunk interactions?
@@ -17,10 +17,5 @@ The discussion revolves around the feasibility of placing torches on various par
 - Can bounding box checks be optimized further to reduce their impact on meshing performance?
 - What are the architectural implications of moving block handling to the neighbor-chunk interaction section?
 - How does the current implementation ensure that only border faces depend on neighbor chunks?
-- What is the potential for memory leaks in the proposed changes to mesh generation?
-- How can we balance the need for detailed torch placement with performance considerations?
-- What are the implications of increasing the rotation data bits for more precise torch placements?
-- Can the current optimization strategies be adapted to handle larger areas of dependency on neighbor chunks?
-- How does the proposed change affect thread safety in the meshing process?
 
 *Source: unknown | chunk_id: github_issue_2498_discussion*

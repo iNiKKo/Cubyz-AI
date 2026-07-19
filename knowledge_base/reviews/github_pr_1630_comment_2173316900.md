@@ -9,7 +9,7 @@
 A review of the chunk_meshing.zig file discusses renaming imports and proposes namespacing mods to improve code organization.
 
 ## Explanation
-The reviewer points out that using `@""` for imports is against guidelines and suggests a more organized approach by namespacing mods. This would involve creating a manual list of imports for each mod, allowing for better file organization and easier access to mod-specific functionalities. The main concern is the increased complexity in loading assets, but this can be mitigated with an iterator function in assets.zig.
+A review of the chunk_meshing.zig file discusses renaming imports from `gpu_performance_measuring` to `@"cubyz:gpu_performance_measuring"`. The reviewer points out that using `@""` for imports is against guidelines and suggests a more organized approach by namespacing mods. This would involve creating a manual list of imports for each mod, allowing for better file organization and easier access to mod-specific functionalities. For example, instead of importing individual modules with `@"cubyz:..."`, we could import them through a namespace like `pub const cubyz = @import("cubyz/rotation/_list.zig");` and then access specific functionalities using `main.gui.windowlist.cubyz.gpu_performance_measuring`. The main concern is the increased complexity in loading assets, but this can be mitigated with an iterator function in assets.zig. This function would iterate over the list of imports to handle asset loading efficiently. The reviewer also proposes that this approach could be applied to other parts of the codebase and discusses potential trade-offs with backward compatibility.
 
 ## Related Questions
 - How does the proposed namespacing affect code readability?

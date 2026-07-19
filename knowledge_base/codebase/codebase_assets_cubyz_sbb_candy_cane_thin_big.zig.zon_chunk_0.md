@@ -8,7 +8,7 @@
 Defines blueprints and children for a candy cane asset.
 
 ## Explanation
-This chunk defines the structure of a candy cane asset, including its blueprints and child components. The blueprints are identified by specific IDs, and there is one child component with the ID 'cubyz:candy_cane/thin/top/big'.
+This chunk defines the structure of a candy cane asset, including its blueprints and child components. The blueprints are identified by specific IDs: `cubyz:candy_cane/thin/stem/5`, `cubyz:candy_cane/thin/stem/6`, and `cubyz:candy_cane/thin/stem/7`. There are three blueprints defined for this candy cane asset. Additionally, there is one child component with the ID `cubyz:candy_cane/thin/top/big`.
 
 ## Related Questions
 - What are the IDs of the blueprints defined for the candy cane asset?

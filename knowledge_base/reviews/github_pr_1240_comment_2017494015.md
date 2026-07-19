@@ -9,7 +9,7 @@
 Added a new `StructureBuildingBlock` struct with methods to initialize from ZON data, retrieve blueprints, and pick children based on a seed.
 
 ## Explanation
-The change introduces a new struct `StructureBuildingBlock` that encapsulates the logic for handling structure building blocks in the game. The struct includes methods to initialize from ZON data (`initFromZon`), retrieve a blueprint entry based on rotation (`getBlueprint`), and pick a child block based on a seed (`pickChild`). The reviewer notes that while setting an empty alias table (`.red = .{},`) is technically valid, it may not be necessary and could potentially be disallowed or made fatal to prevent unnecessary configurations.
+The change introduces a new struct `StructureBuildingBlock` that encapsulates the logic for handling structure building blocks in the game. The struct includes methods to initialize from ZON data (`initFromZon`), retrieve a blueprint entry based on rotation (`getBlueprint`), and pick a child block based on a seed (`pickChild`). The `initFromZon` method handles missing blueprint fields by logging an error and returning an error code. If an empty children list is encountered in the ZON data, a warning is logged. The reviewer notes that while setting an empty alias table (`.red = .{},`) is technically valid, it may not be necessary and could potentially be disallowed or made fatal to prevent unnecessary configurations. The `pickChild` method uses the seed to select a child block from the alias table. The `blueprintCache` is used to store blueprint entries for quick retrieval.
 
 ## Related Questions
 - What is the purpose of the `StructureBuildingBlock` struct?

@@ -8,7 +8,7 @@
 Defines blueprints and children for a meteorite asset.
 
 ## Explanation
-This chunk defines the structure of a meteorite asset in Cubyz. It specifies the blueprints associated with the meteorite, including its unique identifier. Additionally, it lists the child assets that are part of the meteorite, such as rocks.
+This chunk defines the structure of a meteorite asset in Cubyz. It specifies the blueprints associated with the meteorite, including its unique identifier (`blueprints.id = "cubyz:meteorite/crater/0"`). Additionally, it lists the child assets that are part of the meteorite, such as rocks (`.white = "cubyz:meteorite/rock"`).
 
 ## Related Questions
 - What is the unique identifier for the meteorite crater blueprint?

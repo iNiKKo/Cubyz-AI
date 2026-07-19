@@ -8,7 +8,7 @@
 Discussion about implementing shift-click crafting functionality, with suggestions for alternative keybindings.
 
 ## Explanation
-The issue discusses adding shift-click crafting to allow users to craft as many items as possible based on their input inventory. The user comments highlight the need for faster crafting when dealing with large quantities of materials. The maintainer suggests using Ctrl+click for crafting a full stack and Ctrl+shift+click for crafting and transferring to the inventory, due to existing keybindings for moving items one at a time.
+The issue discusses adding shift-click crafting functionality to allow users to craft as many items as possible based on their input inventory. The user comments highlight the need for faster crafting when dealing with large quantities of materials, such as mining marble and converting it into block variants. The maintainer suggests using Ctrl+click for crafting a full stack and Ctrl+shift+click for crafting and transferring to the inventory due to existing keybindings for moving items one at a time (shift-click).
 
 ## Related Questions
 - What is the current keybinding for moving items one at a time?

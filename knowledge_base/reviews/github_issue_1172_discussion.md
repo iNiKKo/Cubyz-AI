@@ -8,14 +8,11 @@
 Discussion on allowing trees to generate branches and mushrooms, referencing issue #1227.
 
 ## Explanation
-The discussion revolves around enhancing the tree generation system in Cubyz to include branches and mushrooms. The maintainer indicates that this feature is now achievable with changes introduced in pull request #1227.
+Discussion on allowing trees to generate branches and mushrooms, specifically mentioning that mushrooms would also be generated on fallen trees. The maintainer indicates that this feature is now achievable with changes introduced in pull request #1227.
 
 ## Related Questions
 - What changes were made in #1227 to allow trees to generate branches and mushrooms?
 - How does the tree generation system now support mushroom growth on fallen trees?
 - Are there any performance implications from adding branch and mushroom generation to trees?
-- Is there a specific configuration required to enable this new feature in Cubyz?
-- What is the impact of this change on existing world files or save games?
-- How does this enhancement affect the visual diversity of the game environment?
 
 *Source: unknown | chunk_id: github_issue_1172_discussion*

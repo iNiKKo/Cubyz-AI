@@ -11,6 +11,10 @@ Defines VertexArray and SSBO structures for managing OpenGL vertex arrays and sh
 ## Explanation
 The chunk defines two main structures, VertexArray and SSBO, which are used to manage OpenGL resources such as vertex arrays and shader storage buffers. The VertexArray struct includes methods for initialization (init), cleanup (deinit), and binding (bind). It handles the creation of vertex array objects (VAOs), vertex buffer objects (VBOs), and index buffer objects (IBOs) if indices are provided. The SSBO struct provides similar functionality for shader storage buffers, including static and dynamic buffer initialization, data binding, and sub-data updates. Both structures use OpenGL functions to interact with the graphics API.
 
+The VertexArray.init function generates a VAO and VBO, binds them, and uploads vertex data using glBufferData. If indices are provided, it also generates an IBO and uploads index data. The VertexArray.deinit function deletes the VAO, VBO, and IBO if present. The VertexArray.bind function binds the VAO.
+
+The SSBO.init function generates a buffer ID for shader storage buffers. The SSBO.initStatic function initializes a static buffer with provided data. The SSBO.initStaticSize function initializes a static buffer of a specified size without data. The SSBO.deinit function deletes the buffer. The SSBO.bind function binds the buffer to a specific binding point. The SSBO.bufferData function updates the entire buffer with new data. The SSBO.bufferSubData function updates a portion of the buffer with new data. The SSBO.createDynamicBuffer function creates a dynamic buffer of a specified size.
+
 ## Code Example
 ```zig
 pub fn deinit(self: VertexArray) void {

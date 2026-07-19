@@ -8,7 +8,7 @@
 The issue discusses adding more speed to the block step-up mechanic in Cubyz, with a maintainer expressing interest in implementing such physics.
 
 ## Explanation
-The discussion revolves around enhancing the player's movement experience by increasing the speed of block step-ups. The maintainer acknowledges the potential for niche movement mechanics and expresses enthusiasm about adding physics that could make the game more dynamic and engaging.
+The discussion centers around enhancing the player's movement experience by increasing the speed of block step-ups, inspired by mechanics such as ice slipping. The maintainer acknowledges the potential for niche movement mechanics and expresses enthusiasm about adding physics that could make the game more dynamic and engaging. Specifically, the maintainer comments on the possibility of implementing physics similar to those described in the issue report.
 
 ## Related Questions
 - What specific changes are proposed to increase the speed of block step-ups?

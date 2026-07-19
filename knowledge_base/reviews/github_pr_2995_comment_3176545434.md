@@ -9,7 +9,11 @@
 Added a `print` method to `ListUnmanaged` for formatting and appending strings, along with tests for single call, string, and multiple writes scenarios.
 
 ## Explanation
-The change introduces a new method `print` in the `ListUnmanaged` struct, which allows printing formatted strings into the list. The method uses an allocator to handle dynamic memory allocation and resizing of the internal buffer. The reviewer suggests replacing one of the tests with a check for preserving the `items` pointer when using `.initCapacity`, and another test to verify that the `items` pointer does not change when not using `.initCapacity`. This ensures proper behavior of the list's capacity management and memory handling.
+The change introduces a new method `print` in the `ListUnmanaged` struct, which allows printing formatted strings into the list. The method uses an allocator to handle dynamic memory allocation and resizing of the internal buffer. Specifically, it creates a `std.ArrayList` from the list's items and capacity, then uses a writer to format and append the string. After writing, it updates the list's items and capacity with the new buffer values.
+
+The tests for the `print` method include scenarios for single call, string, and multiple writes. The test for a single call checks if the formatted string is correctly appended and if the list's length does not exceed its capacity. The test with a string verifies that a string can be printed without issues. The test for multiple writes ensures that the list retains normal behavior by inserting a single element before each print operation.
+
+The reviewer suggests replacing one of the tests with a check for preserving the `items` pointer when using `.initCapacity`, and another test to verify that the `items` pointer does not change when not using `.initCapacity`. This ensures proper behavior of the list's capacity management and memory handling.
 
 ## Related Questions
 - What is the purpose of the `print` method in `ListUnmanaged`?

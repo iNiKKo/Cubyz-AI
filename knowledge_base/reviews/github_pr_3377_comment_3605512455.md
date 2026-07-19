@@ -11,6 +11,12 @@ The code removes a while loop that samples biomes until a condition is met, whic
 ## Explanation
 The reviewer suggests that removing the while loop will not provide long-term advantages and may be foiled by changes in assets (e.g., #3360) that give the surface cave layer a distinct tag. This change could lead to inconsistent biome generation, as it no longer ensures that the sampled biome meets specific height criteria.
 
+The original code included a while loop that repeatedly sampled biomes until one met the condition `biome.minHeight < biomeWorldPos[2] + CaveBiomeMapFragment.caveBiomeSize*marginMulPositive/marginDiv and biome.maxHeight > biomeWorldPos[2] + CaveBiomeMapFragment.caveBiomeSize*marginMulNegative/marginDiv`. This loop ensured that the sampled biome was within a specific height range relative to the cave layer's position.
+
+Removing this while loop means that the first sampled biome is used regardless of whether it meets the height criteria. This change could result in inconsistent biome generation, especially if the first sampled biome does not meet the required height conditions.
+
+The reviewer also notes that changes like #3360, which give the surface cave layer a distinct tag, could further complicate the biome generation process. These changes might introduce additional requirements or constraints that were not previously considered, potentially leading to even more inconsistent results.
+
 ## Related Questions
 - What is the purpose of the removed while loop in the generate function?
 - How does the removal of the while loop affect biome generation?

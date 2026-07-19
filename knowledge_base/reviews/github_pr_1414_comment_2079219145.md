@@ -9,7 +9,11 @@
 A new `SparseSet` type is introduced in `utils.zig`, designed to manage a collection of entities with unique identifiers. The reviewer suggests considering fixed-size arrays instead of dynamic allocations for performance improvements.
 
 ## Explanation
-The introduction of the `SparseSet` type aims to provide an efficient way to handle sparse data structures, where only a subset of possible indices are used. The reviewer raises concerns about the overhead associated with dynamic memory allocation and suggests using fixed-size arrays if the number of entities is capped at 65536. This would eliminate one level of indirection and simplify the code by removing reallocation logic.
+A new `SparseSet` type is introduced in `utils.zig`, designed to manage a collection of entities with unique identifiers. The `SparseSet` type uses two main components: `dense` and `idType`. The `dense` component is a list that stores the values and their corresponding IDs. The `idType` must be an unsigned integer, and the maximum value for `noValue` is determined by `std.math.maxInt(idType)`.
+
+The `SparseSet` type defines two error types: `idOutOfBounds` and `valueDoesntExist`. These errors are returned when attempting to access a non-existent value or an out-of-bounds ID. The reviewer suggests considering fixed-size arrays instead of dynamic allocations for performance improvements, especially if the number of entities is limited to 65536. This would eliminate one level of indirection and simplify the code by removing reallocation logic.
+
+The `SparseSet` type is intended to handle sparse data structures efficiently, where only a subset of possible indices are used. The use of unsigned integers as identifiers ensures that all IDs are non-negative, which can be beneficial for certain operations.
 
 ## Related Questions
 - What are the potential benefits of using fixed-size arrays instead of dynamic allocations in this context?

@@ -11,6 +11,10 @@ The FlowerPatch struct now uses an array of blocks instead of a single block, al
 ## Explanation
 This change modifies the FlowerPatch struct to support multiple block states by replacing a single block with an array of blocks. The loadModel function is updated to check if the 'blockStates' parameter is present. If it is, and the 'block' field does not already contain a state, it combines the base block string with each state from 'blockStates' to create multiple Block instances. This allows for more flexible generation of flower patches with different block states. The reviewer notes that there might be a better way to handle the array mutation but is unsure of an alternative approach.
 
+Specifically, if the 'blockStates' parameter is present and the 'block' field does not contain a state, the code combines the base block string with each state from 'blockStates' using `std.fmt.allocPrint` to create a new block string. This new block string is then parsed into a Block instance using `main.blocks.parseBlock`. If a block state is already specified in the 'block' field, an error message is logged using `std.log.err`, and the 'blockStates' field is ignored.
+
+The use of `worldArena` and `stackAllocator` ensures efficient memory allocation for the array of blocks. The potential performance implications of using an array of blocks instead of a single block include increased memory usage and slightly more complex logic, but this allows for greater flexibility in generating flower patches with different block states.
+
 ## Related Questions
 - How does the FlowerPatch struct now handle multiple block states?
 - What is the purpose of checking if 'blockStates' is present in the loadModel function?

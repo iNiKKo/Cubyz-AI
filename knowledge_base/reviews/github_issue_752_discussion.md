@@ -8,7 +8,7 @@
 The user reports issues with crafting planks and experiencing crashes while using the workbench menu. The maintainer explains that the crafting system is incomplete and mentions specific bugs related to inventory crafting and item compatibility.
 
 ## Explanation
-The user encounters difficulties in crafting planks, which could be due to an incomplete or improperly implemented crafting system. Additionally, there are reported crashes when interacting with the workbench menu and using certain items like a chisel. The maintainer acknowledges these issues and provides guidance on valid crafting ingredients while noting that some problems are being tracked separately.
+The user reports issues with crafting planks, experiencing crashes while using the workbench menu, and encountering problems when trying to use a chisel in the crafting grid. The maintainer explains that the current crafting system is incomplete due to ongoing back-end changes (tracked under issue #643). Specifically, inventory crafting is temporarily broken and will be fixed soon. Valid crafting ingredients include sticks, diamonds, iron, and cobblestone. Additionally, issues with the workbench menu are tracked in issue #753.
 
 ## Related Questions
 - What are the current limitations of the crafting system in Cubyz?

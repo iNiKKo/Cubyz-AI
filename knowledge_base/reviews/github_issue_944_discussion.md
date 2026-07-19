@@ -11,6 +11,8 @@ Discussion on allowing wildcards in recipe ingredients and transitioning to tags
 ## Explanation
 The discussion revolves around the implementation of wildcard support in recipe ingredients, specifically addressing how to handle new items added by addons. The maintainer suggests using tags instead of wildcards to ensure that newly added items are automatically included in recipes. However, a user points out that this approach doesn't allow specifying amounts for tagged inputs. The maintainer then proposes treating tags as strings without colons, similar to block IDs, and mentions the possibility of automatically creating tags when they are first defined in an item.
 
+To address the issue of specifying amounts with wildcarded tags, the maintainer suggests using a string format like '4 planks' instead. This allows for flexibility in defining the quantity of each input item without needing to modify the recipe itself.
+
 ## Related Questions
 - How does the zon parser handle tags without colons?
 - What is the process for automatically creating tags in Cubyz?

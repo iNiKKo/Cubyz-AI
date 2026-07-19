@@ -9,7 +9,7 @@
 Refactored player eye-related data into a nested struct `EyeData` within the `Player` struct.
 
 ## Explanation
-The change introduces a new nested struct `EyeData` within the `Player` struct to encapsulate all eye-related attributes such as position, velocity, coyote time, step status, collision box, and desired position. This refactoring improves code organization by grouping related data together, enhancing readability and maintainability. The reviewer suggests separating such refactorings into a separate pull request (PR) to adhere to the contributing guidelines on PR size, which likely aims to make code reviews more manageable and focused.
+Refactored player eye-related data into a nested struct `EyeData` within the `Player` struct. The new struct encapsulates several attributes: position (`pos` of type `Vec3d`), velocity (`vel` of type `Vec3d`), coyote time (`coyote` of type `f64`), step status (`step` of type `@Vector(3, bool)`), collision box (`box` of type `collision.Box`), and desired position (`desiredPos` of type `Vec3d`). This refactoring improves code organization by grouping related data together, enhancing readability and maintainability. The reviewer suggests separating such refactorings into a separate pull request (PR) to adhere to the contributing guidelines on PR size, which likely aims to make code reviews more manageable and focused.
 
 ## Related Questions
 - What is the purpose of the `EyeData` struct?

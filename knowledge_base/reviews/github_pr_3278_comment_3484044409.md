@@ -9,7 +9,7 @@
 Added `restartChannelCounter` and `restartCounter` fields to the `Connection` struct.
 
 ## Explanation
-The reviewer suggests adding two new fields, `restartChannelCounter` and `restartCounter`, to the `Connection` struct. The reviewer emphasizes that while these fields may increase the size of the struct by 12 bytes, this is a minor concern compared to potential performance impacts due to cache line alignment issues. The reviewer advises against optimizing for space at the cost of potentially degrading performance.
+The reviewer suggests adding two new fields, `restartChannelCounter` and `restartCounter`, to the `Connection` struct. These fields are initialized to zero and increase the size of the struct by 12 bytes. The reviewer emphasizes that while this may seem like a minor concern, it could potentially degrade performance due to cache line alignment issues. The reviewer advises against optimizing for space at the cost of potentially degrading performance.
 
 ## Related Questions
 - What is the impact of adding these fields on memory usage?

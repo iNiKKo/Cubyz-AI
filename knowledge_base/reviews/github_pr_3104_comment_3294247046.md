@@ -9,7 +9,9 @@
 A new struct named `Biome` is added to `command.zig`, which references a biome from the terrain module. The reviewer suggests renaming this struct to avoid confusion with other `Biome` types.
 
 ## Explanation
-The addition of a new `Biome` struct in `command.zig` introduces a potential naming conflict, as there might already be another `Biome` type defined elsewhere in the codebase. The reviewer highlights that this could lead to confusion, especially when using tools like ZLS (Zig Language Server) that support auto-importing. Renaming the struct would prevent such issues and ensure clarity in code usage.
+The addition of a new `Biome` struct in `command.zig` introduces a potential naming conflict, as there might already be another `Biome` type defined elsewhere in the codebase. Specifically, the new struct is added at line 182 in the file `src/server/command.zig`. The reviewer highlights that this could lead to confusion, especially when using tools like ZLS (Zig Language Server) that support auto-importing. Renaming the struct would prevent such issues and ensure clarity in code usage.
+
+To rename the struct, you can modify the line where it is defined from `pub const Biome = struct {` to something more descriptive, such as `pub const TerrainBiome = struct {`. This change should be made in the file `src/server/command.zig` at line 182.
 
 ## Related Questions
 - What is the purpose of the new `Biome` struct in `command.zig`?

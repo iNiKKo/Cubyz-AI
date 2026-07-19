@@ -9,7 +9,7 @@
 Handles world creation and settings management.
 
 ## Explanation
-This chunk defines the `Settings` struct for managing world configuration, including default gamemode, cheat allowance, testing mode, and seed. It includes methods to load (`fromZon`) and save (`toZon`) these settings from/to a ZonElement format. The `findValidFolderName` function ensures that the world folder name is valid by escaping illegal characters and avoiding duplicates. The `tryCreateWorld` function creates a new world directory, initializes world information, writes it to disk, and sets up necessary subdirectories.
+This chunk defines the `Settings` struct for managing world configuration, including default gamemode (`creative`), cheat allowance (`true`), testing mode (`false`), and seed (`undefined`). It includes methods to load (`fromZon`) and save (`toZon`) these settings from/to a ZonElement format. The `findValidFolderName` function ensures that the world folder name is valid by escaping illegal characters (e.g., replacing non-ASCII characters with `-`) and avoiding duplicates by appending an index if necessary. The `tryCreateWorld` function creates a new world directory, initializes world information, writes it to disk, and sets up necessary subdirectories (`assets`).
 
 ## Code Example
 ```zig

@@ -11,6 +11,13 @@ The review suggests making certain variables private in the MeshSelection struct
 ## Explanation
 The reviewer is concerned about encapsulation and separation of concerns. By making `lastSelectedBlockPos` and `lastDir` public, it exposes internal state that should be managed by the callback function. The reviewer recommends creating a struct to hold `lastPos` and `playerOrientation`, which would then be passed to the callback. This approach enhances modularity and makes the codebase easier to maintain by clearly defining responsibilities between different parts of the system.
 
+The following variables were removed or made public in the MeshSelection struct:
+- `currentBlockProgress`: Removed
+- `currentSwingProgress`: Removed
+- `currentSwingTime`: Removed
+- `lastSelectedBlockPos`: Made public
+- `lastDir`: Made public
+
 ## Related Questions
 - What are the potential benefits of encapsulating `lastSelectedBlockPos` and `lastDir` within the MeshSelection struct?
 - How does passing these variables as parameters to a callback function improve code maintainability?

@@ -9,7 +9,7 @@
 Refactored SelectionCapabilities from a struct with optional capabilities array to a union(enum) with two variants: always and custom. The reviewer suggests moving the allowsSelectionByItem function to the custom variant for clearer distinction between features.
 
 ## Explanation
-The change refactors the SelectionCapabilities structure by converting it into a union(enum) with two variants: 'always' and 'custom'. This modification aims to provide a more explicit separation of capabilities that are always applicable versus those that can be customized. The reviewer recommends placing the allowsSelectionByItem function within the custom variant, which would involve adding conditional checks for each capability. This approach is intended to enhance clarity and maintainability by distinguishing between hardcoded features and configurable ones.
+Refactored SelectionCapabilities from a struct with optional capabilities array to a union(enum) with two variants: always and custom. The 'custom' variant includes a packed struct with a boolean field 'toolEffective'. The reviewer suggests moving the allowsSelectionByItem function to the custom variant for clearer distinction between features, involving conditional checks for each capability. This modification aims to provide a more explicit separation of capabilities that are always applicable versus those that can be customized, enhancing clarity and maintainability by distinguishing between hardcoded features and configurable ones.
 
 ## Related Questions
 - What is the purpose of refactoring SelectionCapabilities to a union(enum)?

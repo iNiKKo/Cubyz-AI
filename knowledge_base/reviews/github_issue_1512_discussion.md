@@ -8,14 +8,12 @@
 The discussion revolves around refining the torch flame particle's animation and appearance to improve its visual appeal and consistency with block textures.
 
 ## Explanation
-The issue focuses on enhancing the torch flame particle by adjusting its animation, velocity, and texture properties. The user suggests that the flame should have a tiny upwards velocity and that the animation frames should be consistent in size (4x4 pixels). The maintainer agrees to adjust the animation accordingly. The discussion also touches on making the particles rarer as the player moves further away from the torch and ensuring they do not spawn during Level of Detail (LOD) rendering.
+The discussion revolves around refining the torch flame particle's animation and appearance to improve its visual appeal. The user suggests that the flame should have a tiny upwards velocity and that each frame of the animation should be consistent in size at 4x4 pixels, matching block textures. The maintainer agrees to adjust the animation accordingly. Additionally, the flame particles become rarer as the player moves further away from the torch and do not spawn during Level of Detail (LOD) rendering.
 
 ## Related Questions
-- What is the current animation speed of the torch flame particle?
+- What is the exact size of each frame in the torch flame particle's animation?
 - How does the flame particle's appearance change with distance from the player?
-- Is there a specific reason for making the particle frames 4x4 pixels in size?
 - Does the updated animation maintain consistency with other block textures?
-- How does the LOD rendering affect the visibility of the torch flame particles?
-- What are the performance implications of adjusting the particle's upwards velocity?
+- How does LOD rendering affect the visibility of the torch flame particles?
 
 *Source: unknown | chunk_id: github_issue_1512_discussion*

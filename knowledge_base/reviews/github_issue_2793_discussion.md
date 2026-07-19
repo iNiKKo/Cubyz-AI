@@ -9,7 +9,7 @@
 Proposes adding a ZON notation for human-readable block data representation, with discussion on verbosity and key stability.
 
 ## Explanation
-The proposal introduces a ZON-based notation to represent block data in a more readable format. The main concern raised is the verbosity of this notation compared to existing binary or numeric representations. For instance, the example given for a branch block using ZON notation is significantly longer than its current representation. Additionally, there are concerns about key stability and ensuring that different orders of keys resolve consistently into the same block data. The maintainer suggests considering alternative notations like comma-separated short values to address these issues.
+The proposal introduces a ZON-based notation to represent block data in a more readable format. The main concern raised is the verbosity of this notation compared to existing binary or numeric representations, as exemplified by `cubyz:branch/birch` which currently uses `0b11`. In contrast, using ZON notation would require writing `cubyz:branch/birch:.{.isConnectedNegZ=true,.isConnectedPosZ=true}`, making it significantly longer and less convenient. Additionally, there are concerns about key stability and ensuring that different orders of keys resolve consistently into the same block data. The maintainer suggests considering alternative notations like comma-separated short values to address these issues, such as `cubyz:branch/birch:+z,-z` or `cubyz:branch/birch:up,down`. These alternatives could be easily parsed and would maintain readability while reducing verbosity.
 
 ## Related Questions
 - What are the potential performance implications of using ZON notation for block data?
@@ -17,6 +17,5 @@ The proposal introduces a ZON-based notation to represent block data in a more r
 - Can you provide examples of how the proposed alternative notations (e.g., comma-separated values) would be parsed?
 - What are the benefits and drawbacks of allowing arbitrary whitespace in block data definitions?
 - How does the addition of ZON notation impact backwards compatibility with existing block data representations?
-- What is the expected impact on parsing tasks when using ZON notation?
 
 *Source: unknown | chunk_id: github_issue_2793_discussion*

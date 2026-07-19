@@ -8,7 +8,22 @@
 Discussion on adding a tags field to biomes to prevent conflicts in pull requests.
 
 ## Explanation
-The issue revolves around the potential for merge conflicts when multiple pull requests add new tags to biome definitions. The maintainer explains that simply adding a `.tags` field does not resolve the conflict if two PRs attempt to modify the same line by adding different tags. Git cannot automatically determine which order to merge these changes, leading to a conflict.
+The issue discusses adding a `.tags` field to biome definitions in order to prevent merge conflicts when multiple pull requests (PRs) add new tags. The maintainer explains that simply introducing a `.tags` field does not resolve the conflict if two PRs attempt to modify the same line by adding different tags, such as:
+
+```diff
+.tags = .{
++    .birch,
+},
+```
+and
+```diff
+.tags = .{
++    .oak,
+},
+```
+Git cannot automatically determine which order to merge these changes, leading to a conflict. The maintainer clarifies that the issue arises from both PRs attempting to add a `.tags` field and then adding specific tags within it, rather than just adding the tags directly.
+
+The discussion highlights the need for careful coordination between contributors when modifying shared data structures like biome tags to avoid such conflicts.
 
 ## Related Questions
 - How can conflicts be resolved when multiple PRs add different tags to the same biome?

@@ -9,7 +9,7 @@
 The SurfaceMap module generates detailed height and biome maps from climate data using registered map generators and a caching mechanism.
 
 ## Explanation
-The SurfaceMap module defines a `MapGenerator` struct with methods for initialization and generating map fragments. It maintains a registry of available map generators, allowing retrieval by ID. The module uses a cache to store generated map fragments efficiently, leveraging an associative memory pool. An interpolation polynomial is defined for smooth transitions between map data points, and a tiled noise structure generates fractal terrain noise for detailed mapping.
+The SurfaceMap module generates detailed height and biome maps from climate data using registered map generators and a caching mechanism. The `MapGenerator` struct includes methods for initialization (`init`) and generating map fragments (`generateMapFragment`). A registry of available map generators, `generatorRegistry`, allows retrieval by ID. The cache size is set to 64 (1 << 6), with an associativity of 8, resulting in a cache size of approximately 400 MiB. An associative memory pool, `memoryPool`, manages the allocation and deallocation of map fragments. The interpolation polynomial, defined in `InterpolationPolynomial`, ensures smooth transitions between map data points using specific coefficients (`a`, `b`, `c`). Tiled noise generation is handled by the `TiledNoise` struct, which uses fractal terrain noise to create detailed mapping.
 
 ## Code Example
 ```zig

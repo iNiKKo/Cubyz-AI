@@ -8,7 +8,7 @@
 Defines default properties for the Chalk block in Cubyz, including tags, health, drops, model, and rotation.
 
 ## Explanation
-This chunk specifies the configuration for the Chalk block within the Cubyz game engine. It sets various properties such as tags (stone and mineable), block health (12), drop behavior (auto-drops), visual model (cube), and rotation type (stairs). These settings define how the Chalk block behaves in-game, including its interactions with mining tools, its appearance, and what items it drops when broken.
+This chunk specifies the configuration for the Chalk block within the Cubyz game engine. It sets various properties such as tags (stone and mineable), block health (12), drop behavior (auto-drops), visual model (`cubyz:cube`), and rotation type (`cubyz:stairs`). These settings define how the Chalk block behaves in-game, including its interactions with mining tools, its appearance, and what items it drops when broken.
 
 ## Related Questions
 - What are the tags assigned to the Chalk block?

@@ -8,7 +8,7 @@
 Discussion about adding a 'lock sign' feature to prevent accidental editing of signs on chests, with considerations for unlocking mechanisms and alternative labeling methods.
 
 ## Explanation
-The discussion revolves around the addition of a 'lock sign' toggle in the Cubyz game to prevent users from accidentally opening the sign UI when interacting with chests. The maintainers express concerns about how to unlock locked signs without breaking them, as well as the potential impact on functionality like copying text from signs. There is also a suggestion for adding labels directly inside the chest UI as an alternative solution. The conversation touches on architectural considerations such as handling multiple block entities per block and user experience improvements.
+Discussion about adding a 'lock sign' feature to prevent accidental editing of signs on chests. The maintainers suggest a way to unlock locked signs without breaking them, but also express concerns about potential impacts on functionality like copying text from signs and the introduction of multiple block entities per block. There is a suggestion for adding labels directly inside the chest UI as an alternative solution. Additionally, a Minecraft mod (clickthrough+) that allows users to click through signs placed on chests unless shift is held is mentioned as a possible solution.
 
 ## Related Questions
 - How can we implement a lock/unlock mechanism for signs without allowing them to be broken?

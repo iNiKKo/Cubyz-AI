@@ -9,7 +9,7 @@
 The `entity_manager.zig` file has been refactored by replacing a `VirtualList` with a `SparseSet`. The reviewer suggests pausing further work on this PR until issues in the interpolation system are resolved.
 
 ## Explanation
-The change involves switching from a `VirtualList` to a `SparseSet` for managing entities. This decision is part of an ongoing architectural review that highlights potential batch processing improvements. However, the reviewer expresses concern about the current state of the interpolation system and advises pausing this PR until those issues are addressed. The reviewer also questions the rationale behind the chosen approach.
+The change involves switching from a `VirtualList` to a `SparseSet` for managing entities. This decision is part of an ongoing architectural review that highlights potential batch processing improvements. However, the reviewer expresses concern about the current state of the interpolation system and advises pausing this PR until those issues are addressed. The reviewer also questions the rationale behind the chosen approach. Additionally, there is a comment suggesting that entities are sometimes small and sometimes big, which means using smooth lighting would require a lot of work. Therefore, a non-smooth shader is used for these entities.
 
 ## Related Questions
 - What are the potential performance implications of switching from VirtualList to SparseSet?

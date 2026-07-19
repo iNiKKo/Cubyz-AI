@@ -8,7 +8,7 @@
 The issue discusses improving chunk loading priority based on player velocity to enhance performance during long falls in multiplayer sessions, particularly on lower-end computers.
 
 ## Explanation
-The discussion revolves around optimizing the game's chunk loading mechanism to prioritize chunks along the player's trajectory when they are falling at high speeds. The maintainers suggest adding the player's velocity to the chunk loading priority calculation, which would not only improve performance during falls but also enhance gameplay when flying at high speeds. The goal is to prevent unnecessary loading of distant chunks that will never be visible and to focus on rendering only the necessary path.
+The issue discusses improving chunk loading priority based on player velocity to enhance performance during long falls in multiplayer sessions, particularly on lower-end computers. The maintainers suggest adding the player's velocity to the chunk loading priority calculation even if it isn't terminal velocity. This would help prevent unnecessary loading of distant chunks that will never be visible and focus rendering only on necessary paths. Additionally, this optimization is intended to enhance gameplay when flying at high speeds without being too specific for falling down scenarios.
 
 ## Related Questions
 - How does the current chunk loading mechanism handle player velocity?

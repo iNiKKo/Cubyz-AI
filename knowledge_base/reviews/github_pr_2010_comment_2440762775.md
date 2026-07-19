@@ -11,6 +11,17 @@ The code introduces a check for cursor blinking using millisecond timestamps and
 ## Explanation
 The change involves modifying the `render` function in the `TextInput.zig` file to include a cursor blinking mechanism. The reviewer highlights the importance of preventing bugs or crashes due to integer overflow by suggesting the use of safe arithmetic operations (`-%`) instead of regular subtraction. This ensures that the comparison between timestamps remains accurate and prevents potential issues with large values.
 
+The specific change in the code is as follows:
+```zig
+const milliTime = std.time.milliTimestamp();
+if(self.lastBlinkTime + blinkDurationMs <= milliTime) {
+```
+The reviewer suggests using safe arithmetic to prevent integer overflow, specifically recommending the use of `-%` instead of regular subtraction. The corrected comparison would look like this:
+```zig
+if(milliTime -% self.lastBlinkTime > blinkDurationMs) {
+```
+This ensures that the comparison between `milliTime` and `self.lastBlinkTime` is performed safely, preventing any potential issues with integer overflow.
+
 ## Related Questions
 - What is the purpose of the `lastBlinkTime` variable in the `TextInput` component?
 - How does the suggested safe arithmetic operation (`-%`) prevent integer overflow?

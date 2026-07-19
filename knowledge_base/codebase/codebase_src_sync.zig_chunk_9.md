@@ -9,7 +9,17 @@
 This chunk defines several inventory-related actions including dropping items, filling from creative mode, and depositing or dropping items.
 
 ## Explanation
-The chunk contains four main structs: Drop, FillFromCreative, FillAnyFromCreative, and DepositOrDrop. Each struct represents a different action related to inventory management in the game. The Drop struct handles dropping items from an inventory slot into the world. The FillFromCreative struct manages filling an inventory slot with items from creative mode. The FillAnyFromCreative struct is responsible for distributing items across multiple inventory slots, also in creative mode. The DepositOrDrop struct deals with depositing items into available inventories or dropping them if no space is available.
+This chunk defines several inventory-related actions including dropping items, filling from creative mode, and depositing or dropping items. The chunk contains four main structs: Drop, FillFromCreative, FillAnyFromCreative, and DepositOrDrop. Each struct represents a different action related to inventory management in the game.
+
+The Drop struct handles dropping items from an inventory slot into the world. It has fields such as `source` (the inventory slot) and `desiredAmount` (the maximum amount of items to drop). The `run` method checks if the item is null, calculates the amount to drop, and then drops it with a cooldown on the server side. The `serialize` method writes the source and desiredAmount to a binary writer, while the `deserialize` method reads these values from a binary reader.
+
+The FillFromCreative struct manages filling an inventory slot with items from creative mode. It has fields such as `dest` (the destination inventory slot), `item`, and `amount`. The `run` method checks if the gamemode is creative, deletes any existing item in the destination slot, and then creates a new item there. The `serialize` method writes the destination, amount, and item to a binary writer, while the `deserialize` method reads these values from a binary reader.
+
+The FillAnyFromCreative struct is responsible for distributing items across multiple inventory slots, also in creative mode. It has fields such as `destinations` (an array of client inventories), `item`, and `amount`. The `init` method initializes the struct with the given parameters. The `finalize` method deinitializes the destinations. The `run` method checks if the gamemode is creative, then puts items into the available inventories or drops them if no space is available. The `serialize` method writes the destinations, amount, and item to a binary writer, while the `deserialize` method reads these values from a binary reader.
+
+The DepositOrDrop struct deals with depositing items into available inventories or dropping them if no space is available. It has fields such as `destinations`, `source`, and `dropLocation`. The `init` method initializes the struct with the given parameters. The `run` method checks if the gamemode is creative, then deposits items into available inventories or drops them if no space is available.
+
+Serialization and deserialization are implemented for all structs to ensure that their state can be saved and loaded correctly.
 
 ## Code Example
 ```zig

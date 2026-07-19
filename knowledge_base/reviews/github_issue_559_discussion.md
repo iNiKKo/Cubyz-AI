@@ -8,7 +8,7 @@
 The discussion revolves around adding a Vertical Rail implementation that could potentially support roller coasters, with the maintainer suggesting it might be better suited for a mod rather than the base game.
 
 ## Explanation
-The issue report describes the addition of a Vertical Rail implementation which could enable roller coaster features. The maintainer comments on the lack of space in the base game for such additions and suggests that vertical rails might still be included as part of another feature (#72), but with no guarantee. This indicates a consideration for maintaining the core game's scope and possibly delegating more specialized features to mods.
+The issue report describes the addition of a Vertical Rail implementation which could enable roller coaster features. The example video link provided is [https://youtu.be/Ps8EvrLu02Y?t=37](https://youtu.be/Ps8EvrLu02Y?t=37). The maintainer comments on the lack of space in the base game for such additions and suggests that vertical rails might still be included as part of another feature (#72), but with no guarantee. This indicates a consideration for maintaining the core game's scope and possibly delegating more specialized features to mods.
 
 ## Related Questions
 - What is the current status of adding roller coasters to Cubyz?

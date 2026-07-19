@@ -9,7 +9,23 @@
 The `ClientInventory` struct manages client-side inventory operations, including initialization, deinitialization, and various item manipulation methods.
 
 ## Explanation
-The `ClientInventory` struct extends the base `Inventory` type with additional functionality specific to client-side inventories. It includes a union enum `ClientType` that categorizes different types of client inventories such as server-shared, creative, crafting, and workbench result inventories. The struct provides methods for initializing and deinitializing inventories, depositing or swapping items between inventories, handling item deposits, taking half of an item stack, distributing items across multiple inventories, dropping items, filling from the creative inventory, crafting items, placing and breaking blocks, and retrieving inventory size, items, stacks, and amounts. Each method interacts with the server through `main.sync.client.executeCommand` for operations that require synchronization with the server.
+The `ClientInventory` struct manages client-side inventory operations, including initialization, deinitialization, and various item manipulation methods. It extends the base `Inventory` type with additional functionality specific to client-side inventories. The struct includes a union enum `ClientType` that categorizes different types of client inventories such as server-shared (`serverShared`), creative (`creative`), crafting (`crafting`), and workbench result (`workbenchResult`) inventories.
+
+The `init` method initializes a `ClientInventory` by creating an instance of the base `Inventory` type and setting its `type`. If the client type is server-shared, it sends an open command to the server. The `deinit` method deinitializes the inventory, sending a close command if connected to the server or manually deinitializing otherwise.
+
+The `depositOrSwap` method deposits or swaps items between inventories. If the destination inventory is creative, it fills from the creative inventory; otherwise, it sends a deposit or swap command to the server. The `deposit` method handles item deposits, filling from the creative inventory if the source is creative, or sending a deposit command to the server otherwise.
+
+The `takeHalf` method takes half of an item stack and places it in another inventory. If the destination inventory is creative, it fills from the creative inventory; otherwise, it sends a take half command to the server. The `distribute` method distributes items across multiple inventories by calculating the amount per inventory and sending deposit commands.
+
+The `depositOrDrop` method deposits items into specified destinations or drops them if no destination is available. The `depositToAny` method deposits items into any of the specified destinations. The `dropStack` method drops an entire stack from an inventory, while the `dropOne` method drops a single item.
+
+The `fillFromCreative` and `fillAmountFromCreative` methods fill inventories with items from the creative inventory, either filling a specific slot or specifying an amount. The `fillAnyFromCreative` method fills any of the specified destinations with items from the creative inventory.
+
+The `craftFrom` method crafts items using a crafting inventory, sending a craft command to the server. The `craftProceduralItem` method crafts procedural items by interacting with the workbench inventory.
+
+The `placeBlock` and `breakBlock` methods handle block placement and breaking, respectively, by interacting with the renderer's mesh selection system.
+
+The struct also provides methods for retrieving inventory size (`size`), items (`getItem`), stacks (`getStack`), and amounts (`getAmount`).
 
 ## Code Example
 ```zig

@@ -9,7 +9,13 @@
 Proposes revamping the Modifier system in the Key struct to use a Tag-based approach for better flexibility and easier addition of new modifier categories.
 
 ## Explanation
-The current Modifier code in the Key struct is described as rigid, with manually added boolean flags for possible modifier keys. The proposed change involves removing these booleans and replacing the Modifiers struct with Tags. This allows for easy addition of new modifier keybinds by simply adding a new statically declared Tag in tag.zig. The system would use `.tag` to declare which modifier a keybind is, and `.requiredModifiers` array of Tags to specify required modifiers for other keybinds. Instead of checking GLFW's mods via the Key's pressed modifiers, the system will check `.modById(<tag>).?.pressed`. The discussion highlights limitations imposed by GLFW and suggests ignoring GLFW's mods and implementing custom toggles for tagged modifiers. It also addresses the need for efficient lookup of tags without constant looping over keybinds, proposing an array-based approach where Tags are enums, and a global accessible hashmap to store the pressed status of each tag.
+The current Modifier code in the Key struct is described as rigid, with manually added boolean flags for possible modifier keys. The proposed change involves removing these booleans and replacing the Modifiers struct with Tags. This allows for easy addition of new modifier keybinds by simply adding a new statically declared Tag in tag.zig.
+
+The system would use `.tag` to declare which modifier a keybind is, and `.requiredModifiers` array of Tags to specify required modifiers for other keybinds. Instead of checking GLFW's mods via the Key's pressed modifiers, the system will check `.modById(<tag>).?.pressed`. The discussion highlights limitations imposed by GLFW and suggests ignoring GLFW's mods and implementing custom toggles for tagged modifiers.
+
+Specific keys that are themselves a modifier include Left Shift, Left Control, Caps Lock. These keybinds have tag defined in constructor in KeyBoard. Keys that consume modifiers check `main.KeyBoard.getModByTag(<tag>).isPressed` to determine the pressed status of these tags.
+
+The system also addresses the need for efficient lookup of tags without constant looping over keybinds, proposing an array-based approach where Tags are enums, and a global accessible hashmap to store the pressed status of each tag. This ensures that when toggled, the boolean is set to true, allowing actions dependent on modifiers to use this globally accessible hashmap.
 
 ## Related Questions
 - How does the proposed Tag-based system handle the addition of new modifier categories?

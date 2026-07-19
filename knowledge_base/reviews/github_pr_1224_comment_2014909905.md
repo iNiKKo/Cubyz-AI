@@ -9,7 +9,7 @@
 Added initialization and deinitialization for `blockPosToEntityDataMap` in the `Chunk` struct.
 
 ## Explanation
-The change introduces a new field `blockPosToEntityDataMap` to the `Chunk` struct, which is initialized in the constructor (`init`) and deinitialized in the destructor (`deinit`). The reviewer suggests that either the unload method should be called or an assertion should be added to ensure that unloading has occurred before deinitialization to prevent memory leaks.
+The change introduces a new field `blockPosToEntityDataMap` to the `Chunk` struct, which is initialized in the constructor (`init`) and deinitialized in the destructor (`deinit`). The reviewer suggests that either the unload method should be called or an assertion should be added to ensure that unloading has occurred before deinitialization to prevent memory leaks. Specifically, the unload method should be called within the `deinit` function to ensure all resources are properly released. Alternatively, an assertion can be added to check if the unload has already been performed before proceeding with deinitialization. The purpose of `blockPosToEntityDataMap` is to map block positions to entity data within the chunk. If unloading is not performed before deinitialization, it can lead to memory leaks as resources may not be fully released. To verify that the unload method is called correctly in practice, developers should ensure that all chunks are properly unloaded before they are deinitialized. There may be other resources that need to be managed similarly in the `Chunk` struct, such as textures or materials, depending on the specific implementation details.
 
 ## Related Questions
 - What is the purpose of `blockPosToEntityDataMap` in the `Chunk` struct?

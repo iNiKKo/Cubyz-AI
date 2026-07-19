@@ -11,6 +11,8 @@ Defines network channel and secure channel structures with methods for initializ
 ## Explanation
 The chunk defines two main structures: `Channel` and `SecureChannel`. The `Channel` structure manages the sending and receiving of data over a network connection, including handling buffers, timestamps, and congestion control. It provides methods for initialization (`init`), deinitialization (`deinit`), connecting to a remote start index (`connect`), receiving data (`receive`), sending data (`send`), receiving confirmation and getting timestamp (`receiveConfirmationAndGetTimestamp`), checking for packet losses (`checkForLosses`), sending the next packet and getting its size (`sendNextPacketAndGetSize`), and retrieving statistics about unconfirmed and queued packets (`getStatistics`). The `SecureChannel` structure extends `Channel` to add SSL/TLS encryption using the mbedTLS library. It includes methods for initialization (`init`) that set up SSL configurations, generate self-signed certificates (for server-side use), and manage secure data transmission.
 
+The `init` method in `SecureChannel` initializes the SSL context and configuration, sets the authentication mode to none, and configures debugging output. For server-side use, it generates a self-signed RSA key pair with 2048 bits and sets up the certificate details. The `sendNextPacketAndGetSize` method in `Channel` constructs a packet by writing the channel ID, sequence index, and data to a binary writer, then sends the packet over the network connection.
+
 ## Code Example
 ```zig
 pub fn receive(self: *Channel, conn: *Connection, start: SequenceIndex, data: []const u8) !ReceiveBuffer.ReceiveStatus {

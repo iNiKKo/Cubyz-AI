@@ -11,6 +11,8 @@ The review suggests adding a deinit function to the Helper struct and renaming t
 ## Explanation
 The reviewer points out that the current implementation lacks a proper cleanup mechanism for the Helper struct, which could lead to resource leaks or other issues. By adding a deinit function, the code ensures that all resources are properly released when the Helper is no longer needed. Additionally, renaming the creation function to 'init' aligns with Zig's convention of using 'init' and 'deinit' for resource management, making the code more intuitive and easier to understand.
 
+The specific line `defer if (helper.isReference) helper.user.decreaseRefCount();` indicates that the Helper struct should decrement a reference count when it is no longer needed. This helps prevent memory leaks by ensuring that resources are properly released. The reviewer also suggests adding a deinit function to the Helper struct to handle any additional cleanup tasks.
+
 ## Related Questions
 - What is the purpose of adding a deinit function to the Helper struct?
 - Why should the creation function be renamed to 'init'?

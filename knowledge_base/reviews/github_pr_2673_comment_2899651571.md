@@ -11,6 +11,8 @@ Refactored entity initialization and deinitialization to separate functions for 
 ## Explanation
 The change involves moving the entity component system initialization and deinitialization logic from the global main function into dedicated client entity init and deinit functions. This refactoring improves code modularity, making it easier to manage and maintain. The reviewer emphasizes that implementation details should not be directly placed in the global main, advocating for a cleaner separation of concerns.
 
+The refactored code uses `@typeInfo` to get information about the `entityComponent` struct's declarations and `@field` to access each field by name. An inline for loop iterates over these declarations, initializing each client component system with `Client.init()`. This approach ensures that all entity components are properly initialized without manually listing each one.
+
 ## Related Questions
 - What is the purpose of separating entity initialization and deinitialization into dedicated functions?
 - How does this refactoring improve code maintainability?

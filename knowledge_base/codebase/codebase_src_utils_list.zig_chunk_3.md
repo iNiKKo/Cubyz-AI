@@ -9,7 +9,12 @@
 The chunk defines a `MultiArray` type and provides methods for managing multiple arrays sequentially in memory.
 
 ## Explanation
-The chunk includes a `MultiArray` struct that holds multiple arrays sequentially. It provides various methods to manage the arrays, such as initialization (`initCapacity`), deallocation (`deinit`), clearing (`clearAndFree`, `clearRetainingCapacity`), ensuring capacity (`ensureCapacity`), adding elements (`addMany`), replacing ranges (`replaceRange`), and accessing specific ranges or all elements (`getRange`, `getEverything`). The struct uses an allocator for memory management and maintains offsets to track the start of each subarray. The chunk also includes tests for the `List.print` method, which demonstrates how the list can be used as a print destination.
+The chunk defines a `MultiArray` type and provides methods for managing multiple arrays sequentially in memory. The struct uses an allocator for memory management and maintains offsets to track the start of each subarray. It includes various methods such as initialization (`initCapacity`), deallocation (`deinit`), clearing (`clearAndFree`, `clearRetainingCapacity`), ensuring capacity (`ensureCapacity`), adding elements (`addMany`), replacing ranges (`replaceRange`), and accessing specific ranges or all elements (`getRange`, `getEverything`). The chunk also includes tests for the `List.print` method, which demonstrate how the list can be used as a print destination. Specifically, the tests include:
+
+- **Test 1**: Demonstrates that calling `list.print` with an empty list results in a new buffer being allocated.
+- **Test 2**: Tests the behavior of `list.print` when initialized with a specific capacity, ensuring the buffer is preserved.
+- **Test 3**: Shows how to use `list.print` with a string format.
+- **Test 4**: Illustrates handling multiple print calls and ensures that the list retains normal list behavior by inserting a single element between prints.
 
 ## Code Example
 ```zig

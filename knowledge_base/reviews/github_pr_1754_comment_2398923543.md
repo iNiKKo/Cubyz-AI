@@ -9,7 +9,13 @@
 Refactored blueprint retrieval logic to handle null cases more gracefully.
 
 ## Explanation
-The change refactors the `placeSbb` function in `SbbGen.zig` to safely handle potential null values returned by `structure.getBlueprint(seed)`. The reviewer suggests using a more concise syntax with `orelse return` to directly check and handle the null case. The use of `*?T` is noted as questionable but retained for now due to lack of an immediate alternative solution.
+The change refactors the `placeSbb` function in `SbbGen.zig` to safely handle potential null values returned by `structure.getBlueprint(seed)`. The reviewer suggests using a more concise syntax with `orelse return` to directly check and handle the null case. Specifically, the suggested code is:
+
+```zig
+const blueprints = &(structure.getBlueprint(seed).* orelse return);
+```
+
+The use of `*?T` is noted as questionable but retained for now due to lack of an immediate alternative solution.
 
 ## Related Questions
 - What is the purpose of the `getBlueprint` method in `SbbGen.zig`?

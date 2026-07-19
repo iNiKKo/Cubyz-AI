@@ -9,7 +9,7 @@
 Defines network protocols for chat and light map requests.
 
 ## Explanation
-This chunk defines two network protocols: 'chat' and 'lightMapRequest'. The 'chat' protocol handles sending and receiving chat messages, ensuring they are valid UTF-8 and within length limits. The 'lightMapRequest' protocol manages requests for light maps, validating input data and queuing tasks for the server to process.
+This chunk defines two network protocols: 'chat' and 'lightMapRequest'. The 'chat' protocol handles sending and receiving chat messages, ensuring they are valid UTF-8 and within length limits. Specifically, client-received messages must be valid UTF-8, and server-received messages must not exceed 10,000 bytes or 1,000 visible characters. The 'lightMapRequest' protocol manages requests for light maps, validating input data and queuing tasks for the server to process. The ID for the chat protocol is 10, and the ID for the light map request protocol is 11.
 
 ## Code Example
 ```zig

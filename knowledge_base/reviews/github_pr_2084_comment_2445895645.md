@@ -9,7 +9,7 @@
 Conditional texture initialization based on headless server mode.
 
 ## Explanation
-The change introduces a conditional check to initialize textures only when the application is not running in headless server mode. This modification addresses potential issues with unnecessary OpenGL calls in headless environments, where rendering operations are not required. The reviewer expresses concern about the proliferation of such conditional checks and suggests that there might be a more elegant way to handle this scenario, possibly by refactoring the deinit and bind methods to also respect the headless mode setting.
+The change introduces a conditional check to initialize textures only when the application is not running in headless server mode. Specifically, the condition `if(!main.settings.launchConfig.headlessServer)` ensures that `c.glGenTextures(1, &self.textureID);` is called only if the application is not in headless mode. This modification addresses potential issues with unnecessary OpenGL calls in headless environments, where rendering operations are not required. The reviewer expresses concern about the proliferation of such conditional checks and suggests that there might be a more elegant way to handle this scenario, possibly by refactoring the deinit and bind methods to also respect the headless mode setting.
 
 ## Related Questions
 - What is the purpose of the conditional check for headless server mode in the TextureArray initialization?

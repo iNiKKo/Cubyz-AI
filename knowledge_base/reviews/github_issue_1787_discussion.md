@@ -8,7 +8,7 @@
 Discussion about a quality-of-life improvement for block placement in Cubyz.
 
 ## Explanation
-The issue revolves around enhancing the user experience during block placement by ensuring accurate and continuous placement while moving. The maintainer clarifies that holding down the 'place' button should allow for precise block placement without skipping any. There is also mention of a 'Masonry Kit' feature, which further refines this behavior to accurately place blocks in sequence, similar to line drawing in GIMP.
+Discussion about a quality-of-life improvement for block placement in Cubyz. The maintainer clarifies that holding down the 'place' button should allow for precise block placement without skipping any blocks, but specifically mentions pressing the place button twice: once to begin and once to end the sequence of blocks. There is also mention of a 'Masonry Kit' feature which further refines this behavior to accurately place blocks in sequence while moving, similar to line drawing in GIMP.
 
 ## Related Questions
 - How does the 'place' button function in Cubyz?

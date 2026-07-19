@@ -9,7 +9,7 @@
 The change modifies the initialization of allocators based on whether the build is for testing or not.
 
 ## Explanation
-The patch introduces conditional initialization for `globalGpa` and `handledGpa`. If the build is for testing (`builtin.is_test`), `globalGpa` is set to `undefined`, and `handledGpa` uses `std.testing.allocator`. Otherwise, it initializes `globalGpa` as a `GeneralPurposeAllocator` with thread safety enabled and wraps it in an `ErrorHandlingAllocator`. The reviewer suggests that the initialization should be done at the declaration of the interface and proposes a globally accessible testing allocator wrapped in the error handling allocator for consistency.
+The change modifies the initialization of allocators based on whether the build is for testing or not. Specifically, if the build is for testing (`builtin.is_test`), `globalGpa` is set to `undefined`, and `handledGpa` uses `std.testing.allocator`. Otherwise, it initializes `globalGpa` as a `GeneralPurposeAllocator` with thread safety enabled and wraps it in an `ErrorHandlingAllocator`. The reviewer suggests that the initialization should be done at the declaration of the interface and proposes a globally accessible testing allocator wrapped in the error handling allocator for consistency.
 
 ## Related Questions
 - What is the purpose of initializing `globalGpa` to `undefined` in a test build?

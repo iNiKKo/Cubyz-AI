@@ -9,7 +9,58 @@
 The `Connection` struct manages secure and lossy data transmission channels for a network connection, handling TLS encryption, packet sending/receiving, and state management.
 
 ## Explanation
+**Explanation**
+
 The `Connection` struct is central to managing network connections in the Cubyz engine. It includes fields for various channels (lossy, secure, slow) and their respective states. The struct provides methods for initializing a connection, sending and receiving data through these channels, and managing TLS encryption using the `SecureChannel`. It also handles connection state transitions, such as handshaking and reconnection logic. The `Connection` struct uses mutexes for thread safety during concurrent operations on shared resources like buffers and states.
+
+**Fields of Connection Struct:**
+- **manager**: Pointer to the `ConnectionManager`.
+- **user**: Optional pointer to the user associated with the connection.
+- **remoteAddress**: Address of the remote endpoint.
+- **bruteforcingPort**: Boolean indicating if port bruteforcing is active.
+- **bruteForcedPortRange**: Range of ports being brute forced.
+- **lossyChannel**: Channel for lossy data transmission.
+- **secureChannel**: Secure channel for encrypted data transmission.
+- **slowChannel**: Channel for slow data transmission.
+- **restartChannelCounter**: Array to count restarts for different channels.
+- **restartCounter**: Counter for total restarts.
+- **hasRttEstimate**: Boolean indicating if RTT estimate is available.
+- **rttEstimate**: Estimated round-trip time in milliseconds.
+- **rttUncertainty**: Uncertainty of the RTT estimate.
+- **lastRttSampleTime**: Timestamp of the last RTT sample.
+- **nextPacketTimestamp**: Timestamp for the next packet to be sent.
+- **nextConfirmationTimestamp**: Timestamp for the next confirmation to be sent.
+- **queuedConfirmations**: Circular buffer queue for queued confirmations.
+- **mtuEstimate**: Estimated maximum transmission unit in bytes.
+- **bandwidthEstimateInBytesPerRtt**: Bandwidth estimate in bytes per RTT.
+- **slowStart**: Boolean indicating if slow start is active.
+- **relativeSendTime**: Relative send time for congestion control.
+- **relativeIdleTime**: Relative idle time for connection management.
+- **connectionState**: Atomic variable representing the current state of the connection (e.g., `awaitingClientConnection`, `connected`).
+- **handShakeState**: Atomic variable representing the current state of the handshake process (e.g., `start`, `complete`).
+- **handShakeWaiting**: Condition for waiting during the handshake process.
+- **lastConnectionTime**: Timestamp of the last connection attempt.
+- **connectionIdentifier**: Unique identifier for the connection from the local side.
+- **remoteConnectionIdentifier**: Unique identifier for the connection from the remote side.
+- **mutex**: Mutex for thread safety during concurrent operations.
+
+**Methods of Connection Struct:**
+- **init**: Initializes a new `Connection` instance with default values and sets up channels.
+
+**SecureChannel Struct Methods:**
+- **receiveThroughTls**: Reads data from the TLS context into an output buffer, handling errors and unlocking the mutex after use.
+- **sendThroughTls**: Writes data to the TLS context, handling errors and unlocking the mutex after use.
+- **receive**: Receives secure data through the `SecureChannel` using the superclass method.
+- **send**: Sends secure data through the `SecureChannel` using the superclass method, asserting that the handshake is over before sending.
+- **receiveConfirmationAndGetTimestamp**: Retrieves a confirmation result for a given start index.
+- **checkForLosses**: Checks for packet losses in the connection and returns the loss status.
+- **sendNextPacketAndGetSize**: Sends the next packet in the connection, considering congestion control, and returns its size if sent.
+- **getStatistics**: Retrieves statistics about unconfirmed and queued packets.
+
+**Enumerations:**
+- **ChannelId**: Enumerates different types of channels (e.g., `lossy`, `secure`).
+- **ConnectionState**: Enumerates possible states of a connection (e.g., `awaitingClientConnection`, `connected`).
+- **HandShakeState**: Enumerates stages of the handshake process (e.g., `start`, `complete`).
 
 ## Code Example
 ```zig

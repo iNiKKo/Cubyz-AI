@@ -9,7 +9,7 @@
 The reviewer suggests removing the line that sets `self.item` to null in the `deinit` function of `ItemStack`, arguing it is unnecessary and potentially unsafe.
 
 ## Explanation
-The reviewer points out that setting `self.item` to null after deinitialization (`item.deinit()`) is not necessary because the struct's fields should be reinitialized before use. The reviewer also suggests using `self.* = undefined;` as a safety measure to ensure all fields are set to an undefined state, which can help catch potential use-after-free errors.
+The reviewer suggests removing the line that sets `self.item` to null in the `deinit` function of `ItemStack`, arguing it is unnecessary and potentially unsafe. Setting `self.item` to null after deinitialization (`item.deinit()`) is not necessary because the struct's fields should be reinitialized before use. The reviewer also suggests using `self.* = undefined;` as a safety measure to ensure all fields are set to an undefined state, which can help catch potential use-after-free errors.
 
 ## Related Questions
 - What is the purpose of setting `self.item` to null in the `deinit` function?

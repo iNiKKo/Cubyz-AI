@@ -8,14 +8,17 @@
 Discussion on crop growth and withering mechanics in Cubyz, focusing on simplicity versus complexity.
 
 ## Explanation
-The discussion revolves around the design of crop mechanics in Cubyz, including growth stages, soil effects, and withering. The maintainer suggests simplifying the system to make it more engaging by removing chance-based withering and ensuring crops do nothing on dry soil. This approach aims to encourage players to actively tend to their farms without adding unnecessary complexity.
+Discussion on crop mechanics in Cubyz, including detailed aspects of growth stages, soil effects, withering, and player engagement. The maintainer proposes simplifying the system to make it more engaging by removing chance-based withering and ensuring crops do nothing on dry soil. This approach aims to encourage players to actively tend to their farms without adding unnecessary complexity. Specific details include: 
+
+- **Growth:** Crops have multiple stages of growth, growing every minute based on soil type (soil-dependent chance). They also suck moisture from the soil every minute (crop-dependent chance), only grow during daylight hours and under glass.
+- **Soil Types:** Mud (most efficient, transforms into Soil), Soil (medium efficiency, transforms into Dirt), Dirt (low efficiency, allows withering), Clay (medium efficiency, faster withering), Aerosoil (low efficiency, no sunlight required but allows withering), Permafrost (very low efficiency, allows withering).
+- **Withering Mechanics:** Mature crops on soil that allow withering will begin to visibly wilt in stages. Only the final few stages prevent successful harvest.
+- **Harvesting:** Crops can be harvested slowly by hand or efficiently using a sickle; mature crops yield 2-3 crops and 0-2 seeds.
 
 ## Related Questions
-- What are the proposed changes to crop withering in Cubyz?
-- How does the maintainer suggest simplifying the crop mechanics?
-- Why is the maintainer concerned about chance-based withering?
-- What is the goal of testing different crop systems in Cubyz?
-- How does the proposed system aim to encourage player engagement?
-- What are the potential benefits of removing chance-based withering from crop mechanics?
+- What are the specific soil types that affect crop growth?
+- How does moisture absorption work for different crops?
+- What happens to crops when planted on dry soil?
+- What is the exact yield of mature crops during harvesting?
 
 *Source: unknown | chunk_id: github_issue_2849_discussion*

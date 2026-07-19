@@ -9,7 +9,19 @@
 The review discusses the architecture of Zig modules in Cubyz, specifically regarding how to determine the deepest level of module imports and what should be registered.
 
 ## Explanation
-The reviewer questions how to identify the deepest level of module imports within the Cubyz project's `rotations.zig` file. They provide an example structure of their `_list.zig` file, which includes nested modules, and ask how to determine if a particular module (like `example`) is the deepest level that should be registered. The reviewer also mentions potential issues with ignoring unparsable files, as this could lead to confusion for mod creators. The discussion centers around architectural decisions related to module registration and parsing within the Zig programming language.
+The reviewer questions how to identify the deepest level of module imports within the Cubyz project's `rotations.zig` file. They provide an example structure of their `_list.zig` file, which includes nested modules, and ask how to determine if a particular module (like `example`) is the deepest level that should be registered. The reviewer also mentions potential issues with ignoring unparsable files, as this could lead to confusion for mod creators.
+
+To address these questions, Cubyz uses a specific approach to determine the deepest level of module imports. Each module can have nested submodules, and the deepest level is identified by checking if a module has any further submodules. If a module does not have any submodules, it is considered the deepest level and should be registered.
+
+Criteria for registering modules include ensuring that only the deepest level modules are registered to avoid conflicts and redundant registrations. Unparsable files are handled by logging an error message and skipping registration of those files. This approach helps mod creators understand why their mods might not be working if a file is unparsable.
+
+The `getFeatures()` function is designed to parse nested modules recursively. It starts from the top-level module and traverses through each submodule until it reaches the deepest level, registering only those modules that do not have further submodules.
+
+Best practices for structuring modules in Cubyz include keeping a clear hierarchy and ensuring that each module has a well-defined purpose. This helps maintain modularity and makes the registration process more intuitive.
+
+To make module registration more intuitive, the architecture could be modified to include a visual representation of the module hierarchy or a tool that automatically identifies the deepest level modules. Unparsable files have a significant impact on the overall mod creation process as they can prevent mods from functioning correctly if not handled properly.
+
+The `rotations.zig` file integrates with other parts of the Cubyz project by providing specific rotation functions and constants for various block types, ensuring that blocks are rendered correctly in the game world.
 
 ## Related Questions
 - How does Cubyz determine the deepest level of module imports?

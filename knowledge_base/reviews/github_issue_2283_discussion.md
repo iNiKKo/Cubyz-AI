@@ -9,7 +9,7 @@
 The goal is to consolidate world settings into a single file, addressing the current spread across multiple files.
 
 ## Explanation
-The discussion revolves around combining three configuration files—world.zig.zon, gamerules.zig.zon, and generatorSettings.zig.zon—into a more unified 'world.Settings' field. This change aims to improve clarity and maintainability of the world settings. However, it also introduces the need to add game version information to world files and establish a migration path for existing configurations. The maintainer notes that this issue might have been mistakenly closed.
+The goal is to consolidate world settings into a single 'world.Settings' field, addressing the current spread across multiple files: world.zig.zon, gamerules.zig.zon, and generatorSettings.zig.zon. This change aims to improve clarity and maintainability of the world settings. However, it also introduces the need to add game version information to world files and establish a migration path for existing configurations. The maintainer notes that this issue might have been mistakenly closed.
 
 ## Related Questions
 - What are the current contents of world.zig.zon, gamerules.zig.zon, and generatorSettings.zig.zon?

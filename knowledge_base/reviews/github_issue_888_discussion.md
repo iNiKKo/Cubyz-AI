@@ -9,7 +9,7 @@
 Discussion about implementing shadow maps in Cubyz to enhance visual depth, with considerations for performance and entity shadows.
 
 ## Explanation
-The discussion revolves around adding shadow maps to Cubyz to improve the visual appearance by casting realistic shadows from sunlight. The maintainers explore various methods, including ambient occlusion and floodfill lighting, but ultimately decide that shadow maps are the most suitable solution due to their potential for enhancing realism without significant performance impact. There is a debate about whether to apply shadow maps to entities, with concerns raised about potential lag and visual quality. The team also discusses adjusting block contrast to improve the overall atmosphere of the game.
+Discussion about implementing shadow maps in Cubyz to enhance visual depth by casting realistic shadows from sunlight. The maintainers explore various methods including ambient occlusion and floodfill lighting but ultimately decide that shadow maps are the most suitable solution due to their potential for enhancing realism without significant performance impact. There is a debate about whether to apply shadow maps to entities, with concerns raised about potential lag and visual quality. The team also discusses adjusting block contrast to improve the overall atmosphere of the game. Specifically, they mention playing with the contrast here: https://github.com/PixelGuys/Cubyz/blob/fd43253f4a66b6e9f5b87b1ce2939d3b12e938bb/src/renderer/chunk_meshing.zig#L145. The maintainers note that removing block contrast entirely can make the game look better due to the lack of colored shading.
 
 ## Related Questions
 - What are the potential performance implications of implementing shadow maps in Cubyz?

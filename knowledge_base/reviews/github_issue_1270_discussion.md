@@ -8,20 +8,12 @@
 The issue proposes adding titanium as a new ore with specific physical and in-game properties.
 
 ## Explanation
-This proposal introduces titanium as a base metal intended for tool heads. It is described as having lower durability than iron but higher hardness, resulting in higher damage output despite lighter weight and faster swing times. The discussion suggests that the game does not currently need additional metals, particularly one that is considered 'boring' like titanium.
+This proposal introduces titanium as a new ore with specific physical and in-game properties. Titanium has a hardness of 6.0 on the Mohs scale, a density of 4.5 g/cm³ at 20°C, and is described as a base metal intended for tool heads. It provides less durability than iron but higher damage due to its greater hardness. Titanium is also lighter than iron, resulting in faster swing times. The ore spawns deeper than iron in veins within the depth range of -? < Z < -?. However, the maintainer's discussion suggests that the game does not currently need additional metals, particularly one considered 'boring' like titanium.
 
 ## Related Questions
-- What are the proposed physical properties of titanium in the game?
-- How does titanium compare to iron in terms of durability and damage?
+- What are the specific physical properties (hardness and density) of titanium in the game?
+- How does titanium compare to iron in terms of durability, damage, weight, and swing time?
 - Why is titanium considered 'boring' by the maintainer?
-- What spawn rules are suggested for titanium ore?
-- Are there any modifiers planned for titanium tools?
-- Is there a specific depth range where titanium spawns?
-- How might the addition of titanium affect gameplay balance?
-- What are the potential implications of adding more metals to the base game?
-- Could titanium be used in crafting different types of tools or weapons?
-- How does the hardness of titanium contribute to its damage output?
-- Are there any concerns about the visual representation of titanium ore in the game?
-- How might the spawn depth of titanium affect player strategy?
+- What is the exact spawn depth range for titanium ore?
 
 *Source: unknown | chunk_id: github_issue_1270_discussion*

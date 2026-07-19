@@ -8,7 +8,7 @@
 The issue discusses improving copper tools by increasing their durability or power instead of nerfing stone.
 
 ## Explanation
-The discussion revolves around the balance of tool materials in a game. The reporter suggests that copper tools break too quickly and should be made more durable or powerful. The maintainer agrees, noting that this issue might apply to other metals as well, suggesting a potential need to adjust the durability ceiling for all metal tools.
+The issue discusses improving copper tools by increasing their durability or power instead of nerfing stone. The reporter suggests that copper tools break too quickly and should be made more durable or powerful. The maintainer agrees, noting that the current durability ceiling for metal tools is at 1500, which they consider suboptimal. This issue might apply to other metals as well, suggesting a potential need to adjust the durability ceiling for all metal tools.
 
 ## Related Questions
 - What is the current durability ceiling for metal tools?

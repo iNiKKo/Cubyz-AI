@@ -11,6 +11,17 @@ Refactored the SelectionCapabilities struct to use a union(enum) with a packed s
 ## Explanation
 The change refactors the SelectionCapabilities struct from using an optional slice of capabilities to a union(enum) that includes a packed struct. This allows for more granular control over individual capabilities, such as tool effectiveness. The reviewer suggests ensuring that checks are not skipped by properly structuring the conditional logic within the `allowsSelectionByItem` method.
 
+The original Capability enum has been replaced with a packed struct inside the union(enum). The packed struct contains a single boolean field `toolEffective`. The `allowsSelectionByItem` method now checks if the `BackingType` is non-zero and then evaluates the `toolEffective` field. If `toolEffective` is true, it further checks if the item is a procedural item and if it is effective on the block.
+
+The reviewer suggests structuring the conditional logic to ensure that no checks are skipped. Specifically, the condition should be structured as follows:
+```zig
+if (item == .proceduralItem and item.proceduralItem.isEffectiveOn(block)) {
+    return true;
+}
+```
+
+This refactoring impacts backwards compatibility with existing code because the structure of SelectionCapabilities has changed. The use of a packed struct may also have performance implications, as it can be more memory-efficient but may require additional processing to access its fields.
+
 ## Related Questions
 - What is the purpose of using a union(enum) with a packed struct in SelectionCapabilities?
 - How does the refactored `allowsSelectionByItem` method ensure that checks are not skipped?

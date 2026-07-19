@@ -9,7 +9,13 @@
 This chunk manages block registration and properties in the Cubyz voxel engine, including friction, bounciness, density, and other physical attributes.
 
 ## Explanation
-The chunk defines several arrays to store various properties of blocks, such as friction, bounciness, density, and terminal velocity. It also includes a string hash map for reverse indexing block IDs. The `register` function handles the registration of new blocks by parsing ZonElement data, setting default values if necessary, and updating the global state with the new block's properties. The `loadBlockDrop` function parses drop configurations from ZonElement data, creating a list of possible drops for each block. The `registerBlockDrop` and `registerLodReplacement` functions are helper methods to register block-specific behaviors like item drops and level-of-detail replacements.
+This chunk manages block registration and properties in the Cubyz voxel engine, including friction, bounciness, density, and other physical attributes. It defines several arrays to store various properties of blocks, such as `_friction`, `_bounciness`, `_density`, and `_terminalVelocity`. Each array has a size of `maxBlockCount` and is initialized with undefined values. The chunk also includes a string hash map called `reverseIndices` for reverse indexing block IDs.
+
+The `register` function handles the registration of new blocks by parsing ZonElement data, setting default values if necessary, and updating the global state with the new block's properties. For example, it sets `_friction` to 20, `_bounciness` to 0.0, `_density` to `main.physics.airDensity`, `_terminalVelocity` to 90, and `_mobility` to 1.0 if these values are not provided in the ZonElement data.
+
+The `loadBlockDrop` function parses drop configurations from ZonElement data, creating a list of possible drops for each block. Each drop configuration includes items that can be dropped, their amounts, and conditions under which they can be dropped (e.g., allowed or forbidden tool tags). The function returns an array of `BlockDrop` structures.
+
+The `registerBlockDrop` function registers the item drops for a specific block type by calling `loadBlockDrop`. The `registerLodReplacement` function registers level-of-detail replacements for a specific block type, either using a specified replacement or defaulting to the original block type if no replacement is provided.
 
 ## Code Example
 ```zig

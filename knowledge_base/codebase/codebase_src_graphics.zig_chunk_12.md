@@ -9,7 +9,13 @@
 Handles initialization and deinitialization of graphics components including render passes.
 
 ## Explanation
-The chunk defines functions for initializing (`init`) and deinitializing (`deinit`) various graphics components such as circles, images, lines, rectangles, text rendering, block textures, pipelines, and render passes. The `RenderPass` struct manages Vulkan render pass creation and destruction, including setting up color attachments, subpasses, and dependencies. It initializes a render pass if Vulkan testing mode is enabled in the settings.
+The chunk defines functions for initializing (`init`) and deinitializing (`deinit`) various graphics components such as circles, images, lines, rectangles, text rendering, block textures, pipelines, and render passes. The `RenderPass` struct manages Vulkan render pass creation and destruction, including setting up color attachments, subpasses, and dependencies.
+
+The `init` function initializes the following components: circles, images, lines, rectangles, rectangle borders, text rendering, block textures, and pipelines. It also initializes a render pass if Vulkan testing mode is enabled in the settings.
+
+The `deinit` function deinitializes the same components in reverse order: render passes, circles, images, lines, rectangles, rectangle borders, text rendering, block textures, and pipelines.
+
+During the initialization of text rendering, an error is logged if an error occurs. The Vulkan device is used to create a render pass through the `vkCreateRenderPass` function. A render pass is initialized only if Vulkan testing mode is enabled in the settings.
 
 ## Code Example
 ```zig

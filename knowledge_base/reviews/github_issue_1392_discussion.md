@@ -8,7 +8,7 @@
 Discussion about the need for a message system rewrite to track messages originating from players.
 
 ## Explanation
-The user comments on the necessity of rewriting the existing message system to accurately identify and handle messages sent by players. This is crucial for implementing player speech bubbles, which require knowing the source of each chat message.
+Discussion about the need for a message system rewrite to track messages originating from players. The user comments on the necessity of rewriting the existing message system to accurately identify and handle messages sent by players. This is crucial for implementing player speech bubbles, which require knowing the source of each chat message. The issue title explicitly states 'Player Speech Bubbles' and mentions that there is currently no way to know that a message came from a player.
 
 ## Related Questions
 - What is the current limitation in the message system that prevents identifying player messages?

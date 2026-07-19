@@ -11,6 +11,12 @@ Refactored BlueprintSubCommand enum to a union(enum) with structs for each comma
 ## Explanation
 The change refactors the BlueprintSubCommand from an enum to a union(enum) containing structs for each command. Each struct now includes a deinit method to handle resource cleanup. The reviewer suggests implementing a recursive deinit similar to the parse method to reduce boilerplate and maintain a clean interface.
 
+### Specific Changes
+- **BlueprintSubCommand** was refactored into an **Args** union(enum) with the following subcommands:
+  - `@"/blueprint save <file-name>"`: Contains a struct with an enum `{ save }` and a `FilePath` field. The deinit method releases resources associated with the `FilePath`.
+  - `@"/blueprint delete <file-name>"`: Contains a struct with an enum `{ delete }` and a `FilePath` field. The deinit method releases resources associated with the `FilePath`.
+  - `@"/blueprint load <file-name>"`: Contains a struct with an enum `{ load }` and a `FilePath` field. The deinit method releases resources associated with the `FilePath`.
+
 ## Related Questions
 - How does the new Args union(enum) structure improve code organization?
 - What is the purpose of the deinit method in each struct within the Args union(enum)?

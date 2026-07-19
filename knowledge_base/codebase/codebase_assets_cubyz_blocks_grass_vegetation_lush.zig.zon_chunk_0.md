@@ -8,7 +8,7 @@
 Defines configuration for lush grass vegetation blocks.
 
 ## Explanation
-This chunk contains a configuration object for the lush grass vegetation block in Cubyz. It specifies the texture paths for both the block itself and its corresponding item representation. The `.texture` field under the main object points to the block's texture, while the nested `.item.texture` field specifies the texture for the item form of the block.
+This chunk contains a configuration object for the lush grass vegetation block in Cubyz. It specifies the texture paths for both the block itself and its corresponding item representation. The `.texture` field under the main object points to the block's texture, which is `cubyz:grass/vegetation/lush`. The nested `.item.texture` field specifies the texture for the item form of the block, which is `grass_vegetation/lush.png`. Two different textures are specified: one for the block and one for the item form. This chunk only defines texture paths and does not mention any additional properties or behaviors.
 
 ## Related Questions
 - What is the texture path for the lush grass vegetation block?

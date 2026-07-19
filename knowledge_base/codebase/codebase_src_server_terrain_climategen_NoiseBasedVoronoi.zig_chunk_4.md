@@ -9,7 +9,7 @@
 This chunk implements the recursive filling of a climate map with biomes, considering transition and sub-biome generation.
 
 ## Explanation
-The code defines methods for recursively filling a climate map with biomes, handling biome transitions, and adding sub-biomes. The `fillRecursively` function subdivides the map until it reaches a minimum size, then fills each segment with the closest biome candidate. The `addTransitionBiomes` function applies transition rules based on neighbor data to adjust biome properties. The `toMap` method orchestrates the entire process, initializing data structures, calling recursive filling, and copying results into the final map.
+This chunk implements the recursive filling of a climate map with biomes, considering transition and sub-biome generation. The code defines methods for recursively filling a climate map with biomes, handling biome transitions, and adding sub-biomes. The `fillRecursively` function subdivides the map until it reaches a minimum size, then fills each segment with the closest biome candidate based on neighbor data. The `addTransitionBiomes` function applies transition rules based on neighbor data to adjust biome properties such as height, roughness, hills, mountains, and seed. The `toMap` method orchestrates the entire process, initializing data structures, calling recursive filling, and copying results into the final map. The `margin` constant defines a border around the map for handling edge cases, while `preMapSize` is the size of the pre-map used in the generation process.
 
 ## Code Example
 ```zig

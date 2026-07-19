@@ -8,7 +8,7 @@
 Discussion about making shift-clicking in inventory configurable to accommodate different user layouts.
 
 ## Explanation
-The discussion revolves around the usability of the shift-click feature in the game's inventory system. Users are advocating for flexibility in key bindings, particularly for left-handed players who use alternative key layouts (e.g., U-I-K-O instead of A-W-S-D). The reviewer acknowledges that other game behaviors already depend on the shift key but suggests that generalizing hardcoded shift dependencies could be addressed separately.
+The discussion revolves around making the shift-click feature in the game's inventory system more configurable to accommodate different user layouts. Users, including a left-handed player who uses alternative key layouts (U-I-K-O instead of A-W-S-D), advocate for flexibility in key bindings. They suggest that hardcoding the shift key should not be mandatory and request that other shift-dependent behaviors be addressed separately. The reviewer acknowledges that other game behaviors already depend on the shift key but proposes generalizing hardcoded shift dependencies as a separate issue.
 
 ## Related Questions
 - What are the current key bindings for shift-clicking in the inventory?

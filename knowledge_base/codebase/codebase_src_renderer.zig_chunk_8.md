@@ -9,7 +9,7 @@
 Handles block placement and breaking logic based on player interactions.
 
 ## Explanation
-The code processes block placement when the player selects a block from their inventory. It checks if the selected item can be added to or replace the existing block, considering rotation modes and neighbor blocks. For breaking blocks, it calculates damage based on the tool used and updates the block's health. If the block is broken completely, it sends an update to the server.
+The code processes block placement and breaking logic based on player interactions. When placing a block, it checks if the selected item can be added to or replace the existing block, considering rotation modes and neighbor blocks. The `blocks.Block.mode` function determines how the block should be placed or modified. Specifically, it uses the `rotationMode` to adjust the block's orientation and considers neighboring blocks to ensure proper placement. For procedural items, the code calculates damage based on the tool's properties using the `getBlockDamage` method of the item. The damage is then subtracted from the block's resistance to determine how much health is left. If the block is broken completely (health reaches zero), it sends an update to the server. The `updateBlockAndSendUpdate` function handles sending block updates to the server, including the old and new block states. The code also manages animations during the block breaking process by updating the `currentBlockProgress` and removing or adding breaking animations as needed. Additionally, it checks conditions such as whether the player is in creative mode or if the block has fluid or air tags before allowing a block to be placed or broken.
 
 ## Code Example
 ```zig
@@ -98,11 +98,11 @@ pub fn breakBlock(inventory: main.items.Inventory.ClientInventory, slot: u32, de
 ```
 
 ## Related Questions
-- How does the code handle block placement when the player selects a block from their inventory?
-- What is the process for breaking blocks in the game engine?
-- How does the code calculate damage to a block based on the tool used?
-- What role does the `updateBlockAndSendUpdate` function play in the block interaction logic?
-- How does the code manage animations during the block breaking process?
-- What conditions are checked before allowing a block to be placed or broken?
+-  How does the code handle block placement when the player selects a block from their inventory?
+-  What is the process for breaking blocks in the game engine?
+-  How does the code calculate damage to a block based on the tool used?
+-  What role does the `updateBlockAndSendUpdate` function play in the block interaction logic?
+-  How does the code manage animations during the block breaking process?
+-  What conditions are checked before allowing a block to be placed or broken?
 
 *Source: unknown | chunk_id: codebase_src_renderer.zig_chunk_8*

@@ -8,7 +8,7 @@
 Discussion on adding a wall placement mode for structures like mushrooms and spikes.
 
 ## Explanation
-The discussion revolves around the potential addition of a wall placement mode in the Cubyz engine. The maintainers note that while floor and ceiling modes are relatively straightforward to implement due to the ease of finding solid points above or below, wall placement is more challenging because identifying the next solid point to the left or right is difficult. The maintainers hope that existing floor/ceiling modes could adequately cover wall placements.
+Discussion on adding a wall placement mode for structures like mushrooms and spikes. The maintainers note that while floor and ceiling modes are relatively straightforward to implement due to the ease of finding solid points above or below, wall placement is more challenging because identifying the next solid point to the left or right is difficult. Specifically, the maintainers hope that existing floor/ceiling modes could adequately cover wall placements despite these challenges.
 
 ## Related Questions
 - What are the current challenges in implementing wall placement mode?

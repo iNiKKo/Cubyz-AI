@@ -9,7 +9,7 @@
 Discussion about adding a configuration option to enable or disable the use of UV coordinates from OBJ files.
 
 ## Explanation
-The maintainer suggests adding a JSON configuration option named 'useUV' to control whether OBJ blocks should utilize UV coordinates specified in the OBJ file. This change aims to provide flexibility for users who may want to toggle this feature on or off depending on their specific needs or preferences.
+Discussion about adding a JSON configuration option named 'useUV' to control whether OBJ blocks should utilize UV coordinates specified in the OBJ file. The suggested configuration is `useUV=true` to enable the use of UV coordinates from the OBJ file, providing flexibility for users who may want to toggle this feature on or off depending on their specific needs or preferences.
 
 ## Related Questions
 - What is the purpose of adding the 'useUV' option?

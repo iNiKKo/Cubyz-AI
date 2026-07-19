@@ -9,7 +9,7 @@
 The reviewer suggests removing a complex seed calculation in favor of simpler copying or direct usage.
 
 ## Explanation
-The reviewer points out that the current method of calculating a seed from position coordinates does not serve any clear purpose and is unnecessarily complex. They recommend either directly copying the structure or using the seed for other specific purposes, implying that the current implementation may be redundant or unclear in its intent.
+The reviewer suggests removing a complex seed calculation in favor of simpler copying or direct usage. The specific seed calculation formula used is `var seed: u64 = @as(u64, @intCast(pos1[0])) ^ (@as(u64, @intCast(pos1[1])) << 15) ^ (@as(u64, @intCast(pos1[2])) << 31);`. They recommend either directly copying the structure or using the seed for other specific purposes, implying that the current implementation may be redundant or unclear in its intent.
 
 ## Related Questions
 - What is the purpose of the seed calculation in the execute function?

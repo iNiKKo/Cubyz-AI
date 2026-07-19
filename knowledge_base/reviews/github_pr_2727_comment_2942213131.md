@@ -9,7 +9,7 @@
 The build script now accepts a 'version' option for CI purposes, ensuring that the git tag matches the game version.
 
 ## Explanation
-This change introduces a new command-line option in the build.zig file to specify a tagged version used by the Continuous Integration (CI) system. The reviewer suggests refining the description of this option to clarify its purpose: verifying that the git tag aligns with the game version. This enhancement is crucial for maintaining consistency between the source code's versioning and the CI process, preventing potential mismatches that could lead to build failures or incorrect deployments.
+This change introduces a new command-line option in the build.zig file to specify a tagged version used by the Continuous Integration (CI) system. The exact syntax for this new option is `b.option([]const u8, "version", "used by the CI to check if the git tag and game version match")`. The reviewer suggests refining the description of this option to clarify its purpose: verifying that the git tag aligns with the game version. This enhancement is crucial for maintaining consistency between the source code's versioning and the CI process, preventing potential mismatches that could lead to build failures or incorrect deployments.
 
 ## Related Questions
 - What is the purpose of the 'version' option in build.zig?

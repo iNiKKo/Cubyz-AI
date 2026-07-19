@@ -9,7 +9,7 @@
 Changed `toolTypes` from a list of pointers to an array of `ToolType`.
 
 ## Explanation
-The reviewer suggests that `toolTypes` should be changed from a list of pointers to an array of `ToolType`. The reviewer questions the initial choice of using a pointer and implies that using an array might be more appropriate. This change could potentially improve memory usage and access patterns, but it also requires careful consideration of how existing code interacts with this variable.
+The reviewer suggests changing `toolTypes` from a list of pointers (`main.ListUnmanaged(*const main.items.ToolType)`) to an array of `ToolType` (`[]ToolType`). This change could potentially improve memory usage and access patterns, but it also requires careful consideration of how existing code interacts with this variable. The reviewer questions the initial choice of using a pointer and implies that using an array might be more appropriate. Additionally, the reviewer suggests that `toolTypes` could be a `ToolTypeIndex` instead, which could provide additional benefits.
 
 ## Related Questions
 - What is the impact of changing `toolTypes` from a list of pointers to an array on memory usage?

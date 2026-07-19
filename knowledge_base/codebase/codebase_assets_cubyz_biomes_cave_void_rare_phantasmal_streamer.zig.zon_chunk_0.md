@@ -9,7 +9,7 @@
 Cave void rare phantasmal streamer configuration
 
 ## Explanation
-This chunk defines the configuration for cave void rare phantasmal streamers. It specifies structures and cave models with their respective IDs, chances, rotations, minimum and maximum amounts, and radii.
+This chunk defines the configuration for cave void rare phantasmal streamers. It specifies structures and cave models with their respective IDs (`cubyz:sbb`), chances (0.03 for high aurora, 0.04 for low aurora), rotations (0 for both), minimum and maximum amounts (5 to 10 partial sphere cave models per structure), and radii (30 to 40).
 
 ## Related Questions
 - What are the IDs of the structures for cave void rare phantasmal streamers?

@@ -9,7 +9,7 @@
 Discussion on implementing buckets in Cubyz using the tool crafting system, focusing on durability and potential capacity features.
 
 ## Explanation
-The discussion revolves around integrating buckets into Cubyz's tool crafting system. Key points include the need for durability attributes to account for different fluid types (e.g., water vs. lava) and the possibility of varying bucket capacities based on size. The team identifies dependencies such as selecting specific fluids when holding a bucket and implementing an `onRightClick` callback for items. There is also mention of ongoing work in #2898 that will expand to include this functionality.
+The discussion revolves around integrating buckets into Cubyz's tool crafting system, focusing on durability and potential capacity features. Key points include the need for durability attributes to account for different fluid types (e.g., water vs. lava) and the possibility of varying bucket capacities based on size. The team identifies dependencies such as selecting specific fluids when holding a bucket, implementing an `onRightClick` callback for items, and ongoing work in #2898 that will expand to include this functionality. Additionally, it is mentioned that capacity is hard to implement and will need further work on the fluid system (#62). The procedural crafting part will be set up for future enhancements, and the current status of the fluid system implementation is still under development.
 
 ## Related Questions
 - How does the tool crafting system currently handle item interactions?

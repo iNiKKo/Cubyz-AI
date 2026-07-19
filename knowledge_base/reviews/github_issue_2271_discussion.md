@@ -8,7 +8,7 @@
 Discussion on enhancing item highlighting in the game interface.
 
 ## Explanation
-The discussion revolves around improving the user experience by adding a feature that highlights all items of the same type when hovered over. The suggestion includes making the highlight effect subtle and potentially requiring a second of hovering or holding a key to activate it, aiming to balance visibility with usability.
+Discussion on enhancing item highlighting in the game interface. The user suggests that when hovering over an item, all items of the same type should be highlighted to improve organization and inventory management. To ensure a subtle effect, it is proposed that this feature requires either hovering for one second or holding a key while hovering.
 
 ## Related Questions
 - What is the current behavior of item highlighting in the game?

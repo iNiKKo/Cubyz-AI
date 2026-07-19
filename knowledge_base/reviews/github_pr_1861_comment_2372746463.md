@@ -9,7 +9,7 @@
 Added `createArena` method to `NeverFailingAllocator`, allowing creation of arenas only when wrapping a `StackAllocator`. Reviewer suggests extending this functionality to all allocators for easier global arena creation.
 
 ## Explanation
-The change introduces a new method `createArena` in the `NeverFailingAllocator` struct, which is designed to create an arena specifically when the underlying allocator is of type `StackAllocator`. The reviewer raises concerns about the restriction and suggests that this functionality should be generalized to all allocators to simplify the process of creating arenas from global allocators. This could enhance flexibility and ease of use in scenarios where different types of allocators might be used.
+The change introduces a new method `createArena` in the `NeverFailingAllocator` struct. This method creates an arena specifically when the underlying allocator is of type `StackAllocator`. The implementation checks if the type of the allocator is a pointer, casts it to a `StackAllocator`, and then calls the `createArena` method on this stack allocator. If the allocator is not a `StackAllocator`, the method panics with the message "createArena can only be called on NeverFailingAllocator wrapping a StackAllocator". The reviewer suggests extending this functionality to all allocators, which could simplify the process of creating arenas from global allocators and enhance flexibility and ease of use in scenarios where different types of allocators might be used.
 
 ## Related Questions
 - What is the purpose of the `createArena` method in `NeverFailingAllocator`?

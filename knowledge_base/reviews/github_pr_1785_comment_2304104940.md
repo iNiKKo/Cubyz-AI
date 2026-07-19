@@ -9,7 +9,7 @@
 The code was modified to compare pointers instead of string values for better performance and safety.
 
 ## Explanation
-The reviewer suggests changing the comparison from comparing the contents of the strings to comparing their pointers. This change aims to improve performance by avoiding unnecessary string comparisons and enhance safety by preventing potential issues with string manipulation or memory leaks.
+The reviewer suggests changing the comparison from comparing the contents of the strings (`std.mem.eql(u8, cubyzDirStr_, ".")`) to comparing their pointers (`if(cubyzDirStr_.ptr != ".")`). This change aims to improve performance by avoiding unnecessary string comparisons and enhance safety by preventing potential issues with string manipulation or memory leaks.
 
 ## Related Questions
 - What is the potential impact of comparing string pointers instead of values in this context?

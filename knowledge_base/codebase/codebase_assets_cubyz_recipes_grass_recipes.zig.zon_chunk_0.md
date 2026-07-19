@@ -9,7 +9,28 @@
 Grass recipe definitions
 
 ## Explanation
-This chunk defines various grass recipes, specifying inputs and outputs for different types of grass based on soil conditions.
+This chunk defines various grass recipes, specifying inputs and outputs for different types of grass based on soil conditions. The exact inputs and outputs are as follows:
+- **First Recipe:**
+  - Inputs: `cubyz:grass/vegetation/{type}`
+  - Output: `5 cubyz:grass_seeds`
+- **Second Recipe:**
+  - Inputs: `cubyz:soil`, `cubyz:grass_seeds`
+  - Output: `cubyz:grass/temperate`
+- **Third Recipe:**
+  - Inputs: `cubyz:dirt`, `cubyz:grass_seeds`
+  - Output: `cubyz:grass/dry`
+- **Fourth Recipe:**
+  - Inputs: `cubyz:permafrost`, `cubyz:grass_seeds`
+  - Output: `cubyz:grass/cold`
+- **Fifth Recipe:**
+  - Inputs: `cubyz:mud`, `cubyz:grass_seeds`
+  - Output: `cubyz:grass/lush`
+- **Sixth Recipe:**
+  - Inputs: `cubyz:clay`, `cubyz:grass_seeds`
+  - Output: `cubyz:grass/dew`
+- **Seventh Recipe:**
+  - Inputs: `cubyz:aerosoil`, `cubyz:grass_seeds`
+  - Output: `cubyz:grass/sky`
 
 ## Related Questions
 - What are the inputs required for each grass recipe?

@@ -9,7 +9,7 @@
 The issue discusses FPS limiting problems in Cubyz where the game limits itself further than intended on low-end monitors.
 
 ## Explanation
-The maintainers are unable to reproduce the issue consistently, but suspect it may be related to the use of sleep for power-saving purposes instead of busy waiting. They consider reverting to busy waiting as a potential solution, despite increased power consumption, due to Windows' thread scheduling issues. A user mentions investigating better waiting methods and is considering making a PR if others want to test it.
+In Cubyz, under certain circumstances, the FPS limit decided to set a limit of 144 FPS, which was deemed too high for the user's low-end monitor. This led to further limiting of the FPS. The maintainers were unable to consistently reproduce the issue but suspected it might be related to using sleep for power-saving purposes instead of busy waiting. They considered reverting to busy waiting as a potential solution, despite increased power consumption, due to Windows' thread scheduling issues. A user mentioned investigating better waiting methods and was considering making a PR if others wanted to test it.
 
 ## Related Questions
 - What is the root cause of the FPS limiting issue in Cubyz?

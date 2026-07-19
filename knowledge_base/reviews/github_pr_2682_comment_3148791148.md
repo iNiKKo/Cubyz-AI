@@ -9,7 +9,7 @@
 The change replaces `VirtualList` with `SparseSet` for managing entities, but is reverted due to architectural concerns about memory reordering and pointer stability.
 
 ## Explanation
-The reviewer suggests reverting the change from `VirtualList` to `SparseSet` because `SparseSet` reorders values in memory, which conflicts with the current interpolation system's requirement for stable pointers. The reviewer recommends keeping the original `VirtualList` until a benchmark can be conducted with enough entities to make an informed decision.
+The change replaces `VirtualList` with `SparseSet` for managing entities, but is reverted due to architectural concerns about memory reordering and pointer stability. The reviewer suggests reverting the change from `VirtualList` to `SparseSet` because `SparseSet` reorders values in memory, which conflicts with the current interpolation system's requirement for stable pointers. The reviewer recommends keeping the original `VirtualList` until a benchmark can be conducted with enough entities to make an informed decision.
 
 ## Related Questions
 - What are the implications of using SparseSet for entity management?

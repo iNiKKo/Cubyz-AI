@@ -9,7 +9,7 @@
 Discussion about the behavior of Structure Void blocks and potential commands for their manipulation.
 
 ## Explanation
-The discussion revolves around the behavior of Structure Void blocks, which are similar to those in Minecraft. There is a suggestion to invert the behavior so that air does not change blocks and void replaces them, making it easier to create structures without large volumes of void blocks. The maintainers also propose adding `-a` and `-w` flags to the `/paste` command to disable placing air and water blocks, similar to WorldEdit. Additionally, there is a suggestion for an automatic command to place structure void blocks. The current `/replace` command does not work well when both air and void are needed. The maintainers also inquire about the difference between `/swap` and `/replace` commands.
+The discussion revolves around the behavior of Structure Void blocks in Cubyz, which are similar to those in Minecraft. The maintainers suggest inverting the behavior so that air does not change blocks and void replaces them, making it easier to create structures without large volumes of void blocks. The current `/replace` command (`/replace cubyz:air cubyz:void`) does not work well when both air and void are needed. The maintainers also propose adding `-a` and `-w` flags to the `/paste` command to disable placing air and water blocks, similar to WorldEdit. Additionally, there is a suggestion for an automatic command to place structure void blocks. The maintainers inquire about the difference between `/swap` and `/replace` commands.
 
 ## Related Questions
 - What is the intended behavior of Structure Void blocks in Cubyz?

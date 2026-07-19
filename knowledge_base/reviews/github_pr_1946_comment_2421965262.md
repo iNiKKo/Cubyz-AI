@@ -9,7 +9,7 @@
 Refactored button release handling in `GuiWindow.zig` to improve precision and responsiveness.
 
 ## Explanation
-The change refactors the logic for determining which button was released by a mouse click. The reviewer identified that the original conditionals could create a small, unresponsive region between icons due to exclusive range checks. By making one half of the range inclusive, the code ensures more accurate detection of button clicks, enhancing user interaction. This modification also introduces relative position calculations for better readability and maintainability.
+Refactored button release handling in `GuiWindow.zig` to improve precision and responsiveness. The change refactors the logic for determining which button was released by a mouse click. Specifically, it introduces relative position calculations (`mousePositionRelative` and `grabPositionRelative`) for better readability and maintainability. The reviewer identified that the original conditionals could create a small, unresponsive region between icons due to exclusive range checks. By making one half of the range inclusive (e.g., changing `>` to `>=`), the code ensures more accurate detection of button clicks, enhancing user interaction. This modification also includes a check for the vertical position of the mouse click within the button area (`mousePositionRelative[1] > 0 and mousePositionRelative[1] < btnPos[0]-btnPos[1]`) to ensure that only clicks within the button strip are considered. The refactoring affects the responsiveness of the GUI buttons by eliminating small, unresponsive regions between icons.
 
 ## Related Questions
 - What is the purpose of the `getButtonPositions` function in `GuiWindow.zig`?

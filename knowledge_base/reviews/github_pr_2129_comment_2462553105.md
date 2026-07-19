@@ -11,6 +11,8 @@ A new asset type is proposed for loading structure tables within the existing as
 ## Explanation
 The reviewer suggests adding a new asset type specifically for structure tables to maintain consistency with the standard asset loading flow. This approach avoids creating separate mechanisms for loading different types of assets, which could lead to diverging code paths and potential maintenance issues. The goal is to ensure that all assets, including structure tables, are loaded in a unified manner.
 
+The specific code change includes adding `structureTables` to the `Assets` struct within `src/assets.zig`. This modification ensures that structure tables can be loaded using the existing asset loading mechanisms without introducing new, separate loading procedures.
+
 ## Related Questions
 - How does the addition of a new asset type impact the overall architecture of Cubyz?
 - What are the potential benefits and drawbacks of using a unified approach for loading all assets?

@@ -9,7 +9,7 @@
 Refactored mesh selection logic to improve readability and correctness.
 
 ## Explanation
-The change refactors the mesh selection logic by introducing a labeled block `rules` to encapsulate the conditions for selecting blocks. This makes the code more readable and avoids potential issues with nested conditional statements. The reviewer suggests simplifying the condition in the first line, but notes that readability is subjective.
+Refactored mesh selection logic to improve readability and correctness. The change introduces a labeled block `rules` to encapsulate the conditions for selecting blocks, specifically checking if the item is a base item with a fluid placeable tag or if it matches the targeted block type. This makes the code more readable and avoids potential issues with nested conditional statements. The reviewer suggests simplifying the condition in the first line, but notes that readability is subjective.
 
 ## Related Questions
 - What is the purpose of the `rules` labeled block in the refactored code?

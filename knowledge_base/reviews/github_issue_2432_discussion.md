@@ -8,7 +8,7 @@
 The issue discusses prioritizing addon content over in-game content when duplicate names are found, raising concerns about modding systems and potential conflicts.
 
 ## Explanation
-The discussion revolves around the idea of allowing addon creators to overwrite vanilla game content by prioritizing addon assets with duplicate names. The maintainer argues against this approach, citing the need for a robust modding system and the risk of namespace conflicts when playing multiple addons simultaneously. This highlights concerns about maintaining backward compatibility and ensuring that different mods do not interfere with each other.
+The issue discusses prioritizing addon content over in-game content when duplicate names are found. Specifically, if an addon biome with the same name as a vanilla biome is found, only the addon biome should generate, allowing addon creators to overhaul existing features. This would allow for far greater creativity and enable addon creators to edit vanilla content. However, this approach raises concerns about modding systems and potential conflicts when playing multiple addons simultaneously. The maintainer argues against this idea, stating that it can already be achieved by using the same addon name and placing it in the per world assets folder. Additionally, having separate namespaces for addons is crucial to avoid conflicts when using multiple addons, as it ensures that different mods do not interfere with each other.
 
 ## Related Questions
 - How can the game be modified to prioritize addon content over in-game content without causing namespace conflicts?

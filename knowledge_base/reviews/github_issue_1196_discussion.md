@@ -9,14 +9,12 @@
 The issue proposes a 'shroom well' cave biome with a nearly vertical, circular hole leading to void roots. Large shrooms spawn within the well, offering a chance for players to survive by reducing falling speed.
 
 ## Explanation
-The proposal introduces a unique cave generation mode called the 'shroom well,' which is a deep, nearly vertical cylindrical structure that leads into void roots. The primary feature of this biome is the presence of large shrooms attached to the walls, designed to reduce the player's falling speed upon impact. This concept aims to create an immersive experience where players must navigate through the darkness and avoid certain death by relying on the shrooms for survival. Additionally, a monster called 'Brights' (inspired by Roderick Gordon's book) is proposed to add danger and excitement to the biome.
+The issue proposes a 'shroom well' cave biome with a nearly vertical, circular hole leading to void roots. The well generates randomly at least 5_000 blocks below the surface, extending down to 7_000 blocks where large shrooms spawn attached to the walls. These shrooms are emissive and have low friction properties. Upon impact, they reduce falling speed by N blocks/s per hit; if this reduces the player's speed to zero, no further action occurs. If the player's speed remains above zero after reduction, the shroom breaks and the process repeats until the player stops or falls through all shrooms. The concept aims to create an immersive experience where players must navigate through darkness and avoid certain death by relying on the shrooms for survival. Additionally, a monster called 'Brights' (inspired by Roderick Gordon's book) is proposed to add danger and excitement to the biome.
 
 ## Related Questions
 - What is the depth of the shroom well?
 - How does the falling speed reduction work in the shroom well?
 - What are the properties of the shroom blocks?
 - What is the role of the Brights monster in the shroom well biome?
-- How does the shroom well contribute to the overall cave generation system?
-- What inspired the design of the shroom well and its features?
 
 *Source: unknown | chunk_id: github_issue_1196_discussion*

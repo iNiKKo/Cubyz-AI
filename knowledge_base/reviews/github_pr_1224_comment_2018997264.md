@@ -11,6 +11,8 @@ A new file `entity_data.zig` is introduced with a struct `EntityDataClass` defin
 ## Explanation
 The code defines a new module for handling entity data, including client and server-side event hooks such as loading, unloading, placing, breaking, and interacting with entities. The `EntityDataClass` struct uses a vtable pattern to store function pointers for these events. However, the reviewer notes that the pointer casts used during vtable initialization are not necessary and could lead to unsafe behavior, especially since Zig's type system is designed to avoid such explicit casting.
 
+The reviewer suggests an alternative approach to initializing the vtable without using pointer casts, which would improve type safety and reduce potential risks associated with unsafe function pointers in Zig. The critical architectural review comment also highlights that the pointer cast being used is inherently unsafe for functions.
+
 ## Related Questions
 - Why are pointer casts necessary in the vtable initialization?
 - What is the alternative to using pointer casts for initializing the vtable?

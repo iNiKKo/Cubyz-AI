@@ -8,7 +8,7 @@
 Discussion on adding keybindings for entering chat and scrolling through history.
 
 ## Explanation
-The issue discusses the addition of two keybindings: one to enter the chat using 'enter' or 'tab', and another to scroll through chat history using arrow keys, similar to shell behavior. The maintainer notes that the first part (entering chat) is already addressed by a previous pull request (#412).
+The issue discusses the addition of two keybindings: one to enter the chat using 'enter' or 'tab', and another to scroll through chat history using arrow keys. The maintainer notes that the first part (entering chat) is already addressed by a previous pull request (#412). Scroll through chat history will use arrow keys, similar to shell behavior.
 
 ## Related Questions
 - What is the status of adding keybindings for entering chat?

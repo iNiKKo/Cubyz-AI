@@ -9,7 +9,13 @@
 The StackAllocator struct provides a stack-like allocation mechanism with safety checks and fallback to a regular allocator when the buffer is full.
 
 ## Explanation
-The StackAllocator struct implements a custom memory allocator that behaves like a stack, allowing for fast and safe allocations. It uses a fixed-size buffer and falls back to a provided backing allocator when the buffer overflows. The struct includes methods for initialization (`init`), destruction (`deinit`), and creating an allocator interface (`allocator`). Internal functions handle checking if allocations are within the buffer (`isInsideBuffer`, `indexInBuffer`), managing allocation trailers (`getTrueAllocationEnd`, `getTrailerBefore`), and performing actual memory operations (`alloc`, `resize`, `remap`, `free`). The `alloc` function allocates memory from the stack, `resize` resizes existing allocations if they are within the buffer, `remap` attempts to resize and returns the original pointer if successful, and `free` marks memory as freed and potentially reclaims space in the stack.
+The StackAllocator struct provides a stack-like allocation mechanism with safety checks and fallback to a regular allocator when the buffer is full. It uses a fixed-size buffer and falls back to a provided backing allocator when the buffer overflows. The struct includes methods for initialization (`init`), destruction (`deinit`), and creating an allocator interface (`allocator`). Internal functions handle checking if allocations are within the buffer (`isInsideBuffer`, `indexInBuffer`), managing allocation trailers (`getTrueAllocationEnd`, `getTrailerBefore`), and performing actual memory operations (`alloc`, `resize`, `remap`, `free`).
+
+The AllocationTrailer struct is a packed structure that includes a boolean indicating whether the allocation was freed and a previous allocation trailer index. This helps in managing the stack-like behavior of the allocator.
+
+Alignment handling is managed during memory operations such as `alloc`, `resize`, and `remap`. The alignment is ensured by aligning the start of the allocation to the specified alignment using `std.mem.alignForward`.
+
+The deinit method checks if there are any remaining allocations in the buffer. If the index is not zero, it logs an error indicating a memory leak and then frees the buffer using the backing allocator.
 
 ## Code Example
 ```zig

@@ -9,7 +9,7 @@
 Added a new Zig file for a connecting window GUI, including thread management and error handling.
 
 ## Explanation
-The review introduces a new file `connecting.zig` that defines a GUI window for managing network connections. The code initializes a `GuiWindow` with specific properties and sets up state management using an enum `State`. It also includes functions like `connectFromNewThread` to handle connection logic in a separate thread, ensuring proper initialization and cleanup of thread-local storage. The reviewer notes that the use of `@errorName` for error messages is efficient since it returns strings from the read-only section of the executable, thus avoiding unnecessary memory allocation.
+The review introduces a new file `connecting.zig` that defines a GUI window for managing network connections. The code initializes a `GuiWindow` with specific properties such as `contentSize = Vec2f{128, 64}`, `hasBackground = true`, `closeable = false`, and `modal = true`. It also sets up state management using an enum `State` with values `.connecting`, `.connected`, `.failed`, and `.cancelled`. The code includes functions like `connectFromNewThread` to handle connection logic in a separate thread, ensuring proper initialization and cleanup of thread-local storage. The reviewer notes that the use of `@errorName` for error messages is efficient since it returns strings from the read-only section of the executable, thus avoiding unnecessary memory allocation.
 
 ## Related Questions
 - What is the purpose of the `connectFromNewThread` function?

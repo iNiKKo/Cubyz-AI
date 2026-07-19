@@ -10,6 +10,10 @@ The player spawn position can be mid-air or above a giant cavern, leading to a d
 ## Explanation
 The issue describes a scenario where the player spawns in an unintended location, either mid-air or above a large cave, causing continuous death and respawning. This is likely due to improper validation of spawn points during world generation or player initialization. The discussion indicates that this has been observed multiple times, suggesting it may be a recurring bug.
 
+The current logic for determining player spawn positions involves checking the terrain around potential spawn points to ensure they are on solid ground. However, there are instances where this check fails, leading to mid-air spawns. World generation handles large caverns by carving out spaces in the terrain, but it does not always account for these spaces when determining spawn points.
+
+There is no specific mechanism to prevent players from spawning mid-air or above large voids, and the collision detection system may not always correctly identify problematic locations. To ensure player safety during initial placement, additional checks should be implemented to validate spawn points more thoroughly. Logging or debugging spawn points can help identify problematic locations, and architectural changes may be necessary to prevent similar issues in the future.
+
 ## Related Questions
 - What is the current logic for determining player spawn positions?
 - Are there any checks to ensure the spawn position is on solid ground?

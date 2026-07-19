@@ -11,6 +11,12 @@ Added `sincos32` function for efficient sine and cosine calculation, copied from
 ## Explanation
 The change introduces a new function `sincos32` which calculates both sine and cosine of a given angle using minimax polynomial approximations. This is optimized for performance by reducing the number of trigonometric operations. The function is copied from the zmath library, adhering to its MIT license. Additionally, the implementation of `quatFromAxisAngle` begins, which converts an axis-angle representation into a quaternion. The reviewer suggests encapsulating related calculations within a struct to improve organization and potentially enhance performance by reducing redundant computations.
 
+The `sincos32` function uses a 11-degree minimax approximation for sine calculation and a 10-degree minimax approximation for cosine calculation. These approximations are implemented using polynomial expressions that minimize the error over a specified range of angles. The function handles angles outside the primary range by normalizing them to fall within one period of the trigonometric functions.
+
+The `quatFromAxisAngle` function is being implemented to convert an axis-angle representation into a quaternion, which is a mathematical entity used to represent rotations in 3D space. The implementation details are not fully provided in the diff but involve normalizing the axis vector and using the angle to compute the quaternion components.
+
+The reviewer suggests organizing related calculations within a struct to improve code organization and potentially enhance performance by reducing redundant computations. This could involve grouping functions like `sincos32` and `quatFromAxisAngle` into a single struct, which would allow for more efficient access and manipulation of related data.
+
 ## Related Questions
 - What is the purpose of the `sincos32` function?
 - How does the minimax approximation improve performance in trigonometric calculations?

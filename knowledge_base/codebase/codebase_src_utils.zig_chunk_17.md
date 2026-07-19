@@ -9,7 +9,7 @@
 Provides utility functions for error handling, string obfuscation, and Base64 encoding/decoding.
 
 ## Explanation
-The chunk defines several utility functions and a struct for handling common tasks in the Cubyz engine. `panicWithMessage` formats and panics with a custom message. `obfuscateString` replaces each character of the input string with an obfuscation character. The `Base64` struct provides methods to encode data to Base64, retrieve the encoded message, and free resources. Functions `toBase64`, `getEncodedMessage`, and `deinit` are part of this struct's API. Additionally, `fromBase64` decodes a Base64-encoded string back to its original form.
+The chunk defines several utility functions and a struct for handling common tasks in the Cubyz engine. `panicWithMessage` formats and panics with a custom message. `obfuscateString` replaces each character of the input string with an obfuscation character, which is '∗'. The `Base64` struct provides methods to encode data to Base64, retrieve the encoded message, and free resources. Functions `toBase64`, `getEncodedMessage`, and `deinit` are part of this struct's API. Additionally, `fromBase64` decodes a Base64-encoded string back to its original form. The `SparseSet/reusing` test demonstrates the functionality of the SparseSet by setting values, removing an entry, and reusing the ID for a new value.
 
 ## Code Example
 ```zig

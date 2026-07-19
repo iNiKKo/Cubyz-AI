@@ -9,14 +9,12 @@
 The discussion revolves around redistributing and adjusting the placement of various ores in the game to enhance gameplay balance and exploration. The maintainer suggests reducing coal's spawn rate and introducing alternative lighting solutions like weaker torches and sconces.
 
 ## Explanation
-The issue primarily focuses on the distribution and density of ore veins, particularly coal, which is considered too abundant and not challenging enough for players to find. The maintainer proposes making coal less prevalent and more unique by reducing its spawn rate and introducing alternative lighting solutions such as weaker torches made from wood. This would encourage players to explore more and discover different cave biomes where certain ores are more likely to be found. Additionally, the discussion includes ideas for biome-dependent ore spawns and creating a progression path with different types of torches.
+The discussion revolves around redistributing and adjusting the placement of various ores in the game to enhance gameplay balance and exploration. The maintainer suggests reducing coal's spawn rate and introducing alternative lighting solutions like weaker torches made from wood. Specifically, the proposed changes include setting coal to always be present on the surface but less common underground with a z-dependent sinusoidal distribution pattern. Copper spawns at 20 meters above sea level, iron at -200 meters, gold at -500 meters (with copper stopping), diamond and sulfur at -1000 meters, and uranium deeper still. The maintainer also proposes making coal veins larger but rarer, with a more flat distribution in the Z axis to make them less common sights but abundant if needed. Additionally, the discussion includes ideas for biome-dependent ore spawns where certain ores are more likely to be found in specific biomes, such as sulfur being more prevalent in special cave biomes. Alternative lighting solutions like weaker torches made from wood with lower brightness and sconces crafted with metal that provide similar light levels to current torches are also suggested. This would encourage players to explore more and discover different cave biomes where certain ores are more likely to be found, making caves less empty and more interesting.
 
 ## Related Questions
-- What are the proposed changes to coal's spawn rate and distribution?
-- How does the maintainer suggest addressing the issue of abundant coal in caves?
+- What are the exact spawn rates and depths for each ore?
+- How will coal's distribution change in terms of abundance and depth?
+- Which ores are proposed to have biome-dependent spawns, and where would they be most common?
 - What alternative lighting solutions are being considered for players without access to coal near cave entrances?
-- Which ores are discussed as potential candidates for biome-dependent spawns?
-- What is the proposed progression path for torches, and how would it impact gameplay?
-- How does the maintainer suggest making caves less empty and more interesting?
 
 *Source: unknown | chunk_id: github_issue_1278_discussion*

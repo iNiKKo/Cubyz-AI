@@ -8,7 +8,7 @@
 Reported lighting bugs occur when moving up and down, causing a strip of darkness at the edge of the render distance due to chunk updates and neighbor unloading.
 
 ## Explanation
-The issue involves lighting data discrepancies when chunks are updated while their neighboring chunks have been unloaded. This leads to visual artifacts like a dark strip at the edge of the render distance. The maintainer notes that they haven't encountered these issues recently, suggesting potential improvements or changes in the chunk update and unloading logic.
+Reported lighting bugs occur when moving up and down, causing a strip of darkness at the edge of the render distance due to chunk updates and neighbor unloading. The issue involves lighting data discrepancies when chunks are updated while their neighboring chunks have been unloaded, leading to visual artifacts like a dark strip at the edge of the render distance. The maintainer notes that they haven't seen these issues in a while, suggesting potential improvements or changes in the chunk update and unloading logic.
 
 ## Related Questions
 - What changes were made to chunk update and unloading logic recently?

@@ -8,7 +8,8 @@
 The server should handle invalid inventory commands without crashing, specifically by ensuring no implicit assumptions about items not being null.
 
 ## Explanation
-The discussion indicates that while the Inventory system has improved in stability, there is still a need to explicitly handle cases where items might be null. This change aims to prevent potential crashes due to unhandled null values and improve the robustness of the inventory management system.
+**Explanation**
+The server should handle invalid inventory commands without crashing, specifically by ensuring no implicit assumptions about items not being null. The maintainer's comment indicates that while the Inventory system has improved in stability since the time this was written, nullness is handled everywhere. This change aims to prevent potential crashes due to unhandled null values and improve the robustness of the inventory management system.
 
 ## Related Questions
 - What specific changes were made to handle null items in the Inventory system?

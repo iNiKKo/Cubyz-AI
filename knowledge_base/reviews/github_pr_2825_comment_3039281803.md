@@ -9,7 +9,55 @@
 The reviewer suggests improving the `Blueprint.capture` function by changing its parameter to a `Selection` struct that includes methods for initialization and size calculation, reducing redundancy in min/max operations.
 
 ## Explanation
-The reviewer proposes architectural improvements to the `Blueprint.capture` function. Currently, the function accepts raw positions and performs min/max calculations internally. The suggestion is to encapsulate these positions within a `Selection` struct defined in `blueprint.zig`. This struct would include an `init` method that automatically handles min/maxing of the provided positions. By doing so, the redundancy of min/max operations within the `capture` function can be eliminated. Additionally, adding a `size` method to the `Selection` struct could further simplify related logic in other parts of the codebase. This change aims to enhance code organization and reduce duplication.
+The reviewer suggests improving the `Blueprint.capture` function by changing its parameter to a `Selection` struct that includes methods for initialization and size calculation, reducing redundancy in min/max operations. The `Selection` struct should be defined in `blueprint.zig` with `minPos`, `maxPos`, and an `init` method that automatically handles min/maxing of the provided positions. Additionally, adding a `size` method to the `Selection` struct could further simplify related logic in other parts of the codebase. This change aims to enhance code organization and reduce duplication.
+
+The `Selection` struct would be defined as follows:
+```zig
+const Selection = struct {
+    minPos: Vec3i,
+    maxPos: Vec3i,
+
+    fn init(pos1: Vec3i, pos2: Vec3i) Selection {
+        const startX = @min(pos1[0], pos2[0]);
+        const startY = @min(pos1[1], pos2[1]);
+        const startZ = @min(pos1[2], pos2[2]);
+
+        const endX = @max(pos1[0], pos2[0]);
+        const endY = @max(pos1[1], pos2[1]);
+        const endZ = @max(pos1[2], pos2[2]);
+
+        return Selection{
+            .minPos = Vec3i{.x = startX, .y = startY, .z = startZ},
+            .maxPos = Vec3i{.x = endX, .y = endY, .z = endZ},
+        };
+    }
+
+    fn size(self: Selection) Vec3i {
+        return Vec3i{
+            .x = self.maxPos.x - self.minPos.x + 1,
+            .y = self.maxPos.y - self.minPos.y + 1,
+            .z = self.maxPos.z - self.minPos.z + 1,
+        };
+    }
+};
+```
+
+The `Blueprint.capture` function would then be updated to accept a `Selection` struct instead of raw positions:
+```zig
+pub fn capture(allocator: NeverFailingAllocator, selection: Selection) CaptureResult {
+    const startX = selection.minPos.x;
+    const startY = selection.minPos.y;
+    const startZ = selection.minPos.z;
+
+    const endX = selection.maxPos.x;
+    const endY = selection.maxPos.y;
+    const endZ = selection.maxPos.z;
+
+    // Existing capture logic using startX, startY, startZ, endX, endY, endZ
+}
+```
+
+By encapsulating the selection logic within a dedicated struct, the code becomes more organized and reduces redundancy in min/max operations.
 
 ## Related Questions
 - How does the proposed `Selection` struct improve code readability?

@@ -8,7 +8,7 @@
 The issue discusses parallelizing the server update thread by dividing the world into 2×2×2 chunks for independent processing, while addressing potential drawbacks like player movement and world edit limitations.
 
 ## Explanation
-The proposal aims to enhance server performance by enabling parallel processing of chunks through 8 independent passes. This approach allows each chunk event to access neighboring chunks without blocking, leveraging multi-processor systems effectively. However, it introduces challenges such as ensuring thread safety during player movement and managing world edit commands to prevent data corruption. The discussion clarifies that all server operations except bookkeeping and terrain generation fall under the update thread, including inventory operations related to block entities like workbenches and chests.
+The proposal aims to enhance server performance by enabling parallel processing of chunks through dividing them into units of 2×2×2. This allows for 8 independent passes, ensuring each chunk event can access its surrounding chunks without blocking. The approach introduces challenges such as preventing further actions until the next tick when a player moves far enough out of a chunk to avoid accessing data currently used by another thread. Additionally, world edit commands need to be split into chunks and recombined at the end to store undo operations, with a limit of 1 command per player per tick to prevent data corruption. All server operations except bookkeeping and terrain generation fall under the update thread, including inventory operations related to block entities like workbenches and chests. Inventory updates are limited to a radius of 32 blocks around the player who performs the interaction.
 
 ## Related Questions
 - How does the parallel processing of chunks affect server performance?
@@ -16,6 +16,5 @@ The proposal aims to enhance server performance by enabling parallel processing 
 - How is world edit handled to prevent data corruption during parallel updates?
 - Are inventory operations covered by the update thread, and how are they managed?
 - Does the server have a concept of frames, or does it operate differently?
-- What limitations exist for interacting with block entities like workbenches and chests in this new system?
 
 *Source: unknown | chunk_id: github_issue_2420_discussion*

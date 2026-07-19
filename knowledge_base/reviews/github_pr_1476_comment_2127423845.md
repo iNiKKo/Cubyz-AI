@@ -9,7 +9,11 @@
 Refactored the tick function handling by introducing a new `TickEventVTableMap` structure and replacing the switch statement with an if check to ensure type safety at compile time.
 
 ## Explanation
-The change involves refactoring the way tick functions are managed in the Cubyz game engine. The previous implementation used a `NamedCallbacks` structure for managing tick functions, which was replaced by a more structured approach using a `TickEventVTableMap`. This new map uses a string hash map to associate block types with their respective tick event vtables. The reviewer suggests avoiding deep indentations and recommends replacing the switch statement with an if check to enforce type safety at compile time, preventing runtime errors related to incorrect type usage.
+Refactored the tick function handling by introducing a new `TickEventVTableMap` structure and replacing the switch statement with an if check to ensure type safety at compile time. The change involves refactoring the way tick functions are managed in the Cubyz game engine. The previous implementation used a `NamedCallbacks` structure for managing tick functions, which was replaced by a more structured approach using a `TickEventVTableMap`. This new map uses a string hash map to associate block types with their respective tick event vtables. The reviewer suggests avoiding deep indentations and recommends replacing the switch statement with an if check to enforce type safety at compile time, preventing runtime errors related to incorrect type usage.
+
+The `init` function initializes the `vTableMap` using `main.globalAllocator.allocator`. Specifically, it creates a new instance of `TickEventVTableMap`, initializes its `vTableMap` field with an empty string hash map allocated by `main.globalAllocator.allocator`, and then populates this map based on the fields of the `TickEvents` struct. The critical architectural review comments suggest that this should be a compiler error and not a runtime error, emphasizing the importance of type safety.
+
+The use of a string hash map improves the management of tick events by providing a clear and efficient way to associate block types with their respective tick event vtables, allowing for quick lookups and dynamic handling of different block behaviors.
 
 ## Related Questions
 - What is the purpose of the `TickEventVTableMap` structure?

@@ -8,7 +8,7 @@
 The issue discusses adding dapperling mushrooms to the game for increased color variety among mushroom types. There's a discussion about whether new decoration blocks like these should be considered clutter and if they qualify as addon materials.
 
 ## Explanation
-The proposal is to introduce dapperling mushrooms, also known as Leucocoprinus birnbaumii, to enhance the visual diversity of mushrooms in the game. The maintainers are concerned about whether such decorative additions could contribute to cluttering the environment, which goes against the game's design principles. They seek clarification on how to categorize these new mushroom types and determine if they should be treated as addon materials rather than core game content.
+The issue discusses adding dapperling mushrooms (Leucocoprinus birnbaumii) to enhance color variety among mushroom types. The maintainers are concerned about whether new decoration blocks like these should be considered clutter, referencing the game design principles which advocate for avoiding clutter in the environment. They seek clarification on how to categorize these new mushroom types and determine if they should be treated as addon materials rather than core game content. Specifically, the maintainers mention that unless given gameplay-changing properties, another mushroom type would be an addon material.
 
 ## Related Questions
 - What are the current guidelines for adding new decoration blocks to the game?

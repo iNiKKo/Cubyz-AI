@@ -9,7 +9,7 @@
 The code changes from using a `std.StringHashMap` to a `ListUnmanaged` for storing tool types, with concerns about manual resource management and the use of an arena allocator.
 
 ## Explanation
-The reviewer questions whether manually freeing resources in the arena defeats its purpose. The transition from `std.StringHashMap` to `ListUnmanaged` suggests a shift in data structure choice, possibly aiming for more efficient memory management or different access patterns. However, the use of an arena allocator implies that automatic memory management is intended, which raises concerns about potential memory leaks if resources are not properly managed.
+The code changes from using a `std.StringHashMap` named `toolTypes` to a `ListUnmanaged` named `toolTypeList` for storing tool types. The reviewer questions whether manually freeing resources in the arena defeats its purpose. The transition from `std.StringHashMap` to `ListUnmanaged` suggests a shift in data structure choice, possibly aiming for more efficient memory management or different access patterns. However, the use of an arena allocator implies that automatic memory management is intended, which raises concerns about potential memory leaks if resources are not properly managed.
 
 ## Related Questions
 - What is the purpose of using a ListUnmanaged instead of std.StringHashMap in this context?

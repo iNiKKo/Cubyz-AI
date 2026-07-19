@@ -9,7 +9,7 @@
 Handles chunk meshing by iterating over block positions and neighbors, checking transparency and view-through properties, and appending quads to opaque or transparent cores.
 
 ## Explanation
-The code iterates over each block position in the chunk and its neighboring chunks. For each block, it checks if the block is transparent or needs to check through a neighbor block. It then appends facing quads to either opaque or transparent cores based on these conditions. After processing all blocks, it unlocks the mutex, replaces ranges in the mesh, and finishes neighbor handling by updating last neighbors' LOD information.
+The code handles chunk meshing by iterating over each block position in the chunk and its neighboring chunks. For each block, it checks if the block is transparent or needs to check through a neighbor block. It then appends facing quads to either opaque or transparent cores based on these conditions. The iteration is done using nested loops for x, y, and z coordinates within the chunk size. The `bitMask` variable is used to efficiently track which faces need processing. If a block is transparent and has a back face, it appends quads for both the front and back faces. For opaque blocks, it checks if they are view-through and not always view-through, in which case it compares with the neighbor block to avoid duplicates. After processing all blocks, it unlocks the mutex, replaces ranges in the mesh, and finishes neighbor handling by updating last neighbors' LOD information.
 
 ## Related Questions
 - What is the purpose of the `sameLodBlock` label in the code?

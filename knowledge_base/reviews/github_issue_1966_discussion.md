@@ -9,7 +9,7 @@
 Discussion on adding a rope block/entity to Cubyz, focusing on its functionality, appearance, and limitations.
 
 ## Explanation
-The discussion revolves around the idea of introducing a rope block or entity in Cubyz to aid exploration in steep caves. The primary concerns include proper climbing mechanics, which are currently lacking, and the need for a length limit to prevent overpowered gameplay. The user proposes using ropes as liquids as a workaround but acknowledges that this relies on a bug affecting the entire voxel space rather than just the collision box. There is also discussion about attaching ropes to ceilings or using metal anchors for better visual attachment, and the possibility of placing ropes horizontally. Future considerations include entity-based ropes with sagging effects and rope cannons for remote placement.
+Discussion on adding a rope block/entity to Cubyz, focusing on its functionality, appearance, and limitations. The user proposes using ropes as a workaround for steep caves but acknowledges that this relies on a bug affecting the entire voxel space rather than just the collision box of the rope. The current crafting recipe uses leaves, which are plentiful and currently have no use in the game. Future considerations include entity-based ropes with sagging effects and rope cannons for remote placement. Metal anchors could be used to visually attach ropes to blocks, but this would require a specific item or visual addition to the block itself. The texture of the temporary rope is taken from the unused bellows.
 
 ## Related Questions
 - What is the current workaround for rope functionality in Cubyz?

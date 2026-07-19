@@ -9,7 +9,11 @@
 Added a 'taskType' field to the ChunkMesh struct with the value '.lighting'.
 
 ## Explanation
-The reviewer suggests that the addition of a 'taskType' field to classify tasks as '.lighting' is straightforward. However, they raise a question about whether there might be a better classification method for task types, indicating potential future improvements in how tasks are categorized and managed within the chunk meshing process.
+The reviewer added a 'taskType' field to the ChunkMesh struct and classified it as '.lighting'. They suggest that this change is straightforward but raise a question about whether there might be a better classification method for task types. The current classification is based on the reviewer's impressions of performance problems in the chunk meshing process.
+
+The addition of 'taskType' impacts the performance of chunk meshing tasks by providing a clearer categorization of tasks, which could lead to more efficient management and optimization. However, there may be potential memory implications from adding this new field to ChunkMesh, as it increases the size of the struct.
+
+The reviewer indicates that future improvements in task classification are possible based on their feedback, suggesting a plan to refactor task classification if necessary. This change does not affect backwards compatibility with existing chunk meshing logic, as it is an additive modification.
 
 ## Related Questions
 - What other task types are currently being considered for classification?

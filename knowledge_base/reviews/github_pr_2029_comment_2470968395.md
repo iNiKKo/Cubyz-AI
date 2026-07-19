@@ -9,7 +9,7 @@
 Added functions to handle obfuscated cursor positions and buffer length calculation in TextInput component.
 
 ## Explanation
-The changes introduce new functions `cursorPosFromObfuscated`, `cursorPosToObfuscated`, and `getBufferLen` to manage cursor positions and buffer lengths when text is obfuscated. The reviewer suggests that the obfuscation feature should be a static option set during construction, rather than being dynamically changeable, as this would simplify the codebase without significant loss of functionality.
+The changes introduce new functions `cursorPosFromObfuscated`, `cursorPosToObfuscated`, and `getBufferLen` to manage cursor positions and buffer lengths when text is obfuscated. The `getBufferLen` function calculates the buffer length based on whether the text is obfuscated or not. If the text is obfuscated, it returns the length of the text buffer multiplied by the length of the obfuscation character; otherwise, it returns the length of the current string items. The reviewer suggests that the obfuscation feature should be a static option set during construction, rather than being dynamically changeable, as this would simplify the codebase without significant loss of functionality. The `obfuscate` function is responsible for enabling or disabling the obfuscation feature.
 
 ## Related Questions
 - What is the purpose of the `cursorPosFromObfuscated` function?

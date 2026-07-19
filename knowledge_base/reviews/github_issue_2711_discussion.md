@@ -8,7 +8,7 @@
 The issue describes significant stuttering in the game at 75 Hz, particularly after tabbing out or opening the GUI. The problem persists even when uncapping the frame rate.
 
 ## Explanation
-The user reports that the game stutters significantly at 75 Hz, alternating between 38 and 75 fps. This issue is observed after tabbing out of the game and then returning to it, or when interacting with the GUI. The problem seems to be consistent even when the frame rate is uncapped, suggesting a deeper underlying issue related to performance or resource management.
+The issue describes significant stuttering in the game at 75 Hz, particularly after tabbing out or opening the GUI. The problem persists even when uncapping the frame rate. Users report that the stuttering alternates between 38 and 75 fps. One user noted that after flying up to skyislands and falling down while tabbed out, the game ran consistently at around ~65 fps upon returning to gameplay. This consistent lower frame rate was observed even when changing the frame rate limit multiple times. After a few seconds, the framerate returned to 75 Hz once the limit was set back to 75 Hz.
 
 ## Related Questions
 - What specific changes were made to address the stuttering issue at 75 Hz?

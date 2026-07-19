@@ -9,7 +9,7 @@
 Added undo history functionality to WorldEditData, including a circular buffer queue for storing changes.
 
 ## Explanation
-The change introduces an undo history mechanism for the WorldEditData struct in Cubyz's server code. This involves adding a History struct with a CircularBufferQueue to store edit operations. Each operation is encapsulated in a Value struct containing a blueprint, position, and message. The reviewer suggests swapping the order of `dequeue` and `enqueue` operations to ensure full capacity utilization of the circular buffer.
+The change introduces an undo history mechanism for the WorldEditData struct in Cubyz's server code. This involves adding a History struct with a CircularBufferQueue to store edit operations, where maxWorldEditHistoryCapacity is set to 1024. Each operation is encapsulated in a Value struct containing a blueprint, position, and message. The reviewer suggests swapping the order of `dequeue` and `enqueue` operations to ensure full capacity utilization of the circular buffer.
 
 ## Related Questions
 - What is the purpose of the CircularBufferQueue in the History struct?

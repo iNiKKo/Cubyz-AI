@@ -11,6 +11,12 @@ The `onLastCloseCallback` function signature in the `Callbacks` struct has been 
 ## Explanation
 This change introduces a more detailed representation for the `workbench` source type by using a struct instead of a simple `u32`, which enhances readability and future extensibility. The inclusion of the user pointer in the callback function allows for more context-aware operations when an inventory is last closed, potentially improving security or functionality related to user-specific actions. This modification also aligns with the architectural goal of making the codebase more maintainable by providing a clear structure for potential future enhancements.
 
+The specific change from `u32` to a struct for the `workbench` source type in the `Source` union is as follows:
+```zig
+workbench: struct { playerId: u32 },
+```
+This change improves code maintainability by allowing additional fields to be added to the `workbench` source type in the future without breaking existing code.
+
 ## Related Questions
 - What is the purpose of the `onLastCloseCallback` function in the `Callbacks` struct?
 - How does the new `workbench` variant in the `SourceType` enum and `Source` union improve code maintainability?

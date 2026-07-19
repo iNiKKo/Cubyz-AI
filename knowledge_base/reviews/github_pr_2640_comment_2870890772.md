@@ -11,6 +11,22 @@ The `lang.zig` file introduces language management functionality, including init
 ## Explanation
 This code snippet defines a module for managing language translations in the Cubyz application. It includes functions to initialize language data, set the current language, load translations from a map, and translate strings based on different categories such as blocks, items, labels, etc. The reviewer suggests benchmarking the performance of querying the translation map, noting that while it might not be a significant issue, it's important to measure its impact.
 
+The `init` function initializes language data by loading languages from assets and setting the initial language based on settings. If the specified language is not found, it defaults to English.
+
+The `setLanguage` function changes the current language by loading the new language and updating the settings. It handles memory allocation for language settings by freeing the old language ID and duplicating the new one.
+
+If a language ID is not found during translation, an error message is logged, and the original string is returned.
+
+The `standardTranslate` function retrieves translations from the ZonElement map using section names, category names, and strings. If a translation is not found, it logs an error and returns the original string.
+
+Categories in the `translate` function are handled by mapping each category to its corresponding section in the ZonElement map. The `languageZon` variable holds the current language's ZonElement data.
+
+The code ensures that language settings are saved after changing languages by calling `main.settings.save()`.
+
+The `languages` array is a list of ZonMapEntry items, each containing a language ID and its corresponding ZonElement data.
+
+Potential performance issues might arise from frequent zonMap queries, which the reviewer suggests benchmarking to measure their impact.
+
 ## Related Questions
 - What is the purpose of the `init` function in `lang.zig`?
 - How does the `setLanguage` function handle memory allocation for language settings?

@@ -11,6 +11,8 @@ The reviewer suggests modifying the error message to be more descriptive and les
 ## Explanation
 The original code logs an internal error when failing to load a structure model, which might not accurately reflect the situation. The reviewer proposes changing the log level from 'err' to a more appropriate level that indicates a recoverable error. This change aims to improve clarity and avoid misleading developers about the severity of the issue.
 
+The specific suggested change is to modify the error message from `std.log.err("Couldn't find structure model with id {s}", .{id});` to `std.log.err("Error occurred while loading structure with id '{s}'. Dropping model from biome.", .{id});`. This new message provides more context and clarity about what went wrong, helping developers understand that the issue is recoverable rather than critical.
+
 ## Related Questions
 - What is the purpose of the 'vtable.loadModel' function in this context?
 - How does changing the logging level affect error handling in Cubyz?

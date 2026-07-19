@@ -9,7 +9,7 @@
 Handles client-side inventory command execution and synchronization.
 
 ## Explanation
-This chunk manages the client-side logic for executing inventory commands, handling confirmations, failures, and synchronization operations. It uses a mutex to ensure thread safety when accessing shared resources like the command queue. The `executeCommand` function serializes and sends commands over the network, while `receiveConfirmation` and `receiveFailure` handle responses from the server. The `setGamemode` function updates the player's gamemode and re-executes pending commands accordingly.
+This chunk manages the client-side logic for executing inventory commands, handling confirmations, failures, and synchronization operations. It uses a mutex to ensure thread safety when accessing shared resources like the command queue. The `executeCommand` function serializes and sends commands over the network using `BinaryWriter`, while `receiveConfirmation` and `receiveFailure` handle responses from the server. The `setGamemode` function updates the player's gamemode and re-executes pending commands accordingly. The command queue is initialized with a capacity of 256 commands, and each command is serialized into binary data before being sent over the network.
 
 ## Code Example
 ```zig

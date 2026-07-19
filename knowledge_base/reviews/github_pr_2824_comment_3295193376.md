@@ -9,7 +9,7 @@
 Added `sincos32` function and began implementing `quatFromAxisAngle` in `vec.zig`. The reviewer questions whether to use a vector alias or a struct for the quaternion representation.
 
 ## Explanation
-The change introduces a new function `sincos32`, which computes both sine and cosine of a given angle using minimax polynomial approximations. This function is copied from the zmath library under the MIT License. The reviewer also initiates the implementation of `quatFromAxisAngle`, which converts an axis-angle representation to a quaternion. The architectural concern raised by the reviewer pertains to the choice between using a vector alias or a struct for representing quaternions, suggesting that each option has its own trade-offs in terms of type safety and clarity.
+The change introduces a new function `sincos32`, which computes both sine and cosine of a given angle using minimax polynomial approximations. This function is copied from the zmath library under the MIT License. The implementation details include specific coefficients for the 11-degree minimax approximation for sine and the 10-degree minimax approximation for cosine. The reviewer also initiates the implementation of `quatFromAxisAngle`, which converts an axis-angle representation to a quaternion. The architectural concern raised by the reviewer pertains to the choice between using a vector alias or a struct for representing quaternions, suggesting that each option has its own trade-offs in terms of type safety and clarity.
 
 ## Related Questions
 - What is the purpose of the `sincos32` function in this code?

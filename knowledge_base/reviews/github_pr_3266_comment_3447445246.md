@@ -9,7 +9,7 @@
 Adds Zig modules for various rotation types in Cubyz.
 
 ## Explanation
-This change introduces a series of Zig modules, each handling different types of rotations within the Cubyz game engine. The reviewer suggests using the `@"mod:path/name"` syntax to avoid conflicts with the existing `@""` syntax used for creating IDs based on folder structures. The discussion revolves around maintaining consistency and clarity in module naming and ID generation.
+This change introduces a series of Zig modules, each handling different types of rotations within the Cubyz game engine. The modules include `stairs`, `no_rotation`, `texture_pile`, `ore`, `hanging`, `torch`, `decayable`, `direction`, `planar`, `log`, `carpet`, `branch`, `fence`, and `sign`. Each module is imported using the `@import` function with a specific path, such as `@import("rotations/stairs.zig")`. The reviewer suggests using the `@"mod:path/name"` syntax to avoid conflicts with the existing `@""` syntax used for creating IDs based on folder structures. The discussion revolves around maintaining consistency and clarity in module naming and ID generation. The reviewer also mentions that the current ID creation method involves generating IDs from the folder structure, which looks like `[modName|cubyz]:feature`. The reviewer suggests using full paths for ID generation to avoid potential conflicts and ensure clarity.
 
 ## Related Questions
 - How does the `@"mod:path/name"` syntax affect module resolution in Zig?

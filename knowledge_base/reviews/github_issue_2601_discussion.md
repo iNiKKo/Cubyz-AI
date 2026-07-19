@@ -10,6 +10,8 @@ The issue discusses implementing an autopilot feature during high-speed falls to
 ## Explanation
 The user proposes an autopilot feature that would automatically adjust the player's trajectory to center them within blocks when falling at high speeds, with varying influence based on the direction of the player's view. The maintainer raises concerns about the possibility of unintended consequences if players specifically want to land on the side of a block and suggests that safer infrastructure should be built instead.
 
+The autopilot feature would have different levels of influence depending on whether the player is looking directly downwards or at an angle, with less influence when not looking exactly down.
+
 ## Related Questions
 - What are the potential unintended consequences of implementing an autopilot feature during high-speed falls?
 - How can the influence of the autopilot be adjusted based on the player's view direction?

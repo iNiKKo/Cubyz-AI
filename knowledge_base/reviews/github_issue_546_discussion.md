@@ -9,7 +9,7 @@
 The discussion revolves around implementing sapling mechanics in Cubyz, considering different approaches like seeds vs. saplings, and exploring resource management systems such as composting.
 
 ## Explanation
-The conversation centers on how to implement sapling functionality in Cubyz, with a focus on balancing gameplay and resource management. The maintainers and users discuss various options for sapling mechanics, including the Terraria-style seed system versus the Minecraft-style sapling item. They also explore methods to prevent infinite wood farming by introducing complexity such as composting or requiring specific resources like sulfur. The discussion touches on game design principles, such as avoiding grindy gameplay and encouraging exploration.
+The discussion centers on implementing sapling mechanics in Cubyz, with a focus on balancing gameplay and resource management. The maintainers and users explore different approaches for sapling mechanics, including the Terraria-style seed system versus the Minecraft-style sapling item. They also discuss methods to prevent infinite wood farming by introducing complexity such as composting or requiring specific resources like sulfur. The discussion touches on game design principles, such as avoiding grindy gameplay and encouraging exploration. Specifically, it is proposed that saplings should be able to turn into structures, but the exact mechanism for this transformation is not explicitly stated in the raw content.
 
 ## Related Questions
 - How does the current sapling system in Cubyz work?

@@ -13,9 +13,19 @@ This JavaScript code snippet defines two primary functions: `saveItemToProject` 
 
 1. **Input Validation**: They check if required fields (like Item ID, texture, or filename) are filled out. If not, they alert the user to provide necessary information.
 
-2. **Data Extraction**: For items, they extract various properties such as ID, texture, stack size, food value, block placement, base color, and material attributes. They also generate a list of colors based on an HSL conversion from a base hex color.
+2. **Data Extraction**: For items, they extract various properties such as ID, texture, stack size, food value, block placement, base color, and material attributes. They also generate a list of colors based on an HSL conversion from a base hex color. The specific steps for color processing include:
+   - Extracting the base hex color.
+   - Converting the hex color to RGB values.
+   - Calculating the HSL values (hue, saturation, lightness) from the RGB values.
+   - Generating a list of colors using predefined steps (0.22, 0.38, 0.52, 0.72, 0.88) and converting these HSL values back to hex colors.
 
-3. **Project Data Update**: They update the `window.projectData` object by adding or replacing items or recipes. This involves filtering out existing entries with the same ID and pushing new data into the appropriate arrays or objects.
+3. **Project Data Update**: They update the `window.projectData` object by adding or replacing items or recipes. This involves filtering out existing entries with the same ID and pushing new data into the appropriate arrays or objects. For items, they also handle material attributes such as:
+   - Durability: default value is "250".
+   - Swing Speed: default value is "1.0".
+   - Texture Roughness: default value is "0.0".
+   - Mass Damage: default value is "2.0".
+   - Hardness Damage: default value is "2.0".
+   - Modifier Type and Strength are extracted from the respective input fields.
 
 4. **State Management**: After saving, they reset certain global states like `hasUnsavedChanges`, `editingId`, and `currentPanelName` to reflect that changes have been saved.
 

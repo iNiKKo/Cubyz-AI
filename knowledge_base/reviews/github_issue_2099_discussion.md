@@ -8,7 +8,7 @@
 The issue discusses renaming the 'Render Distance' setting to 'LOD Distance' to avoid confusion and improve accuracy. It also explores potential solutions to prevent crashes and provide better guidance for players based on GPU memory.
 
 ## Explanation
-The discussion revolves around addressing player confusion regarding the 'Render Distance' setting, which often leads to performance issues or crashes when set too high. The maintainer suggests renaming it to 'LOD Distance' to reflect its actual function more accurately. Additionally, they propose several measures to mitigate these issues, including temporarily lowering the default value, specifying units in blocks, counting chunks across multiple LODs, and providing GPU memory-based recommendations. The goal is to improve user understanding and prevent performance problems.
+The issue discusses renaming the 'Render Distance' setting to 'LOD Distance' to avoid confusion and improve accuracy. The maintainer suggests several measures to mitigate performance issues, including temporarily lowering the default value to 20 until crashes caused by >2GB buffer size are resolved, specifying units in blocks for the render distance setting, counting chunks across multiple LODs, and providing GPU memory-based recommendations. The goal is to improve user understanding and prevent performance problems. Recommended render distance based on GPU VRAM capacity: 1GB or less - 5 chunks, 2GB or less - 10 chunks, 4GB or less - 15 chunks, 8GB or less - 20 chunks.
 
 ## Related Questions
 - What is the proposed new name for the 'Render Distance' setting?

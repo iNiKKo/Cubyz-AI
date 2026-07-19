@@ -8,7 +8,7 @@
 Issue with block placement due to player collision detection.
 
 ## Explanation
-The issue arises from incorrect hitbox checks during block placement, causing the game to prevent placing blocks on sides where the player is slightly colliding. The maintainer notes that the wrong hitbox is being checked, suggesting a need to adjust the collision detection logic to accurately determine when the player can place blocks.
+Issue with block placement due to player collision detection. The problem occurs when the game incorrectly checks the wrong hitbox, leading to a situation where placing blocks on sides of blocks you are walking into is prevented because the player's hitbox slightly overlaps or goes through corners of adjacent blocks. This issue persists even after stopping movement. Users have reported that the player’s hitbox can still be inside the block, causing placement restrictions. The maintainer confirmed that the game checks an incorrect hitbox during block placement, necessitating adjustments to collision detection logic.
 
 ## Related Questions
 - What is the current logic for determining if a block can be placed?
@@ -20,6 +20,5 @@ The issue arises from incorrect hitbox checks during block placement, causing th
 - How can we ensure that the fix does not introduce new collision-related issues?
 - Are there any similar issues reported for different types of blocks or terrain?
 - Can we optimize the collision detection to improve performance without affecting accuracy?
-- What is the expected behavior when a player's hitbox partially overlaps with a block?
 
 *Source: unknown | chunk_id: github_issue_549_discussion*

@@ -9,7 +9,7 @@
 A new `timeoutPeriod` field with a default value of 5,000,000 was added to the `Connection` struct in `network.zig`. The reviewer questioned the unit of measurement and suggested creating a `TimeDelta` struct to represent time more clearly.
 
 ## Explanation
-The change introduces a new field `timeoutPeriod` with an initial value of 5,000,000. However, the unit of this value is unclear; it is assumed to be microseconds based on its usage in comparison with a function that returns a microseconds timestamp. The reviewer highlights the need for better type safety and clarity by suggesting the implementation of a `TimeDelta` struct. This struct would encapsulate time-related operations and conversions, ensuring consistency and reducing ambiguity in handling time units throughout the codebase.
+The change introduces a new field `timeoutPeriod` with an initial value of 5,000,000. The unit of this value is microseconds, as it is compared against a function that returns a microseconds timestamp. The reviewer highlights the need for better type safety and clarity by suggesting the implementation of a `TimeDelta` struct. This struct would encapsulate time-related operations and conversions, ensuring consistency and reducing ambiguity in handling time units throughout the codebase.
 
 ## Related Questions
 - What is the purpose of the `timeoutPeriod` field in the `Connection` struct?

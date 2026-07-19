@@ -9,7 +9,7 @@
 Added a new client-side rendering module for entities in Cubyz, including initialization, deinitialization, and rendering functions.
 
 ## Explanation
-The added code initializes a graphics pipeline for entity rendering, sets up uniform variables, and provides functions to render HUD elements and entities. The reviewer suggests refactoring the loop to use an alias for the common path to improve readability and maintainability.
+The added code initializes a graphics pipeline for entity rendering using the shaders located at `assets/cubyz/shaders/entity_vertex.vert` and `assets/cubyz/shaders/entity_fragment.frag`. It sets up uniform variables such as `projectionMatrix`, `viewMatrix`, `light`, `contrast`, and `ambientLight`. The `init` function initializes the pipeline, while the `deinit` function ensures proper cleanup by deinitializing it. The `renderHud` function calculates the position of entities on the screen using projection and view matrices, and handles transparency based on the distance from the player. The `render` function binds the pipeline, sets uniform variables, and iterates over entity components to render them. The reviewer suggests refactoring the loop to use an alias for the common path to improve readability and maintainability.
 
 ## Related Questions
 - What is the purpose of the `init` function in the `modelRenderer.zig` file?

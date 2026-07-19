@@ -8,14 +8,10 @@
 Discussion on how status effects should be displayed to the player.
 
 ## Explanation
-The maintainer is seeking input on the visual representation of status effects for both the player and other entities in the game. The attached images likely illustrate different design concepts or examples of current implementations, prompting a discussion on user interface (UI) design choices.
+The maintainer is seeking input on the visual representation of status effects for both the player and other entities in the game. The attached images (width=1204px, height=770px) illustrate different design concepts or examples of current implementations related to status effect displays. These images are meant to prompt a discussion on user interface (UI) design choices regarding how status effects should be visually represented and displayed within the game environment.
 
 ## Related Questions
-- What are the current methods for displaying status effects in Cubyz?
-- How do the attached images represent different UI designs for status effects?
-- Are there any specific requirements or constraints for how status effects should be displayed?
-- What feedback has been received on previous implementations of status effect displays?
-- How will the chosen design impact user experience and gameplay balance?
-- Are there any technical considerations that need to be addressed when implementing the new display system?
+- What specific visual elements do the attached images depict in relation to status effect display?
+- How might these image examples influence future UI design decisions for status effects?
 
 *Source: unknown | chunk_id: github_issue_624_discussion*

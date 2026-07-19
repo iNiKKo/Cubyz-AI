@@ -9,7 +9,11 @@
 A new struct `TexturePile` is introduced within the `RotationModes` struct in `rotation.zig`, which includes a string ID and two maps for managing rotated models and block state counts.
 
 ## Explanation
-The introduction of the `TexturePile` struct represents an architectural decision to manage texture-related data more efficiently. The struct contains a static string identifier (`id`) and two dynamic data structures: `rotatedModels`, a `std.StringHashMap` for mapping model indices, and `blockToStateCountMap`, an `std.AutoHashMapUnmanaged` for tracking block state counts. This change is part of a broader discussion on how to handle specializations in rotations, particularly focusing on the trade-offs between cloning parametrizable rotations and storing specialization data within the rotation itself. The reviewer suggests that specializing rotations during block load could be more efficient but requires careful consideration of how to hash and store specialized instances, especially for non-serializable rotations.
+The introduction of the `TexturePile` struct represents an architectural decision to manage texture-related data more efficiently. The struct contains a static string identifier (`id`) and two dynamic data structures: `rotatedModels`, a `std.StringHashMap` for mapping model indices, and `blockToStateCountMap`, an `std.AutoHashMapUnmanaged` for tracking block state counts.
+
+The `specialize(zon: ZonElement) *RotationMode` function is introduced to handle the specialization of rotations. For non-serializable rotations, this function returns the same pointer. For serializable rotations, it hashes the specialization parameters and stores specialized instances in a hash map inside itself. This approach ensures that different specializations can share model caches if possible, using a nested hash map for separate caches when necessary.
+
+The reviewer suggests that specializing rotations during block load could be more efficient but requires careful consideration of how to hash and store specialized instances, especially for non-serializable rotations. The use of `std.StringHashMap` and `std.AutoHashMapUnmanaged` helps manage these mappings efficiently.
 
 ## Related Questions
 - What is the purpose of the `TexturePile` struct in `rotation.zig`?

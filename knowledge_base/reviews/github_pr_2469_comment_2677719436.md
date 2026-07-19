@@ -9,7 +9,7 @@
 Refactored the inventory deposit logic by using an array of destinations instead of a single destination.
 
 ## Explanation
-The change involves modifying the `depositToAny` function call to accept an array of `Inventory` objects rather than a single one. This refactoring is aimed at improving flexibility and potentially preparing for future enhancements where multiple destinations might be needed. The reviewer suggests inlining the array creation, noting that it only adds 4 more characters compared to the previous version. This change does not introduce any new functionality but enhances the code's structure and maintainability.
+Refactored the inventory deposit logic by using an array of destinations instead of a single destination. The change involves modifying the `depositToAny` function call to accept an array of `Inventory` objects rather than a single one. Specifically, a var array 'destinations' is created and passed to the function. This refactoring is aimed at improving flexibility and potentially preparing for future enhancements where multiple destinations might be needed. The reviewer suggests inlining the array creation, noting that it only adds 4 more characters compared to the previous version: `itemSlot.inventory.depositToAny(itemSlot.itemSlot, &.{main.game.Player.inventory}, itemSlot.inventory.getAmount(itemSlot.itemSlot));`. This change does not introduce any new functionality but enhances the code's structure and maintainability.
 
 ## Related Questions
 - What is the purpose of refactoring the `depositToAny` function call?

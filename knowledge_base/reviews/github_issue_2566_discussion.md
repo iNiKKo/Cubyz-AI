@@ -8,7 +8,7 @@
 Discussion about implementing a player whitelist feature in Cubyz, focusing on how to display and handle public keys during the first login.
 
 ## Explanation
-The discussion revolves around adding a whitelist feature that requires obtaining a player's public key. The maintainer suggests displaying only one key as text during the first login to avoid confusion. This approach is deemed acceptable because any incorrect key used during this initial login can be corrected later, minimizing the impact of potential algorithmic issues.
+Discussion about implementing a player whitelist feature in Cubyz, focusing on how to display and handle public keys during the first login. The maintainer suggests displaying only one key as text during the first login to avoid confusion. This approach is deemed acceptable because any incorrect key used during this initial login can be corrected later, minimizing the impact of potential algorithmic issues. Additionally, it requires a window to get the player's public key.
 
 ## Related Questions
 - How does Cubyz currently handle player authentication?

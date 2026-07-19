@@ -9,7 +9,9 @@
 The code introduces a new `registerAll` function to handle both block and biome migrations, replacing the previous `registerBlockMigrations` function. The reviewer expresses concern about the readability of this approach, describing it as a 'crazy hack'.
 
 ## Explanation
-The change involves refactoring the migration registration process by introducing a generic `registerAll` function that can handle both block and biome migrations using an enum to determine which collection to use. The reviewer notes that while the proposed code produces the same assembly output as the current version, it is less readable due to its complexity. The primary motivation for this change appears to be consolidating migration registration logic into a single function, potentially reducing code duplication and improving maintainability.
+The change involves refactoring the migration registration process by introducing a generic `registerAll` function that can handle both block and biome migrations using an enum to determine which collection to use. The `MigrationType` enum has two values: `block` and `biome`. The `registerAll` function takes a `comptime` parameter of type `MigrationType` and a pointer to a `std.StringHashMap(ZonElement)`. Depending on the value of `typ`, it logs the number of migrations being registered and assigns the appropriate collection (`blockMigrations` or `biomeMigrations`) to the `collection` variable.
+
+The reviewer notes that while the proposed code produces the same assembly output as the current version, it is less readable due to its complexity. The primary motivation for this change appears to be consolidating migration registration logic into a single function, potentially reducing code duplication and improving maintainability.
 
 ## Related Questions
 - What is the purpose of the `MigrationType` enum in this code?

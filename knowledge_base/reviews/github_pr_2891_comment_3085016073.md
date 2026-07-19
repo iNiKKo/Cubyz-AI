@@ -9,7 +9,9 @@
 Refactored the `getProperty` function to use an array lookup and added a new `getPropertyPtr` function for pointer access.
 
 ## Explanation
-The change refactors the `getProperty` function in the `ProceduralItem` struct to use an array lookup instead of inline field access. This approach is more future-proof as it allows adding locking mechanisms without altering every call site. A new `getPropertyPtr` function is introduced for scenarios where a pointer to the property value is needed. The reviewer expresses concern about potential misuse of pointers and questions the design choice, suggesting that Zig typically avoids such syntax sugar.
+The change refactors the `getProperty` function in the `ProceduralItem` struct to use an array lookup instead of inline field access. This approach is more future-proof as it allows adding locking mechanisms without altering every call site. The reviewer expresses concern about potential misuse of pointers and questions the design choice, suggesting that Zig typically avoids such syntax sugar.
+
+The new `getPropertyPtr` function returns a pointer to the property value (`*f32`). The exact return type of both functions is specified: `getProperty` returns `f32`, and `getPropertyPtr` returns `*f32`. The reviewer's specific concern about potential misuse of pointers and questions the design choice are also mentioned.
 
 ## Related Questions
 - What is the purpose of the `getPropertyPtr` function?

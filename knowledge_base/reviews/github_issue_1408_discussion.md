@@ -9,18 +9,10 @@
 The discussion revolves around implementing a 'snap' feature for SBBs (Structure Blueprint Blocks) to align them with terrain. The maintainers propose separating normal SBBs from generator SBBs, which would have restrictions on block types and allow additional features like snapping.
 
 ## Explanation
-The issue discusses the implementation of a 'snap' feature for SBBs to ensure they align correctly with the terrain. The maintainers suggest creating two categories of SBBs: normal and generator. Generator SBBs would have limitations on block types, allowing only `cubyz:void`, child blocks, and origin blocks. This separation aims to clarify behavior during snapping operations, particularly when dealing with surface overwrites. The proposal also considers performance implications, noting that accessing the ceiling or floor is O(1) while finding a wall is O(n). The maintainers aim to prevent unintended block replacements and ensure consistent behavior across different structures.
+The discussion revolves around implementing a 'snap' feature for SBBs (Structure Blueprint Blocks) to align them with terrain. The maintainers propose creating two categories of SBBs: normal and generator. Generator SBBs would have limitations on block types, allowing only `cubyz:void`, child blocks, and origin blocks. This separation aims to clarify behavior during snapping operations, particularly when dealing with surface overwrites. For example, if a blueprint contains gray (stone) pixels that overwrite the terrain surface, the child block will snap to the old surface pre-blueprint-pasting (Option A). The proposal also considers performance implications: accessing the ceiling or floor is O(1), while finding a wall is O(n). This separation prevents unintended block replacements and ensures consistent behavior across different structures. Additionally, the maintainers aim to restrict snapping operations to up and down directions due to higher computational costs for other orientations.
 
 ## Related Questions
-- What is the proposed implementation for the 'snap' feature in SBBs?
-- How does the separation of normal and generator SBBs affect performance?
-- What are the restrictions on block types for generator SBBs?
-- How does the snapping operation handle surface overwrites?
-- What are the potential issues with allowing arbitrary blocks in blueprints?
-- How does the proposal address the complexity of using multiple SBBs?
-- What is the performance difference between accessing ceiling/floor and finding a wall?
-- How does the 'snap' feature impact existing blueprint designs?
-- What are the implications of limiting snapping to up and down directions?
-- How does the separation of SBB categories improve consistency in structure generation?
+- What are the specific block types allowed in generator SBBs?
+- How does the performance differ between accessing ceiling/floor vs. finding a wall?
 
 *Source: unknown | chunk_id: github_issue_1408_discussion*

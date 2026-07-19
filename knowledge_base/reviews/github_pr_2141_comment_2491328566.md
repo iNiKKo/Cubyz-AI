@@ -11,6 +11,17 @@ Refactored Vulkan instance creation by adding macOS-specific extensions and opti
 ## Explanation
 The change involves updating the Vulkan instance creation process to include specific extensions required for macOS compatibility. The reviewer notes that precomputing the count and using `initCapacity` does not provide any performance benefit due to the low cost of stack allocations in this context. The refactoring aims to ensure correct functionality on macOS while maintaining efficient resource management.
 
+The specific Vulkan extensions added for macOS compatibility are VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME and VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME. These extensions are conditionally added if the operating system is macOS, as indicated by the code snippet:
+
+```zig
+const extensionsMacOs = [_][*:0]const u8{
+    c.VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME,
+    c.VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME,
+};
+```
+
+The reviewer also notes that using `stackAllocator` instead of `initCapacity` does not result in additional allocations, as the number of allocations remains the same regardless of whether `initCapacity` is used or not.
+
 ## Related Questions
 - What are the specific Vulkan extensions added for macOS compatibility?
 - Why was precomputing the extension count and using initCapacity deemed unnecessary?

@@ -9,7 +9,7 @@
 The issue involves giant flashes during movement in multiplayer mode, particularly noticeable on lower-end hardware and near specific locations with many block entities like signs.
 
 ## Explanation
-The problem stems from incorrect viewport settings when loading or reloading sign textures at a lower resolution scale. This causes the render engine to use data from a past frame, leading to visual artifacts. The issue is more pronounced during movement and in multiplayer mode, affecting lower-end hardware more significantly. The maintainers identified that the viewport dimensions were not being correctly set relative to the window size, which led to incorrect texture scaling and rendering.
+The issue involves giant flashes during movement in multiplayer mode, particularly noticeable on lower-end hardware and near specific locations with many block entities like signs. The problem stems from incorrect viewport settings when loading or reloading sign textures at a lower resolution scale due to incorrectly setting the viewport to an unscaled window width/height. This causes the render engine to use data from a past frame, leading to visual artifacts. The issue is more pronounced during movement and in multiplayer mode, affecting lower-end hardware more significantly.
 
 ## Related Questions
 - What is the impact of incorrect viewport settings on texture rendering?

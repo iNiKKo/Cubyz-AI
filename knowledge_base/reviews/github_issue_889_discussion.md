@@ -8,14 +8,10 @@
 Discussion about implementing overlay textures for blocks, with concerns over efficiency.
 
 ## Explanation
-The discussion revolves around the implementation of overlay textures for certain blocks based on a priority list. The maintainer expresses doubt about the feasibility of efficiently implementing this feature or similar connected textures in general.
+Discussion about implementing overlay textures for blocks, with concerns over efficiency. The priority list includes Snow, Grass, Sand, Dirt, and Soil. The maintainer expresses doubt about the feasibility of efficiently implementing this feature or similar connected textures in general.
 
 ## Related Questions
-- What is the priority list for overlay textures?
+- What is the exact priority list for overlay textures?
 - Why does the maintainer doubt the efficiency of implementing this feature?
-- Are there any plans to revisit the implementation of connected textures in the future?
-- How might the implementation impact backwards compatibility?
-- What are the potential performance implications of adding overlay textures?
-- Is there a specific algorithm being considered for efficient texture overlaying?
 
 *Source: unknown | chunk_id: github_issue_889_discussion*

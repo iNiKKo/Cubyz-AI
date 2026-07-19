@@ -9,7 +9,7 @@
 A new function `obfuscateString` is added to the `TextInput` module. The reviewer suggests moving this function to a utility module and recommends placing allocator parameters as the first argument.
 
 ## Explanation
-The addition of the `obfuscateString` function in the `TextInput` module introduces functionality for string obfuscation, which is not inherently tied to GUI components. The reviewer's suggestion to move this function to a utility module aligns with better code organization and reusability principles. By placing allocator parameters as the first argument, the code adheres to common Zig conventions, improving readability and maintainability.
+A new function `obfuscateString` is added to the `TextInput` module. This function takes a string and an allocator as parameters and returns an obfuscated version of the input string. The reviewer suggests moving this function to a utility module, as it is not inherently tied to GUI components, to improve code organization and reusability. By placing allocator parameters as the first argument, the code adheres to common Zig conventions, enhancing readability and maintainability. The specific allocator type used is `NeverFailingAllocator`, which ensures that allocation failures are handled gracefully.
 
 ## Related Questions
 - Why was the `obfuscateString` function added to the `TextInput` module?

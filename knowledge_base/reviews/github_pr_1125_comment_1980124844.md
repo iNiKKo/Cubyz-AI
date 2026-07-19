@@ -9,7 +9,7 @@
 The change renames the 'name' parameter to 'addonName' in the `register` function and introduces a local allocator.
 
 ## Explanation
-The reviewer expresses concern about using a stack allocator for potentially large data structures, such as blueprint block arrays that could occupy up to 1<<50 bytes. The reviewer suggests replacing the stack allocator with a variable to allow easy replacement if needed. They question the nature of the stack allocator used in the code, specifically whether it has fallback logic when full or is just a fixed-size buffer with a top pointer.
+The reviewer expresses concern about using a stack allocator for potentially large data structures, such as blueprint block arrays that could occupy up to 1<<50 bytes (u16 x u16 x u16, 4 bytes per block). The reviewer suggests replacing the stack allocator with a variable to allow easy replacement if needed. They question the nature of the stack allocator used in the code, specifically whether it has fallback logic when full or is just a fixed-size buffer with a top pointer.
 
 ## Related Questions
 - What is the maximum size of a blueprint block array that could be handled by this code?

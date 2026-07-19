@@ -9,7 +9,13 @@
 Added `sortItems` and `compressItems` functions to `ClientInventory`, allowing for item sorting and compression.
 
 ## Explanation
-The changes introduce two new functions, `sortItems` and `compressItems`, within the `ClientInventory` struct. The `compressItems` function iterates through the inventory items, merging stacks of identical items by executing a deposit command. The `sortItems` function first compresses the items and then sorts them using an insertion sort algorithm with a custom context (`SortContext`). The reviewer suggests giving developers more control over sorting to avoid enforcing a specific order based on memory reading, which could lead to unexpected results if not handled correctly.
+The changes introduce two new functions, `sortItems` and `compressItems`, within the `ClientInventory` struct. The `compressItems` function iterates through the inventory items, merging stacks of identical items by executing a deposit command. Specifically, it checks each item stack against every other item stack in the inventory. If two stacks have the same item type, it executes a deposit command to merge them into one stack with the combined amount. The `sortItems` function first compresses the items and then sorts them using an insertion sort algorithm with a custom context (`SortContext`). The reviewer suggests giving developers more control over sorting to avoid enforcing a specific order based on memory reading, which could lead to unexpected results if not handled correctly.
+
+The `lessThan` method in the `SortContext` struct determines item order by comparing their tags. It first checks for null items and procedural items, ensuring that non-procedural items come before procedural ones. Then, it compares the tags of the items lexicographically. If two items have the same tags up to a certain point, the item with fewer tags is considered less than the other. This ensures a consistent order based on item tags.
+
+The reviewer's suggestion impacts the flexibility of inventory management by allowing developers to define their own sorting rules, potentially leading to more intuitive and user-friendly inventory systems. However, it also introduces potential performance implications, as custom sorting logic may require additional computation. The current implementation handles items with null values during sorting by treating them as less than any non-null item.
+
+To implement user-defined sorting rules, developers would need to extend the `SortContext` struct and modify the `lessThan` method to incorporate their desired sorting criteria. This could involve adding new fields to the context or changing the comparison logic entirely.
 
 ## Related Questions
 - How does the `compressItems` function handle items with different amounts?

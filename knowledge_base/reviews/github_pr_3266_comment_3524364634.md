@@ -9,7 +9,7 @@
 Refactored the feature list generation to use a for loop instead of an iterator, avoiding unnecessary allocations.
 
 ## Explanation
-The change replaces the use of `featureDir.iterate()` with `std.Io.Dir.walk()`, which provides a more efficient way to traverse directory entries. The original code used an intermediate allocation for each feature entry, which is now eliminated by directly appending to `modFeatureList`. Additionally, the code sorts the list of features and adds a marker comment for better readability in the generated output.
+Refactored the feature list generation to use a for loop instead of an iterator, avoiding unnecessary allocations. The change replaces the use of `featureDir.iterate()` with `std.Io.Dir.walk()`, which provides a more efficient way to traverse directory entries. The original code used an intermediate allocation for each feature entry, which is now eliminated by directly appending to `modFeatureList`. Additionally, the list of features is sorted using `std.mem.sort` with a custom comparator function that sorts strings lexicographically. A marker comment `// MARK: {s}` is added for better readability in the generated output.
 
 ## Related Questions
 - What is the purpose of using `std.Io.Dir.walk()` instead of `featureDir.iterate()`?

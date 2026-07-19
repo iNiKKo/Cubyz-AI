@@ -11,6 +11,10 @@ Added Skybox struct with initialization, deinitialization, and rendering functio
 ## Explanation
 The change introduces a new `Skybox` struct to handle skybox rendering in the Cubyz game engine. The struct includes methods for initializing resources (shaders, vertex arrays, buffers), deinitializing them, and rendering the skybox. The reviewer suggests encapsulating the rendering function within GPU performance measuring functions (`start/stopQuery`) to track its performance in the debug menu (F5). This will help in optimizing the rendering process by providing insights into its performance characteristics.
 
+The `Skybox` struct uses a shader initialized with vertex and fragment shaders located at `assets/cubyz/shaders/skybox/vertex.vs` and `assets/cubyz/shaders/skybox/fragment.fs`. The uniform variables include `time`, `altitude`, `lightDir`, `invLightDir`, `viewMatrix`, and `projectionMatrix`. The vertex data consists of 8 vertices forming a cube, and the indices define 12 triangles to render the cube. Vertex attributes are set up for the position attribute.
+
+The rendering process disables face culling and depth testing, sets the view and projection matrices, calculates time-based animations for day/night cycles using `lightMatrix` and `invLightMatrix`, and then draws the skybox using vertex array objects (VAOs) and vertex buffer objects (VBOs). Proper cleanup of resources is ensured in the `deinit` method by deleting VAOs and VBOs.
+
 ## Related Questions
 - What is the purpose of the `Skybox` struct in the Cubyz game engine?
 - How are shaders and vertex buffers initialized in the `Skybox` struct?

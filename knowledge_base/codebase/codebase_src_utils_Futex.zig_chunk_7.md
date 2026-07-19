@@ -9,7 +9,7 @@
 The Deadline struct manages timeouts for waiting on a pointer's value change using Futex, converting relative durations to absolute ones to handle spurious wakeups and provide accurate error reporting.
 
 ## Explanation
-The Deadline struct is designed to efficiently manage timeouts when waiting for a pointer's value to change using the Futex mechanism. It converts relative timeout durations into absolute times to ensure more accurate handling of multiple timed waits, which are often necessary due to spurious wakeups. The `init` function initializes a deadline with a specified timeout in nanoseconds or sets it to never expire if null is passed. The `wait` method blocks until the pointer's value changes, Futex.wake() is called on the pointer, a spurious wakeup occurs, or the deadline expires, returning an error.Timeout if the deadline is reached.
+The Deadline struct manages timeouts for waiting on a pointer's value change using Futex, converting relative durations to absolute ones to handle spurious wakeups and provide accurate error reporting. The `init` function initializes a deadline with a specified timeout in nanoseconds or sets it to never expire if null is passed. The `wait` method blocks until the pointer's value changes, Futex.wake() is called on the pointer, a spurious wakeup occurs, or the deadline expires, returning an error.Timeout if the deadline is reached. Specifically, in the `wait` method, the timeout duration is calculated by subtracting the elapsed time since the deadline was started from the initial timeout. If the elapsed time exceeds the initial timeout, the result is clamped to zero.
 
 ## Code Example
 ```zig

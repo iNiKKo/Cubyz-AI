@@ -8,7 +8,7 @@
 Defines properties for a leafy pine branch block, including its drop behavior, textures, and LOD replacement.
 
 ## Explanation
-This chunk defines the configuration for a leafy pine branch block in the Cubyz voxel engine. It specifies that the block decays over time and drops pine branches when it does. The block also has multiple textures assigned to different faces (6-10) and a LOD replacement texture. Additionally, it specifies an opaque variant for rendering purposes.
+This chunk defines the configuration for a leafy pine branch block in the Cubyz voxel engine. The block's decay effect is defined as `type = .decay`, meaning it will decay over time. When it decays, it drops pine branches (`drops`), which are specified to be of type `cubyz:branch/pine`. Additionally, the block can drop pine leaves (`cubyz:leaves/pine`) when cut with a tool tagged as `.cuttable`. The block has multiple textures assigned to different faces (6-10) and uses specific LOD replacement textures. The opaque variant for rendering purposes is also specified.
 
 ## Related Questions
 - What is the type of update for the leafy pine branch block?

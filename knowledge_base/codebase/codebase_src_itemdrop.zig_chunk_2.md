@@ -9,7 +9,18 @@
 The `ItemDropManager` handles the creation, storage, and updating of item drops in the game world.
 
 ## Explanation
-The `ItemDropManager` manages item drops by providing functions to initialize a list of items, store individual items, update their positions and states, add new items, and process changes. It uses an allocator for memory management and ensures thread safety with mutexes. The manager also handles networking to send updates to connected users.
+The `ItemDropManager` handles the creation, storage, and updating of item drops in the game world. It provides functions to initialize a list of items (`getInitialList`), store individual items (`storeSingle`, `storeDrop`), update their positions and states (`update`), add new items (`add`, `addWithIndex`), and process changes (`processChanges`). The manager uses an allocator for memory management and ensures thread safety with mutexes. It also handles networking to send updates to connected users.
+
+- `getInitialList`: Initializes a list of items by processing changes, creating a ZonElement array, and appending stored single items to it.
+- `storeDrop`: Stores an individual item drop by creating a ZonElement object, setting its properties (`i`, `pos`, `vel`, `despawnTime`), and storing the item stack.
+- `storeSingle`: Calls `storeDrop` to store a single item drop.
+- `store`: Creates a ZonElement array, appends stored single items to it, and returns a ZonElement object containing the array.
+- `update`: Updates the positions and states of item drops by processing changes, checking for collisions with blocks, updating pickup cooldowns, and despawning items when their despawn time reaches zero.
+- `add`: Adds a new item drop to the world by locking the empty mutex, finding an available index, creating an ItemDrop object, sending updates to connected users, and pushing the add operation to the change queue.
+- `addWithIndex`: Similar to `add`, but uses a specified index instead of finding one.
+- `processChanges`: Processes changes in the item drop list by adding or removing items based on the change queue.
+
+The manager ensures thread safety by using mutexes (`emptyMutex`) and handles networking by sending updates to connected users when items are added.
 
 ## Code Example
 ```zig

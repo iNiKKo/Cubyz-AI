@@ -8,7 +8,7 @@
 Defines properties for the lime glass block.
 
 ## Explanation
-This chunk defines a configuration object with two fields: `absorbedLight` and `texture`. The `absorbedLight` field is set to a hexadecimal color value, indicating how much light the block absorbs. The `texture` field specifies the path to the texture file used for rendering the lime glass block.
+This chunk defines a configuration object with two fields: `absorbedLight` and `texture`. The `absorbedLight` field is set to 0xa03ed0, which represents a hexadecimal color value indicating how much light the block absorbs. The `texture` field specifies the path to the texture file used for rendering the lime glass block.
 
 ## Related Questions
 - What is the absorbed light value for the lime glass block?

@@ -9,7 +9,7 @@
 The issue involves operations not being stored before a player disconnects due to the player being removed prematurely.
 
 ## Explanation
-The discussion revolves around handling player disconnections in a way that ensures all pending operations are completed before the player is fully removed. The initial suggestion was to remove `userMutex` and use a single mutex for both sync operations and disconnections, but this approach was found to cause asynchronous disconnection issues. Another proposal was to push user indices into a queue at the end of the update function to handle removals safely, preventing race conditions. However, this method also encountered problems, specifically preventing reconnection after disconnection.
+The issue involves operations not being stored before a player disconnects due to premature removal. The discussion centers on handling disconnections in a way that ensures all pending operations are completed before removing the player. Specifically, `src/network.zig:1801` causes asynchronous disconnection issues when the player is removed prematurely. Initially, it was suggested to remove `userMutex` and use a single mutex for both sync operations and disconnections, but this approach led to further problems with asynchronous disconnects. Another proposal involved pushing user indices into a queue at the end of the update function to handle removals safely, preventing race conditions. However, this method also encountered issues, specifically preventing reconnection after disconnection.
 
 ## Related Questions
 - What is the purpose of `userMutex` in the network handling code?

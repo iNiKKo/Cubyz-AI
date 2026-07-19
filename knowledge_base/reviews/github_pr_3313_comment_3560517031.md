@@ -9,7 +9,7 @@
 The review discusses issues with the selection command in Cubyz, particularly focusing on user experience and clarity of usage.
 
 ## Explanation
-The reviewer points out that setting pos2 after pos1 can be awkward because it only allows clearing both positions. The reviewer suggests a future improvement where a unique wand could automatically select connected blocks upon clicking. Additionally, the reviewer questions the clarity of the `/selection cube` command, expressing uncertainty about the dimensions and positioning of the resulting block box.
+The review discusses issues with the selection command in Cubyz, particularly focusing on user experience and clarity of usage. The reviewer points out that setting pos2 after pos1 can be awkward because it only allows clearing both positions. The reviewer suggests a future improvement where a unique wand could automatically select connected blocks upon clicking. Additionally, the reviewer questions the clarity of the `/selection cube` command, expressing uncertainty about the dimensions and positioning of the resulting block box. The exact usage syntax for the selection command is as follows: `/selection normalize` to ensure pos1 is set to minimal coordinates and pos2 is set to maximal coordinates from selection, and `/selection cube <radius=5>` to create a cube selection with a specified radius. The reviewer's questions about the dimensions of the block box are valid because the current implementation does not provide clear guidance on whether the result is 9×9×9, 11×11×11, or 10×10×10 and off-center.
 
 ## Related Questions
 - How does the current selection command handle setting pos2 after pos1?

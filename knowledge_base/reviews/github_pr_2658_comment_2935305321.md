@@ -9,7 +9,7 @@
 The code introduces a new torus SDF model with initialization and generation functions.
 
 ## Explanation
-The review suggests optimizing the limit calculation for the z-direction, focusing only on the thickness and perimeter rather than the full radius. This change aims to improve performance by reducing unnecessary computations in the z-axis.
+The `init` function initializes the torus model with parameters such as `minRadius`, `maxRadius`, `minThickness`, and `maxThickness`. The default values for these parameters are set to 16, the value of `minRadius`, 1, and the value of `minThickness`, respectively. The `generate` function calculates the radius and thickness for each voxel using random numbers generated from a seed. The review suggests optimizing the limit calculation for the z-direction by focusing only on the thickness and perimeter rather than the full radius. This change aims to improve performance by reducing unnecessary computations in the z-axis.
 
 ## Related Questions
 - What is the purpose of the `init` function in the torus SDF model?

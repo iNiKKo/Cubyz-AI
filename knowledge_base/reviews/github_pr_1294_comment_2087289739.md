@@ -9,7 +9,13 @@
 The code was modified to use a fixed padding length for test names in the terminal output to prevent line wrapping on small terminals.
 
 ## Explanation
-The reviewer suggests using a fixed padding length of 65 characters for test names to ensure that the terminal output does not wrap around, especially on smaller terminals with a width of 80 characters. This change uses Zig's formatting options to align and truncate the test names appropriately, improving the readability and consistency of the test runner output.
+The reviewer suggests using a fixed padding length of 65 characters for test names to ensure that the terminal output does not wrap around, especially on smaller terminals with a width of 80 characters. This change uses Zig's formatting options to align and truncate the test names appropriately, improving the readability and consistency of the test runner output. The specific code suggestion is:
+
+```zig
+std.debug.print("{d: >4}/{d: <4} {s:.<65}", .{i + 1, test_fn_list.len, test_fn.name});
+```
+
+This ensures that the test names are aligned and truncated to a maximum of 65 characters, preventing line wrapping on terminals with a width of 80 characters.
 
 ## Related Questions
 - What is the purpose of setting a fixed padding length for test names?

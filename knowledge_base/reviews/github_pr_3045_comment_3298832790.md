@@ -9,7 +9,7 @@
 Refactored ambient light handling and introduced a new `DayCycle` struct for managing in-game time.
 
 ## Explanation
-The change refactors the ambient light calculation into a separate `DayCycle` struct, which encapsulates the logic for managing in-game time. The reviewer suggests removing the explicit type from the `dayCycleLength` constant to simplify the code. This refactor aims to improve modularity and maintainability by separating concerns related to day cycle management from other game logic.
+Refactored ambient light handling and introduced a new `DayCycle` struct for managing in-game time. The change refactors the ambient light calculation into a separate `DayCycle` struct, which encapsulates the logic for managing in-game time. The reviewer suggests removing the explicit type from the `dayCycleLength` constant to simplify the code. This refactor aims to improve modularity and maintainability by separating concerns related to day cycle management from other game logic. The length of one in-game day is 12000 units (in 100ms), with midnight at half of this value, and sunrise and sunset each taking about 1/16 of the day.
 
 ## Related Questions
 - What is the purpose of the `DayCycle` struct in the refactored code?

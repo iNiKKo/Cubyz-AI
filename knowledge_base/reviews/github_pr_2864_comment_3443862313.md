@@ -9,7 +9,7 @@
 Replaced user iteration with entity iteration in the update function.
 
 ## Explanation
-The change replaces the iteration over a userList with an iteration over entities managed by the entity_manager. This addresses a critical architectural issue where the previous method might have missed or incorrectly processed entities, especially those that were dynamically added or removed. The reviewer confirms that this resolves the TODO related to freeId, ensuring that all active entities are correctly processed during updates.
+The change replaces the iteration over a userList with an iteration over entities managed by the entity_manager. This addresses a critical architectural issue where the previous method might have missed or incorrectly processed entities, especially those that were dynamically added or removed. The reviewer confirms that this resolves the TODO related to freeId, ensuring that all active entities are correctly processed during updates. Specifically, the code now iterates over 'entity_manager.getAll()' and checks if each entity is used with 'if (!ent.used) continue;'. The previous line 'const id = user.id;' has been replaced with 'const id = ent.id;', as suggested in the review comment. This change ensures that all active entities are processed correctly, preventing any potential issues related to freeId.
 
 ## Related Questions
 - What was the previous method of iterating over users?

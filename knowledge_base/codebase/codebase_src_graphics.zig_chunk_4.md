@@ -9,7 +9,15 @@
 Handles drawing circles and images using OpenGL shaders.
 
 ## Explanation
-This chunk manages the rendering of circles and images in a graphics engine. It defines functions to initialize and deinitialize resources for circle and image rendering, as well as methods to draw these shapes with various parameters such as position, size, color, and UV coordinates. The `circle` function handles drawing circles by binding a pipeline and setting uniform values for screen dimensions, center, radius, and color. Similarly, the `boundImage`, `boundSubImage`, and `bound9SliceImage` functions manage image rendering with different levels of detail and slicing options. The `customShadedImage` and `customShadedRect` functions provide more flexible drawing capabilities by allowing custom uniform settings.
+This chunk manages the rendering of circles and images using OpenGL shaders. It defines functions to initialize and deinitialize resources for circle and image rendering, as well as methods to draw these shapes with various parameters such as position, size, color, and UV coordinates.
+
+The `deinitCircle` function deinitializes the circle pipeline and vertex array object. The `circle` function handles drawing circles by binding a pipeline and setting uniform values for screen dimensions (`screen`), center (`center`), radius (`radius`), and color (`circleColor`).
+
+The `imageUniforms` struct defines uniforms used in image rendering, including `screen`, `start`, `size`, `color`, `uvOffset`, and `uvDim`. The `initImage` function initializes the image pipeline with specified shaders and uniform settings. The `deinitImage` function deinitializes the image pipeline.
+
+The `boundImage` function binds an image to a given position and dimension using custom shaded image rendering. The `boundSubImage` function handles UV coordinates by setting them in the uniforms before drawing the sub-image. The `drawSlice` function draws a slice of an image based on destination and UV coordinates.
+
+The `bound9SliceImage` function draws a 9-slice image by dividing it into nine parts and drawing each part with appropriate UV coordinates. The `customShadedImage` function provides more flexible drawing capabilities by allowing custom uniform settings, including screen dimensions (`screen`), start position (`start`), size (`size`), color (`color`), UV offset (`uvOffset`), and UV dimension (`uvDim`). Similarly, the `customShadedRect` function allows for custom shaded rectangle rendering with specified uniforms.
 
 ## Code Example
 ```zig

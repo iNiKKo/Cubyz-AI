@@ -8,7 +8,7 @@
 The issue involves an out-of-memory error on Linux when too many chunks are allocated, likely due to the mesh loadlist growing indefinitely without removal.
 
 ## Explanation
-The problem stems from the mesh loadlist accumulating meshes that remain in memory even after they fall out of render distance. This is exacerbated by increasing base render distances and the discontinuation of memory pools since the introduction of palette compression, which previously helped manage memory usage more efficiently.
+The issue involves an out-of-memory error on Linux when too many chunks are allocated, likely due to the mesh loadlist growing indefinitely without removal. The problem stems from the lack of a mechanism for removing meshes from memory once they fall out of render distance. This is exacerbated by increasing base render distances and the discontinuation of memory pools since the introduction of palette compression, which previously helped manage memory usage more efficiently.
 
 ## Related Questions
 - What is the current mechanism for removing meshes from memory when they fall out of render distance?

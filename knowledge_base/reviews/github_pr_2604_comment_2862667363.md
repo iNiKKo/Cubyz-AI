@@ -9,7 +9,7 @@
 Refactored coordinate parsing and validation in the `/tp` command handler.
 
 ## Explanation
-The change refactors the way coordinates are parsed from user input. Previously, individual numbers were extracted and assigned to `x`, `y`, and `z`. Now, a new function `command.parseCoordinates` is used to handle this parsing, which simplifies the code and potentially improves maintainability. The reviewer notes that the `clamp` function might work on vectors, suggesting further architectural considerations for vector operations.
+Refactored coordinate parsing and validation in the `/tp` command handler. Previously, individual numbers were extracted and assigned to `x`, `y`, and `z`. Now, a new function `command.parseCoordinates` is used to handle this parsing, which simplifies the code and potentially improves maintainability. The reviewer notes that the `clamp` function might work on vectors, suggesting further architectural considerations for vector operations. The change also includes specific error messages: `#ff0000Too few arguments for command /tp` when fewer than three numbers are provided, and `#ff0000Too many arguments for command /tp` when more than three numbers are provided. Coordinates are parsed using `command.parseCoordinates`, which returns an error if the input is invalid. The coordinates are then clamped between `-1e9` and `1e9` to ensure they fall within a valid range.
 
 ## Related Questions
 - What is the purpose of the `parseCoordinates` function in this refactoring?

@@ -8,7 +8,7 @@
 Discussion on making biome fog effects adjustable independently of the day-night cycle.
 
 ## Explanation
-The discussion revolves around modifying the behavior of biome fog so that it is not uniformly affected by the day-night cycle. The maintainer suggests implementing a percentage-based system where users can specify how much the fog is influenced by the time of day, ranging from no effect (0.00) to full effect (1.00). Alternatively, another suggestion is to make this setting configurable on a per-biome basis, which could offer more granular control over the visual effects in different environments.
+The discussion revolves around modifying the behavior of biome fog so that it is not uniformly affected by the day-night cycle. The maintainer suggests implementing a percentage-based system where users can specify how much the fog is influenced by the time of day, ranging from no effect (0.00) to full effect (1.00). This allows for fine-grained control over the visual effects based on the time of day. Additionally, another suggestion is to make this setting configurable on a per-biome basis, which could offer even more granular control over the visual effects in different environments.
 
 ## Related Questions
 - What is the current implementation of fog effect in relation to the day-night cycle?

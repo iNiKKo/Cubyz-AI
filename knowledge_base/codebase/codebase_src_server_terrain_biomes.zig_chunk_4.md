@@ -9,7 +9,7 @@
 The chunk defines a `TreeNode` union for biome generation, including initialization and retrieval methods. It also manages global lists and maps of biomes.
 
 ## Explanation
-The `TreeNode` union represents either a leaf or branch node in a decision tree used to select biomes based on noise values. The `init` method constructs the tree recursively by partitioning biome slices into lower, middle, and upper categories based on properties. The `getBiome` method traverses the tree to select a biome using noise sampling. Global variables manage lists and maps of biomes, including unfinished sub-biomes and transitions. The `reset` function initializes these global states.
+The `TreeNode` union represents either a leaf or branch node in a decision tree used to select biomes based on noise values. The `init` method constructs the tree recursively by partitioning biome slices into lower, middle, and upper categories based on properties. Specifically, it uses bit shifting and masking to categorize biomes into three groups: lower, middle, and upper. For example, if a biome's property is 1 after shifting and masking, it is added to the lower group; if it is 4, it is added to the upper group; otherwise, it is added to the middle group. The `getBiome` method traverses the tree to select a biome using noise sampling. Global variables manage lists and maps of biomes, including unfinished sub-biomes and transitions. The `reset` function initializes these global states by setting `finishedLoading` to false and initializing all global lists and maps to empty states.
 
 ## Code Example
 ```zig

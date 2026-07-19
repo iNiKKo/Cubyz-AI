@@ -8,7 +8,7 @@
 The discussion revolves around changing the default crosshair in Cubyz, with suggestions ranging from custom sprites to dynamic crosshairs. The maintainer emphasizes that players can already customize their crosshair and questions the necessity of altering the default design.
 
 ## Explanation
-The issue starts with a user complaint about the current crosshair being too large and unappealing. The maintainer initially suggests making a custom crosshair, which is met with rejection. The discussion then shifts to in-game texture pack support and dynamic crosshairs. However, the maintainer ultimately argues against changing the default design for the sake of novelty, suggesting that players who prefer smaller crosshairs can adjust them themselves.
+The issue begins with a user complaint about the current crosshair being too large and unappealing. The maintainer initially suggests making a custom crosshair, which is met with rejection. The discussion then shifts to in-game texture pack support and dynamic crosshairs. However, the maintainer ultimately argues against changing the default design for the sake of novelty, suggesting that players who prefer smaller crosshairs can adjust them themselves by editing the crosshair texture or using texture packs. Specifically, players can edit the crosshair texture file directly to change its size and appearance. Additionally, there is no current plan to implement dynamic crosshair support in Cubyz.
 
 ## Related Questions
 - What are the current limitations of crosshair customization in Cubyz?

@@ -9,7 +9,7 @@
 Handles adding and removing breaking animation faces for blocks in the renderer.
 
 ## Explanation
-This chunk contains functions to manage breaking animations of block faces. `addBreakingAnimationFace` adds a breaking face by locking the mesh mutex, finding the light index, and appending the face data. `removeBreakingAnimationFace` removes a breaking face by iterating through the list and swapping removing the matching face. `removeBreakingAnimation` iterates over all quads of a block and its neighbors to remove their breaking faces.
+This chunk contains functions to manage breaking animations of block faces. `addBreakingAnimationFace` adds a breaking face by locking the mesh mutex, calculating the world position, finding the relative position within the chunk, retrieving the mesh, and appending the face data with its light index. If the face doesn't exist, the function returns without making any changes. `removeBreakingAnimationFace` removes a breaking face by iterating through the list of block breaking faces, swapping and removing the matching face if found. `removeBreakingAnimation` iterates over all quads of a block and its neighbors to remove their breaking faces. The `blockBreakingFacesChanged` flag is used to indicate that the list of breaking faces has been modified, which helps in managing updates to the mesh.
 
 ## Code Example
 ```zig

@@ -9,7 +9,7 @@
 A new condition was added to skip processing of a 'Managed' declaration in the `refAllDeclsRecursiveExceptCImports` function.
 
 ## Explanation
-The change introduces a conditional check to bypass the processing of a 'Managed' declaration. This is likely due to an issue or limitation with how the 'Managed' hashmap is handled in Zig, necessitating a temporary workaround. The reviewer suggests adding a TODO comment to document this exception and to ensure it is removed once the underlying issue in Zig is resolved.
+A new condition was added to skip processing of a 'Managed' declaration in the `refAllDeclsRecursiveExceptCImports` function. The change introduces a conditional check to bypass the processing of a 'Managed' declaration by returning early if `decl.name` is equal to 'Managed'. This is likely due to an issue or limitation with how the 'Managed' hashmap is handled in Zig, necessitating a temporary workaround. The reviewer suggests adding a TODO comment to document this exception and to ensure it is removed once the underlying issue in Zig is resolved.
 
 ## Related Questions
 - Why is the 'Managed' declaration being skipped in refAllDeclsRecursiveExceptCImports?

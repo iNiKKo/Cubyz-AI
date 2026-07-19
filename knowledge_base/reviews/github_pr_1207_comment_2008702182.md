@@ -6,10 +6,20 @@
 **Concepts:** memory management, data structures, error handling, cache optimization
 
 ## Summary
-A new Zig file `structure_building_blocks.zig` is introduced, defining structures and functions for handling structure building blocks in a game engine.
+A new Zig file `structure_building_blocks.zig` is introduced, defining structures and functions for handling structure building blocks in a game engine. The code defines several key components including `StructureBuildingBlock`, `BlueprintEntry`, and `Children`. It initializes caches for structure and blueprint entries using `std.StringHashMapUnmanaged`. The `BlueprintEntry` struct contains an `Info` struct that processes blueprints to identify origin and child blocks. Functions like `isChildBlock` and `isOriginBlock` are used to classify blocks.
 
 ## Explanation
-The code defines several key components including `StructureBuildingBlock`, `BlueprintEntry`, and `Children`. It initializes caches for structure and blueprint entries using `std.StringHashMapUnmanaged`. The `BlueprintEntry` struct contains an `Info` struct that processes blueprints to identify origin and child blocks. Functions like `isChildBlock` and `isOriginBlock` are used to classify blocks. The code also includes error handling for missing fields and incorrect data structures. A critical architectural review suggests separating unresolved entries into a temporary data structure to optimize cache usage.
+The code defines several key components including `StructureBuildingBlock`, `BlueprintEntry`, and `Children`. It initializes caches for structure and blueprint entries using `std.StringHashMapUnmanaged`. The `BlueprintEntry` struct contains an `Info` struct that processes blueprints to identify origin and child blocks. Functions like `isChildBlock` and `isOriginBlock` are used to classify blocks.
+
+- **StructureBuildingBlock**: Represents a structure building block with children and associated blueprints. It includes methods for initialization from Zon elements, finalization, and retrieving blueprints based on rotation.
+
+- **BlueprintEntry**: Contains a blueprint and its associated information (`Info`). The `init` function initializes a new `BlueprintEntry`, and the `Info` struct processes the blueprint to identify origin and child blocks. It includes methods for deinitialization and initialization from a blueprint.
+
+- **Children**: Manages color-specific children using an array of `AliasTable(Child)`. It includes methods for initialization from Zon elements, finalization, and picking a child based on a block and seed.
+
+The code also includes error handling for missing fields and incorrect data structures. For example, it logs errors if multiple origin blocks are found or if the blueprint field is missing. Additionally, it handles empty child lists by logging a warning and initializing an empty `AliasTable(Child)`.
+
+A critical architectural review suggests separating unresolved entries into a temporary data structure to optimize cache usage. This would involve creating a separate data structure for unresolved entries that is cleared after loading, as the current implementation clogs cache lines with unnecessary data.
 
 ## Related Questions
 - What is the purpose of the `structureCache` and `blueprintCache` variables?

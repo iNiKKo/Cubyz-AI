@@ -9,7 +9,7 @@
 The function `enqueue` in the ConcurrentQueue struct was renamed to `push`. The reviewer noted that there are only two variants of the concurrent queue, eliminating any potential confusion.
 
 ## Explanation
-The change involves renaming a method from `enqueue` to `push` within the ConcurrentQueue struct. The reviewer's comment suggests that since there are only two variants of the concurrent queue, there is no risk of confusion arising from the naming choice. This refactoring likely aims to improve code clarity and consistency with common terminology used in similar data structures.
+The function `enqueue` in the ConcurrentQueue struct was renamed to `push`. The reviewer noted that there are only two variants of the concurrent queue: 'push' and 'enqueue'. This renaming eliminates any potential confusion, as it aligns with common terminology used in similar data structures. The change does not affect thread safety or existing code directly, but it may require updates in any codebase that relies on the old method name. This refactoring likely aims to improve code clarity and consistency.
 
 ## Related Questions
 - What are the two variants of the ConcurrentQueue?

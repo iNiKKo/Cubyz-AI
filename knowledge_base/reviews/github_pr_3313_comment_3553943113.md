@@ -9,7 +9,8 @@
 A new command for world editing is introduced, allowing users to create selections in the form of cubes.
 
 ## Explanation
-The review introduces a new command called 'selection cube' which allows users to quickly define a selection area by specifying a radius. The reviewer questions the necessity of this feature, suggesting that selecting a single block and adjusting from there might be more intuitive. The architectural review highlights the convenience of creating large selections with a single command but raises concerns about user understanding and potential misuse.
+**Explanation**
+The review introduces a new command called 'selection cube' which allows users to quickly define a selection area by specifying a radius. The exact usage syntax for this command is `/selection cube <radius=5>`, where the default radius is set to 5 if no value is provided. The reviewer questions the necessity of this feature, suggesting that selecting a single block and adjusting from there might be more intuitive. The architectural review highlights the convenience of creating large selections with a single command but raises concerns about user understanding and potential misuse.
 
 ## Related Questions
 - What is the purpose of the 'selection cube' command?

@@ -9,7 +9,7 @@
 A new file `src/migrations.zig` is introduced to handle block migrations. It registers block migrations using an arena allocator and logs the number of registered migrations.
 
 ## Explanation
-The change introduces a new module for handling block migrations in Cubyz. The `registerBlockMigrations` function iterates over provided migrations, registering each one by calling the `register` helper function. The `register` function checks if the migration ZonElement is an object and non-empty before proceeding to iterate over its properties. A critical architectural review suggests avoiding unnecessary local allocation of strings by directly using pointers from the iterator.
+A new file `src/migrations.zig` is introduced to handle block migrations. It registers block migrations using an arena allocator and logs the number of registered migrations. The `registerBlockMigrations` function iterates over provided migrations, registering each one by calling the `register` helper function. The `register` function checks if the migration ZonElement is an object and non-empty before proceeding to iterate over its properties. If the migration ZonElement is not an object or is empty, it returns immediately. A critical architectural review suggests avoiding unnecessary local allocation of strings by directly using pointers from the iterator. This can improve performance by reducing memory overhead. The `migrationAllocator` is used for allocating memory for temporary strings during the registration process. Logging in `registerBlockMigrations` contributes to debugging and monitoring by providing information about the number of registered migrations.
 
 ## Related Questions
 - What is the purpose of the `NeverFailingArenaAllocator` in this code?

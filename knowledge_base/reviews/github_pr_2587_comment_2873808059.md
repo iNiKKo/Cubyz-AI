@@ -9,7 +9,7 @@
 The code attempts to free a group in the `User` struct's deinit method, which raises concerns about potential double-free or invalid memory access.
 
 ## Explanation
-The reviewer points out that freeing the `group` pointer inside the `deinit` method of the `User` struct could lead to undefined behavior. The concern is that if the `group` pointer was already freed elsewhere, this would result in a double-free error. Additionally, if the `group` pointer was not allocated using the same allocator as `main.globalAllocator`, it could cause memory corruption or invalid access.
+The code attempts to free a `group` pointer inside the `deinit` method of the `User` struct, which raises concerns about potential double-free or invalid memory access. The reviewer points out that freeing the `group` pointer could lead to undefined behavior if it was already freed elsewhere or if it was not allocated using the same allocator as `main.globalAllocator`. This could result in memory corruption or invalid access. The specific line of code where this occurs is within a loop iterating over `permissionGroups.keyIterator()`, and each group is being freed using `main.globalAllocator.free(group.*)`. It is crucial to ensure that each `group` is only freed once to prevent double-free errors and maintain allocator consistency.
 
 ## Related Questions
 - Why is the `group` pointer being freed in the `deinit` method?

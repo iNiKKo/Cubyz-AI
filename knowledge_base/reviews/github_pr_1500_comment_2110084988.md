@@ -11,6 +11,37 @@ Changed error handling for empty children lists in structure building blocks to 
 ## Explanation
 The change modifies the behavior of the `initChildTableFromZon` function by changing an error message to a warning when encountering an empty children list. The reviewer suggests allowing multiple valid representations for structures with no children, including cases where the `children` field is omitted or explicitly set to an empty array. This aims to improve user experience and reduce confusion during configuration, especially in development scenarios where configurations are frequently modified.
 
+The proposed ways to specify no children for a structure include:
+
+1. Omitting the `children` field entirely:
+   ```zig
+   .{
+       .blueprint = "cubyz:tree/birch/1/root/1",
+   }
+   ```
+
+2. Explicitly setting the `children` field to an empty array:
+   ```zig
+   .{
+       .blueprint = "cubyz:tree/birch/1/root/1",
+       .children = .{},
+   }
+   ```
+
+3. Using an inline form where there is no zon file at all.
+
+4. Allowing a `children` field with an empty object:
+   ```zig
+   .{
+       .blueprint = "cubyz:tree/birch/1/root/1",
+       .children = .{
+           .blue = .{},
+       },
+   }
+   ```
+
+While the best representation is the shortest one, it's important to document this in a wiki to avoid user confusion. In the worst case, users might encounter multiple error messages before realizing they don't need a zon file.
+
 ## Related Questions
 - What is the purpose of changing the error message to a warning in `initChildTableFromZon`?
 - How does the proposed change improve user experience with structure configurations?

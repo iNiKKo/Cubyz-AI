@@ -11,6 +11,12 @@ Handles network initialization and deinitialization, defines address formatting,
 ## Explanation
 This chunk manages the lifecycle of the networking system by initializing various components like sockets, protocols, and authentication during setup. It also provides a method to format IP addresses into human-readable strings. The `Request` struct encapsulates details about a network request, including the target address, data payload, and a condition variable for notification purposes.
 
+The `init` function initializes the networking system by starting up sockets, initializing protocols and authentication, and checking the result of `psa_crypto_init`. The `deinit` function frees the cryptographic resources using `mbedtls_psa_crypto_free`.
+
+The `Address` struct contains fields for IP address (`ip`), port (`port`), and a boolean indicating if it is symmetric NAT (`isSymmetricNAT`). It also has a constant `localHost` representing the loopback address. The `format` method formats the IP address into a human-readable string, optionally including the port number.
+
+The `Request` struct contains fields for the target address (`address`), data payload (`data`), and a condition variable (`requestNotifier`) used for notification purposes.
+
 ## Code Example
 ```zig
 pub fn init() !void {

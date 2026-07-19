@@ -9,7 +9,7 @@
 A new condition was added to the `checkFile` function in `format.zig` to handle single-line comments, ensuring they are correctly formatted.
 
 ## Explanation
-The change introduces a new case for the '/' character in the `checkFile` function. This case checks if the next character is also '/', indicating the start of a single-line comment. It then verifies that the third character is not another '/', space, or newline, and ensures that the previous character (if it exists) is neither ':' nor '
+The change introduces a new case for the '/' character in the `checkFile` function. This case checks if the next character is also '/', indicating the start of a single-line comment. It then verifies that the third character is not another '/', space, or newline, and ensures that the previous character (if it exists) is neither ':' nor '"'. The condition short-circuits on true, so there is no need to check `i` twice.
 
 ## Related Questions
 - What is the purpose of the new condition added to handle single-line comments?

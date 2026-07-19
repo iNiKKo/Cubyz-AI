@@ -9,7 +9,14 @@
 Refactored BlueprintSubCommand enum into Args union with struct members for each subcommand, adding deinit methods for resource management.
 
 ## Explanation
-The change refactors the BlueprintSubCommand enum into an Args union containing structs for each subcommand. This approach allows for more specific handling of command arguments and provides a clear structure for future evolution paths of each command. The addition of deinit methods ensures proper resource management, preventing potential memory leaks. The reviewer raises concerns about architectural consistency and naming conventions, suggesting that the struct fields should align with the command parameters. The refactoring maintains backward compatibility by preserving the existing command structure while preparing for more complex operations like file path handling in save and load commands.
+The change refactors the BlueprintSubCommand enum into an Args union containing structs for each subcommand. Each struct corresponds to a specific subcommand ('save', 'delete', 'load') and includes a `path` field of type FilePath. The addition of deinit methods ensures proper resource management, preventing potential memory leaks. The reviewer raises concerns about architectural consistency and naming conventions, suggesting that the struct fields should align with the command parameters. The refactoring maintains backward compatibility by preserving the existing command structure while preparing for more complex operations like file path handling in save and load commands.
+
+The specific subcommands and their parameters are as follows:
+- `/blueprint save <file-name>`: Saves a blueprint to a specified file path.
+- `/blueprint delete <file-name>`: Deletes a blueprint from a specified file path.
+- `/blueprint load <file-name>`: Loads a blueprint from a specified file path.
+
+The reviewer suggests that the struct fields should be named 'path' instead of 'file-name' to align with the command parameters and to allow for paths rather than just file names. The refactoring also prepares for future evolution paths where each command might have different expected operations, such as compatibility parameters or skipping entities.
 
 ## Related Questions
 - What is the purpose of the deinit methods added to each struct in the Args union?

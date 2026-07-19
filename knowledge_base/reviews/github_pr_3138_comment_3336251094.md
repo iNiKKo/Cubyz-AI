@@ -9,7 +9,7 @@
 Refactored the blueprint command handling by introducing a new Args union for better type safety and clarity.
 
 ## Explanation
-The refactoring involves replacing the BlueprintSubCommand enum with a more structured Args union. This change aims to improve type safety and make the codebase easier to understand and maintain. The reviewer notes that the deinit function should be removed after switching to an arena allocator, indicating a plan for future optimization.
+Refactored the blueprint command handling by introducing a new Args union for better type safety and clarity. The Args union now includes specific fields such as `filePath` for the save, delete, and load commands. The usage syntax has been updated to use `<filePath>` instead of `<file-name>`. The BlueprintSubCommand enum has been replaced with this more structured Args union. This change aims to improve type safety and make the codebase easier to understand and maintain. The reviewer notes that the deinit function should be removed after switching to an arena allocator, indicating a plan for future optimization.
 
 ## Related Questions
 - What is the purpose of the Args union in this refactoring?

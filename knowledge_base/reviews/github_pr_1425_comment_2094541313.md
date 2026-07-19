@@ -9,7 +9,7 @@
 Refactored the teleport command to use an argument parser for better structure and error handling.
 
 ## Explanation
-The change introduces a new argument parser (`ArgParser`) to handle different teleport command formats. This refactoring improves code readability and maintainability by separating argument parsing logic from the main execution flow. The reviewer suggests caching `params.@
+Refactored the teleport command to use an argument parser for better structure and error handling. The change introduces a new argument parser (`ArgParser`) to handle different teleport command formats, such as `/tp <x> <y>`, `/tp <x> <y> <z>`, and `/tp <biome>`. This refactoring improves code readability and maintainability by separating argument parsing logic from the main execution flow. The `Args` union enum defines the structure for different command formats, with specific fields for coordinates (`<x>`, `<y>`, `<z>`) and biome ID (`<biome>`). The `ArgParser` is used to parse the input arguments, and if parsing fails, it sends error messages to the user. For successful parsing, the command executes based on the parsed arguments, such as teleporting to a specified location or biome. The reviewer suggests caching `params.@"<biome>".id` in a temporary variable to avoid duplicate property access and improve readability.
 
 ## Related Questions
 - What is the purpose of the `ArgParser` in this refactoring?

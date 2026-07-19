@@ -8,7 +8,7 @@
 Discussion about creating a 'Pawn' test entity for basic behavior and pathfinding.
 
 ## Explanation
-The issue proposes the creation of a 'Pawn' entity to serve as a basic testing tool for behavior and pathfinding. The entity would have specific behaviors such as entering attack mode when it sees the player, walking towards the player while avoiding obstacles, jumping over gaps, and exiting attack mode if the player is far enough away. However, the maintainer suggests that a dedicated test entity might not be necessary.
+The issue proposes the creation of a 'Pawn' entity to serve as a basic testing tool for behavior and pathfinding. The entity would have specific behaviors such as entering attack mode when it sees the player, walking towards the player while avoiding obstacles, jumping over gaps, and exiting attack mode if the player is far enough away. Additionally, the note mentions that the 'Pawn' does not have eyes on the back of its head, meaning it must be looking at you to spot you. The maintainer suggests that a dedicated test entity might not be necessary for this purpose.
 
 ## Related Questions
 - What are the specific behaviors of the 'Pawn' test entity?

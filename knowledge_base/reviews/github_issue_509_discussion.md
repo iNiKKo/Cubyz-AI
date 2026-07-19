@@ -8,7 +8,7 @@
 Discussion about implementing a fading option for block animations, focusing on its application to water and other liquid rendering.
 
 ## Explanation
-The discussion revolves around the implementation of a fading effect for block animations, particularly in the context of water rendering. The maintainer initially presents a prototype that does not meet expectations due to the design of the animation frames and the synchronized movement of the entire water surface. There is a suggestion to explore alternative methods such as using large textures or procedural generation for liquids. The user provides examples of successful fading effects from Minecraft, specifically mentioning the glowing charcoal on campfires and the prismarine block. The maintainer expresses interest in experimenting with more advanced techniques like those seen in Super Mario Galaxy.
+Discussion about implementing a fading option for block animations, focusing on its application to water and other liquid rendering. The maintainer initially presents a quick and dirty prototype of water with smooth animation but finds it unsatisfactory due to the frames not being designed for smooth transitions and the entire surface moving in unison. Suggestions include using large textures that scroll over the liquid or procedural generation techniques, inspired by examples like those seen in Super Mario Galaxy. The user provides successful fading effect examples from Minecraft, specifically mentioning the glowing charcoal on campfires and the prismarine block.
 
 ## Related Questions
 - What are the specific issues with the current water animation prototype?
@@ -16,6 +16,5 @@ The discussion revolves around the implementation of a fading effect for block a
 - Can procedural generation techniques be effectively applied to render liquids like water in Cubyz?
 - What examples of successful fading effects from Minecraft were mentioned in the discussion?
 - Why is synchronized movement of the entire water surface considered problematic for animation?
-- How might alternative methods of rendering liquids, such as those seen in Super Mario Galaxy, be implemented in Cubyz?
 
 *Source: unknown | chunk_id: github_issue_509_discussion*

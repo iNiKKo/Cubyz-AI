@@ -8,7 +8,7 @@
 The issue proposes adding a 'Stop time' option during world creation. The maintainer suggests creating a developer preset instead.
 
 ## Explanation
-The discussion revolves around improving the user experience by automating the process of stopping time when creating a new world. The maintainer's counter proposal involves introducing a dev preset that includes common options such as testing mode and time stop, which could streamline the setup for developers or advanced users.
+The issue proposes adding a 'Stop time' option during world creation. The maintainer suggests creating a developer preset instead, which would include common options such as testing mode and time stop to streamline the setup for developers or advanced users. This proposal aims to improve user experience by automating these settings.
 
 ## Related Questions
 - What are the potential benefits of adding a 'Stop time' option during world creation?

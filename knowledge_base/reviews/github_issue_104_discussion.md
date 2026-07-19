@@ -9,14 +9,11 @@
 The issue discusses adding a run script that automatically installs the required version of Zig. The maintainer has partially addressed this by implementing a bash script, but the batch file is still pending due to lack of testing.
 
 ## Explanation
-The discussion revolves around improving the development workflow by automating the installation of the correct Zig version. The maintainer has made progress by adding a run.sh script, which addresses the issue for Unix-like systems. However, the corresponding run.bat file is still pending because the maintainer lacks the capability to test it on Windows environments.
+The issue discusses adding a run script (run.sh/run.bat) that automatically installs the required version of Zig to improve development workflow by reducing manual steps for contributors and developers. The maintainer has partially addressed this by implementing a bash script (commit: 54337f17fd0de57808ddb5ca4e95c05575f35b3c) which automates the installation of the correct Zig version for Unix-like systems. However, the corresponding run.bat file is still pending due to lack of testing on Windows environments.
 
 ## Related Questions
-- What is the current status of the run.bat file implementation?
+- What specific commit addresses the implementation of the run.sh script?
 - How does the run.sh script automate the Zig version installation?
-- Are there any plans to test and implement the run.bat file in the future?
-- What are the potential benefits of having an automated Zig version installer?
-- How can contributors benefit from this automation feature?
-- Is there a specific reason for not implementing the batch file yet?
+- Why has the maintainer not implemented and tested the run.bat file yet?
 
 *Source: unknown | chunk_id: github_issue_104_discussion*

@@ -9,7 +9,7 @@
 The Skybox struct manages star rendering in the Cubyz engine, including initialization of star positions and colors, pipeline setup, and rendering logic.
 
 ## Explanation
-The Skybox struct is responsible for rendering stars in the sky. It initializes a graphics pipeline, vertex array, shader storage buffer object (SSBO), and loads a star color image. The `init` function generates random star positions and colors based on temperature and light intensity, storing them in an SSBO. The `render` method binds the pipeline, sets uniforms for opacity and model-view-projection matrix, and draws the stars using OpenGL commands.
+The Skybox struct manages star rendering in the Cubyz engine, including initialization of star positions and colors, pipeline setup, and rendering logic. It initializes a graphics pipeline with specific shaders and uniforms (mvp and starOpacity), a vertex array, shader storage buffer object (SSBO), and loads a star color image from 'assets/cubyz/star.png'. The `init` function generates 10,000 random star positions and colors based on temperature and light intensity, storing them in an SSBO. Each star is represented by three vertices forming a triangle, with positions calculated using Gaussian distribution for randomness and normalized to a distance of 200 units. Colors are determined by a temperature-based lookup in the star color image, adjusted for brightness. The `render` method binds the pipeline, sets uniforms for opacity and model-view-projection matrix, and draws the stars using OpenGL commands (glDrawArrays). Errors during image loading are logged to the console.
 
 ## Code Example
 ```zig

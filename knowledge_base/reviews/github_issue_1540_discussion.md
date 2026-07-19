@@ -9,7 +9,7 @@
 The issue discusses enabling mods to add new server commands with considerations for autocompletion, permission levels, and namespace management to avoid conflicts.
 
 ## Explanation
-The discussion centers around enhancing the server command interface to allow mods to introduce new commands. This includes features like autocompletion and different permission levels to control mod-added mechanics such as teams or trading. The primary concern is managing command name conflicts, which can be mitigated by introducing namespaces. The maintainer suggests considering this enhancement after implementing autocomplete logic to gauge the inconvenience of adding namespaces.
+The issue discusses enabling mods to add new server commands with considerations for autocompletion, permission levels, and namespace management to avoid command name conflicts. The primary concern is managing command name conflicts, which can be mitigated by introducing namespaces if the command name is ambiguous. If a command name does not contain its own namespace, Cubyz will default to checking the 'cubyz' namespace. This solution was proposed in #1509 where we check the cubyz namespace if we don't find a rotation with specified ID and that ID doesn't contain a namespace on its own. The maintainer suggests considering this enhancement after implementing autocomplete logic to gauge the inconvenience of adding namespaces.
 
 ## Related Questions
 - What are the potential benefits of allowing mods to add new server commands?

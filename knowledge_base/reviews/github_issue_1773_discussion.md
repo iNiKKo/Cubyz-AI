@@ -8,14 +8,11 @@
 Discussion on allowing items to be stored inside ore-locked chests, highlighting technical challenges and alternative ideas.
 
 ## Explanation
-The discussion revolves around the feasibility of storing items in chests that are locked by ores. The maintainer points out that the current implementation does not support associating block entities with ore blocks, which is necessary for this feature. They suggest making block entities independent from block types as a potential solution, but also mention alternative ideas such as using padlocks and keys or encrusted lids on chests.
+Discussion on allowing items to be stored inside chests locked by ores. The maintainer notes that currently, block entities are not and cannot be associated with ore blocks, which is a technical limitation preventing this feature. They suggest making block entities independent from block types as one potential solution but also mention alternative ideas such as using padlocks and keys or encrusted lids on chests to achieve similar functionality.
 
 ## Related Questions
-- What is the current limitation preventing items from being stored in ore-locked chests?
-- How would making block entities independent from block types address the issue?
-- Can you provide examples of alternative solutions to storing items in ore-locked chests?
-- What are the potential benefits and drawbacks of allowing items to be stored in ore-locked chests?
-- How could the current implementation be modified to support this feature?
-- Are there any security concerns associated with allowing items to be stored in ore-locked chests?
+- What specific technical limitations prevent items from being stored in ore-locked chests?
+- How would the independence of block entities from block types solve this issue?
+- Can you provide examples of alternative solutions like padlocks and encrusted lids for storing items in ore-locked chests?
 
 *Source: unknown | chunk_id: github_issue_1773_discussion*

@@ -10,6 +10,10 @@ Defines configuration for the orange cloth block, including its texture and item
 ## Explanation
 This chunk is a configuration file that specifies the visual properties of an orange cloth block in the Cubyz voxel engine. It sets the texture used for rendering the block itself and defines how it appears as an item within the game's inventory or interface. The configuration uses a structured format to map these properties, ensuring consistency across different parts of the engine where this block is utilized.
 
+The specific details are as follows:
+- **Block Texture:** cubyz:cloth/orange
+- **Item Texture:** cloth/orange.png
+
 ## Related Questions
 - What is the texture file used for rendering the orange cloth block?
 - How is the orange cloth block represented as an item in the game?

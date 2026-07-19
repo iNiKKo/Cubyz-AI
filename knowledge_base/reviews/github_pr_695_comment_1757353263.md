@@ -9,7 +9,7 @@
 Refactored the minimum size check in `updateWindowPosition` to ensure the window size is at least the minimum when the title bar is shown.
 
 ## Explanation
-The refactoring introduces a condition that checks if the `showTitleBar` flag is true before applying the minimum size constraint. This change ensures that the window's width is not reduced below the specified minimum only when the title bar is visible, preventing potential issues with dynamic sizing where the window might become too small to be usable.
+Refactored the minimum size check in `updateWindowPosition` to ensure the window size is at least the minimum when the title bar is shown. The refactoring introduces a condition that checks if the `showTitleBar` flag is true before applying the minimum size constraint (`if(self.showTitleBar and self.contentSize[0] < iconWidth*4)`). This change ensures that the window's width is not reduced below the specified minimum only when the title bar is visible, preventing potential issues with dynamic sizing where the window might become too small to be usable.
 
 ## Related Questions
 - What is the purpose of the `showTitleBar` flag in the `GuiWindow` class?

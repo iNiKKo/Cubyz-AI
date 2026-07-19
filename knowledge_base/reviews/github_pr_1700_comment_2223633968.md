@@ -11,6 +11,8 @@ The code now checks for tags in items and blocks, optimizing search functionalit
 ## Explanation
 The change introduces a new condition to handle searches based on tags. It iterates over items and checks if they have specific tags or if their associated blocks have those tags. The reviewer suggests explicitly setting the 'data' field to undefined for clarity, although this is noted as a minor concern.
 
+The code now includes a check for the 'searchString' length and whether it starts with a '.' character. If so, it finds similar tags using `main.Tag.findSimilar` and iterates over items to check if they have any of those tags or if their associated blocks have those tags.
+
 ## Related Questions
 - What is the purpose of the 'bestTags' variable in this code?
 - How does the new condition handle searches based on tags?

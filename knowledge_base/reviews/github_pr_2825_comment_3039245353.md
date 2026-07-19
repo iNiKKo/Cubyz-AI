@@ -9,7 +9,7 @@
 Added a new function `getSelectionBounds` to handle selection bounds retrieval for a user.
 
 ## Explanation
-The review introduces a new function `getSelectionBounds` which retrieves the selection bounds for a given user. The reviewer emphasizes that this approach enforces consistent naming conventions across callers by using a struct, rather than just changing variable names in the caller code. This architectural decision aims to improve code maintainability and reduce errors related to inconsistent naming.
+The review introduces a new function `getSelectionBounds` which retrieves the selection bounds for a given user. The function returns an array of two `main.vec.Vec3i` values and can return an error of type `error{PositionNotSet}` if the position is not set. The reviewer emphasizes that this approach enforces consistent naming conventions across callers by using a struct, rather than just changing variable names in the caller code. This architectural decision aims to improve code maintainability and reduce errors related to inconsistent naming.
 
 ## Related Questions
 - What is the purpose of the `getSelectionBounds` function?

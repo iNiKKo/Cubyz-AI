@@ -9,7 +9,7 @@
 Added code to read and write game rules from a ZON file, with handling for file creation if it doesn't exist.
 
 ## Explanation
-The change introduces functionality to manage game rules by reading from and writing to a 'gamerules.zig.zon' file. If the file does not exist, it initializes an empty object, writes it to the file, and then proceeds with further operations. The reviewer notes that the explicit deinitialization of the `gamerules` variable is unnecessary because it uses an arena allocator, which automatically frees all allocated memory at the end of its scope.
+The change introduces functionality to manage game rules by reading from and writing to a 'gamerules.zig.zon' file. If the file does not exist, it initializes an empty object using `ZonElement.initObject`, writes it to the file using `files.writeZon`, and then proceeds with further operations. The reviewer notes that the explicit deinitialization of the `gamerules` variable is unnecessary because it uses an arena allocator, which automatically frees all allocated memory at the end of its scope. The code reads from the 'gamerules.zig.zon' file using `files.readToZon`, formats file paths using `std.fmt.bufPrint`, and writes to files using `files.writeZon`. The purpose of the 'arenaAllocator' is to manage memory allocation efficiently, ensuring that all allocated memory is freed at the end of its scope. Potential errors during file read and write operations include issues with file access permissions or disk space limitations.
 
 ## Related Questions
 - What is the purpose of the 'arenaAllocator' in this code?

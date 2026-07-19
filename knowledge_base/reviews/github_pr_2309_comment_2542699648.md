@@ -11,6 +11,12 @@ The healthbar rendering logic has been modified to adjust the conditionals for d
 ## Explanation
 The reviewer points out that the current healthbar rendering logic is confusing due to overlapping conditional checks. The code now uses a more structured approach with separate loops for full hearts, empty hearts, and a half heart. This change aims to improve clarity and maintainability by precomputing the number of each type of heart upfront.
 
+The specific changes in the code include:
+- The condition `if(health + 1 <= main.game.Player.super.health)` has been changed to `if(health + 0.5 < main.game.Player.super.health)`.
+- The condition `else if(health + 0.5 <= main.game.Player.super.health)` has been changed to `else if(health < main.game.Player.super.health)`.
+
+The 'heartTexture.bindTo(0)' call is used to bind the heart texture to slot 0, which is necessary for rendering the hearts on the healthbar.
+
 ## Related Questions
 - What is the purpose of the 'heartTexture.bindTo(0)' call in the healthbar rendering?
 - How does the new conditional logic affect the display of full and half hearts?

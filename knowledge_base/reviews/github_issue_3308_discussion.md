@@ -8,7 +8,7 @@
 Discussion about making Cubyz an add-on with potential benefits and concerns.
 
 ## Explanation
-The issue discusses the idea of converting Cubyz into an add-on that players can enable or disable. The main advantage cited is providing a blank slate for custom games and worlds using Cubyz' base tools, which could simplify addon-pack management and creation. However, there are concerns raised about the potential for Cubyz to evolve into a general game engine rather than remaining focused on being a modifiable game.
+Discussion about making Cubyz an add-on with potential benefits and concerns. The main advantage cited is providing a blank slate for custom games and worlds using Cubyz' base tools, which could simplify addon-pack management and creation. However, there are concerns raised about the potential for Cubyz to evolve into a general game engine rather than remaining focused on being a modifiable game. A maintainer suggested converting Cubyz to 'root:air' or just 'air'. One user commented that this idea is not good as it could lead Cubyz to become like MineTest, which tried to be a general game engine instead of a modifiable game.
 
 ## Related Questions
 - What are the potential benefits of making Cubyz an add-on?

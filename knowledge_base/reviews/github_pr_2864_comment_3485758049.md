@@ -9,7 +9,7 @@
 Moved `main.sync.server.init()` call before other server initialization steps.
 
 ## Explanation
-The reviewer is questioning the architectural decision to move the initialization of the synchronization system (`main.sync.server.init()`) before other server components like entity management and inventory. The concern is about the potential impact on the order of operations and dependencies between these systems, which could affect thread safety or data consistency.
+The reviewer is questioning the architectural decision to move the initialization of the synchronization system (`main.sync.server.init()`) before other server components like entity management and inventory. The concern is about the potential impact on the order of operations and dependencies between these systems, which could affect thread safety or data consistency. Additionally, there is a TODO comment indicating that the second argument in the server settings needs to be configured.
 
 ## Related Questions
 - What is the purpose of moving `main.sync.server.init()` before other server initialization steps?

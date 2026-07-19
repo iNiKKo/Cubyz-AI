@@ -8,7 +8,7 @@
 Discussion on allowing dirt and cobblestone as crafting materials while maintaining gameplay balance.
 
 ## Explanation
-The discussion revolves around the idea of making certain blocks like dirt and cobblestone usable in crafting, despite their typically non-utilitarian nature. The maintainer agrees that this could add an interesting twist to gameplay but suggests waiting until the tool system is more stable to avoid excessive maintenance work.
+Discussion on allowing dirt and cobblestone as crafting materials while maintaining gameplay balance. The maintainer agrees that it would be fun to have dirt and other garbage in tools, such as a dirt gem encased in dirt (though this could be an addon). However, the maintainer suggests waiting until the tool system is more stable to avoid excessive maintenance work.
 
 ## Related Questions
 - What are the potential impacts of allowing dirt and cobblestone as crafting materials?

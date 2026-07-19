@@ -9,7 +9,7 @@
 This chunk handles the sorting and rendering of transparent mesh faces for a voxel chunk.
 
 ## Explanation
-The chunk processes transparent faces by first identifying culled faces, then using bucket sort to organize them based on distance. It separates front and back faces, ensuring block breaking faces are drawn after front faces but before corresponding backfaces. The sorted faces are uploaded to the GPU for rendering. Finally, it logs the chunk position and updates counters for drawn quads.
+This chunk handles the sorting and rendering of transparent mesh faces for a voxel chunk. It first identifies culled faces by incrementing `backFaceStart` for each face that is not visible from the camera's perspective. The number of culled faces is stored in `culledSortingCount`. The chunk then uses bucket sort to organize the faces based on their distance from the camera. This involves initializing a `buckets` array with 34*3 elements, counting the occurrences of each distance, and computing prefix sums for sorting. The sorted faces are moved into a new buffer (`sortingOutputBuffer`) in the correct order, ensuring that block breaking faces are drawn after front faces but before corresponding backfaces. Finally, the sorted face data is uploaded to the GPU using `faceBuffers[self.transparentMesh.lod].uploadData`, and the chunk position is logged. The `culledSortingCount` is updated by adding the length of `self.blockBreakingFaces.items`. This process ensures that transparent mesh faces are rendered correctly in relation to their distance from the camera.
 
 ## Related Questions
 - How are transparent mesh faces sorted in this chunk?

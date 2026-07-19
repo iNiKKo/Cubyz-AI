@@ -9,7 +9,11 @@
 The chunk implements serialization and deserialization for command payloads and operations, including handling durability, health, kill, and energy sync operations.
 
 ## Explanation
-This chunk defines the `Command` struct with methods for serializing and deserializing payload data. It includes specific logic for different types of sync operations such as useDurability, health, kill, and energy. The `serializePayload` method writes the command's payload to a binary format, while the `do` method executes the command based on its payload type. The `undo` method reverses the effects of previously executed base operations.
+This chunk defines the `Command` struct with methods for serializing and deserializing payload data. It includes specific logic for different types of sync operations such as useDurability, health, kill, and energy.
+
+The `useDurability` operation reads an inventory and a durability value from the reader, while the `health`, `energy`, and `kill` operations read a float or vector value respectively. The `serializePayload` method writes the command's payload to a binary format using a `BinaryWriter`. The `do` method executes the command based on its payload type, and the `undo` method reverses the effects of previously executed base operations by iterating in reverse order.
+
+The `serialize` method for `SyncOperation` writes different types of data depending on the operation type: inventory and durability for `useDurability`, a float for `health` and `energy`, and a vector for `kill`. The `do` method asserts that the base operations list is empty before executing the payload, and the `undo` method handles various inventory management operations such as move, swap, delete, create, moveToBag, and takeFromBag.
 
 ## Code Example
 ```zig

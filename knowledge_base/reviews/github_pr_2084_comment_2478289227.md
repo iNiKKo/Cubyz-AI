@@ -9,7 +9,15 @@
 Added new configuration options for headless server mode in the settings.zig file.
 
 ## Explanation
-The changes introduce several new variables to support headless server functionality, including `headlessServer`, `headlessServerWorldName`, `headlessGamemode`, `headlessTestingMode`, and `headlessAllowCheats`. The reviewer suggests creating a generic world config struct to prevent the configuration from becoming outdated quickly without notice. This architectural suggestion aims to maintain clean code and ease of maintenance.
+The changes introduce several new variables to support headless server functionality: `headlessServer`, `headlessServerWorldName`, `headlessGamemode`, `headlessTestingMode`, and `headlessAllowCheats`. Each variable serves a specific purpose:
+
+- `headlessServer`: A boolean indicating whether the server is running in headless mode. Default value is `false`.
+- `headlessServerWorldName`: A string representing the name of the world to be loaded by the headless server. Default value is an empty string (`""`).
+- `headlessGamemode`: An enumeration specifying the game mode for the headless server. The default value is `.survival`.
+- `headlessTestingMode`: A boolean indicating whether the headless server is in testing mode. Default value is `false`.
+- `headlessAllowCheats`: A boolean indicating whether cheats are allowed on the headless server. Default value is `false`.
+
+The reviewer suggests creating a generic world config struct to prevent the configuration from becoming outdated quickly without notice. This architectural suggestion aims to maintain clean code and ease of maintenance.
 
 ## Related Questions
 - What are the new configuration options added for headless server mode?

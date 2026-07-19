@@ -9,7 +9,32 @@
 This chunk implements the Alias Method for weighted random sampling and a sorted list data structure.
 
 ## Explanation
-The chunk defines two main types: `AliasTable` and `SortedList`. The `AliasTable` type is an implementation of the Alias Method, which allows for efficient weighted random sampling. It includes methods to initialize the alias table from a list of items with associated chances, deinitialize it, and sample an item based on its chance. The `SortedList` type is a dynamic array that maintains elements in ascending order, providing methods to insert elements while keeping them sorted, convert the list to an owned slice, and deinitialize it.
+This chunk implements the Alias Method for weighted random sampling and a sorted list data structure. The `AliasTable` type is an implementation of the Alias Method, which allows for efficient weighted random sampling. It includes methods to initialize the alias table from a list of items with associated chances, deinitialize it, and sample an item based on its chance. The `SortedList` type is a dynamic array that maintains elements in ascending order, providing methods to insert elements while keeping them sorted, convert the list to an owned slice, and deinitialize it.
+
+### AliasTable
+- **AliasData**: A struct containing `chance` (u16) and `alias` (u16).
+- **items**: An array of items with associated chances.
+- **aliasData**: An array of AliasData structs used for alias sampling.
+- **ownsSlice**: A boolean indicating whether the `AliasTable` owns the slice of items.
+
+**Methods**:
+- **initAliasData**: Initializes the alias data based on the total chance and current chances of items. It calculates the desired chance, iterates through the items to balance probabilities, and sets up aliases accordingly.
+- **init**: Initializes the `AliasTable` from a list of items with associated chances. It allocates memory for alias data, calculates total chances, and initializes alias data using `initAliasData`.
+- **initFromContext**: Initializes the `AliasTable` from a context slice, converting each context to an item and then initializing it similarly to `init`.
+- **deinit**: Frees the allocated memory for alias data and items if owned.
+- **sample**: Samples an item based on its chance using the alias method. It generates a random index and checks the alias data to determine the final sampled item.
+
+### SortedList
+- **ptr**: A pointer to the array of elements.
+- **len**: The current length of the list.
+- **capacity**: The total capacity of the list.
+
+**Methods**:
+- **deinit**: Frees the allocated memory for the list.
+- **items**: Returns a slice of the list's items.
+- **increaseCapacity**: Increases the capacity of the list by reallocating it to a new size (8 + current capacity * 3/2).
+- **insertSorted**: Inserts an element into the sorted list while maintaining order. It shifts elements as needed and inserts the new item at the correct position.
+- **toOwnedSlice**: Converts the list to an owned slice, freeing the original list and returning the new slice.
 
 ## Code Example
 ```zig

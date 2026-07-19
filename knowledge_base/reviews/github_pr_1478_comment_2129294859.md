@@ -9,7 +9,7 @@
 A new packed struct `ToolTypeIndex` with a single `u16` field named `index` has been added to the `items.zig` file.
 
 ## Explanation
-The addition of the `ToolTypeIndex` struct introduces a new way to handle tool types in Cubyz. The reviewer suggests using an enum for better allocation and management, but this change is not implemented in the current PR. The struct is packed, which can improve memory usage by reducing padding between fields.
+The addition of the `ToolTypeIndex` struct introduces a new way to handle tool types in Cubyz. The struct contains a single field, `index`, which is of type `u16`. This packed struct can improve memory usage by reducing padding between fields. The reviewer suggests using an enum for better allocation and management, specifically mentioning that one ID could be allocated to `empty` instead of making stuff optional. However, this change is not implemented in the current PR.
 
 ## Related Questions
 - What is the purpose of the `ToolTypeIndex` struct in Cubyz?

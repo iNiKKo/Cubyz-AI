@@ -9,7 +9,7 @@
 The update function in game.zig has been modified to ensure proper normalization of the movement direction vector based on the movement speed.
 
 ## Explanation
-The reviewer identified an issue where the movement direction vector was not being correctly normalized when its length squared was less than the square of the movement speed. The suggested change ensures that if the length squared of the movement direction is greater than the square of the movement speed, it should be divided by the movement speed to normalize it properly. This adjustment prevents incorrect movement calculations and maintains the integrity of the player's movement mechanics.
+The update function in game.zig has been modified to ensure proper normalization of the movement direction vector based on the movement speed. The reviewer identified an issue where the movement direction vector was not being correctly normalized when its length squared was less than the square of the movement speed. Specifically, if `vec.lengthSquare(movementDir) > movementSpeed*movementSpeed`, it should be divided by `movementSpeed` to normalize it properly. This adjustment prevents incorrect movement calculations and maintains the integrity of the player's movement mechanics. The suggested change ensures that the movement direction vector is correctly scaled by `movementSpeed`, preventing issues such as overshooting or undershooting the intended movement distance.
 
 ## Related Questions
 - What is the purpose of normalizing the movement direction vector in the update function?

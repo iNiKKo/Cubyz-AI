@@ -8,7 +8,7 @@
 Discussion about adding a new block type that flings players forwards when jumped on, with consideration for determining the forward direction.
 
 ## Explanation
-The discussion revolves around introducing a new block feature in Cubyz where players are launched forwards upon jumping. The main challenge is deciding how to determine the forward direction of the player's movement. Suggestions include launching based on the player's facing direction or their current velocity vector. This addition aims to enhance gameplay dynamics, offering new possibilities for parkour and horizontal transportation within the game.
+The discussion centers around introducing a new block type in Cubyz that flings players forwards when jumped on. The primary challenge is deciding how to determine the forward direction of the player's movement. Suggestions include launching based on the player's facing direction or their current velocity vector. This addition aims to enhance gameplay dynamics, offering new possibilities for parkour and horizontal transportation within the game. Additionally, there are considerations about implementing this feature with rubber trees, though it is not clear how to direct the forward direction.
 
 ## Related Questions
 - How can the forward direction be determined for the flinging block?

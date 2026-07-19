@@ -9,7 +9,7 @@
 The review discusses the chat window's history management and user experience, pointing out unexpected behaviors and suggesting improvements.
 
 ## Explanation
-The reviewer expresses surprise at the chat window's architecture, noting that it differs from typical shell behavior. They highlight issues such as message duplication, unexpected undo behavior, and cluttered edit histories. The reviewer suggests using a doubly-linked list for history management to improve usability and align with common practices in GUI applications.
+The review discusses the chat window's history management and user experience, pointing out unexpected behaviors and suggesting improvements. The reviewer expresses surprise at the chat window's architecture, noting that it differs from typical shell behavior. They highlight issues such as message duplication, where messages get cloned every time you scroll up or down, leading to cluttered edit histories. Unexpected undo behavior occurs when pressing up or down after editing a message, which undoes the message rather than scrolling to the previous/next message. The reviewer suggests using a doubly-linked list for history management to improve usability and align with common practices in GUI applications. This would allow for better handling of edit histories without cluttering the main edit history.
 
 ## Related Questions
 - What is the purpose of the CircularBufferQueue in the chat window?

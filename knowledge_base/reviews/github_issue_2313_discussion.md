@@ -8,7 +8,7 @@
 The issue discusses rejecting block updates that are too far away from the player, with a focus on defining the distance threshold.
 
 ## Explanation
-The discussion revolves around implementing a mechanism to prevent clients from modifying blocks that are beyond their expected reach. The user suggests considering the closest vertex of the block rather than just its center, while the maintainer proposes setting a simpler threshold at `hand_reach + 1` and potentially ignoring further distances unless full ray casting is implemented on the server side.
+The issue discusses rejecting block updates that are too far away from the player to prevent clients from modifying blocks outside their expected reach. The user suggests considering the closest vertex of the block rather than just its center, while the maintainer proposes setting a simpler threshold at `hand_reach + 1` and ignoring further distances unless full ray casting is implemented on the server side. This approach ensures that clients cannot modify blocks beyond this distance without additional validation.
 
 ## Related Questions
 - What is the current implementation of block update validation?

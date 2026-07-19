@@ -9,7 +9,7 @@
 The change introduces a new variable `selectionCapabilities` and suggests using a default `.all` capability instead of a nullable value.
 
 ## Explanation
-The reviewer recommends replacing the nullable `SelectionRule` with a non-nullable default capability, specifically `.all`. This change aims to simplify the code by avoiding null checks and potential allocation issues. The reviewer believes that using a default capability is more architecturally sound and easier to manage.
+The reviewer recommends replacing the nullable `SelectionRule` with a non-nullable default capability, specifically `.all`. This change aims to simplify the code by avoiding null checks and potential allocation issues. The reviewer believes that using a default capability is more architecturally sound and easier to manage. Additionally, the reviewer suggests using `&.{.all}` without needing to do any allocation.
 
 ## Related Questions
 - What is the purpose of the `selectionCapabilities` variable?

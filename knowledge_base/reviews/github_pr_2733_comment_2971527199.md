@@ -11,6 +11,8 @@ Added a new `EntityModel` struct and its initialization method from OBJ files.
 ## Explanation
 The change introduces a new `EntityModel` struct with fields for vertex array object (VAO), vertex buffer object (VBO), element buffer object (EBO), size, and texture. The `initFromObj` function is added to initialize an `EntityModel` from an OBJ file. The reviewer notes that local allocations should use the stack allocator unless there's a specific need for heap allocation, suggesting potential improvements in memory management.
 
+The `EntityVertex` struct contains fields for position (`pos`), normal (`normal`), and UV coordinates (`uv`). Each field is of type `[3]f32` for `pos` and `normal`, and `[2]f32` for `uv`.
+
 ## Related Questions
 - What is the purpose of the `EntityModel` struct?
 - How does the `initFromObj` function initialize an `EntityModel`?

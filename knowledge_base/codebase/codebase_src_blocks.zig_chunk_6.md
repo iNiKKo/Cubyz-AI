@@ -11,6 +11,12 @@ Handles texture loading and animation preprocessing for Cubyz blocks.
 ## Explanation
 This chunk manages the loading of block textures, including breaking textures and animations. It includes functions to load textures from specified paths, preprocess animation data using a compute shader, and generate texture arrays for different types of textures like block, emission, reflectivity, absorption, and combined reflectivity-absorption textures. The chunk also handles SSBO (Shader Storage Buffer Object) initialization for animations and fog data.
 
+The `preProcessAnimationData` function binds the animation compute pipeline, sets uniform values for time and size, dispatches the compute shader, and applies a memory barrier. The `finishTextureLoading` function initializes arrays for animation data and texture occlusion data, reads texture data from paths, and generates texture arrays with anisotropic filtering set based on settings.
+
+The `reloadTextures` function clears existing texture lists, reloads textures from paths, and regenerates the texture array. The `generateTextureArray` function creates block, emission, reflectivity, absorption, and combined reflectivity-absorption texture arrays. It also initializes SSBOs for animation data, animated texture indices, and fog data, binding them to specific buffer slots.
+
+The `main.stackAllocator` is used to manage memory for temporary strings like file paths and IDs during the loading process.
+
 ## Code Example
 ```zig
 pub fn preProcessAnimationData(time: u32) void {

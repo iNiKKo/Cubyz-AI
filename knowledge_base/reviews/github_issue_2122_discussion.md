@@ -8,7 +8,7 @@
 The issue discusses a proposal for adding world edit UI features similar to Axiom, but it is closed due to the decision to reduce built-in world edit scope and focus on mod-based solutions.
 
 ## Explanation
-The discussion revolves around the suggestion of implementing advanced world editing capabilities within Cubyz, inspired by the Axiom mod. The maintainers have decided against expanding the built-in world edit tools in favor of allowing developers to create these features through first-party or third-party mods. This decision is based on a broader strategy to reduce the scope of core functionalities and promote modular development.
+The discussion revolves around a proposal to add world edit UI features similar to Axiom, but it is closed due to the decision to reduce built-in world edit scope and focus on mod-based solutions. This decision is based on content suggestion guidelines. The Axiom mod is mentioned as an example of advanced tooling, but its specific features are not explicitly stated in raw_content.
 
 ## Related Questions
 - What are the reasons behind reducing the built-in world edit scope in Cubyz?

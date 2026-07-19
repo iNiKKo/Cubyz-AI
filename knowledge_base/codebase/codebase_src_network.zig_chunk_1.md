@@ -11,6 +11,12 @@ The chunk defines a `Socket` struct for UDP networking, handling OS-specific soc
 ## Explanation
 This chunk implements a `Socket` struct that encapsulates the creation, initialization, sending, receiving, and cleanup of UDP sockets. It handles both Windows and POSIX-compliant systems by checking the operating system tag at compile time. The `Socket` struct includes methods for error handling specific to Windows (`windowsError`), initializing the socket (`init`), deinitializing it (`deinit`), sending data (`send`), receiving data with a timeout (`receive`), resolving IP addresses from hostnames (`resolveIP`), and retrieving the local port of the socket (`getPort`). The code manages OS-specific differences in socket operations, such as using `WSAStartup` on Windows and handling different error codes. It also includes logging for warnings and errors encountered during socket operations.
 
+On Windows, the socket type is `c.SOCKET`, while on POSIX systems, it is `posix.socket_t`. The `windowsError` function maps specific Windows error codes to Zig error types, such as `WSASYSNOTREADY` to `error.NetworkDown` or `WSAEADDRINUSE` to `error.AddressInUse`. The `Socket.init` method creates a UDP socket using `c.socket` on Windows and `std.c.socket` on POSIX systems. If the socket creation fails, it logs an error and panics.
+
+The `resolveIP` method uses `std.Io.net.HostName.lookup` to resolve hostnames to IP addresses. It handles both IPv4 and IPv6 addresses but only returns IPv4 addresses as a 32-bit integer. The `receive` method uses `WSAPoll` on Windows and `posix.poll` on POSIX systems to handle timeouts. If no data is received within the timeout period, it returns an `error.Timeout`.
+
+The `getPort` method retrieves the local port of the socket using `c.getsockname` on Windows and `std.c.getsockname` on POSIX systems.
+
 ## Code Example
 ```zig
 fn windowsError(err: c_int) !void {

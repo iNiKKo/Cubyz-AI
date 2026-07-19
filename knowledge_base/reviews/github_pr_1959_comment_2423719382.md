@@ -9,7 +9,7 @@
 The change modifies the file extension check in the `checkDirectory` function to include `.zig` files while excluding a specific file named `fmt.zig`. The reviewer suggests using `std.mem.eql(u8, child.basename, 
 
 ## Explanation
-The modification aims to ensure that `.zig` files are processed correctly by the formatter, except for the `fmt.zig` file. This change is critical for maintaining the integrity of the formatting process and ensuring that only intended files are formatted. The reviewer's suggestion uses `std.mem.eql(u8, child.basename, 
+The modification aims to ensure that `.zig` files are processed correctly by the formatter, except for the `fmt.zig` file. This change is critical for maintaining the integrity of the formatting process and ensuring that only intended files are formatted. The reviewer's suggestion uses `std.mem.eql(u8, child.basename, "fmt.zig")` to check if the basename is exactly `"fmt.zig"`, which is more precise than checking if it starts with `"fmt.zig"`. This ensures that only the exact file named `fmt.zig` is excluded from processing.
 
 ## Related Questions
 - What is the purpose of the `checkDirectory` function in the `format.zig` file?

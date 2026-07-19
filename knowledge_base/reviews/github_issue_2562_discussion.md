@@ -8,7 +8,7 @@
 Discussion about adding a quick testing world feature in Cubyz.
 
 ## Explanation
-The issue discusses the need for a feature that allows users to open Cubyz directly into a testing world, bypassing the account password and world selection screen. The maintainer suggests using an unencrypted account or a second account for testing purposes, as there is already a zero-click option available through launch configurations.
+The issue discusses the need for a feature that allows users to open Cubyz directly into a testing world, bypassing the account password and world selection screen. The maintainer suggests using an unencrypted account or a second account for testing purposes, as there is already a zero-click option available through launch configurations. However, this zero-click option only works if the account is not encrypted. Therefore, users are recommended to use a second account specifically for testing to avoid security risks associated with unencrypted accounts.
 
 ## Related Questions
 - What is the current method for launching Cubyz without an account password?

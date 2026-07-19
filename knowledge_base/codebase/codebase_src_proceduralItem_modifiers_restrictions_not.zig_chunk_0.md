@@ -9,7 +9,7 @@
 Not modifier restriction implementation
 
 ## Explanation
-This chunk defines a `Not` struct that represents the negation of another `ModifierRestriction`. It provides a method `satisfied` to check if a procedural item does not satisfy the child restriction, and a `loadFromZon` function to deserialize it from a ZonElement. The `printTooltip` function generates a tooltip for the `Not` modifier.
+This chunk defines a `Not` struct that represents the negation of another `ModifierRestriction`. It provides three key methods: `satisfied`, `loadFromZon`, and `printTooltip`. The `satisfied` method checks if a procedural item does not satisfy the child restriction. The `loadFromZon` function deserializes the `Not` struct from a ZonElement, creating a new instance of `Not` with its child restriction loaded from the provided ZonElement. The `printTooltip` function generates a tooltip for the `Not` modifier, indicating that it negates the tooltip of the child restriction.
 
 ## Code Example
 ```zig

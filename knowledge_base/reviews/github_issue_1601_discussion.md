@@ -9,7 +9,7 @@
 Discussion about changing cactus back to a `.leaf` block and considering new tagging approaches for blocks.
 
 ## Explanation
-The discussion revolves around reverting the change made in a previous PR where cactus was changed to a `.wood` block. The maintainers suggest that giant mushroom blocks should also be tagged as `.leaf`. There is a proposal to introduce more specific tags like `.mushroom` for better addon compatibility. The conversation then shifts to questioning whether cactus and mushrooms should break with axes or sickles, highlighting the complexity of balancing tool interactions. A suggestion is made to replace material-based tagging (like `wood`, `leaf`) with tool-specific properties (`breakByAxe`, `breakByPickaxe`), emphasizing that these tags should not dictate which tools can be used to break a block.
+The discussion revolves around reverting the change made in a previous PR where cactus was changed to a `.wood` block. The maintainers suggest that giant mushroom blocks should also be tagged as `.leaf`. There is a proposal to introduce more specific tags like `.mushroom` for better addon compatibility. The conversation then shifts to questioning whether cactus and mushrooms should break with axes or sickles, highlighting the complexity of balancing tool interactions. A suggestion is made to replace material-based tagging (like `wood`, `leaf`) with tool-specific properties (`breakByAxe`, `breakByPickaxe`), emphasizing that these tags should not dictate which tools can be used to break a block. The maintainers propose creating a separate issue for implementing these changes, rather than making them immediately.
 
 ## Related Questions
 - What was the reason for changing cactus to a .wood block?

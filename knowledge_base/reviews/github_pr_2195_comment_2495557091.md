@@ -11,6 +11,8 @@ The `loadModel` function now returns an optional pointer (`?*SbbGen`) instead of
 ## Explanation
 The change in return type from `*SbbGen` to `?*SbbGen` allows the function to handle cases where the model might not be loaded successfully, returning null instead of a pointer. The reviewer emphasizes the importance of ensuring capacity for the list to maintain efficient memory usage and prevent potential performance issues caused by frequent resizes. This is crucial for maintaining optimal performance in scenarios where multiple models are being allocated concurrently.
 
+The reviewer also suggests adding an `ensureCapacity` call to guarantee that the list doesn't use 2N storage due to resizes, even if someone allocates something else in the meantime. This ensures that the list's capacity is pre-allocated and prevents unnecessary memory reallocations, which can lead to performance bottlenecks.
+
 ## Related Questions
 - What is the purpose of changing the return type of `loadModel` to `?*SbbGen`?
 - Why is it important to ensure capacity for the list in this context?

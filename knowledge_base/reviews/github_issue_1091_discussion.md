@@ -8,7 +8,7 @@
 The discussion revolves around whether to fix issues where placing ores on blocks disables certain properties like light or friction.
 
 ## Explanation
-The maintainer argues against fixing these issues, citing practical examples such as walking on pebbles in ice and the natural behavior of light dimming when obscured by rocks. The maintainer also supports the current design for glowing ores, where ore light overwrites block light, suggesting it adds to the game's realism and aesthetic appeal.
+The discussion revolves around whether to fix issues where placing ores on blocks disables certain properties like light or friction. The maintainer argues against fixing these issues, citing practical examples such as walking on pebbles in ice (you can walk without slipping since you're walking on the pebbles) and the natural behavior of light dimming when rocks are placed on a light source. Additionally, the maintainer supports the current design for glowing ores, where ore light overwrites block light, suggesting it adds to the game's realism and aesthetic appeal (e.g., blooming light without block light). The maintainer also notes that fixing these issues would be expensive.
 
 ## Related Questions
 - What are the potential performance implications of fixing the issue where placing ores disables block properties?

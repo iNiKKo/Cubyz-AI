@@ -9,7 +9,7 @@
 The discussion revolves around replacing the UNSCII font with Fusion Font in Cubyz. The Fusion Font supports multiple languages and Unicode characters but is not monospaced.
 
 ## Explanation
-The issue discusses the replacement of the existing UNSCII font with Fusion Font, which offers better language support and Unicode character coverage. However, there are concerns about its non-monospaced nature and file size. The maintainers have renamed the issue to reflect the use of Fusion Font instead of Lanapixel. There is also a discussion about whether the font files should be included in the main repository or handled separately through the Cubyz-Assets repo. The lack of consensus on using a new font and which one to choose remains an unresolved issue.
+The discussion revolves around replacing the UNSCII font with Fusion Font in Cubyz. The Fusion Font supports multiple languages and Unicode characters but is not monospaced like UNSCII. There are concerns about its non-monospaced nature, file size (10 MB), and whether it should be included in the main repository or handled separately through the Cubyz-Assets repo. The maintainers have renamed the issue to reflect the use of Fusion Font instead of Lanapixel. An image showing the appearance of Fusion Font is provided: ![Image](https://github.com/user-attachments/assets/02e9d443-b64a-403e-a570-82664f23b82b). The lack of consensus on using a new font and which one to choose remains an unresolved issue.
 
 ## Related Questions
 - What are the main reasons for replacing UNSCII with Fusion Font?

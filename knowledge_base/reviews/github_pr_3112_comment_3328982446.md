@@ -9,7 +9,13 @@
 Refactored permission command handling by introducing an argument parser and restructuring error handling.
 
 ## Explanation
-The change involves replacing the manual argument parsing logic with a structured approach using an argument parser (`ArgParser`). This refactoring aims to improve code readability, maintainability, and reduce potential errors. The reviewer notes that the allocator used for `Args` should be consistent with the one used for error messages, specifically `main.stackAllocator`. However, there is a concern about the lifetime of the allocator, as it outlives the function call, which could lead to undefined behavior if not managed correctly.
+Refactored permission command handling by introducing an argument parser and restructuring error handling. The change involves replacing the manual argument parsing logic with a structured approach using an argument parser (`ArgParser`). This refactoring aims to improve code readability, maintainability, and reduce potential errors. The reviewer notes that the allocator used for `Args` should be consistent with the one used for error messages, specifically `main.stackAllocator`. However, there is a concern about the lifetime of the allocator, as it outlives the function call, which could lead to undefined behavior if not managed correctly.
+
+The new argument parsing logic supports the following commands:
+- `/perm <action> <list> <playerIndex> <permissionPath>`: Adds or removes a permission path for a specific player index in either the whitelist or blacklist.
+- `/perm <playerIndex> <permissionPath>`: Checks if a player has a specific permission path.
+
+The `Path` struct is responsible for parsing permission paths, ensuring they always begin with a "/". If a permission path does not start with a "/", an error message is generated.
 
 ## Related Questions
 - What is the purpose of introducing `ArgParser` in this refactoring?

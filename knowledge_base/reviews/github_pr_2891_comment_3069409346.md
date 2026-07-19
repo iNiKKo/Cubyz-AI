@@ -9,7 +9,11 @@
 Refactored the `ProceduralItem` struct by renaming the `getProperty` function to `getPropertyPtr` and adding a new `getProperty` function that returns a value instead of a pointer.
 
 ## Explanation
-The refactoring aims to provide flexibility in accessing properties of `ProceduralItem`. The original `getProperty` method, which returned a pointer to an `f32`, has been renamed to `getPropertyPtr`. A new `getProperty` function has been added that returns the property value directly. This change allows for scenarios where only the value is needed without the overhead or potential issues associated with pointer manipulation. The reviewer suggests considering adding a corresponding `setProperty` method for completeness, indicating an intention to maintain symmetry in the API.
+The refactoring aims to provide flexibility in accessing properties of `ProceduralItem`. The original `getProperty` method, which returned a pointer to an `f32`, has been renamed to `getPropertyPtr`. A new `getProperty` function has been added that returns the property value directly. This change allows for scenarios where only the value is needed without the overhead or potential issues associated with pointer manipulation.
+
+The original implementation of `getProperty` used a switch statement to access properties based on an enum (`ProceduralItemProperty`). The refactored code now uses an array (`self.properties`) and the `@intFromEnum` function to directly access the property values. This change simplifies the code and improves performance by avoiding the overhead of pointer manipulation.
+
+The reviewer suggests considering adding a corresponding `setProperty` method for completeness, indicating an intention to maintain symmetry in the API.
 
 ## Related Questions
 - What is the purpose of renaming `getProperty` to `getPropertyPtr`?

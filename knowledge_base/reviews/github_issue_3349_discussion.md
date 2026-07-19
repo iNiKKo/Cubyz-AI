@@ -8,7 +8,7 @@
 Discussion on implementing command piping in Cubyz, with suggestions for alternative approaches like direct spawning or copying coordinates.
 
 ## Explanation
-The discussion revolves around the idea of adding Unix-style command piping to Cubyz. The maintainer points out that current command outputs are human-friendly and not designed for capturing or processing as input. They also note that commands in Cubyz are intended to alter game state rather than output data or take extended input. Users suggest alternatives such as direct spawning with coordinates, making coordinates clickable, or copying them to the clipboard. The maintainer considers allowing chat copy-paste functionality as a potential solution.
+The discussion revolves around the idea of adding Unix-style command piping to Cubyz. The maintainer points out that current command outputs are designed to be human-friendly and not intended for capturing or processing as input. They also note that commands in Cubyz are intended to alter game state rather than output data or take extended input, indicating there is no compelling use case within the scope of Cubyz's design philosophy. Users suggest alternatives such as direct spawning with coordinates (e.g., `/summon entityName ~ ~ ~`), making coordinates clickable, copying them to the clipboard, and allowing chat copy-paste functionality as potential solutions.
 
 ## Related Questions
 - How can command outputs be modified to support piping in Cubyz?

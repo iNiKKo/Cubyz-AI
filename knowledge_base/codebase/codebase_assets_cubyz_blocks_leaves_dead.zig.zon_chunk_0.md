@@ -8,7 +8,7 @@
 Defines properties for dead leaves block.
 
 ## Explanation
-This chunk defines the configuration for a dead leaves block in the Cubyz voxel engine. It specifies the absorbed light level, texture path, LOD replacement block, and opaque variant block.
+This chunk defines the configuration for a dead leaves block in the Cubyz voxel engine. It specifies the absorbed light level (`0x222222`), texture path (`cubyz:leaves/dead`), LOD replacement block (`cubyz:leaves/opaque/dead`), and opaque variant block (`cubyz:leaves/opaque/dead`).
 
 ## Related Questions
 - What is the absorbed light level for dead leaves?

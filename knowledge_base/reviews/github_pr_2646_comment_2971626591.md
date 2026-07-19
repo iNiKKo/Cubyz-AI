@@ -9,7 +9,7 @@
 The code introduces a new file `conductedWith.zig` that defines a struct `Encased` and functions for checking tool restrictions based on block positions.
 
 ## Explanation
-The review focuses on the initialization of the queue in the `satisfied` function. The reviewer suggests replacing hardcoded initial directions with relative positions to improve flexibility and correctness. This change ensures that the search starts from the correct position, enhancing the functionality of the tool restriction check.
+The code introduces a new file `conductedWith.zig` that defines a struct `Encased` and functions for checking tool restrictions based on block positions. The `Encased` struct contains fields for `sourceTag`, `conductorTag`, and `amount`. The function `getIndexInCheckArray` calculates the array index based on the relative position and check range. The `satisfied` function checks if a tool meets certain conditions by performing a breadth-first search (BFS) using a queue initialized with specific directions: Vec2i{1, 0}, Vec2i{-1, 0}, Vec2i{0, 1}, and Vec2i{0, -1}. The reviewer suggests replacing these hardcoded initial directions with relative positions to improve flexibility and correctness. This change ensures that the search starts from the correct position, enhancing the functionality of the tool restriction check. The code uses a `CircularBufferQueue` for the queue implementation and handles memory allocation and deallocation using `main.stackAllocator`. The `NeverFailingAllocator` is used for other allocations in the context.
 
 ## Related Questions
 - What is the purpose of the `Encased` struct in this code?

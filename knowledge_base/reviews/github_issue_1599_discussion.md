@@ -8,7 +8,7 @@
 The maintainer decided against using a bloom filter for searching tags due to the small dataset size and potential increase in code complexity.
 
 ## Explanation
-The maintainer evaluated the use of a bloom filter for improving search time when checking if a block or item has a specific tag. They concluded that it is not worth implementing because the current dataset of tags is small (only 1 or 2 integers). The maintainer also noted that using SIMD operations could achieve similar performance improvements with less complexity by properly aligning and over-allocating the buffer.
+The maintainer evaluated the use of a bloom filter for improving search time when checking if a block or item has a specific tag. They concluded that it is not worth implementing because the current dataset of tags is small (only 1 or 2 integers), and linear search, which is currently sufficient, may become inefficient as the list grows. The maintainer also noted that using SIMD operations could achieve similar performance improvements with less complexity by properly aligning and over-allocating the buffer. This approach would allow for one SIMD operation for most blocks/items, given the unlikely scenario of more than 8 (16 for AVX-512) tags.
 
 ## Related Questions
 - What is the current size of the tag dataset in Cubyz?

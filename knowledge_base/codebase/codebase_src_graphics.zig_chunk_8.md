@@ -11,6 +11,18 @@ Handles text parsing, rendering, and interaction logic.
 ## Explanation
 This chunk implements the TextBuffer struct, which manages text rendering and interaction. It includes methods for initializing text buffers from parsed text, deinitializing resources, converting mouse positions to character indices, and calculating cursor positions. The code uses Harfbuzz for shaping text and handles line breaks based on font size and maximum line width.
 
+The `parse` method initializes the parser, sets up Harfbuzz buffer, adds UTF-32 characters, sets direction, script, language, shapes the text, retrieves glyph information and positions, guesses text indices from cluster indices, merges it all together into glyphs, finds lines, and appends line breaks.
+
+The `deinit` method frees allocated resources for glyphs, lines, and line breaks.
+
+The `getLineOffset` method calculates the offset based on alignment and width differences.
+
+The `mousePosToIndex` method converts mouse positions to character indices by iterating through glyphs and checking mouse position relative to glyph advance.
+
+The `indexToCursorPos` method calculates cursor positions by iterating through glyphs and finding the position of a specific character index.
+
+The `calculateLineBreaks` method calculates line breaks based on font size, maximum line width, and handling spaces and newlines.
+
 ## Code Example
 ```zig
 pub fn deinit(self: TextBuffer) void {

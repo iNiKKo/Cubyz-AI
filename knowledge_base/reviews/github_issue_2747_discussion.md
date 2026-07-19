@@ -8,7 +8,7 @@
 The maintainer revisits the reverse-z-buffer approach to address z-fighting issues but notes ongoing performance concerns.
 
 ## Explanation
-The issue report indicates that z-fighting is causing significant pixel errors, similar to a previously reported issue (#92). The maintainer attempts to resolve this by re-evaluating the reverse-z-buffer technique. However, they encounter persistent performance issues with this approach. The maintainer suggests revisiting the reverse-z-buffer after Vulkan integration but does not see any immediate alternative solutions.
+The issue report indicates that z-fighting is causing significant pixel errors, similar to a previously reported issue (#92). The maintainer attempts to resolve this by re-evaluating the reverse-z-buffer technique. However, they encounter persistent performance issues with this approach and notes: 'Okay, I tried reverse-z-buffer again, the performance issue I experienced last time still persists.' The maintainer suggests revisiting the reverse-z-buffer after Vulkan integration but does not see any immediate alternative solutions.
 
 ## Related Questions
 - What are the specific performance issues encountered with the reverse-z-buffer?

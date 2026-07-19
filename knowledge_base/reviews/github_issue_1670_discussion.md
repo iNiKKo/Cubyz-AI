@@ -8,7 +8,12 @@
 Discussion about adding a procedural cooking system for soups in Cubyz, including potential integration with magical fluids and effect manipulation.
 
 ## Explanation
-The discussion revolves around the idea of implementing a 'crockpot/cauldron' feature in Cubyz where players can cook soups using various ingredients. The proposal includes both recipe-based and procedural cooking methods, inspired by Minecraft and The Legend of Zelda: Breath of the Wild. Additionally, there is a suggestion to enhance the system with magical fluids that could transform regular soup into potions. The maintainers also explore the possibility of manipulating effects associated with these dishes, such as duration, strength, eating time, and stackability. This feature aims to add depth to gameplay by allowing players to manage multiple effects efficiently and strategically.
+Discussion about adding a procedural cooking system for soups in Cubyz, including potential integration with magical fluids and effect manipulation. The maintainers propose implementing a 'crockpot/cauldron' feature where players can cook soups using various ingredients. This system would include both recipe-based and procedural cooking methods, inspired by Minecraft and The Legend of Zelda: Breath of the Wild. Additionally, there is a suggestion to enhance the system with magical fluids that could transform regular soup into potions. The maintainers also explore the possibility of manipulating effects associated with these dishes in several ways:
+- Duration (how long effects last)
+- Strength
+- Eating time
+- Stackability (how many effects can be stacked into one dish)
+The stackability feature is particularly interesting and unusual compared to other games, as it allows players to manage multiple effects efficiently by minimizing inventory space usage. This system aims to add depth to gameplay by allowing strategic management of effects.
 
 ## Related Questions
 - What are the proposed methods for cooking soups in Cubyz?

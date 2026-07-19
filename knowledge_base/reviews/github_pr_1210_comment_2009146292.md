@@ -9,7 +9,7 @@
 The reviewer is questioning whether to retain the `addEnergy` base operation or eliminate the `AddEnergy` struct in the Inventory system.
 
 ## Explanation
-The review focuses on architectural decisions regarding the Inventory module's structure. The reviewer is considering simplifying the code by potentially removing a dedicated struct (`AddEnergy`) that handles energy addition, opting instead to use a base operation directly. This decision could impact the modularity and clarity of the codebase.
+The review focuses on architectural decisions regarding the Inventory module's structure. The reviewer suggests keeping the `addEnergy` base operation and removing the dedicated `AddEnergy` struct that handles energy addition. This decision could impact the modularity and clarity of the codebase. The reviewer is considering simplifying the code by potentially removing a dedicated struct (`AddEnergy`) that handles energy addition, opting instead to use a base operation directly.
 
 ## Related Questions
 - What are the potential benefits of removing the AddEnergy struct?

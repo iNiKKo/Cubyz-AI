@@ -9,7 +9,7 @@
 Handles rendering of rectangles and text in the graphics system.
 
 ## Explanation
-The code defines functions for drawing shaded rectangles and text. The `customShadedRect` function adjusts position and dimensions based on scale and translation, retrieves the viewport size, sets various uniforms, and draws a rectangle using a vertex array object (VAO). The `text` function calls an external rendering function to display text at specified coordinates and font size. The `print` function formats a string using Zig's formatting utilities and then calls `text` to render it.
+The code defines functions for drawing shaded rectangles and text. The `customShadedRect` function adjusts position and dimensions based on scale and translation, retrieves the viewport size, sets various uniforms including `screen`, `start`, `size`, `color`, and `scale`, and draws a rectangle using a vertex array object (VAO). Specifically, it uses `glGetIntegerv` to get the viewport size, `glUniform2f` to set 2D float uniforms for `screen`, `start`, and `uvOffset`, `glUniform1i` to set an integer uniform for `color`, and `glUniform1f` to set a float uniform for `scale`. The rectangle is drawn using `glDrawArrays` with `GL_TRIANGLE_STRIP`. The `text` function calls an external rendering function to display text at specified coordinates and font size. The `print` function formats a string using Zig's formatting utilities and then calls `text` to render it, managing memory for the formatted string using `std.fmt.allocPrint` and `main.stackAllocator.free`.
 
 ## Code Example
 ```zig

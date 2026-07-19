@@ -8,7 +8,7 @@
 Discussion about the resolution of panorama images in Cubyz.
 
 ## Explanation
-The issue discusses that panorama images are not high-resolution enough even for standard or low field of view (fov) settings. The maintainer comments on the current file size range of 1-10 MB and expresses reluctance to produce larger files, indicating a trade-off between image quality and file size.
+The issue discusses that panorama images are not high-resolution enough even for standard or low field of view (fov) settings. The current file size range is explicitly stated by the maintainer to be between 1-10 MB. The maintainer expresses reluctance to produce larger files due to concerns about image quality and file size, indicating a trade-off between resolution and file size. There are no specific plans mentioned to improve the resolution of panorama images without significantly increasing the file size. The impact of image resolution on user experience in Cubyz is not explicitly discussed, but it is implied that lower resolution affects visual fidelity. Optimizing the compression of panorama images to maintain quality while reducing file size is also not addressed in this discussion.
 
 ## Related Questions
 - What is the current resolution of panorama images in Cubyz?

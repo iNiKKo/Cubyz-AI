@@ -11,6 +11,19 @@ The review suggests adding a conditional check for `headless` mode before initia
 ## Explanation
 The reviewer points out that the original code initializes the GUI window list before other components to facilitate error handling during loading. The suggestion is to wrap the initialization and deinitialization of the window list in a conditional check for `headless` mode. This change aims to maintain the architectural integrity by ensuring that the window list is only initialized when not in headless mode, thus preserving the original order's purpose without altering its functionality.
 
+The reviewer also notes that the following lines were removed from the code:
+```zig
+std.log.info("Starting game client with version {s}", .{settings.version.version});
+gui.initWindowList();
+defer gui.deinitWindowList();
+```
+The suggestion is to replace these lines with:
+```zig
+if(!headless) gui.initWindowList();
+defer if(!headless) gui.deinitWindowList();
+```
+This change ensures that the GUI window list is only initialized and deinitialized when not in headless mode, maintaining the original order's intent.
+
 ## Related Questions
 - What is the purpose of initializing the GUI window list before other components?
 - How does the suggested change affect the error handling during loading?

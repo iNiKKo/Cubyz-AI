@@ -9,7 +9,13 @@
 Handles inventory management and rendering in the GUI.
 
 ## Explanation
-This chunk defines a module for managing player inventories within the GUI. It includes structures for item stacks, client inventories, and various slots for left-click and right-click actions. The `init` function initializes the carried inventory and related slots. The `deinit` function cleans up resources. The `deleteItemSlotReferences` function removes references to deleted item slots. The `update` function handles crafting logic and item interactions based on user input. The `applyChanges` function applies changes made during left-click or right-click actions, distributing items between inventories or handling creative mode deposits. The `render` function updates the position of the carried item slot and renders tooltips for hovered items.
+This chunk defines a module for managing player inventories within the GUI. It includes structures for item stacks (`ItemStack`), client inventories (`ClientInventory`), and various slots for left-click (`leftClickSlots`) and right-click (`rightClickSlots`) actions. The `init` function initializes the carried inventory and related slots, setting up a default item slot with rendering disabled. The `deinit` function cleans up resources by deinitializing the carried inventory and clearing lists of item slots. The `deleteItemSlotReferences` function removes references to deleted item slots from both left-click and right-click lists.
+
+The `update` function handles crafting logic and item interactions based on user input. It checks for specific conditions related to crafting cooldowns (`minCraftingCooldown` and `maxCraftingCooldown`) and updates the crafting state accordingly. The function also manages item transfers between inventories, including handling creative mode deposits and procedural item crafting.
+
+The `applyChanges` function applies changes made during left-click or right-click actions. When left-click is applied, it distributes items between target inventories or swaps items within the same inventory. For right-click, it either clears the right-click slots or handles item transfers based on the type of inventory being interacted with.
+
+The `render` function updates the position of the carried item slot and renders tooltips for hovered items, providing visual feedback to the player.
 
 ## Code Example
 ```zig

@@ -8,7 +8,7 @@
 The discussion revolves around whether mobs should leave corpses instead of dropping items immediately upon death.
 
 ## Explanation
-The maintainers argue against implementing corpses as they would introduce clutter and require additional resources to gather. They suggest that players not dropping their inventories is a deliberate design choice, aiming to prevent excessive item drops. The user proposes leaving corpses as an alternative solution but is countered with the idea of bag filters instead. The maintainers also discuss the importance of player-player interactions and propose mechanisms to discourage spawn kills by increasing respawn distances based on death frequency.
+The discussion revolves around whether mobs should leave corpses instead of dropping items immediately upon death. The maintainers argue against implementing corpses as they would introduce clutter and require additional resources to gather, with the cost of implementing corpses as a normal entity being more costly than expected. They suggest that players not dropping their inventories is a deliberate design choice, aiming to prevent excessive item drops. The user proposes leaving corpses as an alternative solution but is countered with the idea of bag filters instead. The maintainers also discuss the importance of player-player interactions and propose mechanisms to discourage spawn kills by increasing respawn distances based on death frequency.
 
 ## Related Questions
 - What are the potential benefits and drawbacks of implementing corpse entities in Cubyz?

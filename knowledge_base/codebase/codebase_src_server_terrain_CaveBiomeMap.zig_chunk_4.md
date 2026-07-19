@@ -9,7 +9,7 @@
 Manages caching and generation of cave biome map fragments.
 
 ## Explanation
-This chunk handles the caching and generation of cave biome map fragments. It initializes a cache with a specified size and associativity, using a memory pool for fragment management. The `init` function sets up the terrain generation profile, while `deinit` clears the cache. The `cacheInit` function creates and initializes a new map fragment by applying various generators to it. The `getOrGenerateFragment` function retrieves an existing fragment from the cache or generates a new one if it doesn't exist.
+This chunk handles the caching and generation of cave biome map fragments. The cache is initialized with a size of 256 (1 << 8) and an associativity of 8, resulting in a total cache size of 128 MiB. A memory pool is used for fragment management. The `init` function sets up the terrain generation profile, while `deinit` clears the cache. The `cacheInit` function creates and initializes a new map fragment by applying all cave biome generators specified in the profile to it. The `getOrGenerateFragment` function retrieves an existing fragment from the cache or generates a new one if it doesn't exist, using the world coordinates rounded down to the nearest multiple of the cave biome map mask.
 
 ## Code Example
 ```zig

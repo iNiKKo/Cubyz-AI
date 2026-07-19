@@ -9,7 +9,7 @@
 Added a function to rotate neighbors counterclockwise around the x-axis.
 
 ## Explanation
-The change introduces a new inline function `rotateX` in the `Neighbor` enum within the `chunk.zig` file. This function is designed to return the neighbor that is rotated by 90 degrees counterclockwise around the x-axis. The reviewer suggests an alternative architectural approach to optimize storage space by using one type array and multiple data arrays for required rotations, which could improve iteration order but may lead to poor cache locality in certain cases.
+The change introduces a new inline function `rotateX` in the `Neighbor` enum within the `chunk.zig` file. This function is designed to return the neighbor that is rotated by 90 degrees counterclockwise around the x-axis. The reviewer suggests an alternative architectural approach to optimize storage space by using one type array and multiple data arrays for required rotations, which could improve iteration order but may lead to poor cache locality in certain cases. This approach has a caveat of potentially very poor cache locality in specific scenarios, raising concerns about its performance impact.
 
 ## Related Questions
 - What is the impact of rotating neighbors on performance?

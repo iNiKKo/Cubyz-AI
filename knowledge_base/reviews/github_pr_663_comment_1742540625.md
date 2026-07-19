@@ -9,7 +9,21 @@
 Refactored player position rendering code to avoid direct access of atomic values, addressing thread safety concerns.
 
 ## Explanation
-The change involves modifying the `render` function in `debug.zig` to prevent direct access to raw atomic values. This is crucial for maintaining thread safety and ensuring that the thread sanitizer does not flag false positives related to data races. By using `.load()` with `.unordered`, the code adheres to proper atomic operations, even though memory ordering is not a concern in this context.
+The change involves modifying the `render` function in `debug.zig` to prevent direct access to raw atomic values. Specifically, the code now uses `.load()` with `.unordered` when accessing `player.isFlying.raw`, `player.isGhost.raw`, and `player.hyperSpeed.raw`. This is crucial for maintaining thread safety and ensuring that the thread sanitizer does not flag false positives related to data races. By using `.load()`, the code adheres to proper atomic operations, even though memory ordering is not a concern in this context. The refactored code now correctly accesses these atomic values as follows:
+
+```zig
+const player = main.game.Player;
+draw.print("Pos: {d:.1}", .{player.getPosBlocking()}, 0, y, 8, .left);
+y += 8;
+draw.print("IsFlying: {} IsGhost: {} HyperSpeed: {}", .{
+    player.isFlying.load(.unordered),
+    player.isGhost.load(.unordered),
+    player.hyperSpeed.load(.unordered)
+}, 0, y, 8, .left);
+y += 8;
+```
+
+This ensures that the atomic values are accessed safely and efficiently, without causing issues with the thread sanitizer.
 
 ## Related Questions
 - What is the purpose of using `.unordered` with atomic operations in this context?

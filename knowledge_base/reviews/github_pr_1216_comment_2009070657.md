@@ -11,6 +11,15 @@ A new `TexturePile` struct is introduced within the `RotationModes` in `rotation
 ## Explanation
 The reviewer suggests adding a generic field to each block to store additional rotation model data, rather than using hashmaps. This approach aims to reduce the overhead of hashmap lookups and anticipates potential future needs for other rotation modes with extra states. The introduction of `TexturePile` struct is part of an architectural decision to optimize performance and maintain flexibility for future enhancements.
 
+The `TexturePile` struct includes the following fields:
+- `id`: A string identifier set to "texturePile".
+- `rotatedModels`: A `std.StringHashMap` that maps model indices to their corresponding rotated models.
+- `blockToStateCountMap`: An `std.AutoHashMapUnmanaged` that maps block IDs to the count of states they can have.
+
+The memory usage per block is expected to increase by 2 bytes due to the addition of the generic field. This change is anticipated to benefit future rotation modes, such as a top-attached torch rotation model. The addition of more generic fields may affect backwards compatibility, but the reviewer believes that the benefits outweigh the potential drawbacks.
+
+The choice of `std.StringHashMap` for `rotatedModels` and `std.AutoHashMapUnmanaged` for `blockToStateCountMap` is based on performance considerations and memory efficiency. These data structures are chosen to minimize overhead and improve lookup times.
+
 ## Related Questions
 - What is the purpose of the `TexturePile` struct in `rotation.zig`?
 - How does the introduction of `TexturePile` impact memory usage per block?

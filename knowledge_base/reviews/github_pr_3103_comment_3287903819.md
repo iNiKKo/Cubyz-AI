@@ -9,7 +9,7 @@
 Added a new struct `TargetArg` to handle command target arguments, including parsing logic.
 
 ## Explanation
-The change introduces a new struct `TargetArg` with an `index` field and a `parse` method. The `parse` method checks if the argument length is zero and returns a `TargetArg` instance with `index` set to null. The reviewer suggests that the parser should handle insufficient arguments on its own, implying that this change might introduce redundancy or inconsistency in error handling.
+The change introduces a new struct `TargetArg` with an `index` field and a `parse` method. The `parse` method checks if the argument length is zero and returns a `TargetArg` instance with `index` set to null. The reviewer suggests that the parser should handle insufficient arguments on its own, implying that this change might introduce redundancy or inconsistency in error handling. Additionally, the critical architectural review mentions that 'Parser should already report that it doesn't have enough arguments on its own.' This implies that the current implementation of `TargetArg`'s `parse` method might be redundant if the parser is already capable of reporting insufficient arguments.
 
 ## Related Questions
 - What is the purpose of the `NeverFailingAllocator` in the `parse` method?

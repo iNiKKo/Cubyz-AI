@@ -6,10 +6,10 @@
 **Concepts:** thread safety, backwards compatibility, memory leak, logging system, UTF-8 encoding, ANSI color codes
 
 ## Summary
-Added a new logging module with various log levels and output methods.
+Added a new logging module with various log levels and output methods, including error, warning, info, debug, server, and chat. Each level has a specific color code for terminal output: err (Red), warn (Yellow), info (No color), debug (Light blue on dark blue background), server (Blue), and chat (Cyan). The `logFn` function handles formatted logging, while `runtimeLogFn` manages the actual writing to files and standard error. The module initializes and deinitializes log file handling, supports ANSI color coding for terminal output, and ensures that error messages trigger an error window prompt if not in headless mode. The reviewer notes a potential issue with UTF-8 encoding in the parser, suggesting a change from `catch break` to `catch unreachable` to ensure valid Unicode.
 
 ## Explanation
-The change introduces a comprehensive logging system in Cubyz, including different log levels such as error, warning, info, debug, server, and chat. The `logFn` function handles formatted logging, while `runtimeLogFn` manages the actual writing to files and standard error. The module initializes and deinitializes log file handling, supports ANSI color coding for terminal output, and ensures that error messages trigger an error window prompt if not in headless mode. The reviewer notes a potential issue with UTF-8 encoding in the parser, suggesting a change from `catch break` to `catch unreachable` to ensure valid Unicode.
+The logging module introduces various log levels such as error (`err`), warning (`warn`), info (`info`), debug (`debug`), server (`server`), and chat (`chat`). Each level has a specific color code for terminal output: err (Red), warn (Yellow), info (No color), debug (Light blue on dark blue background), server (Blue), and chat (Cyan). The `logFn` function handles formatted logging, while `runtimeLogFn` manages the actual writing to files and standard error. The module initializes and deinitializes log file handling, supports ANSI color coding for terminal output, and ensures that error messages trigger an error window prompt if not in headless mode. The reviewer notes a potential issue with UTF-8 encoding in the parser, suggesting a change from `catch break` to `catch unreachable` to ensure valid Unicode.
 
 ## Related Questions
 - What are the different log levels defined in the logging module?

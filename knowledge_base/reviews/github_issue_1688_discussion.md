@@ -8,7 +8,7 @@
 The issue describes a bug where holding down the attack button allows players to 'store' their undertime swing.
 
 ## Explanation
-The discussion indicates that this bug is specific to a particular fork of the project, suggesting it may be related to changes or modifications made in that fork. The maintainer's comment implies that the original codebase does not exhibit this behavior, indicating a potential issue with how the fork has been implemented.
+The issue describes a bug where players can 'store' their undertime swing by holding down the attack button. The steps to reproduce this behavior are detailed in the GitHub attachment at https://github.com/user-attachments/assets/c4424fca-a466-4b8a-be5d-da5802d9a727. According to the maintainer's comment, this bug is specific to a particular fork of the project and does not occur in the original codebase.
 
 ## Related Questions
 - What specific changes were made in the fork that introduced this bug?

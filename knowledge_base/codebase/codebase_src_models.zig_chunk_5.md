@@ -11,6 +11,8 @@ Handles model data processing including initialization, deinitialization, face r
 ## Explanation
 This chunk defines the `Model` struct with methods for managing its internal quad information. It includes functions for initializing (`init`) and deinitializing (`deinit`) models, retrieving raw faces (`getRawFaces`), merging multiple models into one (`mergeModels`), transforming a model using a provided function (`transformModel`), and appending quads to lists (`appendQuadsToList`, `appendInternalQuadsToList`, `appendNeighborFacingQuadsToList`). The chunk also contains utility functions for processing vertices, normals, UVs, and texture slots. It manages memory allocation and deallocation using the global allocator.
 
+The `init` function initializes the `Model` struct by setting up its internal quad information based on the provided vertices, normals, uvs, and faces. The `deinit` function frees all allocated memory for the model's quads and collision data. The `getRawFaces` function retrieves raw face data from the model, including both internal and neighbor-facing quads. The `mergeModels` function combines multiple models into a single model by appending their quad information to a list. The `transformModel` function applies a transformation function to each quad in the model. The `appendQuadsToList`, `appendInternalQuadsToList`, and `appendNeighborFacingQuadsToList` functions append quads to a list, with specific handling for internal and neighbor-facing quads.
+
 ## Code Example
 ```zig
 fn deinit(self: *const Model) void {

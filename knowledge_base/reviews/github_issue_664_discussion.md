@@ -9,7 +9,7 @@
 Discussion about loading animations from a sprite sheet and consolidating texture information into the block JSON.
 
 ## Explanation
-The issue discusses the inconvenience of managing multiple files for animated textures, such as water, where each frame requires separate PNGs along with associated metadata like absorption, reflectivity, and textureInfo. The proposal is to load animations from a single sprite sheet file, which would simplify the process. Additionally, there's a suggestion to include texture information directly in the block JSON to allow for easier configuration and future extensions.
+The issue discusses the inconvenience of managing multiple files for animated textures, such as water. Each frame requires separate PNGs along with associated metadata like absorption, reflectivity, and textureInfo, resulting in a total of 120 files (30 frames * 4 types of info) for one block. The proposal is to load animations from a single sprite sheet file, which would simplify the process. Additionally, there's a suggestion to include texture information directly in the block JSON to allow for easier configuration and future extensions. The maintainer plans to extend the textureInfo to also contain info on the number of animation frames and animation time, making those parameters easier to configure.
 
 ## Related Questions
 - How can the current system be modified to support loading animations from a sprite sheet?

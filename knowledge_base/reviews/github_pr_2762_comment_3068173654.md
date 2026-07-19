@@ -11,6 +11,8 @@ The code was updated to read entity models in GLB format instead of OBJ and corr
 ## Explanation
 The change involved modifying the `EntityModel` struct to load model data from a GLB file instead of an OBJ file. The reviewer emphasized the importance of using the stack allocator for local allocations, which was previously not adhered to. This update ensures better memory management and aligns with architectural guidelines.
 
+Specifically, the code now reads entity models in GLB format using `main.assets.readAsset(main.globalAllocator, "entityModels/models", self.modelId.?, ".glb");`. The reviewer suggested changing this to use `main.stackAllocator` instead for better memory management practices.
+
 ## Related Questions
 - What is the purpose of changing the file format from OBJ to GLB?
 - Why was the stack allocator emphasized in this review?

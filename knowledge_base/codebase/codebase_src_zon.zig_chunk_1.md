@@ -11,6 +11,20 @@ Defines the ZonElement union and its associated methods for handling different d
 ## Explanation
 The ZonElement union in this chunk represents various data types such as integers, floats, strings, booleans, nulls, arrays, and objects. It includes methods for initializing objects and arrays, accessing elements by index or key, cloning the entire structure, joining two ZonElements with a specified priority, and converting the element to a specific type if possible. The chunk also defines an enumeration JoinPriority to determine how conflicts are resolved during the join operation.
 
+### Methods
+- **initObject**: Initializes a new object within a ZonElement using the provided allocator.
+- **initArray**: Initializes a new array within a ZonElement using the provided allocator.
+- **getAtIndex**: Retrieves an element from an array by index, returning a default value if the index is out of bounds.
+- **getChildAtIndex**: Retrieves a child element from an array by index, returning .null if the index is out of bounds.
+- **get**: Retrieves an element from an object by key, returning null if the key does not exist.
+- **getChild**: Retrieves a child element from an object by key, returning .null if the key does not exist.
+- **getChildOrNull**: Retrieves a child element from an object by key, returning null if the key does not exist.
+- **removeChild**: Removes and returns a child element from an object by key, returning null if the key does not exist.
+- **clone**: Creates a deep copy of a ZonElement, handling different data types appropriately.
+- **joinGetNew**: Joins two ZonElements with a specified priority, creating a new ZonElement as the result.
+- **join**: Joins two ZonElements with a specified priority, modifying the left ZonElement in place.
+- **as**: Attempts to convert a ZonElement to a specific type if possible.
+
 ## Code Example
 ```zig
 pub fn initObject(allocator: NeverFailingAllocator) ZonElement {

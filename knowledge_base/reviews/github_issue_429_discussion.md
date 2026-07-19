@@ -8,7 +8,7 @@
 Discusses issues with GLSL version support on Mac and potential performance impacts.
 
 ## Explanation
-The discussion revolves around a problem where the latest Mac build fails to compile shaders due to unsupported GLSL 4.60 version. The user finds a workaround by setting `MESA_GLSL_VERSION_OVERRIDE`, but this introduces a slight increase in frame time from 150 to 160. The maintainer suggests making accurate measurements by staying at the spawn location and not rotating the camera. The user expresses difficulty with noisy data and proposes adding a global option for running average measurements to the frame-time graph.
+The discussion revolves around a problem where the latest Mac build fails to compile shaders due to unsupported GLSL 4.60 version. The user finds a workaround by setting `MESA_GLSL_VERSION_OVERRIDE`, but this introduces a slight increase in frame time from 150 to 160. The maintainer suggests making accurate measurements by staying at the spawn location and not rotating the camera, which can help reduce noise in data collection. The user expresses difficulty with noisy data and proposes adding a global option for running average measurements to the frame-time graph.
 
 ## Related Questions
 - What is the impact of using `MESA_GLSL_VERSION_OVERRIDE` on frame time?

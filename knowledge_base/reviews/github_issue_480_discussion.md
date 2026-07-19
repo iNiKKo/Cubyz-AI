@@ -9,7 +9,7 @@
 The maintainer plans to remove certain code and assets after the Version 0.0.0 release, aiming for full backwards compatibility with previous development versions.
 
 ## Explanation
-The maintainer intends to eliminate specific functionalities and files that are no longer needed post-release. These include code for generating bioem/height maps from saves without stored data, JSON to Zig.Zon conversion utilities, the json.zig file, and assets/backgrounds migration. The primary goal is to ensure that the upcoming first release (Version 0.0.0) can load world saves from any development version up until the previous release, maintaining full backwards compatibility.
+The maintainer plans to remove specific functionalities and files that are no longer needed post-release, aiming for full backwards compatibility with previous development versions. These include code for generating bioem/height maps from saves without stored data, JSON to Zig.Zon conversion utilities, the json.zig file, and assets/backgrounds migration. The primary goal is to ensure that the upcoming first release (Version 0.0.0) can load world saves from any development version up until the previous release, maintaining full backwards compatibility. Until then, these changes cannot be made as they would break compatibility with earlier versions.
 
 ## Related Questions
 - What specific code is planned for removal after Version 0.0.0?

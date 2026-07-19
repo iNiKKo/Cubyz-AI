@@ -9,7 +9,7 @@
 Reordered initialization calls for `entity_manager` and adjusted its position within the server initialization sequence.
 
 ## Explanation
-The change involves reordering the initialization calls within the `init` function of the server module. The primary concern is ensuring that `entity_manager` is initialized before any other components that depend on it, particularly regarding thread context awareness. This adjustment aims to prevent potential issues related to uninitialized dependencies and ensure proper resource management during server startup.
+The change involves reordering the initialization calls within the `init` function of the server module. Specifically, `main.sync.server.init()` was moved from the end to the beginning of the sequence, and `entity_manager.init()` was placed immediately after it. The primary concern is ensuring that `entity_manager` is initialized before any other components that depend on it, particularly regarding thread context awareness. This adjustment aims to prevent potential issues related to uninitialized dependencies and ensure proper resource management during server startup. The new order of initialization calls is as follows: `main.sync.server.init()`, `entity_manager.init()`, `main.entity.server.init()`, and `main.items.Inventory.server.init()`. This ensures that all components are initialized in the correct sequence, maintaining thread safety and preventing potential regressions.
 
 ## Related Questions
 - What is the purpose of initializing `entity_manager` first in the server startup sequence?

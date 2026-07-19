@@ -9,7 +9,13 @@
 The issue discusses improving the readability and consistency of the `particles.zig` file by renaming and restructuring types, methods, and functions.
 
 ## Explanation
-The review focuses on enhancing the clarity and maintainability of the `ParticleIndex` and related structures in `particles.zig`. The reviewer suggests renaming `ParticleIndex` to `ParticleTypeIndex` and changing it into a `packed struct` with an `id()` method. Additionally, a new `ParticleIndex` packed struct is proposed to replace plain `u32`, along with a `type()` method returning `ParticleTypeIndex` and a `fromId` function for `ParticleTypeIndex`. The reviewer questions the relevance of using packed structs compared to exhaustive enums used in `items.zig` and seeks clarification on the purpose of the `id()` method.
+The issue discusses improving the readability and consistency of the `particles.zig` file by renaming and restructuring types, methods, and functions. Specifically, the following changes are proposed:
+
+- Rename `ParticleIndex` to `ParticleTypeIndex`
+- Change `ParticleTypeIndex` into a `packed struct` offering an `id()` method that returns the ID of the particle type.
+- Add a new `packed struct` called `ParticleIndex` to replace plain `u32`, with a `type()` method returning `ParticleTypeIndex` and a `fromId` function for converting IDs to `ParticleTypeIndex` instances.
+
+The reviewer questions the relevance of using packed structs compared to exhaustive enums used in `items.zig` and seeks clarification on the purpose of the `id()` method. The discussion highlights that some functionality is currently implemented as functions on `ParticleManager`, which is considered a messy design choice.
 
 ## Related Questions
 - What is the purpose of renaming `ParticleIndex` to `ParticleTypeIndex`?

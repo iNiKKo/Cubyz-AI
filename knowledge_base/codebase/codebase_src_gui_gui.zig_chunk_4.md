@@ -9,7 +9,8 @@
 Handles GUI updates, rendering, and game menu toggling.
 
 ## Explanation
-The chunk contains two main functions: `updateAndRenderGui` and `toggleGameMenu`. The `updateAndRenderGui` function manages the updating and rendering of the graphical user interface (GUI). It retrieves the mouse position, executes GUI commands, updates selected windows, checks for hovered items, updates inventory, and renders open windows and the gamepad cursor. The `toggleGameMenu` function toggles the game menu by grabbing or releasing the mouse, handling inventory interactions, closing windows if the mouse is grabbed, and resetting various states.
+**Explanation**
+The chunk contains two main functions: `updateAndRenderGui` and `toggleGameMenu`. The `updateAndRenderGui` function manages the updating and rendering of the graphical user interface (GUI). It retrieves the mouse position, executes GUI commands, updates selected windows, checks for hovered items, updates inventory, and renders open windows and the gamepad cursor. Specifically, it calculates the mouse position relative to the window scale, updates the selected window if applicable, checks if any window is hovered over, and handles rendering in reverse order of opening. The `toggleGameMenu` function toggles the game menu by grabbing or releasing the mouse, handling inventory interactions, closing windows if the mouse is grabbed, and resetting various states.
 
 ## Code Example
 ```zig

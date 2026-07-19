@@ -9,7 +9,7 @@
 The review suggests changing the return type of the `loadModel` function from `*anyopaque` to `?*anyopaque` in the `SimpleStructureModel` struct, with a critical architectural concern about consistency and safety.
 
 ## Explanation
-The reviewer points out that while the current implementation may support using `?*anyopaque`, it is not part of the contract. The review emphasizes the importance of changing the return type in all structure implementations to ensure consistency and safety. Although the compiler might currently ignore this change, the reviewer believes it is necessary for robustness.
+The reviewer points out that while the current implementation may support using `?*anyopaque`, it is not part of the contract. The review emphasizes the importance of changing the return type in all structure implementations to ensure consistency and safety. Although the compiler might currently ignore this change, the reviewer believes it is necessary for robustness. Additionally, the reviewer thinks it is unsafe to use `?*anyopaque` without changing the return type in all structure implementations.
 
 ## Related Questions
 - What is the impact of changing `*anyopaque` to `?*anyopaque` on existing implementations?

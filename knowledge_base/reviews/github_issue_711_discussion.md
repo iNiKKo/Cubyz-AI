@@ -8,7 +8,7 @@
 Discussion on adding interaction indicators to blocks in Cubyz.
 
 ## Explanation
-The issue proposes adding visual or textual indicators to show which blocks are interactable, such as crafting tables, doors, and chests. The maintainer suggests using icons instead of text for better clarity and player experience. There is no mention of specific implementation details, bug fixes, or performance considerations.
+The issue proposes adding visual or textual indicators to show which blocks are interactable, such as crafting tables (Craft), doors (Open/Close), and chests (Open). The maintainer suggests using icons instead of text for better clarity and player experience. Text can either render in the middle of the selected block or under your crosshair. There is no mention of specific implementation details, bug fixes, or performance considerations.
 
 ## Related Questions
 - What are the potential benefits of using icons instead of text for interaction indicators?

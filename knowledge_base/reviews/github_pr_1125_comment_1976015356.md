@@ -11,6 +11,12 @@ Added block migration registration and application functions in `migrations.zig`
 ## Explanation
 The code introduces functions for registering and applying block migrations. It uses an arena allocator for efficient memory management but fails to reset it, leading to potential memory leaks. The reviewer points out that without resetting the arena, memory will be leaked every time a world is left and reentered, which could lead to significant performance degradation over time.
 
+The `registerBlockMigrations` function takes a pointer to a `std.StringHashMap(ZonElement)` and registers block migrations by iterating through its entries. The `register` function handles the actual registration of each migration, checking if the migration is an object with non-zero count before proceeding. If the migration is invalid or an error occurs during registration, it logs an error message.
+
+The `applyBlockPaletteMigrations` function applies block migrations to a palette by iterating through its items and replacing entries based on the `BLOCK_MIGRATIONS` hashmap. If a block name is not found in the hashmap, it continues to the next item.
+
+The `reset` function clears and frees the `BLOCK_MIGRATIONS` hashmap but does not reset the arena allocator, which is a critical issue leading to memory leaks.
+
 ## Related Questions
 - What is the purpose of the `ARENA_ALLOCATOR` in this code?
 - Why is it important to reset the arena allocator in the `reset` function?

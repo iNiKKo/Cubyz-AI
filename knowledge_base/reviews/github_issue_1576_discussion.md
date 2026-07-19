@@ -8,14 +8,12 @@
 Discussion on allowing separate item models for blocks, focusing on visual consistency and feasibility.
 
 ## Explanation
-The discussion revolves around the issue of block items not matching their full block appearance due to texture differences. The user proposes adding an 'inventoryData' property for rotation modes as a solution. The maintainer expresses interest in item models but questions the practicality of automatically lowering resolution to achieve similar results, citing potential loss of detail like spiral patterns on logs. The user acknowledges the complexity of the task and suggests generating some block models automatically while manually creating others.
+Discussion on allowing separate item models for blocks to ensure visual consistency between full blocks and their corresponding items. The issue highlights that logs should use `line` texture on the sides, `top` texture on top and bottom in inventory, while full blocks do not get item textures. A user proposes an 'inventoryData' property for rotation modes as a solution but is met with skepticism about automatic resolution lowering due to potential detail loss like spiral patterns on logs. The maintainer expresses interest in having such item models in the game despite initial doubts. The user acknowledges the complexity of creating these models and suggests generating some automatically while manually crafting others.
 
 ## Related Questions
 - What is the proposed solution for making block items visually consistent with their full blocks?
 - Why does the maintainer question the feasibility of automatically lowering resolution to match item models?
 - How does the user suggest addressing the complexity of creating item models for all blocks?
 - Can automatic generation of some block models be combined with manual creation for others?
-- What are the potential drawbacks of using an 'inventoryData' property for rotation modes?
-- How might the spiral pattern on logs be affected by different resolution settings?
 
 *Source: unknown | chunk_id: github_issue_1576_discussion*

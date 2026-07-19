@@ -9,7 +9,25 @@
 Discussion on allowing addons to disable or block recipes in Cubyz, focusing on unique recipe identifiers and different modes of handling existing recipes.
 
 ## Explanation
-The issue revolves around enabling addons to remove or modify recipes from the base game. The user proposes assigning unique identifiers to recipes to manage them effectively. The maintainer suggests that recipes can already be uniquely identified by their behavior, and proposes using a 'disable' flag to block recipes without needing new modes like 'overwrite' or 'modify'. The discussion highlights potential issues with managing recipe IDs and the complexity of handling different addon interactions.
+Discussion on allowing addons to disable or block recipes in Cubyz, focusing on unique recipe identifiers and different modes of handling existing recipes. The user proposes assigning unique identifiers to recipes to manage them effectively. The maintainer suggests that recipes can already be uniquely identified by their behavior and provides concrete examples for disabling and modifying recipes using specific syntax:
+
+To disable a recipe:
+```zig.zon
+{
+    .disable = true,
+    .inputs = .{"cubyz:marble"},
+    .output = "cubyz:marble_tile",
+}
+```
+
+To modify an existing recipe:
+```zig.zon
+{
+    .inputs = .{"cubyz:marble", "cubyz:chisel"},
+    .output = "cubyz:marble_tile",
+}
+```
+The discussion highlights potential issues with managing recipe IDs and the complexity of handling different addon interactions. The maintainer's approach addresses these concerns by providing clear syntax for disabling and modifying recipes without needing new modes like 'overwrite' or 'modify'.
 
 ## Related Questions
 - How does the current system handle recipe conflicts between addons?
@@ -17,6 +35,5 @@ The issue revolves around enabling addons to remove or modify recipes from the b
 - Can the 'disable' flag be used to prevent other addons from overwriting a recipe?
 - How would the 'modify' mode work in practice, and what are its limitations?
 - What is the impact on backwards compatibility with existing addons when introducing new recipe handling modes?
-- How does the maintainer's approach address the issue of managing recipe IDs effectively?
 
 *Source: unknown | chunk_id: github_issue_2037_discussion*

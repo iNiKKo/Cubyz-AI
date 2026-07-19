@@ -11,6 +11,8 @@ The review suggests replacing the current enum-based tick function design with a
 ## Explanation
 The reviewer criticizes the current implementation of `TickFunction` in `blocks.zig`, which uses an enum to define block-specific tick behaviors. The reviewer argues that this approach is problematic because enums are not runtime-extensible, limiting the ability to add new block types through mods. Additionally, using function pointers introduces runtime dispatch overhead. The reviewer proposes a VTable-based design similar to how other systems in Cubyz handle events, such as tool modifiers, to improve modularity and performance.
 
+The `TickFunction` signature has been updated to include an additional parameter `_param: ?*anyopaque`, which allows for more flexible function calls. A new enum `FunctionName` with values `null` and `replaceWith` has been introduced to manage different tick behaviors.
+
 ## Related Questions
 - What are the potential performance implications of using a VTable instead of enums for tick functions?
 - How does the current enum-based design limit modularity in Cubyz?

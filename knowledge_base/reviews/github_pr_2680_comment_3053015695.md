@@ -9,7 +9,7 @@
 Added a new function `readAsset` to handle asset reading with specific formatting and allocation.
 
 ## Explanation
-The review introduces a new function `readAsset` designed to read assets from a specified folder, subpath, and ID with a given file ending. The reviewer notes that the use of `NeverFailingAllocator` implies that allocations cannot fail, and thus suggests replacing the error handling with `unreachable` to indicate an internal logic error if allocation fails.
+The review introduces a new function `readAsset` designed to read assets from a specified folder, subpath, and ID with a given file ending. The function uses `std.mem.splitScalar(u8, id, ':')` to split the `id` into `mod` and `name`. If the split operation fails (i.e., there is no colon in `id`), the function returns null. The use of `NeverFailingAllocator` implies that allocations cannot fail, and thus suggests replacing the error handling with `unreachable` to indicate an internal logic error if allocation fails. This change ensures that any allocation failure is treated as a critical bug rather than a recoverable error.
 
 ## Related Questions
 - What is the purpose of the `NeverFailingAllocator` in this context?

@@ -8,7 +8,7 @@
 The issue discusses a bug where logging out before restarting the game results in an input seed phrase window instead of an unlock window. The maintainer clarified that this behavior is intentional.
 
 ## Explanation
-The user reported a discrepancy between their expectation and the actual behavior of the logout functionality. After discussing with the maintainer, it was determined that logging out should log the user out of the account rather than lock it, which aligns with the intended design. The maintainer's comment clarified that this is working as expected.
+The issue discusses a bug where logging out before restarting the game results in an input seed phrase window instead of an unlock window. The user expected to be presented with an unlock window upon logging out, but instead, they were prompted for their seed phrase. This discrepancy was clarified by the maintainer, who stated that this behavior is intentional and aligns with the intended design of the logout functionality. Logging out should result in the user being logged out of their account rather than locked into it.
 
 ## Related Questions
 - What is the intended behavior of logging out in the game?

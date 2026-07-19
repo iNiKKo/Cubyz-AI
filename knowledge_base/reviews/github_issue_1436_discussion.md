@@ -9,7 +9,7 @@
 Discussion about renaming the `collide` parameter to `solid` or `hasCollision` in Cubyz.
 
 ## Explanation
-The discussion revolves around the naming of a parameter related to collision detection in Cubyz. The maintainers initially suggest renaming from `collide` to `solid`, but they are concerned that 'solid' could be ambiguous as it can refer to the state of matter, not just the ability to collide. Another maintainer points out that `collide` is a verb while other properties are adjectives, suggesting inconsistency. A user proposes `hasCollision` as an alternative, which aligns with using adjectives for all properties.
+Discussion about renaming the `collide` parameter to `solid` or `hasCollision` in Cubyz. The maintainers initially suggest renaming from `collide` to `solid`, but they are concerned that 'solid' could be ambiguous as it can refer to the state of matter, not just the ability to collide (e.g., mushrooms are solid as a matter state but do not collide). Another maintainer points out that `collide` is a verb while other properties are adjectives, suggesting inconsistency. A user proposes `hasCollision` as an alternative, which aligns with using adjectives for all properties.
 
 ## Related Questions
 - What are the potential implications of renaming `collide` to `solid` in Cubyz?

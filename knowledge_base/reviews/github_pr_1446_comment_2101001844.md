@@ -11,6 +11,8 @@ The code introduces a new sign editor window in Cubyz with components for text i
 ## Explanation
 This change adds a GUI window for editing signs, including a text input component. The reviewer suggests improving error handling by displaying a label under the textbox when text limits are exceeded. They also recommend caching the result of character counting to avoid redundant calculations, which could improve performance. The review highlights architectural considerations such as reducing deep namespace function calls and enhancing code readability.
 
+The sign editor handles text input validation by checking if the text length exceeds 500 characters or if the visible character count exceeds 100. If either condition is met, an error message is logged. The `deinit` function frees the memory allocated for the old text. Character counting is cached in the `apply` function to avoid redundant calculations of `main.graphics.TextBuffer.Parser.countVisibleCharacters(textComponent.currentString.items)`. The sign editor manages memory allocation and deallocation by using `main.globalAllocator.dupe(u8, _oldText)` to duplicate the old text and `main.globalAllocator.free(oldText)` to free it. The character limit is enforced in the text input component by checking the length of the current string items and the visible character count against the limits of 500 and 100 respectively.
+
 ## Related Questions
 - How does the sign editor handle text input validation?
 - What is the purpose of the `deinit` function in the sign editor?

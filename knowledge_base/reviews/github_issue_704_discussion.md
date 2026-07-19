@@ -8,14 +8,12 @@
 Discussion about preventing game crashes when players with empty names join, leading to suggestions and counterarguments regarding the feasibility of enforcing non-empty player names.
 
 ## Explanation
-The issue revolves around fixing a crash that occurs when a player joins the game with an empty name. The maintainer initially suggests making blank player names impossible but acknowledges the complexity due to various Unicode characters that can appear as blanks. There is a suggestion to require at least one valid character (numbers or letters) in player names, which raises concerns about usability and potential advantages of having a blank name in multiplayer scenarios.
+Discussion about preventing game crashes when players with empty names join. The maintainer acknowledges that making blank player names impossible is complex due to various Unicode characters like zero width spaces (​). Suggestions include requiring at least one valid character (numbers or letters) in player names, but this raises concerns about usability and potential advantages of having a blank name for hiding oneself in multiplayer scenarios. Additionally, the maintainer mentions that a faction system similar to Terraria could address visibility issues by allowing players to see only their allies from a distance.
 
 ## Related Questions
 - How can the game be modified to prevent crashes when players with empty names join?
-- What are the potential challenges in making blank player names impossible?
-- Why is it suggested to require at least one valid character in player names?
+- What are the potential challenges in making blank player names impossible due to Unicode characters like zero width spaces (​)?
+- Why is it suggested to require at least one valid character (numbers or letters) in player names?
 - How could a faction system like in Terraria address visibility issues in multiplayer?
-- What are the implications of allowing blank names for gameplay strategies?
-- How can the game handle various Unicode characters that appear as blanks?
 
 *Source: unknown | chunk_id: github_issue_704_discussion*

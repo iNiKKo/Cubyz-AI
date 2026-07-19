@@ -8,14 +8,9 @@
 Discussion about adding manual disconnection/connecting features for fences and log blocks in the game.
 
 ## Explanation
-The discussion revolves around enhancing the game's building mechanics by allowing players to manually disconnect or connect fence and log block sides. The maintainer suggests that while this feature is desirable, it should be implemented as a separate issue from other potential enhancements.
+Discussion about adding manual disconnection/connecting features for fences and log block sides in the game. The maintainer suggests implementing these as separate issues: one for manually disconnecting/connecting fence sides, and another for toggling log block sides.
 
 ## Related Questions
-- What is the current status of the manual disconnection/connecting feature for fences?
-- Is there a specific timeline for implementing this feature in the game?
-- How will the implementation of this feature impact existing building mechanics?
-- Are there any potential performance concerns with adding this new feature?
-- What are the expected benefits of allowing players to manually toggle sides of log blocks?
-- How will this feature be tested to ensure it works correctly across different scenarios?
+- Is manually toggling log block sides a different issue from connecting/disconnecting fence sides?
 
 *Source: unknown | chunk_id: github_issue_1685_discussion*

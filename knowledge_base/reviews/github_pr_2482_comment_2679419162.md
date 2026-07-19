@@ -9,7 +9,7 @@
 Added LOD (Level of Detail) enumeration with methods for min, max, next, previous, toInt, and voxelSize in chunk.zig.
 
 ## Explanation
-The change introduces a new enum `Lod` representing different levels of detail from LOD0 to LOD5. It includes inline functions for retrieving the minimum and maximum LOD values, navigating between adjacent LODs, converting to an integer representation, and calculating the voxel size based on the LOD level. The reviewer suggests avoiding the use of a lookup table for `voxelSize` unless proven faster by benchmarking, as it may complicate compiler optimization.
+The change introduces a new enum `Lod` representing different levels of detail from LOD0 to LOD5. It includes inline functions for retrieving the minimum and maximum LOD values (`min`, `max`), navigating between adjacent LODs (`next`, `previous`), converting to an integer representation (`toInt`), and calculating the voxel size based on the LOD level (`voxelSize`). The reviewer suggests avoiding the use of a lookup table for `voxelSize` unless proven faster by benchmarking, as it may complicate compiler optimization. The `voxelSize` function calculates the size based on the LOD level using bitwise shifting (`1 << i`), where `i` is the index of the LOD level.
 
 ## Related Questions
 - What is the purpose of the `Lod` enum in chunk.zig?

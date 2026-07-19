@@ -111,7 +111,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.39"
+VERSION = "1.1.40"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -2298,10 +2298,28 @@ def run_live_gpu_diagnostic():
                 gfx_versions = sorted(set(re.findall(r'gfx[0-9a-fA-F]+', res.stdout)))
                 if gfx_versions:
                     print(f"  {Colors.CYAN}Detected GPU architecture(s) via rocminfo: {', '.join(gfx_versions)}{Colors.RESET}")
-                    print(f"  {Colors.YELLOW}→ If Ollama isn't using this GPU, check whether this architecture is in Ollama's/ROCm's supported")
-                    print(f"    list. If not, setting the environment variable HSA_OVERRIDE_GFX_VERSION to the closest supported")
-                    print(f"    architecture (then restarting Ollama) is the standard fix -- but pick that value from ROCm's own")
-                    print(f"    documentation for your card, not a guess; a wrong override can crash Ollama instead of fixing it.{Colors.RESET}")
+                    # gfx8xx (GCN 4/5 -- Polaris/Fiji-class cards, e.g. RX 460-590) was officially
+                    # dropped from ROCm entirely starting ROCm 4.5 (~2020-2021) -- confirmed live,
+                    # this is NOT the same situation as an unlisted-but-similar modern architecture.
+                    # HSA_OVERRIDE_GFX_VERSION only helps when compiled kernels for a CLOSE
+                    # architecture already exist and the card just isn't on the auto-detect list --
+                    # for a genuinely dropped generation, those kernels aren't in the binary at all,
+                    # so no override value fixes it. Suggesting the override here anyway would send
+                    # someone down a real dead end instead of the honest answer.
+                    if any(v.startswith('gfx8') for v in gfx_versions):
+                        print(f"  {Colors.RED}✗ gfx8xx (Polaris/Fiji-generation, e.g. RX 460-590 series) was officially dropped from ROCm")
+                        print(f"    entirely starting ROCm 4.5 (~2020-2021) -- modern ROCm builds (yours included) don't ship compiled")
+                        print(f"    compute kernels for this generation at all. This is a real hardware-generation support boundary, not")
+                        print(f"    a config issue -- HSA_OVERRIDE_GFX_VERSION won't fix it, since there's no close-enough compiled kernel")
+                        print(f"    to fall back to. A community-maintained from-source ROCm rebuild for gfx803 exists")
+                        print(f"    (github.com/robertrosenbusch/gfx803_rocm) if you want to pursue it, but it's a multi-hour build with")
+                        print(f"    real fragility (pins to specific kernel versions). For a weak/older card, CPU-only is often the more")
+                        print(f"    practical outcome.{Colors.RESET}")
+                    else:
+                        print(f"  {Colors.YELLOW}→ If Ollama isn't using this GPU, check whether this architecture is in Ollama's/ROCm's supported")
+                        print(f"    list. If not, setting the environment variable HSA_OVERRIDE_GFX_VERSION to the closest supported")
+                        print(f"    architecture (then restarting Ollama) is the standard fix -- but pick that value from ROCm's own")
+                        print(f"    documentation for your card, not a guess; a wrong override can crash Ollama instead of fixing it.{Colors.RESET}")
             except Exception as e:
                 print(f"  {Colors.YELLOW}⚠ Could not run rocminfo: {e}{Colors.RESET}")
         else:

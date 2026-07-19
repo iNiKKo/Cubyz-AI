@@ -8,7 +8,7 @@
 Discussion about adding a feature to move the crosshair to the cursor when holding Alt, inspired by Vintage Story.
 
 ## Explanation
-The discussion revolves around implementing a feature that allows players to move the crosshair to the cursor's position when the Alt key is held down. The primary use cases mentioned are for precise block placement, especially useful with tools like chisels. There is debate about the necessity of this feature compared to simply moving the head, and suggestions for alternative behaviors such as independent head movement while running or using a freemouse mode.
+Discussion about adding a feature to move the crosshair to the cursor when holding Alt, inspired by Vintage Story. The primary use case is for precise block placement, especially useful with tools like chisels. Users argue that moving the head alone does not provide enough precision compared to using the Alt key to align the crosshair with the cursor. Maintainers suggest an alternative behavior where pressing Alt allows independent head movement while running, which could enhance player mobility in large worlds. Additionally, users propose implementing a freemouse mode under a different keybind for even greater control during building and traversal. The precision values mentioned are 1/2 in each axis for Cubyz compared to 1/16 in each axis for Vintage Story.
 
 ## Related Questions
 - What are the primary use cases for moving the crosshair to the cursor?

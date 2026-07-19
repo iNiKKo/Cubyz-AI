@@ -9,7 +9,7 @@
 Discussion on subbiome music inheritance, considering multiple parent biomes and potential arbitrary choices.
 
 ## Explanation
-The issue revolves around ensuring that subbiomes inherit music from their parent biomes correctly. The complexity arises because a subbiome can have multiple parents, and determining which parent's music to use becomes non-trivial. There is a risk of playing incorrect music if the assumption that all parent biomes share the same music is not true. Additionally, future plans indicate that per-biome music will no longer be supported.
+The issue revolves around ensuring that subbiomes inherit music from their parent biomes correctly. The complexity arises because a subbiome can have multiple parents, and determining which parent's music to use becomes non-trivial. There is a risk of playing incorrect music if the assumption that all parent biomes share the same music is not true. Additionally, future plans indicate that per-biome music will no longer be supported (see issue #732).
 
 ## Related Questions
 - How does the current system determine which parent biome's music a subbiome should inherit?

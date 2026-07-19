@@ -9,7 +9,7 @@
 The issue discusses a bug where opening a crafting table does not guarantee that the inventory window is open, making it useless until the player manually opens their inventory. The discussion includes suggestions to fix this by ensuring the inventory is always part of the HUD and using flags in the Window struct.
 
 ## Explanation
-The problem stems from the crafting table UI appearing without the inventory window, rendering it unusable until the player manually opens their inventory. The maintainer suggests that the inventory should always be open in the menu, specifically as part of the HUD. A flag in the Window struct is mentioned as a potential solution to ensure this behavior. The discussion also touches on similar issues with chests and proposes solutions involving changes to block entities and GUI handling.
+The issue discusses a bug where opening a crafting table does not guarantee that the inventory window is open, making it useless until the player manually opens their inventory. The discussion includes suggestions to fix this by ensuring the inventory is always part of the HUD and using flags in the Window struct. The chest block does not take a .gui; instead, it has a struct within block_entity.zig that explicitly opens its gui. The maintainer suggests that the inventory should always be open in the menu, specifically as part of the HUD. A flag in the Window struct is mentioned as a potential solution to ensure this behavior. The discussion also touches on similar issues with chests and proposes solutions involving changes to block entities and GUI handling.
 
 ## Related Questions
 - What is the current behavior of opening a crafting table in Cubyz?

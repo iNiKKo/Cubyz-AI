@@ -9,7 +9,7 @@
 Refactored block ticking system to use a dynamic vtable map for event handling.
 
 ## Explanation
-The change introduces a new `TickEventVTableMap` struct that manages a string-to-vtable mapping for block events. This refactoring aims to improve the modularity and performance of the ticking system by allowing automatic construction of the vtable, reducing manual registration overhead. The reviewer suggests further optimization by automatically constructing the vtable during initialization rather than on every tick event.
+The change introduces a new `TickEventVTableMap` struct that manages a string-to-vtable mapping for block events. This refactoring aims to improve the modularity and performance of the ticking system by allowing automatic construction of the vtable, reducing manual registration overhead. The `init` function initializes the `vTableMap` with entries from the `TickEvents` struct, and the `deinit` function deinitializes it. The `registerEventStruct` function registers each event structure's fields into the `vTableMap`. The reviewer suggests further optimization by automatically constructing the vtable during initialization rather than on every tick event.
 
 ## Related Questions
 - How does the new `TickEventVTableMap` struct improve modularity in the block ticking system?

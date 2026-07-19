@@ -9,7 +9,7 @@
 Defines a partial sphere SDF model for terrain generation.
 
 ## Explanation
-This chunk defines a partial sphere Signed Distance Function (SDF) model used in terrain generation. It includes initialization from configuration data, instantiation with random parameters, and the actual SDF calculation function. The `initAndGetExtend` function initializes the model from ZonElement configuration, setting default values if necessary. The `instantiate` function creates an instance of the partial sphere with randomized radius and cut direction based on the model's parameters. The `generate` function calculates the SDF value for a given sample position, representing the distance to the surface of the partial sphere.
+This chunk defines a partial sphere Signed Distance Function (SDF) model used in terrain generation. It includes initialization from configuration data, instantiation with randomized parameters, and the actual SDF calculation function. The `initAndGetExtend` function initializes the model by setting default values if not provided in the ZonElement configuration. The `instantiate` function creates an instance of the partial sphere with a radius that is a random value between the minimum and maximum set in the configuration, and it randomizes the cut direction based on the specified randomness factor. After randomization, the cut direction is normalized using `vec.normalize`. The `generate` function calculates the SDF value for a given sample position, representing the distance to the surface of the partial sphere.
 
 ## Code Example
 ```zig
@@ -22,7 +22,7 @@ pub fn generate(self: *Instance, samplePos: Vec3f) f32 {
 
 ## Related Questions
 - What is the purpose of the `initAndGetExtend` function?
-- How does the `instantiate` function randomize the instance parameters?
+- How does the `instantiate` function randomize and normalize the instance parameters?
 - What does the `generate` function calculate for a given sample position?
 - What are the default values set in the `initAndGetExtend` function if not provided in the configuration?
 - How is the cut direction randomized during instantiation?

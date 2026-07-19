@@ -8,14 +8,12 @@
 The issue outlines a comprehensive list of UI changes for Cubyz, categorized into major and minor updates. The maintainer suggests organizing the list and tackling items in order, while also recommending the completion of another issue before proceeding.
 
 ## Explanation
-This issue document serves as a roadmap for UI enhancements in Cubyz, detailing both significant and minor modifications. The maintainer's comments emphasize the importance of prioritizing certain changes, particularly those that might impact survival mode. There is a suggestion to pin the issue for better tracking, indicating its critical role in the project's development.
+This issue document outlines a comprehensive list of UI changes for Cubyz, categorized into major and minor updates. The major changes include issues #1004, the addition of a 'Reset to Default' button, global GUI scaling option (for better pixel consistency), and other specific issues like #990, #759, #758, and #201. Minor changes are listed as contributor-friendly items such as issues #1594, #1578, #1576, #1569, #1555, #1554, #1549, #1510, #1488, #1439, #1421, #1410, #1394, #1392, #1391 (completed), #1307, #1282, #566, #1628 (completed), #1619 (completed), #1574 (completed), #1570 (completed), #1393 (completed), #1296 (completed), #1051 (completed), #1000 (completed), #892 (completed), #428 (completed), #401 (completed), #372 (completed), #247 (completed), #246 (completed), and #229 (completed). The maintainer suggests organizing the list in order of priority, with a recommendation to complete issue #670 before proceeding. There is also a suggestion to pin this issue for better tracking.
 
 ## Related Questions
-- What is the recommended order for tackling the UI changes?
-- Why is it suggested to finish issue #670 before proceeding with these UI updates?
-- How should the maintainer organize the list of UI changes?
-- Is there a specific reason why some items are marked as 'Contributor Friendly!'?
-- What impact might non-technical dependencies have on contributors' motivation?
-- Why is it important to prioritize certain UI changes over others?
+- What are the specific major UI changes listed?
+- Which minor UI changes are marked as 'Contributor Friendly!' and what are their statuses?
+- Why is it important to complete issue #670 before tackling these UI updates?
+- How should the maintainer organize the list of UI changes in order of priority?
 
 *Source: unknown | chunk_id: github_issue_1050_discussion*

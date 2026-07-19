@@ -9,7 +9,15 @@
 Handles inventory operations and durability management in the game.
 
 ## Explanation
-This chunk contains functions for executing various base operations on inventories, managing item durability, and removing crafting ingredients from a workbench. It includes methods for moving items, swapping stacks, deleting items, creating new items, transferring items between bags, using item durability, adding health or energy to players, and handling player death. The `Context` struct provides an interface for executing these operations with necessary context such as allocator, command instance, side (client/server), user, and gamemode.
+This chunk contains functions for executing various base operations on inventories, managing item durability, and removing crafting ingredients from a workbench. It includes methods for moving items, swapping stacks, deleting items, creating new items, transferring items between bags, using item durability, adding health or energy to players, and handling player death.
+
+The `executeBaseOperation` function handles different types of base operations such as move, swap, delete, create, moveToBag, takeFromBag, useDurability, addHealth, and addEnergy. Each operation has specific logic for modifying the inventory or player attributes.
+
+Crafting ingredients are removed from a workbench by iterating through the items in the inventory and deleting them using the `executeBaseOperation` function with the delete operation.
+
+When an item's durability reaches zero, it is removed from the inventory. The `executeDurabilityUseOperation` function decreases the durability of an item and removes it if its durability becomes zero.
+
+Player health and energy are managed by adding or subtracting values to the player's current health or energy. If a player's health drops to zero or below, they are killed, and their spawn point is reset.
 
 ## Code Example
 ```zig

@@ -9,7 +9,7 @@
 The `SbbGen` struct now includes a `rotation` field to handle the orientation of structures. The `loadModel` function has been updated to parse this new field and handle potential errors gracefully.
 
 ## Explanation
-This change introduces a new `rotation` field in the `SbbGen` struct, which is crucial for accurately placing structures in the game world with the correct orientation. The `loadModel` function has been modified to extract this rotation information from the parameters. If the rotation parameter is missing or of an unsupported type, appropriate error messages are logged and handled using `panicWithMessage`. This ensures that the system remains robust and provides clear feedback when configuration errors occur.
+This change introduces a new `rotation` field in the `SbbGen` struct, which is crucial for accurately placing structures in the game world with the correct orientation. The `loadModel` function has been modified to extract this rotation information from the parameters using `sbb.Rotation.fromZon(rotationParam)`. If the rotation parameter is missing or of an unsupported type, appropriate error messages are logged and handled using `panicWithMessage`. Specifically, if the rotation string is unknown, the error message 'Error loading generator 'cubyz:sbb' structure '{s}' specified unknown rotation '{s}'` is logged. If the rotation field has an unsupported type, the error message 'Error loading generator 'cubyz:sbb' structure '{s}': Unsupported type of rotation field '{s}'` is logged. This ensures that the system remains robust and provides clear feedback when configuration errors occur.
 
 ## Related Questions
 - What is the purpose of the `rotation` field in the `SbbGen` struct?

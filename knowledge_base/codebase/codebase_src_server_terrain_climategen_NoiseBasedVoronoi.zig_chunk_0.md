@@ -9,7 +9,7 @@
 Generates climate maps using a noise-based Voronoi algorithm.
 
 ## Explanation
-This chunk defines the logic for generating climate maps using a noise-based Voronoi algorithm. It includes functions to initialize the generator and generate map fragments. The `generateMapFragment` function creates a `GenerationStructure`, processes it, and optionally exports a debug image. The `BiomePoint` struct is used to represent points in the Voronoi diagram, with methods for calculating distances and comparing positions.
+This chunk defines the logic for generating climate maps using a noise-based Voronoi algorithm. It includes functions to initialize the generator and generate map fragments. The `init` function takes parameters but does not use them. The `generateMapFragment` function creates a `GenerationStructure`, processes it, and optionally exports a debug image. The `BiomePoint` struct is used to represent points in the Voronoi diagram, with methods for calculating distances and comparing positions. The `maxBiomeRadius` constant is set to 2048.
 
 ## Code Example
 ```zig

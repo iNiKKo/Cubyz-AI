@@ -9,7 +9,7 @@
 A new Zig file `pattern.zig` is introduced with a struct definition for handling world edit patterns in Cubyz. The reviewer suggests that having a single struct in a file with the same name might not be necessary.
 
 ## Explanation
-The code introduces a new module for handling world edit patterns, utilizing Zig's standard library and custom modules from the project. The `AliasTable` is used to manage entries related to blocks, which are essential for world editing operations. The reviewer points out that while the current implementation places the struct within the file, it might be more appropriate to refactor or organize the code differently if additional functionality or structs are added in the future.
+A new Zig file `pattern.zig` is introduced to handle world edit patterns in Cubyz. It includes a struct definition that utilizes Zig's standard library and custom modules from the project. The `AliasTable` is used to manage entries related to blocks, which are essential for world editing operations. The `blocks` field is an instance of `AliasTable(Entry)`, indicating its role in managing block-related data. The reviewer suggests that having a single struct in a file with the same name might not be necessary if additional functionality or structs are added in the future.
 
 ## Related Questions
 - What is the purpose of the `AliasTable` in this context?

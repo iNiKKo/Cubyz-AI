@@ -9,7 +9,7 @@
 This chunk defines functions for creating and managing voxel models, including box and open box generation, model registration, initialization, reset, deinitialization, and uploading to GPU.
 
 ## Explanation
-The chunk contains several functions related to voxel model management. The `box` function generates six quads representing a closed box with specified minimum and maximum corners and UV offset. The `openBox` function creates a box with one side removed based on the `openSide` parameter. The `registerModel` function loads a model from data, associates it with an ID, and stores it in a map. The `init`, `reset`, and `deinit` functions handle initialization, resetting to default state, and deinitialization of resources respectively. The `uploadModels` function uploads the quad information to a GPU buffer for rendering.
+This chunk defines functions for creating and managing voxel models, including box and open box generation, model registration, initialization, reset, deinitialization, and uploading to GPU. The `box` function generates six quads representing a closed box with specified minimum (`min`) and maximum (`max`) corners and UV offset (`uvOffset`). Each quad has a normal vector, corner positions, UV coordinates, and a texture slot corresponding to the direction of the face (negative X, positive X, negative Y, positive Y, negative Z, positive Z). The `openBox` function creates a box with one side removed based on the `openSide` parameter, which can be `x`, `y`, or `z`. The `registerModel` function loads a model from data, associates it with an ID, and stores it in a map. It also checks for a coordinate system specified in the ZonElement; if not provided, it defaults to right-handed Z-up. The `init` function initializes various resources, including models, quad deduplication, and name-to-index mapping. The `reset` function restores the model system to its default state by deinitializing all models and resetting internal storage structures. The `deinit` function completely deinitializes the model management system, freeing up allocated resources such as GPU buffers and maps. The `uploadModels` function uploads the quad information to a GPU buffer for rendering.
 
 ## Code Example
 ```zig
@@ -64,11 +64,11 @@ fn box(min: Vec3f, max: Vec3f, uvOffset: Vec2f) [6]QuadInfo {
 ```
 
 ## Related Questions
-- How does the `box` function generate quads for a closed box?
-- What is the purpose of the `openBox` function and how does it differ from `box`?
-- How are models registered in the system using the `registerModel` function?
-- What steps are involved in initializing the model management system with `init`?
-- How does the `reset` function restore the model system to its default state?
-- What resources are deinitialized by the `deinit` function and how is it done?
+-  How does the `box` function generate quads for a closed box?
+-  What is the purpose of the `openBox` function and how does it differ from `box`?
+-  How are models registered in the system using the `registerModel` function?
+-  What steps are involved in initializing the model management system with `init`?
+-  How does the `reset` function restore the model system to its default state?
+-  What resources are deinitialized by the `deinit` function and how is it done?
 
 *Source: unknown | chunk_id: codebase_src_models.zig_chunk_7*

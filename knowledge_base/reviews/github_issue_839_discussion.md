@@ -8,7 +8,7 @@
 Discussion about allowing structures to be placed closer together, potentially using hierarchical structure definitions or subbiomes.
 
 ## Explanation
-The issue discusses the need for more flexible placement of structures in close proximity. The maintainer suggests that current biome structures are limited in size and proposes considering subbiomes as a solution. Another suggestion is to use the new structure system introduced in #1227, which supports hierarchical definitions. There's also mention of another potential approach through issue #2002.
+The issue discusses the need for more flexible placement of structures in close proximity to allow the creation of complex structures without the use of sub-biomes. The maintainer suggests that current biome structures are limited in size and proposes considering subbiomes as a solution. Another suggestion is to use the new structure system introduced in #1227, which supports hierarchical definitions. There's also mention of another potential approach through issue #2002.
 
 ## Related Questions
 - What are the limitations of current biome structures in Cubyz?

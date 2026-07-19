@@ -9,18 +9,13 @@
 The discussion revolves around enhancing the game's music system by introducing a more dynamic and context-aware approach using keywords and mood levels.
 
 ## Explanation
-The initial proposal suggests replacing simple playlists with a keyword-based system where each song is associated with specific keywords. This allows for more flexible and nuanced music selection based on various conditions such as time of day, player danger level, or biome type. The maintainer introduces the concept of a 'Moody' sound selector that chooses songs based on mood levels and tags. Additional considerations include allowing addons to define their own music with specific tags, enabling biomes to have base mood levels, and addressing potential oddities in the height-based anxiety scale through biome tags and mood levels.
+The discussion revolves around enhancing the game's music system by introducing a more dynamic and context-aware approach using keywords and mood levels. The initial proposal suggests replacing simple playlists with a keyword-based system where each song is associated with specific keywords, allowing for flexible and nuanced music selection based on various conditions such as time of day (day/night), player danger level, or biome type. Each music track can have a list of keywords like 'day', 'night', 'danger', 'building', etc., which are used to determine the likelihood of playing that song in different contexts. Biomes also get a list of keyword + weight pairs associated with them, and music is selected based on these weights and thresholds specific to each biome. The maintainer introduces the concept of a 'Moody' sound selector that chooses songs based on mood levels and tags. Additional considerations include allowing addons to define their own music with specific tags (e.g., .any tag for base game compatibility), enabling biomes to have base mood levels, and addressing potential oddities in the height-based anxiety scale through biome tags and mood levels. The system also allows for conditions such as player velocity or danger level to influence whether a song plays. For example, songs with the 'day' keyword are disabled at night unless explicitly allowed by biome settings.
 
 ## Related Questions
-- How does the keyword-based system improve music selection flexibility?
-- What are the benefits of using mood levels in the sound selector?
+- How does the chance system work for selecting songs in playlists?
+- What specific keywords can be used to tag music tracks and biomes?
+- Can you explain how base mood levels for biomes influence song selection?
 - How do addons contribute to the music system with their own tags?
-- Can you explain how base mood levels for biomes work and why they are beneficial?
-- How does the height-based anxiety scale relate to biome tags and mood levels?
-- What is the purpose of the 'Moody' sound selector in the proposed design?
-- How can new keywords be added by addons, and what impact does this have on music selection?
-- What conditions can be used for music to play beyond just time of day?
-- How does the system handle looping background music versus non-looping tracks?
-- Can you provide an example of how a song's mood level is determined in the new system?
+- What conditions beyond time of day can affect whether a song plays?
 
 *Source: unknown | chunk_id: github_issue_732_discussion*

@@ -9,7 +9,7 @@
 A crash occurs when using a Hall Effect keyboard on Linux, specifically the Keychron K10 HE.
 
 ## Explanation
-The issue is related to an illegal instruction error in the GLFW library's joystick polling function for Linux. The user suggests running the latest master version compiled with debug_linux.sh to obtain a more detailed stack trace, which could help identify the root cause of the crash.
+A crash occurs when using a Hall Effect keyboard on Linux, specifically the Keychron K10 HE. The error message indicates an illegal instruction at address `0x1613f7c` within the `_glfwPollJoystickLinux` function in GLFW's joystick polling mechanism for Linux. This issue is observed in version 0.1.1 of Cubyz on NixOS using Wayland. Running the latest master version compiled with debug_linux.sh can provide a more detailed stack trace, which could help identify and resolve the root cause of the crash.
 
 ## Related Questions
 - What is the specific illegal instruction causing the crash?

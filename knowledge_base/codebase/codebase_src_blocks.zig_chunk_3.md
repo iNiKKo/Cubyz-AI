@@ -9,7 +9,19 @@
 The `Block` struct defines the properties and behaviors of blocks in the Cubyz voxel engine, including type, data, transparency, collision, health, resistance, and various callbacks for interactions.
 
 ## Explanation
-The `Block` struct is a packed structure containing two fields: `typ` (type) and `data`. It provides methods to convert between block instances and integer representations. The struct includes numerous inline functions that return properties of the block based on its type, such as transparency, collision capabilities, health, resistance, and more. These properties are accessed through static arrays like `_transparent`, `_collide`, `_blockHealth`, etc., which map block types to their respective attributes. Additionally, the struct defines methods for handling interactions, such as `onInteract`, `onBreak`, and `onUpdate`, returning callbacks that define how blocks respond to player actions or environmental changes. The `canBeChangedInto` method checks if a block can be transformed into another type based on certain conditions.
+The `Block` struct defines the properties and behaviors of blocks in the Cubyz voxel engine, including type (`typ`), data (`data`), transparency, collision, health, resistance, and various callbacks for interactions. The struct is a packed structure containing two fields: `typ` (type) and `data`. It provides methods to convert between block instances and integer representations using `toInt` and `fromInt` functions.
+
+The struct includes numerous inline functions that return properties of the block based on its type, such as transparency (`transparent`), collision capabilities (`collide`), health (`blockHealth`), resistance (`blockResistance`), and more. These properties are accessed through static arrays like `_transparent`, `_collide`, `_blockHealth`, etc., which map block types to their respective attributes.
+
+For example, the `transparent` function checks if a block is transparent by accessing the `_transparent` array with the block's type (`self.typ`). Similarly, other functions access different static arrays to retrieve various properties of the block.
+
+Additionally, the struct defines methods for handling interactions, such as `onInteract`, `onBreak`, and `onUpdate`, returning callbacks that define how blocks respond to player actions or environmental changes. The `canBeChangedInto` method checks if a block can be transformed into another type based on certain conditions.
+
+The `Block` struct also includes methods for checking block tags (`hasTag`), light properties (`light`, `absorption`), and other physical attributes like friction, bounciness, density, terminal velocity, and mobility. The `blockEntity` method returns the block entity associated with a block type, if any.
+
+The `mode` method returns the rotation mode of a block, which affects how it can be rotated or transformed. The `rotateZ` function rotates a block around the Z-axis by a specified angle using its mode's rotation logic.
+
+Overall, the `Block` struct provides a comprehensive set of methods and properties for managing blocks in the Cubyz voxel engine, allowing for detailed customization and interaction handling.
 
 ## Code Example
 ```zig

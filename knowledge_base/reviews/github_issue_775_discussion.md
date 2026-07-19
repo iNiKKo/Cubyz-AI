@@ -9,7 +9,7 @@
 The maintainer implemented a new Carpet RotationMode that allows placing carpets on walls, ceilings, and filling gaps in corners.
 
 ## Explanation
-The user requested a feature similar to the Log mode but for carpets, allowing them to cover multiple faces of a block including corners. The maintainer misunderstood initially but clarified that it meant placing carpets on walls and ceilings, akin to moss or vines. The maintainer then implemented this feature without testing with the provided carpet model.
+The user requested a feature similar to the Log mode but for carpets, allowing them to cover multiple faces of a block including corners. The maintainer initially misunderstood the request but then clarified that it meant placing carpets on walls and ceilings, akin to moss or vines. Despite this clarification, the maintainer implemented the feature without testing it with the provided carpet model.
 
 ## Related Questions
 - How does the Carpet RotationMode handle overlapping placements?

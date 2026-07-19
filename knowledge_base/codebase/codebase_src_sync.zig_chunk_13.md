@@ -9,7 +9,7 @@
 The chunk implements block update logic, including inventory changes and item drops.
 
 ## Explanation
-This chunk defines the `UpdateBlock` struct with methods for running block updates, serializing, and deserializing. The `run` method checks if a block can be changed based on game mode and inventory conditions, then updates the server world and informs clients of changes. It also handles item drops when blocks are broken. Serialization and deserialization methods ensure that block update data can be written to and read from binary streams.
+This chunk defines the `UpdateBlock` struct with methods for running block updates, serializing, and deserializing. The `run` method checks if a block can be changed based on game mode and inventory conditions, then updates the server world and informs clients of changes. It also handles item drops when blocks are broken by calculating the number of drops based on the old and new block types and randomly determining whether each drop occurs based on its chance. The `dropLocation` field is used to determine the position where items should be dropped, including a random offset to simulate natural dispersion. Serialization and deserialization methods ensure that block update data can be written to and read from binary streams.
 
 ## Code Example
 ```zig

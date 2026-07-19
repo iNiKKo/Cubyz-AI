@@ -11,6 +11,23 @@ Added a new keyboard action for modifier keys, renaming existing modifiers.
 ## Explanation
 The change introduces a new keyboard action named 'modifier0' associated with the left shift key. This addition is part of a broader architectural review aimed at refining how keyboard actions are handled within the game. The reviewer renamed existing modifier-related actions to `actionModifier` and introduced a new flag on the key struct called `textModifier`, which is intended to be un-rebindable. This refactoring likely aims to improve the modularity and clarity of the input handling system, ensuring that different types of modifiers are distinctly managed.
 
+The specific key bindings for the actions are as follows:
+- 'breakBlock':
+  - Mouse Button: GLFW_MOUSE_BUTTON_LEFT
+  - Gamepad Axis: GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER
+  - Press Action: &game.pressBreak
+  - Release Action: &game.releaseBreak
+  - Notify Requirement: inGame
+- 'acquireSelectedBlock':
+  - Mouse Button: GLFW_MOUSE_BUTTON_MIDDLE
+  - Gamepad Button: GLFW_GAMEPAD_BUTTON_DPAD_LEFT
+  - Press Action: &game.pressAcquireSelectedBlock
+  - Notify Requirement: inGame
+- 'drop':
+  - Key: GLFW_KEY_Q
+  - Repeat Action: &game.Player.dropFromHand
+  - Notify Requirement: inGame
+
 ## Related Questions
 - What is the purpose of renaming existing modifier actions to `actionModifier`?
 - How does the introduction of `textModifier` affect the rebindability of keyboard actions?

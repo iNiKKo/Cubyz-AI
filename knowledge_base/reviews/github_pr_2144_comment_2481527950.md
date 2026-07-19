@@ -9,7 +9,7 @@
 A new Zig file `callbacks.zig` is introduced to define callback structures and initialization functions for different block-related events in a game engine.
 
 ## Explanation
-The code defines three types of callbacks: `ClientBlockCallback`, `ServerBlockCallback`, and `BlockTouchCallback`. Each callback type has a specific structure that includes parameters like blocks, positions, entities, and timing. The `init` function initializes these callbacks globally. The reviewer notes the persistence of `runFunction` in the callback struct and suggests renaming it to gather community feedback through a poll on Discord.
+A new Zig file `callbacks.zig` is introduced to define callback structures and initialization functions for different block-related events in a game engine. The code defines three types of callbacks: `ClientBlockCallback`, `ServerBlockCallback`, and `BlockTouchCallback`. Each callback type has a specific structure that includes parameters like blocks, positions, entities, and timing. The `init` function initializes these callbacks globally. The reviewer notes the persistence of `runFunction` in the callback struct and suggests renaming it to gather community feedback through a poll on Discord. Specifically, the reviewer asks for suggestions on what field name to choose for `<field-name>` in the following code snippet: ```rust fn Callback(_Params: type, list: type) type { return struct { data: *anyopaque, <field-name>: *const fn(self: *anyopaque, params: Params) Result, ... ``` The `Result` enum is used to indicate whether a callback was handled or ignored. The use of `anyopaque` allows for flexibility in the types of functions that can be passed as callbacks.
 
 ## Related Questions
 - What is the purpose of the `init` function in this code?

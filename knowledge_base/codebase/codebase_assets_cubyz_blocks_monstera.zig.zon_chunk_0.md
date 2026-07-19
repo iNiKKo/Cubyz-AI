@@ -8,7 +8,7 @@
 Defines properties for the Monstera block in Cubyz, including tags, health, drops, and textures.
 
 ## Explanation
-This chunk defines a configuration for the Monstera block in the Cubyz game engine. It specifies various properties such as tags (cuttable and sliceable), block health, drop behavior, selection capabilities, replaceability, degradability, collision settings, light absorption, model, rotation, textures for different sides, item texture, LOD replacement, and an update action to check support blocks.
+This chunk defines a configuration for the Monstera block in the Cubyz game engine. It specifies various properties such as tags (cuttable and sliceable), block health (0.2), drop behavior (auto items with cuttable tools allowed), replaceability (true), degradability (true), collision settings (collide: false), light absorption (absorbedLight: 0x121012), model (cubyz:monstera), rotation (cubyz:planar), textures for different sides (texture: cubyz:monstera/stem, texture_top: cubyz:monstera/leaf, texture_bottom: cubyz:monstera/leaf_stem), item texture (item.texture: monstera/leaf.png), LOD replacement (cubyz:air), and an update action to check support blocks.
 
 ## Related Questions
 - What are the tags associated with the Monstera block?

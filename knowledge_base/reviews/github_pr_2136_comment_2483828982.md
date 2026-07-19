@@ -9,7 +9,7 @@
 A new function `getWorldSeed` is introduced to generate a world seed using a random integer if the input string is empty. The reviewer suggests using existing code for seed generation instead, citing concerns about the current method's reliance on time, which limits the search space for reconstructing a seed.
 
 ## Explanation
-The introduction of `getWorldSeed` aims to handle cases where no seed is provided by generating a random one. However, the reviewer points out that the existing code for seed generation should be reused instead. The current method's reliance on time makes it easier to predict and reconstruct seeds, which could pose security risks or make world generation less random. The reviewer emphasizes the importance of using a more secure and unpredictable method for seed generation.
+A new function `getWorldSeed` is introduced to generate a world seed using a random integer if the input string is empty. The reviewer suggests using existing code for seed generation instead, citing concerns about the current method's reliance on time, which limits the search space for reconstructing a seed. The existing code is lacking because it depends directly on the time, making the search space to reconstruct a seed from a generated world much smaller. This could pose security risks or make world generation less random. The reviewer emphasizes the importance of using a more secure and unpredictable method for seed generation.
 
 ## Related Questions
 - What is the purpose of the `getWorldSeed` function?

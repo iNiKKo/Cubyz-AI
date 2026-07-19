@@ -9,7 +9,16 @@
 A segfault occurs when the `/` shortcut is used during world joining, specifically after asset loading but before the inventory bar appears.
 
 ## Explanation
-The issue stems from a potential race condition where the `/` shortcut triggers an action that assumes certain game components are fully initialized. The crash happens in `openCommand` function within `main.zig`, likely due to uninitialized or improperly synchronized resources. Reviewers note that similar race conditions might exist during loading, suggesting a broader need for thread safety and synchronization checks in the loading sequence.
+A segfault occurs when the `/` shortcut is used during world joining, specifically after asset loading but before the inventory bar appears. This happens due to a potential race condition where the `/` shortcut triggers an action that assumes certain game components are fully initialized. The crash happens in `openCommand` function within `main.zig`, likely due to uninitialized or improperly synchronized resources. Reviewers note that similar race conditions might exist during loading, suggesting a broader need for thread safety and synchronization checks in the loading sequence.
+
+The specific actions leading up to the crash include:
+- Clicking `/` just after asset loading
+- On localhost
+- When the main menu is still visible (and inventory bar is not)
+
+To ensure proper synchronization of resources during the game's initialization phases, developers should review and synchronize all critical components involved in world joining. This includes ensuring that the inventory bar appears before any actions are taken that might rely on it.
+
+Existing mechanisms for handling race conditions during asset loading may need to be reviewed and enhanced to prevent similar issues in the future.
 
 ## Related Questions
 - What other functions or components might be involved in the loading sequence that could cause similar race conditions?

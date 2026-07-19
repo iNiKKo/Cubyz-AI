@@ -8,7 +8,7 @@
 The maintainer decided that border textures for UI elements like windows, sliders, text fields, and scroll bars should not be hardcoded but require actual texture files.
 
 ## Explanation
-The original issue suggested making the border textures invisible by default. However, the maintainer's comment indicates a change in approach, emphasizing that these textures must be non-hardcoded to allow for flexibility and customization. This decision likely aims to enhance the visual appeal and adaptability of the UI elements without relying on fixed, potentially limited options.
+The original issue suggested making the border textures for UI elements like windows, sliders, text fields, and scroll bars invisible by default. However, the maintainer's comment indicates a change in approach, emphasizing that these textures must be non-hardcoded to allow for flexibility and customization. This decision aims to enhance the visual appeal and adaptability of the UI elements without relying on fixed options.
 
 ## Related Questions
 - What are the potential benefits of using non-hardcoded border textures in UI elements?

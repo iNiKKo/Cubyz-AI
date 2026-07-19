@@ -9,7 +9,11 @@
 The `Pattern` struct defines a blueprint for generating blocks with weighted chances, initializing from a string and deinitializing properly.
 
 ## Explanation
-The `Pattern` struct is designed to manage block generation patterns where each block has an associated chance of being selected. It includes methods to initialize the pattern from a string representation and to deinitialize it when no longer needed. The initialization process parses a string, splits it into specifiers based on separators, and assigns weights to blocks. The deinitialization method ensures that all allocated resources are properly released.
+The `Pattern` struct defines a blueprint for generating blocks with weighted chances, initializing from a string and deinitializing properly. The initialization process parses a string, splits it into specifiers based on separators (`weightSeparator` and `expressionSeparator`), and assigns weights to blocks. If the weight is not a valid number or less than or equal to zero, an error is returned. The deinitialization method ensures that all allocated resources are properly released by calling `deinit` on the `blocks` table and freeing its items.
+
+The `Pattern` struct includes methods to initialize the pattern from a string representation and to deinitialize it when no longer needed. The initialization process involves parsing a string, splitting it into specifiers based on separators (`weightSeparator` and `expressionSeparator`), and assigning weights to blocks. If the weight is not a valid number or less than or equal to zero, an error is returned.
+
+The data structure used to store block entries in the `Pattern` struct is an `AliasTable(Entry)`, where each entry contains a `block` of type `Block` and a `chance` of type `f32`. The `initFromString` method returns an error if the block ID is not found or if the weight is not a valid number or less than or equal to zero.
 
 ## Code Example
 ```zig

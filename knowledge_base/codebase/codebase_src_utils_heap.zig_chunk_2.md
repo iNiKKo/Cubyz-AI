@@ -9,7 +9,7 @@
 The `ErrorHandlingAllocator` struct provides an allocator that handles OutOfMemory situations by panicking or freeing memory, making it safe to ignore errors.
 
 ## Explanation
-The `ErrorHandlingAllocator` struct wraps another allocator and overrides its allocation methods (`alloc`, `resize`, `remap`, `free`) to handle out-of-memory conditions by panicking. It uses a vtable to define the allocator interface and delegates most operations to the backing allocator, only adding error handling in the `alloc` method.
+The `ErrorHandlingAllocator` struct provides an allocator that handles OutOfMemory situations by panicking or freeing memory, making it safe to ignore errors. It wraps another allocator and overrides its allocation methods (`alloc`, `resize`, `remap`, `free`) to handle out-of-memory conditions by panicking. The `alloc` method attempts to allocate a specified number of bytes with a given alignment and returns a pointer to the allocated memory or null if the allocation fails, in which case it calls `handleError`. The `resize` method attempts to expand or shrink memory in place, returning true if successful and false otherwise. The `remap` method attempts to expand or shrink memory, allowing relocation, and returns a non-null pointer to the new memory location if successful or null if the resize would be equivalent to allocating new memory, copying the bytes from the old memory, and then freeing the old memory. The `free` method frees and invalidates a region of memory. It uses a vtable to define the allocator interface and delegates most operations to the backing allocator, only adding error handling in the `alloc` method.
 
 ## Code Example
 ```zig

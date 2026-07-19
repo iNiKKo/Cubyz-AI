@@ -9,7 +9,7 @@
 The `set` function in the `Blueprint` struct has been modified to take a variable pointer instead of cloning the blueprint. The reviewer suggests this change to prevent unnecessary copying and to accommodate future features like masks.
 
 ## Explanation
-The original implementation of the `set` function cloned the entire blueprint, which could lead to performance issues if the blueprint is large. The reviewer points out that since all values are being overwritten, cloning is not necessary. Additionally, the reviewer anticipates that future changes might introduce masks, which could require preserving some old blocks, making the current implementation more flexible.
+The `set` function in the `Blueprint` struct has been modified to take a variable pointer instead of cloning the blueprint. The reviewer suggests this change to prevent unnecessary copying and to accommodate future features like masks. The caller should always be responsible for copying, and `set` should take a variable pointer to prevent additional copies when unnecessary (e.g., when `/set` is applied to the clipboard). Furthermore, cloning is not necessary in the current implementation because all values are being overwritten. However, after masks are implemented, it will be possible that some (or even all) of the old blocks will be preserved.
 
 ## Related Questions
 - What is the purpose of changing the `set` function to take a variable pointer?

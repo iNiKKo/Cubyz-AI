@@ -9,7 +9,7 @@
 Thicket biome configuration
 
 ## Explanation
-This chunk defines a Thicket biome with specific properties, tags, and structures. It includes details such as chance of occurrence, wetness, oak tag, radius, terrain preservation, height range, roughness, hills, music, player spawn availability, ground structure, structures to place, and parent biomes.
+This chunk defines a Thicket biome with specific properties, tags, and structures. The overall chance of occurrence for the Thicket biome is set to 0, meaning it will not generate naturally unless influenced by other factors or commands. However, structures within the Thicket biome have their own specific chances of being placed. For example, the structure with ID 'cubyz:sbb' has a chance of 0.8. The biome includes properties such as wetness, an oak tag, a radius of 32, terrain preservation enabled, a height range from 22 to 40, roughness set to 10, and hills also set to 10. The music played in this biome is 'cubyz:totaldemented/leaves', and player spawn is allowed. The ground structure used includes 'cubyz:grass/temperate' and '2 to 3 cubyz:soil'. Parent biomes that influence the generation of this Thicket biome include 'cubyz:grassland' with a chance of 0.5.
 
 ## Related Questions
 - What is the chance of occurrence for this Thicket biome?

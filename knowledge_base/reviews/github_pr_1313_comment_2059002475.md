@@ -9,7 +9,7 @@
 Restored neighbor updates in the chunk meshing process but introduced a memory leak. Refactored code to consolidate conditions and handle reference counting more effectively.
 
 ## Explanation
-The reviewer restored the functionality for updating neighboring blocks when a block changes within a chunk. However, this restoration inadvertently introduced a memory leak. The refactoring effort aimed to improve code clarity by consolidating conditions related to neighbor dependencies and updating data into a single if statement. Additionally, the reviewer ensured proper reference counting by adding a decrement operation in an else clause. This change was necessary to prevent resource leaks and maintain the integrity of the chunk meshing process.
+Restored neighbor updates in the chunk meshing process but introduced a memory leak. Refactored code to consolidate conditions and handle reference counting more effectively by adding `addSelfToLightRefreshList` and merging `neighborBlock.mode().dependsOnNeighbors` and `neighborBlock.mode().updateData(&neighborBlock, neighbor.reverse(), newBlock)` conditions into a single if statement. Additionally, the reviewer ensured proper reference counting by adding a decrement operation in an else clause to prevent resource leaks and maintain the integrity of the chunk meshing process.
 
 ## Related Questions
 - What is the purpose of the `addSelfToLightRefreshList` function?

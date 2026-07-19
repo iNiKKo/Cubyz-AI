@@ -9,7 +9,7 @@
 The issue requests modifying the `printTooltip()` function to display both percentage boost and total damage for 'good at' modifiers in tooltips.
 
 ## Explanation
-The current implementation of the `printTooltip()` function only shows the percentage boost provided by 'good at' modifiers. The user suggests enhancing this tooltip to include the actual damage value, making it easier to understand the impact without needing a calculator. This change involves modifying the function signature to accept a Tool object as a parameter, allowing access to necessary attributes for calculating and displaying the total damage.
+The issue requests modifying the `printTooltip()` function to display both percentage boost and total damage for 'good at' modifiers in tooltips. The current implementation of the `printTooltip()` function only shows the percentage boost provided by 'good at' modifiers. The user suggests enhancing this tooltip to include the actual damage value, making it easier to understand the impact without needing a calculator. For example, the tooltip could look like: `Good at increases damage by **% on ******** blocks (** damage)`. This change involves modifying the function signature to accept a Tool object as a parameter, allowing access to necessary attributes for calculating and displaying the total damage.
 
 ## Related Questions
 - What is the current behavior of the `printTooltip()` function?

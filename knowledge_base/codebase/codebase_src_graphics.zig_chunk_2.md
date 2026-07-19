@@ -9,7 +9,13 @@
 This chunk defines functions and data structures for rendering rectangles, rectangle borders, and lines in a graphics pipeline.
 
 ## Explanation
-The chunk contains definitions for three main drawing functions: `rect`, `rectBorder`, and `drawLine`. Each function initializes its respective pipeline and vertex array object (VAO) with specific shaders and vertex data. The `initRect` and `deinitRect` functions manage the lifecycle of the rectangle rendering resources, while `rect` sets up and draws a filled rectangle using OpenGL commands. Similarly, `initRectBorder` and `deinitRectBorder` handle the border drawing resources, and `rectBorder` renders a rectangle with a border. The `drawLine` function is partially defined but not fully implemented in the provided snippet.
+This chunk defines functions and data structures for rendering rectangles, rectangle borders, and lines in a graphics pipeline. The chunk contains definitions for three main drawing functions: `rect`, `rectBorder`, and `drawLine`. Each function initializes its respective pipeline and vertex array object (VAO) with specific shaders and vertex data.
+
+The `initRect` function initializes the rectangle rendering resources by creating a pipeline with the shader files "assets/cubyz/shaders/graphics/Rect.vert" and "assets/cubyz/shaders/graphics/Rect.frag", setting up uniform variables for screen, start, size, and rectColor. The vertex data for rectangles is defined as an array of `SimpleVertex2D` structs with positions (0, 0), (0, 1), (1, 0), and (1, 1). The `rect` function sets up and draws a filled rectangle by binding the pipeline, setting uniform values for screen dimensions, start position, size, and color, and then drawing the vertices using `glDrawArrays` with `GL_TRIANGLE_STRIP`.
+
+The `initRectBorder` function initializes the border rendering resources similarly but uses different shaders "assets/cubyz/shaders/graphics/RectBorder.vert" and "assets/cubyz/shaders/graphics/RectBorder.frag". The vertex data for borders is more complex, involving positions that define lines forming a border around a rectangle. The `rectBorder` function sets up and draws a rectangle with a border by binding the pipeline, setting uniform values for screen dimensions, start position, size, color, and line width, and then drawing the vertices using `glDrawArrays` with `GL_TRIANGLE_STRIP`.
+
+The `deinitRect` and `deinitRectBorder` functions manage the lifecycle of their respective rendering resources by deinitializing the pipeline and vertex array object. The `drawLine` function is partially defined but not fully implemented in the provided snippet.
 
 ## Code Example
 ```zig

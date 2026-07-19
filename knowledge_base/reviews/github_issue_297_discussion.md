@@ -8,7 +8,12 @@
 The issue proposes adding a menu to select different modes for the chisel tool in Cubyz, similar to the functionality in Vintage Story. The selected mode should persist until changed or the game is closed.
 
 ## Explanation
-This change aims to enhance the chiseling feature by providing more options and making it configurable. The discussion suggests that while chiseling is a valuable tool, it should be one of multiple available options, implying a broader context for block manipulation tools in Cubyz. This enhancement could improve user flexibility and creativity in game design.
+This change aims to enhance the chiseling feature by providing more options and making it configurable. The selected mode should persist until changed or the game is closed, similar to Vintage Story's functionality where pressing the `F` key opens a menu for selecting different modes for the chisel tool. Specifically, the proposed modes include:
+- Remove a single subblock
+- Convert to specific model (based on currently looked at block)
+- Convert to specific model (based on currently looked at block) rotated based on camera rotation
+- Convert to stairs (based on camera direction, looking up will flip the model)
+The discussion also suggests adding convenience options like stairs and slabs. This enhancement could improve user flexibility and creativity in game design.
 
 ## Related Questions
 - What are the proposed modes for the chisel tool?
@@ -19,7 +24,5 @@ This change aims to enhance the chiseling feature by providing more options and 
 - Is there a plan for backwards compatibility with existing chiseling functionality?
 - How will the new modes handle different camera rotations?
 - Are there any performance considerations for adding these new options?
-- Will this feature be configurable by users in settings?
-- What are the potential regression risks associated with this change?
 
 *Source: unknown | chunk_id: github_issue_297_discussion*

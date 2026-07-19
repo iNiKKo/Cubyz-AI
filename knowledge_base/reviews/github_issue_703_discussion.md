@@ -8,7 +8,7 @@
 Discussion about a bug where jumping up a fence pole teleports the player in the wrong direction.
 
 ## Explanation
-The issue report indicates that jumping up a fence pole sometimes results in the player being teleported in the opposite direction. The maintainer suggests that this might be related to recent physics changes made by @ITR13. The bug is reproducible with two fences next to each other, occurring only in one specific direction when jumping.
+The issue report indicates that jumping up a fence pole sometimes results in the player being teleported in the opposite direction of the intended jump. The maintainer suggests this might be related to recent physics changes made by @ITR13. The bug is reproducible with two fences next to each other, occurring only in one specific direction when jumping.
 
 ## Related Questions
 - What specific physics changes were made by @ITR13 that might be related to this issue?

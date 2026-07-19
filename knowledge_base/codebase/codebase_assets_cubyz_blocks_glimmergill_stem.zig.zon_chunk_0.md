@@ -8,7 +8,7 @@
 Defines properties for the Glimmergill Stem block, including tags, health, drops, rotation, model, and texture.
 
 ## Explanation
-This chunk is a configuration file defining the properties of the Glimmergill Stem block in the Cubyz voxel engine. It specifies that the block has multiple tags such as choppable, cuttable, sliceable, and mushroom. The block's health is set to 4, indicating how much damage it can take before breaking. It drops a log item when broken. The rotation property is linked to 'cubyz:direction', suggesting it can be rotated in different directions. The model used for rendering the block is 'cubyz:cube', and its texture is specified as 'cubyz:glimmergill_stem'.
+This chunk is a configuration file defining the properties of the Glimmergill Stem block in the Cubyz voxel engine. It specifies that the block has multiple tags such as choppable, cuttable, sliceable, and mushroom. The block's health is set to 4, indicating how much damage it can take before breaking. It drops a log item when broken (cubyz:log/glimmergill). The rotation property is linked to 'cubyz:direction', suggesting it can be rotated in different directions. The model used for rendering the block is 'cubyz:cube', and its texture is specified as 'cubyz:glimmergill_stem'.
 
 ## Related Questions
 - What are the tags associated with the Glimmergill Stem block?

@@ -9,7 +9,7 @@
 Added a format function to the User struct for printing user information with an optional ID.
 
 ## Explanation
-The change introduces a new `format` method in the `User` struct within the `server.zig` file. This method allows for formatted output of user information, which can be useful for logging or displaying user details. The reviewer suggests using '@' as the separator between the username and ID to maintain consistency with command input syntax.
+The change introduces a new `format` method in the `User` struct within the `server.zig` file. This method allows for formatted output of user information, which can be useful for logging or displaying user details. The method checks if `main.settings.showIdWithName` is true before printing the user's name and ID. If this setting is false, it only prints the username. The reviewer suggests using '@' as the separator between the username and ID to maintain consistency with command input syntax. For example, the code snippet shows how the writer might print the user information as `{s}@{d}` if `main.settings.showIdWithName` is true.
 
 ## Related Questions
 - What is the purpose of the `format` function in the `User` struct?

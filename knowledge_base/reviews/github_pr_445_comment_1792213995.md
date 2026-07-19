@@ -9,7 +9,7 @@
 Added performance monitoring and reset functionality in the debug window.
 
 ## Explanation
-The change introduces performance monitoring by reading and resetting the thread pool's performance metrics every `perfUpdateFrequency` frames. The reviewer suggests a manual reset mechanism, either through a separate button or tying it to the debug window visibility, to avoid averaging over a large number of requests which could yield less comparable performance numbers.
+The change introduces performance monitoring by reading and resetting the thread pool's performance metrics every `perfUpdateFrequency` frames. The reviewer suggests a manual reset mechanism, either through a separate button or tying it to the debug window visibility, to avoid averaging over a large number of requests which could yield less comparable performance numbers. Specifically, `main.perfUpdateFrequency` is set to 10000 frames, and the performance metrics are read and reset using `main.threadPool.performance.readAndReset()`. The reviewer also notes that there is a potential for race conditions when resetting the performance metrics, but no specific details are provided on how to mitigate this. Additionally, the explanation does not address the implications of averaging performance over a large number of requests or how the debug window visibility can be used to trigger the performance reset automatically.
 
 ## Related Questions
 - What is the purpose of `main.perfUpdateFrequency` in the debug window?

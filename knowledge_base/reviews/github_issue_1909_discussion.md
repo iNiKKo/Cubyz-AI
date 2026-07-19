@@ -8,7 +8,14 @@
 Discussion on implementing XDG Base Directory Specification for data directories on Linux, with concerns about maintaining existing directory structures and cross-platform consistency.
 
 ## Explanation
-The issue revolves around the outdated practice of storing application data in dot folders within the $HOME directory. The proposal suggests adhering to the XDG Base Directory Specification, which recommends specific environment variables for different types of data (cache, configuration, logs) with fallbacks to traditional locations. Maintainers are hesitant about changing the current structure, citing familiarity and time constraints. Users propose making changes but acknowledge the complexity of migrating existing data.
+The issue revolves around the outdated practice of storing application data in dot folders within the $HOME directory. The proposal suggests adhering to the XDG Base Directory Specification, which recommends specific environment variables for different types of data (cache, configuration, logs) with fallbacks to traditional locations. Specifically:
+
+- Cache should be stored in $XDG_CACHE_HOME/appname, and fallback to ~/.cache/appname.
+- Data should be stored in $XDG_DATA_HOME/appname, and fallback to ~/.local/share/appname.
+- User configs should be stored in $XDG_CONFIG_HOME/appname, and fallback to ~/.config/appname.
+- Logs should be stored in $XDG_STATE_HOME/appname and fallback to ~/.local/state/appname. On Windows, data should be stored in %APPDATA%.
+
+Maintainers are hesitant about changing the current structure, citing familiarity with the existing locations and time constraints. Users propose making changes but acknowledge the complexity of migrating existing data directories.
 
 ## Related Questions
 - What are the benefits of using XDG Base Directory Specification?

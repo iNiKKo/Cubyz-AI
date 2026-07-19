@@ -8,7 +8,7 @@
 The discussion revolves around revamping the Cubyz GUI, focusing on improving usability and aesthetics. The maintainer presents various mockups and considerations for inventory, crafting, and settings interfaces.
 
 ## Explanation
-The conversation centers around enhancing the user interface of Cubyz, with a focus on making it more intuitive and visually appealing. The maintainer shares multiple mockups and discusses changes such as adjusting inventory slot sizes, removing tabs to streamline information visibility, and separating the pause menu for better navigation. There are also discussions about text-based UI elements, controller-friendliness, and ensuring the design scales well across different aspect ratios and window sizes. The maintainer presents progress reports and shares files for further review.
+The discussion revolves around revamping the Cubyz GUI to improve usability and aesthetics. The maintainer shares multiple mockups and discusses changes such as adjusting inventory slots from 20 to 36 (12 rows of 12 slots each), removing tabs for immediate visibility, and separating the pause menu for better navigation. Specific concerns addressed include covering the center of the screen during crafting, text-based UI elements, controller-friendliness, and ensuring design scalability across different aspect ratios and window sizes. The maintainer presents progress reports with detailed images showing inventory windows, workbench interactions, and block representations in the new GUI. Feedback includes critiques on white outlines around health bars and selected items, font readability, and partial transparency effects in inventory slots.
 
 ## Related Questions
 - What are the main changes proposed in the GUI revamp?

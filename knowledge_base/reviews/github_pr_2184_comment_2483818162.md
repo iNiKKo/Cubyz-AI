@@ -11,6 +11,16 @@ Refactored player eye data into a nested struct and updated variable names.
 ## Explanation
 The change introduces a new nested struct `EyeData` within the `Player` struct to encapsulate all eye-related attributes. This refactoring improves code organization and readability. The reviewer suggests renaming the struct or variables to better reflect their purpose, such as using `eye` or `eyes`, considering that the player might have multiple eyes in future iterations.
 
+The `EyeData` struct contains the following fields:
+- `pos`: of type `Vec3d`
+- `vel`: of type `Vec3d`
+- `coyote`: of type `f64`
+- `step`: of type `@Vector(3, bool)`
+- `box`: of type `collision.Box`
+- `desiredPos`: of type `Vec3d`
+
+These fields are initialized with default values in the `Player` struct.
+
 ## Related Questions
 - What are the potential benefits of encapsulating eye data within a nested struct?
 - How might this refactoring impact future iterations where the player has multiple eyes?

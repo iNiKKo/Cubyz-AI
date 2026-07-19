@@ -9,7 +9,11 @@
 Defines network connection structures and buffer management for packet handling.
 
 ## Explanation
-This chunk defines the `Connection` struct, which includes constants for MTU sizes, header overheads, and congestion control parameters. It also contains nested structs like `RangeBuffer` and `ReceiveBuffer`, each with their own methods for managing ranges of sequence indices and buffers for receiving data. The `RangeBuffer` manages non-overlapping ranges and supports adding, checking, and extracting ranges. The `ReceiveBuffer` handles incoming data, including decryption and buffer management, using fixed-size circular buffers.
+This chunk defines the `Connection` struct, which includes constants for MTU sizes, header overheads, and congestion control parameters. The specific values are as follows: `maxMtu` is 65507, `importantHeaderSize` is 5, `minMtu` is 532 (calculated as 576 - 20 - 8), `headerOverhead` is 60 (calculated as 20 + 8 + 42), `congestionControl_historySize` is 16, and `minimumBandWidth` is 10,000. The struct also contains nested structs like `RangeBuffer` and `ReceiveBuffer`, each with their own methods for managing ranges of sequence indices and buffers for receiving data.
+
+The `RangeBuffer` manages non-overlapping ranges and supports adding, checking, and extracting ranges. It includes methods such as `init()`, `clear()`, `deinit()`, `addRange()`, `hasRange()`, and `extractFirstRange()`. The `ReceiveBuffer` handles incoming data, including decryption and buffer management, using fixed-size circular buffers. It includes methods such as `init()`, `deinit()`, and `applyRanges()`.
+
+The explanation also mentions that the `Connection` struct contains atomic variables for tracking statistics such as `packetsSent`, `packetsResent`, `internalMessageOverhead`, `internalHeaderOverhead`, and `externalHeaderOverhead`.
 
 ## Code Example
 ```zig

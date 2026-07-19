@@ -8,7 +8,7 @@
 Discussion about adding a warning for Survival mode incompleteness in Cubyz.
 
 ## Explanation
-The issue report highlights the confusion experienced by newcomers to Cubyz due to missing fundamental components of Survival gameplay, such as monsters and incomplete mechanics like progression, energy, and health. The proposal suggests appending '(Test)' or '(pre-alpha)' to the survival option to manage expectations. However, the maintainer prefers not to display signs of incompleteness prominently and believes that the leading '0' in the version number already indicates the game's developmental stage.
+Discussion about adding a warning for Survival mode incompleteness in Cubyz. The issue report highlights the confusion experienced by newcomers to Cubyz due to missing fundamental components of Survival gameplay, such as monsters and incomplete mechanics like progression, energy, and health. Additionally, there is currently no means to heal in the game. The proposal suggests appending '(Test)' or '(pre-alpha)' to the survival option to manage expectations. However, the maintainer prefers not to display signs of incompleteness prominently and believes that the leading '0' in the version number already indicates the game's developmental stage.
 
 ## Related Questions
 - What are the fundamental components missing from Cubyz's Survival mode?

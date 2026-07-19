@@ -8,7 +8,7 @@
 The discussion revolves around switching to SPIR-V shaders to reduce vendor-specific compiler errors and pave the way for future Vulkan support.
 
 ## Explanation
-The maintainer comments on the poor support of certain OpenGL features in Intel's and AMD's drivers, highlighting that Vulkan has stricter requirements regarding non-opaque uniforms. The discussion suggests implementing #1379 as a preparatory step to ease the transition towards Vulkan support.
+Switching to SPIR-V shaders reduces problems from vendor-specific compiler errors and marks a first step towards future Vulkan support. By using SPIR-V, developers can ensure compatibility across different graphics drivers, avoiding issues related to specific vendors' implementations of OpenGL. This change also paves the way for better performance and more efficient use of resources in the graphics pipeline, ultimately leading to improved overall game stability and user experience.
 
 ## Related Questions
 - What are the main issues with OpenGL drivers on Intel and AMD hardware?

@@ -9,7 +9,7 @@
 Modified the subBlockMask operation to use bitwise AND instead of OR. Added error logging for invalid stair data.
 
 ## Explanation
-The change modifies the `subBlockMask` operation from a bitwise OR to a bitwise AND, which could alter how sub-blocks are masked during rotation calculations. The reviewer suggests this modification was helpful in debugging but is not immediately critical. Additionally, an error logging statement has been added to log invalid stair data when it exceeds 255 (0b11111111). This change aims to improve the robustness of the code by catching and reporting unexpected input values.
+The change modifies the `subBlockMask` operation from a bitwise OR to a bitwise AND, which could alter how sub-blocks are masked during rotation calculations. The reviewer suggests this modification was helpful in debugging but is not immediately critical. Additionally, an error logging statement has been added to log invalid stair data when it exceeds 255 (0b11111111). Specifically, the condition for logging is `if(data > 0b11111111)`. This change aims to improve the robustness of the code by catching and reporting unexpected input values.
 
 ## Related Questions
 - What is the purpose of changing subBlockMask from bitwise OR to bitwise AND?

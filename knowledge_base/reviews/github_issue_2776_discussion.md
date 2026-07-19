@@ -9,7 +9,7 @@
 Discussion on adding more targeting options for commands in Cubyz, including suggestions like 'force', 'group', and 'all'. The proposal includes new selector symbols for players, entities, groups, and filtering.
 
 ## Explanation
-The discussion revolves around enhancing the command system in Cubyz by introducing additional targeting options. The proposed options include 'force' to target offline players, 'group' to target permission groups, and 'all' to target all players or entities. The thread explores various selector symbols for different types of targets (e.g., '@' for players, '&' for entities) and a filtering mechanism using '?' followed by criteria. The proposal aims to increase the versatility of commands while avoiding direct imitation of Minecraft's command syntax.
+Discussion on adding more targeting options for commands in Cubyz, including suggestions like 'force', 'group', and 'all'. The proposal includes new selector symbols for players ('@'), entities ('&'), groups ('$'), and filtering ('?'). Specific examples include selecting all entities within a range (`&?r=5`), offline players (`!&`), and filtering based on criteria (`&?x=20,dx=10,y=200,dy=3,z=50,dz=20`). The proposal aims to increase the versatility of commands while avoiding direct imitation of Minecraft's command syntax. However, certain symbols like `#`, `*`, `__`, `~~`, and `§` are blocked due to formatting issues.
 
 ## Related Questions
 - What are the proposed new targeting options for commands in Cubyz?
@@ -20,7 +20,5 @@ The discussion revolves around enhancing the command system in Cubyz by introduc
 - How does the proposal ensure compatibility with existing command syntax?
 - What are the potential performance implications of adding more targeting options?
 - Can entities be targeted without specifying a range or criteria?
-- Is there a plan to implement these changes in the near future?
-- How will the new targeting options be integrated into existing commands?
 
 *Source: unknown | chunk_id: github_issue_2776_discussion*

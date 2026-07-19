@@ -9,7 +9,7 @@
 The maintainer plans to remove the number '1' from the function name `scheduleLightRefreshAndDecreaseRefCount1` in a future PR, following the resolution of issue #1313 to prevent conflicts.
 
 ## Explanation
-The discussion indicates that the maintainer intends to refactor the function name by removing the numeral '1'. This change is likely aimed at improving code readability and maintainability. The maintainer has noted that without this change, there is a risk of forgetting to perform a necessary action related to light refresh and reference counting. By addressing this in a separate PR after resolving issue #1313, the maintainer aims to avoid potential conflicts with other changes being made.
+The discussion indicates that the maintainer intends to refactor the function name `scheduleLightRefreshAndDecreaseRefCount1` by removing the numeral '1'. This change is likely aimed at improving code readability and maintainability. The maintainer has noted that without this change, there is a risk of forgetting to perform a necessary action related to light refresh and reference counting. By addressing this in a separate PR after resolving issue #1313, the maintainer aims to avoid potential conflicts with other changes being made.
 
 ## Related Questions
 - What is the purpose of removing '1' from `scheduleLightRefreshAndDecreaseRefCount1`?

@@ -9,7 +9,13 @@
 Added a new function `pasteInGeneration` to handle blueprint pasting with different modes and substitutions.
 
 ## Explanation
-The change introduces a new function `pasteInGeneration` in the `Blueprint` struct, which allows for pasting blueprints into a server chunk with various modes (all, noAir, replaceAir) and optional substitutions. The reviewer highlights potential performance concerns due to runtime checks during generation, suggesting that these could be optimized using compile-time evaluation if necessary.
+The change introduces a new function `pasteInGeneration` in the `Blueprint` struct, which allows for pasting blueprints into a server chunk with different modes (`all`, `noAir`, `replaceAir`) and optional substitutions. The reviewer highlights potential performance concerns due to runtime checks during generation, suggesting that these could be optimized using compile-time evaluation if necessary.
+
+The `pasteInGeneration` function iterates over the blocks in the blueprint and updates them in the server chunk based on the specified mode. If a substitution map is provided, it replaces the block type accordingly. The function skips origin and child blocks during this process. It also checks if the block lies within the target chunk before updating it.
+
+The `PasteMode` enum has three values: `all`, `noAir`, and `replaceAir`. In `all` mode, all blocks are pasted. In `noAir` mode, air blocks are not pasted. In `replaceAir` mode, existing air blocks in the chunk are replaced with the blocks from the blueprint.
+
+The function ensures that only valid world coordinates are updated by checking if the block lies within the target chunk using the `liesInChunk` method of the `ServerChunk` struct.
 
 ## Related Questions
 - What are the potential performance implications of using runtime checks during blueprint generation?

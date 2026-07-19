@@ -9,7 +9,7 @@
 The issue discusses replacing the `allowCheats` option with a default permission group to enhance server owner permissions and align with a more robust permission system.
 
 ## Explanation
-The discussion revolves around improving the permission management in Cubyz by replacing the binary `allowCheats` flag with a more flexible default permission group. This change aims to provide greater control over player permissions, allowing the server owner to elevate their privileges beyond what is currently possible with the `allowCheats` option. The reviewers consider either implementing two default permission groups or maintaining a single group that strictly enforces no cheats if enabled. The primary motivation for this change is to align with a more comprehensive and customizable permission system.
+The issue discusses replacing the `allowCheats` option with a default permission group to enhance server owner permissions and align with a more robust permission system. The discussion includes a comment by USER mentioning that they talked about implementing either two default permission groups or maintaining one strict group, agreeing that the permission system should replace allowCheats since it is not used for anything else.
 
 ## Related Questions
 - What are the potential benefits of replacing `allowCheats` with a default permission group?

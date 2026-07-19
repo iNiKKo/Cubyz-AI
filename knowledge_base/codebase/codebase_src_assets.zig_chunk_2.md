@@ -11,6 +11,20 @@ Handles asset discovery and reading for Cubyz, including addons, defaults, and s
 ## Explanation
 This chunk defines the `Addon` struct responsible for managing assets within an addon directory. It includes methods to discover all addons in a given path, read ZON files with optional default merging, and read blueprint files. The `Defaults` nested struct manages default asset configurations, reading from `_defaults.zig.zon` or `_defaults.zon` files. Error handling is implemented throughout for file operations, logging errors when assets cannot be opened or processed.
 
+The `Addon` struct has the following methods:
+- `discoverAll`: Discovers all addons in a given path. It checks if the addon name contains only lowercase letters, numbers, and underscores. If not, it logs an error and skips the addon.
+- `deinit`: Closes the directory and frees the addon's name.
+
+The `Defaults` struct has the following methods:
+- `init`: Initializes the local arena allocator and default hashmap.
+- `deinit`: Deinitializes the local arena allocator.
+- `get`: Retrieves or reads a default configuration for a given directory path.
+- `read`: Reads a ZON file from the specified directory. If the `_defaults.zig.zon` file is not found, it attempts to read the `_defaults.zon` file.
+
+The `Addon` struct also has methods for reading all ZON files and blueprints:
+- `readAllZon`: Reads all ZON files in a given asset type directory. It merges defaults if specified and handles errors by logging them.
+- `readAllBlueprints`: Reads all blueprint files in a given subpath directory and processes them.
+
 ## Code Example
 ```zig
 fn deinit(self: *Defaults) void {

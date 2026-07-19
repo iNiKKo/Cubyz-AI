@@ -9,7 +9,17 @@
 Defines the Emitter and related structures for particle system management.
 
 ## Explanation
-The code defines an `Emitter` struct that manages particle spawning properties, including shape, speed, direction mode, and collision settings. It includes nested structs like `SpawnPoint`, `SpawnSphere`, and `SpawnCube` to handle different spawn shapes. Each spawn type has a `spawn` method to calculate particle position and velocity based on the emitter's properties and mode. The `Emitter` struct also provides methods for initialization from configuration (`initFromZon`) and for spawning particles (`spawnParticles`). Additionally, it defines a `ParticleType` struct to manage particle visual and behavior properties.
+The code defines an `Emitter` struct that manages particle spawning properties, including shape, speed, direction mode, and collision settings. It includes nested structs like `SpawnPoint`, `SpawnSphere`, and `SpawnCube` to handle different spawn shapes. Each spawn type has a `spawn` method to calculate particle position and velocity based on the emitter's properties and mode.
+
+- **SpawnPoint**: The `spawn` method for `SpawnPoint` calculates the particle position as the same as the emitter's position (`pos`) and generates a random direction vector (`dir`). The speed is determined by the emitter's properties, and the particle velocity (`particleVel`) is calculated by multiplying the direction vector by the speed.
+
+- **SpawnSphere**: The `spawn` method for `SpawnSphere` calculates the particle position within a sphere defined by the radius. It generates a random offset vector (`offsetPos`) within a unit sphere and scales it by the radius to get the final particle position. The speed is determined by the emitter's properties, and the direction vector (`dir`) is calculated based on the mode (direction, scatter, spread).
+
+- **SpawnCube**: The `spawn` method for `SpawnCube` calculates the particle position within a cube defined by the size. It generates a random offset vector (`offsetPos`) within a unit cube and scales it by the size to get the final particle position. The speed is determined by the emitter's properties, and the direction vector (`dir`) is calculated based on the mode (direction, scatter, spread).
+
+The `Emitter` struct also provides methods for initialization from configuration (`initFromZon`) and for spawning particles (`spawnParticles`). Additionally, it defines a `ParticleType` struct to manage particle visual and behavior properties.
+
+Error handling during parsing of direction mode and spawn data is managed by logging an error message and providing default values. For example, if the direction mode cannot be parsed, it defaults to `.spread`. If the spawn shape cannot be parsed, it defaults to a `SpawnPoint`.
 
 ## Code Example
 ```zig

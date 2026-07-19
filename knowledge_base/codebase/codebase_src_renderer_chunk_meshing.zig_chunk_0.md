@@ -9,7 +9,7 @@
 The chunk meshing module initializes graphics pipelines and buffers for rendering chunks in the game world.
 
 ## Explanation
-This chunk defines the initialization logic for various graphics components used in rendering chunks. It sets up multiple graphics pipelines, including one for opaque chunks and another for transparent ones. Additionally, it initializes several large buffers to store face data, light data, chunk data, command data, and chunk IDs. The `init` function configures these components by loading shaders, setting up uniform structures, and allocating memory for the buffers.
+This chunk defines the initialization logic for various graphics components used in rendering chunks. It sets up multiple graphics pipelines, including one for opaque chunks (`pipeline`) and another for transparent ones (`transparentPipeline`). Additionally, it initializes several large buffers to store face data (`faceBuffers`), light data (`lightBuffers`), chunk data (`chunkBuffer`), command data (`commandBuffer`), and chunk IDs (`chunkIDBuffer`). The `init` function configures these components by loading shaders from specified paths, setting up uniform structures (`UniformStruct`, `transparentUniforms`, `commandUniforms`, `occlusionTestUniforms`), and allocating memory for the buffers. The vertex array object (`vao`) is initialized with a predefined set of indices. The maximum number of quads that can be stored in the index buffer is determined by `maxQuadsInIndexBuffer`. The blending settings for the transparent pipeline include specific blend factors and operations to ensure proper transparency rendering. The shaders are located in the `assets/cubyz/shaders/chunks/` directory.
 
 ## Code Example
 ```zig

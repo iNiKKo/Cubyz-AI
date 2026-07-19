@@ -8,7 +8,7 @@
 Defines properties and structures for the dry bushland biome in Cubyz.
 
 ## Explanation
-This chunk configures the dry bushland biome, specifying its properties like being dry and tagged with cactus. It sets generation parameters such as radius limits and ground structure. The biome includes various structures like cacti, oak bushes, baobab bushes, grass patches, and flower patches, each with specific placement chances and characteristics. It also references a parent biome for inheritance.
+This chunk configures the dry bushland biome, specifying its properties like being dry and tagged with cactus. It sets generation parameters such as radius limits (minRadius = 20, maxRadius = 64) and ground structure ('1 to 2 cubyz:dirt'). The biome includes various structures: oak bushes (placed with a 0.07 chance), baobab bushes (placed with a 0.14 chance), grass patches (with a 0.02 chance, width of 14, variation of 4, depth of 2, and smoothness of 0.2), flower patches (with chances ranging from 0.05 to 0.08 for different types of flowers), and cacti (placed with a 0.006 chance). It also references a parent biome 'cubyz:bushlands/base' with a 5% chance for inheritance.
 
 ## Related Questions
 - What are the properties of the dry bushland biome?

@@ -9,7 +9,8 @@
 A new struct `String` is introduced in the `command.zig` file, but the reviewer suggests handling `[]const u8` cases directly in the parser.
 
 ## Explanation
-The introduction of a new struct `String` in the `command.zig` file aims to encapsulate string-related functionality. However, the reviewer raises concerns about the architectural approach, suggesting that handling `[]const u8` cases should be managed within the parser instead of through a separate struct. This recommendation is based on the belief that centralizing such logic within the parser could lead to cleaner and more maintainable code.
+**Explanation**
+The introduction of an empty `String` struct in the `command.zig` file does not provide any new functionality. The reviewer suggests handling `[]const u8` cases directly in the parser instead of as a separate struct. This recommendation is based on the belief that centralizing such logic within the parser could lead to cleaner and more maintainable code.
 
 ## Related Questions
 - Why was the `String` struct introduced in `command.zig`?

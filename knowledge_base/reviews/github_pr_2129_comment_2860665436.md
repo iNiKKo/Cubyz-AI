@@ -9,7 +9,7 @@
 The change extends the biome's structure generation by incorporating structures from external tables based on matching biome tags. The reviewer suggests removing the `else` condition to ensure that untagged structures are added to all biomes.
 
 ## Explanation
-The modification introduces a new loop to iterate over external structure tables and add structures to the biome if their tags match any of the biome's tags. The reviewer points out a potential issue with the current logic, suggesting that the `else` condition might inadvertently restrict untagged structures to biomes without any tags, which is likely not the intended behavior.
+The modification extends the biome's structure generation by incorporating structures from external tables based on matching biome tags. The code iterates over external structure tables and adds structures to the biome if their tags match any of the biome's tags. Specifically, for each table in `structure_tables`, it checks if the biome has any tags (`self.biomeTags`). If so, it compares these with the tags in the current table (`table.biomeTags`). If a match is found, all structures from that table are appended to the vegetation list, and their chances are added to `totalChance`. The reviewer suggests removing the `else` condition to ensure that untagged structures are added to all biomes. This change aims to prevent the unintended restriction of untagged structures to biomes without any tags.
 
 ## Related Questions
 - What is the purpose of the `else` condition in the code snippet?

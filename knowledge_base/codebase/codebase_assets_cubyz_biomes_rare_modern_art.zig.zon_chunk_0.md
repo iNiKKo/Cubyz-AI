@@ -8,7 +8,7 @@
 Defines configuration for a rare modern art biome in Cubyz, including properties like height limits, music, and ground structures.
 
 ## Explanation
-This chunk is a configuration file defining the properties of a specific biome in the Cubyz game engine. It sets various parameters such as the chance of this biome appearing, height restrictions, music associated with it, and whether players can spawn within it. The primary focus is on configuring ground structures, specifically 'ground_patch' elements that appear randomly across the biome's terrain. Each patch has a defined block type, chance of appearance, size, variation, depth, and smoothness.
+This chunk is a configuration file defining the properties of a specific biome in the Cubyz game engine. It sets various parameters such as the chance of this biome appearing (0.02), height restrictions (minHeightLimit = 7, minHeight = 22, maxHeight = 40, maxHeightLimit = 60), music associated with it ('cubyz:bytepop/pixel_wires'), and whether players can spawn within it (false). The primary focus is on configuring ground structures, specifically 'ground_patch' elements that appear randomly across the biome's terrain. Each patch has a defined block type, chance of appearance (0.02), size (width = 5), variation (4), depth (1), and smoothness (0.5). The block types used for these patches include 'cubyz:chalk/white', 'cubyz:chalk/aqua', 'cubyz:chalk/black', 'cubyz:chalk/blue', 'cubyz:chalk/brown', 'cubyz:chalk/crimson', 'cubyz:chalk/cyan', 'cubyz:chalk/dark_grey', 'cubyz:chalk/green', 'cubyz:chalk/grey', 'cubyz:chalk/indigo', 'cubyz:chalk/lime', 'cubyz:chalk/magenta', 'cubyz:chalk/orange', and 'cubyz:chalk/pink'.
 
 ## Related Questions
 - What is the chance of this rare modern art biome appearing?

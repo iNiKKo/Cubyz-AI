@@ -11,6 +11,10 @@ Handles the creation and management of chunk meshes for rendering.
 ## Explanation
 The `PrimitiveMesh` struct manages the mesh data for a single LOD level, including face data storage, buffer allocation, and vertex count. It provides methods to deinitialize resources (`deinit`), replace face ranges (`replaceRange`), finalize mesh data by calculating lighting and bounding boxes (`finish`), and upload mesh data to GPU buffers (`uploadData`). The `SortingData` struct is used for sorting faces based on distance and culling criteria, with an `update` method that recalculates these properties.
 
+The `deinit` method frees the buffer allocation and deinitializes the complete list. The `replaceRange` method updates a specific range of face data. The `finish` method calculates lighting for each face, updates the bounding box (`min` and `max`), and assigns light indices. The `uploadData` method uploads face data to GPU buffers, sorting them by normal direction for backface culling optimization.
+
+The `SortingData` struct includes fields for face data, distance, backface status, and culling status. The `update` method recalculates these properties based on chunk position and normal vector.
+
 ## Code Example
 ```zig
 fn deinit(self: *PrimitiveMesh) void {

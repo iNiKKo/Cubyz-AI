@@ -9,7 +9,11 @@
 The chunk implements a UI component for adding and managing structure rows in the addon creator app. Each row allows users to define different types of biome structures with specific parameters.
 
 ## Explanation
-This JavaScript code snippet defines two primary functions: `handleCustomBlockTexture` and `addStructureRow`. The `handleCustomBlockTexture` function handles file input for custom block textures, reading the file, processing it into a data URL, and updating relevant UI elements. The `addStructureRow` function dynamically adds new structure rows to the UI, each containing dropdowns for selecting structure types, inputs for spawn chances, and additional subfields based on the selected structure type. These subfields allow users to specify detailed parameters for each structure type, such as log blocks, foliage sprites, or SBB asset paths.
+This JavaScript code snippet defines three primary functions: `handleCustomBlockTexture`, `addStructureRow`, and `toggleStructSubFields`. The `handleCustomBlockTexture` function handles file input for custom block textures, reading the file, processing it into a data URL, and updating relevant UI elements. The `addStructureRow` function dynamically adds new structure rows to the UI, each containing dropdowns for selecting structure types, inputs for spawn chances, and additional subfields based on the selected structure type. These subfields allow users to specify detailed parameters for each structure type, such as log blocks, foliage sprites, or SBB asset paths.
+
+The `toggleStructSubFields` function is responsible for dynamically generating the subfields based on the selected structure type. It uses a series of conditional statements to determine which subfields to display and what values they should have. The `displayLabels` object maps each structure type ID to its corresponding display label, which is used to populate the dropdown options.
+
+The code also includes event listeners for managing user input and ensuring that the form remains marked as dirty after any changes are made.
 
 ## Related Questions
 - What is the purpose of the `handleCustomBlockTexture` function?

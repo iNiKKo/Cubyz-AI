@@ -9,7 +9,7 @@
 Added validation for empty IP address input and improved error handling in multiplayer connection logic.
 
 ## Explanation
-The change introduces a check to ensure that the IP address entry is not empty before proceeding with the connection. If it is, an error message is logged and a notification is raised. The reviewer suggests using `defer ...free(...);` for better readability and to prevent memory leaks, especially when introducing early returns or `try` statements.
+The change introduces a check to ensure that the IP address entry is not empty before proceeding with the connection. If it is, an error message 'IP address cannot be empty' is logged using `std.log.err` and raised as a notification using `raiseNotification`. The code also includes a formatted error message that is allocated using `std.fmt.allocPrint` and freed after use. This ensures proper memory management and prevents potential leaks. The reviewer suggests using `defer ...free(...);` for better readability and to prevent memory leaks, especially when introducing early returns or `try` statements.
 
 ## Related Questions
 - What is the purpose of the `raiseNotification` function in this code?

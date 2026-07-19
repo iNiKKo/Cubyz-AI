@@ -5,10 +5,10 @@
 **Concepts:** code cleanup, dead code removal
 
 ## Summary
-Discussion about removing the procedural tree structure generator after #1396.
+Discussion about removing the procedural tree structure generator after #1396, as its functionality is believed to be adequately replaced by SBB and has no clear use case post-#1396.
 
 ## Explanation
-The maintainers are considering removing the procedural tree structure generator due to the belief that its functionality can be adequately replaced by SBB (presumably another system or module). The primary motivation is to eliminate dead code and reduce maintenance overhead.
+The maintainers are considering removing the procedural tree structure generator due to the belief that its functionality can be adequately replaced by SBB (presumably another system or module). The primary motivation is to eliminate dead code, reduce maintenance overhead, and address the lack of any specific use case for the generator post-#1396.
 
 ## Related Questions
 - What are the potential impacts of removing the procedural tree structure generator?

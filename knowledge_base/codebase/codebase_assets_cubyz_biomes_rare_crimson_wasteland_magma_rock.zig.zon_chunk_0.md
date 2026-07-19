@@ -9,7 +9,11 @@
 Magma Rock Biome Configuration
 
 ## Explanation
-This chunk defines the configuration for a rare Crimson Wasteland Magma Rock biome. It specifies properties such as minimum and maximum heights, radius, roughness, chance of occurrence, hills, interpolation method, stone block, structures, and parent biomes.
+This chunk defines the configuration for a rare Crimson Wasteland Magma Rock biome. It specifies properties such as minimum and maximum heights (84 to 85), radius (16 to 36), roughness (24), chance of occurrence (0), hills (2), interpolation method (linear), stone block ('cubyz:obsidian'), structures, and parent biomes.
+
+The structure 'ground_patch' has a block type of 'cubyz:magma', a chance of 0.4, a width of 3, a variation of 2, a depth of 3, and a smoothness of 0.8.
+
+The parent biome is 'cubyz:rare/crimson_wasteland/base' with a chance of 6.
 
 ## Related Questions
 - What is the minimum height for this Magma Rock Biome?

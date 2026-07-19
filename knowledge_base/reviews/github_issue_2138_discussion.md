@@ -8,7 +8,7 @@
 The issue discusses empty folders in the `.cubyz/backgrounds` directory and confirms it has been resolved.
 
 ## Explanation
-The discussion revolves around the presence of empty asset folders within the `.cubyz/backgrounds` directory. The maintainer notes that this issue was addressed, suggesting that users might be encountering an outdated version of the folder structure. This implies a potential regression or oversight in previous updates where empty folders were inadvertently created or not cleaned up properly.
+The discussion revolves around the presence of empty asset folders within the `.cubyz/backgrounds` directory. The maintainer notes that this issue was addressed, suggesting users might be encountering an outdated version of the folder structure. Specifically, the maintainer mentioned that fixing the issue involved ensuring that all empty folders were removed and that the folder structure was updated to prevent future occurrences of such issues.
 
 ## Related Questions
 - What changes were made to fix the issue of empty folders in .cubyz/backgrounds?

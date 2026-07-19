@@ -11,6 +11,21 @@ Defines the Texture struct and its methods for initialization, binding, generati
 ## Explanation
 The Texture struct encapsulates OpenGL texture management. It provides methods to initialize textures from files or mipmaps, bind them for use in rendering, generate GPU buffers, and render images at specified positions and dimensions. The struct manages texture IDs and handles errors during image loading. It also includes methods to get the texture size.
 
+The `initFromFile` method initializes a texture from an image file. If the image cannot be read, it logs an error and uses a default image.
+
+The `initFromMipmapFiles` method initializes a texture with mipmaps. It generates multiple levels of detail for the texture based on the largest size provided and loads each level from a corresponding image file.
+
+Error handling is implemented in both `initFromFile` and `initFromMipmapFiles` methods, where errors during image loading are logged using `std.log.err`.
+
+The parameters that can be set on a texture include:
+- `GL_TEXTURE_MIN_FILTER`
+- `GL_TEXTURE_MAG_FILTER`
+- `GL_TEXTURE_WRAP_S`
+- `GL_TEXTURE_WRAP_T`
+- `GL_TEXTURE_LOD_BIAS`
+
+These parameters are set using the `glTexParameteri` and `glTexParameterf` functions.
+
 ## Code Example
 ```zig
 pub fn init() Texture {

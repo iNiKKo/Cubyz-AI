@@ -9,7 +9,7 @@
 Added a function to load permission groups from disk into memory.
 
 ## Explanation
-The change introduces a new function `loadPermissionGroups` in the `ServerWorld` struct. This function reads permission group data from a file named 'groups.zig.zon' located in the server's save directory and loads it into memory. The reviewer suggests loading all permission groups into memory to simplify management, indicating that this approach is acceptable for current needs.
+The change introduces a new function `loadPermissionGroups` in the `ServerWorld` struct. This function reads permission group data from a file named 'groups.zig.zon' located in the server's save directory and loads it into memory. The exact path is constructed using `std.fmt.allocPrint(main.stackAllocator.allocator, "saves/{s}/groups.zig.zon", .{self.path}) catch unreachable;`. After loading the data, it writes the world data to a file using `files.cubyzDir().writeZon(path, worldData);`. The reviewer suggests loading all permission groups into memory to simplify management, indicating that this approach is acceptable for current needs.
 
 ## Related Questions
 - What is the purpose of the `loadPermissionGroups` function?

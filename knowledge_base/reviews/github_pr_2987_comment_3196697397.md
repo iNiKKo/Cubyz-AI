@@ -9,7 +9,7 @@
 Refactored `SelectionRule` to `SelectionCapability` and updated the function parameter naming convention.
 
 ## Explanation
-The change involves renaming the `SelectionRule` enum to `SelectionCapability` and updating the function `loadSelectionCapabilitiesFromZon` to use the parameter name 'arena' instead of '_allocator'. This aligns with the architectural guideline that functions accepting only arena allocators should call the parameter just 'arena'. The refactoring ensures consistency in naming conventions, improving code readability and maintainability.
+The change involves renaming the `SelectionRule` enum to `SelectionCapability`, which now includes the capability `toolEffective`. The function `loadSelectionCapabilitiesFromZon` was updated to use the parameter name 'arena' instead of '_allocator'. This aligns with the architectural guideline that functions accepting only arena allocators should call the parameter just 'arena'. The refactoring ensures consistency in naming conventions, improving code readability and maintainability.
 
 ## Related Questions
 - What is the purpose of renaming `SelectionRule` to `SelectionCapability`?

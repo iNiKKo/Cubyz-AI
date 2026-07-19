@@ -9,7 +9,47 @@
 The `hashGeneric` function is made public, and a new tree structure `BranchSegment` is proposed for handling directional branches in the project.
 
 ## Explanation
-The reviewer suggests making the `hashGeneric` function public to allow broader access within the project. Additionally, they propose a new tree structure called `BranchSegment` to manage directional branches (left, right, forward, backward, up). This structure includes methods for initialization from a `ZonElement` and deinitialization, ensuring proper memory management. The reviewer questions whether there is already a tree structure available in the project or standard library, suggesting that if not, a non-generic approach might be more appropriate.
+The reviewer suggests making the `hashGeneric` function public to allow broader access within the project. Additionally, they propose a new tree structure called `BranchSegment` to manage directional branches (left, right, forward, backward, up). This structure includes methods for initialization from a `ZonElement` and deinitialization, ensuring proper memory management.
+
+The `BranchSegment` struct is defined as follows:
+```zig
+const BranchSegment = struct {
+    left: ?*BranchSegment,
+    right: ?*BranchSegment,
+    forward: ?*BranchSegment,
+    backward: ?*BranchSegment,
+    up: ?*BranchSegment,
+
+    pub fn initFromZon(allocator: NeverFailingAllocator, series: ZonElement) *@This() {
+        const self = allocator.create(@This());
+
+        const left = series.getChild("left");
+        const right = series.getChild("right");
+        const forward = series.getChild("forward");
+        const backward = series.getChild("backward");
+        const up = series.getChild("up");
+
+        self.left = if(left.isNull()) null else .initFromZon(allocator, left);
+        self.right = if(right.isNull()) null else .initFromZon(allocator, right);
+        self.forward = if(forward.isNull()) null else .initFromZon(allocator, forward);
+        self.backward = if(backward.isNull()) null else .initFromZon(allocator, backward);
+        self.up = if(up.isNull()) null else .initFromZon(allocator, up);
+
+        return self;
+    }
+
+    pub fn deinit(self: *@This(), allocator: NeverFailingAllocator) void {
+        if(self.left) |left| left.deinit(allocator);
+        if(self.right) |right| right.deinit(allocator);
+        if(self.forward) |forward| forward.deinit(allocator);
+        if(self.backward) |backward| backward.deinit(allocator);
+        if(self.up) |up| up.deinit(allocator);
+
+        allocator.destroy(self);
+    }
+};
+```
+The reviewer questions whether there is already a tree structure available in the project or standard library, suggesting that if not, a non-generic approach might be more appropriate.
 
 ## Related Questions
 - Is there an existing tree data structure in the Cubyz project or standard library?

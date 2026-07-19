@@ -9,7 +9,7 @@
 A segmentation fault occurs during rendering when uploading data to a light buffer.
 
 ## Explanation
-The issue stems from a segmentation fault in the memcpyFast function within the Zig compiler runtime library, triggered by an invalid memory access while attempting to upload data for rendering. The error is localized to the graphics module, specifically within the uploadData function of chunk_meshing.zig and mesh_storage.zig. Reviewers are concerned about potential buffer overflows or improper memory management leading to this crash. The discussion suggests adding more robust error handling and validation checks around memory allocation and data uploads to prevent similar regressions in the future.
+A segmentation fault occurs at address 0x7f77c86dc000 while uploading data to a light buffer. The issue stems from an invalid memory access within the memcpyFast function of the Zig compiler runtime library, triggered by an attempt to upload data for rendering in the graphics module. Specifically, the error is localized to the uploadData function in chunk_meshing.zig and mesh_storage.zig. Reviewers are concerned about potential buffer overflows or improper memory management leading to this crash. The discussion suggests adding more robust error handling and validation checks around memory allocation and data uploads to prevent similar regressions in the future.
 
 ## Related Questions
 - What is the potential cause of the segmentation fault in memcpyFast?

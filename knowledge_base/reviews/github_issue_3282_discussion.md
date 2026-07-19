@@ -9,7 +9,9 @@
 The issue outlines tasks for implementing skin functionality in Cubyz, including displaying, selecting, and editing skins. It also discusses design considerations such as preloading textures and separating default textures from skins.
 
 ## Explanation
-This issue document serves as a to-do list for developing skin features in Cubyz. The tasks include adding a Skin Component, modifying the Modelrenderer to use skin textures, optimizing GPU memory by avoiding duplicate texture storage, implementing a GUI file explorer with preview, sending selected skins via protocol to the server, storing player skins locally, and ensuring server options to disallow custom skin selection. Additionally, it discusses creating an inverse mapping texture for editing skins and allowing different brush shapes. The maintainer comments suggest preloading textures in assets.zig and considering separating Texture components from EntityModel for more flexibility.
+This issue document serves as a to-do list for developing skin features in Cubyz, including displaying, selecting, and editing skins. The tasks include adding a Skin Component, modifying the Modelrenderer to use skin textures, optimizing GPU memory by avoiding duplicate texture storage, implementing a GUI file explorer with preview, sending selected skins via protocol to the server, storing player skins locally, and ensuring server options to disallow custom skin selection. Additionally, it discusses creating an inverse mapping texture for editing skins and allowing different brush shapes.
+
+The maintainer comments suggest preloading textures in assets.zig for better flexibility and separating Texture components from EntityModel to allow more reuse of textures. This separation would mean that if a Texture component is not available, a default universal texture (e.g., a uniform purple 'missing texture') could be used instead.
 
 ## Related Questions
 - How does the Skin Component interact with Modelrenderer?

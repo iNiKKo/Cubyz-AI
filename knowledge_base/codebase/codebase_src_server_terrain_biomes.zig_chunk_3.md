@@ -9,7 +9,7 @@
 Defines the structure of a biome's vertical ground, including parsing from configuration and adding terrain to chunks.
 
 ## Explanation
-The `BlockStructure` struct represents the vertical layers of blocks in a biome. It contains an array of `BlockStack`, each specifying a block type and its depth range. The `init` function parses a ZonElement into a BlockStructure, allocating memory for the structure array and initializing each BlockStack from string descriptions. The `deinit` function frees the allocated memory. The `addSubTerranian` method adds terrain to a chunk based on the biome's block structure, considering depth, slope, and soil creep.
+The `BlockStructure` struct represents the vertical layers of blocks in a biome. Each layer is defined by a `BlockStack`, which includes a block type and its depth range specified by `min` and `max`. The `init` function parses a ZonElement into a BlockStructure, allocating memory for the structure array and initializing each BlockStack from string descriptions. The `deinit` function frees the allocated memory. The `addSubTerranian` method adds terrain to a chunk based on the biome's block structure, considering depth, slope, and soil creep. The `BlockStack.init` method expects a string in the format '<blockId> [min] [to max]', where `min` and `max` are optional parameters specifying the range of blocks. If only `min` is provided, it defaults to 1. If no depth range is specified, both `min` and `max` default to 1. The method handles errors such as empty strings, incorrect parameter counts, missing 'to' keyword, and invalid block IDs by returning specific error codes.
 
 ## Code Example
 ```zig

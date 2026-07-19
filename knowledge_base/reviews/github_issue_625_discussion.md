@@ -8,7 +8,7 @@
 Discussion on integrating chisels into the tool crafting system, considering material variety and properties like durability.
 
 ## Explanation
-The discussion revolves around adding chisels as a craftable item using the procedural crafting system. The primary points include allowing chisels to be made from various materials rather than just iron, and debating whether chisels should have swing speed or damage attributes. There is also mention of making chisel usage instant in the end game but reducing its viability by lowering damage.
+The discussion revolves around integrating chisels into the tool crafting system. The primary points include allowing chisels to be crafted using the procedural crafting grid from various materials, not just iron. There is debate about whether chisels should have swing speed or damage attributes; it was decided that chisels do not need swing speed but may require damage adjustments for different materials. Additionally, there is a suggestion to make chisel usage instant in the end game, but this comes with a trade-off: wooden chisels are made less viable through reduced damage.
 
 ## Related Questions
 - What materials can be used to craft chisels?
