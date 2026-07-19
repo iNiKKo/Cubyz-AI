@@ -524,7 +524,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.1.2"
-LATEST_CLIENT_VERSION = "1.2.1"
+LATEST_CLIENT_VERSION = "1.2.2"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:
@@ -1482,7 +1482,17 @@ def _get_audit_work(user_id: str, hardware_tier: str, client_local_models: set =
     candidates = []
     for t in audit_chunk_queue:
         cid = t["chunk_id"]
-        if cid in state["completed"] or cid in state["locked"]:
+        # NOT also skipped for "cid in state['completed']" -- audit_chunk_queue only ever contains
+        # a chunk that's either never been audited, or WAS audited but the combined raw+kb hash
+        # changed since (see audit_initialize_chunks()'s skip-unchanged logic, and _mark_done's
+        # comment on deliberately not caching a hash for LLM-only-approved fixes so they get a
+        # second independent pass later). state["completed"] never has entries removed from it, so
+        # a completed-list check here would make that whole "eligible for re-audit" design
+        # permanently unreachable: confirmed live -- a second full audit run over ~2,255
+        # previously-applied fixes produced zero new activity and reported "complete" instantly,
+        # because every one of them was silently filtered out right here despite
+        # audit_initialize_chunks() correctly re-queuing all of them every restart.
+        if cid in state["locked"]:
             continue
         p = pending.get(cid)
         if not p or not p.get("stage"):
@@ -1545,7 +1555,16 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
     state = load_lock_state(AUDIT_LOCK_FILE)
     state["locked"].pop(submission.chunk_id, None)
 
-    if submission.chunk_id in state["completed"]:
+    original_task = next((t for t in audit_chunk_queue if t["chunk_id"] == submission.chunk_id), None)
+
+    # A chunk_id already in state["completed"] is normally a late/duplicate submission for
+    # already-resolved work and should be ignored -- EXCEPT when it's still in audit_chunk_queue
+    # (original_task is not None), meaning its combined raw+kb hash changed since that earlier
+    # completion and audit_initialize_chunks() legitimately re-queued it for a fresh pass (see
+    # _get_audit_work's comment for the full story -- this is the submit-side half of the same
+    # bug: without this exception, ~2,255 previously-applied fixes could never be resubmitted even
+    # after the dispatch-side fix, since every one of them was already in state["completed"]).
+    if submission.chunk_id in state["completed"] and original_task is None:
         save_lock_state(AUDIT_LOCK_FILE, state)
         return {"status": "ignored"}
 
@@ -1560,7 +1579,6 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
         state["actions_baseline_completed"] = len(state["completed"])
     state["actions_count"] = state.get("actions_count", 0) + 1
 
-    original_task = next((t for t in audit_chunk_queue if t["chunk_id"] == submission.chunk_id), None)
     collection = (original_task or {}).get("collection", "docs")
     content_hash = (original_task or {}).get("content_hash")
     kb_content = (original_task or {}).get("kb_content", "")
@@ -1572,7 +1590,11 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
     pending = read_json_file(AUDIT_PENDING_FILE, {})
 
     def _mark_done(result_label, cache_hash=True):
-        state["completed"].append(submission.chunk_id)
+        # Idempotent -- see _submit_rag_work's comment on why appending unconditionally would let
+        # len(state["completed"]) exceed total_chunks once a chunk can legitimately complete more
+        # than once (a re-audit cycle re-resolving a chunk that was already in this list).
+        if submission.chunk_id not in state["completed"]:
+            state["completed"].append(submission.chunk_id)
         save_lock_state(AUDIT_LOCK_FILE, state)
         if cache_hash and content_hash:
             audit_hashes = read_json_file(AUDIT_HASH_FILE, {})
@@ -1919,10 +1941,17 @@ def _get_rag_work(user_id: str, hardware_tier: str, model: str) -> dict:
     # thin chunks.
     client_model_rank = MODEL_TIER_RANK.get(model, 1)
 
+    # NOT also filtered on "chunk_id not in state['completed']" -- rag_chunk_queue only ever
+    # contains a chunk that's either never been completed, or WAS completed but whose source file
+    # hash changed since (see rag_initialize_chunks()'s skip-unchanged logic). A completed-list
+    # check here would silently exclude that second case forever: state["completed"] never has
+    # entries removed from it, so a hash-changed chunk that rag_initialize_chunks() correctly
+    # re-queued on every restart could never actually be re-dispatched to anyone. Confirmed live
+    # as the exact same bug in audit mode (see _get_audit_work's comment) -- fixed here too since
+    # it's the identical pattern, not something specific to audit.
     available_tasks = [
         t for t in rag_chunk_queue
-        if t["chunk_id"] not in state["completed"]
-        and t["chunk_id"] not in state["locked"]
+        if t["chunk_id"] not in state["locked"]
         and t["difficulty"] in allowed
         and (not t.get("requires_strong_model") or client_model_rank >= THIN_CHUNK_MIN_TIER)
     ]
@@ -1973,9 +2002,15 @@ def _get_finetune_work(user_id: str, hardware_tier: str) -> dict:
     if hardware_tier == "easy":
         available_tasks = []
     else:
+        # NOT filtered on "chunk_id not in state['completed']" -- see _get_rag_work's comment for
+        # why. finetune_chunk_queue already excludes anything genuinely settled (unchanged since
+        # its last completion); a completed-list check on top of that would silently exclude any
+        # chunk finetune_initialize_chunks() re-queued because its knowledge_base source changed
+        # since the earlier pass -- state["completed"] never has entries removed from it, so that
+        # exclusion would be permanent, not just until the next restart.
         available_tasks = [
             t for t in finetune_chunk_queue
-            if t["chunk_id"] not in state["completed"] and t["chunk_id"] not in state["locked"]
+            if t["chunk_id"] not in state["locked"]
         ]
 
     if not available_tasks:
@@ -2030,13 +2065,25 @@ def get_work(user_id: str, hardware_tier: str = "medium", model: str = "", clien
 def _submit_rag_work(submission: UnifiedSubmission) -> dict:
     state = load_lock_state(RAG_LOCK_FILE)
 
-    if submission.chunk_id in state["completed"]:
+    # A chunk_id already in state["completed"] is normally a late/duplicate submission for
+    # already-resolved work and should be ignored -- EXCEPT when it's also still in
+    # rag_chunk_queue, meaning its source changed since that earlier completion and
+    # rag_initialize_chunks() legitimately re-queued it (see _get_rag_work's comment). Checking
+    # queue membership, not just completed-list membership, is what makes that re-crunch actually
+    # reachable instead of silently unrecoverable forever.
+    still_queued = any(t["chunk_id"] == submission.chunk_id for t in rag_chunk_queue)
+    if submission.chunk_id in state["completed"] and not still_queued:
         state["locked"].pop(submission.chunk_id, None)
         save_lock_state(RAG_LOCK_FILE, state)
         return {"status": "ignored"}
 
     state["locked"].pop(submission.chunk_id, None)
-    state["completed"].append(submission.chunk_id)
+    # Idempotent -- a re-crunched chunk (still_queued case above) may already be in
+    # state["completed"] from its earlier pass; appending it again would let len(state["completed"])
+    # exceed total_chunks and break every percentage/"done" calculation that assumes it's a count
+    # of unique chunks, not completion events.
+    if submission.chunk_id not in state["completed"]:
+        state["completed"].append(submission.chunk_id)
     save_lock_state(RAG_LOCK_FILE, state)
     _record_completion(rag_completion_log)
 
@@ -2094,13 +2141,21 @@ def _submit_rag_work(submission: UnifiedSubmission) -> dict:
 
 def _submit_finetune_work(submission: UnifiedSubmission) -> dict:
     state = load_lock_state(FINETUNE_LOCK_FILE)
-    if submission.chunk_id in state["completed"]:
+    # See _submit_rag_work's comment -- same reasoning, same fix: only ignore this as a stale/
+    # duplicate submission if it's ALSO no longer in the active queue. Still in the queue means
+    # finetune_initialize_chunks() re-queued it (its knowledge_base source changed since the
+    # earlier completion), and this submission is the legitimate redo, not a duplicate.
+    still_queued = any(t["chunk_id"] == submission.chunk_id for t in finetune_chunk_queue)
+    if submission.chunk_id in state["completed"] and not still_queued:
         state["locked"].pop(submission.chunk_id, None)
         save_lock_state(FINETUNE_LOCK_FILE, state)
         return {"status": "ignored"}
 
     state["locked"].pop(submission.chunk_id, None)
-    state["completed"].append(submission.chunk_id)
+    # Idempotent -- see _submit_rag_work's comment on why appending unconditionally would let
+    # len(state["completed"]) exceed total_chunks once a chunk can legitimately complete twice.
+    if submission.chunk_id not in state["completed"]:
+        state["completed"].append(submission.chunk_id)
     save_lock_state(FINETUNE_LOCK_FILE, state)
     _record_completion(finetune_completion_log)
 
@@ -2152,6 +2207,51 @@ def submit_work(submission: UnifiedSubmission):
             return _submit_audit_work(submission)
         return _submit_rag_work(submission)
 
+# c/g = a dual-lane secondary (see DualLaneController's secondary_user_id); p through z = a
+# parallel worker (see ParallelWorkerPoolController's suffix pool). Both build their synthetic id
+# the same way: user_id[:11] + one of these letters.
+_LANE_CHILD_SUFFIXES = "cgpqrstuvwxyz"
+
+def _merge_lane_children(rankings: list, sum_keys: list) -> list:
+    """Folds a dual-lane secondary's or parallel worker's synthetic identity into its real
+    owner's entry before the leaderboard is ranked or shown -- those synthetic ids exist purely
+    so the ADMIN dashboard can show distinct per-lane hardware/status panels (see
+    render_dashboard()); they were never meant to look like separate volunteers to anyone else.
+    Confirmed live as confusing: a dual-lane or parallel-workers volunteer showed up split across
+    2-4 tiny leaderboard rows (e.g. "nickc", "nicksrvrc", "nickpcc") instead of their real
+    combined contribution under one name.
+
+    Reconstructs parent from child structurally (child == parent[:11] + suffix) rather than
+    needing the relationship recorded anywhere explicitly -- the exact inverse of how
+    DualLaneController/ParallelWorkerPoolController build the child id. Only merges when the
+    reconstructed parent is ALSO a real entry already in this same rankings list (so a
+    coincidentally suffix-ending real name can never be misattributed to a non-existent parent),
+    and only when the reconstruction is provably exact -- see the truncation-ambiguity note below.
+    """
+    by_id = {r["user_id"]: r for r in rankings}
+    merged_away = set()
+    for user_id in list(by_id.keys()):
+        if user_id in merged_away or len(user_id) < 2 or user_id[-1] not in _LANE_CHILD_SUFFIXES:
+            continue
+        parent_id = user_id[:-1]
+        if parent_id not in by_id or parent_id in merged_away:
+            continue
+        # A parent longer than 11 chars gets truncated before the suffix is appended, so its
+        # child can't always be inverted back to the exact original parent id from the child
+        # alone -- this check only accepts the reconstruction when it's provably exact (parent is
+        # <=11 chars, or the truncated-and-resuffixed form matches the child exactly either way),
+        # so an unprovable case is left as a separate row rather than risked as a wrong merge.
+        if parent_id[:11] + user_id[-1] != user_id:
+            continue
+        entry, parent = by_id[user_id], by_id[parent_id]
+        for k in sum_keys:
+            if k in parent and k in entry:
+                parent[k] = parent[k] + entry[k]
+        if "ONLINE" in entry.get("status", "") and "ONLINE" not in parent.get("status", ""):
+            parent["status"] = entry["status"]
+        merged_away.add(user_id)
+    return [r for uid, r in by_id.items() if uid not in merged_away]
+
 def _rag_leaderboard() -> dict:
     state = load_lock_state(RAG_LOCK_FILE)
     user_stats = load_user_stats(RAG_STATS_FILE)
@@ -2186,6 +2286,13 @@ def _rag_leaderboard() -> dict:
             "status": "ONLINE 🟢" if is_online else "OFFLINE 🔴"
         })
 
+    # Merged BEFORE contribution_percentage is recomputed -- that field is derived from
+    # chunks_completed, not itself additive, so it has to be recalculated against each entry's
+    # now-merged chunks_completed rather than summed like a raw count would be.
+    rankings = _merge_lane_children(rankings, sum_keys=["chunks_completed", "lines_crunched"])
+    for entry in rankings:
+        entry["contribution_percentage"] = round((entry["chunks_completed"] / lifetime_total * 100) if lifetime_total > 0 else 0.0, 2)
+
     rankings.sort(key=lambda x: (x["chunks_completed"], x["lines_crunched"]), reverse=True)
     for index, entry in enumerate(rankings, 1):
         entry["rank"] = index
@@ -2216,6 +2323,7 @@ def _finetune_leaderboard() -> dict:
             "pairs_generated": data["pairs_generated"],
             "status": "ONLINE" if is_online else "OFFLINE",
         })
+    rankings = _merge_lane_children(rankings, sum_keys=["chunks_completed", "pairs_generated"])
     rankings.sort(key=lambda x: (x["chunks_completed"], x["pairs_generated"]), reverse=True)
     for i, entry in enumerate(rankings, 1):
         entry["rank"] = i
@@ -2248,6 +2356,7 @@ def _audit_leaderboard() -> dict:
             "fixes_applied": data.get("fixes_applied", 0),
             "status": "ONLINE" if is_online else "OFFLINE",
         })
+    rankings = _merge_lane_children(rankings, sum_keys=["chunks_audited", "issues_found", "reviews_done", "fixes_applied"])
     rankings.sort(key=lambda x: (x["fixes_applied"], x["chunks_audited"]), reverse=True)
     for i, entry in enumerate(rankings, 1):
         entry["rank"] = i
@@ -2322,6 +2431,135 @@ def delete_user(user_id: str):
         _user_error_counts.pop(user_key, None)
 
     return {"status": "deleted", "user_id": user_id}
+
+@app.post("/rename_user")
+def rename_user(old_user_id: str, new_user_id: str):
+    """Migrates every trace of one volunteer identity to a new name, instead of the old_user_id's
+    entire history just sitting orphaned while new_user_id starts over at zero. Confirmed live as
+    a real gap: the pause menu's [N] option originally only changed what the CLIENT saves
+    locally -- the server had no idea the new name was the same person, so it looked exactly like
+    a brand-new volunteer with no history, and the old name's stats/leaderboard entry/hardware
+    info were never touched at all. Mirrors delete_user's list of what counts as "every trace,"
+    just moving each piece to the new key instead of discarding it."""
+    for uid in (old_user_id, new_user_id):
+        if not uid.isalpha() or not (3 <= len(uid) <= 12):
+            raise HTTPException(status_code=400, detail=f"Invalid user_id: '{uid}'.")
+    old_key, new_key = old_user_id.lower(), new_user_id.lower()
+    if old_key == new_key:
+        raise HTTPException(status_code=400, detail="New name is the same as the old one.")
+
+    with campaign_state_lock:
+        # Refuse if new_user_id is already a real, distinct identity with its own history --
+        # renaming INTO it would silently merge two different volunteers' stats together, which
+        # is a much worse outcome than just asking for a different name.
+        stats_snapshots = {f: load_user_stats(f) for f in (RAG_STATS_FILE, FINETUNE_STATS_FILE, AUDIT_STATS_FILE)}
+        if new_key != old_key and (new_key in _user_first_seen or any(new_key in s for s in stats_snapshots.values())):
+            raise HTTPException(status_code=409, detail=f"'{new_user_id}' already exists on the server -- pick a different name.")
+
+        # Reassign (not release) any chunk currently locked to the old name, so in-flight work
+        # this exact rename request interrupted isn't lost or handed to someone else mid-task.
+        for lock_file in (RAG_LOCK_FILE, FINETUNE_LOCK_FILE, AUDIT_LOCK_FILE):
+            state = load_lock_state(lock_file)
+            changed = False
+            for info in state["locked"].values():
+                if info.get("user_id", "").lower() == old_key:
+                    info["user_id"] = new_user_id
+                    changed = True
+            if changed:
+                save_lock_state(lock_file, state)
+
+        # Per-campaign stats/leaderboard entries.
+        for stats_file, stats in stats_snapshots.items():
+            if old_key in stats:
+                stats[new_key] = stats.pop(old_key)
+                save_user_stats(stats_file, stats)
+
+        # Live dashboard / identity state.
+        if old_key in online_clients:
+            online_clients[new_key] = online_clients.pop(old_key)
+        if old_key in _user_first_seen:
+            _user_first_seen[new_key] = _user_first_seen.pop(old_key)
+            try:
+                with open(USER_FIRST_SEEN_FILE, "w", encoding="utf-8") as f:
+                    json.dump(_user_first_seen, f, indent=2)
+            except Exception:
+                pass
+        if old_key in _user_hardware_info:
+            _user_hardware_info[new_key] = _user_hardware_info.pop(old_key)
+            _save_user_hardware_info()
+        if old_key in audit_model_assignments:
+            audit_model_assignments[new_key] = audit_model_assignments.pop(old_key)
+            write_json_file(AUDIT_MODEL_ASSIGNMENTS_FILE, audit_model_assignments, "audit model assignments")
+
+        log_event("admin", new_user_id, "→", Colors.CYAN, f"'{old_user_id}' renamed to '{new_user_id}'")
+        _user_last_status.pop(old_key, None)
+        _user_error_counts[new_key] = _user_error_counts.pop(old_key, 0)
+
+    return {"status": "renamed", "old_user_id": old_user_id, "new_user_id": new_user_id}
+
+@app.post("/merge_user")
+def merge_user(absorbed_user_id: str, into_user_id: str):
+    """Combines two REAL, independent identities that turned out to be the same volunteer (e.g.
+    a rename that happened before rename_user's server-side migration existed, so the old name's
+    history was left orphaned instead of moved) -- unlike rename_user, this is explicitly for the
+    case where into_user_id already has its own real history too, and both should be summed
+    together rather than one refusing to overwrite the other. Stats are additive across every
+    campaign; first_seen keeps whichever is EARLIER (the absorbed identity may well be the older
+    one, e.g. a volunteer's original name from early in the project); hardware_info keeps
+    into_user_id's (the current name is the one still actively reporting real specs)."""
+    for uid in (absorbed_user_id, into_user_id):
+        if not uid.isalpha() or not (3 <= len(uid) <= 12):
+            raise HTTPException(status_code=400, detail=f"Invalid user_id: '{uid}'.")
+    absorbed_key, into_key = absorbed_user_id.lower(), into_user_id.lower()
+    if absorbed_key == into_key:
+        raise HTTPException(status_code=400, detail="Both names are the same identity already.")
+
+    with campaign_state_lock:
+        for lock_file in (RAG_LOCK_FILE, FINETUNE_LOCK_FILE, AUDIT_LOCK_FILE):
+            state = load_lock_state(lock_file)
+            changed = False
+            for info in state["locked"].values():
+                if info.get("user_id", "").lower() == absorbed_key:
+                    info["user_id"] = into_user_id
+                    changed = True
+            if changed:
+                save_lock_state(lock_file, state)
+
+        # Per-campaign stats -- summed field by field (not a blind dict overwrite), since either
+        # side might be missing fields the other has (different campaign shapes, or a fresh
+        # identity that's never submitted to this particular campaign yet).
+        for stats_file in (RAG_STATS_FILE, FINETUNE_STATS_FILE, AUDIT_STATS_FILE):
+            stats = load_user_stats(stats_file)
+            if absorbed_key in stats:
+                absorbed_data = stats.pop(absorbed_key)
+                into_data = stats.setdefault(into_key, {})
+                for k, v in absorbed_data.items():
+                    if isinstance(v, (int, float)):
+                        into_data[k] = into_data.get(k, 0) + v
+                    elif k not in into_data:
+                        into_data[k] = v
+                save_user_stats(stats_file, stats)
+
+        online_clients.pop(absorbed_key, None)
+        if absorbed_key in _user_first_seen:
+            absorbed_seen = _user_first_seen.pop(absorbed_key)
+            if into_key not in _user_first_seen or absorbed_seen < _user_first_seen[into_key]:
+                _user_first_seen[into_key] = absorbed_seen
+            try:
+                with open(USER_FIRST_SEEN_FILE, "w", encoding="utf-8") as f:
+                    json.dump(_user_first_seen, f, indent=2)
+            except Exception:
+                pass
+        _user_hardware_info.pop(absorbed_key, None)
+        _save_user_hardware_info()
+        audit_model_assignments.pop(absorbed_key, None)
+        write_json_file(AUDIT_MODEL_ASSIGNMENTS_FILE, audit_model_assignments, "audit model assignments")
+
+        log_event("admin", into_user_id, "→", Colors.CYAN, f"'{absorbed_user_id}' merged into '{into_user_id}'")
+        _user_last_status.pop(absorbed_key, None)
+        _user_error_counts.pop(absorbed_key, None)
+
+    return {"status": "merged", "absorbed_user_id": absorbed_user_id, "into_user_id": into_user_id}
 
 @app.get("/leaderboard")
 def get_leaderboard():

@@ -111,7 +111,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.2.1"
+VERSION = "1.2.2"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -2649,13 +2649,24 @@ def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None,
             elif not is_valid_user_id(new_id):
                 print(f"{Colors.RED}[X] '{new_id}' isn't valid -- 3-12 letters only, no numbers or symbols.{Colors.RESET}")
             else:
+                # Migrates stats/leaderboard/hardware-info/locked-chunk ownership server-side from
+                # the old name to the new one -- confirmed live as a real gap: this used to just
+                # call save_user() and restart, which only changes what THIS CLIENT remembers.
+                # The server had no idea the new name was the same person, so it looked exactly
+                # like a brand-new volunteer starting at zero while the old name's real history
+                # sat orphaned, still on the server, under a name nobody was using anymore.
+                try:
+                    make_request(f"{SERVER_URL}/rename_user?old_user_id={current}&new_user_id={new_id}", method="POST", timeout=15)
+                except Exception as e:
+                    print(f"{Colors.RED}[X] Couldn't reach the server to migrate '{current}' to '{new_id}': {e}. Nothing was renamed -- try again once it's reachable.{Colors.RESET}")
+                    continue
                 save_user(new_id)
                 # A running lane's user_id is a plain function parameter captured at thread-start,
                 # not something safely mutable mid-loop from here -- restarting (same pattern as
                 # [B]'s benchmark reset) re-enters main() from the top and picks the new name up
                 # cleanly everywhere it's used (server identity, diagnostics, secondary/parallel
                 # worker ids), rather than trying to hot-swap it in three different closures at once.
-                print(f"{Colors.GREEN}[✓] Renamed to '{new_id}'. Restarting to apply...{Colors.RESET}")
+                print(f"{Colors.GREEN}[✓] Renamed to '{new_id}' -- your stats and history came with you. Restarting to apply...{Colors.RESET}")
                 os.execv(sys.executable, [sys.executable] + sys.argv)
         elif choice == 'x':
             current = load_saved_user()
