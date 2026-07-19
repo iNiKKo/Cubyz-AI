@@ -524,7 +524,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.1.2"
-LATEST_CLIENT_VERSION = "1.2.0"
+LATEST_CLIENT_VERSION = "1.2.1"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:
@@ -2263,6 +2263,65 @@ def _audit_leaderboard() -> dict:
                                      _audit_avg_actions_per_chunk(state.get("actions_count", 0), completed_since_tracking)),
         "rankings": rankings,
     }
+
+@app.post("/delete_user")
+def delete_user(user_id: str):
+    """Purges every trace of one volunteer identity from the server -- raised by a volunteer's
+    own request (see the pause menu's [X] option), e.g. after renaming, or just wanting to stop
+    appearing on the leaderboard/dashboard under an old id. Deliberately thorough rather than
+    just clearing user_stats: a half-deleted identity (still showing hardware info or "joined"
+    time, or holding a stale chunk lock forever) would be a worse, more confusing state than
+    either "fully present" or "fully gone."""
+    if not user_id.isalpha() or not (3 <= len(user_id) <= 12):
+        raise HTTPException(status_code=400, detail="Invalid user_id.")
+    user_key = user_id.lower()
+
+    with campaign_state_lock:
+        # Release any chunk currently locked to this user across every campaign, rather than
+        # leaving it to sit locked until TASK_TIMEOUT expires on its own -- someone else should be
+        # able to pick it up immediately, not wait out a timeout for a user who no longer exists.
+        for lock_file in (RAG_LOCK_FILE, FINETUNE_LOCK_FILE, AUDIT_LOCK_FILE):
+            state = load_lock_state(lock_file)
+            released = [cid for cid, info in state["locked"].items() if info.get("user_id", "").lower() == user_key]
+            for cid in released:
+                state["locked"].pop(cid, None)
+            if released:
+                save_lock_state(lock_file, state)
+
+        # Per-campaign stats/leaderboard entries.
+        for stats_file in (RAG_STATS_FILE, FINETUNE_STATS_FILE, AUDIT_STATS_FILE):
+            stats = load_user_stats(stats_file)
+            if user_key in stats:
+                del stats[user_key]
+                save_user_stats(stats_file, stats)
+
+        # Live dashboard / identity state -- both the in-memory copy AND the persisted file for
+        # first-seen/hardware-info, which otherwise survive a server restart forever (see
+        # USER_FIRST_SEEN_FILE's and USER_HARDWARE_INFO_FILE's own comments on why they're
+        # persisted at all).
+        online_clients.pop(user_key, None)
+        _user_first_seen.pop(user_key, None)
+        try:
+            with open(USER_FIRST_SEEN_FILE, "w", encoding="utf-8") as f:
+                json.dump(_user_first_seen, f, indent=2)
+        except Exception:
+            pass
+        _user_hardware_info.pop(user_key, None)
+        _save_user_hardware_info()
+        audit_model_assignments.pop(user_key, None)
+        write_json_file(AUDIT_MODEL_ASSIGNMENTS_FILE, audit_model_assignments, "audit model assignments")
+
+        # log_event() itself writes into _user_last_status (and, since this is RED-severity, into
+        # _user_error_counts) as a side effect of recording the announcement -- called deliberately
+        # INSIDE the lock and BEFORE the two lines below, so those two pops are what actually have
+        # the last word. Popping first and logging after (the original order here) silently
+        # resurrected both entries for a user that otherwise no longer exists anywhere -- confirmed
+        # by a real before/after test against live state, not just read from the code.
+        log_event("admin", user_id, "✗", Colors.RED, f"'{user_id}' deleted their identity from the server")
+        _user_last_status.pop(user_key, None)
+        _user_error_counts.pop(user_key, None)
+
+    return {"status": "deleted", "user_id": user_id}
 
 @app.get("/leaderboard")
 def get_leaderboard():

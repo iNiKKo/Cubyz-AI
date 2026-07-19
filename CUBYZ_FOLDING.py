@@ -111,7 +111,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.2.0"
+VERSION = "1.2.1"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -1068,9 +1068,12 @@ def ensure_ollama_running_and_model_pulled(model_name):
     except Exception as e:
         sys.exit(f"{Colors.RED}[X] Model setup failed: {e}{Colors.RESET}")
 
-def make_request(url, payload=None, timeout=180):
+def make_request(url, payload=None, timeout=180, method=None):
     data = json.dumps(payload).encode('utf-8') if payload else None
-    req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'} if data else {})
+    # method=None preserves the original behavior (urllib defaults to POST when data is present,
+    # GET otherwise) -- only needed explicitly for a POST endpoint that takes no body, like
+    # /delete_user, where relying on "data present" to imply POST doesn't work.
+    req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'} if data else {}, method=method)
     # Default 180s (not RAG_FOLDING's original 120s) -- finetune generation prompts run longer
     # than RAG extraction, and this function serves both the Cubyz server calls and the local
     # Ollama call. Callers doing a quick status poll (version/get_work/leaderboard) pass a much
@@ -2559,38 +2562,59 @@ def run_live_gpu_diagnostic():
             print(f"  {Colors.YELLOW}→ This wasn't a timeout -- Ollama itself rejected or errored on this request. Check Ollama's own logs for the real cause.{Colors.RESET}")
     print(f"{Colors.CYAN}{'─' * 74}{Colors.RESET}\n")
 
+def _print_interrupt_menu(dual_controller, parallel_controller, has_gpu):
+    """Renders the pause menu fresh on every loop iteration (some entries' status -- auto-update,
+    dual-lane, parallel workers -- can change between choices) as vertical, grouped sections
+    instead of one long wrapped line -- confirmed live that the single-line version was hard to
+    scan once enough options accumulated on it."""
+    auto_on = load_auto_update_preference()
+    auto_status = f"{Colors.GREEN if auto_on else Colors.GRAY}{'ON' if auto_on else 'OFF'}{Colors.RESET}"
+
+    print(f"\n{Colors.BOLD}── General ─────────────────────────────────────────{Colors.RESET}")
+    print(f"  [R] Resume crunching")
+    print(f"  [L] View the leaderboard")
+    print(f"  [U] View active users")
+    print(f"  [Q] Safely exit")
+
+    print(f"\n{Colors.BOLD}── Customisation ───────────────────────────────────{Colors.RESET}")
+    print(f"  [N] Change your volunteer name")
+    print(f"  [C] Change your primary lane (GPU ONLY / CPU ONLY / DUAL MODE)")
+    print(f"  [A] Toggle auto-update (currently {auto_status})")
+    print(f"  [X] {Colors.RED}Delete your identity from the server{Colors.RESET} (stats, leaderboard, hardware info -- permanent)")
+
+    # dual_controller/parallel_controller only exist at all when this machine is actually capable
+    # of them (see main()) -- their mere presence is what gates this whole section ever showing
+    # up, so an incapable machine's menu looks unchanged apart from the new grouping.
+    perf_lines = []
+    if dual_controller is not None:
+        # The secondary lane isn't always CPU anymore (see main()'s dual_capable comment -- a
+        # working GPU that lost PRIMARY on capability tier runs as secondary instead), so this
+        # reads the actual lane_tag rather than hardcoding "CPU" into the menu text.
+        secondary_tag = dual_controller.cpu_lane_kwargs.get("lane_tag", "secondary")
+        d_on = dual_controller.active
+        d_status = f"{Colors.GREEN if d_on else Colors.GRAY}{'ON' if d_on else 'OFF'}{Colors.RESET}"
+        perf_lines.append(f"  [D] Toggle the secondary {secondary_tag} lane (currently {d_status})")
+    if parallel_controller is not None:
+        p_on = parallel_controller.active
+        p_status = f"{Colors.GREEN if p_on else Colors.GRAY}{'ON' if p_on else 'OFF'}{Colors.RESET}"
+        perf_lines.append(f"  [P] Toggle {parallel_controller.worker_count} parallel workers (currently {p_status})")
+    perf_lines.append(f"  [B] Force a fresh hardware benchmark")
+    if perf_lines:
+        print(f"\n{Colors.BOLD}── Performance ─────────────────────────────────────{Colors.RESET}")
+        for line in perf_lines:
+            print(line)
+
+    print(f"\n{Colors.BOLD}── Diagnostics ─────────────────────────────────────{Colors.RESET}")
+    print(f"  [G] Run a live GPU diagnostic")
+    print()
+
 def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None,
                            parallel_controller: "ParallelWorkerPoolController | None" = None,
                            has_gpu: bool = False):
     print(f"\n\n{Colors.YELLOW}{Colors.BOLD}[||] Node Execution Paused via User Action.{Colors.RESET}")
     while True:
-        auto_status_color = Colors.GREEN if load_auto_update_preference() else Colors.GRAY
-        auto_status = f"{auto_status_color}{'ON' if load_auto_update_preference() else 'OFF'}{Colors.RESET}"
-        # dual_controller only exists at all on a machine that was actually dual-capable at
-        # startup (see main()) -- its mere presence is what gates this option ever showing up in
-        # the prompt, so a non-capable machine's menu looks completely unchanged.
-        dual_option = ""
-        if dual_controller is not None:
-            # The secondary lane isn't always CPU anymore (see main()'s dual_capable comment --
-            # a working GPU that lost PRIMARY on capability tier runs as secondary instead), so
-            # this reads the actual lane_tag rather than hardcoding "CPU" into the menu text.
-            secondary_tag = dual_controller.cpu_lane_kwargs.get("lane_tag", "secondary")
-            dual_status_color = Colors.GREEN if dual_controller.active else Colors.GRAY
-            dual_status = f"{dual_status_color}{'ON' if dual_controller.active else 'OFF'}{Colors.RESET}"
-            dual_option = f", [D] to toggle the secondary {secondary_tag} lane (currently {dual_status})"
-        # Same gating idea as dual_option -- parallel_controller only exists at all once the
-        # primary lane's tier is known (see main()), since its worker count is tier-scaled.
-        parallel_option = ""
-        if parallel_controller is not None:
-            p_status_color = Colors.GREEN if parallel_controller.active else Colors.GRAY
-            p_status = f"{p_status_color}{'ON' if parallel_controller.active else 'OFF'}{Colors.RESET}"
-            parallel_option = f", [P] to toggle {parallel_controller.worker_count} parallel workers (currently {p_status})"
-        choice = input(
-            f"Enter [R] to resume, [L] to view the leaderboard, [U] to view active users, "
-            f"[A] to toggle auto-update (currently {auto_status}){dual_option}{parallel_option}, "
-            f"[N] to change your volunteer name, [C] to change your primary lane, "
-            f"[B] to force a fresh hardware benchmark, [G] to run a live GPU diagnostic, or [Q] to safely exit: "
-        ).strip().lower()
+        _print_interrupt_menu(dual_controller, parallel_controller, has_gpu)
+        choice = input("Enter your choice: ").strip().lower()
         if choice == 'r': return
         elif choice == 'l': fetch_and_show_leaderboard()
         elif choice == 'u': fetch_and_show_userlist()
@@ -2633,16 +2657,43 @@ def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None,
                 # worker ids), rather than trying to hot-swap it in three different closures at once.
                 print(f"{Colors.GREEN}[✓] Renamed to '{new_id}'. Restarting to apply...{Colors.RESET}")
                 os.execv(sys.executable, [sys.executable] + sys.argv)
+        elif choice == 'x':
+            current = load_saved_user()
+            confirm = input(f"{Colors.RED}This permanently deletes '{current}' from the server -- stats, leaderboard entry, "
+                             f"hardware info, and releases any chunk currently locked to you. Type the name again to "
+                             f"confirm, or leave blank to cancel: {Colors.RESET}").strip()
+            if not confirm:
+                print(f"{Colors.GRAY}[~] Cancelled -- nothing deleted.{Colors.RESET}")
+            elif confirm != current:
+                print(f"{Colors.RED}[X] That didn't match '{current}' -- cancelled, nothing deleted.{Colors.RESET}")
+            else:
+                try:
+                    make_request(f"{SERVER_URL}/delete_user?user_id={current}", method="POST", timeout=15)
+                    print(f"{Colors.GREEN}[✓] '{current}' deleted from the server.{Colors.RESET}")
+                except Exception as e:
+                    print(f"{Colors.RED}[X] Couldn't reach the server to delete '{current}': {e}. Nothing was deleted -- try again once it's reachable.{Colors.RESET}")
+                    continue
+                # Only clears the saved identity, not auto_update/benchmark_result -- those are
+                # real hardware/preference facts about THIS machine, still valid under whatever
+                # name it picks next. is_valid_user_id(load_saved_user()) will be False on the
+                # next boot, which is exactly what makes main() prompt for a fresh name instead of
+                # silently re-registering the identity that was just deleted.
+                config = load_config()
+                config.pop("user_id", None)
+                save_config(config)
+                print(f"{Colors.CYAN}[~] Restarting to pick a new volunteer name...{Colors.RESET}")
+                os.execv(sys.executable, [sys.executable] + sys.argv)
         elif choice == 'c':
+            current_labels = {"gpu": "GPU ONLY", "cpu": "CPU ONLY", "auto": "DUAL MODE"}
             current_override = load_lane_override() or "auto"
-            print(f"Current primary lane setting: {current_override.upper()}" + (" (this machine has no GPU, so CPU is the only real option)" if not has_gpu else ""))
-            pick = input("Enter [G] to force GPU primary, [P] to force CPU primary, [A] for auto (benchmark decides), or leave blank to cancel: ").strip().lower()
+            print(f"Current setting: {current_labels[current_override]}" + (" (this machine has no GPU, so CPU ONLY is the only real option)" if not has_gpu else ""))
+            pick = input("Enter [G] for GPU ONLY, [P] for CPU ONLY, [D] for DUAL MODE (auto-picks primary; both lanes run if this machine qualifies), or leave blank to cancel: ").strip().lower()
             if not pick:
                 print(f"{Colors.GRAY}[~] Cancelled.{Colors.RESET}")
             elif pick == 'g' and not has_gpu:
                 print(f"{Colors.RED}[X] This machine has no GPU -- there's nothing to switch to.{Colors.RESET}")
-            elif pick in ('g', 'p', 'a'):
-                save_lane_override({'g': "gpu", 'p': "cpu", 'a': None}[pick])
+            elif pick in ('g', 'p', 'd'):
+                save_lane_override({'g': "gpu", 'p': "cpu", 'd': None}[pick])
                 # Same reasoning as rename above -- primary_is_gpu and everything derived from it
                 # (chosen_model, hardware_tier, thread counts, the whole dual/parallel setup) is
                 # decided once at startup, not something to reassign live out from under a running
@@ -3148,7 +3199,11 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
                 announce_board = current_board()
                 if announce_board is None or announce_board.should_announce_mode(mode):
                     if mode == "idle":
-                        banner(f"{Colors.GRAY}[{lane_tag}] Server online -- no tasks available (idle mode).{Colors.RESET}")
+                        # No lane_tag prefix here (unlike the mode-activated banner below) --
+                        # idle is server-global, not a per-lane event, and every lane hits it at
+                        # the same time, so "[CPU] no tasks available" just read as a confusing,
+                        # meaningless label rather than useful info.
+                        banner(f"{Colors.GRAY}Server online -- no tasks available (idle mode).{Colors.RESET}")
                     else:
                         banner(f"\n[{lane_tag}] [{MODE_BANNERS.get(mode, mode.upper() + ' MODE ACTIVATED')}]\n")
                 current_mode = mode
