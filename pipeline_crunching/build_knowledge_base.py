@@ -26,6 +26,7 @@ REPO_ROOT = os.path.dirname(PIPELINE_ROOT)
 
 USERS_DIR = os.path.join(REPO_ROOT, "users")
 KNOWLEDGE_DIR = os.path.join(REPO_ROOT, "knowledge_base")
+AUDIT_LOCK_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "audit_lock_state.json")
 
 # Same four categories pipeline_crunching/merge_data.py uses -- this script is that script's
 # sibling, publishing one file per chunk instead of one merged-blob file per category, since that
@@ -78,12 +79,28 @@ def format_chunk_as_kb_md(chunk: dict) -> str:
     return text.replace("\r\n", "\n").replace("\r", "\n")
 
 
+def load_audited_chunk_ids() -> set:
+    # Audit mode (pipeline_crunching/server.py) edits knowledge_base/*.md directly and never
+    # touches users/*/*.jsonl -- so a chunk_id in here has a knowledge_base file that may already
+    # be BETTER than what's still frozen in its original users/*/*.jsonl submission. Regenerating
+    # it from that stale jsonl would silently throw away every audit fix (confirmed live: this is
+    # exactly what re-running this script would have done to every one of the ~2,300 chunks audit
+    # mode fixed this session). Once a chunk_id has been audited at least once -- fixed or found
+    # clean, doesn't matter which -- this script leaves it alone permanently; any future content
+    # improvement to it has to come from audit mode itself, not from this publish step.
+    if not os.path.exists(AUDIT_LOCK_FILE):
+        return set()
+    with open(AUDIT_LOCK_FILE, encoding="utf-8") as f:
+        return set(json.load(f).get("completed", []))
+
+
 def build_knowledge_base():
     if not os.path.exists(USERS_DIR):
         print(f"[X] Directory '{USERS_DIR}' not found.")
         return
 
-    added, updated, unchanged, skipped = 0, 0, 0, 0
+    audited_chunk_ids = load_audited_chunk_ids()
+    added, updated, unchanged, skipped, protected = 0, 0, 0, 0, 0
 
     for filename, kb_subdir in DATASET_TYPES.items():
         target_dir = os.path.join(KNOWLEDGE_DIR, kb_subdir)
@@ -120,6 +137,10 @@ def build_knowledge_base():
                             continue
                         seen_chunk_ids.add(chunk_id)
 
+                        if chunk_id in audited_chunk_ids:
+                            protected += 1
+                            continue
+
                         out_path = os.path.join(target_dir, f"{chunk_id}.md")
                         new_content = format_chunk_as_kb_md(chunk)
 
@@ -138,7 +159,8 @@ def build_knowledge_base():
                 print(f"[!] Error reading {dataset_path}: {e}")
 
     print(f"[✓] Knowledge base publish complete -- {added} new, {updated} updated, {unchanged} unchanged"
-          + (f", {skipped} duplicate chunk_ids skipped" if skipped else "") + ".")
+          + (f", {skipped} duplicate chunk_ids skipped" if skipped else "")
+          + (f", {protected} audit-reviewed chunks left untouched" if protected else "") + ".")
     if added or updated:
         print("[~] Restart webapp/chat_server.py (or run `python3 local_rag_chat.py --rebuild` from")
         print("    webapp/) to pick up the new/changed content in the live embedding index.")

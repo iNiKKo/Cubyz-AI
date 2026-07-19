@@ -13,6 +13,7 @@ Usage:
     python3 local_rag_chat.py --rebuild "some question"   # force-rebuild the embedding cache first
 """
 import os
+import re
 import sys
 import json
 import math
@@ -204,7 +205,15 @@ def ask(question, index, verbose=True):
     # (e.g. flipping "left mouse button" -> "right mouse button" run to run with the correct chunk
     # present the whole time). Retrieval/ranking logic above is unchanged -- only presentation order.
     ordered = sorted(hits, key=lambda h: h["_score"])
-    context = "\n\n---\n\n".join(f"[{h['collection']}/{h['filename']}]\n{h['text']}" for h in ordered)
+    # Every chunk ends with its own "*Source: unknown | chunk_id: ...*" footer -- always literally
+    # "unknown" since that field was never actually populated during crunching. It's meaningless to
+    # the model but looks like real citation text, so it sometimes gets echoed back verbatim in an
+    # answer (seen live: "what is Ashframe" was otherwise a correct answer, but ended with the raw
+    # "*Source: unknown | chunk_id: docs_ashframe_overview.md_chunk_0*" line pasted in). Stripped
+    # here rather than relied on via prompt instruction -- the bracketed [collection/filename]
+    # header below already gives the model everything it needs for an accurate citation.
+    strip_footer = re.compile(r"\n*\*Source:.*?\*\s*$")
+    context = "\n\n---\n\n".join(f"[{h['collection']}/{h['filename']}]\n{strip_footer.sub('', h['text'])}" for h in ordered)
     system = SYSTEM_PROMPT + f"\n\n## Retrieved context\n{context}"
 
     if verbose:

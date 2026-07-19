@@ -419,10 +419,7 @@ RAG_STATS_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "user_stats.json"
 RAG_HASH_DB_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "file_hashes.json")
 RAG_BACKUP_DIR = os.path.join(REPO_ROOT, "archive", "rag_crunching_campaign_backups")
 
-# --- Fine-tune campaign paths (unchanged from finetune/server_finetune.py's pre-merge state) ---
-FINETUNE_DOCS_SOURCE = USERS_DIR  # reads wiki.jsonl from every volunteer
-FINETUNE_CODEBASE_SUBSET_FILE = os.path.join(FINETUNE_ROOT, "source_data", "codebase_architectural_subset.jsonl")
-FINETUNE_REVIEWS_SOURCE = USERS_DIR  # reads github_reviews.jsonl from every volunteer
+# --- Fine-tune campaign paths ---
 FINETUNE_OUTPUT_DIR = os.path.join(FINETUNE_ROOT, "pairs")
 FINETUNE_LOCK_FILE = os.path.join(FINETUNE_ROOT, "campaign_state", "lock_state.json")
 FINETUNE_STATS_FILE = os.path.join(FINETUNE_ROOT, "campaign_state", "user_stats.json")
@@ -527,7 +524,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.1.2"
-LATEST_CLIENT_VERSION = "1.1.40"
+LATEST_CLIENT_VERSION = "1.2.0"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:
@@ -610,7 +607,7 @@ class RAGNode(BaseModel):
     code_example: Optional[str] = None
     synthetic_queries: List[str]
     title: str
-    user_id: str = Field(..., min_length=3, max_length=9, pattern="^[a-zA-Z]+$")
+    user_id: str = Field(..., min_length=3, max_length=12, pattern="^[a-zA-Z]+$")
     lines_crunched: Optional[int] = 0
 
 
@@ -618,7 +615,7 @@ class FinetunePairsSubmission(BaseModel):
     chunk_id: str
     source_type: str  # docs | codebase | reviews
     pairs: List[dict]  # [{"instruction": ..., "response": ...}, ...]
-    user_id: str = Field(..., min_length=3, max_length=9, pattern="^[a-zA-Z]+$")
+    user_id: str = Field(..., min_length=3, max_length=12, pattern="^[a-zA-Z]+$")
     lines_crunched: Optional[int] = 0
 
 
@@ -629,7 +626,7 @@ class UnifiedSubmission(BaseModel):
     mode: Literal["rag", "finetune", "audit"] = "rag"
     client_version: str = ""  # absent (old client) is treated the same as "0.0.0" -- see _parse_version
     chunk_id: str
-    user_id: str = Field(..., min_length=3, max_length=9, pattern="^[a-zA-Z]+$")
+    user_id: str = Field(..., min_length=3, max_length=12, pattern="^[a-zA-Z]+$")
     lines_crunched: Optional[int] = 0
     # RAG-mode fields
     summary: Optional[str] = None
@@ -1074,32 +1071,86 @@ def finetune_execute_hard_reset():
 def calculate_content_hash(obj) -> str:
     return hashlib.sha256(json.dumps(obj, sort_keys=True).encode("utf-8")).hexdigest()
 
-def load_deduped_jsonl(paths):
-    seen = set()
-    entries = []
-    for path in paths:
-        if not os.path.exists(path):
+# Reproduces filter_codebase_subset.py's qualifies() filter (architectural/conceptual chunks
+# only, not per-asset stat blocks or narrow utility code) against knowledge_base-derived records
+# instead of the raw users/*/codebase.jsonl crunch it was originally written against -- see
+# _parse_kb_md_record's comment for why finetune reads from knowledge_base/ at all now. Keep in
+# sync with finetune/scripts/filter_codebase_subset.py's ALWAYS_INCLUDE_TYPES/CONDITIONAL_TYPES/
+# CONDITIONAL_MIN_TIER if that script's own filter logic ever changes -- that script is still the
+# right place to go inspect/tune the filter by hand, this is just its rule re-applied live.
+FINETUNE_CODEBASE_ALWAYS_INCLUDE_TYPES = {"world_generation", "algorithm", "gameplay", "networking"}
+FINETUNE_CODEBASE_CONDITIONAL_TYPES = {"implementation", "api", "serialization"}
+FINETUNE_CODEBASE_CONDITIONAL_MIN_TIER = {"medium", "hard"}
+_FINETUNE_TIER_RE = re.compile(r"\[(easy|medium|hard)/")
+
+def _finetune_codebase_qualifies(record: dict) -> bool:
+    chunk_type = record.get("chunk_type")
+    if chunk_type in FINETUNE_CODEBASE_ALWAYS_INCLUDE_TYPES:
+        return True
+    if chunk_type in FINETUNE_CODEBASE_CONDITIONAL_TYPES:
+        m = _FINETUNE_TIER_RE.search(record.get("title") or "")
+        return bool(m) and m.group(1) in FINETUNE_CODEBASE_CONDITIONAL_MIN_TIER
+    return False
+
+def _parse_kb_md_record(collection: str, chunk_id: str) -> dict:
+    """Reconstructs the same record shape rag_submit_work() originally wrote to
+    users/*/{wiki,codebase,github_reviews}.jsonl, but read back from the published
+    knowledge_base/*.md file instead -- so finetune trains on whatever audit mode has already
+    fixed (or will fix in the future), not on the original, possibly-since-corrected crunch output
+    that sits frozen in users/*.jsonl forever (that file is never touched again after the initial
+    crunch submission -- confirmed while investigating why audit's fixes weren't reaching
+    finetune). Returns None if this chunk_id was never published (e.g. mid-crunch, or a different
+    campaign's in-progress chunk)."""
+    kb_path = os.path.join(KNOWLEDGE_DIR, collection, f"{chunk_id}.md")
+    if not os.path.exists(kb_path):
+        return None
+    with open(kb_path, encoding="utf-8") as f:
+        text = f.read()
+
+    title_m = re.match(r"^#\s+(.+)$", text, re.M)
+    type_m = re.search(r"^\*\*Type:\*\*\s*(.+)$", text, re.M)
+    keywords_m = re.search(r"^\*\*Keywords:\*\*\s*(.+)$", text, re.M)
+    symbols_m = re.search(r"^\*\*Symbols:\*\*\s*(.+)$", text, re.M)
+    concepts_m = re.search(r"^\*\*Concepts:\*\*\s*(.+)$", text, re.M)
+
+    code_example = _extract_kb_section(text, "Code Example")
+    if code_example:
+        code_example = re.sub(r"^```\w*\n|\n```$", "", code_example).strip() or None
+
+    related = _extract_kb_section(text, "Related Questions")
+    synthetic_queries = [re.sub(r"^-\s*", "", ln).strip() for ln in related.splitlines() if ln.strip()] if related else []
+
+    return {
+        "chunk_id": chunk_id,
+        "title": title_m.group(1).strip() if title_m else chunk_id,
+        "chunk_type": type_m.group(1).strip() if type_m else None,
+        "keywords": [k.strip() for k in keywords_m.group(1).split(",")] if keywords_m else [],
+        "symbols": [s.strip() for s in symbols_m.group(1).split(",")] if symbols_m else [],
+        "concepts": [c.strip() for c in concepts_m.group(1).split(",")] if concepts_m else [],
+        "summary": _extract_kb_section(text, "Summary"),
+        "comprehensive_explanation": _extract_kb_section(text, "Explanation"),
+        "code_example": code_example,
+        "synthetic_queries": synthetic_queries,
+    }
+
+def _load_kb_records_for_finetune(collection: str) -> list:
+    d = os.path.join(KNOWLEDGE_DIR, collection)
+    if not os.path.exists(d):
+        return []
+    out = []
+    for fname in sorted(os.listdir(d)):
+        if not fname.endswith(".md"):
             continue
-        with open(path, encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if not line:
-                    continue
-                try:
-                    chunk = json.loads(line)
-                except Exception:
-                    continue
-                if chunk["chunk_id"] in seen:
-                    continue
-                seen.add(chunk["chunk_id"])
-                entries.append(chunk)
-    return entries
+        record = _parse_kb_md_record(collection, fname[:-3])
+        if record:
+            out.append(record)
+    return out
 
 def finetune_initialize_chunks():
     global finetune_total_chunks
     finetune_total_chunks = 0
-    if not os.path.exists(FINETUNE_CODEBASE_SUBSET_FILE):
-        print(f"[X] {FINETUNE_CODEBASE_SUBSET_FILE} not found. Run filter_codebase_subset.py first.")
+    if not os.path.exists(KNOWLEDGE_DIR):
+        print(f"[X] {KNOWLEDGE_DIR} not found. Run pipeline_crunching/build_knowledge_base.py first.")
         sys.exit(1)
 
     lock_state = load_lock_state(FINETUNE_LOCK_FILE)
@@ -1107,13 +1158,9 @@ def finetune_initialize_chunks():
     old_hashes = read_json_file(FINETUNE_HASH_DB_FILE, {})
     current_hashes = {}
 
-    docs_paths = [os.path.join(FINETUNE_DOCS_SOURCE, u, "wiki.jsonl") for u in os.listdir(FINETUNE_DOCS_SOURCE)] if os.path.exists(FINETUNE_DOCS_SOURCE) else []
-    docs_entries = load_deduped_jsonl(docs_paths)
-
-    review_paths = [os.path.join(FINETUNE_REVIEWS_SOURCE, u, "github_reviews.jsonl") for u in os.listdir(FINETUNE_REVIEWS_SOURCE)] if os.path.exists(FINETUNE_REVIEWS_SOURCE) else []
-    review_entries = load_deduped_jsonl(review_paths)
-
-    codebase_entries = load_deduped_jsonl([FINETUNE_CODEBASE_SUBSET_FILE])
+    docs_entries = _load_kb_records_for_finetune("docs")
+    review_entries = _load_kb_records_for_finetune("reviews")
+    codebase_entries = [r for r in _load_kb_records_for_finetune("codebase") if _finetune_codebase_qualifies(r)]
 
     skipped_unchanged = 0
     for source_type, entries in (("docs", docs_entries), ("codebase", codebase_entries), ("reviews", review_entries)):
@@ -1947,7 +1994,7 @@ def _get_finetune_work(user_id: str, hardware_tier: str) -> dict:
 
 @app.get("/get_work")
 def get_work(user_id: str, hardware_tier: str = "medium", model: str = "", client_version: str = "", available_models: str = "", avg_task_seconds: float = None, lane: str = ""):
-    if not user_id.isalpha() or not (3 <= len(user_id) <= 9):
+    if not user_id.isalpha() or not (3 <= len(user_id) <= 12):
         raise HTTPException(status_code=400, detail="Invalid ID layout.")
 
     if _parse_version(client_version) < _parse_version(MIN_CLIENT_VERSION):

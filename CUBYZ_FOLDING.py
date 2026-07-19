@@ -111,7 +111,7 @@ DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
 # Bump this whenever the protocol this client speaks changes in a way the server needs to know
 # about (new required fields, new modes, etc.) -- the server rejects anything below its own
 # MIN_CLIENT_VERSION with an "update required" error rather than silently mishandling it.
-VERSION = "1.1.40"
+VERSION = "1.2.0"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -230,7 +230,7 @@ def offer_update(status: str, info: dict, mandatory: bool):
 USER_ID_PATTERN = re.compile(r"^[a-zA-Z]+$")
 
 def is_valid_user_id(user_id: str) -> bool:
-    return bool(user_id) and 3 <= len(user_id) <= 9 and bool(USER_ID_PATTERN.fullmatch(user_id))
+    return bool(user_id) and 3 <= len(user_id) <= 12 and bool(USER_ID_PATTERN.fullmatch(user_id))
 
 # ============================================================
 # RAG MODE -- schema, prompts (from pipeline_crunching/RAG_FOLDING.py)
@@ -861,6 +861,22 @@ def save_auto_update_preference(enabled: bool):
     config["auto_update"] = enabled
     save_config(config)
 
+def load_lane_override():
+    """"gpu"/"cpu" to force that lane as primary regardless of what the benchmark would have
+    picked, or None (the default) for the normal auto-detected choice. Set from the pause menu's
+    [C] option; applied once in main(), right after the benchmark/cache resolves primary_is_gpu,
+    and only honored for a lane that's actually known to work (see main()'s comment there) -- this
+    can't force a machine into using a GPU that's unusable or doesn't exist."""
+    return load_config().get("lane_override", None)
+
+def save_lane_override(override):
+    config = load_config()
+    if override is None:
+        config.pop("lane_override", None)
+    else:
+        config["lane_override"] = override
+    save_config(config)
+
 def load_benchmark_result() -> dict:
     """{} if never benchmarked (first boot) or the cached result no longer matches this
     machine's current hardware fingerprint (see save_benchmark_result)."""
@@ -929,7 +945,16 @@ def install_ollama_container(gpu_type: str):
         gpu_flags = "--device /dev/dri"
 
     try:
-        subprocess.run(f"sudo docker run -d {gpu_flags} -v ollama:/root/.ollama -p 11434:11434 --name ollama {image_name}", shell=True, capture_output=True, check=True)
+        # OLLAMA_NUM_PARALLEL lets one loaded model serve multiple concurrent generate calls
+        # instead of queueing them one at a time -- what makes PARALLEL_WORKERS_BY_TIER (see
+        # ParallelWorkerPoolController) actually run in parallel server-side rather than just
+        # firing concurrent HTTP requests that Ollama itself still serializes. Sized to
+        # PARALLEL_WORKERS_MAX (the largest any tier will ever request) since the container is
+        # provisioned once here, before any lane's tier is known. Only takes effect on a
+        # freshly-provisioned container; an already-running "ollama" container needs to be
+        # recreated (stop, rm, re-run this) to pick up a changed env var, same as any other
+        # docker run -e change.
+        subprocess.run(f"sudo docker run -d -e OLLAMA_NUM_PARALLEL={PARALLEL_WORKERS_MAX} {gpu_flags} -v ollama:/root/.ollama -p 11434:11434 --name ollama {image_name}", shell=True, capture_output=True, check=True)
     except KeyboardInterrupt:
         sys.exit(f"\n{Colors.CYAN}[X] Container deployment cancelled by user.{Colors.RESET}")
     except subprocess.CalledProcessError as e:
@@ -2229,6 +2254,67 @@ def _find_rocm_tool(name: str):
             return candidate
     return None
 
+# Known-DEAD GPU architectures, by vendor -- a deny-list, not an allow-list. An architecture NOT
+# in here is NOT thereby assumed to work; it just means nothing about it is confirmed dead yet,
+# and the real benchmark (see main()) remains the actual test for it, same as always. Only ever
+# add an entry here off a real confirmed case, the same way gfx803 got added: a volunteer's real
+# RX 550 4GB had rocm-smi/rocminfo both installed and working, the correct Docker image with
+# correct --device passthrough, and Ollama's own logs still said "compiled without GPU support"
+# for that specific card -- a live diagnostic session (2026-07-19) plus a WebSearch confirmed
+# gfx803 (Polaris/GCN4) was dropped from ROCm after version 4.5. Never add a guessed entry here --
+# see feedback_no_hardcoded_hardware_guesses: an unconfirmed suspicion belongs in the benchmark's
+# own real test, not in a table that silently skips it.
+GPU_ARCH_COMPATIBILITY = {
+    "amd": {
+        # gfx8xx = GCN 4/5 (Polaris/Fiji, e.g. RX 460-590 series).
+        "gfx803": "Polaris/GCN4 (e.g. RX 460-590 series) -- dropped from ROCm since version 4.5",
+    },
+    "nvidia": {
+        # Below Kepler (compute capability < 3.0, i.e. Fermi and older) -- CUDA itself dropped
+        # support for this generation years ago, so no current llama.cpp/Ollama CUDA build can
+        # target it regardless of driver version. Kepler (3.x) itself is deliberately NOT listed:
+        # llama.cpp's own CUDA support for that generation has shifted across versions, so it's a
+        # real "let the benchmark decide" case, not a confirmed dead end.
+        "cc_below": 3.0,
+    },
+}
+
+def check_gpu_architecture_support(gpu_type: str) -> tuple:
+    """Returns (is_known_unsupported, reason). False (or an unraised exception along the way)
+    means "not a confirmed dead end" -- NOT the same as "confirmed working"; the benchmark this
+    gates is still what actually decides that for anything not in GPU_ARCH_COMPATIBILITY. Checked
+    before spending up to BENCHMARK_TIMEOUT running real inference on a GPU already known dead at
+    the architecture level, so that specific case gets an honest, immediate, specific reason
+    instead of a generic "benchmark failed or timed out" after a real wait."""
+    if gpu_type == "amd":
+        rocminfo_path = _find_rocm_tool('rocminfo')
+        if not rocminfo_path:
+            return False, None
+        try:
+            res = subprocess.run([rocminfo_path], capture_output=True, text=True, timeout=15)
+            gfx_versions = set(re.findall(r'gfx\d+\w*', res.stdout))
+        except Exception:
+            return False, None
+        for gfx in gfx_versions:
+            if gfx in GPU_ARCH_COMPATIBILITY["amd"]:
+                return True, f"{gfx} ({GPU_ARCH_COMPATIBILITY['amd'][gfx]})"
+        return False, None
+
+    if gpu_type == "nvidia":
+        try:
+            res = subprocess.run(['nvidia-smi', '--query-gpu=compute_cap', '--format=csv,noheader'], capture_output=True, text=True, timeout=15)
+            cap = float(res.stdout.strip().split('\n')[0])
+        except Exception:
+            return False, None
+        if cap < GPU_ARCH_COMPATIBILITY["nvidia"]["cc_below"]:
+            return True, f"compute capability {cap} -- CUDA no longer supports this generation"
+        return False, None
+
+    # Intel: no confirmed-dead architecture identified yet -- nothing to check against. Extend
+    # GPU_ARCH_COMPATIBILITY (and this branch) the same way once a real case turns up; don't add a
+    # speculative one now.
+    return False, None
+
 def run_live_gpu_diagnostic():
     """Step-by-step live checks, printed directly to THIS machine's own terminal in real time --
     added because the server-side dashboard can only ever show the final captured error, not walk
@@ -2473,7 +2559,9 @@ def run_live_gpu_diagnostic():
             print(f"  {Colors.YELLOW}→ This wasn't a timeout -- Ollama itself rejected or errored on this request. Check Ollama's own logs for the real cause.{Colors.RESET}")
     print(f"{Colors.CYAN}{'─' * 74}{Colors.RESET}\n")
 
-def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None):
+def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None,
+                           parallel_controller: "ParallelWorkerPoolController | None" = None,
+                           has_gpu: bool = False):
     print(f"\n\n{Colors.YELLOW}{Colors.BOLD}[||] Node Execution Paused via User Action.{Colors.RESET}")
     while True:
         auto_status_color = Colors.GREEN if load_auto_update_preference() else Colors.GRAY
@@ -2490,7 +2578,19 @@ def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None):
             dual_status_color = Colors.GREEN if dual_controller.active else Colors.GRAY
             dual_status = f"{dual_status_color}{'ON' if dual_controller.active else 'OFF'}{Colors.RESET}"
             dual_option = f", [D] to toggle the secondary {secondary_tag} lane (currently {dual_status})"
-        choice = input(f"Enter [R] to resume, [L] to view the leaderboard, [U] to view active users, [A] to toggle auto-update (currently {auto_status}){dual_option}, [B] to force a fresh hardware benchmark, [G] to run a live GPU diagnostic, or [Q] to safely exit: ").strip().lower()
+        # Same gating idea as dual_option -- parallel_controller only exists at all once the
+        # primary lane's tier is known (see main()), since its worker count is tier-scaled.
+        parallel_option = ""
+        if parallel_controller is not None:
+            p_status_color = Colors.GREEN if parallel_controller.active else Colors.GRAY
+            p_status = f"{p_status_color}{'ON' if parallel_controller.active else 'OFF'}{Colors.RESET}"
+            parallel_option = f", [P] to toggle {parallel_controller.worker_count} parallel workers (currently {p_status})"
+        choice = input(
+            f"Enter [R] to resume, [L] to view the leaderboard, [U] to view active users, "
+            f"[A] to toggle auto-update (currently {auto_status}){dual_option}{parallel_option}, "
+            f"[N] to change your volunteer name, [C] to change your primary lane, "
+            f"[B] to force a fresh hardware benchmark, [G] to run a live GPU diagnostic, or [Q] to safely exit: "
+        ).strip().lower()
         if choice == 'r': return
         elif choice == 'l': fetch_and_show_leaderboard()
         elif choice == 'u': fetch_and_show_userlist()
@@ -2507,6 +2607,50 @@ def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None):
             else:
                 dual_controller.start()
                 print(f"{Colors.GREEN}[✓] Secondary {secondary_tag} lane ENABLED -- crunching with both lanes again.{Colors.RESET}")
+        elif choice == 'p' and parallel_controller is not None:
+            if parallel_controller.active:
+                parallel_controller.stop()
+                print(f"{Colors.GRAY}[✓] Parallel workers DISABLED -- back to a single request at a time on this lane.{Colors.RESET}")
+            else:
+                started, reason = parallel_controller.start()
+                if started:
+                    print(f"{Colors.GREEN}[✓] {parallel_controller.worker_count} parallel workers ENABLED -- this lane is now firing that many concurrent requests at Ollama.{Colors.RESET}")
+                else:
+                    print(f"{Colors.RED}[X] Not enough headroom to enable parallel workers: {reason}. Staying at a single request at a time.{Colors.RESET}")
+        elif choice == 'n':
+            current = load_saved_user()
+            new_id = input(f"Current volunteer name: {current}. Enter a new one (3-12 letters), or leave blank to cancel: ").strip()
+            if not new_id:
+                print(f"{Colors.GRAY}[~] Rename cancelled.{Colors.RESET}")
+            elif not is_valid_user_id(new_id):
+                print(f"{Colors.RED}[X] '{new_id}' isn't valid -- 3-12 letters only, no numbers or symbols.{Colors.RESET}")
+            else:
+                save_user(new_id)
+                # A running lane's user_id is a plain function parameter captured at thread-start,
+                # not something safely mutable mid-loop from here -- restarting (same pattern as
+                # [B]'s benchmark reset) re-enters main() from the top and picks the new name up
+                # cleanly everywhere it's used (server identity, diagnostics, secondary/parallel
+                # worker ids), rather than trying to hot-swap it in three different closures at once.
+                print(f"{Colors.GREEN}[✓] Renamed to '{new_id}'. Restarting to apply...{Colors.RESET}")
+                os.execv(sys.executable, [sys.executable] + sys.argv)
+        elif choice == 'c':
+            current_override = load_lane_override() or "auto"
+            print(f"Current primary lane setting: {current_override.upper()}" + (" (this machine has no GPU, so CPU is the only real option)" if not has_gpu else ""))
+            pick = input("Enter [G] to force GPU primary, [P] to force CPU primary, [A] for auto (benchmark decides), or leave blank to cancel: ").strip().lower()
+            if not pick:
+                print(f"{Colors.GRAY}[~] Cancelled.{Colors.RESET}")
+            elif pick == 'g' and not has_gpu:
+                print(f"{Colors.RED}[X] This machine has no GPU -- there's nothing to switch to.{Colors.RESET}")
+            elif pick in ('g', 'p', 'a'):
+                save_lane_override({'g': "gpu", 'p': "cpu", 'a': None}[pick])
+                # Same reasoning as rename above -- primary_is_gpu and everything derived from it
+                # (chosen_model, hardware_tier, thread counts, the whole dual/parallel setup) is
+                # decided once at startup, not something to reassign live out from under a running
+                # loop. main() re-reads load_lane_override() fresh on every boot.
+                print(f"{Colors.GREEN}[✓] Primary lane preference saved. Restarting to apply...{Colors.RESET}")
+                os.execv(sys.executable, [sys.executable] + sys.argv)
+            else:
+                print(f"{Colors.RED}[X] Not a valid choice.{Colors.RESET}")
         elif choice == 'b':
             # The hardware benchmark (see main()) runs exactly once per machine and is cached
             # forever, keyed only on static specs (GPU type/VRAM/CPU count/RAM) -- NOT on whether
@@ -2523,7 +2667,9 @@ def handle_interrupt_menu(dual_controller: "DualLaneController | None" = None):
             run_live_gpu_diagnostic()
         elif choice == 'q': sys.exit(f"{Colors.CYAN}[X] Disconnecting safely. Thank you for your computational contributions!{Colors.RESET}")
 
-def interruptible_sleep(seconds, dual_controller: "DualLaneController | None" = None):
+def interruptible_sleep(seconds, dual_controller: "DualLaneController | None" = None,
+                         parallel_controller: "ParallelWorkerPoolController | None" = None,
+                         has_gpu: bool = False):
     """time.sleep() wrapped for the retry/cooldown waits inside the main loop's except blocks.
     A Ctrl+C during a plain time.sleep() there escapes uncaught -- it's a new KeyboardInterrupt
     raised while already handling another exception, so the loop's own `except KeyboardInterrupt`
@@ -2532,7 +2678,7 @@ def interruptible_sleep(seconds, dual_controller: "DualLaneController | None" = 
     try:
         time.sleep(seconds)
     except KeyboardInterrupt:
-        handle_interrupt_menu(dual_controller)
+        handle_interrupt_menu(dual_controller, parallel_controller, has_gpu)
 
 # ============================================================
 # MAIN
@@ -2559,6 +2705,43 @@ DUAL_LANE_MIN_RAM_GB = 12.0
 # risk may resurface right at this new floor and needs live confirmation it doesn't, rather than
 # assuming the original failure was specific to something below 4.0 GB.
 DUAL_LANE_MIN_VRAM_GB = 4.0
+
+# How many extra concurrent worker identities to run alongside the primary lane -- see
+# ParallelWorkerPoolController. Raised by a volunteer's own live question: Ollama can serve
+# multiple concurrent generate calls against one already-loaded model far more efficiently than
+# running them one at a time, since a single request rarely saturates a modern GPU or CPU on its
+# own, at ANY model size -- not just small ones. What changes per tier is how many concurrent
+# slots are actually affordable: Ollama's OLLAMA_NUM_PARALLEL splits the model's context window
+# across N slots, each needing its own KV cache in VRAM/RAM, so N concurrent 14b contexts costs
+# far more headroom than N concurrent 3b ones, on hardware that in the "hard" tier's case was
+# often already sized to just barely fit ONE instance of that model. Scaled down (not disabled)
+# for bigger tiers rather than excluded, since this is opt-in and OFF by default either way --
+# the volunteer is the one deciding whether their hardware has the headroom, this just avoids
+# defaulting to a count that's reckless for the model size actually in use.
+PARALLEL_WORKERS_BY_TIER = {"easy": 3, "medium": 2, "hard": 2}
+
+# Ceiling used to size OLLAMA_NUM_PARALLEL when this client provisions a fresh Ollama container
+# (see install_ollama_container) -- the container is created once, before any lane's tier is even
+# known, so it has to accommodate whichever tier ends up requesting the most concurrent slots.
+PARALLEL_WORKERS_MAX = max(PARALLEL_WORKERS_BY_TIER.values())
+
+# The VRAM/RAM a lane already needed just to reach a given tier at all (mirrors
+# gpu_tier_from_vram()'s and get_cpu_model_tier()'s own thresholds) -- used as the baseline that
+# ParallelWorkerPoolController.check_headroom() requires SPARE capacity on top of, not the
+# requirement itself. "hard" has no CPU entry: get_cpu_model_tier() caps out at "medium" on CPU.
+GPU_TIER_VRAM_FLOOR_GB = {"easy": 0.0, "medium": 4.5, "hard": 8.5}
+CPU_TIER_RAM_FLOOR_GB = {"easy": 11.0, "medium": 24.0}
+
+# Conservative estimated VRAM/RAM cost of each EXTRA concurrent worker's own KV cache, on top of
+# the tier floor above -- NOT a measured fact (this file's stance elsewhere is never to fabricate
+# a specific hardware number -- see feedback_no_hardcoded_hardware_guesses), but a deliberately
+# cautious safety margin for a brand-new feature with no live data yet: bigger models have bigger
+# KV caches per concurrent slot, so the per-worker cost scales with tier the same way
+# PARALLEL_WORKERS_BY_TIER's own worker count scales down. check_headroom() is what actually
+# blocks [P] from starting when a machine doesn't clear this -- tune these numbers down (or up)
+# once real usage confirms where they should actually sit.
+PARALLEL_WORKERS_VRAM_HEADROOM_PER_WORKER_GB = {"easy": 1.0, "medium": 2.0, "hard": 3.5}
+PARALLEL_WORKERS_RAM_HEADROOM_PER_WORKER_GB = {"easy": 1.5, "medium": 3.0}
 
 class DualStatusBoard:
     """One shared, redrawing status window covering BOTH lanes at once, used instead of each
@@ -2693,11 +2876,102 @@ class DualLaneController:
         # solo box, which has no idea how many lines the board last drew.
         self.board.rendered_once = False
 
+class ParallelWorkerPoolController:
+    """Lets the primary lane, at ANY hardware_tier, spin up extra worker identities that all
+    poll/crunch against the SAME local Ollama instance concurrently instead of one request at a
+    time -- see PARALLEL_WORKERS_BY_TIER's comment for why the worker count is scaled down (not
+    zeroed out) as the model gets bigger. Deliberately reuses crunch_lane() completely unmodified
+    for each worker (same pattern DualLaneController already uses for the secondary lane) rather
+    than rewriting crunch_lane's internals to be concurrent -- each worker is just another
+    independent lane, plain_ui (no fancy box -- N boxes fighting over the same terminal doesn't
+    work, same reasoning as the dual-lane CPU lane), reporting via simple printed lines instead.
+
+    Off by default -- only ever started from the pause menu's [P] option, never automatically,
+    since more concurrent requests means more concurrent memory/VRAM use. check_headroom() is
+    what actually enforces that trade-off rather than leaving it purely to the volunteer's own
+    judgment: start() refuses outright on a machine that doesn't clear it, since "this will
+    probably OOM or stall" isn't something to find out by trying.
+    """
+
+    def __init__(self, worker_kwargs: dict, user_id: str, hardware_tier: str,
+                 total_vram_gb: float, system_ram_gb: float, force_cpu: bool):
+        self.worker_kwargs = worker_kwargs
+        self.user_id = user_id
+        self.hardware_tier = hardware_tier
+        self.total_vram_gb = total_vram_gb
+        self.system_ram_gb = system_ram_gb
+        self.force_cpu = force_cpu
+        self.worker_count = PARALLEL_WORKERS_BY_TIER.get(hardware_tier, 1)
+        self.active = False
+        self._threads = []
+        self._stop_events = []
+
+    def check_headroom(self) -> tuple:
+        """Returns (has_enough, reason). See PARALLEL_WORKERS_VRAM_HEADROOM_PER_WORKER_GB's
+        comment -- this is a conservative estimate, not a measured guarantee, but it's a real
+        check against this machine's own actual detected specs, not a blanket "sure, go ahead."
+        force_cpu decides which pool (VRAM vs. system RAM) actually matters -- a lane running on
+        CPU was never going to touch VRAM regardless of what GPU (if any) is also in the machine."""
+        if self.force_cpu:
+            floor = CPU_TIER_RAM_FLOOR_GB.get(self.hardware_tier, 0.0)
+            per_worker = PARALLEL_WORKERS_RAM_HEADROOM_PER_WORKER_GB.get(self.hardware_tier, 3.0)
+            required = floor + per_worker * self.worker_count
+            if self.system_ram_gb >= required:
+                return True, ""
+            return False, (f"needs an estimated {required:.1f} GB system RAM for {self.worker_count} parallel "
+                            f"{self.hardware_tier}-tier workers on CPU, this machine has {self.system_ram_gb:.1f} GB")
+        floor = GPU_TIER_VRAM_FLOOR_GB.get(self.hardware_tier, 0.0)
+        per_worker = PARALLEL_WORKERS_VRAM_HEADROOM_PER_WORKER_GB.get(self.hardware_tier, 3.5)
+        required = floor + per_worker * self.worker_count
+        if self.total_vram_gb >= required:
+            return True, ""
+        return False, (f"needs an estimated {required:.1f} GB VRAM for {self.worker_count} parallel "
+                        f"{self.hardware_tier}-tier workers, this GPU has {self.total_vram_gb:.1f} GB")
+
+    def start(self) -> tuple:
+        """Returns (started, reason) -- refuses and returns (False, reason) if check_headroom()
+        says no, rather than spinning up workers that were already known likely to OOM or stall.
+        Checked here too (not just by the pause menu before calling this), so start() itself can
+        never be called into a bad state regardless of caller."""
+        if self.active:
+            return True, ""
+        ok, reason = self.check_headroom()
+        if not ok:
+            return False, reason
+        self._threads = []
+        self._stop_events = []
+        # Distinct suffix letters per worker, never "c"/"g" (already used by a dual-lane secondary
+        # on this same machine, if any) -- truncated the same way secondary_user_id is, so every
+        # worker's synthetic id stays within the 3-12 char / letters-only range the server itself
+        # validates against and never collides with the primary lane's own real id.
+        suffixes = "pqrstuvwxyz"
+        for i in range(self.worker_count):
+            stop_event = threading.Event()
+            worker_id = self.user_id[:11] + suffixes[i % len(suffixes)]
+            kwargs = dict(self.worker_kwargs, user_id=worker_id, lane_tag=f"P{i + 1}", stop_event=stop_event)
+            t = threading.Thread(target=_background_lane, kwargs=kwargs, daemon=True)
+            t.start()
+            self._threads.append(t)
+            self._stop_events.append(stop_event)
+        self.active = True
+        return True, ""
+
+    def stop(self):
+        if not self.active:
+            return
+        for e in self._stop_events:
+            e.set()
+        self._threads = []
+        self._stop_events = []
+        self.active = False
+
 def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: str, max_threads,
                  cooldown: float, mode_desc: str, hardware_label: str, force_cpu: bool = False,
                  fancy_ui: bool = True, pause_event: "threading.Event | None" = None,
                  board: "DualStatusBoard | None" = None, stop_event: "threading.Event | None" = None,
-                 dual_controller: "DualLaneController | None" = None):
+                 dual_controller: "DualLaneController | None" = None,
+                 parallel_controller: "ParallelWorkerPoolController | None" = None,
+                 has_gpu: bool = False):
     """Runs the poll -> crunch -> submit cycle forever for one lane. A "lane" is one independent
     identity polling /get_work and calling Ollama on its own -- there's normally just one (the
     whole client, as before dual-lane support existed), but a machine with both a real GPU and
@@ -3094,7 +3368,7 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
                 log_diagnostic(cancelled_event)
                 submit_diagnostic_to_server(cancelled_event)
                 current_task_chunk_id = None
-            handle_interrupt_menu(dual_controller)
+            handle_interrupt_menu(dual_controller, parallel_controller, has_gpu)
             if pause_event is not None:
                 pause_event.clear()
         except urllib.error.HTTPError as he:
@@ -3124,14 +3398,14 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
                     f"    This is a data/config problem, not a network hiccup -- retrying won't fix it.\n"
                     f"    Check your volunteer ID and, if this persists, report it as a bug.{Colors.RESET}"
                 )
-            banner(f"\n{Colors.YELLOW}[{lane_tag}] [Warning] Server error {he.code}. Retrying in 15 seconds...{Colors.RESET}"); interruptible_sleep(15, dual_controller)
+            banner(f"\n{Colors.YELLOW}[{lane_tag}] [Warning] Server error {he.code}. Retrying in 15 seconds...{Colors.RESET}"); interruptible_sleep(15, dual_controller, parallel_controller, has_gpu)
         except urllib.error.URLError:
             current_mode = None
             first_stat_print = True
-            banner(f"\n{Colors.RED}[{lane_tag}] [X] Server offline -- no tasks available. Retrying in 15 seconds...{Colors.RESET}"); interruptible_sleep(15, dual_controller)
+            banner(f"\n{Colors.RED}[{lane_tag}] [X] Server offline -- no tasks available. Retrying in 15 seconds...{Colors.RESET}"); interruptible_sleep(15, dual_controller, parallel_controller, has_gpu)
         except Exception as e:
             first_stat_print = True
-            banner(f"\n{Colors.RED}[{lane_tag}] [Error] Failure path encounter: {e}. Retrying in 5 seconds...{Colors.RESET}"); interruptible_sleep(5, dual_controller)
+            banner(f"\n{Colors.RED}[{lane_tag}] [Error] Failure path encounter: {e}. Retrying in 5 seconds...{Colors.RESET}"); interruptible_sleep(5, dual_controller, parallel_controller, has_gpu)
 
 def _background_lane(**kwargs):
     """Thread target for the secondary (CPU) lane. sys.exit() from a fatal, unrecoverable error
@@ -3155,10 +3429,10 @@ def main():
         print(f"{Colors.GREEN}[✓] Auto-logged in as remembered user: {user_id}{Colors.RESET}")
     else:
         if user_id and not is_valid_user_id(user_id):
-            print(f"{Colors.YELLOW}[!] Saved user ID '{user_id}' is no longer valid (3-9 ASCII letters only). Please re-enter.{Colors.RESET}")
+            print(f"{Colors.YELLOW}[!] Saved user ID '{user_id}' is no longer valid (3-12 ASCII letters only). Please re-enter.{Colors.RESET}")
         user_id = ""
         while not is_valid_user_id(user_id):
-            user_id = input("Enter your unique volunteer ID (3-9 letters only): ").strip()
+            user_id = input("Enter your unique volunteer ID (3-12 letters only): ").strip()
         save_user(user_id)
 
     # First boot only -- once configured, this is never asked again (change it from the pause
@@ -3235,11 +3509,23 @@ def main():
             # once without issue, so there's no reason the benchmark itself needs to be serial.
             print(f"{Colors.CYAN}[~] First-time hardware benchmark: measuring real CPU vs. GPU throughput on this machine (one-time, can take up to a couple of minutes on slower hardware -- this is not frozen)...{Colors.RESET}")
             _bench_results = {}
-            _bench_gpu_thread = threading.Thread(target=lambda: _bench_results.update(gpu=benchmark_lane(chosen_model, force_cpu=False)), daemon=True)
+            # Checked before spending real time running inference: an architecture already
+            # confirmed dead (see GPU_ARCH_COMPATIBILITY) gets the same "GPU unusable, falling
+            # back to CPU" outcome the benchmark itself would eventually reach anyway, just
+            # without the up-to-BENCHMARK_TIMEOUT wait or a generic "failed or timed out" message
+            # standing in for a reason that's already known.
+            arch_unsupported, arch_reason = check_gpu_architecture_support(gpu_type)
+            if arch_unsupported:
+                print(f"{Colors.YELLOW}[!] {gpu_type.upper()} architecture check: {arch_reason} -- confirmed dead end, skipping the GPU benchmark.{Colors.RESET}")
+                _bench_results["gpu"] = (None, f"known_unsupported_architecture: {arch_reason}")
+                _bench_gpu_thread = None
+            else:
+                _bench_gpu_thread = threading.Thread(target=lambda: _bench_results.update(gpu=benchmark_lane(chosen_model, force_cpu=False)), daemon=True)
+                _bench_gpu_thread.start()
             _bench_cpu_thread = threading.Thread(target=lambda: _bench_results.update(cpu=benchmark_lane(cpu_model, force_cpu=True)), daemon=True)
-            _bench_gpu_thread.start()
             _bench_cpu_thread.start()
-            _bench_gpu_thread.join()
+            if _bench_gpu_thread is not None:
+                _bench_gpu_thread.join()
             _bench_cpu_thread.join()
             gpu_time, gpu_error = _bench_results.get("gpu", (None, None))
             cpu_time, cpu_error = _bench_results.get("cpu", (None, None))
@@ -3275,6 +3561,23 @@ def main():
                 "gpu_time": gpu_time, "cpu_time": cpu_time,
                 "gpu_error": gpu_error, "cpu_error": cpu_error,
             })
+
+    # A manual override from the pause menu's [C] option wins over whatever the benchmark/tier
+    # comparison above picked -- but only when the requested lane is actually known to work.
+    # "cpu" is always honored (every machine has a working CPU); "gpu" is only honored if this
+    # GPU actually produced a real benchmark time -- forcing primary onto a GPU that errored or
+    # was never usable in the first place would just break crunching outright, not merely pick a
+    # slower lane.
+    lane_override = load_lane_override()
+    if lane_override == "cpu" and primary_is_gpu:
+        primary_is_gpu = False
+        print(f"{Colors.CYAN}[~] Primary lane manually overridden to CPU (set from the pause menu).{Colors.RESET}")
+    elif lane_override == "gpu" and not primary_is_gpu:
+        if gpu_time is not None:
+            primary_is_gpu = True
+            print(f"{Colors.CYAN}[~] Primary lane manually overridden to GPU (set from the pause menu).{Colors.RESET}")
+        else:
+            print(f"{Colors.YELLOW}[!] Primary lane override requested GPU, but this GPU has no working benchmark ({gpu_error or 'never usable'}) -- staying on CPU.{Colors.RESET}")
 
     # Captured BEFORE the CPU-primary reassignment below can overwrite chosen_model/hardware_tier
     # -- needed so a working GPU that merely lost the PRIMARY slot (beaten on capability tier, not
@@ -3380,13 +3683,13 @@ def main():
         print(f"{Colors.CYAN}[✓] Dual-lane mode: {primary_hardware_label} (primary) + a secondary {secondary_lane_tag} lane ({secondary_model}, {secondary_hardware_label}) will crunch two tasks at once. Toggle it off/on anytime from the pause menu.{Colors.RESET}\n")
         board = DualStatusBoard(gpu_label=primary_hardware_label if primary_is_gpu else secondary_hardware_label,
                                  cpu_label=secondary_hardware_label if primary_is_gpu else primary_hardware_label)
-        # user_id is 3-9 alpha chars (enforced at login); truncating to 8 and appending a suffix
+        # user_id is 3-12 alpha chars (enforced at login); truncating to 11 and appending a suffix
         # that's never "c" for a GPU secondary (avoids colliding with what a CPU-secondary run on
         # this same machine would have used) always differs from the primary lane's own id (even
-        # at the 9-char ceiling, where a bare suffix would otherwise just silently reproduce the
-        # original id) while staying within that same 3-9 range the server itself validates
+        # at the 12-char ceiling, where a bare suffix would otherwise just silently reproduce the
+        # original id) while staying within that same 3-12 range the server itself validates
         # against.
-        secondary_user_id = user_id[:8] + ("c" if primary_is_gpu else "g")
+        secondary_user_id = user_id[:11] + ("c" if primary_is_gpu else "g")
         # The secondary lane is a fully separate user_id on the server but used to never get its
         # own session_start report at all -- only the primary lane's user_id ever sent one, tagged
         # with ITS OWN specs -- so the admin dashboard showed the primary lane correctly and the
@@ -3411,6 +3714,25 @@ def main():
         ))
         dual_controller.start()  # on by default, same as before this toggle existed -- just now reversible
 
+    # Available at every tier -- see PARALLEL_WORKERS_BY_TIER's comment for why the worker count
+    # itself (not whether this is offered at all) is what scales down for a bigger model. Built
+    # but NOT started here (off by default, opt-in from the pause menu's [P] option) --
+    # worker_kwargs mirrors the primary lane's own config (same model/tier/force_cpu) so every
+    # worker is a genuine peer of the primary lane, just another identity hitting the same local
+    # Ollama instance.
+    parallel_controller = ParallelWorkerPoolController(
+        worker_kwargs=dict(
+            hardware_tier=hardware_tier, chosen_model=chosen_model, max_threads=max_threads,
+            cooldown=cooldown, mode_desc=mode_desc, hardware_label=primary_hardware_label,
+            force_cpu=not primary_is_gpu, fancy_ui=False,
+        ),
+        user_id=user_id,
+        hardware_tier=hardware_tier,
+        total_vram_gb=total_vram_gb,
+        system_ram_gb=system_ram_gb,
+        force_cpu=not primary_is_gpu,
+    )
+
     crunch_lane(
         # fancy_ui is always True here, even on a dual-capable machine -- it means "fall back to
         # my own solo box whenever current_board() has nothing to report into," which is true
@@ -3430,6 +3752,8 @@ def main():
         hardware_label=primary_hardware_label, force_cpu=not primary_is_gpu, fancy_ui=True,
         pause_event=dual_controller.pause_event if dual_controller is not None else None,
         dual_controller=dual_controller,
+        parallel_controller=parallel_controller,
+        has_gpu=(gpu_type != "cpu"),
     )
 
 if __name__ == "__main__":
