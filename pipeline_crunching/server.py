@@ -3,6 +3,7 @@ import re
 import sys
 import json
 import time
+import atexit
 import shutil
 import hashlib
 import threading
@@ -479,7 +480,31 @@ def start_dashboard_if_tty():
     clears, which would make a log file unreadable."""
     if not _TTY:
         return
+    # Switches to the terminal's ALTERNATE screen buffer -- the same mechanism htop/vim/less use
+    # for a live-redrawing full-screen UI with zero scrollback pollution. Confirmed live: a user
+    # scrolling UP in their terminal saw every historical redraw frame stacked one after another,
+    # which is completely normal, unavoidable behavior for ANY app that redraws via cursor
+    # movement on the regular (primary) screen buffer -- cursor-erase-and-redraw can only ever
+    # affect the currently-visible line, it can never retroactively un-write what's already been
+    # pushed into scrollback history. No amount of tuning the redraw escape sequences themselves
+    # (already tried three different ones) can fix that; alt-screen sidesteps it entirely by
+    # rendering somewhere that has no scrollback of its own to pollute. restore_terminal_screen()
+    # switches back to the normal buffer (restoring whatever was on screen before) on exit, via
+    # atexit -- more reliable than trying to catch every possible shutdown path by hand.
+    sys.stdout.write("\033[?1049h")
+    sys.stdout.flush()
+    atexit.register(restore_terminal_screen)
     threading.Thread(target=_dashboard_loop, daemon=True).start()
+
+def restore_terminal_screen():
+    """Switches back to the terminal's normal screen buffer -- see start_dashboard_if_tty()'s
+    comment. Registered with atexit rather than called from one specific shutdown path, since a
+    server this long-running can exit via a plain Ctrl+C, an uncaught exception, or a clean
+    sys.exit() call, and all of them should leave the terminal in a sane state afterward, not
+    stuck showing the dashboard's last frame with the shell prompt trapped behind it."""
+    if _TTY:
+        sys.stdout.write("\033[?1049l")
+        sys.stdout.flush()
 
 app = FastAPI(title="Cubyz Distributed Dataset Coordinator")
 
@@ -628,7 +653,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.1.2"
-LATEST_CLIENT_VERSION = "1.2.5"
+LATEST_CLIENT_VERSION = "1.2.6"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:

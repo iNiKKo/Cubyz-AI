@@ -18,22 +18,22 @@
     "reviews_done": 493
   },
   "caleb": {
-    "chunks_audited": 517,
-    "issues_found": 88,
-    "fixes_applied": 89,
-    "reviews_done": 1125
+    "chunks_audited": 525,
+    "issues_found": 89,
+    "fixes_applied": 90,
+    "reviews_done": 1126
   },
   "nickpc": {
-    "chunks_audited": 3205,
-    "issues_found": 2364,
+    "chunks_audited": 3243,
+    "issues_found": 2367,
     "fixes_applied": 2112,
-    "reviews_done": 1007
+    "reviews_done": 1009
   },
   "nickpcc": {
-    "chunks_audited": 5,
-    "issues_found": 0,
+    "chunks_audited": 6,
+    "issues_found": 1,
     "fixes_applied": 0,
-    "reviews_done": 1
+    "reviews_done": 2
   },
   "nickpcq": {
     "chunks_audited": 610,

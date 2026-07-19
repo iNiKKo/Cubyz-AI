@@ -1,1 +1,86 @@
-{}
+{
+  "codebase_src_gui_windows_sound.zig_chunk_0": {
+    "stage": "revise_requested",
+    "collection": "codebase",
+    "proposer": "NickPC",
+    "reason": "The explanation does not provide the exact recipe for converting between decibel and linear scales, nor does it fully explain the music volume formatting.",
+    "corrected_summary": null,
+    "corrected_explanation": "This chunk defines a GUI window for sound settings, including components like sliders and formatters for music volume control. The code initializes a `GuiWindow` with `contentSize = {128, 256}`. The functions `deziBelToLinear` and `linearToDezibel` convert between a -60..0 dB slider range and a 0..1 linear volume, treating anything below -59.95 dB as silent (`0` linear / `-60` dB). Specifically, `deziBelToLinear(x)` returns `0` if `x < -59.95`, otherwise it computes `10^(x/20)`. Conversely, `linearToDezibel(x)` computes `20*log10(x)`, returning `-60` if the result is less than `-59.95`. The `musicFormatter` function displays `",
+    "corrected_related_questions": [
+      "What is the purpose of the `musicCallback` function?",
+      "How does the chunk convert between decibel and linear scales?",
+      "What components are used to create the sound settings window?",
+      "How is the music volume formatted for display in the GUI?",
+      "What happens when the sound settings window is opened or closed?",
+      "Where is the music volume saved and loaded from?"
+    ],
+    "attempts": 3,
+    "last_reviewer": "NickPCc",
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickPC",
+        "timestamp": 1784479078.3860674,
+        "reason": "The explanation omits specific details about the `musicFormatter` function, such as not appending the numeric percentage when the volume is not off. It also fails to mention that the slider range is from -60 to 0 dB and that the window's content size is dynamically adjusted based on its components.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines a GUI window for sound settings, including components like sliders and formatters for music volume control. The code initializes a `GuiWindow` with `contentSize = {128, 256}`. `deziBelToLinear`/`linearToDezibel` convert between a -60..0 dB slider range and a 0..1 linear volume, both treating anything below -59.95 dB as silent (`0` linear / `-60` dB). `musicFormatter` displays `",
+        "corrected_related_questions": []
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "Caleb",
+        "verdict": "reject",
+        "feedback": "The proposer's diagnosis is incorrect. The current kb_content already states that the slider range is from -60 to 0 dB and that the window's content size is dynamically adjusted based on its components. Additionally, it correctly mentions that `musicFormatter` displays 'Music volume: Off' when the linear percentage is exactly 0, otherwise just 'Music volume:' without appending the numeric percentage.",
+        "timestamp": 1784479089.086598
+      },
+      {
+        "stage": "proposed",
+        "user_id": "NickPC",
+        "timestamp": 1784479097.6578877,
+        "reason": "The explanation does not provide the exact recipe for converting between decibel and linear scales, nor does it fully explain the music volume formatting.",
+        "corrected_summary": null,
+        "corrected_explanation": "This chunk defines a GUI window for sound settings, including components like sliders and formatters for music volume control. The code initializes a `GuiWindow` with `contentSize = {128, 256}`. The functions `deziBelToLinear` and `linearToDezibel` convert between a -60..0 dB slider range and a 0..1 linear volume, treating anything below -59.95 dB as silent (`0` linear / `-60` dB). Specifically, `deziBelToLinear(x)` returns `0` if `x < -59.95`, otherwise it computes `10^(x/20)`. Conversely, `linearToDezibel(x)` computes `20*log10(x)`, returning `-60` if the result is less than `-59.95`. The `musicFormatter` function displays `",
+        "corrected_related_questions": [
+          "What is the purpose of the `musicCallback` function?",
+          "How does the chunk convert between decibel and linear scales?",
+          "What components are used to create the sound settings window?",
+          "How is the music volume formatted for display in the GUI?",
+          "What happens when the sound settings window is opened or closed?",
+          "Where is the music volume saved and loaded from?"
+        ]
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "NickPCc",
+        "verdict": "revise",
+        "feedback": "The proposed explanation does not complete the description of `musicFormatter`. It should specify that it appends the numeric percentage when the linear value is not zero.",
+        "timestamp": 1784479132.7092047
+      }
+    ],
+    "review_feedback": "The proposed explanation does not complete the description of `musicFormatter`. It should specify that it appends the numeric percentage when the linear value is not zero."
+  },
+  "codebase_assets_cubyz_biomes_cave_mantle__defaults.zig.zon_chunk_0": {
+    "stage": "proposed",
+    "collection": "codebase",
+    "proposer": "NickPC",
+    "reason": "The related questions list includes questions about a third cave model that is not defined in the raw_content. The explanation does not provide information about the third cave model, which leads to confusion.",
+    "corrected_summary": null,
+    "corrected_explanation": "# [easy/codebase_assets_cubyz_biomes_cave_mantle__defaults.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** biome settings, cave models, default values, terrain generation, engine configuration\n**Symbols:** .isCave, .tags, .fogDensity, .fogColor, .stoneBlock, .music, .caveModels\n**Concepts:** biome defaults, cave models, cave generation\n\n## Summary\nCave Mantle Biome Defaults\n\n## Explanation\nDefines default settings for the Cave Mantle biome. The settings include:\n- `.isCave = true`\n- Tags: `mantle_layer`\n- Fog density: `15`\n- Fog color: `0x3d1a11`\n- Stone block type: `cubyz:pyrolite/rough`\n- Music track: `cubyz:totaldemented/scoria`\n\nCave models are defined with specific properties:\n- First cave model:\n  - ID: `partial_sphere`\n  - Min amount: `10`\n  - Max amount: `20`\n  - Min radius: `30`\n  - Max radius: `60`\n\n- Second cave model:\n  - ID: `partial_sphere`\n  - Min amount: `1`\n  - Max amount: `1`\n  - Min radius: `60`\n  - Max radius: `100`\n  - Cut direction: `{0, 0, 1}`\n  - Cut direction randomness: `0.1`\n  - Cut percentage: `0.8`\n  - Mode: `additive`\n\n## Related Questions\n- What is the fog density for the Cave Mantle biome?\n- Which tags are associated with the Cave Mantle biome?\n- What is the music track used in the Cave Mantle biome?\n- How many cave models are defined for the Cave Mantle biome?\n- What is the minimum amount of the first cave model?\n- What is the maximum radius of the second cave model?\n- What is the cut percentage of the second cave model?\n- What mode is used for the second cave model?\n- What is the id of the first cave model?",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickPC",
+        "timestamp": 1784479135.7828157,
+        "reason": "The related questions list includes questions about a third cave model that is not defined in the raw_content. The explanation does not provide information about the third cave model, which leads to confusion.",
+        "corrected_summary": null,
+        "corrected_explanation": "# [easy/codebase_assets_cubyz_biomes_cave_mantle__defaults.zig.zon] - Chunk 0\n\n**Type:** configuration\n**Keywords:** biome settings, cave models, default values, terrain generation, engine configuration\n**Symbols:** .isCave, .tags, .fogDensity, .fogColor, .stoneBlock, .music, .caveModels\n**Concepts:** biome defaults, cave models, cave generation\n\n## Summary\nCave Mantle Biome Defaults\n\n## Explanation\nDefines default settings for the Cave Mantle biome. The settings include:\n- `.isCave = true`\n- Tags: `mantle_layer`\n- Fog density: `15`\n- Fog color: `0x3d1a11`\n- Stone block type: `cubyz:pyrolite/rough`\n- Music track: `cubyz:totaldemented/scoria`\n\nCave models are defined with specific properties:\n- First cave model:\n  - ID: `partial_sphere`\n  - Min amount: `10`\n  - Max amount: `20`\n  - Min radius: `30`\n  - Max radius: `60`\n\n- Second cave model:\n  - ID: `partial_sphere`\n  - Min amount: `1`\n  - Max amount: `1`\n  - Min radius: `60`\n  - Max radius: `100`\n  - Cut direction: `{0, 0, 1}`\n  - Cut direction randomness: `0.1`\n  - Cut percentage: `0.8`\n  - Mode: `additive`\n\n## Related Questions\n- What is the fog density for the Cave Mantle biome?\n- Which tags are associated with the Cave Mantle biome?\n- What is the music track used in the Cave Mantle biome?\n- How many cave models are defined for the Cave Mantle biome?\n- What is the minimum amount of the first cave model?\n- What is the maximum radius of the second cave model?\n- What is the cut percentage of the second cave model?\n- What mode is used for the second cave model?\n- What is the id of the first cave model?",
+        "corrected_related_questions": []
+      }
+    ]
+  }
+}
