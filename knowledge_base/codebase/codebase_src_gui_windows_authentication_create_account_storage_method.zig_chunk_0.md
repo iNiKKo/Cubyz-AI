@@ -9,7 +9,7 @@
 Handles the GUI logic for selecting account storage methods during account creation.
 
 ## Explanation
-This chunk defines a GUI window that allows users to choose how they want to store their Account Code. It includes a vertical list of buttons, each corresponding to a different storage method: **"Password Manager (recommended)"** (the recommended default), "Save as file", and "Write it down yourself". The `next` function is called when a button is clicked, which closes the current window, sets the selected storage method, and opens the next relevant window (`"authentication/create_account_account_code"`). The `onOpen` function initializes the GUI components and layout when the window is opened, while the `onClose` function deinitializes them when the window is closed.
+This chunk defines a GUI window that allows users to choose how they want to store their Account Code. It includes a vertical list of buttons, each corresponding to a different storage method: **"Password Manager (recommended)"** (the recommended default), "Save as file", and "Write it down yourself". The `next` function is called when a button is clicked, which closes the current window, sets the selected storage method, and opens the next relevant window (`"authentication/create_account_account_code"`). The `onOpen` function initializes the GUI components and layout when the window is opened, while the `onClose` function deinitializes them when the window is closed. The content size of the window is determined by adding the position and size of the root component to a padding value. The recommended storage method is **"Password Manager (recommended)"**.
 
 ## Code Example
 ```zig

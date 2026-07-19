@@ -8,7 +8,7 @@
 Discussion about changing the up direction from y to z in Cubyz.
 
 ## Explanation
-The issue revolves around whether the 'up' direction should be represented by the z-axis instead of the current y-axis. The user suggests that using z as the up/down axis could make terrain generation more intuitive, aligning with common standards where z is typically used for vertical movement. This suggestion implies familiarity and consistency with industry practices. However, there is no explicit mention of technical implications or architectural changes required to implement this change.
+The discussion revolves around whether the 'up' direction should be represented by the z-axis instead of the current y-axis. The user suggests that using z as the up/down axis could make terrain generation more intuitive, aligning with common standards where z is typically used for vertical movement. This change would involve iterating over x and z rather than x and y, which might simplify certain aspects of terrain generation. However, there are potential impacts on existing terrain generation code, user experience, and gameplay that need to be considered. The benefits and drawbacks of this change should also be thoroughly evaluated to ensure compatibility with existing plugins or mods.
 
 ## Related Questions
 - What are the potential impacts on existing terrain generation code if z is made the up axis?

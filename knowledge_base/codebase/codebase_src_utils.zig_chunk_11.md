@@ -17,13 +17,13 @@ The `init` method initializes the interpolation system by setting the output pos
 
 The `updatePosition` method updates the position and velocity at a given time by shifting the front index, copying new values to the last positions and velocities arrays, and storing the timestamp.
 
-The `evaluateSplineAt` function calculates spline values using cubic Hermite splines based on the provided parameters.
+The `evaluateSplineAt` function calculates spline values using cubic Hermite splines based on the provided parameters: `_t`, `tScale`, `p0`, `_m0`, `p1`, and `_m1`. It returns an array containing the interpolated value and its first derivative.
 
 The `interpolateCoordinate` method interpolates individual coordinates using cubic interpolation if the velocity is non-zero; otherwise, it linearly interpolates.
 
-The `determineNextDataPoint` method determines the next data point to use for interpolation based on the current time and the last times array.
+The `determineNextDataPoint` method determines the next data point to use for interpolation based on the current time and the last times array. It selects the future time value that is at least 50 units away from the current time to prevent jumping.
 
-The `update` method updates the system with new time by determining the next data point, calculating delta time, handling time travel detection, and updating positions and velocities either linearly or using cubic interpolation.
+The `update` method updates the system with new time by determining the next data point, calculating delta time, handling time travel detection, and updating positions and velocities either linearly or using cubic interpolation. If time travel is detected, it logs a warning and resets the last time to the current time.
 
 The `updateIndexed` method is similar to `update` but allows for more complex updates based on an array of indices.
 

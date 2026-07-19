@@ -13,7 +13,7 @@ This chunk defines structures and functions for calculating physical properties,
 
 The `calculateVolumeProperties` function computes volume properties based on block presence, setting density to `airDensity`, terminal velocity to `airTerminalVelocity`, max density to `airDensity`, and mobile friction to `1.0/airTerminalVelocity`. The `calculateFriction` function calculates friction coefficients considering ground contact, where the current friction is calculated as `groundFriction + volumeFrictionCoeffecient` and mobile friction as `groundFriction + mobileFriction`. This function also considers whether the entity is on the ground (`onGround`) to adjust the ground friction accordingly. The `calculateMotion` function models motion over a single frame, applying gravity, input acceleration, and friction effects. It uses effective gravity `(gravity*(density - volumeProperties.density)/density)`, calculates the base friction coefficient (`baseGravity/volumeProperties.terminalVelocity`), and updates velocity based on these parameters.
 
-During jumping, no friction is applied if `jumpHeight > 0.0`. The jump velocity is calculated as `@sqrt(jumpHeight*baseGravity*2)`.
+During jumping, no friction is applied if `jumpHeight > 0.0`. The jump velocity is calculated as `@sqrt(jumpHeight*baseGravity*2)`. The motion model implemented in `calculateMotion` uses the differential equation `dv/dt = a - λ·v` and `dx/dt = v`, where `a` is the acceleration, `λ` is the friction coefficient, `v_0` is the initial velocity, and `c_1` is calculated as `v_0 - a/λ`. The solution to these equations provides the updated velocity and position over time.
 
 ## Code Example
 ```zig

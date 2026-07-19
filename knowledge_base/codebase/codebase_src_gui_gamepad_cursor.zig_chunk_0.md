@@ -9,7 +9,11 @@
 Gamepad cursor rendering logic
 
 ## Explanation
-This chunk defines the gamepad cursor rendering logic for the Cubyz voxel engine. It initializes a texture from the file 'assets/cubyz/ui/gamepad_cursor.png', deinitializes it, renders the cursor based on the mouse position, and binds it to the graphics context when necessary. The size of the cursor is 16 units.
+This chunk defines the gamepad cursor rendering logic for the Cubyz voxel engine. It initializes a texture from the file 'assets/cubyz/ui/gamepad_cursor.png', deinitializes it, and renders the cursor based on the mouse position. The size of the cursor is 16 units.
+
+The `render` function checks if the last used input device was the mouse or if the window is grabbed. If either condition is true, the function returns without rendering the cursor. Otherwise, it binds the texture to the graphics context and retrieves the current mouse position. The cursor is then drawn at a position relative to the mouse position, scaled by the GUI scale factor.
+
+The `boundImage` function in the `render` function takes two parameters: the position of the image and its size. In this case, the position is calculated as `-size/2.0` plus the mouse position divided by the GUI scale factor, ensuring the cursor is centered on the mouse pointer.
 
 ## Code Example
 ```zig

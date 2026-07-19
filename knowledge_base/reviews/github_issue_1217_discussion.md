@@ -8,7 +8,7 @@
 Discussion on world editing behavior, particularly regarding blocks that require support. Maintainers suggest atomic updates and preserving connection states during paste operations.
 
 ## Explanation
-The discussion revolves around the issue of world editing breaking when pasting blocks that require support, such as branches needing to connect to leaves. The maintainers propose an atomic update approach where the pasted region's block types and data values are preserved exactly as copied. This includes maintaining invalid rotation modes at the edges. Additionally, there is a suggestion to combine this with bulk data transfer to reduce mesh updates from per-block to per-chunk, which could also optimize light updates. The issue was fixed in the process of #2459, which changed these checks to block update events.
+Discussion on world editing behavior, particularly regarding blocks that require support, such as branches needing to connect to leaves. Maintainers suggest atomic updates and preserving connection states during paste operations. The discussion revolves around the issue of world editing breaking when pasting blocks that require support, such as branches needing to connect to leaves. The maintainers propose an atomic update approach where the pasted region's block types and data values are preserved exactly as copied. This includes maintaining invalid rotation modes at the edges. Additionally, there is a suggestion to combine this with bulk data transfer to reduce mesh updates from per-block to per-chunk, which could also optimize light updates. The issue was fixed in the process of #2459, which changed these checks to block update events.
 
 ## Related Questions
 - What is the proposed behavior for pasting blocks that require support?

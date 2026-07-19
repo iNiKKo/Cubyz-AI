@@ -9,7 +9,7 @@
 Discussion on splitting player.id into playerIndex and entityId, and reworking health transmission using entityComponent protocol.
 
 ## Explanation
-Discussion on splitting player.id into playerIndex and entityId, and reworking health transmission using entityComponent protocol. The maintainer suggests moving attributes like health to their own components but emphasizes the necessity of proper synchronization and client-side prediction for these components. This implies that changes are required in the existing sync system to accommodate new components such as health.
+Discussion on splitting player.id into playerIndex and entityId, and reworking health transmission using entityComponent protocol. The maintainer suggests moving attributes like health to their own components but emphasizes the necessity of proper synchronization (sync code) and client-side prediction for these components. Specifically, components need to be properly synced and client-side predicted, so they will likely need to be put through the sync system in some way, at least for the player's own components.
 
 ## Related Questions
 - How does the separation of player index and entity ID impact existing gameplay mechanics?

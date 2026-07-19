@@ -14,10 +14,10 @@ The reviewer suggests modifying the existing `convertCoordinateSystemVec0to1` fu
 The `CoordinateSystem` enum defines four possible systems: `right_handed_z_up`, `right_handed_y_up`, `left_handed_z_up`, and `left_handed_y_up`. The `convertCoordinateSystemVec0to1` function converts a vector from one of these coordinate systems to another without considering the center of rotation. The revised `convertCoordinateSystemVec` function takes an additional parameter, `centerOfRotation`, which is subtracted from the input position before conversion and added back afterward.
 
 The switch statement within the revised function handles each coordinate system transformation as follows:
-- `.right_handed_z_up`: No change to the vector components.
-- `.right_handed_y_up`: Swaps the y and z components, negating the new y component.
-- `.left_handed_z_up`: Negates the x component, leaving the y and z unchanged.
-- `.left_handed_y_up`: Swaps the x and z components, leaving the y unchanged.
+- `.right_handed_z_up`: No change to the vector components. The implementation is `Vec3f{v[0], v[1], v[2]}`.
+- `.right_handed_y_up`: Swaps the y and z components, negating the new y component. The implementation is `Vec3f{v[0], v[2], -v[1]}`.
+- `.left_handed_z_up`: Negates the x component, leaving the y and z unchanged. The implementation is `Vec3f{-v[0], v[1], v[2]}`.
+- `.left_handed_y_up`: Swaps the x and z components, leaving the y unchanged. The implementation is `Vec3f{-v[0], v[2], v[1]}`.
 
 ## Related Questions
 - What is the purpose of adding an explicit center of rotation in vector transformations?

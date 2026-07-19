@@ -11,6 +11,20 @@ The issue discusses the development of Survival Mode for Cubyz, detailing top pr
 ## Explanation
 This document outlines the progression and requirements for implementing Survival Mode in Cubyz. The maintainer emphasizes the need for a comprehensive list of desired features and issues related to survival mode. Key points include separating modes from creative, disabling the creative menu for survival players, block breaking, item collection, health/damage calculations (including damage types), fall damage, regeneration, eating mechanics, liquid physics, hunger meter, defense stats, and entity management. Specific issues that need addressing are #846, #257, #620, #89, #232, #293, #604, #86, #87, #88, #90, #83, #84, #85, #310, #553, #561, #78, #643, #644, #645. There are also discussions on storing player modes separately and saving entities independently from chunk files for efficiency.
 
+Health/Damage Calculation: The health/damage calculation includes damage types and will be implemented to ensure fair and balanced gameplay.
+
+Fall Damage: Fall damage mechanics will be added to simulate realistic physics when players fall from heights.
+
+Regeneration: Regeneration mechanics will allow players to recover health over time, similar to Minecraft's regeneration effect.
+
+Eating Mechanics: Eating mechanics will include a hunger meter that affects player performance and health recovery.
+
+Liquid Physics: Liquid physics will be implemented to simulate realistic water and lava behavior in the game world.
+
+Defense Stats: Defense stats will be introduced to provide players with armor-like protection against damage.
+
+Entity Management: Entity management will involve saving entities separately from chunk files for efficiency and better performance.
+
 ## Related Questions
 - What are the top priorities for implementing Survival Mode in Cubyz?
 - How does Cubyz plan to handle entity management in Survival Mode?

@@ -11,9 +11,9 @@ The chunk implements the teleportation command logic for the server.
 ## Explanation
 This chunk defines the teleportation command (`/tp`) for the Cubyz server. It supports three types of arguments: teleporting to a biome, teleporting to specific coordinates, and teleporting to another player's position. The `Args` union enum categorizes these argument types as follows:
 
-- `/tp <biome>`: Teleports the user to a specified biome within a radius of 16384 blocks using a spiral search algorithm.
-- `/tp <x> <y> <z>`: Teleports the user to specific coordinates provided in the command.
-- `/tp @<playerIndex>`: Teleports the user to another player's position based on their index.
+- `/tp <biome>`: Teleports the user to a specified biome within a radius of 16384 blocks using a spiral search algorithm. If the biome is a cave, teleportation to the biome is not available.
+- `/tp <x> <y> <z>`: Teleports the user to specific coordinates provided in the command. The coordinates are resolved using `command.resolveCoordinates`.
+- `/tp @<playerIndex>`: Teleports the user to another player's position based on their index. The target player is identified using `command.Target.fromPlayerIndex`, and if successful, the user's position is retrieved and used for teleportation.
 
 The `ArgParser` is used to parse the input arguments. The `execute` function handles the command execution based on the parsed arguments. For biomes, it searches for a suitable location within a specified radius using a spiral search algorithm that explores chunks in a spiral pattern from the center. If the biome is a cave, teleportation to the biome is not available. The algorithm iterates through chunks and samples within each chunk until a suitable biome is found or the entire area has been searched.
 

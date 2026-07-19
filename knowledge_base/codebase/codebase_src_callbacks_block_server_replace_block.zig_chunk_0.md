@@ -9,7 +9,7 @@
 Handles server-side block replacement events by initializing with a specified block type from configuration and replacing blocks in the world based on provided parameters. Includes detailed error handling for missing 'block' field and uses atomic operations for block replacement.
 
 ## Explanation
-This chunk defines a callback for handling server-side block replacement events. It includes an `init` function that initializes the callback with data from a configuration element, specifically parsing the block type specified in the configuration. If the required "block" field is missing, it logs an error and returns null. The `run` function calculates world coordinates based on chunk position and block position parameters, then uses atomic operations to replace blocks in the main server world.
+This chunk defines a callback for handling server-side block replacement events. It includes an `init` function that initializes the callback with data from a configuration element, specifically parsing the block type specified in the configuration. If the required 'block' field is missing, it logs an error and returns null. The `run` function calculates world coordinates based on chunk position and block position parameters, then uses atomic operations to replace blocks in the main server world. Specifically, the `cmpxchgBlock` method is used for atomic block replacement.
 
 ## Code Example
 ```zig

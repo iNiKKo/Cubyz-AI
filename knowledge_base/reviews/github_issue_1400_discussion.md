@@ -8,7 +8,7 @@
 The issue discusses star aliasing and jittering during movement.
 
 ## Explanation
-The issue discusses star aliasing and jittering during movement, with a specific note from maintainers acknowledging that the current size of stars is acceptable but suggesting that the discussion should focus on aliasing rather than sizes. The maintainers also mention that this problem might be related to another issue (#1362).
+When the issue was initially reported, stars were just one pixel in size. However, maintainers have noted that the current size of stars is acceptable. The discussion should focus on aliasing rather than sizes. Additionally, it has been suggested that this problem might be related to another issue (#1362).
 
 ## Related Questions
 - What is the current size of the stars in the game?

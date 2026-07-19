@@ -9,9 +9,27 @@
 The user proposes changing the day sky color in Cubyz from a desaturated look to a more natural 'sky blue' by modifying the `getSkyColor` function in `src/renderer.zig`. The maintainer suggests testing with hardcoded values and integrating a suggested color.
 
 ## Explanation
+**Explanation**
+
 The issue revolves around improving the visual appearance of the day sky in Cubyz. The current implementation results in a desaturated, overcast look, which is not visually appealing. The user proposes changing the `getSkyColor` function to return a hardcoded value representing a more natural sky blue. Specifically, the user replaced the `getSkyColor` function with `{0.46, 0.7, 1.0}` and changed the default fog color to `0xffbfe2ff`. The maintainer provides guidance on how to test this change by modifying the function at line 769 in `src/renderer.zig`, where the sky color is defined as a Vec3f with values between 0.0 and 1.0.
 
 The user also mentions exploring further customization of fog colors for different biomes but notes that they do not know how to properly implement this change dynamically. The maintainer suggests testing these hardcoded values first before integrating them into the codebase.
+
+To modify the `getSkyColor` function, you can go into `src/renderer.zig` line 769 and change the following code:
+```zig
+pub fn getSkyColor() Vec3f {
+    return game.fog.skyColor*@as(Vec3f, @splat(@reduce(.Add, game.fog.skyColor)/3.0));
+}
+```
+to
+```zig
+pub fn getSkyColor() Vec3f {
+    return .{1.0, 0.2, 0.4};
+}
+```
+The 3 values must be between 0.0 and 1.0.
+
+The user replaced the `getSkyColor` function with `{0.46, 0.7, 1.0}` and changed the default fog color to `0xffbfe2ff`. The maintainer suggests testing these hardcoded values first before integrating them into the codebase.
 
 ## Related Questions
 - How does the current implementation of `getSkyColor` affect the sky appearance?

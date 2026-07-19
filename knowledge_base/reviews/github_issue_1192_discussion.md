@@ -8,7 +8,7 @@
 Discussion about improving light mixing and cascades in Cubyz, focusing on limitations of flood-fill lighting and potential performance issues.
 
 ## Explanation
-Discussion about improving light mixing and cascades in Cubyz, focusing on limitations of flood-fill lighting. The inherent limitation is that multiple identical light sources do not increase brightness. Maintainers explore an alternative approach involving a 'brightness' value that multiplies with RGB values to create an overexposure effect but dismiss this idea due to potential performance issues. Specifically, adding a 'brightness' value would require repropagating all light sources in the area whenever a block is placed, which is computationally expensive.
+Discussion about improving light mixing and cascades in Cubyz, focusing on limitations of flood-fill lighting. The inherent limitation is that multiple identical light sources do not increase brightness. Maintainers explore an alternative approach involving a 'brightness' value that multiplies with RGB values to create an overexposure effect but dismiss this idea due to potential performance issues. Specifically, adding a 'brightness' value would require repropagating all light sources in the area whenever a block is placed, which is computationally expensive. The radius of influence for each light source is 32 blocks, and this could lead to significant performance problems if there are many crystals or other light-emitting blocks in the area.
 
 ## Related Questions
 - What is the current lighting technique used in Cubyz?

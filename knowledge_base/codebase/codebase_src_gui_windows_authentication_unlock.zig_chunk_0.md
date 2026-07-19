@@ -16,7 +16,19 @@ Specifically:
 - Padding value is defined as `const padding: f32 = 8;`.
 - The text input field (`textComponent`) has an obfuscated password entry and updates the `logoutButton.disabled` state based on its length. If the password input field is empty, the logout button becomes enabled; otherwise, it remains disabled.
 - Error handling includes displaying messages like "#ff0000Incorrect password." for authentication failure or a formatted error message for other errors, such as "#ff0000Authentication data is corrupted: {error_name}".
-- The window contains labels with specific text and dimensions, a text input field with an obfuscated password entry and show/hide checkbox, buttons for logout and decryption, and secure memory zeroing when the window closes.
+
+When the window opens, the following components are added to the vertical list:
+- A label with text "Please enter your local password to decrypt your Multiplayer Account." and width 420.
+- A label with text "If you lost your password you can also log out and reenter your Account Code." and width 420.
+- An `incorrectPasswordLabel` initialized with empty text and left alignment, with a width of 420.
+- A horizontal list (`passwordRow`) containing:
+  - A `TextInput` field for password input with dimensions `{0, 0}`, width 340 (420 - 80), height 22, and an obfuscated entry. The text buffer is selected by default.
+  - A `CheckBox` with position `{10, 0}`, width 70, label "Show", initial state false, and a callback function `showTextCallback` to toggle the password visibility.
+- A horizontal list (`buttonRow`) containing:
+  - A `Button` for logout with dimensions `{0, 0}`, width 200, text "Logout", and an action that calls the `logout` function. The button is initially enabled.
+  - A `Button` for decryption with dimensions `{8, 0}`, width 200, text "Decrypt", and an action that calls the `apply` function.
+
+Secure memory zeroing is performed when the window closes by using `std.crypto.secureZero` to clear the password buffer and current string items. The clipboard is also cleared, and any remaining components are deinitialized.
 
 ## Code Example
 ```zig

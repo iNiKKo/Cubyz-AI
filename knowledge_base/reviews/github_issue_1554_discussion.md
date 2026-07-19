@@ -8,7 +8,7 @@
 Discussion on displaying multiple error messages in a popup, with a preference for showing the first error and indicating additional errors.
 
 ## Explanation
-The discussion focuses on how to handle scenarios where multiple error messages need to be displayed in a single popup. The user suggests showing the first error message and appending 'and X more' if there are additional errors. This approach aims to provide users with clear information without cluttering the popup, specifically by displaying the oldest (first) error message.
+Discussion on displaying multiple error messages in a popup, with a preference for showing the first error and indicating additional errors. The user suggests showing the first error message and appending 'and X more' if there are additional errors. This approach aims to provide users with clear information without cluttering the popup, specifically by displaying the oldest (first) error message.
 
 ## Related Questions
 - How does the current implementation handle multiple error messages?

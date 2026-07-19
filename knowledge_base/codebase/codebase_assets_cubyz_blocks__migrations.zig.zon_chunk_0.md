@@ -9,7 +9,82 @@
 Block migration mappings
 
 ## Explanation
-This chunk contains 114 block migration mappings (old identifier -> new identifier), covering renamed stone types (e.g. `stone` -> `slate`, `stone_bricks` -> `slate_bricks`), a full material-naming overhaul splitting flat names into `material/variant` paths (e.g. `basalt` -> `basalt/base`, later further split to `basalt/base` -> `basalt/smooth`), leaves/planks/fences reorganized under shared prefixes (e.g. `oak_leaves` -> `leaves/oak`, `oak_planks` -> `planks/oak`, `oak_fence` -> `fence/oak`), glow crystal color renames (e.g. `glow_crystal/dark_gray` -> `glow_crystal/grey`), and grass variant renames (e.g. `grass` -> `grass/temperate`, `dry_grass_vegetation` -> `grass/vegetation/dry`). Specific mappings include: `mossy_cobblestone` -> `cobblestone`; `void_stone` -> `voidstone/base`; `terracotta_bricks` -> `terracotta/bricks`. The old and new block identifiers for 'glow_crystal/dark_gray' are 'glow_crystal/dark_gray' -> 'glow_crystal/grey'. The old and new block identifiers for 'void_stone' are 'void_stone' -> 'voidstone/base'. The old and new block identifiers for 'dry_grass_vegetation' are 'dry_grass_vegetation' -> 'grass/vegetation/dry'.
+This chunk contains 114 block migration mappings (old identifier -> new identifier), covering renamed stone types, a full material-naming overhaul, leaves/planks/fences reorganization, glow crystal color renames, and grass variant renames. The specific mappings include:
+
+- `glow_crystal/dark_gray` -> `glow_crystal/grey`
+- `glow_crystal/dark_green` -> `glow_crystal/viridian`
+- `glow_crystal/dark_red` -> `glow_crystal/crimson`
+- `glow_crystal/gray` -> `glow_crystal/grey`
+- `glow_crystal/light_blue` -> `glow_crystal/aqua`
+- `stone` -> `slate`
+- `stone_bricks` -> `slate_bricks`
+- `stone_tile` -> `slate_tile`
+- `stone_wall` -> `slate_wall`
+- `mossy_cobblestone` -> `cobblestone`
+- `baobab_leaves` -> `leaves/baobab`
+- `baobab_leaves_opaque` -> `leaves/opaque/baobab`
+- `birch_leaves` -> `leaves/birch`
+- `birch_leaves_opaque` -> `leaves/opaque/birch`
+- `dead_leaves` -> `leaves/dead`
+- `dead_leaves_opaque` -> `leaves/opaque/dead`
+- `mahogany_leaves` -> `leaves/mahogany`
+- `mahogany_leaves_opaque` -> `leaves/opaque/mahogany`
+- `oak_leaves` -> `leaves/oak`
+- `oak_leaves_opaque` -> `leaves/opaque/oak`
+- `palm_leaves` -> `leaves/palm`
+- `palm_leaves_opaque` -> `leaves/opaque/palm`
+- `pine_leaves` -> `leaves/pine`
+- `pine_leaves_opaque` -> `leaves/opaque/pine`
+- `willow_leaves` -> `leaves/willow`
+- `willow_leaves_opaque` -> `leaves/opaque/willow`
+- `baobab_planks` -> `planks/baobab`
+- `birch_planks` -> `planks/birch`
+- `mahogany_planks` -> `planks/mahogany`
+- `oak_planks` -> `planks/oak`
+- `palm_planks` -> `planks/palm`
+- `pine_planks` -> `planks/pine`
+- `willow_planks` -> `planks/willow`
+- `baobab_fence` -> `fence/baobab`
+- `birch_fence` -> `fence/birch`
+- `mahogany_fence` -> `fence/mahogany`
+- `oak_fence` -> `fence/oak`
+- `palm_fence` -> `fence/palm`
+- `pine_fence` -> `fence/pine`
+- `willow_fence` -> `fence/willow`
+- `candy_cane/block` -> `candy_cane_block`
+- `candy_cane/branch` -> `branch/candy_cane`
+- `cactus_arm` -> `branch/cactus`
+- `glimmergill_branch` -> `branch/glimmergill`
+- `toadstool_branch` -> `branch/toadstool`
+- `bolete_branch` -> `branch/bolete`
+- `baobab_branch` -> `branch/baobab`
+- `birch_branch` -> `branch/birch`
+- `mahogany_branch` -> `branch/mahogany`
+- `oak_branch` -> `branch/oak`
+- `pine_branch` -> `branch/pine`
+- `willow_branch` -> `branch/willow`
+- `slate/base` -> `slate/smooth`
+- `slate/cobble` -> `slate/rough`
+- `marble/base` -> `marble/smooth`
+- `glacite/base` -> `glacite/smooth`
+- `basalt/base` -> `basalt/smooth`
+- `voidstone/base` -> `voidstone/smooth`
+- `pyrolite/base` -> `pyrolite/rough`
+- `terracotta/base` -> `terracotta/smooth`
+- `sandstone/base` -> `sandstone/rough`
+- `ferrock/base` -> `ferrock/smooth`
+- `limestone/base` -> `limestone/smooth`
+- `nimbusite/base` -> `nimbusite/smooth`
+- `grass` -> `grass/temperate`
+- `cold_grass` -> `grass/cold`
+- `dry_grass` -> `grass/dry`
+- `lush_grass` -> `grass/lush`
+- `grass_vegetation` -> `grass/vegetation/temperate`
+- `cold_grass_vegetation` -> `grass/vegetation/cold`
+- `dry_grass_vegetation` -> `grass/vegetation/dry`
+- `lush_grass_vegetation` -> `grass/vegetation/lush`
+
+These mappings cover various block types and their respective renamings.
 
 ## Related Questions
 - What are the old and new block identifiers for 'glow_crystal/dark_gray'?

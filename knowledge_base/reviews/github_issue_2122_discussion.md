@@ -8,7 +8,7 @@
 The issue discusses a proposal for adding world edit UI features similar to Axiom, but it is closed due to the decision to reduce built-in world edit scope and focus on mod-based solutions.
 
 ## Explanation
-The discussion revolves around a proposal to add world edit UI features similar to Axiom, but it is closed due to the decision to reduce built-in world edit scope and focus on mod-based solutions. This decision is based on content suggestion guidelines. The Axiom mod is mentioned as an example of advanced tooling, but its specific features are not explicitly stated in raw_content.
+The discussion revolves around a proposal to add world edit UI features similar to Axiom, which includes player spawning in shapes, using elevation, and erasing. However, the issue is closed due to the decision to reduce built-in world edit scope and focus on mod-based solutions. This decision is based on content suggestion guidelines. The Axiom mod is mentioned as an example of advanced tooling with specific features such as spawning in shapes, using elevation, and erasing.
 
 ## Related Questions
 - What are the reasons behind reducing the built-in world edit scope in Cubyz?

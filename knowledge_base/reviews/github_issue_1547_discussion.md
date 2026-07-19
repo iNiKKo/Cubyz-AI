@@ -8,7 +8,7 @@
 Discussion about adding a sickle tool to Cubyz for efficient vegetation removal, with consideration of gameplay mechanics and visual design.
 
 ## Explanation
-The discussion revolves around the introduction of a new tool called a 'sickle' in the game Cubyz for efficient vegetation removal, particularly for cacti. The reviewer suggests that a sickle would be more distinctive and better suited as a tool compared to existing options like an axe or machete. The maintainer agrees with this idea, noting that cacti are tagged as leaves and can currently be chopped with an axe but proposes using a sickle instead for gameplay benefits due to its unique shape in the crafting grid. Additionally, there is a suggestion to modify game mechanics so that leaves and grass do not drop without the use of a sickle, enhancing the tool's utility.
+Discussion about adding a sickle tool to Cubyz for efficient vegetation removal, particularly for cacti. The reviewer suggests that a sickle would be more distinctive and better suited as a tool compared to existing options like an axe or machete. The maintainer agrees with this idea, noting that cacti are tagged as leaves and can currently be chopped with an axe but proposes using a sickle instead for gameplay benefits due to its unique shape in the crafting grid. Additionally, there is a suggestion to modify game mechanics so that leaves and grass do not drop without the use of a sickle, enhancing the tool's utility.
 
 ## Related Questions
 - What specific vegetation can be cut with an axe?

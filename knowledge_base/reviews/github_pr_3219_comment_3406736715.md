@@ -9,7 +9,7 @@
 The review addresses inconsistencies in memory allocation for `recipe.sourceItems` and notes unused code.
 
 ## Explanation
-The reviewer points out a critical architectural issue where `recipe.sourceItems` can be allocated using different allocators (`main.worldArena` or `main.globalAllocator`) depending on the context. Specifically, `items.zig:parseRecipe` uses `main.worldArena`, while `items.zig:registerRecipes` calls `recipes.zig:parseRecipe` which in turn calls `recipes.zig:addRecipe` using `main.globalAllocator`. This inconsistency could lead to potential memory management issues, such as double-free errors or incorrect allocator usage. Additionally, the reviewer notes that `item.zig:parseRecipe` is never used, suggesting it may be dead code and should be removed to maintain clean and efficient code.
+The review addresses inconsistencies in memory allocation for `recipe.sourceItems` and notes unused code. Specifically, `items.zig:parseRecipe` uses `main.worldArena`, while `items.zig:registerRecipes` calls `recipes.zig:parseRecipe` which in turn calls `recipes.zig:addRecipe` using `main.globalAllocator`. This inconsistency could lead to potential memory management issues, such as double-free errors or incorrect allocator usage. Additionally, the reviewer notes that `item.zig:parseRecipe` is never used, suggesting it may be dead code and should be removed to maintain clean and efficient code.
 
 ## Related Questions
 - Why are `recipe.sourceItems` allocated with different allocators?

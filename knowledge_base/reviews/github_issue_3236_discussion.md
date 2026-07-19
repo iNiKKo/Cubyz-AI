@@ -8,7 +8,7 @@
 Discussion about implementing non-rectilinear projections like Panini or fisheye in Cubyz, noting potential hardware limitations and future shader support.
 
 ## Explanation
-Discussion about implementing non-rectilinear projections like Panini or fisheye in Cubyz. The user suggests these effects could be implemented using shaders but notes a lack of resources. The maintainer points out that current hardware does not support drawing curved triangles directly, necessitating the use of a larger framebuffer and post-processing pass, which is deemed unsuitable for the base game due to performance implications. However, future shader support is anticipated to enable such effects. Additionally, any changes would require a restart.
+Discussion about implementing non-rectilinear projections like Panini or fisheye in Cubyz. The user suggests these effects could be implemented using shaders but notes a lack of resources, providing specific examples such as Panini and fisheye projections along with links to shader examples (https://www.shadertoy.com/view/Wt3fzB, https://www.shadertoy.com/view/X3GcWW) and a video resource (https://www.youtube.com/watch?v=LE9kxUQ-l14). The maintainer points out that current hardware does not support drawing curved triangles directly, necessitating the use of a larger framebuffer and post-processing pass, which is deemed unsuitable for the base game due to performance implications. However, future shader support is anticipated to enable such effects. Additionally, any changes would require a restart.
 
 ## Related Questions
 - What are the current limitations of hardware in supporting non-rectilinear projections?

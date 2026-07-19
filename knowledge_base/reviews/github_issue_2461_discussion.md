@@ -15,7 +15,7 @@ The current method for block replacements is described as tedious and inefficien
 .substitute = .{
 	.{.old = "cubyz:stone", .new = .{
 		.{.id = "cubyz:stone", .chance = 0.99},
-		.{.id = "cubyz:coal_ire", .chance = 0.01},
+		.{.id = "cubyz:coal_ore", .chance = 0.01},
 	}},
 }
 ```

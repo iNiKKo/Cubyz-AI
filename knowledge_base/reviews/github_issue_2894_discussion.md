@@ -9,7 +9,7 @@
 Discussion about allowing applications to interface with Cubyz servers directly, focusing on potential implementation via server-side mods or patching.
 
 ## Explanation
-Discussion about allowing applications to interface with Cubyz servers directly without requiring a player to be online. The maintainer suggests using server-side mods as an alternative approach but notes that the official modding system cannot currently achieve this functionality. A user proposes catching chat messages just before they enter the Protocol serverReceive function as a potential workaround, indicating that patching into specific functions could enable such interactions.
+Discussion about allowing applications to interface with Cubyz servers directly without requiring a player to be online. The maintainer suggests using server-side mods as an alternative approach but notes that the official modding system cannot currently achieve this functionality. A user proposes catching chat messages just before they enter the Protocol serverReceive function as a potential workaround, indicating that patching into specific functions could enable such interactions. The current capability of server-side mods in Cubyz is limited to getting and setting data if patched into the function responsible for handling chat messages.
 
 ## Related Questions
 - What is the current capability of server-side mods in Cubyz?

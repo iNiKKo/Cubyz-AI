@@ -9,7 +9,7 @@
 Discussion about z-fighting issues between chiseled blocks and glass, with potential solutions involving OpenGL functions.
 
 ## Explanation
-The issue revolves around z-fighting occurring when glass is placed adjacent to a chiseled block. The maintainer explains that complete blocks have the `canSeeNeighbor` bits set to false, which prevents drawing transparent backfaces towards opaque terrain. This setting ensures that only necessary faces are rendered for complete blocks, avoiding unnecessary rendering of transparent backfaces toward opaque terrain. Similar problems are noted for walls, where z-fighting also occurs due to the same underlying issue with block adjacency and transparency.
+Discussion about z-fighting issues between chiseled blocks and glass, with potential solutions involving OpenGL functions. The issue revolves around z-fighting occurring when glass is placed adjacent to a chiseled block. The maintainer explains that complete blocks have the `canSeeNeighbor` bits set to false, which prevents drawing transparent backfaces towards opaque terrain. This setting ensures that only necessary faces are rendered for complete blocks, avoiding unnecessary rendering of transparent backfaces toward opaque terrain. Similar problems are noted for walls, where z-fighting also occurs due to the same underlying issue with block adjacency and transparency. The maintainer mentions that there is a `glPolygonOffsetClamp` function in the OpenGL 4.6 specification, which allows limiting the maximum offset and could help avoid the troubles of `glPolygonOffset`. This function could potentially mitigate z-fighting issues by providing more control over polygon offsets.
 
 ## Related Questions
 - What is the purpose of the `canSeeNeighbor` bits in block rendering?

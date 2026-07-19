@@ -10,6 +10,8 @@ Discussion about adding item sprites for water and lava blocks, with concerns ab
 ## Explanation
 The discussion centers around adding item sprites for water and lava blocks. A user questions the relevance of this feature due to a previous change (#473) which makes obtaining these blocks in survival mode impossible, and notes that full cubes generally do not use item textures. The maintainer acknowledges these points but emphasizes that the block textures for water and lava currently look awkward and suggests addressing both texture issues and obtainability concerns as part of a larger fix.
 
+Specifically, issue #473 removed the ability to obtain water blocks in survival mode, which has made the feature less relevant. Full cubes typically do not use item textures because they are solid and do not require individual representations. The current block textures for water and lava appear awkward due to their design choices, which the maintainer believes should be addressed as part of a comprehensive fix.
+
 ## Related Questions
 - What changes were made in issue #473 to affect the obtainability of water blocks?
 - Why are full cubes not typically given item textures?

@@ -10,6 +10,8 @@ The sky appears unusual from high altitudes due to atmospheric rendering issues.
 ## Explanation
 The sky appears unusual from high altitudes due to the current atmospheric rendering model, which does not account for spherical curvature. The maintainer notes that this is what the atmosphere would look like if we were living on a non-globular world and suggests exploring different combinations of fog density and atmosphere height settings. A user proposes simulating a spherical atmosphere around the player to correct the visual anomaly.
 
+The current atmospheric rendering model in Cubyz does not account for the curvature of the Earth, leading to an unusual sky appearance at high altitudes. The maintainer suggests experimenting with different values for fog density and atmosphere height to achieve a more realistic effect. Implementing a spherical atmosphere model around the player could potentially resolve these issues but may have performance implications that need to be considered.
+
 ## Related Questions
 - What is the current atmospheric rendering model in Cubyz?
 - How does changing fog density and atmosphere height affect sky appearance?

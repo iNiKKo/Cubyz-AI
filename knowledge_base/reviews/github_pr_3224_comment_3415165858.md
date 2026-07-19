@@ -9,8 +9,6 @@
 A new logging module `log.zig` is introduced, providing functionality for different log levels with color coding and file logging.
 
 ## Explanation
-A new logging module `log.zig` is introduced, providing functionality for different log levels with color coding and file logging.
-
 The review introduces a comprehensive logging system in Cubyz. The `log.zig` file defines an enum `Level` for various log levels such as error, warning, info, debug, server, and chat. Each level has associated color codes for console output:
 - Error: Red (`[31m`)
 - Warning: Yellow (`[33m`)
@@ -19,6 +17,10 @@ The review introduces a comprehensive logging system in Cubyz. The `log.zig` fil
 - Server: Blue (`[34mserver[0m:`)
 - Chat: Cyan (`[36mchat[0m:`)
 The module initializes two log files: one for the latest session located at `logs/latest.log` and another timestamped file in the format `logs/ts_{timestamp}.log`. It supports ANSI color codes if the terminal does so. The `runtimeLogFn` function formats messages, writes them to both files, and optionally opens an error window for critical errors. If a long log message is truncated during formatting, it logs a message indicating truncation.
+
+The `init` function creates the `logs` directory and initializes two log files: `logs/latest.log` and a timestamped file in the format `logs/ts_{timestamp}.log`. It also checks if the terminal supports ANSI color codes. If any of these operations fail, it logs an error message and returns early.
+
+The `deinit` function closes both log files if they are open. This ensures that all resources are properly released when the logging system is shut down.
 
 The review highlights a potential issue with reusing internal state in the parser, suggesting it should be made a local variable.
 

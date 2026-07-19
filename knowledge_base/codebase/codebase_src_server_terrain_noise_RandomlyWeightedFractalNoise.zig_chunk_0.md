@@ -21,6 +21,8 @@ The `setSeed` function initializes a seed for random number generation using the
 
 The grid size in fractal terrain generation is determined by the `scale` parameter, which defines the initial side length of the grid. The grid must have a side length of 2^n + 1 to ensure that each new grid point has a new neighbor. The `maxResolution` parameter limits the resolution of the generated map.
 
+The interpolation process involves calculating the height of new points based on the surrounding known points with random weights. This creates a smooth transition between different areas of the terrain. The randomness scale is adjusted in each iteration to reduce noise and create a more natural-looking landscape.
+
 ## Code Example
 ```zig
 fn setSeed(x: i32, y: i32, offsetX: i32, offsetY: i32, seed: *u64, worldSeed: u64, scale: u31, maxResolution: u31) void {

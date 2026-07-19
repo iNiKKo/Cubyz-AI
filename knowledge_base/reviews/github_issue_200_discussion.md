@@ -11,6 +11,12 @@ Discussion on implementing multi-block support for complex structures like doors
 ## Explanation
 Discussion on implementing multi-block support for complex structures like doors, with considerations for block interactions and model extensions. The proposed solution involves a new rotation mode and block type called 'multiblock,' where the bits determine the origin block's position relative to the multiblock. Specifically, the bit pattern `0123456789ABCDEF` is used to define the placement of blocks within the multiblock structure (e.g., `XXXXXYYYYYZZZZZ#`). The XYZ values in this pattern determine where the origin block is relative to the multiblock. This would enable structures like doors to open adjacent doors or double chests to open simultaneously. Key concerns include collision handling, behavior in unloaded chunks, and LOD (Level of Detail) chunk interactions. The maintainer suggests using block entities for future implementation, while the user proposes a detailed system involving bit manipulation to define multiblocks and their interactions.
 
+**Collision Handling:** Collisions between different parts of the structure would be managed by determining the collision bounds based on the origin block's position and the defined multiblock pattern. Each part of the multiblock would need to check for collisions with other blocks within its defined area.
+
+**Behavior in Unloaded Chunks:** If a multiblock borders an unloaded chunk, collision detection and rendering would be disabled for that portion of the structure until the chunk is loaded again. This ensures that the game does not attempt to interact with non-existent or inaccessible parts of the world.
+
+**LOD Chunk Interactions:** LOD chunks would need to handle multiblocks by adjusting their level of detail based on the distance from the player. When a multiblock spans across different LOD levels, the system should ensure that the visual representation remains consistent and does not introduce any artifacts or inconsistencies.
+
 ## Related Questions
 - How does the proposed multiblock system handle collisions between different parts of the structure?
 - What is the mechanism for ensuring that block updates within a multiblock correctly propagate and maintain structural integrity?

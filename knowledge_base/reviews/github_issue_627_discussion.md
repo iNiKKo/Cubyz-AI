@@ -9,14 +9,14 @@
 Discussion on implementing buckets in Cubyz using the tool crafting system, focusing on durability and potential capacity features.
 
 ## Explanation
-The discussion revolves around integrating buckets into Cubyz's tool crafting system, focusing on durability and potential capacity features. Key points include the need for durability attributes to account for different fluid types (e.g., water vs. lava) and the possibility of varying bucket capacities based on size. The team identifies dependencies such as selecting specific fluids when holding a bucket, implementing an `onRightClick` callback for items, and ongoing work in #2898 that will expand to include this functionality. Additionally, it is mentioned that capacity is hard to implement and will need further work on the fluid system (#62). The procedural crafting part will be set up for future enhancements, and the current status of the fluid system implementation is still under development.
+The discussion revolves around integrating buckets into Cubyz's tool crafting system, focusing on durability and potential capacity features. Key points include the need for durability attributes to account for different fluid types (e.g., water vs. lava) and the possibility of varying bucket capacities based on size. The team identifies dependencies such as selecting specific fluids when holding a bucket, implementing an `onRightClick` callback for items, and ongoing work in #2898 that will expand to include this functionality. Specifically, bucket capacity is based on the size of the bucket, with larger buckets having more capacity but reduced durability. Dependencies include selecting specific fluids when holding a bucket and implementing an `onRightClick` callback for items. The procedural crafting part will be set up for future enhancements, and the current status of the fluid system implementation is still under development.
 
 ## Related Questions
 - How does the tool crafting system currently handle item interactions?
 - What are the current limitations of fluid handling in Cubyz?
 - How will the `onRightClick` callback be integrated into the existing system?
 - What specific attributes will be assigned to buckets for durability and flammability?
-- How will bucket capacity be determined and implemented?
+- How will bucket capacity be determined and implemented (e.g., larger buckets have more capacity but reduced durability)?
 - What dependencies need to be resolved before implementing bucket functionality?
 - How does #2898 relate to the `onRightClick` callback implementation?
 - What are the potential challenges in integrating fluid-specific interactions with buckets?

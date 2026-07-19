@@ -9,7 +9,7 @@
 Discussion on implementing a skeleton system for entity models in Cubyz, considering formats like .zon or JSON, and future plans to use GLTF.
 
 ## Explanation
-The discussion revolves around adding a skeleton system to support inverse kinematics and other animations in Cubyz. The proposal includes defining joints and bones either through a separate file format (.zon) or by extending existing formats like OBJ. A specific example of the .zon format is provided:
+Discussion on implementing a skeleton system for entity models in Cubyz, considering formats like .zon or JSON, and future plans to use GLTF. The proposal includes defining joints and bones either through a separate file format (.zon) or by extending existing formats like OBJ. A specific example of the .zon format is provided, which includes detailed information about how joints and bones are defined:
 
 ```
 {
@@ -28,14 +28,15 @@ The discussion revolves around adding a skeleton system to support inverse kinem
 }
 ```
 
-There's also mention of potential future adoption of the GLTF format, which supports binary representation and animations, suggesting that this issue might be addressed when transitioning to GLTF. The discussion highlights the benefits of using GLTF over existing formats due to its support for animations and binary representation.
+The structure of the .zon file format includes a `.joints` array where each joint has a `.name` and `.position`. The `.bones` array defines bones with `.from`, `.to`, and `.controls` properties, where `.controls` maps bone names to face groups like `.all`.
+
+The discussion also mentions potential future adoption of the GLTF format, which supports binary representation and animations, suggesting that this issue might be addressed when transitioning to GLTF. The benefits of using GLTF over existing formats include its support for animations and binary representation.
+
+Users have proposed various solutions, such as supporting .json models or using Blockbench for better model editing. There is also a mention of the need to define how much joints can move and which are fixed in future implementations.
 
 ## Related Questions
-- What are the proposed formats for defining skeletons in Cubyz?
-- How does the discussion suggest handling animations in the future?
-- Why is there a mention of switching to GLTF format?
-- What are the potential benefits of using GLTF over existing formats?
-- How might the implementation of a skeleton system impact model compatibility?
-- Are there any specific concerns raised about the proposed changes?
+- What is the structure of the .zon file format for defining skeletons?
+- How are joints and bones defined in the .zon file format?
+- What specific benefits does the GLTF format offer over existing formats like OBJ?
 
 *Source: unknown | chunk_id: github_issue_2419_discussion*

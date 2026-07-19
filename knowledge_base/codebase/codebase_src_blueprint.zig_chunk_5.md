@@ -17,6 +17,12 @@ The Entry struct includes an inner union that can represent block type, block ta
 
 The Mask struct's methods include `initFromString`, which parses a string into a Mask instance, and `deinit`, which cleans up memory. The `clone` method creates a deep copy of the Mask instance. The `match` method evaluates whether a given block meets the specified conditions.
 
+The Inner union within Entry has four possible types: block, blockType, blockTag, and blockProperty. The block type is represented by a Block struct with typ and data fields. The blockType is represented by a u16 value. The blockTag is represented by a Tag struct. The blockProperty is represented by an enum of boolean properties of the Block struct.
+
+The `initFromString` method in Entry handles different types of block properties based on the first character of the specifier: '!' for inversion, '$' for tags, '@' for properties, and default for block-like specifications. It returns an error if the tag or property is not found.
+
+The `parseBlockLike` function parses block-like specifications into Mask.Entry.Inner instances, handling errors for data parsing and ID parsing.
+
 ## Code Example
 ```zig
 fn initFromString(specifier: []const u8) !Entry {

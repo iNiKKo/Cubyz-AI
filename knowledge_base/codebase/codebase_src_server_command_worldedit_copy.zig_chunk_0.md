@@ -11,6 +11,8 @@ WorldEdit copy command implementation
 ## Explanation
 This chunk defines the '/copy' command for WorldEdit in the Cubyz voxel engine. It captures the current selection and copies it to the clipboard, handling errors if the capture fails. The implementation uses specific data structures such as 'User', 'Block', and 'Blueprint'. When executing the command, an error message is displayed to the user if there are issues with capturing blocks. If the clipboard already contains a block, the previous content is deinitialized before storing the new selection. Error messages logged by this code include details about the position of the failed block capture and the associated error message. The 'execute' function interacts with the globalAllocator for memory management during execution. Blueprint.capture can return either success or failure outcomes, where success stores the captured selection in worldEditData.clipboard.
 
+The usage string for the 'copy' command is defined as '/copy'. The exact error messages displayed to the user are '#ff0000{s}' and '#ff0000Error while copying block {}: {s}'. The format of the error messages logged by this code is 'Error while copying block {}: {s}'.
+
 ## Code Example
 ```zig
 const Args = union(enum) {

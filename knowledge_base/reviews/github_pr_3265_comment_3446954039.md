@@ -9,7 +9,7 @@
 The change adds a new field `blockModelsZon` to the `Assets` struct and updates the logging function to include this new field in its output.
 
 ## Explanation
-This update introduces a new data structure, `blockModelsZon`, which is used to store additional information about block models in ZON format. The reviewer suggests modifying the log message to include this new field, ensuring that all relevant asset counts are reported during the reading process. Specifically, the log message now includes the number of block models and block model ZONs. This change aims to improve the transparency and completeness of the logging output, making it easier to track and verify the loading of assets.
+This update introduces a new data structure, `blockModelsZon`, which is used to store additional information about block models in ZON format. The reviewer suggests modifying the log message to include this new field, ensuring that all relevant asset counts are reported during the reading process. Specifically, the log message now includes the number of blocks, items, procedural items, biomes, cave layers, structure tables, recipes, structure building blocks, blueprints, particles, world presets, block models, and block model ZONs. The updated log message should display the counts for each of these asset types, providing a comprehensive overview of the assets being loaded. This change aims to improve the transparency and completeness of the logging output, making it easier to track and verify the loading of assets.
 
 ## Related Questions
 - What is the purpose of the `blockModelsZon` field in the `Assets` struct?

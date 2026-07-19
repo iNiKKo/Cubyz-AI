@@ -9,7 +9,7 @@
 Provides utility functions for casting function pointers and concatenating comptime strings.
 
 ## Explanation
-This chunk defines several utility functions related to function pointer manipulation and string concatenation. The `castFunctionSelfToConstAnyopaque` function converts the first parameter of a given function to a `*const anyopaque` pointer, ensuring that the size and alignment match those of `*const anyopaque`. If these conditions are not met, a compile-time error is generated with a message indicating the mismatched type. Similarly, the `castFunctionSelfToAnyopaque` function converts the first parameter to a `*anyopaque` pointer under the same constraints but without constness. The `castFunctionReturnToAnyopaque` and `castFunctionReturnToOptionalAnyopaque` functions modify the return type of a given function to `*anyopaque` or `?*anyopaque`, respectively, ensuring that the size and alignment match those of `*anyopaque` or `?*anyopaque`. If these conditions are not met, compile-time errors are generated with messages indicating the mismatched types. Additionally, the `concatComptime` function concatenates an array of comptime strings using a specified separator.
+This chunk defines several utility functions related to function pointer manipulation and string concatenation. The `castFunctionSelfToConstAnyopaque` function converts the first parameter of a given function to a `*const anyopaque` pointer, ensuring that the size and alignment match those of `*const anyopaque`. Specifically, if the size or alignment does not match, or if the first parameter is a mutable pointer, a compile-time error is generated with a message indicating the mismatched type. Similarly, the `castFunctionSelfToAnyopaque` function converts the first parameter to a `*anyopaque` pointer under the same constraints but without constness. The `castFunctionReturnToAnyopaque` and `castFunctionReturnToOptionalAnyopaque` functions modify the return type of a given function to `*anyopaque` or `?*anyopaque`, respectively, ensuring that the size and alignment match those of `*anyopaque` or `?*anyopaque`. If these conditions are not met, compile-time errors are generated with messages indicating the mismatched types. Specifically, if the return type's size or alignment does not match, or if it is an optional type, a compile-time error occurs. Additionally, the `concatComptime` function concatenates an array of comptime strings using a specified separator.
 
 ## Code Example
 ```zig
@@ -19,10 +19,7 @@ pub fn castFunctionSelfToConstAnyopaque(function: anytype) *const CastFunctionSe
 ```
 
 ## Related Questions
-- How does the `castFunctionSelfToConstAnyopaque` function work?
-- What is the purpose of the `concatComptime` function?
-- What constraints are checked during function pointer casting?
-- Can you explain the difference between `*const anyopaque` and `*anyopaque` in this context?
-- How does the `castFunctionReturnToOptionalAnyopaque` function differ from others?
+- What specific constraints are checked during function pointer casting?
+- What compile-time errors are generated if the size or alignment does not match in `castFunctionSelfToConstAnyopaque` and `castFunctionSelfToAnyopaque`?
 
 *Source: unknown | chunk_id: codebase_src_meta.zig_chunk_0*

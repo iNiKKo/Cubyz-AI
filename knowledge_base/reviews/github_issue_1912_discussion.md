@@ -48,8 +48,7 @@ The maintainer suggests using tuples where the meaning is clear but warns agains
     .{5, "cubyz:xyz"},
 }
 ```
-The maintainer also discusses the need for documentation and context-aware snippets to aid users in understanding configuration files.
-Both parties agree that explicitness and consistency are important.
+The maintainer also discusses the need for documentation and context-aware snippets to aid users in understanding configuration files. Both parties agree that explicitness and consistency are important.
 
 ## Related Questions
 -  What is the proposed alternative way to define stripes using arrays of blocks instead of individual structures?

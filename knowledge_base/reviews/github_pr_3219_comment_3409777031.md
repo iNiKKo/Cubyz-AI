@@ -9,9 +9,9 @@
 The code change introduces a memory allocation for the thread name and ensures it is freed after use, addressing potential memory leaks.
 
 ## Explanation
-The reviewer identified a possible memory leak in the original code where the thread name was not properly managed. The change adds explicit memory allocation using `main.globalAllocator.dupe(u8, name)` to duplicate the thread name string and ensures it is freed with `defer main.globalAllocator.free(_name)`. This modification aims to prevent memory leaks by ensuring that all allocated resources are properly released after use. Additionally, a garbage collection sync point is added to ensure that any potential issues related to memory management are addressed.
+The reviewer identified a possible memory leak in the original code where the thread name was not properly managed. The original code did not have explicit memory allocation for the thread name and did not free it, which could lead to memory leaks. The change adds explicit memory allocation using `main.globalAllocator.dupe(u8, name)` to duplicate the thread name string and ensures it is freed with `defer main.globalAllocator.free(_name)`. This modification aims to prevent memory leaks by ensuring that all allocated resources are properly released after use.
 
-The original code did not have explicit memory allocation for the thread name and did not free it, which could lead to memory leaks. The new code ensures that the thread name is duplicated using `main.globalAllocator.dupe(u8, name)` and freed using `defer main.globalAllocator.free(_name)`. This change also calls `startFromExistingThread` with the duplicated thread name and the original port, ensuring proper resource management.
+Additionally, a garbage collection sync point is added after freeing the thread name using `main.heap.GarbageCollection.syncPoint()`. The purpose of this sync point is to ensure that any potential issues related to memory management are addressed and to synchronize the garbage collector's state with the current program state. This change also calls `startFromExistingThread` with the duplicated thread name and the original port, ensuring proper resource management.
 
 ## Related Questions
 - What is the purpose of the `main.globalAllocator.dupe` function call in this code?

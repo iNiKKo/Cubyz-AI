@@ -9,7 +9,7 @@
 Vulkan Info Window
 
 ## Explanation
-This chunk defines a Vulkan info window that displays the Vulkan version and list of interesting extensions present in the engine. It initializes the window's position, size, and properties, and provides a render function to display the information. The Vulkan version is displayed as `{vulkan.version.major}.{vulkan.version.minor}`. The render function iterates over `@TypeOf(vulkan.interestingExtensions)` and prints each extension name if it is present.
+This chunk defines a Vulkan info window that displays the Vulkan version and list of interesting extensions present in the engine. It initializes the window's position, size, and properties, and provides a render function to display the information. The Vulkan version is displayed as `{vulkan.version.major}.{vulkan.version.minor}`. The render function iterates over `@TypeOf(vulkan.interestingExtensions)` and prints each extension name if it is present. Specifically, the Vulkan version is rendered using the format `{major}.{minor}`, where `major` and `minor` are the major and minor components of the Vulkan version number. The list of interesting extensions includes those that are relevant to the engine's functionality, such as 'VK_KHR_surface', 'VK_KHR_swapchain', etc.
 
 ## Code Example
 ```zig

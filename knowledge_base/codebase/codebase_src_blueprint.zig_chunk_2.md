@@ -15,6 +15,10 @@ The Blueprint struct contains fields such as `blocks`, which is a 3D array of bl
 
 The PasteFlags struct contains a boolean field `preserveVoid`, which determines whether void blocks should be preserved during pasting. The `load` method handles different versions of blueprints, checking if the version is supported and reading the appropriate data. The `store` method creates a block palette and compresses the blueprint's blocks into a format suitable for storage or transmission.
 
+The Blueprint struct has methods like `updateBlockInGeneration` and `updateBlockIfDegradable` that handle different modes of block updating based on the mode parameter. The `load` method reads a compressed buffer, decompresses it, and reconstructs the blueprint using a block palette. The `store` method compresses the blueprint's blocks into a format suitable for storage or transmission.
+
+The `paste` method interacts with the world to place blueprint blocks by iterating over the blueprint's blocks and updating the world with these blocks at the specified position. Block mappings play a crucial role in the serialization and deserialization processes, as they map block IDs between different versions of blueprints.
+
 ## Code Example
 ```zig
 pub fn paste(self: Blueprint, pos: Vec3i, flags: PasteFlags) void {

@@ -9,7 +9,7 @@
 SDF model and instance generation logic
 
 ## Explanation
-This chunk defines the `SdfModel` struct for representing different types of SDF (Signed Distance Function) models used in terrain generation. The `initModel` function initializes an `SdfModel` using specific parameters such as `maxBiomeCenterDistance`, which is clamped to a range between 0 and half of `terrain.CaveBiomeMap.CaveBiomeMapFragment.caveBiomeSize`. If the parameter for `minAmount` or `maxAmount` is missing, default values are used: `minAmount` defaults to 1, and `maxAmount` defaults to the value of `minAmount`, also defaulting to 1 if neither is provided. The `generate` method generates SDF instances into a 3D array based on these parameters. Additionally, it includes methods to instantiate an `SdfInstance` for further processing and functions such as `smoothUnion` and `intersection` for handling distance calculations.
+This chunk defines the `SdfModel` struct for representing different types of SDF (Signed Distance Function) models used in terrain generation. The `initModel` function initializes an `SdfModel` using specific parameters such as `maxBiomeCenterDistance`, which is clamped to a range between 0 and half of `terrain.CaveBiomeMap.CaveBiomeMapFragment.caveBiomeSize`. If the parameter for `minAmount` or `maxAmount` is missing, default values are used: both `minAmount` and `maxAmount` default to 1 if neither is provided. The `mode` parameter defaults to `.subtractive` if not specified. The `generate` method generates SDF instances into a 3D array based on these parameters. Additionally, it includes methods to instantiate an `SdfInstance` for further processing and functions such as `smoothUnion` and `intersection` for handling distance calculations.
 
 ## Code Example
 ```zig

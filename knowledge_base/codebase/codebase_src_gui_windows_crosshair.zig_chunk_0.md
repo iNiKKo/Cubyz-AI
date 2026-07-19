@@ -9,7 +9,7 @@
 This chunk initializes and manages a GUI window for displaying a crosshair in the game.
 
 ## Explanation
-This chunk initializes and manages a GUI window for displaying a crosshair in the game. The code defines a `GuiWindow` with specified dimensions (`64x64`) and properties such as no title bar, background, or closeability. It includes initialization functions to set up resources like a texture from an image file (`assets/cubyz/ui/hud/crosshair.png`) and a graphics pipeline configured with specific shaders (`Image.vert`, `Image.frag`), blending settings (subtractive color blend mode), and culling mode (none). The crosshair is rendered using the defined texture and pipeline, and resources are cleaned up in the deinitialization function.
+This chunk initializes and manages a GUI window for displaying a crosshair in the game. The code defines a `GuiWindow` with specified dimensions (`64x64`) and properties such as no title bar, background, or closeability. It includes initialization functions to set up resources like a texture from an image file (`assets/cubyz/ui/hud/crosshair.png`) and a graphics pipeline configured with specific shaders (`Image.vert`, `Image.frag`), blending settings (subtractive color blend mode), and culling mode (none). The crosshair is rendered using the defined texture and pipeline, and resources are cleaned up in the deinitialization function. Additionally, the uniforms used in the shader include `screen`, `start`, `size`, `color`, `uvOffset`, and `uvDim`, each bound to specific integer values: `screen` is bound to 0, `start` is bound to 1, `size` is bound to 2, `color` is bound to 3, `uvOffset` is bound to 4, and `uvDim` is bound to 5.
 
 ## Code Example
 ```zig

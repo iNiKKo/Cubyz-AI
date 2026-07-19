@@ -8,7 +8,7 @@
 Discussion on implementing block placement behind other blocks for speed bridging and skyblock building.
 
 ## Explanation
-Discussion on implementing block placement behind other blocks for speed bridging and skyblock building. The maintainer suggests a keybind or tool-based approach to switch between normal placement and behind placement modes, highlighting potential precision issues such as ambiguity in determining whether the block should be placed behind a near block or on a distant one. Edge cases include scenarios where the player might need to place blocks in complex configurations. The user prefers this feature to be always available without needing a special tool, suggesting it could be implemented as an accessory.
+Discussion on implementing block placement behind other blocks for speed bridging and skyblock building. The maintainer suggests a keybind or tool-based approach to switch between normal placement and behind placement modes, highlighting potential precision issues such as ambiguity in determining whether the block should be placed behind a near block or on a distant one. Edge cases include scenarios where the player might need to place blocks in complex configurations. The user prefers this feature to be always available without needing a special tool, suggesting it could be implemented as an accessory. The maintainer proposes using a keybind (or maybe a tool that you put in your off-hand) to switch between different placement modes.
 
 ## Related Questions
 - What are the potential precision issues with placing blocks behind other blocks?

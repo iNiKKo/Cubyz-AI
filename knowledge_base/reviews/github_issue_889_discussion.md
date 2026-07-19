@@ -8,7 +8,7 @@
 Discussion about implementing overlay textures for blocks, with concerns over efficiency.
 
 ## Explanation
-Discussion about implementing overlay textures for blocks, with concerns over efficiency. The priority list includes Snow, Grass, Sand, Dirt, and Soil. The maintainer expresses doubt about the feasibility of efficiently implementing this feature or similar connected textures in general.
+Discussion about implementing overlay textures for blocks, with concerns over efficiency. The priority list includes Snow, Grass, Sand, Dirt, Soil, etc., and requires 16 tiles for implementation. The maintainer expresses doubt about the feasibility of efficiently implementing this feature or similar connected textures in general.
 
 ## Related Questions
 - What is the exact priority list for overlay textures?

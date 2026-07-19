@@ -9,7 +9,41 @@
 Defines various callback functions for handling user input and GUI interactions in the game.
 
 ## Explanation
-This chunk contains a series of callback functions that handle different types of user inputs and GUI actions within the game. Each function is responsible for specific tasks such as toggling GUI windows, managing inventory states, adjusting game settings, and handling hotbar slots. Functions like `escape` manage the state of various GUI elements based on user input by setting `gui.selectedTextInput` to null and calling `inventory(mods)`. The `inventory` function checks if a world exists before opening the 'inventory' and 'hotbar' windows and toggling the game menu. The `ungrabMouse` function releases mouse control when the window is grabbed, while `openCreativeInventory` opens the creative inventory window only in creative mode after ungrabbing the mouse. The `openChat` function checks if the chat window is open before opening it and selecting input, and `openCommand` clears the chat input and adds a '/' character for command execution. The `takeBackgroundImageFn` temporarily hides GUI elements and disables item display to take a background image. Functions like `toggleHideGui`, `toggleHideDisplayItem`, and various debug overlay toggles (`toggleDebugOverlay`, `togglePerformanceOverlay`, etc.) manage the visibility of specific windows or settings. Hotbar slots are managed by `cycleHotbarSlot` which cycles through 12 hotbar slots, and `setHotbarSlot` sets a specific slot based on an input parameter.
+This chunk contains a series of callback functions that handle different types of user inputs and GUI actions within the game. Each function is responsible for specific tasks such as toggling GUI windows, managing inventory states, adjusting game settings, and handling hotbar slots.
+
+- **escape**: Manages the state of various GUI elements based on user input by setting `gui.selectedTextInput` to null and calling `inventory(mods)`.
+
+- **inventory**: Checks if a world exists before opening the 'inventory' and 'hotbar' windows and toggling the game menu.
+
+- **ungrabMouse**: Releases mouse control when the window is grabbed.
+
+- **openCreativeInventory**: Opens the creative inventory window only in creative mode after ungrabbing the mouse.
+
+- **openChat**: Checks if the chat window is open before opening it and selecting input.
+
+- **openCommand**: Clears the chat input and adds a '/' character for command execution.
+
+- **takeBackgroundImageFn**: Temporarily hides GUI elements and disables item display to take a background image.
+
+- **toggleHideGui**: Toggles the visibility of the GUI (`gui.hideGui = !gui.hideGui`).
+
+- **toggleHideDisplayItem**: Toggles the visibility of item display (`itemdrop.ItemDisplayManager.showItem = !itemdrop.ItemDisplayManager.showItem`).
+
+- **toggleDebugOverlay**: Toggles the debug window (`gui.toggleWindow("debug")`).
+
+- **togglePerformanceOverlay**: Toggles the performance graph window (`gui.toggleWindow("performance_graph")`).
+
+- **toggleGPUPerformanceOverlay**: Toggles the GPU performance measuring window (`gui.toggleWindow("gpu_performance_measuring")`).
+
+- **toggleNetworkDebugOverlay**: Toggles the network debug window (`gui.toggleWindow("debug_network")`).
+
+- **toggleAdvancedNetworkDebugOverlay**: Toggles the advanced network debug window (`gui.toggleWindow("debug_network_advanced")`).
+
+- **toggleVulkanDebugOverlay**: Toggles the Vulkan info debug window (`gui.toggleWindow("debug_vulkan_info")`).
+
+- **cycleHotbarSlot(i: comptime_int)**: Cycles through 12 hotbar slots using modulo arithmetic to wrap around. The function returns a pointer to an anonymous struct with a `set` method that updates `game.Player.selectedSlot`.
+
+- **setHotbarSlot(i: comptime_int)**: Sets a specific hotbar slot based on the input parameter `i`. The function returns a pointer to an anonymous struct with a `set` method that updates `game.Player.selectedSlot` to `i - 1`.
 
 ## Code Example
 ```zig

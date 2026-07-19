@@ -8,7 +8,13 @@
 The discussion revolves around the design and mechanics of player cannons, focusing on the materials required for the barrel and the explosives needed to propel the player.
 
 ## Explanation
-The issue proposes adding a cannon as a multiblock structure in Cubyz, where the cannon is activated by placing explosives at its base to propel the player upwards. The design specifies that only strong materials should be used for the barrel to prevent easy construction using regular stone. Strong materials include blocks like metal or reinforced concrete. The discussion suggests an alternative approach where TNT/Dynamite might be insufficiently powerful to break stronger blocks, and accessories could be used to block damage from explosions. This would allow for a more unified explosive system with varying power levels. The final height of the player depends on the barrel material, length, type of explosives, and air resistance.
+The discussion revolves around the design and mechanics of player cannons in Cubyz. The cannon is proposed as a multiblock structure consisting of a one-block hole surrounded by a two-block wall made from suitable materials. To activate it, the player jumps into the cannon and places and ignites explosives at the bottom, which propels them upwards. This feature could enable fast traveling and exploration using gliders, aiding vertical transportation to sky islands or back up from the root world.
+
+The final height of the player depends on several factors: the material of the barrel, its length, the type of explosives used, and air resistance. The barrel must be made from strong materials; regular stone is explicitly ruled out as it would allow for easy construction by simply digging a one-block hole in the ground.
+
+The discussion also explores alternative approaches to cannon design. One suggestion is that TNT/Dynamite might not be powerful enough to break stronger blocks when used in small quantities, necessitating accessories that can block damage from explosions. This could lead to a more unified explosive system with varying power levels. Accessories could include protective gear or shields that absorb explosion damage, allowing the barrel to withstand multiple uses without breaking.
+
+Examples of strong materials for the barrel might include metal, reinforced concrete, or other durable blocks. The exact types of accessories and their effects on explosion mechanics are also not detailed.
 
 ## Related Questions
 - What are the requirements for the cannon barrel material?

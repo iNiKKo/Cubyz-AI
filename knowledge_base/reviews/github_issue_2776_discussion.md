@@ -9,7 +9,7 @@
 Discussion on adding more targeting options for commands in Cubyz, including suggestions like 'force', 'group', and 'all'. The proposal includes new selector symbols for players, entities, groups, and filtering.
 
 ## Explanation
-Discussion on adding more targeting options for commands in Cubyz, including suggestions like 'force', 'group', and 'all'. The proposal includes new selector symbols for players ('@'), entities ('&'), groups ('$'), and filtering ('?'). Specific examples include selecting all entities within a range (`&?r=5`), offline players (`!&`), and filtering based on criteria (`&?x=20,dx=10,y=200,dy=3,z=50,dz=20`). The proposal aims to increase the versatility of commands while avoiding direct imitation of Minecraft's command syntax. However, certain symbols like `#`, `*`, `__`, `~~`, and `§` are blocked due to formatting issues.
+Discussion on adding more targeting options for commands in Cubyz, including suggestions like 'force', 'group', and 'all'. The proposal includes new selector symbols for players ('@'), entities ('&'), groups ('$'), and filtering ('?'). Specific examples include selecting all entities within a range (`&?r=5`), offline players (`!&`), and filtering based on criteria (`&?x=20,dx=10,y=200,dy=3,z=50,dz=20`). The proposal aims to increase the versatility of commands while avoiding direct imitation of Minecraft's command syntax. However, certain symbols like `#`, `*`, `__`, `~~`, and `§` are blocked due to formatting issues. There is also a discussion about replacing `#` with `&` or other special characters to avoid confusion.
 
 ## Related Questions
 - What are the proposed new targeting options for commands in Cubyz?

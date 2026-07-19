@@ -10,6 +10,12 @@ Handles the general information window for creating an account in the GUI.
 
 ## Explanation
 The chunk defines a GUI window that displays instructions and a button to continue. The button is initially disabled and becomes enabled after exactly 8 seconds, updating its text accordingly. Specifically, the `enableTime` variable stores the timestamp when the timer starts, and the remaining time in seconds is calculated using `std.math.divCeil`. This value is used to update the button's label from 'Continue (n)' to 'Continue' as it counts down from 8 seconds. The window updates its size based on its root component's position and size plus padding of 8 units. Additionally, the function `next()` is called when the button is clicked.
+The window displays two labels with the following text:
+1. "An Account Code acts as a password and identity."
+2. "If you lose your Account Code, you lose your Account. There are no recovery options, so please store it somewhere safe."
+The initial state of the `button` is disabled (`button.disabled = true`). The button remains disabled for exactly 8 seconds before becoming enabled. When the button becomes enabled, its label text changes from 'Continue (n)' to 'Continue'.
+The `padding` variable is set to 8 units and is used to calculate the window's size based on its root component's position and size plus padding.
+When the window closes, the function `onClose()` is called, which deinitializes the `window.rootComponent` if it exists.
 
 ## Code Example
 ```zig

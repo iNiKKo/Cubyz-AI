@@ -9,7 +9,13 @@
 The RegionFile struct manages the storage and retrieval of voxel chunks in a region-based file system.
 
 ## Explanation
-The RegionFile struct manages the storage and retrieval of voxel chunks in a region-based file system. The struct includes several constants such as `version` (0), `regionShift` (2), `regionSize` (1 << regionShift), `regionVolume` (1 << 3*regionShift), and `headerSize` (8 + regionSize*regionSize*regionSize*@sizeOf(u32)). It also includes methods for initializing, loading, storing, and managing references to these chunks. The struct uses a mutex for thread safety when accessing shared data. Key functionalities include loading chunk data from disk, storing modified chunks back to disk, increasing and decreasing reference counts, and retrieving chunks based on their relative positions within the region.
+The RegionFile struct manages the storage and retrieval of voxel chunks in a region-based file system. The struct includes several constants such as `version` (0), `regionShift` (2), `regionSize` (1 << regionShift = 4), `regionVolume` (1 << 3*regionShift = 64), and `headerSize` (8 + regionSize*regionSize*regionSize*@sizeOf(u32) = 520). It also includes methods for initializing, loading, storing, and managing references to these chunks. The struct uses a mutex for thread safety when accessing shared data.
+
+Key functionalities include:
+- **Loading chunk data from disk**: The `load` method reads the region file, checks its version (which must be 0), and then reads each chunk's data into memory. It also verifies that the total size of the file matches the expected size.
+- **Storing modified chunks back to disk**: The `store` method writes all chunks back to the region file if they have been modified. It ensures that the total size of the file does not exceed the maximum allowed size for a 32-bit integer (4,294,967,295 bytes). The method also handles errors during file writing and logs any issues encountered.
+- **Increasing and decreasing reference counts**: The `increaseRefCount` and `decreaseRefCount` methods manage how many parts of the program are using a particular RegionFile instance. When the reference count drops to zero, the region file is deinitialized and its memory is freed. If the reference count drops to one, any modified chunks are stored back to disk before deinitialization.
+- **Retrieving chunks based on their relative positions within the region**: The `getChunk` method returns a copy of the chunk data for a given position within the region if it exists. It locks the mutex to ensure thread safety during access.
 
 ## Code Example
 ```zig

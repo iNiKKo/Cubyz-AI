@@ -9,7 +9,7 @@
 Handles entity-related network protocols for client-server communication.
 
 ## Explanation
-This chunk defines a struct `entity` with methods to receive and send entity data over a network connection. The `clientReceive` method processes incoming binary data using the Zon format, which can either remove or add entities based on the parsed elements. Specifically, if an element is of type `.int`, it removes the corresponding entity; if it's of type `.object`, it adds the entity. If an unrecognized zon parameter is encountered, it logs an error message. The method also handles item drops by removing existing ones or loading new ones from the received data. The `send` method sends messages securely with a specific protocol ID.
+This chunk defines a struct `entity` with methods to receive and send entity data over a network connection. The `clientReceive` method processes incoming binary data using the Zon format, which can either remove or add entities based on the parsed elements. Specifically, if an element is of type `.int`, it removes the corresponding entity; if it's of type `.object`, it adds the entity. If an unrecognized zon parameter is encountered, it logs an error message. The method also handles item drops by removing existing ones if the element is of type `.int` and loading new ones from the received data if the element contains a child array named 'array'. Otherwise, it adds item drops from the Zon element. The `send` method sends messages securely with a specific protocol ID.
 
 ## Code Example
 ```zig

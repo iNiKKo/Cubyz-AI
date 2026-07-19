@@ -8,7 +8,7 @@
 Discussion about implementing a new color model, OKLCH, for lighting in Cubyz. The maintainer seeks clarification on where and how this model should be applied, specifically regarding fading values by 8 or rounding them during quantization processes. There is mention of a previous issue (#225) that tracks an unspecified problem occurring after quantization.
 
 ## Explanation
-The discussion revolves around the potential implementation of the OKLCH color model for lighting effects in Cubyz. The maintainer seeks clarification on where and how this model should be applied, specifically regarding fading values by 8 or rounding them during quantization processes. There is mention of a previous issue (#225) that tracks an unspecified problem occurring after quantization.
+The discussion revolves around the potential implementation of the OKLCH color model for lighting effects in Cubyz. The maintainer seeks clarification on where and how this model should be applied, specifically regarding fading values by 8 or rounding them during quantization processes. There is mention of a previous issue (#225) that tracks an unspecified problem occurring after quantization. The maintainer also asks about mixing colors using these models instead of RGB. Each value would fade by 8 like usual or be rounded rather, but the exact implementation details are unclear. For further reading on OKLCH, see [OKLCH](https://oklch.com/), [Oklab](https://bottosson.github.io/posts/oklab/), and [Shadertoy Example](https://www.shadertoy.com/view/wfsXzN).
 
 ## Related Questions
 - What are the specific requirements for implementing OKLCH in Cubyz?

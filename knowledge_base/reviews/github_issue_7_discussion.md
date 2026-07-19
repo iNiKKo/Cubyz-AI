@@ -8,7 +8,7 @@
 A user reported that Cubyz's mouse input was overly sensitive on Windows 10, causing the camera to spin violently. The maintainer identified potential issues with unsupported mouse states and implemented a fix in commit 4b6f7b2.
 
 ## Explanation
-A user reported that Cubyz's mouse input was overly sensitive on Windows 10, causing the camera to spin violently. The maintainer identified potential issues with unsupported mouse states and implemented a fix in commit 4b6f7b2. This fix resolved the sensitivity problem and an additional bug. The effectiveness of the fix was confirmed by another tester.
+A user reported that Cubyz's mouse input was overly sensitive on Windows 10, causing the camera to spin violently. The maintainer identified potential issues with unsupported mouse states, such as those not supported by Windows 10, and implemented a fix in commit 4b6f7b2. This fix resolved the sensitivity problem and an additional bug. The effectiveness of the fix was confirmed by another tester.
 
 ## Related Questions
 - What specific mouse states were causing the sensitivity issue in Cubyz?

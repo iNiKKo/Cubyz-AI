@@ -9,7 +9,7 @@
 The ArgParser's errorMessages usage is inconsistent between stackAllocator and the passed-in allocator. The discussion suggests using a List instead of ListUnmanaged to avoid allocator misuse.
 
 ## Explanation
-The issue arises because the interface specifies that `errorMessage` should be allocated with `stackAllocator`, but most code uses the passed-in allocator. This inconsistency can lead to bugs and is hard to catch in reviews. The maintainers discuss potential solutions, including using a `List` instead of `ListUnmanaged` to avoid allocator misuse.
+The ArgParser's errorMessages usage is inconsistent between stackAllocator and the passed-in allocator. The interface specifies that `errorMessage` should be allocated with `stackAllocator`, but most code uses the passed-in allocator. This inconsistency can lead to bugs and is hard to catch in reviews.
 
 The following code snippet demonstrates this issue:
 ```zig
@@ -25,7 +25,7 @@ if (@typeInfo(field.type) == .optional) {
     return error.ParseError;
 }
 ```
-The maintainers also mention that using a `Result` struct instead of an out parameter could be another solution. However, they note that this would require allocating and copying the error strings around all the time.
+The maintainers discuss potential solutions, including using a `List` instead of `ListUnmanaged` to avoid allocator misuse. They also mention that using a `Result` struct instead of an out parameter could be another solution. However, they note that this would require allocating and copying the error strings around all the time.
 
 The main concern is maintaining consistency with Zig's guidelines on allocator usage:
 > - local lifetime, things that are freed at the end of the scope (including local data structures such as lists) → `main.stackAllocator`

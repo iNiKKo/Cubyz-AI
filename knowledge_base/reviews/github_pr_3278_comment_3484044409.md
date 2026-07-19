@@ -9,7 +9,9 @@
 Added `restartChannelCounter` and `restartCounter` fields to the `Connection` struct.
 
 ## Explanation
-The reviewer suggests adding two new fields, `restartChannelCounter` and `restartCounter`, to the `Connection` struct. These fields are initialized to zero and increase the size of the struct by 12 bytes. The reviewer emphasizes that while this may seem like a minor concern, it could potentially degrade performance due to cache line alignment issues. The reviewer advises against optimizing for space at the cost of potentially degrading performance.
+The reviewer suggests adding two new fields, `restartChannelCounter` and `restartCounter`, to the `Connection` struct. The `restartChannelCounter` field is an array of three unsigned 32-bit integers (`[3]u32 = .{0, 0, 0}`), while `restartCounter` is a single unsigned 32-bit integer (`u32 = 0`). These fields are initialized to zero and increase the size of the struct by 12 bytes. The reviewer emphasizes that while this may seem like a minor concern, it could potentially degrade performance due to cache line alignment issues. The reviewer advises against optimizing for space at the cost of potentially degrading performance. Additionally, the reviewer suggests using overflow arithmetic in these counters.
+
+The reviewer also mentions that there is no good reason to shorten variable types for space optimization, as it takes more space in the struct and could push another field into a new cache line. The reviewer believes that both implementations would be equally complex.
 
 ## Related Questions
 - What is the impact of adding these fields on memory usage?

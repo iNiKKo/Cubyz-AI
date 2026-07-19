@@ -15,6 +15,11 @@ The SupportDetails struct contains methods to query device capabilities, choose 
 
 The createImageView function creates an image view for a given Vulkan image, specifying the format and subresource range. The init method initializes the swap chain by creating images and views, while the deinit method cleans up all allocated resources.
 
+**Specific Values:**
+- **Image Format:** VK_FORMAT_B8G8R8A8_SRGB with VK_COLOR_SPACE_SRGB_NONLINEAR_KHR color space.
+- **Present Mode:** Defaults to VK_PRESENT_MODE_FIFO_KHR.
+- **Extent Calculation:** Based on the current window size and device capabilities, ensuring it falls within the minimum and maximum image extent limits.
+
 ## Code Example
 ```zig
 fn chooseFormat(self: SupportDetails) c.VkSurfaceFormatKHR {

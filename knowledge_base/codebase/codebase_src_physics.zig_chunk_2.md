@@ -9,24 +9,11 @@
 This chunk calculates physical properties such as friction, bounciness, volume properties, and handles collision responses for game entities within a voxel-based environment. It iterates over voxels in the bounding box of an entity to determine interactions with blocks based on block attributes like friction, bounciness, density, terminal velocity, and mobility.
 
 ## Explanation
-The chunk contains functions to calculate physical properties and handle collision responses for game entities within a voxel-based environment. It iterates over voxels in the bounding box of an entity to determine interactions with blocks based on block attributes like friction, bounciness, density, terminal velocity, and mobility.
+The `friction` and `bounciness` values are calculated by iterating through each voxel within the bounding box. For each voxel that collides with a block, the area of collision is computed and used to update the total friction and bounciness based on the block's attributes. The variables `maxY`, `z`, `friction`, `bounciness`, and `totalArea` are involved in this process. Specifically, the code calculates the area of intersection between the bounding box and each block's collision box, then sums up the areas for all colliding blocks to compute the average friction and bounciness.
 
-### Friction and Bounciness Calculation:
-The `friction` and `bounciness` values are calculated by iterating through each voxel within the bounding box. For each voxel that collides with a block, the area of collision is computed and used to update the total friction and bounciness based on the block's attributes.
+The `calculateVolumeProperties` function calculates volume properties such as terminal velocity, density, maximum density, and mobile friction. It iterates through each voxel within the bounding box and computes the overlap volume with blocks. The function updates sums for inverse terminal velocity, density, mobile friction, and total volume based on block attributes like terminal velocity, mobility, and density. The `VolumeProperties` struct contains properties like `terminalVelocity`, `density`, `maxDensity`, and `mobileFriction`. The function uses the overlap volume to determine how much of each voxel is filled by blocks and adjusts the sums accordingly.
 
-### Volume Properties Calculation:
-The `calculateVolumeProperties` function calculates volume properties such as terminal velocity, density, maximum density, and mobile friction. It iterates through each voxel within the bounding box and computes the overlap volume with blocks. The function updates sums for inverse terminal velocity, density, mobile friction, and total volume based on block attributes like terminal velocity, mobility, and density.
-
-### Collision Handling:
-The `collideOrStep` function checks for collisions in a specified direction and allows entities to step up if possible after a collision. It calculates the new floor position and determines whether stepping up is feasible without causing further collisions.
-
-### Specific Variables and Functions:
-- **maxY, z:** These variables represent the maximum Y coordinate and Z coordinate of the bounding box respectively.
-- **friction, bounciness, totalArea:** These are calculated based on the area of collision with blocks within the bounding box.
-- **VolumeProperties:** A struct containing properties like terminal velocity, density, maximum density, and mobile friction.
-- **overlapVolume:** Calculates the overlap volume between two boxes.
-- **calculateVolumeProperties:** Computes volume properties for an entity's bounding box based on interactions with surrounding blocks.
-- **collideOrStep:** Handles collision detection and stepping logic for entities.
+The `collideOrStep` function checks for collisions in a specified direction and allows entities to step up if possible after a collision. It calculates the new floor position and determines whether stepping up is feasible without causing further collisions. The variables `index`, `resultingMovement`, and `checkPos` are involved in this process. The function first checks for a collision in the specified direction, then calculates the height difference between the current position and the new floor. If the height difference is within the stepping height limit and there is no additional collision when stepping up, the entity can step up.
 
 ## Code Example
 ```zig

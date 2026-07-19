@@ -8,7 +8,18 @@
 The discussion revolves around a creature called 'Mossmans' with unique burrowing and attacking behaviors, but ultimately, the maintainer decides to scrap it.
 
 ## Explanation
-The Mossmans creature was designed with unique burrowing and attacking behaviors. They spawn individually and cannot move traditionally; instead, they burrow into the ground and pop out up to 16 blocks away from their initial position. Their idle behavior includes observing other entities, wiggling, and self-grooming, occasionally relocating within their chunk. When an entity approaches that they are uncomfortable with, Mossmans enter attack mode: unburrowing near the target, looking at it for about three seconds, spitting, then burrowing again to relocate before repeating the cycle. They will always try to relocate to a spot within line-of-sight of their target and may give up if the target is out of range or moves too far away from their territory. Mossmans also join in attacks on other targets they observe being attacked for fun. The purpose of this enemy is to be a bother at long distances but easy to deal with otherwise, incidentally supporting other enemies by knocking down fleeing targets. However, despite having well-defined behavior, the visual design was lacking, leading to the decision to scrap the Mossmans for now, although its behavior might be reused in future designs.
+**Explanation**
+The Mossmans creature was designed with unique burrowing and attacking behaviors. They spawn individually and cannot move traditionally; instead, they burrow into the ground and pop out up to 16 blocks away from their initial position. Their idle behavior includes observing other entities, wiggling, and self-grooming, occasionally relocating within their chunk.
+
+When an entity approaches that they are uncomfortable with, Mossmans enter attack mode: unburrowing near the target, looking at it for about three seconds, spitting, then burrowing again to relocate before repeating the cycle. This sequence includes specific timings: unburrow near target (3 seconds), look at target (3 seconds), spit (instantaneous), and burrow and relocate (immediate). They will always try to relocate to a spot within line-of-sight of their target and may give up if the target is out of range or moves too far away from their territory. Mossmans also join in attacks on other targets they observe being attacked for fun.
+
+The purpose of this enemy is to be a bother at long distances but easy to deal with otherwise, incidentally supporting other enemies by knocking down fleeing targets. However, despite having well-defined behavior, the visual design was lacking, leading to the decision to scrap the Mossmans for now, although its behavior might be reused in future designs.
+
+**Health and Damage Characteristics:**
+- **Immunity to Knockback:** Yes
+- **Low Health:** Yes
+- **Spit Damage:** Very Little
+- **Spit Effect:** Produces Knockback
 
 ## Related Questions
 - What specific behaviors were implemented for the Mossmans creature?

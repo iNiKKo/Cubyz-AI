@@ -9,7 +9,7 @@
 The Palette struct handles loading and storing color palettes from ZonElement data structures, managing memory allocation and deallocation for palette entries.
 
 ## Explanation
-The Palette struct handles loading and storing color palettes from ZonElement data structures, managing memory allocation and deallocation for palette entries. It provides methods to initialize a palette from ZonElement data, either in legacy object format or array format. The `init` function checks the type of ZonElement and calls `loadFromZonLegacy` or `loadFromZon` accordingly. If the first element is provided and does not match the first item in the palette, it returns an error (`FistItemMismatch`). The `loadFromZon` function loads elements from a Zon array into the palette, while `loadFromZonLegacy` handles legacy object format by mapping numeric IDs to names. The struct also includes functions to add new entries (`add`), replace existing ones (`replaceEntry`), and store the current state back into a ZonElement (`storeToZon`). The struct manages memory for its internal list of palette items using an allocator, and the `deinit` function frees all allocated memory. Error handling is implemented for invalid formats and mismatched first elements. The global variables `worldAssetFolder` and `refCount` are declared but not used within this chunk.
+The Palette struct is a crucial component for managing color palettes in the game engine. It handles loading and storing palette data from ZonElement structures, ensuring efficient memory management. The `init` function initializes the palette based on the type of ZonElement provided, either using legacy object format or array format. If the first element is provided and does not match the first item in the palette, it returns an error (`FistItemMismatch`). The `loadFromZon` function loads elements from a Zon array into the palette, while `loadFromZonLegacy` handles legacy object format by mapping numeric IDs to names. If a numeric ID is out of range or if there are missing block IDs in the palette, it returns errors (`SparsePaletteNotAllowed` and `MissingKeyInPalette`). The struct includes methods to add new entries (`add`), replace existing ones (`replaceEntry`), and store the current state back into a ZonElement (`storeToZon`). The `deinit` function frees all allocated memory for palette items, ensuring proper cleanup. Error handling is implemented for various invalid formats and mismatched first elements.
 
 ## Code Example
 ```zig
@@ -23,8 +23,7 @@ pub fn deinit(self: *Palette) void {
 ```
 
 ## Related Questions
-- How does the Palette struct initialize from a ZonElement?
-- What error can occur if the first element of the palette doesn't match?
+- What specific error can occur if the first element of the palette doesn't match?
 - How does the Palette handle memory allocation and deallocation?
 - What methods are available to modify the palette after initialization?
 - How is the palette stored back into a ZonElement?

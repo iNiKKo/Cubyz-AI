@@ -5,10 +5,10 @@
 **Concepts:** terrain generation, world creation screen, feature expansion
 
 ## Summary
-Discussion about adding terrain generation presets and tweaking settings on the world creation screen.
+Discussion about adding terrain generation presets and tweaking all terrain generator settings on the world creation screen. The maintainer has hijacked issues #685 and #687 to discuss this topic.
 
 ## Explanation
-The maintainer suggests expanding the functionality to allow users to tweak all terrain generator settings during world creation. They note that this feature was not previously addressed in an issue, prompting them to add it to the current discussion. The current limitations of terrain generator settings on world creation are not explicitly stated in the raw_content, but the maintainer emphasizes the need for more customization options.
+The maintainer suggests expanding the functionality to allow users to tweak all terrain generator settings during world creation. They note that this feature was not previously addressed in an issue, prompting them to add it to the current discussion. The maintainer has hijacked issues #685 and #687 to discuss this topic. The current limitations of terrain generator settings on world creation are not explicitly stated in the raw_content, but the maintainer emphasizes the need for more customization options.
 
 ## Related Questions
 - What are the current limitations of terrain generator settings on world creation?

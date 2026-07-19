@@ -28,6 +28,8 @@ The maintainers explain that high stability with low stiffness results in an ela
 
 Additionally, the maintainers clarify that elasticity is defined as the ability of a body to resist a distorting influence and return to its original size and shape when that influence or force is removed, which aligns more closely with their understanding of it compared to just being about stretching or bending.
 
+The maintainers also mention that sharpness is not considered a material property by them, as it depends on how the material is used. They propose renaming .roughness to .textureRoughness and replacing it with texture roughness as a new parameter.
+
 ## Related Questions
 - What is the difference between elasticity and stiffness in material properties?
 - Why was sharpness considered for inclusion as a material property?

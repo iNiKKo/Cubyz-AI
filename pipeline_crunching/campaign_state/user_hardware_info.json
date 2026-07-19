@@ -59,8 +59,8 @@
     "dual_lane": true,
     "primary_is_gpu": true,
     "hardware_tier": "hard",
-    "benchmark_gpu_time": 22.026955604553223,
-    "benchmark_cpu_time": 47.19681429862976,
+    "benchmark_gpu_time": 9.994415760040283,
+    "benchmark_cpu_time": 29.00538468360901,
     "benchmark_gpu_error": null,
     "benchmark_cpu_error": null
   },
@@ -73,7 +73,7 @@
     "primary_is_gpu": false,
     "hardware_tier": "medium",
     "benchmark_gpu_time": null,
-    "benchmark_cpu_time": 47.19681429862976,
+    "benchmark_cpu_time": null,
     "benchmark_gpu_error": null,
     "benchmark_cpu_error": null
   }

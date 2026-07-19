@@ -15,6 +15,10 @@ The update method processes each particle's movement, collision detection, and l
 
 The ParticleSystem also manages a network creation queue to handle particle spawning from network messages. This ensures that particles can be synchronized across different clients in a multiplayer environment.
 
+The UniformStruct contains several fields: projectionAndViewMatrix (a Mat4f), billboardMatrix (a Mat4f), and ambientLight (a Vec3f). The addParticle method sets properties like lifeTime, density, rot, rotVel, dragCoeff, and collides based on random values and emitter settings.
+
+Collision detection is handled by checking if a particle intersects with other objects in the environment. If a collision is detected, the particle's velocity and position are adjusted accordingly. The system uses a mutex to ensure thread safety when accessing shared resources like the network creation queue.
+
 ## Code Example
 ```zig
 fn init() void {
@@ -37,11 +41,11 @@ fn init() void {
 ```
 
 ## Related Questions
-- How does the ParticleSystem handle particle collisions?
-- What is the role of the mutex in the ParticleSystem?
-- How are particles added to the system from network messages?
-- Can you explain the process of rendering particles in the ParticleSystem?
-- What determines the lifetime of a particle in the ParticleSystem? How is it randomized if necessary?
-- How does the ParticleSystem manage its internal state, such as particle count and SSBO buffer?
+-  How does the ParticleSystem handle particle collisions?
+-  What is the role of the mutex in the ParticleSystem?
+-  How are particles added to the system from network messages?
+-  Can you explain the process of rendering particles in the ParticleSystem?
+-  What determines the lifetime of a particle in the ParticleSystem? How is it randomized if necessary?
+-  How does the ParticleSystem manage its internal state, such as particle count and SSBO buffer?
 
 *Source: unknown | chunk_id: codebase_src_particles.zig_chunk_2*

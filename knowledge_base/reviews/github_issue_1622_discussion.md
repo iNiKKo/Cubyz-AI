@@ -31,12 +31,15 @@ The maintainer also mentions that if a player never used secondary hand function
 
 Additionally, the maintainer suggests adding dedicated slots for items like shields rather than implementing a full two-handed system. They argue that such a feature could be redundant and complicate the UI with new keybindings.
 
+The potential benefits of implementing a two-handed layout include providing more flexibility in gameplay and allowing players to perform specific actions more efficiently. However, the drawbacks include increased complexity in the user interface and the need for new keybindings, which could potentially confuse players or limit modding capabilities.
+
+Alternative solutions suggested by the maintainer include adding dedicated slots for items like shields rather than implementing a full two-handed system. They argue that such a feature could be redundant and complicate the UI with new keybindings.
+
 ## Related Questions
 - What are the potential benefits and drawbacks of implementing a two-handed layout in Cubyz?
 - How might the addition of a secondary hand affect gameplay balance and player experience?
 - What alternative solutions could be considered for providing specific actions like using shields or torches?
 - How would the implementation of a two-handed system impact modding capabilities in Cubyz?
 - What are the potential usability issues with adding new keybindings for a two-handed layout?
-- How might the current UI design accommodate additional features like a secondary hand?
 
 *Source: unknown | chunk_id: github_issue_1622_discussion*

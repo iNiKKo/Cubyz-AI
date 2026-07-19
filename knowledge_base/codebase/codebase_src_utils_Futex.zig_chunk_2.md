@@ -22,6 +22,19 @@ The `wait` function uses the `c.futex` system call with the `FUTEX.WAIT | FUTEX.
 
 In all implementations, error handling is crucial to manage various possible outcomes of the system calls, including timeouts and invalid operations. The `.PRIVATE_FLAG` ensures that futex operations are private to the process, preventing interference from other processes.
 
+### Detailed Implementation:
+- **LinuxImpl:**
+  - `wait`: Uses `linux.futex_4arg` with `.WAIT`, handles errors like `TIMEDOUT`, `INTR`, and `AGAIN`.
+  - `wake`: Uses `linux.futex_3arg` with `.WAKE`, unblocks up to `max_waiters` threads.
+
+- **FreebsdImpl:**
+  - `wait`: Uses `_umtx_op` with `UMTX_OP.WAIT_UINT_PRIVATE`, sets timeout in `c._umtx_time`, handles errors like `TIMEDOUT`, `INTR`, and `AGAIN`.
+  - `wake`: Uses `_umtx_op` with `UMTX_OP.WAKE_PRIVATE`, unblocks up to `max_waiters` threads.
+
+- **OpenbsdImpl:**
+  - `wait`: Uses `c.futex` with `FUTEX.WAIT | FUTEX.PRIVATE_FLAG`, sets timeout in `c.timespec`, handles errors like `TIMEDOUT`, `INTR`, and `AGAIN`.
+  - `wake`: Uses `c.futex` with `FUTEX.WAKE | FUTEX.PRIVATE_FLAG`, unblocks up to `max_waiters` threads.
+
 ## Code Example
 ```zig
 fn wait(ptr: *const atomic.Value(u32), expect: u32, timeout: ?u64) error{Timeout}!void {

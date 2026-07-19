@@ -8,7 +8,7 @@
 The issue discusses adding an extra tooltip icon to provide additional information on items and slots in the inventory.
 
 ## Explanation
-The issue discusses adding an extra tooltip icon to provide additional information on items and slots in the inventory. The discussion revolves around enhancing the user interface by introducing a tooltip icon that appears when hovering over certain slots, indicating more detailed information is available upon further interaction (such as holding Alt or Shift keys). A primary motivation is to prevent screen clutter and improve usability for inventory management. Specifically, one user comment mentions preferring to hold Alt/Shift instead of dealing with hover delays.
+The issue discusses adding an extra tooltip icon to provide additional information on items and slots in the inventory. The primary use cases include showing extra information on items with material info and modifiers, providing information on slots without traditional tooltips (like bag or armor icons), and preventing screen clutter by having extra info appear only when wanted instead of always. The discussion revolves around enhancing the user interface by introducing a tooltip icon that appears when hovering over certain slots. The primary motivation is to prevent screen clutter and improve usability for inventory management. Specifically, one user comment mentions preferring to hold Alt/Shift instead of dealing with hover delays.
 
 ## Related Questions
 - What are the potential use cases for the extra tooltip icon?

@@ -8,7 +8,7 @@
 The issue proposes adding Sulfur Caves with various terrain and gameplay features. The maintainer expresses concern about the material's usefulness and compliance with content guidelines, leading to the closure of the issue.
 
 ## Explanation
-The discussion revolves around a proposal to introduce Sulfur Caves into the game Cubyz. The proposed biome includes sulfur vents, stalagmites, stalactites, ore deposits, toxic water, smooth sulfur, and explosives. However, the maintainer finds the material 'useless' and notes that it violates the content guidelines by not providing a reference implementation. Additionally, the proposal specifically instructs to avoid covering the entire biome in sulfur. This leads to the decision to close the issue, although the maintainer is not opposed to the idea itself.
+The issue proposes adding Sulfur Caves with specific terrain features including sulfur vents/springs of varying sizes, stalagmites, stalactites, and sulfur ore deposits. The proposal also includes gameplay features such as toxic water, smooth sulfur, and explosives. However, the maintainer expresses concern about the material's usefulness and compliance with content guidelines, particularly the requirement for a reference implementation in the form of an addon, mod, or fork of Cubyz (no content from other games). Additionally, the proposal instructs to avoid covering the entire biome in sulfur. This leads to the decision to close the issue, although the maintainer is not opposed to the idea itself.
 
 ## Related Questions
 - What are the proposed terrain features for Sulfur Caves?

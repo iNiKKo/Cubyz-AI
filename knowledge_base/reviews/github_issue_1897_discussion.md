@@ -9,7 +9,7 @@
 Discussion on handling missing chunks during world edit operations, focusing on generating unsaved chunks on demand and manipulating saved chunks without fully loading them.
 
 ## Explanation
-Discussion on handling missing chunks during world edit operations, focusing on generating unsaved chunks on demand for reading, changing, and saving during modifying operations. The maintainer notes that chunks are compressed for storage, requiring proper decompression and loading to access their data before manipulation can occur. There is also a suggestion to limit the interaction range based on server configuration rather than relying on the number of loaded chunks.
+Discussion on handling missing chunks during world edit operations, focusing on generating unsaved chunks on demand for reading, changing, and saving during modifying operations. The maintainer notes that chunks are compressed for storage, requiring proper decompression and loading to access their data before manipulation can occur. There is also a suggestion to limit the interaction range based on server configuration instead of relying on the number of loaded chunks. Additionally, it is mentioned that if chunk sizes in file are consistent (e.g., we can determine the position of a block with simple multiplication), this should be doable by just calculating the desired index and manipulating it.
 
 ## Related Questions
 - How does chunk compression affect the ability to directly access chunk data?

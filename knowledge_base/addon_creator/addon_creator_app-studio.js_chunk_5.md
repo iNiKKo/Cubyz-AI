@@ -13,7 +13,14 @@ This JavaScript code snippet defines three primary functions: `handleCustomBlock
 
 The `toggleStructSubFields` function is responsible for dynamically generating the subfields based on the selected structure type. It uses a series of conditional statements to determine which subfields to display and what values they should have. The `displayLabels` object maps each structure type ID to its corresponding display label, which is used to populate the dropdown options.
 
-The code also includes event listeners for managing user input and ensuring that the form remains marked as dirty after any changes are made.
+For example, when a user selects 'cubyz:simple_tree', the subfields include:
+- Log Block: Input for specifying the log block (e.g., 'cubyz:oak_log')
+- Leaves Block: Input for specifying the leaves block (e.g., 'cubyz:leaves/oak')
+- Base Trunk Height: Input for specifying the base trunk height (default is '6')
+- Height Variance: Input for specifying the height variance (default is '3')
+- Crown Size (leafRadius): Input for specifying the crown size (default is '2')
+
+Similarly, other structure types have their specific subfields. The code also includes event listeners for managing user input and ensuring that the form remains marked as dirty after any changes are made.
 
 ## Related Questions
 - What is the purpose of the `handleCustomBlockTexture` function?

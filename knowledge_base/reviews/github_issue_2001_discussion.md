@@ -9,7 +9,24 @@
 The menu background rendering is proposed to be split into two separate functions to prevent unnecessary framebuffer updates when changing the FOV.
 
 ## Explanation
-The discussion revolves around optimizing the rendering process by separating concerns. The reviewer suggests that updating the framebuffer should not occur every time the Field of View (FOV) changes, as this could lead to performance issues such as halved FPS when the UI is open. However, the maintainer confirms that changing the FOV does not actually cause halved FPS with the UI open (see their comment on the issue). The maintainer's confirmation clarifies that the proposed change would address unnecessary framebuffer updates without introducing any regressions.
+The menu background rendering currently involves recreating the game's frame buffer twice per frame, which is unnecessary and could be optimized by splitting the function into two separate functions. This optimization would prevent redundant operations in the rendering pipeline, potentially leading to performance improvements. The discussion took place at https://github.com/PixelGuys/Cubyz/pull/1976#discussion_r2427322898.
+
+The reviewer suggests that updating the framebuffer should not occur every time the Field of View (FOV) changes, as this could lead to performance issues such as halved FPS when the UI is open. However, the maintainer confirms that changing the FOV does not actually cause halved FPS with the UI open.
+
+Splitting the function into two separate functions would involve separating the logic for updating the framebuffer from the logic for rendering the menu background. This separation would prevent unnecessary framebuffer updates when only the FOV changes, thus optimizing performance without introducing any potential side effects.
+
+Here is a proposed code snippet showing how the function could be split:
+```c
+void updateFramebuffer() {
+    // Update framebuffer logic here
+}
+
+void renderMenuBackground() {
+    // Render menu background logic here
+}
+```
+
+To verify the FPS improvement, a test case can be created that measures the frame rate before and after implementing the change. This will help ensure that the optimization has the desired effect on performance.
 
 ## Related Questions
 - What is the impact of changing FOV on framebuffer updates?

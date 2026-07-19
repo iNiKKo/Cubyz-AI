@@ -8,7 +8,7 @@
 The discussion revolves around the inability to apply ore rotation to glass blocks due to technical difficulties and the maintainers' decision not to implement it. However, iron frames can still be applied to glass blocks for decorative purposes.
 
 ## Explanation
-The maintainers have identified significant technical challenges in implementing ore rotation for glass blocks due to potential issues with the current architecture or limitations in the rendering engine. These difficulties suggest that the desired functionality cannot be achieved at this time. However, iron frames can still be applied to glass blocks, giving them a neat frame that would look lovely in many builds.
+The discussion revolves around the inability to apply ore rotation to glass blocks due to significant technical difficulties and the maintainers' decision not to implement it. The specific technical challenges include potential issues with the current architecture or limitations in the rendering engine, such as how block rotations are handled and why they might be problematic for glass blocks. These difficulties suggest that the desired functionality cannot be achieved at this time. However, iron frames can still be applied to glass blocks, giving them a neat frame that would look lovely in many builds.
 
 ## Related Questions
 - What are the specific technical difficulties preventing ore rotation from being applied to glass blocks?

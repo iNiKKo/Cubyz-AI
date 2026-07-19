@@ -15,7 +15,7 @@ Discussion on adjusting terminal velocity based on altitude to prevent players f
 const terminalVelocity = @sqrt((2.0 * 37.3 * physics.baseGravity) / (0.390625 * 1.0 * std.math.exp(@min(-Player.super.pos[2], 0) / 4150.0) * 0.7));
 ```
 
-This formula calculates the terminal velocity based on player mass, cross-sectional area, air density, atmospheric scale height, and drag coefficient. The user's model shows that at height 0, Snale has a terminal velocity of approximately 90 m/s, increasing to about 300 m/s at height 10000.
+This formula calculates the terminal velocity based on player mass, cross-sectional area, air density, atmospheric scale height, and drag coefficient. The user's model shows that at height 0, Snale has a terminal velocity of approximately 90 m/s, increasing to about 300 m/s at height 10000. Additionally, the discussion includes concerns about players suffocating at sky islands due to height and the need for specialized equipment to breathe.
 
 ## Related Questions
 - How does the proposed terminal velocity formula affect player movement at different altitudes?

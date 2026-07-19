@@ -19,7 +19,20 @@ The `ProceduralItemTypeIndex` enum has the following methods:
 - `fromId`: Converts an ID string to an enum value.
 - `id`, `tags`, `properties`, `slotInfos`, `pixelSources`, and `pixelSourcesOverlay`: Accessor methods for retrieving item data.
 
-The `ProceduralItemProperty` struct includes properties such as damage, maxDurability, and swingSpeed. It also has a method `fromString` to convert string representations of these properties into enum values.
+The `ProceduralItemType` struct includes the following fields:
+- `id`: A string representing the unique identifier of the item type.
+- `tags`: An array of tags associated with the item type.
+- `properties`: An array of property matrices defining various attributes of the item.
+- `slotInfos`: A fixed-size array of 25 `SlotInfo` structs, each describing a slot within the item.
+- `pixelSources`: A 16x16 array of u8 values representing the pixel sources for the item's visual representation.
+- `pixelSourcesOverlay`: A 16x16 array of u8 values representing an overlay for the item's visual representation.
+
+The `ProceduralItemProperty` enum includes the following properties:
+- `damage`: Represents the damage dealt by the item.
+- `maxDurability`: Represents the maximum durability of the item.
+- `swingSpeed`: Represents the time interval between swings of the item.
+
+It also has a method `fromString` to convert string representations of these properties into enum values.
 
 ## Code Example
 ```zig

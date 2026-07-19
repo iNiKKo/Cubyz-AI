@@ -9,7 +9,7 @@
 Handles command to manage player permissions
 
 ## Explanation
-The chunk defines a '/perm' command that allows users to add, remove, or check permissions for players. The command supports several sub-commands with specific syntax:
+The chunk defines a '/perm' command that allows users to manage player permissions. The command supports several sub-commands with specific syntax:
 
 1. `/perm <permissionPath>`: Checks if the current player has the specified permission path.
 2. `/perm @<playerIndex> <permissionPath>`: Checks if a specified player (by index) has the given permission path.
@@ -20,8 +20,8 @@ The command uses an `Args` union to parse arguments and perform corresponding op
 
 Error handling is implemented during argument parsing and permission management:
 - If a player index is provided, it checks if the target player exists.
-- Permission paths must begin with a '/' character; otherwise, an error message is printed.
-- When adding or removing permissions, errors are handled by checking if the path already exists in the specified list before performing the operation. If the path does not exist and removal is attempted, an error message is displayed to inform the user.
+- Permission paths must begin with a '/' character; otherwise, an error message is printed: `Permission path for <{s}> doesn't begin with a "/", got: {s}`.
+- When adding or removing permissions, errors are handled by checking if the path already exists in the specified list before performing the operation. If the path does not exist and removal is attempted, an error message is displayed to inform the user: `Permission path {s} is not present inside users permission {s}list`.
 
 The 'Path' struct ensures that permission paths begin with a '/' character, and error messages are printed if this condition is not met. User permissions are managed through the `ListType` enum which specifies whether a path belongs to a whitelist or blacklist.
 

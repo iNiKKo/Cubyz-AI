@@ -9,7 +9,13 @@
 Defines a torus-shaped Signed Distance Function (SDF) model for terrain generation.
 
 ## Explanation
-This chunk implements the logic for creating and using a torus SDF model. It includes functions to initialize the model from configuration data, instantiate specific torus instances with random parameters within given ranges, and calculate the distance from any point in space to the surface of the torus. The `initAndGetExtend` function reads parameters from a ZonElement for `minRadius`, `maxRadius`, `minThickness`, and `maxThickness`. If these values are not provided, default values are used: `minRadius = 16`, `maxRadius = minRadius if maxRadius is not specified`, `minThickness = minRadius/2 if maxThickness is not specified`, and `maxThickness = minThickness if maxThickness is not specified`. The `instantiate` function generates a new torus instance with randomized radius and thickness within the ranges defined by these parameters, returning an SdfInstance that can be used for further calculations. The `generate` function computes the distance to the torus surface using mathematical formulas based on the sample position.
+This chunk implements the logic for creating and using a torus Signed Distance Function (SDF) model for terrain generation. It includes functions to initialize the model from configuration data, instantiate specific torus instances with random parameters within given ranges, and calculate the distance from any point in space to the surface of the torus.
+
+The `initAndGetExtend` function reads parameters from a ZonElement for `minRadius`, `maxRadius`, `minThickness`, and `maxThickness`. If these values are not provided, default values are used: `minRadius = 16`, `maxRadius = minRadius if maxRadius is not specified`, `minThickness = minRadius/2 if maxThickness is not specified`, and `maxThickness = minThickness if maxThickness is not specified`.
+
+The `instantiate` function generates a new torus instance with randomized radius and thickness within the ranges defined by these parameters, returning an SdfInstance that can be used for further calculations. The `generate` function computes the distance to the torus surface using mathematical formulas based on the sample position: it calculates the radial distance from the origin (`radialDistance = @sqrt(samplePos[0]*samplePos[0] + samplePos[1]*samplePos[1])`), adjusts it by subtracting the torus's radius (`adjustedDistance = radialDistance - self.radius`), and then computes the final distance using the Pythagorean theorem (`@sqrt(adjustedDistance*adjustedDistance + samplePos[2]*samplePos[2]) - self.thickness`).
+
+The `Instance` struct holds the specific parameters for a torus instance, including its radius and thickness. This struct is used to store the randomized values generated in the `instantiate` function.
 
 ## Code Example
 ```zig

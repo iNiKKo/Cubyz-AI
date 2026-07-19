@@ -21,6 +21,18 @@ The `Args` union defines two cases for parsing arguments:
 1. `@"/gamemode <playerIndex> <mode>": struct { playerIndex: ?command.PlayerIndex, mode: main.game.Gamemode }`
 2. `@"/gamemode <playerIndex>": struct { playerIndex: ?command.PlayerIndex }`
 
+The corrected usage syntax is as follows:
+```zig
+pub const usage =
+	\/gamemode <survival/creative>
+	\/gamemode @playerIndex <survival/creative>
+	\/gamemode
+	\/gamemode @playerIndex
+;
+```
+
+This update ensures that the parser correctly interprets inputs and assigns values to `playerIndex` appropriately.
+
 ## Related Questions
 - How does the parser currently handle inputs like `/gamemode survival @0`?
 - What changes are needed to correctly parse player indices in gamemode commands?

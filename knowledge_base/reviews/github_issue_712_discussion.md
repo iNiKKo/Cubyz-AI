@@ -8,7 +8,7 @@
 The issue discusses messy UI positions and proposes making default UI positions have less overlap.
 
 ## Explanation
-The issue discusses messy UI positions and proposes making default UI positions have less overlap. The report highlights a problem with overlapping UI elements, which can obstruct user interaction. The maintainer considers this issue complex enough to warrant an experimental label, suggesting that it may require significant effort or innovative solutions to address effectively.
+The issue discusses messy UI positions and proposes making default UI positions have less overlap. The report highlights a problem with overlapping UI elements, which can obstruct user interaction. An image is provided to illustrate the current UI position settings causing overlap: ![image](https://github.com/user-attachments/assets/e5882942-2ed5-4439-9a8a-971a423a5380). The maintainer considers this issue complex enough to warrant an experimental label, suggesting that it may require significant effort or innovative solutions to address effectively.
 
 ## Related Questions
 - What are the current UI position settings causing overlap?

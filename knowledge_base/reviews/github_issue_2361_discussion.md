@@ -8,7 +8,7 @@
 The issue describes player physics behavior where holding jump and forward buttons results in inconsistent jumping up steps, including hopping twice or bouncing off solid blocks.
 
 ## Explanation
-The issue describes player physics behavior where holding jump and forward buttons results in inconsistent jumping up steps, including hopping twice or bouncing off solid blocks. Specifically, when attempting to climb stone steps, the player character gets bounced off them. The maintainer requests a video of the effect for better understanding. This problem likely stems from how the game handles input states and transitions between different movement states, such as jumping and colliding with surfaces.
+When holding the jump button while holding the forward button, the game does not smoothly jump up steps of grass or stone. Sometimes the player character hops up against the grass wall twice, and other times they get bounced off solid blocks when trying to jump up stone steps. The expected behavior is for the game to smoothly jump up steps without hopping or bouncing. The maintainer requests a video of the effect for better understanding. This problem likely stems from how the game handles input states and transitions between different movement states, such as jumping and colliding with surfaces.
 
 ## Related Questions
 - What specific input states are being handled when the jump and forward buttons are held?

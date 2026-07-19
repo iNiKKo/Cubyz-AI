@@ -17,6 +17,10 @@ The `Permissions` struct uses two `std.StringHashMapUnmanaged(void)` instances f
 
 The `NeverFailingAllocator` ensures allocation safety by providing a never-failing allocation mechanism, while the `NeverFailingArenaAllocator` manages memory in a way that prevents accidental deallocation on the wrong thread. The use of white and black lists in permissions management allows for controlling access based on inclusion or exclusion criteria.
 
+The ZonElement array is handled by iterating over its elements and checking their types. If an element is a string or owned string, it is duplicated and added to the hash map. The `unreachable` keyword is used in error handling to indicate that an allocation failure should never occur due to the use of `NeverFailingAllocator`.
+
+The assertion suggested for the `deinit` method would ensure that the arena allocator is not freed on the wrong thread, preventing potential memory corruption issues.
+
 ## Related Questions
 - What is the purpose of the `mapFromZon` function?
 - How does the `mapToZon` function convert a string hash map to a ZonElement array?

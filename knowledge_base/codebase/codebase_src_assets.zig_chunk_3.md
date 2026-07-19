@@ -17,6 +17,8 @@ The `readAllBlueprints` function reads blueprint files (`.blp`) from the specifi
 
 The `readAllModels` function reads model files with a specific ending (e.g., `.obj`) from the specified subdirectory. It creates an asset ID using `createAssetStringID`, reads the file data, and stores it in the output map.
 
+Migration files are handled separately by the `readAllAssets` function. If `_migrations.zig.zon` is found, it is read into a `zon` object and stored in the `_migrations` map. The chunk logs errors for file operations such as opening directories or reading files, using `std.log.err`. The chunk stores read assets in a BytesHashMap, where each asset is identified by a unique ID created using `createAssetStringID`. Files are skipped if they are not of type `.file`, do not match the specified file ending (for `readAllModels`), or have names prefixed with `_defaults` or `_migrations` (for `readAllBlueprints`). The BytesHashMap is used to efficiently store and retrieve asset data.
+
 ## Code Example
 ```zig
 pub fn readAllModels(addon: Addon, allocator: NeverFailingAllocator, subPath: []const u8, fileEnding: []const u8, output: *BytesHashMap) void {

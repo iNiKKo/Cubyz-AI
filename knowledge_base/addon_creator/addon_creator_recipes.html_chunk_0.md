@@ -9,7 +9,17 @@
 UI component for creating and editing recipes in the Cubyz Addon Creator.
 
 ## Explanation
-This UI component is responsible for allowing users to create and edit recipes. It includes a "Load Preset" dropdown with exactly two presets: "Oak Planks" (`loadRecipePreset('planks')`) and "Workbench" (`loadRecipePreset('workbench')`). Input Ingredients allows up to 4 items (the 2nd-4th are optional, searchable via a filterable dropdown), each with a quantity and texture selection. The output section specifies the result item, amount made, and texture selection. A save button adds the finished recipe to the project.
+This UI component is responsible for allowing users to create and edit recipes in the Cubyz Addon Creator. It includes a 'Load Preset' dropdown with exactly two presets: 'Oak Planks' (`loadRecipePreset('planks')`) and 'Workbench' (`loadRecipePreset('workbench')`). The preset 'Oak Planks' corresponds to the recipe where 4 oak logs are crafted into 1 oak plank. The preset 'Workbench' corresponds to the recipe where 4 planks are crafted into 1 workbench. Input Ingredients allows up to 4 items (the 2nd-4th are optional, searchable via a filterable dropdown), each with a quantity and texture selection. The output section specifies the result item, amount made, and texture selection. A save button adds the finished recipe to the project.
+
+**Input Validation:** Recipe IDs must be lowercase alphanumeric characters or underscores. Any other characters are automatically removed as the user types.
+
+**Texture Selections:** Users can select textures for input items and the output item from a dropdown menu that provides live filtering based on user input.
+
+**Default Values:** Input fields have default values of 1 for quantities, and the 'Recipe ID' field is initially empty. The 'Load Preset' dropdown defaults to 'None'.
+
+**Dropdown Menus:** Dropdown menus are implemented with a search functionality that filters options as the user types. They provide live previews and allow users to select items or custom blocks.
+
+**Recipe Data Structure:** Recipe data includes the recipe ID, input ingredients (with quantities), output item (with quantity), and texture selections for both inputs and outputs.
 
 ## Code Example
 ```zig

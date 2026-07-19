@@ -9,9 +9,7 @@
 The code introduces a new command for stopping or restarting the server.
 
 ## Explanation
-The review suggests renaming the union field from `@"/server <restart>"` to `@"/server <action>"` to make it more generic and applicable to both 'stop' and 'restart' actions. This change is proposed to improve the architecture by making the command handling more flexible and maintainable.
-
-The original code defines a union with an enum that includes the values `stop` and `restart`. The review recommends renaming the field to `action` to accommodate future potential actions beyond just stop and restart, enhancing the flexibility of the command handling system.
+The code introduces a new command for stopping or restarting the server. The original code defines a union with an enum that includes the values `stop` and `restart`. The review suggests renaming the union field from `@"/server <restart>"` to `@"/server <action>"` to make it more generic and applicable to both 'stop' and 'restart' actions. This change is proposed to improve the architecture by making the command handling more flexible and maintainable. The usage example provided in the raw_content is `/server <stop/restart>`, which should be included in the explanation.
 
 ## Related Questions
 - What is the purpose of renaming the union field in the server command handling?

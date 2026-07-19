@@ -15,11 +15,13 @@ The change refactors the permission command execution by introducing a structure
 
 The argument formats are as follows:
 - `/perm <action> <list> <playerIndex> <permissionPath>`
+  - `<action>` can be `add` or `remove`
+  - `<list>` can be `whitelist` or `blacklist`
 - `/perm <playerIndex> <permissionPath>`
 
-Where `<action>` can be `add` or `remove`, and `<list>` can be `whitelist` or `blacklist`. The `execute` function processes these arguments to add or remove permissions for a player, checking if the permission path starts with a '/'. If not, it sends an error message.
+The new `Path` struct with a parse method checks if permission paths start with a '/'. Error messages are more detailed and use a list unmanaged allocator for better memory management. The refactoring also includes improvements to error handling, such as correcting a typo in the error message format string.
 
-Error messages are more detailed and use a list unmanaged allocator for better memory management. The refactoring also includes a new `Path` struct with a parse method that checks if permission paths start with a '/'. The reviewer suggests correcting a typo in the error message format string.
+The original implementation used a `Helper` struct to handle argument parsing and validation, which has been replaced by the structured argument parser. This change simplifies the code and improves its maintainability.
 
 ## Related Questions
 - What is the purpose of the `ArgParser` in this refactoring?

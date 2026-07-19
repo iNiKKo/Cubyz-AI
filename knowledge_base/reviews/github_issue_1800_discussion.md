@@ -8,7 +8,7 @@
 Discussion about adding a 'lock sign' feature to prevent accidental editing of signs on chests, with considerations for unlocking mechanisms and alternative labeling methods.
 
 ## Explanation
-Discussion about adding a 'lock sign' feature to prevent accidental editing of signs on chests. The maintainers suggest a way to unlock locked signs without breaking them, but also express concerns about potential impacts on functionality like copying text from signs and the introduction of multiple block entities per block. There is a suggestion for adding labels directly inside the chest UI as an alternative solution. Additionally, a Minecraft mod (clickthrough+) that allows users to click through signs placed on chests unless shift is held is mentioned as a possible solution.
+Discussion about adding a 'lock sign' feature to prevent accidental editing of signs on chests, with considerations for unlocking mechanisms and alternative labeling methods. The maintainers suggest a way to unlock locked signs without breaking them but do not specify the mechanism. There are concerns about potential impacts on functionality like copying text from signs and the introduction of multiple block entities per block. A suggestion is made to add labels directly inside the chest UI as an alternative solution, but no details are provided on how this would affect user experience. Additionally, a Minecraft mod (clickthrough+) that allows users to click through signs placed on chests unless shift is held is mentioned as a possible solution.
 
 ## Related Questions
 - How can we implement a lock/unlock mechanism for signs without allowing them to be broken?

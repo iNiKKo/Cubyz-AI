@@ -8,7 +8,7 @@
 Discussion about adding a feature to make biomes more 'blobby' by introducing heightmap-based structures.
 
 ## Explanation
-Discussion about enhancing the visual appearance of biomes in Cubyz, specifically addressing the issue of buttes becoming less round due to deblobbification. The user suggests implementing heightmap-based structures with a surface height noise threshold and abrupt shifts upwards for realism. The maintainer expresses interest in this feature and offers direct interaction as documentation since there is no official documentation beyond the source code.
+Discussion about adding a feature to make biomes more 'blobby' by introducing heightmap-based structures. The user suggests implementing heightmap-based structures with a surface height noise threshold beyond which the surface is abruptly shifted upwards by yet another set amount, along with niceties like having them depend on another layer of noise for realism. The maintainer expresses interest in this feature and offers direct interaction as documentation since there is no official documentation beyond the source code.
 
 ## Related Questions
 - What specific suggestion did the user make to address deblobbification?

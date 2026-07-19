@@ -9,11 +9,15 @@
 Cluster SDF Model Initialization and Instantiation
 
 ## Explanation
-This chunk defines a cluster of SDF models for terrain generation. It initializes the cluster by parsing a ZonElement, calculating the maximum extend based on child model extents and offsets, and creating instances of each child model. The `initAndGetExtend` function parses the children from the ZonElement, calculates their position offsets and random offsets, and determines the overall bounding box for the cluster using precise calculations involving `maxExtend.min` and `maxExtend.max`. If no children are found, it logs an error and returns null. It also sets a default smoothness value to 4 if not specified in the ZonElement.
+This chunk defines a cluster of SDF models for terrain generation. It initializes the cluster by parsing a ZonElement, calculating the maximum extend based on child model extents and offsets, and creating instances of each child model. The `initAndGetExtend` function parses the children from the ZonElement, calculates their position offsets and random offsets, and determines the overall bounding box for the cluster using precise calculations involving `maxExtend.min` and `maxExtend.max`. If no children are found, it logs an error and returns null. It also sets a default smoothness value to 4 if not specified in the ZonElement (the key used is 'smothness', which is a typo). The exact logic for determining `minPos` and `maxPos` involves iterating over each child's position offset and random offset to calculate the bounding box for the combined cluster. Specifically, it calculates `minPos` by taking the minimum of the current `minPos` and the result of adding the child's minBounds to its position offset minus its random offset. It calculates `maxPos` by taking the maximum of the current `maxPos` and the result of adding the child's maxBounds to its position offset plus its random offset.
 
-The `instantiate` function creates multiple instances of each child model based on their minAmount and random offsets, then combines them into a single instance with smooth union operations. The exact logic for determining `minPos` and `maxPos` involves iterating over each child's position offset and random offset to calculate the bounding box for the combined cluster.
+The `instantiate` function creates multiple instances of each child model based on their minAmount and random offsets, then combines them into a single instance with smooth union operations. The exact logic for determining `minPos` and `maxPos` involves iterating over each child's position offset and random offset to calculate the bounding box for the combined cluster. Specifically, it calculates `minPos` by taking the minimum of the current `minPos` and the result of adding the child's minBounds to its position offset minus its random offset. It calculates `maxPos` by taking the maximum of the current `maxPos` and the result of adding the child's maxBounds to its position offset plus its random offset.
 
-The `generate` function calculates the SDF values for the combined cluster using these instances and the smoothness value to blend them together.
+The `generate` function calculates the SDF values for the combined cluster using these instances and the smoothness value to blend them together. The `centerPosOffset` field in the `Instance` struct is used to adjust the sample position when generating the SDF values, ensuring that the center of each child model is correctly aligned with its position offset.
+
+The `random.nextFloatVectorSigned` function generates a signed random vector for each child model, which is then used to calculate the random offsets. This ensures that the child models are positioned randomly within their specified bounds.
+
+The smooth union operations in the `generate` function combine the SDF values of the individual child models into a single SDF value for the cluster. The smoothness value determines how smoothly the individual models blend together, creating a seamless transition between them.
 
 ## Code Example
 ```zig
@@ -62,6 +66,5 @@ pub fn initAndGetExtend(zon: ZonElement) sdf.SdfModel.InitResult {
 - What is the purpose of the `centerPosOffset` field in the `Instance` struct?
 - How does the `generate` function handle different child models with varying minAmounts and random offsets?
 - What is the role of the `random.nextFloatVectorSigned` function in this chunk?
-- How are the SDF instances created using the `instantiate` function?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_sdf_models_cluster.zig_chunk_0*

@@ -9,7 +9,7 @@
 Added a call to `heap.GarbageCollection.forceAllFreeItemsFromList()` in the main function's cleanup sequence.
 
 ## Explanation
-The change introduces a deferred call to `forceAllFreeItemsFromList()` from the `heap.GarbageCollection` module. This addition is aimed at ensuring that all free items are properly managed during the application's shutdown process, preventing potential crashes related to memory management. The reviewer notes that this was necessary due to some function on another thread requiring proper cleanup of dynamic integer array storage. Additionally, the calls to `audio.init()` and `audio.deinit()` have been removed from the main function.
+The change introduces a deferred call to `forceAllFreeItemsFromList()` from the `heap.GarbageCollection` module. This addition is aimed at ensuring that all free items are properly managed during the application's shutdown process, preventing potential crashes related to memory management. The reviewer notes that this was necessary due to some function on another thread requiring proper cleanup of dynamic integer array storage. Additionally, the calls to `audio.init()` and `audio.deinit()` have been removed from the main function. This removal is part of ensuring a cleaner shutdown process without unnecessary initialization.
 
 ## Related Questions
 - What is the purpose of `forceAllFreeItemsFromList()` in the context of memory management?

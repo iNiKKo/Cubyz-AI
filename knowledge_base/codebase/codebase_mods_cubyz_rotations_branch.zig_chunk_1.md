@@ -9,7 +9,16 @@
 This chunk defines functions for determining and adding branch patterns based on connectivity data.
 
 ## Explanation
-This chunk defines functions for determining and adding branch patterns based on connectivity data. The `addQuads` function takes a pattern, side, radius, output list, and texture slot offset to add rotated quads to the output list. It uses specific coordinates and dimensions to define each quad shape depending on the pattern type (dot, halfLine, line, bend, intersection, cross). The `getPattern` function determines the branch pattern based on connectivity data for different directions (positive and negative X and Y) as follows:
+This chunk defines functions for determining and adding branch patterns based on connectivity data. The `addQuads` function takes a pattern, side, radius, output list, and texture slot offset to add rotated quads to the output list. It uses specific coordinates and dimensions to define each quad shape depending on the pattern type (dot, halfLine, line, bend, intersection, cross) as follows:
+
+- **Dot**: Defined by coordinates `.{min, min}`, `.{min, max}`, `.{max, min}`, `.{max, max}`.
+- **HalfLine**: Defined by coordinates `.{min, 0.0}`, `.{min, max}`, `.{max, 0.0}`, `.{max, max}`.
+- **Line**: Defined by coordinates `.{min, 0.0}`, `.{min, 1.0}`, `.{max, 0.0}`, `.{max, 1.0}`.
+- **Bend**: Defined by coordinates `.{0.0, 0.0}`, `.{0.0, max}`, `.{max, 0.0}`, `.{max, max}`.
+- **Intersection**: Defined by coordinates `.{0.0, 0.0}`, `.{0.0, max}`, `.{1.0, 0.0}`, `.{1.0, max}`.
+- **Cross**: Defined by coordinates `.{0.0, 0.0}`, `.{0.0, 1.0}`, `.{1.0, 0.0}`, `.{1.0, 1.0}`.
+
+The `getPattern` function determines the branch pattern based on connectivity data for different directions (positive and negative X and Y) as follows:
 
 - For zero connections (`count == 0`), if the side is not connected, it returns `.dot`. Otherwise, it returns null.
 - For one connection (`count == 1`), it determines the direction based on which neighbor is connected and returns `.halfLine` with that direction.

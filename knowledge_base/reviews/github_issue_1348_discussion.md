@@ -9,6 +9,8 @@
 Discussion on implementing tags in recipe definitions to reduce boilerplate and improve flexibility.
 
 ## Explanation
+Discussion on implementing tags in recipe definitions to reduce boilerplate and improve flexibility.
+
 The discussion revolves around allowing tags in recipes to specify inputs and outputs, reducing the need for duplicating recipes for different item types like wood. The main concerns include how to map input types to correct output types and how to display these recipes in the UI. The maintainer suggests using a mapping option within recipe definitions to explicitly specify the relationship between input and output types.
 
 The proposal involves using tags to specify input and output of recipes, avoiding the need to duplicate all recipes for different wood types. For example, instead of having separate recipes for converting each type of log to planks, there would be one recipe that can take any log type and produce the corresponding plank type. This approach aims to reduce the length of the crafting list and lessen boilerplate in recipe definitions.
@@ -29,6 +31,20 @@ Named symbols are proposed for recipe inputs and outputs to maintain consistency
 ```
 
 This syntax allows for automatic creation of recipes for plank types, including those from addons. The goal is to maintain consistency with the current system while improving flexibility and reducing boilerplate.
+
+The maintainer also proposes using a `.mapping` option within recipe definitions to explicitly specify the relationship between input and output types. For example, a recipe definition might look like this:
+
+```zig
+.{
+    .{
+        .inputs = .wood,
+        .outputs = .{ .typ = ".planks", .count = 4 },
+        .mapping = .{ .startswith = ".recipe_subtype:" },
+    },
+}
+```
+
+This approach allows for more complex patterns or rules to be defined, and can be extended to support more advanced mapping options in the future.
 
 ## Related Questions
 -  How does the proposed mapping option work in recipe definitions?

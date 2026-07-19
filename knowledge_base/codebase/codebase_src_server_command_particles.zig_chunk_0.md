@@ -25,7 +25,15 @@ The helper functions are:
 - `parseBool`: Validates whether a given argument is either 'true' or 'false'. If not, it returns an error message indicating an invalid boolean value.
 - `parseNumber`: Parses a number and handles overflow errors by sending an error message with the maximum particle count. The specific error handling message includes '#ff0000Too many particles spawned "{s}", maximum: "{d}"', where `{d}` is the value of `particles.ParticleSystem.maxCapacity`.
 
-Additionally, the command usage supports using '~' to apply current player position coordinates in `<x> <y> <z>` fields. The `spawnDataZon` parameter can be used to specify additional properties for particles such as shape, radius, mode, speed, lifeTime, and randomRotate.
+Additionally, the command usage supports using '~' to apply current player position coordinates in `<x> <y> <z>` fields. The `spawnDataZon` parameter can be used to specify additional properties for particles such as shape, radius, mode, speed, lifeTime, and randomRotate. The structure of `spawnDataZon` is a JSON-like object with the following fields:
+- `.shape`: Specifies the shape of the particle spawn area (e.g., .sphere).
+- `.radius`: Specifies the radius of the particle spawn area.
+- `.mode`: Specifies the mode of particle spawning (e.g., .scatter).
+- `.speed`: Specifies the speed range for particles as a tuple (min, max).
+- `.lifeTime`: Specifies the lifetime range for particles as a tuple (min, max).
+- `.randomRotate`: A boolean indicating whether particles should rotate randomly.
+
+The `execute` function handles invalid number inputs for particle count by sending an error message '#ff0000Expected number, found "{s}"' and returning without further execution.
 
 ## Code Example
 ```zig

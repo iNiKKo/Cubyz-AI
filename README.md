@@ -244,6 +244,106 @@ chunks specifically, since that's the most user-facing content and where every s
 saga was found. Post-fix, the escalation rate dropped from 30% to under 3% with zero leakage from
 the gated-out weak reviewer — confirmed against live campaign data, not just in theory.
 
+### Audit campaign completion, review, and closing the reprocessing loop
+
+The `audit` campaign (above) ran to completion: **3,247/3,247 chunks**, 2,255 fixes applied, 168
+escalated to human review. A full review pass followed the plan agreed earlier (verify against raw
+source, never trust a chunk's or reviewer's own claim): a mechanical sweep across the whole
+`knowledge_base/` for known bug patterns (double-bullets, structural doc-corruption, literal `\n`,
+non-question "Related Questions") came back clean except one isolated bad generation; all 168
+escalations were reviewed (15 "malformed content" ones all traced to the *same* root cause — a
+proposer re-generating a whole wrapped document instead of just prose — and the structural guard
+correctly blocked every one, zero corruption; the other 153 never wrote anything, the reviewer was
+correctly catching regressions each round); and a sample of ~35 applied fixes across all four
+collections found and fixed 3 real fabrication errors (a model misreading a UI slider's width
+parameter as a value range, and two cases of garbling a value+variance pair into a nonsensical
+range) — an isolated failure pattern, not a new systemic bug class.
+
+This surfaced two real gaps in the pipeline itself, both fixed at the root:
+
+- **Fine-tune training data never actually benefited from any audit fix.** `finetune_initialize_chunks()`
+  sourced content from `users/*/{wiki,codebase,github_reviews}.jsonl` — the raw, one-time crunch
+  output, frozen forever, completely separate from the `knowledge_base/*.md` files audit mode
+  actually edits. Fixed by re-deriving finetune's source content live from `knowledge_base/*.md`
+  instead (`_parse_kb_md_record()`), so every past and future audit fix flows into the next
+  training run automatically. A related landmine: `build_knowledge_base.py` (which republishes
+  `users/*.jsonl` → `knowledge_base/*.md`) would have silently overwritten every audit-corrected
+  chunk back to its original, pre-fix content the next time anyone ran it — fixed to permanently
+  skip any chunk_id already present in `audit_lock_state.json`'s completed set.
+- **A completed chunk could never be dispatched or resubmitted again, even when it genuinely needed
+  to be** (a chunk whose combined raw+kb content hash changed since its last audit pass). Fixing
+  that (checking live queue membership, not just the lifetime `completed` list) then exposed a
+  second, more severe bug: nothing ever pruned a *just-resolved* chunk from the in-memory dispatch
+  queue, so it was immediately re-offered again on the very next poll — a live infinite loop,
+  confirmed with a direct dispatch→resolve→dispatch-again test, and the actual explanation for "100%
+  complete but every client is still working." Fixed across all three campaign modes (RAG/finetune/
+  audit) by pruning a chunk from its in-memory queue at the moment it resolves, independent of the
+  lifetime completed-count. Progress reporting was also switched from that lifetime count (which
+  doesn't move during a repeat pass) to a live "how much of the current queue is still outstanding"
+  number.
+- Two new server endpoints, `rename_user` and `merge_user`, properly migrate/combine a volunteer's
+  stats, hardware info, and first-seen date server-side — the pause menu's rename option used to
+  only change what the client remembered locally, silently orphaning the old identity's entire
+  history under a name nobody used anymore. `delete_user` (pause menu `[X]`) does the thorough
+  opposite: purges every trace of an identity, including releasing any chunk it had locked.
+
+### Parallel workers, hardware guardrails, and a multi-lane terminal UI
+
+Raised by a volunteer's own question ("can Ollama process multiple requests at once on consumer
+hardware?"): yes, via `OLLAMA_NUM_PARALLEL`, and the client now can too. `ParallelWorkerPoolController`
+spins up extra worker identities (independent `crunch_lane()` calls, same pattern as the existing
+dual-lane secondary) that all hit the same local Ollama instance concurrently. Worker count scales
+down per hardware tier (bigger models cost more KV-cache per concurrent slot), and — after an
+initial version that would happily enable this on hardware that couldn't actually support it — a
+real `check_headroom()` pre-flight check now refuses to start if the machine's detected VRAM/RAM
+doesn't clear a conservative per-tier estimate, rather than finding out via an OOM or stall.
+
+Also added this round: a GPU architecture compatibility database (`GPU_ARCH_COMPATIBILITY`) that
+checks for a small, deliberately conservative deny-list of *confirmed*-dead architectures (e.g.
+`gfx803`/Polaris, dropped from ROCm since 4.5 — the root cause finally nailed down for a volunteer's
+long-mysterious RX 550) *before* spending up to two minutes running a real benchmark that was
+always going to fail anyway; a pause-menu redesign (vertical, grouped sections instead of one long
+wrapped line) with new options to rename, change primary lane (GPU ONLY / CPU ONLY / DUAL MODE), and
+delete an identity; and the volunteer name length limit raised from 9 to 12 characters.
+
+Making all this visible without the terminal falling apart took several real iterations. Dual-lane
+and parallel workers, run together, corrupted each other's display the same way a lone fancy box
+and a second lane always had — so `DualStatusBoard` was generalized from a fixed GPU/CPU pair into a
+dynamic N-lane board that any lane (primary, dual secondary, or any number of parallel workers)
+joins and leaves live. That surfaced its own bug: a newly-joined lane makes the next frame longer,
+but the redraw was still erasing based on the *previous, shorter* frame's line count — undershooting
+and leaving stale lines behind, fixed by forcing a fresh (non-erasing) redraw the moment a lane's
+row count changes in either direction. Separately, the admin dashboard's own redraw went through
+three attempts (a full-screen clear, then a per-line cursor-up erase, then a cursor-up +
+erase-to-end-of-screen) before landing on the actual fix: switching to the terminal's *alternate
+screen buffer* (the same mechanism `htop`/`vim`/`less` use), since no amount of tuning the escape
+sequences can fix cursor-based redraw only ever affecting the live viewport, never retroactively
+un-writing what's already scrolled into terminal history — confirmed as the real complaint once a
+user described scrolling *up* to see the "duplication."
+
+That whole saga is the reason **a migration to a real terminal library is underway** — hand-rolling
+raw ANSI escape codes for a live-redrawing multi-panel display kept hitting the same class of bug
+from a different angle every time. As a brand-new file (not an in-place rewrite):
+`pipeline_crunching/server_textual.py` (pivoted from an initial `rich`-only attempt,
+`server_rich.py`, to `textual` for real interactive widgets — RadioSet mode selection, buttons,
+etc, not just a live-redrawing display). Current shape: full-height left sidebar (mode RadioSet +
+collapsed "Advanced Settings" with two-step-confirm hard-reset buttons), right column stacked
+top-to-bottom as a header bar (mode/online/offline/clock) + connections panel (one box per
+volunteer machine, auto-hiding scrollbar) + a capped 10-line recent-events panel. Client-side
+(`CUBYZ_FOLDING.py`) TUI migration not started — server first, per plan. A 2026-07-19 round of live
+dual-lane+parallel-workers testing on Nick's own machine (nickpc) turned up two more rounds of real
+fixes, both now done: lane-counting now hides a machine's primary identity from its own lane count
+whenever parallel workers are active (it shares the exact same physical resource as the parallel
+pool, so it was double-counted — a dual-lane+parallel machine now correctly shows "3 lanes" instead
+of "4"), lane counts are shown even for a single lane, "DUAL-LANE" gets a "+ PARALLEL" suffix when
+both are active, the per-client Status line now shows a short state ("PROPOSED FIX", "FIX APPLIED",
+etc.) instead of the full message (Recent Events still shows the full message, untouched), "Joined"
+was replaced with a resettable "Connected" duration, the header gained a global per-mode progress
+bar and dropped its decorative border lines, and — caught immediately after — the header's
+online/offline counts were fixed to count distinct physical machines instead of raw lane identities
+(a dual-lane+parallel machine was inflating the count by 3-4x; it said "6 online" for 3 real
+volunteers). See the `project_tui_migration_plan` memory for full technical detail on each fix.
+
 ---
 
 ## Summary

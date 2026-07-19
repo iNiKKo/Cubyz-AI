@@ -8,7 +8,17 @@
 The discussion revolves around various ideas for punishing players upon death in Cubyz, including dropping bags, damaging tools, and adjusting energy levels. The hermit crab shell idea is explored but deemed too complex. A simpler proposed mechanism involves increasing max health from healing with accessories.
 
 ## Explanation
-The thread primarily focuses on devising a fair and engaging punishment system for player deaths in Cubyz. Several ideas are presented, including dropping bags, damaging tools, setting energy levels to zero upon death, and adjusting inventory size based on player level or exploration. The hermit crab shell concept is introduced but criticized for adding unnecessary complexity and potential confusion. A simpler alternative involves increasing max health from healing with accessories, which could be balanced with diminishing returns and cooldowns. This idea aims to reward survival without encouraging AFKing. Upon death, the player's energy should always start at zero since running out of energy does not kill them. The bag drop system is proposed as a way to prevent players from easily retrieving lost items upon rebirth, discouraging AFKing. Detailed discussions include preventing grinding through cooldowns and minimal damage requirements for health increases.
+The discussion revolves around various ideas for punishing players upon death in Cubyz, including dropping bags, damaging tools, and adjusting energy levels. The hermit crab shell idea is explored but deemed too complex. A simpler proposed mechanism involves increasing max health from healing with accessories.
+
+Several specific ideas are presented:
+- Dropping bags: Prevents easy retrieval of lost items upon rebirth, discouraging AFKing.
+- Damaging tools: Punishes players for death by damaging their equipment.
+- Setting energy levels to zero upon death: Ensures that running out of energy does not kill the player.
+- Adjusting inventory size based on player level or exploration: Rewards survival without encouraging AFKing.
+
+The hermit crab shell concept is introduced but criticized for adding unnecessary complexity and potential confusion. A simpler alternative involves increasing max health from healing with accessories, which could be balanced with diminishing returns and cooldowns. This idea aims to reward survival without encouraging AFKing.
+
+Detailed discussions include preventing grinding through cooldowns and minimal damage requirements for health increases. The bag drop system is proposed as a way to prevent players from easily retrieving lost items upon rebirth, discouraging AFKing. Upon death, the player's energy should always start at zero since running out of energy does not kill them.
 
 ## Related Questions
 -  What are the potential drawbacks of setting player energy to zero upon death?

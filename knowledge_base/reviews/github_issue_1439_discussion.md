@@ -8,7 +8,7 @@
 The discussion revolves around improving the appearance of the selection box in Cubyz, focusing on reducing its visual impact and making it more integrated with the UI.
 
 ## Explanation
-The discussion revolves around improving the appearance of the selection box in Cubyz to reduce its visual impact. The maintainers suggest removing inside lines, standardizing the line width at 2px regardless of distance, using a gray color instead of black, and rendering it as a UI element with a shader effect that copies the selected block's texture and outlines it. This approach aims to make the selection box less jarring by integrating it better with the user interface.
+The discussion revolves around improving the appearance of the selection box in Cubyz to reduce its visual impact. The maintainers suggest removing inside lines, standardizing the line width at 2px regardless of distance, using a gray color instead of black, and rendering it as a UI element with a shader effect that copies the selected block's texture and outlines it. Additionally, there was a suggestion to make the selection box less corporeal by having it match the rest of the UI somewhat. However, a fake shadow effect was not possible due to transparency sorting.
 
 ## Related Questions
 - How can the inside lines of the selection box be removed?

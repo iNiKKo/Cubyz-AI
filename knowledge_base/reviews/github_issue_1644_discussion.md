@@ -8,7 +8,7 @@
 Discussion on implementing a place tool with a chisel-like UI for placing up to a 3x3x3 volume of blocks, focusing on user experience and design consistency.
 
 ## Explanation
-The discussion centers around implementing a place tool with a chisel-like UI allowing players to place up to a 3x3x3 volume of selected blocks within their range. The maintainers suggest using an existing selection wand available in survival mode, but propose making it more intuitive by following a consistent chisel UI pattern. They argue that this approach will be cheaper and easier to design, aligning with the overall user experience of survival building tools. Additionally, there is a suggestion for material dependency, meaning different materials might have varying functionalities or requirements.
+Discussion on implementing a place tool with a chisel-like UI for placing up to a 3x3x3 volume of blocks, focusing on user experience and design consistency. The maintainers suggest using an existing selection wand available in survival mode, but propose making it more intuitive by following a consistent chisel UI pattern. They argue that this approach will be cheaper and easier to design, aligning with the overall user experience of survival building tools. Additionally, there is a suggestion for material dependency, meaning different materials might have varying functionalities or requirements. The tool would consume items from inventory.
 
 ## Related Questions
 - What is the primary function of the place tool being discussed?

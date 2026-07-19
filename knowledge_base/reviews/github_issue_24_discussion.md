@@ -9,7 +9,7 @@
 Implemented 2/3 meter-sized blocks, optimizing mesh generation and block compression.
 
 ## Explanation
-The issue discusses reducing block size to allow for more detailed construction. The maintainer decided on a 2/3 meter size, dividing blocks into 8 smaller parts (1/2 meters or 2/3 meters). Mesh generation optimization was achieved by compressing identical blocks into larger cubes both in memory and GPU data. This approach reduces client-side computation and time required to push detailed meshes to the GPU. The ability to place or remove multiple blocks at once is not necessary due to the less significant reduction in block size.
+The issue discusses reducing block size to allow for more detailed construction. The maintainer decided on a 2/3 meter size, dividing blocks into 8 smaller parts (1/2 meters or 2/3 meters). Mesh generation optimization was achieved by compressing identical blocks into larger cubes both in memory and GPU data. This approach reduces client-side computation and time required to push detailed meshes to the GPU. The ability to place or remove multiple blocks at once is not necessary due to the less significant reduction in block size. Additionally, the user suggested using a single 64-bit int as a bitfield to determine if a given chunk is present or not and encouraged pushing mesh generation into a compute shader to further reduce client-side computation.
 
 ## Related Questions
 - What is the commit hash for the implementation of 2/3 meter-sized blocks?

@@ -9,7 +9,7 @@
 Refactored the `gamemode` command to handle different argument cases more efficiently by using a single variant instead of two.
 
 ## Explanation
-Refactored the `gamemode` command to handle different argument cases more efficiently by using a single variant instead of two. The new usage syntax includes `/gamemode <survival/creative>`, `/gamemode @playerIndex <survival/creative>`, `/gamemode`, and `/gamemode @playerIndex`. The Args union now contains a single variant with optional player index and mode fields. This change improves performance by avoiding redundant parsing of the player index twice if the first variant fails.
+Refactored the `gamemode` command to handle different argument cases more efficiently by using a single variant instead of two. The new usage syntax includes `/gamemode <survival/creative>`, `/gamemode @playerIndex <survival/creative>`, `/gamemode`, and `/gamemode @playerIndex`. The Args union now contains a single variant with optional player index and mode fields: `@"/gamemode <playerIndex> <mode>": struct { playerIndex: ?command.PlayerIndex, mode: main.game.Gamemode }` and `@"/gamemode <playerIndex>": struct { playerIndex: ?command.PlayerIndex }`. This change improves performance by avoiding redundant parsing of the player index twice if the first variant fails.
 
 ## Related Questions
 - How does the refactored `gamemode` command handle cases where no player index is provided?

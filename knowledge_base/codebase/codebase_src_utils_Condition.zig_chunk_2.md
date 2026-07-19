@@ -9,6 +9,8 @@
 This chunk implements a condition variable mechanism using futexes for synchronization between threads. It includes constants such as `one_waiter`, `waiter_mask`, `one_signal`, and `signal_mask`. The implementation uses atomic operations to safely manage state and epoch values, ensuring proper synchronization and avoiding deadlocks.
 
 ## Explanation
+This chunk implements a condition variable mechanism using futexes for synchronization between threads. It includes constants such as `one_waiter`, `waiter_mask`, `one_signal`, and `signal_mask`. The implementation uses atomic operations to safely manage state and epoch values, ensuring proper synchronization and avoiding deadlocks.
+
 The code defines a `FutexImpl` struct that manages state and epoch values to implement a condition variable. It includes two main methods: `wait` and `wake`. Constants such as `one_waiter`, `waiter_mask`, `one_signal`, and `signal_mask` are defined within the struct:
 
 - `const one_waiter = 1;`

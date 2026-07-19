@@ -8,7 +8,7 @@
 Discussion on whether to implement increased player control during jumps in Cubyz, focusing on gameplay balance and difficulty. The maintainer argues that removing air control makes cave exploration more challenging and encourages the use of accessories like hooks or gliders for navigation.
 
 ## Explanation
-The discussion centers around implementing air control mechanics for players in Cubyz, which would allow them to adjust their trajectory while airborne. However, the maintainer suggests reducing air control as it could make cave exploration more dangerous and interesting due to the need for precise timing and navigation skills. The closer the player is to 0 y-velocity, the more air control they have. This change aims to maintain game difficulty and encourage the use of accessories like hooks or gliders for added functionality. Additionally, high slipperiness would become less impactful if players could easily correct their jumps.
+Discussion on whether to implement increased player control during jumps in Cubyz, focusing on gameplay balance and difficulty. The maintainer argues that removing air control makes cave exploration more challenging and encourages the use of accessories like hooks or gliders for navigation. Specifically, the closer the player is to 0 y-velocity, the more air control they have. This change aims to maintain game difficulty by requiring precise timing and navigation skills, making high slipperiness less impactful. The maintainer believes that without air control, cave exploration becomes more dangerous and interesting, as players must rely on their reflexes and accessories for survival.
 
 ## Related Questions
 - What are the potential benefits of implementing air control in Cubyz?

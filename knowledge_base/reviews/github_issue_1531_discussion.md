@@ -8,7 +8,7 @@
 Discussion about implementing an 'over-mining' feature where leftover damage from a swing can be applied to the next block, enhancing mining strategy and satisfaction.
 
 ## Explanation
-Discussion around implementing an 'over-mining' feature where players can apply leftover damage from one swing to the next block they target, enhancing mining strategy and player satisfaction. The maintainers explore manual and automatic modes for over-mining, with a focus on strategic depth and visual indicators. Specifically, clicking right as the swing hits the block applies the remaining damage to the targeted block rather than behind it. Visual indicators would show the leftover damage amount, and satisfying sounds enhance the experience. This feature also interacts with ore generation systems, leaving leftover damage on the block where the ore was generated.
+Discussion about implementing an 'over-mining' feature where leftover damage from a swing can be applied to the next block, enhancing mining strategy and satisfaction. The maintainers explore manual and automatic modes for over-mining, with a focus on strategic depth and visual indicators. Specifically, clicking right as the tool finishes its swing boosts damage, and clicking right as the swing hits the block applies the remaining damage to the targeted block rather than behind it. Visual indicators would show the leftover damage amount, and satisfying sounds enhance the experience. This feature also interacts with ore generation systems, leaving leftover damage on the block where the ore was generated.
 
 ## Related Questions
 - How does over-mining apply leftover damage to the next block you are pointing at?

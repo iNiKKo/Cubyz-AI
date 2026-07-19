@@ -8,7 +8,7 @@
 Users report cursor movement issues when using both a controller and keyboard/mouse, with the cursor moving towards the top right corner of the screen.
 
 ## Explanation
-Users report cursor movement issues when using both a controller and keyboard/mouse, with the cursor moving towards the top right corner of the screen. The issue stems from the interaction between the game's input handling for controllers and keyboards/mice. The maintainer suggests increasing the default deadzone for controllers to address this recurring problem, noting that Godot has a higher default deadzone percentage (20%). This change aims to mitigate cursor movement anomalies observed by multiple users.
+Users report a cursor movement issue when using both a controller and keyboard/mouse simultaneously in Cubyz. The cursor moves towards the top right corner of the screen by 1 pixel each frame, with UV coordinates involved. This issue is observed on ArchLinux/Hyprland with an AMD 9950X3D and RTX 5070Ti GPU. The maintainer suggests increasing the default deadzone for controllers to address this recurring problem, noting that Godot has a higher default deadzone percentage of 20%. Changing the controller's deadzone value (e.g., setting it to 10%) can exacerbate the issue by making the cursor move faster towards the top right corner. The maintainer acknowledges that this is a reoccurring issue for many users and should be addressed soon.
 
 ## Related Questions
 - What is the current default deadzone value for controllers in Cubyz?

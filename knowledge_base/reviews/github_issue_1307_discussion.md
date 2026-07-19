@@ -8,7 +8,14 @@
 Discussion about implementing an 'Inventory Full' indicator in Cubyz, with suggestions for text, icons, and UI placement.
 
 ## Explanation
-Discussion about implementing an 'Inventory Full' indicator in Cubyz to enhance user experience. Users proposed various options including text indicators, icons, and status effects. Maintainers considered a small crossed-out backpack icon as it minimizes UI clutter. The final decision involves integrating this feature after addressing another issue (#1004). Potential positions for the indicator include the right or left of the hotbar. The image provided by a user shows an example of a crossed-out backpack icon, which could be used to indicate inventory full status.
+Discussion about implementing an 'Inventory Full' indicator in Cubyz to enhance user experience. Users proposed various options including text indicators, icons, and status effects. Specifically, they suggested:
+
+1. Text like in the picture.
+2. Some kind of Icon when full.
+3. Multiple Icons, which are there the entire time showing how full the Inventory is.
+4. Same as 3 but in Text variant.
+
+Maintainers considered a small crossed-out backpack icon as it minimizes UI clutter. The final decision involves integrating this feature after addressing another issue (#1004). Potential positions for the indicator include the right or left of the hotbar. The image provided by a user shows an example of a crossed-out backpack icon, which could be used to indicate inventory full status.
 
 ## Related Questions
 - What are the proposed methods for implementing an 'Inventory Full' indicator?

@@ -32,6 +32,15 @@ path /usr/local/GL/lib (if local build)
 
 The maintainer suggests using `root_module.addRPathSpecial` to add necessary rpaths and mentions that `exe.addObjectFile` can manage static libraries like `cubyz_deps`. The user confirms these solutions and removes unnecessary X11 linking.
 
+To fix the issues, you can use the following commands:
+
+```zig
+exe.root_module.addRPathSpecial("@executable_path/../Library")
+exe.addObjectFile("path/to/cubyz_deps.a")
+```
+
+These commands will ensure that Cubyz's rpaths are correctly set for distribution on macOS and Linux, preventing username leakage from build paths.
+
 ## Related Questions
 - How can I remove duplicate rpaths in Cubyz's build process?
 - What is the correct way to link against XQuartz X11 in Zig?

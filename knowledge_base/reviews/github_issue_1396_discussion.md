@@ -46,7 +46,11 @@ This issue document outlines the ongoing work to revamp different types of tree 
 - Giant Mushrooms (Savannah, Limestone Mountains): Completed
 - Autumn Trees (Block replacements will be used): Pending
 
-Maintainers have engaged in discussions about adding sapling-like representations for young trees and the possibility of integrating resin functionality into trees. However, it is noted that only legacy logs can currently support resin application, specifically in the up-right rotation.
+Maintainers have engaged in discussions about adding sapling-like representations for young trees and the possibility of integrating resin functionality into trees. It is noted that only legacy logs can currently support resin application, specifically in the up-right rotation.
+
+**Additional Information:**
+- The maintainer has updated the PR description to clarify whether tall pines are also considered done with #1377.
+- There is a suggestion to add resin functionality to trees (#1325), but it is noted that only legacy logs can have resin applied, and only in the up-right rotation.
 
 ## Related Questions
 - What are the remaining tasks for revamping Oak trees?

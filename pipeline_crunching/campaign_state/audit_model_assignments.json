@@ -1,22 +1,32 @@
 {
-  "nicksrvr": {
-    "model": "qwen2.5-coder:7b",
-    "tier": "medium",
-    "last_seen": 1784479481.9890287
-  },
   "caleb": {
     "model": "qwen2.5-coder:14b",
     "tier": "hard",
-    "last_seen": 1784479584.9398124
+    "last_seen": 1784493818.7897687
   },
-  "nickpcq": {
+  "nickpcc": {
+    "model": "qwen2.5-coder:7b",
+    "tier": "medium",
+    "last_seen": 1784493812.065392
+  },
+  "nickpc": {
     "model": "qwen2.5-coder:14b",
     "tier": "hard",
-    "last_seen": 1784479580.609536
+    "last_seen": 1784493820.3994007
   },
   "nickpcp": {
     "model": "qwen2.5-coder:14b",
     "tier": "hard",
-    "last_seen": 1784479579.4704146
+    "last_seen": 1784493819.1210983
+  },
+  "nickpcq": {
+    "model": "qwen2.5-coder:14b",
+    "tier": "hard",
+    "last_seen": 1784493821.4685578
+  },
+  "nicksrvr": {
+    "model": "qwen2.5-coder:7b",
+    "tier": "medium",
+    "last_seen": 1784493796.967357
   }
 }

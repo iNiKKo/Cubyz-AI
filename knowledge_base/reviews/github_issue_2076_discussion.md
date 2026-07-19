@@ -18,9 +18,9 @@ The issue arises when the game encounters invalid packets during network communi
 [info]: Chat: cuppercom§#ffff00 left
 [info]: Disconnected
 ```
-The maintainer suggests adding more debugging information in version 0.0.1 to help identify and resolve the problem.
+The maintainer suggests adding more debugging information in version 0.0.1 to help identify and resolve the problem. The additional debugging information should include details about the invalid packets, such as their content or origin, to better understand why they are being received.
 
-The player was mining during this session, which may be a contributing factor.
+The player was mining during this session, which may be a contributing factor. Mining activities could generate a high volume of network traffic, potentially leading to packet processing issues if not handled properly.
 
 ## Related Questions
 - What is the cause of the 'Invalid' error during network data processing?

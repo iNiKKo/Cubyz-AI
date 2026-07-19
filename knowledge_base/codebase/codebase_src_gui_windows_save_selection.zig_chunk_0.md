@@ -11,6 +11,13 @@ Handles the save selection GUI window, managing world list display and interacti
 ## Explanation
 This chunk defines the logic for a GUI window responsible for saving selections. It includes functions to initialize and deinitialize textures, open worlds with specific parameters, delete worlds through confirmation windows, navigate folders using file paths, and refresh the window state if needed. The `window` variable is initialized with a content size of Vec2f{128, 256}. The `WorldInfo` struct contains fields for lastUsedTime (i64), name ([]const u8), and fileName ([]const u8). The `openWorld` function initializes a connection manager, starts the server thread with parameters including world name, port number, and mode. Error handling is implemented to log errors encountered during initialization of connections, starting threads, renaming threads, opening worlds, and navigating directories. Specific error messages are logged for each failure point.
 
+The `init` function initializes textures from files using `Texture.initFromFile`. The `deinit` function deinitializes these textures. The `openWorld` function opens a world by initializing a connection manager, starting the server thread with specified parameters, and handling errors during this process. The `deleteWorld` function opens a confirmation window for deleting a world. The `openFolder` function navigates to a directory using file paths. The `update` function refreshes the window state if needed.
+
+The button callbacks are defined as follows:
+- `openWorldWrap`: Opens a world by its index in the world list.
+- `deleteWorld`: Deletes a world by its index in the world list through a confirmation window.
+- `openFolder`: Opens a folder by its index in the world list using file paths.
+
 ## Code Example
 ```zig
 pub fn init() void {

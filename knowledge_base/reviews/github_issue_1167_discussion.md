@@ -9,7 +9,17 @@
 A segmentation fault occurs when re-entering a world due to potential issues with hashmap keys and allocators.
 
 ## Explanation
-A segmentation fault occurs when re-entering a world due to potential issues with hashmap keys and allocators. The issue involves a segmentation fault at address 0x23411937594, specifically in the `hash_map.zig` file. The maintainer suspects that this could be related to the lifetime of hashmap keys, where the allocator used for these keys might be reset before rejoining, but the rotation modes are not. This inconsistency could lead to dangling pointers or invalid memory access, causing the segmentation fault. Specifically, the error occurs when re-entering a world in single session, and it is not consistent. The full log file [ts_174115307.log](https://github.com/user-attachments/files/19115294/ts_1741295307.log) is attached. Additionally, other people have also encountered this issue, as reported in the Discord channel [here](https://discord.com/channels/443805812390100992/1348549062894424156/1348549062894424156).
+A segmentation fault occurs when re-entering a world due to potential issues with hashmap keys and allocators. The issue involves a segmentation fault at address 0x23411937594, specifically in the `hash_map.zig` file. The maintainer suspects that this could be related to the lifetime of hashmap keys, where the allocator used for these keys might be reset before rejoining, but the rotation modes are not. This inconsistency could lead to dangling pointers or invalid memory access, causing the segmentation fault.
+
+The error occurs when re-entering a world in single session, and it is not consistent. The full log file [ts_174115307.log](https://github.com/user-attachments/files/19115294/ts_1741295307.log) is attached. Additionally, other people have also encountered this issue, as reported in the Discord channel [here](https://discord.com/channels/443805812390100992/1348549062894424156/1348549062894424156).
+
+To prevent similar segmentation faults in the future, it is recommended to ensure proper memory management when re-entering a world. This includes checking the allocator handling and rotation modes to avoid dangling pointers or invalid memory access.
+
+Specifically, resetting the allocator before rejoining can lead to dangling pointers if the rotation modes are not properly managed. To fix this issue, you should:
+1. Ensure that the allocator is not reset before rejoining.
+2. Properly manage rotation modes to prevent invalid memory access.
+3. Use thread-safe methods for accessing and modifying hashmap keys.
+4. Regularly update and test your code to identify and fix any potential issues with memory management.
 
 ## Related Questions
 - What is the potential cause of the segmentation fault in `hash_map.zig`?

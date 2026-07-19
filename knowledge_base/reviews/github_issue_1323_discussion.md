@@ -8,7 +8,7 @@
 Discussion about changing the texture of Iron to more resemble Cast Iron, with maintainer comments suggesting that the current colors are distinguishable but tools look almost identical.
 
 ## Explanation
-Discussion about changing the texture of Iron in Cubyz to more closely resemble Cast Iron. Maintainers suggest that while the current color differentiation between Iron and Silver is acceptable, there is a lack of clear distinction when they are placed next to each other as tools. They propose considering darker colors or specific tints for Titanium (#1270), such as a blue-red-yellow tint (just a bit of each). However, maintainers ultimately decide to close the issue due to the current acceptable color differentiation.
+Discussion about changing the texture of Iron in Cubyz to more closely resemble Cast Iron. The current iron bar/block texture looks more like steel and is differentiated from silver by color but not by clear borders when placed next to each other as tools. Maintainers suggest considering darker colors or specific tints for Titanium (#1270), such as a blue-red-yellow tint (just a bit of each). However, maintainers ultimately decide to close the issue due to the current acceptable color differentiation.
 
 ## Related Questions
 - What is the current texture of Iron in Cubyz?

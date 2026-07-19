@@ -9,7 +9,7 @@
 Defines public key types and account code handling for network authentication.
 
 ## Explanation
-Defines public key types and account code handling for network authentication. The `PublicKey` union supports three cryptographic algorithms: Ed25519, ECDSA P-256 with SHA-256, and MLDSA44. It provides methods to initialize from base64 strings (`initFromBase64`) and verify signatures (`verifySignature`). Each algorithm has a specific public key type associated with it (e.g., `PublicKey.ed25519` for Ed25519). The `AccountCode` struct handles user input validation, ensuring that the account code contains only ASCII letters and spaces, adheres to a 15-word format, and includes a checksum. It also supports random generation of an AccountCode (`initRandomly`) and secure deinitialization (`deinit`).
+Defines public key types and account code handling for network authentication. The `PublicKey` union supports three cryptographic algorithms: Ed25519, ECDSA P-256 with SHA-256, and MLDSA44. Each algorithm has a specific public key type associated with it (e.g., `PublicKey.ed25519` for Ed25519). The `initFromBase64` method decodes base64 strings into the appropriate public key type based on the provided key type (`typ`). The `verifySignature` method verifies a signature using the corresponding algorithm. The `AccountCode` struct handles user input validation, ensuring that the account code contains only ASCII letters and spaces, adheres to a 15-word format, and includes a checksum calculated from the first 20 bytes of the SHA-256 hash of the encoded bits. It also supports random generation of an AccountCode (`initRandomly`) and secure deinitialization (`deinit`), which securely clears the memory used by the account code text.
 
 ## Code Example
 ```zig

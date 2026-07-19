@@ -8,7 +8,7 @@
 The implementation of gem stones includes unique modifiers when used as tool materials, requiring them to be encased in another material for durability.
 
 ## Explanation
-The implementation of gem stones includes unique modifiers when used as tool materials, requiring them to be encased in another material for durability. Specifically, gems provide benefits such as a 50% speed boost, a 100% durability boost, or a 50% power boost when used in tools. However, they must be encased in another material like metal to maintain their durability and prevent significant durability reduction otherwise. This implementation ensures that gems are valuable and practical when integrated into tool crafting.
+The implementation of gem stones includes unique modifiers when used as tool materials, requiring them to be encased in another material for durability. Specifically, gems provide benefits such as a 50% speed boost, a 100% durability boost, or a 50% power boost when used in tools. However, they must be encased in another material like metal to maintain their durability and prevent significant durability reduction otherwise. Additionally, only one gem can be used per tool, and it may need to be placed in a special gem slot. This implementation ensures that gems are valuable and practical when integrated into tool crafting.
 
 ## Related Questions
 - What are the unique benefits provided by gem stones when used as tool materials?

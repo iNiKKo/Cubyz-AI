@@ -28,11 +28,19 @@ The methods available for managing items in a `MemoryPool` include:
 - `destroy`: Destroys a previously created item, returning it to the free list.
 
 The `NeverFailingArenaAllocator` struct provides the following methods:
-- `init`: Initializes the arena allocator with a child allocator.
-- `deinit`: Deinitializes the arena allocator and frees all allocated memory.
-- `allocator`: Returns an allocator that ensures allocations never fail.
-- `reset`: Resets the arena allocator and frees all allocated memory. It returns whether the reset operation was successful or not.
-- `shrinkAndFree`: Shrinks the arena allocator and frees unused memory.
+- `init(childAllocator: NeverFailingAllocator) NeverFailingArenaAllocator`: Initializes the arena allocator with a child allocator.
+- `deinit(self: NeverFailingArenaAllocator) void`: Deinitializes the arena allocator and frees all allocated memory.
+- `allocator(self: *NeverFailingArenaAllocator) NeverFailingAllocator`: Returns an allocator that ensures allocations never fail.
+- `reset(self: *NeverFailingArenaAllocator, mode: std.heap.ArenaAllocator.ResetMode) bool`: Resets the arena allocator and frees all allocated memory. It returns whether the reset operation was successful or not.
+- `shrinkAndFree(self: *NeverFailingArenaAllocator) void`: Shrinks the arena allocator and frees unused memory.
+
+The `MemoryPool` struct provides the following methods:
+- `init(arena: NeverFailingAllocator) Pool`: Creates a new memory pool with the given arena allocator.
+- `deinit(pool: *Pool) void`: Destroys the memory pool and frees all allocated memory. It logs an error if there are leaked elements or prints information about the total allocations.
+- `create(pool: *Pool) ItemPtr`: Creates a new item and adds it to the memory pool. It locks the mutex, checks the free list, allocates new memory if necessary, and returns a pointer to the created item.
+- `destroy(pool: *Pool, ptr: ItemPtr) void`: Destroys a previously created item by returning it to the free list. It locks the mutex, sets the item to undefined, updates the free list, and increments the count of free allocations.
+
+The `MemoryPool` struct also defines constants for the item size (`item_size`) and alignment (`item_alignment`). The item size is the maximum of the size of a node and the size of the specified item type. The item alignment is the maximum of the alignment of a pointer to any opaque type and the alignment of the specified item type.
 
 ## Code Example
 ```zig

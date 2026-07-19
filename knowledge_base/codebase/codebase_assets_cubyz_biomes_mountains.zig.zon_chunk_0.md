@@ -21,7 +21,13 @@ This chunk defines a biome named 'mountain' with specific properties and setting
 - **Roughness Level:** `10`
 - **Number of Mountains:** `100`
 - **River Presence:** `true`
-- **Music Track:** `
+- **Music Track:** `cubyz:totaldemented/adventurous`
+- **Ground Structures:** `cubyz:grass/temperate`, `1 to 2 cubyz:soil`
+- **Structures Defined:**
+  - **Structure ID:** `cubyz:sbb`
+  - **Structure Type:** `cubyz:tree/oak/young`
+  - **Place Mode:** `degradable`
+  - **Chance of Placement:** `0.4`
 
 ## Related Questions
 - What is the name of the biome defined in this configuration?

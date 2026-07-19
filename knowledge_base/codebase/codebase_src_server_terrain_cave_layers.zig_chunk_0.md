@@ -9,7 +9,7 @@
 Manages the initialization and retrieval of cave layers based on configuration data.
 
 ## Explanation
-This chunk defines a `CaveLayer` struct that holds properties like minHeight, maxHeight, layerHeight, depthHint, caveDensity, biomes, and id. The `init` method initializes a `CaveLayer` from a ZonElement configuration, validating required fields such as 'depthHint', 'layerHeight', and ensuring tags are correctly formatted (ending with '_layer'). If any of these validations fail, an error message is logged and the initialization returns null. The `register` function adds valid cave layers to a global list named `caveLayers`. The `registerCaveLayers` function processes a map of cave layer configurations, registers them, sorts them by depth hint using the `lessThan` function, and assigns height ranges starting from the first non-negative depthHint value. For each subsequent layer, it calculates minHeight and maxHeight based on the previous layer's maxHeight and current layerHeight. The `getLayer` method retrieves the appropriate cave layer for a given height using binary search. The `reset` function clears all registered cave layers.
+This chunk defines a `CaveLayer` struct that holds properties like minHeight, maxHeight, layerHeight, depthHint, caveDensity, biomes, and id. The `init` method initializes a `CaveLayer` from a ZonElement configuration, validating required fields such as 'depthHint', 'layerHeight', and ensuring tags are correctly formatted (ending with '_layer'). If any of these validations fail, specific error messages are logged: 'Cave layer with id {s} is missing depthHint field. Skipping', 'Cave layer with id {s} is missing layerHeight field. Skipping', 'Cave layer with id {s} is missing tags. Skipping', and 'Cave layer tags must end with '_layer'. Tag {s} defined in cave layer with id {s} does not. Skipping'. The `register` function adds valid cave layers to a global list named `caveLayers`. The `registerCaveLayers` function processes a map of cave layer configurations, registers them, sorts them by depth hint using the `lessThan` function, and assigns height ranges starting from the first non-negative depthHint value. For each subsequent layer, it calculates minHeight and maxHeight based on the previous layer's maxHeight and current layerHeight: `caveLayer.minHeight = height; height += caveLayer.layerHeight; caveLayer.maxHeight = height;`. The `getLayer` method retrieves the appropriate cave layer for a given height using binary search. The `reset` function clears all registered cave layers.
 
 ## Code Example
 ```zig
@@ -20,9 +20,7 @@ fn register(id: []const u8, zon: ZonElement) void {
 ```
 
 ## Related Questions
-- What specific fields are required to initialize a CaveLayer?
-- How does the init method handle missing or incorrectly formatted tags?
+- What specific error messages are logged during initialization if any validations fail?
 - What is the exact logic used in registerCaveLayers for assigning height ranges to each layer?
-- What error messages are logged during initialization if any validations fail?
 
 *Source: unknown | chunk_id: codebase_src_server_terrain_cave_layers.zig_chunk_0*

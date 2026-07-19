@@ -9,7 +9,13 @@
 Defines the WorldEditData structure and its associated History struct for managing world editing operations in a server environment.
 
 ## Explanation
-Defines the `WorldEditData` structure and its associated `History` struct for managing world editing operations in a server environment. The `maxWorldEditHistoryCapacity` is set to 1024, which limits the capacity of the circular buffer queue used by the history management system. The `WorldEditData` structure includes fields such as `selectionPosition1`, `selectionPosition2`, `clipboard`, `undoHistory`, and `redoHistory`. Each change in the undo/redo history is represented by a `Value` struct containing a blueprint, position, and message. Functions like `init`, `deinit`, `clear`, `push`, and `pop` are provided for managing clipboard operations, memory management within the History struct, and handling selection positions. The chunk also imports various modules necessary for network connections, entity management, world simulation, storage, permissions, commands, blueprints, masks, and utility functions.
+Defines the `WorldEditData` structure and its associated `History` struct for managing world editing operations in a server environment. The `maxWorldEditHistoryCapacity` is set to 1024, which limits the capacity of the circular buffer queue used by the history management system. The `WorldEditData` structure includes fields such as `selectionPosition1`, `selectionPosition2`, `clipboard`, `undoHistory`, and `redoHistory`. Each change in the undo/redo history is represented by a `Value` struct containing a blueprint, position, and message. Functions like `init`, `deinit`, `clear`, `push`, and `pop` are provided for managing clipboard operations, memory management within the History struct, and handling selection positions.
+
+The `clipboard` field stores a `Blueprint` object that can be used to apply changes to the world. The `selectionPosition1` and `selectionPosition2` fields track the start and end positions of a selected area in the world. The `undoHistory` and `redoHistory` fields are instances of the `History` struct, which manages a circular buffer queue of changes made during world editing operations.
+
+The `init` function for the `Value` struct initializes a new change with a blueprint, position, and message. The `deinit` function frees the memory allocated for the message and deinitializes the blueprint. The `selection` function returns a selection based on the position and extent of the blueprint.
+
+Memory management within the History struct is handled by the `init`, `deinit`, and `clear` functions, which manage the allocation and deallocation of memory for changes in the history. Clipboard operations are managed through the `clipboard` field and associated functions.
 
 ## Code Example
 ```zig

@@ -20,12 +20,72 @@ If none apply → prefer Issue discussion first; PR may be closed as *Low Value 
 
 The policy defines 'broken' as a feature failing on any supported platform/config or contradicting documented behavior. 'Unbroken' means the feature works as documented on all supported targets. The review process involves labeling (e.g., `needs-evidence`, `compat-improvement`, `perf-claim`, `maintenance`), a decision tree, and specific approval requirements based on the nature of the changes. Exceptions are made for critical security fixes, CI/build breakages, and documentation/comment-only changes.
 
+**Evidence Checklist (required in PR description):**
+- **Problem statement:** Broken? If yes, include repro (cmds, env, versions).
+- **Supported platforms:** List what improves or remains equal (e.g., Ubuntu 24/25, Fedora 41, Arch, macOS 14).
+- **Proof:** Logs/commands/links (e.g., `command -V xdg-open`, CI job artifacts).
+- **Risk analysis:** Behavior changes? Fallbacks? Edge cases?
+- **Tests/CI:** Added/updated tests or CI matrix entries.
+- **Roll-back plan:** How to revert if issues appear.
+
+**Example (from the **xdg-open** case):**
+- Problem: `open` unavailable by default on Ubuntu 24.04, Fedora 41, Arch → feature broken.
+- Evidence: `command -V open` → not found; `command -V xdg-open` → present.
+- Satisfies **Compatibility Proof**.
+
+**Review Process:**
+1. **Labels:**
+   - `needs-evidence` – Missing proof
+   - `compat-improvement` – Expands platform support
+   - `perf-claim` – Claims perf change
+   - `maintenance` – Refactor/cleanup only
+   - `risk-behavior-change` – May affect users
+
+2. **Decision Tree:**
+   - Repro of broken behavior on a supported target → **Bugfix path**
+   - No repro but clear value + evidence → **Value PR path**
+   - No repro & no evidence → **Request evidence or close**
+
+3. **Approvals:**
+   - Bugfix with repro → 1 reviewer
+   - Value PR (behavioral change) → 2 reviewers or 1 reviewer + passing CI matrix
+
+**Exceptions:**
+Fast-track (skip debate):
+- Critical security fixes
+- CI/build breakages
+- Docs/comment-only changes
+
+**PR Template Snippet:**
+```markdown
+### Problem Statement
+Is something broken? If yes, include repro (env, versions, commands):
+
+### Value Justification (pick ≥1)
+- [ ] Compatibility (with evidence)
+- [ ] Security (CVE/advisory)
+- [ ] Performance (before/after benchmarks)
+- [ ] Maintenance (lines removed / complexity reduced)
+
+### Platforms Tested
+(e.g., Ubuntu 24.04, Fedora 41, Arch, macOS 14)
+
+### Risk & Behavior Changes
+Describe fallbacks, edge cases, and user impact.
+
+### Tests/CI
+What changed or was added?
+
+### Roll-Back Plan
+How to revert if issues arise?
+```
+
 ## Related Questions
-- What are the acceptance criteria for a PR that adjusts a non-broken area?
-- How does the policy define 'broken' and 'unbroken' features?
-- What evidence is required in a PR description according to the policy?
-- What are the labels used in the review process, and how are they applied?
-- How many reviewers are needed for different types of PRs according to the decision tree?
-- What exceptions are made to the policy, and why?
+-  What are the acceptance criteria for a PR that adjusts a non-broken area?
+-  How does the policy define 'broken' and 'unbroken' features?
+-  What evidence is required in a PR description according to the policy?
+-  What are the labels used in the review process, and how are they applied?
+-  How many reviewers are needed for different types of PRs according to the decision tree?
+-  What exceptions are made to the policy, and why?
 
 *Source: unknown | chunk_id: github_issue_1928_discussion*

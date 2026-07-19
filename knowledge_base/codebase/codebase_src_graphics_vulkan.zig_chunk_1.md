@@ -18,13 +18,21 @@ The `version` variable is a packed struct that contains the patch, minor, major,
 The `interestingExtensions` struct lists several Vulkan extensions with boolean flags indicating their support status. These include `VK_KHR_buffer_device_address`, `VK_EXT_fragment_shader_interlock`, `VK_EXT_descriptor_buffer`, `VK_EXT_descriptor_heap`, `VK_EXT_descriptor_indexing`, and `VK_EXT_mutable_descriptor_type`. On macOS, additional extensions like `VK_KHR_PORTABILITY_ENUMERATION` and `VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2` are required.
 
 **Validation Layers:**
-The code checks for validation layer support by comparing the available layers with the required ones. If any required layer is missing, it logs a warning and returns false.
+The code checks for validation layer support by comparing the available layers with the required ones. The validation layers include `VK_LAYER_KHRONOS_validation`. If any required layer is missing, it logs a warning and returns false.
 
 **Device Features:**
-The `deviceFeatures` struct enables specific Vulkan features such as multi-draw indirect, dual-source blending, and depth clamping.
+The `deviceFeatures` struct enables specific Vulkan features such as multi-draw indirect (`multiDrawIndirect = c.VK_TRUE`), dual-source blending (`dualSrcBlend = c.VK_TRUE`), and depth clamping (`depthClamp = c.VK_TRUE`).
 
 **Queue Family Indices:**
 The `QueueFamilyIndidices` struct holds indices for the graphics and presentation queue families. The code determines these indices by iterating through the available queue families and checking their capabilities.
+
+**Initialization Steps:**
+1. Load Vulkan functions using GLAD (except on macOS).
+2. Create a Vulkan instance with required extensions and validation layers.
+3. Check for validation layer support.
+4. Select a suitable physical device based on supported features and extensions.
+5. Create a logical device.
+6. Initialize the swap chain.
 
 ## Code Example
 ```zig

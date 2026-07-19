@@ -13,6 +13,19 @@ The chunk defines two main structures: `Channel` and `SecureChannel`. The `Chann
 
 The `init` method in `SecureChannel` initializes the SSL context and configuration, sets the authentication mode to none, and configures debugging output. For server-side use, it generates a self-signed RSA key pair with 2048 bits and sets up the certificate details. The `sendNextPacketAndGetSize` method in `Channel` constructs a packet by writing the channel ID, sequence index, and data to a binary writer, then sends the packet over the network connection.
 
+Specifically, the `init` method for `SecureChannel` performs the following steps:
+1. Initializes the SSL context and configuration using `mbedtls_ssl_init` and `mbedtls_ssl_config_init`.
+2. Sets default SSL configurations with `mbedtls_ssl_config_defaults`, specifying whether it is a client or server.
+3. Disables server certificate verification with `mbedtls_ssl_conf_authmode`.
+4. Configures debugging output with `mbedtls_ssl_conf_dbg`.
+5. For server-side use, generates a self-signed RSA key pair with 2048 bits using `psa_generate_key` and wraps it with `mbedtls_pk_wrap_psa`.
+6. Sets up the certificate details such as subject name, issuer name, issuer key, and subject key using `mbedtls_x509write_crt_set_subject_name`, `mbedtls_x509write_crt_set_issuer_name`, `mbedtls_x509write_crt_set_issuer_key`, and `mbedtls_x509write_crt_set_subject_key`.
+
+The `sendNextPacketAndGetSize` method constructs a packet by:
+1. Writing the channel ID to the binary writer using `writer.writeEnum`.
+2. Getting the next packet to send from the `SendBuffer` with `self.sendBuffer.getNextPacketToSend`, which includes writing the sequence index and data to the buffer.
+3. Sending the constructed packet over the network connection using `conn.manager.send`.
+
 ## Code Example
 ```zig
 pub fn receive(self: *Channel, conn: *Connection, start: SequenceIndex, data: []const u8) !ReceiveBuffer.ReceiveStatus {

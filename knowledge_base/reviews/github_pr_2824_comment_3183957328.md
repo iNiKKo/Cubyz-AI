@@ -9,9 +9,9 @@
 A reviewer suggests avoiding the addition of a fixed-size array with an arbitrary limit to prevent unnecessary memory usage.
 
 ## Explanation
-The reviewer is concerned about the introduction of a fixed-size array `nodes` with a predefined size of 20. This approach can lead to wasted memory if the actual number of nodes required is less than 20, as unused elements will still occupy space. The reviewer emphasizes that adding such an arbitrary limit could be inefficient and suggests considering more flexible data structures or dynamic sizing mechanisms instead.
+The reviewer is concerned about the introduction of a fixed-size array `nodes` with a predefined size of 20. This approach can lead to wasted memory if the actual number of nodes required is less than 20, as unused elements will still occupy space. The purpose of this array is to store entity model nodes. The reviewer emphasizes that adding such an arbitrary limit could be inefficient and suggests considering more flexible data structures or dynamic sizing mechanisms instead.
 
-The code also introduces a boolean field `hasLoaded` which is initialized to false. This field likely indicates whether the entity model has been fully loaded, but its exact purpose and usage are not specified in the provided context.
+The code also introduces a boolean field `hasLoaded` which is initialized to false. This field indicates whether the entity model has been fully loaded.
 
 ## Related Questions
 - What is the size of the fixed-size array `nodes` and what is its purpose?

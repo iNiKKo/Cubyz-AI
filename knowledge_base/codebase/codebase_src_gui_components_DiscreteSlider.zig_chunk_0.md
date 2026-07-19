@@ -15,6 +15,10 @@ The DiscreteSlider struct has several fields including `border` (3), `fontSize` 
 
 The `deinit()` method frees allocated memory and destroys the DiscreteSlider instance. The `toComponent()` method converts the slider to a GUI component. Methods such as `setButtonPosFromValue()`, `updateLabel()`, `updateValueFromButtonPos()`, `updateHovered()`, `getBarPos()`, `getBarSize()`, and `mainButtonPressed()` handle updating the button position, label text based on selection, value updates from button positions, hover detection, bar positioning, bar sizing, and main button press events respectively.
 
+The specific numerical constants used in DiscreteSlider are `border` (3) and `fontSize` (16). The `init()` method sets up the slider by allocating memory for internal data structures like labels and buttons. It also formats the values based on the provided format string and initializes the label with the initial text and value.
+
+The exact process for updating the label text based on current selection involves freeing the previous currentText, creating a new one that combines the static text with the selected value, and then initializing a new Label instance with this combined text. The callback function gets triggered in DiscreteSlider when the user selects a different value by dragging the button or clicking on the bar.
+
 ## Code Example
 ```zig
 pub fn globalInit() void {

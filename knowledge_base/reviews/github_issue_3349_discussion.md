@@ -8,7 +8,11 @@
 Discussion on implementing command piping in Cubyz, with suggestions for alternative approaches like direct spawning or copying coordinates.
 
 ## Explanation
-The discussion revolves around the idea of adding Unix-style command piping to Cubyz. The maintainer points out that current command outputs are designed to be human-friendly and not intended for capturing or processing as input. They also note that commands in Cubyz are intended to alter game state rather than output data or take extended input, indicating there is no compelling use case within the scope of Cubyz's design philosophy. Users suggest alternatives such as direct spawning with coordinates (e.g., `/summon entityName ~ ~ ~`), making coordinates clickable, copying them to the clipboard, and allowing chat copy-paste functionality as potential solutions.
+Discussion on implementing command piping in Cubyz, with suggestions for alternative approaches like direct spawning or copying coordinates. The maintainer points out that current command outputs are designed to be human-friendly and not intended for capturing or processing as input. They also note that commands in Cubyz are intended to alter game state rather than output data or take extended input, indicating there is no compelling use case within the scope of Cubyz's design philosophy. Users suggest alternatives such as direct spawning with coordinates (e.g., `/summon entityName ~ ~ ~`), making coordinates clickable, copying them to the clipboard, and allowing chat copy-paste functionality as potential solutions.
+
+The maintainer explains that in Unix shell, piping connects stdout of one command to stdin of another without changing the argument list. They also mention that Cubyz commands are not designed for dynamic input or extended processing. Users propose `/tp spawn` as a better solution, detecting coordinates and making them clickable, or using `/spawn copy` to copy coordinates to the clipboard. The maintainer suggests that chat copy-paste functionality could be used to achieve similar results.
+
+The discussion highlights the technical challenges of implementing command piping in Cubyz, such as capturing reliable output from commands and changing their behavior based on input. The maintainers also note that there are no compelling use cases within Cubyz's design philosophy that would require such a feature.
 
 ## Related Questions
 - How can command outputs be modified to support piping in Cubyz?

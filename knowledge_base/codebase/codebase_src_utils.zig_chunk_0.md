@@ -9,7 +9,7 @@
 This chunk provides utility functions for compression and file operations.
 
 ## Explanation
-This chunk provides utility functions for compression and file operations. The `Compression` struct includes methods for deflating and inflating data using the zlib algorithm. The `deflate` method compresses input data with a specified level of compression and returns the compressed data as a slice. The `inflateTo` method decompresses input data into a provided buffer and returns the number of bytes read. The `pack` function recursively compresses files in a directory, normalizing paths for Windows, and writes them to an output stream. The `unpack` function reads a compressed stream and extracts files to a specified directory. Error handling is done using Zig's error propagation mechanism, where functions return errors that need to be handled by the caller.
+This chunk provides utility functions for compression and file operations. The `Compression` struct includes methods for deflating and inflating data using the zlib algorithm. The `deflate` method compresses input data with a specified level of compression and returns the compressed data as a slice. The buffer size used in this method is 65536 bytes. The `inflateTo` method decompresses input data into a provided buffer and returns the number of bytes read. The buffer size used in this method is also 65536 bytes. The `pack` function recursively compresses files in a directory, normalizing paths for Windows, and writes them to an output stream. The `unpack` function reads a compressed stream and extracts files to a specified directory. Error handling is done using Zig's error propagation mechanism, where functions return errors that need to be handled by the caller.
 
 ## Code Example
 ```zig

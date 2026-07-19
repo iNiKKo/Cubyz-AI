@@ -8,7 +8,7 @@
 The issue report describes a problem titled 'Rapture' with no clear steps to reproduce or observed behavior provided. The maintainer suggests taking higher resolution screenshots for better clarity.
 
 ## Explanation
-The issue report describes a problem titled 'Rapture' with no clear steps to reproduce or observed behavior provided. The maintainer suggests taking higher resolution screenshots for better clarity. A higher resolution screenshot of the problem could be helpful, as it's hard to see what's going on exactly if everything is blurred and filled with compression artifacts.
+The issue report describes a problem titled 'Rapture'. The steps to reproduce the issue are not clearly provided, and the observed behavior is also unclear due to compression artifacts in the attached screenshot (https://github.com/user-attachments/assets/adb8b9c9-a2b3-4dc0-b9cf-66da672c23b5). The maintainer suggests taking higher resolution screenshots for better clarity, as it's hard to see what's going on exactly if everything is blurred and filled with compression artifacts. Additionally, the maintainer plans to try to screenshot this phenomenon during a future play session.
 
 ## Related Questions
 - What specific details are missing from the issue report?

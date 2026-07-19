@@ -8,9 +8,7 @@
 The issue regarding placing a specified block on the underside of a tree's canopy, similar to simple_vegetation parameters, has been resolved by pull request #1227.
 
 ## Explanation
-The discussion indicates that the functionality described in the issue report is now achievable due to changes introduced in pull request #1227. The maintainer's comment suggests that this enhancement was implemented as part of a broader update or feature addition, though specific details about the implementation are not provided in the given text.
-
-Additionally, an image has been attached to illustrate the functionality being discussed. This image should be included for better understanding and reference.
+The functionality described in the issue report is now achievable due to changes introduced in pull request #1227. The maintainer's comment suggests that this enhancement was implemented as part of a broader update or feature addition, though specific details about the implementation are not provided in the given text. Additionally, an image has been attached to illustrate the functionality being discussed.
 
 ## Related Questions
 - What specific changes were made in pull request #1227 to resolve the issue?

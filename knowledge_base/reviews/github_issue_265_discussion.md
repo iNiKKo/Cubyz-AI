@@ -8,7 +8,7 @@
 Discussion about implementing advanced physics effects in Cubyz, focusing on feasibility and scope.
 
 ## Explanation
-Discussion about implementing advanced physics effects in Cubyz, focusing on feasibility and scope. The maintainer clarifies that some effects like realistic destruction (blast) are not feasible due to the game's voxel scale. Fluid/gas dynamics are deemed out of scope for similar reasons. Wind is considered a graphical feature with potential for influencing in-game elements like arrows. The maintainer emphasizes the need to balance realism with performance and game style.
+Discussion about implementing advanced physics effects in Cubyz, focusing on feasibility and scope. The maintainer clarifies that some effects like realistic destruction (blast) are not feasible due to the game's voxel scale. Fluid/gas dynamics are deemed out of scope for similar reasons. Wind is considered a graphical feature with potential for influencing in-game elements like arrows. The maintainer emphasizes the need to balance realism with performance and game style. Specifically, collision physics is already mentioned in issue #82. Realistic destruction (blast) is not feasible due to the voxel scale and unclear handling of debris. Fluid/gas dynamics are out of scope due to the world's scale; instead, a simpler per voxel fluid data approach is planned (#62). Soft body dynamics might fit the game style but would require many constraints. Wind could enhance graphical features like arrow movement.
 
 ## Related Questions
 - What are the potential performance impacts of implementing advanced physics effects in Cubyz?

@@ -1,0 +1,19 @@
+# pip install -r pipeline_crunching/requirements.txt
+#
+# fastapi/uvicorn/pydantic: the coordinator server itself (server.py, server_rich.py,
+# server_textual.py all need these -- they're the same server, just with different terminal
+# dashboards).
+fastapi
+uvicorn
+pydantic
+
+# rich: used by server_rich.py's and server_textual.py's admin dashboards (rich.text.Text, still
+# used by server_textual.py to hand pre-styled ANSI content into its RichLog widgets). Not needed
+# to run the original server.py.
+rich
+
+# textual: server_textual.py's interactive admin console (real mode-select radio buttons,
+# keyboard-driven panels) -- see pipeline_crunching/server_textual.py's own module docstring/
+# comments, and the project_tui_migration_plan memory, for why this exists as a separate file
+# from server_rich.py rather than replacing it in place.
+textual

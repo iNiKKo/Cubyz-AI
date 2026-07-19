@@ -8,8 +8,31 @@
 This chunk defines configuration settings for a pickaxe tool in the Cubyz voxel engine.
 
 ## Explanation
-This chunk defines detailed configuration settings for a pickaxe tool in the Cubyz voxel engine. The JSON-like structure includes specific tags, disabled states, optional states, and multiple parameters that define how different attributes of the pickaxe interact. Each parameter specifies source, destination, matrix, factor, and method for calculating damage, durability, and swing speed. For example, one parameter uses massDamage as the source and damage as the destination with a matrix defined as follows:
+This chunk defines configuration settings for a pickaxe tool in the Cubyz voxel engine. The JSON-like structure includes specific tags, disabled states, optional states, and multiple parameters that define how different attributes of the pickaxe interact. Each parameter specifies source, destination, matrix, factor, and method for calculating damage, durability, and swing speed.
 
+The 'tags' array contains one tag: `.mineable`.
+
+The 'disabled' array is a 5x5 matrix with specific values indicating which block types are disabled:
+```
+0, 0, 0, 0, 1,
+0, 0, 0, 1, 1,
+0, 0, 0, 1, 1,
+0, 1, 1, 0, 1,
+1, 1, 1, 1, 0
+```
+
+The 'optional' array is also a 5x5 matrix with specific values indicating which block types are optional:
+```
+1, 1, 1, 1, 0,
+1, 1, 1, 0, 0,
+1, 1, 1, 0, 0,
+0, 0, 0, 1, 0,
+0, 0, 0, 0, 0
+```
+
+The 'parameters' array contains several configurations:
+
+- One parameter uses `massDamage` as the source and `damage` as the destination with a matrix defined as follows:
 ```
 2.5, 2.0, 1.5, 1.0, 0x0,
 2.0, 1.5, 1.0, 0x0, 0x0,
@@ -17,8 +40,11 @@ This chunk defines detailed configuration settings for a pickaxe tool in the Cub
 1.0, 0x0, 0x0, 0.1, 0x0,
 0x0, 0x0, 0x0, 0x0, 0.1
 ```
-The factor for this parameter is set to 0.2 and the method used is sum. Another parameter uses hardnessDamage as the source with a matrix defined as:
+The factor for this parameter is set to 0.2 and the method used is sum.
 
+- Another parameter uses `massDamage` as the source with a matrix defined similarly but with a different factor of 0.8 and method average.
+
+- A third parameter uses `hardnessDamage` as the source with a matrix defined as follows:
 ```
 0.0, 0.0, 0.1, 0.1, 0x0,
 0.0, 0.1, 0.0, 0x0, 0x0,
@@ -26,8 +52,9 @@ The factor for this parameter is set to 0.2 and the method used is sum. Another 
 1.0, 0x0, 0x0, 0.0, 0x0,
 0x0, 0x0, 0x0, 0x0, 0.0
 ```
-The factor for this parameter is set to 1.0 and the method used is average. Additionally, parameters are defined for durability with matrices such as:
+The factor for this parameter is set to 1.0 and the method used is average.
 
+- Parameters are defined for `durability` with matrices such as:
 ```
 0.5, 1.0, 1.0, 1.0, 0x0,
 1.0, 2.0, 1.5, 0x0, 0x0,
@@ -35,8 +62,9 @@ The factor for this parameter is set to 1.0 and the method used is average. Addi
 1.0, 0x0, 0x0, 1.0, 0x0,
 0x0, 0x0, 0x0, 0x0, 0.5
 ```
-The factor for these parameters is set to either 0.2 or 0.8 and the method used can be sum or average. Similarly, swing speed parameters are defined with matrices such as:
+The factor for these parameters is set to either 0.2 or 0.8 and the method used can be sum or average.
 
+- Similarly, swing speed parameters are defined with matrices such as:
 ```
 0.1, 0.5, 2.0, 2.5, 0x0,
 0.5, 1.5, 0.5, 0x0, 0x0,

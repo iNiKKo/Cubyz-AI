@@ -27,7 +27,36 @@ To modify an existing recipe:
     .output = "cubyz:marble_tile",
 }
 ```
-The discussion highlights potential issues with managing recipe IDs and the complexity of handling different addon interactions. The maintainer's approach addresses these concerns by providing clear syntax for disabling and modifying recipes without needing new modes like 'overwrite' or 'modify'.
+The maintainer's approach addresses these concerns by providing clear syntax for disabling and modifying recipes without needing new modes like 'overwrite' or 'modify'. The discussion highlights potential issues with managing recipe IDs and the complexity of handling different addon interactions. The maintainer's approach aims to simplify this process by focusing on behavior-based identification and clear syntax for modification.
+
+**Modes of Handling Existing Recipes:*
+
+1. **Overwrite:** Allows an addon to overwrite what currently is loaded if it exists.
+   ```zig.zon
+{
+    .mode = .overwrite,
+    .identifier = "cubyz:recipe_marble_tile",
+    .inputs = .{"cubyz:marble"},
+    .output = "cubyz:marble_tile",
+}
+```
+
+2. **Disable:** Lets an addon disable the recipe without questions asked, but does not account for a different addon overwriting it.
+   ```zig.zon
+{
+    .mode = .disable,
+    .identifier = "cubyz:recipe_marble_tile",
+}
+```
+
+3. **Modify:** Cubyz will try to join the original recipe with the new one based on modifications without needing to overwrite the whole recipe, but this is not allowed if the recipe is disabled.
+   ```zig.zon
+{
+    .mode = .modify,
+    .identifier = "cubyz:recipe_marble_tile",
+    .inputs = .{"3 cubyz:marble"},
+}
+```
 
 ## Related Questions
 - How does the current system handle recipe conflicts between addons?
