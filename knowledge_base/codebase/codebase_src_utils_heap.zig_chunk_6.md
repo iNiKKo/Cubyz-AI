@@ -25,6 +25,8 @@ The `allocator` method returns a `NeverFailingAllocator` that uses the allocator
 
 The calculation of `alignment` is done using `@max(maxAlignment, @sizeOf(usize))`. The `baseShift` is calculated as `std.math.log2_int(usize, minSize)`, and `bucketCount` is calculated as `std.math.log2_int(usize, maxSize) - baseShift + 1`.
 
+The `Node` struct contains a single field: `next`, which is an optional pointer to the next node in the free list. The `NodePtr` type is a pointer to `Node` with alignment set to `alignment`. The `Bucket` struct maintains a free list of nodes (`freeLists`), counts of free and total allocations (`freeAllocations` and `totalAllocations`), and provides methods for deinitialization (`deinit`), creating new items (`create`), destroying previously created items (`destroy`), and allocating new blocks from the arena (`allocNew`).
+
 ## Code Example
 ```zig
 pub fn deinit(self: *Bucket, size: usize) void {

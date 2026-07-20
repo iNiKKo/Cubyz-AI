@@ -9,7 +9,7 @@
 Added a new function `fromZon` to load settings from a ZonElement. The reviewer suggests avoiding default duplication and using a constant for default values.
 
 ## Explanation
-The change introduces a new function `fromZon` in the `Settings` struct within the `world.zig` file. This function is designed to populate the `Settings` struct from a `ZonElement`, handling potential errors such as missing seed values. If the seed is not present, it logs an error message and returns an error. The `defaultGamemode` is retrieved with a default value of "creative" if not specified in the `ZonElement", and `allowCheats` defaults to `true` if not provided.
+The change introduces a new function `fromZon` in the `Settings` struct within the `world.zig` file. This function is designed to populate the `Settings` struct from a `ZonElement`, handling potential errors such as missing seed values. If the seed is not present, it logs an error message and returns an error (`error.NoSeed`). The `defaultGamemode` is retrieved with a default value of "creative" if not specified in the `ZonElement`, and `allowCheats` defaults to `true` if not provided.
 
 The reviewer suggests avoiding duplication of default values by using a constant for default settings, which could be defined as a `pub const defaults` declaration. This would allow consistent access to default values across the struct and function.
 

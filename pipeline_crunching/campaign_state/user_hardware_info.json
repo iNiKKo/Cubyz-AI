@@ -44,12 +44,12 @@
     "total_vram_gb": 4.5,
     "system_ram_gb": 8.0,
     "dual_lane": false,
-    "primary_is_gpu": true,
-    "hardware_tier": "easy",
-    "benchmark_gpu_time": 25.775607109069824,
-    "benchmark_cpu_time": 48.35023307800293,
-    "benchmark_gpu_error": null,
-    "benchmark_cpu_error": null
+    "primary_is_gpu": false,
+    "hardware_tier": "medium",
+    "benchmark_gpu_time": null,
+    "benchmark_cpu_time": null,
+    "benchmark_gpu_error": "timeout: timed out",
+    "benchmark_cpu_error": "timeout: timed out"
   },
   "nickpc": {
     "platform": "linux",

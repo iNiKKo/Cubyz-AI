@@ -18,11 +18,11 @@ The added code introduces a new module for handling permissions in the server. I
 
 - **Permissions Struct**: The `Permissions` struct contains an arena allocator, a white list (permissionWhiteList), and a black list (permissionBlackList). Both lists are implemented as string hash maps. The `ListType` enum defines two types: `white` and `black`, representing the different modes of permission management.
 
-- **Initialization and Deinitialization**: The reviewer suggests that any structure with a deinit function should also have an init function to ensure proper resource management. Specifically, the arena allocator needs to be initialized before use. The deinit function is responsible for cleaning up resources allocated by the struct, such as freeing memory used by the string hash maps.
+- **Initialization**: The `Permissions` struct should have an init function to initialize the arena allocator before use. This ensures that all resources are properly allocated and managed.
+
+- **Deinitialization**: The deinit function is responsible for cleaning up resources allocated by the struct, such as freeing memory used by the string hash maps. This ensures that all allocated resources are released when the struct is no longer needed.
 
 **Specific Enum Values**: The `ListType` enum has two values: `white` and `black`, which are used to manage permissions in different modes.
-
-**Deinit Function Implementation**: The deinit function should be implemented to properly clean up resources, such as freeing memory allocated by the string hash maps. This ensures that all allocated resources are released when the struct is no longer needed.
 
 ## Related Questions
 - What is the purpose of the `mapFromZon` function?
