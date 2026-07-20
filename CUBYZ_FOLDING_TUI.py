@@ -2542,6 +2542,10 @@ class DualLaneController:
         self._stop_event.set()
         self.active = False
         self.board.drop_lane(self.cpu_lane_kwargs["lane_tag"])
+        sec_uid = self.cpu_lane_kwargs.get("user_id", "")
+        sec_tag = self.cpu_lane_kwargs.get("lane_tag", "CPU")
+        if sec_uid:
+            threading.Thread(target=_disconnect_lane, args=(sec_uid, sec_tag), daemon=True).start()
 
 
 class ParallelWorkerPoolController:
@@ -2602,7 +2606,11 @@ class ParallelWorkerPoolController:
     def stop(self):
         if not self.active:
             return
-        for tag in self._lane_tags:
+        suffixes = "pqrstuvwxyz"
+        for i, tag in enumerate(self._lane_tags):
+            worker_uid = self.user_id[:11] + suffixes[i % len(suffixes)] if self.user_id else ""
+            if worker_uid:
+                threading.Thread(target=_disconnect_lane, args=(worker_uid, tag), daemon=True).start()
             self.board.drop_lane(tag)
         self._lane_tags = []
         for e in self._stop_events:
@@ -2963,12 +2971,28 @@ class CubyzClientApp(App):
         self.exit()
 
 
+_primary_stop_event = threading.Event()
+
+def _disconnect_lane(user_id: str, lane_tag: str):
+    if not user_id:
+        return
+    try:
+        make_request(
+            f"{SERVER_URL}/disconnect?user_id={user_id}&lane={lane_tag}",
+            method="POST",
+            timeout=5,
+        )
+        _log_queue.append(f"{Colors.GRAY}    [{lane_tag}] offline.{Colors.RESET}")
+    except Exception as e:
+        _log_queue.append(f"{Colors.YELLOW}    [{lane_tag}] disconnect notify failed: {e}{Colors.RESET}")
+
+
 # -- Server disconnect notification -------------------------------------------
 def _notify_server_disconnect():
     """POST /disconnect for every lane that was active in this session so the server marks
-    them offline immediately, rather than waiting for ONLINE_STALE_SECONDS (60 s) to expire.
-    Runs synchronously (called right before app.exit()) but is best-effort -- a network
-    failure here is logged but never blocks the exit itself."""
+    them offline immediately. Signals stop events first to prevent background polling threads
+    from re-registering as online right after disconnect."""
+    _primary_stop_event.set()
     lanes_to_notify = []
 
     # Primary lane
@@ -2977,35 +3001,34 @@ def _notify_server_disconnect():
 
     # Dual-lane CPU secondary
     dc = _dual_controller_ref
-    if dc is not None and dc.active:
-        sec_uid = dc.cpu_lane_kwargs.get("user_id", "")
-        sec_tag = dc.cpu_lane_kwargs.get("lane_tag", "CPU")
-        if sec_uid:
-            lanes_to_notify.append((sec_uid, sec_tag))
+    if dc is not None:
+        if dc.active:
+            sec_uid = dc.cpu_lane_kwargs.get("user_id", "")
+            sec_tag = dc.cpu_lane_kwargs.get("lane_tag", "CPU")
+            if sec_uid:
+                lanes_to_notify.append((sec_uid, sec_tag))
+        dc.stop()
 
     # Parallel worker lanes
     pc = _parallel_controller_ref
-    if pc is not None and pc.active:
-        suffixes = "pqrstuvwxyz"
-        for i, tag in enumerate(pc._lane_tags):
-            worker_uid = _volunteer_id[:11] + suffixes[i % len(suffixes)] if _volunteer_id else ""
-            if worker_uid:
-                lanes_to_notify.append((worker_uid, tag))
+    if pc is not None:
+        if pc.active:
+            suffixes = "pqrstuvwxyz"
+            for i, tag in enumerate(pc._lane_tags):
+                worker_uid = _volunteer_id[:11] + suffixes[i % len(suffixes)] if _volunteer_id else ""
+                if worker_uid:
+                    lanes_to_notify.append((worker_uid, tag))
+        pc.stop()
 
     if not lanes_to_notify:
         return
 
     _log_queue.append(f"{Colors.GRAY}[~] Notifying server of disconnect...{Colors.RESET}")
     for uid, lane_tag in lanes_to_notify:
-        try:
-            make_request(
-                f"{SERVER_URL}/disconnect?user_id={uid}&lane={lane_tag}",
-                method="POST",
-                timeout=5,
-            )
-            _log_queue.append(f"{Colors.GRAY}    [{lane_tag}] offline.{Colors.RESET}")
-        except Exception as e:
-            _log_queue.append(f"{Colors.YELLOW}    [{lane_tag}] disconnect notify failed: {e}{Colors.RESET}")
+        _disconnect_lane(uid, lane_tag)
+
+
+atexit.register(_notify_server_disconnect)
 
 
 # =============================================================================
@@ -3251,7 +3274,7 @@ def main():
             mode_desc=mode_desc, hardware_label=primary_hw_label,
             force_cpu=not primary_is_gpu, fancy_ui=True,
             pause_event=dual_controller.pause_event if dual_controller else None,
-            board=board, dual_controller=dual_controller,
+            board=board, stop_event=_primary_stop_event, dual_controller=dual_controller,
             parallel_controller=parallel_controller, has_gpu=_has_gpu,
         )
 
