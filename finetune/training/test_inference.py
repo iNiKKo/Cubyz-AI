@@ -172,16 +172,20 @@ CUBYZ_QUESTIONS = [
     ("Why might a Cubyz reviewer suggest replacing manual string-splitting argument parsing with argparse?", "Manual splitting was brittle -- it assumed exact spacing, required repeated string comparisons, and used a custom Helper struct that had to be manually initialized and deferred"),
     ("Why would a Cubyz reviewer accept a stack-allocator-to-arena-allocator change for asset IDs despite a small memory-leak-on-error risk?", "It simplifies the code and avoids issues with stack allocation, and the arena is reset when leaving the world context, so the rare error-path leak was judged an acceptable tradeoff"),
     ("In Cubyz's Blueprint capture code, what convention does min/max follow architecturally?", "min is inclusive, max is exclusive -- mirroring how size() elsewhere in the codebase adds one and avoids bounds failures"),
-]
 
-GENERAL_QUESTIONS = [
-    "What is the capital of France?",
-    "What's 17 * 24?",
     # ============================================================
-    # New questions (batch 2) -- expanded corpus coverage: game design
-    # principles, contribution guidelines, installation, modding, art
-    # guidelines, soil block page, wood recipes, developer judgment,
-    # ashframe/server list, multiplayer backups, permission syntax.
+    # Batch 2 -- expanded corpus coverage: game design principles,
+    # contribution guidelines, installation, modding, art guidelines,
+    # soil block page, wood recipes, developer judgment, ashframe/
+    # server list, multiplayer backups, permission syntax. Moved here
+    # from GENERAL_QUESTIONS (2026-07-20) -- these are Cubyz domain
+    # facts with known answers, not general-capability sanity checks,
+    # and had been silently broken there: GENERAL_QUESTIONS' loop
+    # assumes plain question strings, so every (question, expected)
+    # tuple below was passed to the model as a literal stringified
+    # tuple instead of just its question text, producing garbage
+    # input and therefore garbage output that looked like lobotomy
+    # but wasn't -- it never actually tested anything until this fix.
     # ============================================================
     # --- Game Design Principles ---
     ("Why doesn't Cubyz use separate dimensions for different areas?",
@@ -302,6 +306,23 @@ GENERAL_QUESTIONS = [
      "Use the simplest data structure for the job -- e.g. use a slice instead of a List if you know the size upfront"),
     ("What's the recommended sweet-spot file size (in lines) for a Cubyz source file, per CONTRIBUTING.md?",
      "Very roughly 1000 lines"),
+]
+
+# Genuinely unrelated to Cubyz -- general knowledge, math, and basic reasoning. This is the ONLY
+# real check for the "lobotomy" failure mode (catastrophic forgetting of general capability) this
+# whole project was built to avoid; everything above tests domain recall, not general capability.
+# Kept deliberately small and varied rather than large -- a handful of clearly-graded questions
+# across different capability types (factual recall, arithmetic, basic logic, simple code) is
+# enough to catch gross degradation; it's not trying to be a full general-capability benchmark.
+GENERAL_QUESTIONS = [
+    "What is the capital of France?",
+    "What's 17 * 24?",
+    "What's the boiling point of water in Celsius at sea level?",
+    "If a train travels 60 miles in 90 minutes, what's its average speed in mph?",
+    "Write a Python one-liner that reverses a string.",
+    "Which planet in our solar system is closest to the sun?",
+    "What's the difference between a list and a tuple in Python?",
+    "If all cats are mammals and all mammals are animals, are all cats animals?",
 ]
 
 

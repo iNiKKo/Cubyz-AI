@@ -1,24 +1,25 @@
 """
-QLoRA fine-tune of the Cubyz assistant model.
+LoRA fine-tune of the Cubyz assistant model.
 
-Why QLoRA specifically (not plain LoRA): even at 7B parameters, bf16 (what plain LoRA trains
-against, since only the adapters are updated but the frozen base still loads at full precision)
-is ~14GB of weights alone -- too tight on a 16GB card once activations/optimizer state are added.
-QLoRA quantizes the frozen base to 4-bit (NF4), dropping it to ~3.7GB, leaving generous headroom
-within 16GB. This is a hardware constraint, not a preference.
+Switched from QLoRA (4-bit NF4) to plain LoRA in full bf16 on 2026-07-20 after dropping the base
+model to Qwen3.5-0.8B for iteration speed. QLoRA's 4-bit quantization existed purely to fit a
+7B/14B model's weights into 16GB VRAM; at 0.8B (~1.6GB in bf16) that constraint is gone, and
+paying the quant/dequant overhead now would only cost speed and precision for no benefit -- a
+model this small has less redundant capacity to absorb 4-bit quantization noise than a 7B did.
+Gradient checkpointing was dropped for the same reason (it trades speed for memory that's no
+longer scarce), and the optimizer switched off `paged_adamw_8bit` (also memory-motivated, and the
+one under suspicion for an unexplained resume-NaN bug on the earlier 7B run) to plain
+`adamw_torch`. If this project ever swaps back to a 7B+ model, reintroduce
+`BitsAndBytesConfig`/`prepare_model_for_kbit_training`/gradient checkpointing/`paged_adamw_8bit`
+together -- they're a matched set for VRAM-constrained training, not independent choices.
 
-Note on model size: this was originally written for Qwen2.5-Coder-14B-Instruct, which QLoRA'd
-down to ~7.4GB of weights but still hit repeated CUDA OOMs during real training on this 16GB
-card (~12.4GB allocated at just 2048 tokens -- more than the weights + adapters should need,
-likely LoRA's extra activation overhead on the large MLP layers, though never fully root-caused).
-Dropped to the 7B variant for a comfortable memory margin instead of continuing to fight it.
-
-Why LoRA/QLoRA at all (not a full fine-tune): the previous attempt at this project full-fine-tuned
+Why LoRA at all (not a full fine-tune): the previous attempt at this project full-fine-tuned
 a small model with no general-data mixing and "lobotomized" it -- catastrophic forgetting of
-general capability. QLoRA only ever updates a small number of injected adapter weights (the
+general capability. LoRA only ever updates a small number of injected adapter weights (the
 frozen base never changes), which is inherently far less prone to overwriting general knowledge,
 and is combined here with the general-data mixing from prepare_training_data.py as a second,
-independent layer of protection against the same failure mode.
+independent layer of protection against the same failure mode. This protection is unrelated to
+4-bit vs bf16 -- dropping QLoRA's quantization above does not weaken it.
 
 Run `prepare_training_data.py` first to produce data/train.jsonl and data/val.jsonl.
 """
@@ -30,10 +31,16 @@ import os
 # card, i.e. wasted to fragmentation rather than actually available).
 os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
 
+# Tried PYTORCH_TUNABLEOP_ENABLED=1 (RDNA4 GEMM autotuning, see rocm.blogs.amd.com's TunableOp
+# writeup) on 2026-07-20 -- deadlocked partway through its kernel search on this exact
+# torch-2.14.0.dev+rocm7.2 nightly (GPU busy% dropped to ~3%, tunableop_results0.csv stopped
+# growing, no progress for 3+ minutes). Reverted rather than chase a bleeding-edge-nightly rough
+# edge for a modest, unconfirmed speed gain -- not worth risking a multi-hour run over.
+
 import torch
 from datasets import load_dataset
-from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
-from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+from peft import LoraConfig, get_peft_model
+from transformers import AutoModelForCausalLM, AutoTokenizer
 from trl import SFTConfig, SFTTrainer
 
 # Anchor paths to the repo root (three levels up: training/ -> finetune/ -> repo root) rather
@@ -42,11 +49,34 @@ from trl import SFTConfig, SFTTrainer
 # (and wrongly) depending on which.
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Switched from Qwen2.5-Coder-14B-Instruct to the 7B variant after repeated CUDA OOMs during
-# real training on a 16GB card (see note above) -- same family/tokenizer/architecture, just
-# smaller. Requires its own download (~15GB) the first time this runs; the 14B safetensors
-# downloaded earlier are not reused.
-MODEL_ID = "Qwen/Qwen2.5-Coder-7B-Instruct"
+# Dropped to Qwen3-0.6B (2026-07-20) purely for iteration speed -- the 7B QLoRA run was taking
+# ~4hrs/attempt on this card, too slow to iterate on training-data/hyperparameter changes. Tried
+# Qwen3.5-0.8B first but it hard-crashed the GPU driver on step 1 ("Memory access fault... Page
+# not present", core dump, process aborted) -- Qwen3.5's hybrid linear-attention architecture
+# needs flash-linear-attention/causal-conv1d kernels that aren't installed, and the torch
+# fallback path for missing kernels is what faulted. Reverted to plain Qwen3-0.6B (standard dense
+# transformer, no such dependency) to unblock iteration -- but measured against the 7B on the
+# same 152-question benchmark (see finetune/training/compare_models.py), 0.6B only reached 44.6%
+# of the 7B's accuracy (16.4% vs 36.8%), concentrated almost entirely in domain fact recall. That
+# capacity loss is real, not marginal, so raising the size back up to test whether a 3-4B model
+# recovers more of it without the 7B's training-time cost.
+#
+# Tried Qwen3.5-4B (2026-07-20) -- a standalone smoke test (smoke_test_qwen35.py: one real
+# forward+backward pass) survived cleanly, but that was insufficient: the real training run
+# hard-crashed the GPU driver on step 1 with the exact same fault signature as the earlier
+# Qwen3.5-0.8B crash ("Memory access fault... Page not present", core dump, abort), first under
+# non-reentrant gradient checkpointing (which failed differently -- a Python-level "does not
+# require grad" error, worked around with model.enable_input_require_grads()) and then again
+# under reentrant checkpointing (the actual GPU fault). Two independent crashes from the same
+# architecture family (0.8B and 4B), under two different checkpointing modes, is strong evidence
+# this is a fundamental incompatibility between Qwen3.5's hybrid-attention torch fallback and this
+# ROCm/RDNA4 setup under real backward-pass load -- not a config problem to keep patching.
+#
+# Switched to Qwen3-4B-Instruct-2507 instead -- same size class, but standard dense-transformer
+# attention (same architecture family as the Qwen3-0.6B that already trained cleanly), no
+# flash-linear-attention/causal-conv1d dependency at all. This was always the safer fallback;
+# worth it now that Qwen3.5 has cost two full GPU-driver crashes this session.
+MODEL_ID = "Qwen/Qwen3-4B-Instruct-2507"
 
 TRAIN_FILE = os.path.join(REPO_ROOT, "finetune/training/data/train.jsonl")
 VAL_FILE = os.path.join(REPO_ROOT, "finetune/training/data/val.jsonl")
@@ -95,12 +125,32 @@ NUM_EPOCHS = 3
 # (2048 token) examples together, and this card has OOM'd on tighter
 # margins than that before. If 2 comfortably fits with headroom to spare, 4 is worth trying next;
 # if this still OOMs, drop back to 1/16 (the previously working combination).
-PER_DEVICE_BATCH_SIZE = 2
-GRADIENT_ACCUMULATION_STEPS = 8  # effective batch size 16 (unchanged from before)
+# Tried 16/1 after dropping to Qwen3.5-0.8B in plain bf16 -- VRAM headroom supported it fine, but
+# Nick saw desktop-level display artifacting during that run on this same RX9070 that already had
+# a real RDNA4 MES-firmware hang earlier this session on this nightly ROCm build. This card/driver
+# combo is known flaky under sustained load, so dialed back to 8/2 (same effective batch 16, half
+# the peak per-step compute/VRAM pressure) rather than chasing max throughput on unstable hardware.
+#
+# Dropped further to 1/16 for Qwen3.5-4B -- even 2/8 OOM'd ("tried to allocate 2.37 GiB... free:
+# 1.92 GiB", a close miss, not a wild overshoot). Base weights alone take 8.31GB of the 15.92GB
+# card in plain bf16, leaving thin margin for everything else -- trl's chunked cross-entropy loss
+# upcasts each logits chunk to fp32 for numerical stability, which is what actually blew the
+# budget, not the model's own forward activations. If 1/16 still OOMs, the next lever isn't batch
+# size (already at the floor) -- it's reintroducing 4-bit QLoRA for the base model (matching the
+# original 7B setup): at 4B params, unlike the 0.6B, quantization saves enough real VRAM (~8GB ->
+# ~2-2.5GB weights) to be worth its overhead again.
+PER_DEVICE_BATCH_SIZE = 1
+GRADIENT_ACCUMULATION_STEPS = 16  # effective batch size 16 (unchanged from before)
 
 
 def format_example(example: dict, tokenizer) -> str:
-    return tokenizer.apply_chat_template(example["messages"], tokenize=False, add_generation_prompt=False)
+    # enable_thinking=False: Qwen3's chat template supports an optional reasoning ("thinking")
+    # mode that wraps generations in <think>...</think> blocks -- irrelevant/unwanted for this
+    # direct instruction-following SFT data, so it's explicitly disabled. Non-Qwen3 templates
+    # simply ignore this kwarg, so this stays harmless if the model is swapped again later.
+    return tokenizer.apply_chat_template(
+        example["messages"], tokenize=False, add_generation_prompt=False, enable_thinking=False
+    )
 
 
 def main():
@@ -112,39 +162,34 @@ def main():
     if not os.path.exists(TRAIN_FILE):
         raise SystemExit(f"[X] {TRAIN_FILE} not found -- run prepare_training_data.py first.")
 
-    print(f"[~] Loading tokenizer + 4-bit base model: {args.model_id}")
+    print(f"[~] Loading tokenizer + bf16 base model: {args.model_id}")
     tokenizer = AutoTokenizer.from_pretrained(args.model_id)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
-    bnb_config = BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_quant_type="nf4",
-        bnb_4bit_compute_dtype=torch.bfloat16,
-        bnb_4bit_use_double_quant=True,
-    )
-
     model = AutoModelForCausalLM.from_pretrained(
         args.model_id,
-        quantization_config=bnb_config,
-        # Forced onto GPU 0 explicitly rather than "auto" -- a model this size in real 4-bit NF4
-        # comfortably fits inside 16GB alone, so there's no legitimate reason for any of it to
-        # land on CPU. "auto" asks accelerate to plan device placement using a memory estimate
-        # that can be based on the pre-quantization size, which can wrongly decide to offload
-        # chunks to system RAM -- that's what caused an OOM kill on a 32GB-RAM machine earlier
-        # in this project (with the original, larger model choice).
+        # Forced onto GPU 0 explicitly rather than "auto" -- a model this size comfortably fits
+        # inside 16GB alone, so there's no legitimate reason for any of it to land on CPU. "auto"
+        # asks accelerate to plan device placement using a memory estimate that can be based on
+        # a pessimistic size, which can wrongly decide to offload chunks to system RAM -- that's
+        # what caused an OOM kill on a 32GB-RAM machine earlier in this project (with the
+        # original, much larger model choice).
         device_map={"": 0},
         dtype=torch.bfloat16,
         # Explicit rather than relying on transformers' auto-selection -- SDPA is PyTorch's own
         # built-in optimized attention (no extra package, works on ROCm), and being explicit
-        # guards against silently falling back to the much slower "eager" implementation, which
-        # some quantized-model loading paths have defaulted to in the past.
+        # guards against silently falling back to the much slower "eager" implementation.
         attn_implementation="sdpa",
     )
-    model = prepare_model_for_kbit_training(
-        model, use_gradient_checkpointing=True,
-        gradient_checkpointing_kwargs={"use_reentrant": False},
-    )
+    # Required for gradient checkpointing on a frozen base model -- without this, the checkpointed
+    # segments' input tensor has no grad_fn once it reaches a frozen (non-LoRA) parameter, and
+    # backward fails with "element 0 of tensors does not require grad and does not have a
+    # grad_fn". QLoRA's prepare_model_for_kbit_training() used to call this automatically; dropped
+    # along with the rest of that function when switching to plain bf16 LoRA, and it happened not
+    # to matter for Qwen3-0.6B's forward pass -- Qwen3.5-4B's different (hybrid-fallback) forward
+    # pass hit the gap that was latent there all along. Cheap and harmless to call unconditionally.
+    model.enable_input_require_grads()
 
     lora_config = LoraConfig(
         r=LORA_R,
@@ -162,6 +207,16 @@ def main():
 
     sft_config = SFTConfig(
         output_dir=OUTPUT_DIR,
+        # Qwen3-4B-Instruct-2507 reproducibly diverged to NaN on step 1 with trl's default
+        # loss_type="chunked_nll" (a memory-saving path that chunks the lm_head projection and
+        # does its own internal torch.utils.checkpoint call, nested inside this script's own
+        # model-level gradient checkpointing). Isolated via diagnose_length_sensitivity.py: the
+        # exact same LoRA+checkpointing+backward combination is completely clean when computing
+        # loss the plain way (trl's "nll" option) instead of the chunked path -- confirms the
+        # chunked-CE/checkpointing nesting specifically, not length, not checkpointing alone, not
+        # the model/tokenizer. trl's own docs note chunked_nll has known PEFT interaction
+        # caveats (e.g. unsupported if lm_head itself is PEFT-wrapped), consistent with this.
+        loss_type="nll",
         max_length=MAX_SEQ_LENGTH,  # trl 1.8+ renamed this from max_seq_length
         packing=False,  # keep examples separate rather than concatenated -- avoids cross-example
                         # contamination between unrelated Cubyz/general instructions in one window
@@ -173,12 +228,26 @@ def main():
         per_device_train_batch_size=PER_DEVICE_BATCH_SIZE,
         per_device_eval_batch_size=PER_DEVICE_BATCH_SIZE,
         gradient_accumulation_steps=GRADIENT_ACCUMULATION_STEPS,
+        # Tried turning this off (2026-07-20) to chase more speed now that the Qwen3.5 crash was
+        # root-caused to its kernel fallback rather than memory pressure -- immediately OOM'd
+        # instead ("Tried to allocate 40.00 MiB... 15.08 GiB already allocated"). Root cause isn't
+        # model size, it's vocab size: Qwen3's 151,936-token vocab makes the logits tensor alone
+        # ~5GB at batch 8/seq 2048 in bf16, and without checkpointing every layer's activations
+        # stack on top of that across the full backward pass. Reverted -- this card doesn't have
+        # margin to drop checkpointing at this batch size regardless of how small the model is.
+        # The working config (this: checkpointing on, batch 8/2) already runs at ~1.37s/it
+        # (~30min total) -- that's the number to keep, not push further.
+        # Re-enabled (2026-07-20) -- disabling this to test the double-checkpointing theory just
+        # OOM'd instead ("Tried to allocate 1.45 GiB... 146.00 MiB free"), so that experiment was
+        # inconclusive, not a disproof. See diagnose_length_sensitivity.py for the actual isolated
+        # test of whether a long (~2048 token) real sequence triggers the NaN under this exact
+        # checkpointing config before assuming this setting is safe again.
         gradient_checkpointing=True,
         gradient_checkpointing_kwargs={"use_reentrant": False},
         learning_rate=LEARNING_RATE,
         lr_scheduler_type="cosine",
         warmup_ratio=0.03,
-        optim="paged_adamw_8bit",  # memory-efficient optimizer, standard pairing with QLoRA
+        optim="adamw_torch",
         bf16=True,
         logging_steps=10,
         eval_strategy="steps",

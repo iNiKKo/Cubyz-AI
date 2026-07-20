@@ -30,7 +30,9 @@ router forwards 7001 to this machine, it's reachable from outside as a real shar
 public IP:7001, or a domain pointed at it) -- the router's forwarding rule needs updating to match
 if it was set up for the old port 7000.
 """
+import json
 import sqlite3
+import time
 import uuid
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -71,6 +73,11 @@ def db():
         conn.execute("ALTER TABLE messages ADD COLUMN feedback TEXT")
     if "feedback_note" not in cols:
         conn.execute("ALTER TABLE messages ADD COLUMN feedback_note TEXT")
+    if "meta" not in cols:
+        # JSON blob: {model, sources, prompt_tokens, response_tokens, elapsed_seconds}. Assistant
+        # rows only -- lets history replay show the same "what answered this / what it used" info
+        # a live answer gets, instead of that info only existing for the current page session.
+        conn.execute("ALTER TABLE messages ADD COLUMN meta TEXT")
     return conn
 
 
@@ -101,14 +108,23 @@ async def history(request: Request):
         return JSONResponse([])
     conn = db()
     rows = conn.execute(
-        "SELECT id, role, content, feedback, feedback_note FROM messages WHERE session_id = ? ORDER BY id ASC",
+        "SELECT id, role, content, feedback, feedback_note, meta FROM messages WHERE session_id = ? ORDER BY id ASC",
         (session_id,),
     ).fetchall()
     conn.close()
     return JSONResponse([
-        {"id": i, "role": r, "content": c, "feedback": f, "feedback_note": n}
-        for i, r, c, f, n in rows
+        {"id": i, "role": r, "content": c, "feedback": f, "feedback_note": n, "meta": json.loads(m) if m else None}
+        for i, r, c, f, n, m in rows
     ])
+
+
+@app.get("/api/status")
+async def status():
+    return JSONResponse({
+        "model": local_rag_chat.ANSWER_MODEL,
+        "embed_model": local_rag_chat.EMBED_MODEL,
+        "chunks": len(_index) if _index is not None else 0,
+    })
 
 
 @app.post("/api/chat")
@@ -132,18 +148,29 @@ async def chat(request: Request):
 
     # Run in a thread so a slow retrieval+generation call doesn't block the event loop --
     # other requests (history, new_chat, someone else's /api/chat) stay responsive meanwhile.
-    answer = await run_in_threadpool(local_rag_chat.ask, question, _index, False)
+    t0 = time.monotonic()
+    result = await run_in_threadpool(local_rag_chat.ask, question, _index, False, True)
+    elapsed = round(time.monotonic() - t0, 2)
+    answer = result["answer"]
+    meta = {
+        "model": result["model"],
+        "embed_model": result["embed_model"],
+        "sources": result["sources"],
+        "prompt_tokens": result["prompt_tokens"],
+        "response_tokens": result["response_tokens"],
+        "elapsed_seconds": elapsed,
+    }
 
     conn = db()
     cursor = conn.execute(
-        "INSERT INTO messages (session_id, role, content) VALUES (?, 'assistant', ?)",
-        (session_id, answer),
+        "INSERT INTO messages (session_id, role, content, meta) VALUES (?, 'assistant', ?, ?)",
+        (session_id, answer, json.dumps(meta)),
     )
     message_id = cursor.lastrowid
     conn.commit()
     conn.close()
 
-    return JSONResponse({"answer": answer, "message_id": message_id})
+    return JSONResponse({"answer": answer, "message_id": message_id, **meta})
 
 
 @app.post("/api/feedback")

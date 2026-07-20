@@ -47,8 +47,14 @@
     padding: 14px 18px; border-bottom: 1px solid var(--border); background: var(--panel);
     display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
   }
-  header h1 { font-size: 16px; margin: 0; font-weight: 600; }
+  header h1 { font-size: 16px; margin: 0; font-weight: 600; display: flex; align-items: center; gap: 7px; }
   header .sub { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+  header .headerBtns { display: flex; gap: 8px; align-items: center; }
+  .status-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: #9a9aa2; flex-shrink: 0;
+  }
+  .status-dot.ok { background: #3fb950; }
+  .status-dot.down { background: #d14343; }
   #newChatBtn {
     background: none; border: 1px solid var(--border); color: var(--text-dim);
     padding: 6px 12px; border-radius: 8px; font-size: 13px; cursor: pointer;
@@ -75,6 +81,34 @@
     background: var(--code-bg); padding: 10px 12px; border-radius: 8px; overflow-x: auto; margin: 6px 0;
   }
   .bubble pre code { background: none; padding: 0; }
+  .bubble pre { position: relative; }
+  .copy-btn {
+    position: absolute; top: 6px; right: 6px; background: var(--panel); color: var(--text-dim);
+    border: 1px solid var(--border); border-radius: 6px; font-size: 11px; padding: 2px 7px;
+    cursor: pointer; opacity: 0; transition: opacity 0.15s;
+  }
+  .bubble pre:hover .copy-btn { opacity: 1; }
+  .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+
+  .msg.enter { animation: msgIn 0.2s ease-out; }
+  @keyframes msgIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  .msg-meta {
+    display: flex; gap: 10px; align-items: center; margin-top: 5px; padding-left: 2px;
+    font-size: 11.5px; color: var(--text-dim);
+  }
+  .msg-meta .sources-toggle {
+    background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 11.5px;
+    padding: 0; text-decoration: underline; text-decoration-style: dotted;
+  }
+  .msg-meta .sources-toggle:hover { color: var(--accent); }
+  .sources-list {
+    display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; padding-left: 2px; max-width: 80%;
+  }
+  .source-chip {
+    font-size: 11px; color: var(--text-dim); background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 3px 7px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
 
   .feedback-row {
     display: flex; gap: 2px; margin-top: 4px; padding-left: 2px;
@@ -145,10 +179,12 @@
 <div id="app">
   <header>
     <div>
-      <h1>Cubyz Assistant</h1>
-      <div class="sub">Grounded on the real Cubyz docs, codebase, and PR history</div>
+      <h1><span class="status-dot" id="statusDot" title="Checking..."></span>Cubyz Assistant</h1>
+      <div class="sub" id="statusSub">Grounded on the real Cubyz docs, codebase, and PR history</div>
     </div>
-    <button id="newChatBtn">New chat</button>
+    <div class="headerBtns">
+      <button id="newChatBtn">New chat</button>
+    </div>
   </header>
 
   <div id="messages"></div>
@@ -177,6 +213,77 @@ function renderContent(text) {
   html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
   html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   return html;
+}
+
+// Adds a hover "Copy" button to every fenced code block in a just-rendered bubble. Done as a
+// post-render DOM pass rather than baked into renderContent's regex, since it needs a live
+// element reference (clipboard write + button text feedback) that string replacement can't give.
+function attachCopyButtons(bubbleEl) {
+  bubbleEl.querySelectorAll('pre').forEach((pre) => {
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.textContent = 'Copy';
+    btn.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(pre.textContent);
+      btn.textContent = 'Copied';
+      setTimeout(() => { btn.textContent = 'Copy'; }, 1200);
+    });
+    pre.appendChild(btn);
+  });
+}
+
+function buildMetaRow(meta) {
+  const wrap = document.createElement('div');
+
+  const row = document.createElement('div');
+  row.className = 'msg-meta';
+
+  if (typeof meta.elapsed_seconds === 'number') {
+    const t = document.createElement('span');
+    t.textContent = `${meta.elapsed_seconds}s`;
+    row.appendChild(t);
+  }
+  if (typeof meta.response_tokens === 'number') {
+    const t = document.createElement('span');
+    t.textContent = `${meta.response_tokens} tokens`;
+    row.appendChild(t);
+  }
+  if (meta.model) {
+    const t = document.createElement('span');
+    t.textContent = meta.model;
+    row.appendChild(t);
+  }
+
+  const sources = meta.sources || [];
+  let sourcesList = null;
+  if (sources.length) {
+    const toggle = document.createElement('button');
+    toggle.className = 'sources-toggle';
+    toggle.textContent = `${sources.length} source${sources.length === 1 ? '' : 's'}`;
+    let open = false;
+    toggle.addEventListener('click', () => {
+      open = !open;
+      if (open) {
+        sourcesList = document.createElement('div');
+        sourcesList.className = 'sources-list';
+        for (const s of sources) {
+          const chip = document.createElement('div');
+          chip.className = 'source-chip';
+          chip.textContent = `${s.collection}/${s.filename}`;
+          chip.title = `similarity score: ${s.score}`;
+          sourcesList.appendChild(chip);
+        }
+        wrap.appendChild(sourcesList);
+      } else if (sourcesList) {
+        sourcesList.remove();
+        sourcesList = null;
+      }
+    });
+    row.appendChild(toggle);
+  }
+
+  wrap.appendChild(row);
+  return wrap;
 }
 
 async function postFeedback(messageId, value, note) {
@@ -238,16 +345,21 @@ function buildNoteBox(messageId, existingNote) {
   return container;
 }
 
-function addMessage(role, content, messageId, feedback, feedbackNote) {
+function addMessage(role, content, messageId, feedback, feedbackNote, meta, animate) {
   clearEmptyState();
   const row = document.createElement('div');
-  row.className = 'msg ' + role;
+  row.className = 'msg ' + role + (animate ? ' enter' : '');
   const col = document.createElement('div');
 
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
   bubble.innerHTML = renderContent(content);
+  attachCopyButtons(bubble);
   col.appendChild(bubble);
+
+  if (role === 'assistant' && meta) {
+    col.appendChild(buildMetaRow(meta));
+  }
 
   if (role === 'assistant' && messageId != null) {
     const feedbackRow = document.createElement('div');
@@ -332,7 +444,22 @@ async function loadHistory() {
     showEmptyState();
   } else {
     messagesEl.innerHTML = '';
-    for (const m of history) addMessage(m.role, m.content, m.id, m.feedback, m.feedback_note);
+    for (const m of history) addMessage(m.role, m.content, m.id, m.feedback, m.feedback_note, m.meta, false);
+  }
+}
+
+async function loadStatus() {
+  const dot = document.getElementById('statusDot');
+  const sub = document.getElementById('statusSub');
+  try {
+    const res = await fetch('/api/status');
+    const s = await res.json();
+    dot.className = 'status-dot ok';
+    dot.title = 'Connected';
+    sub.textContent = `${s.model} · ${s.chunks.toLocaleString()} chunks indexed · embeddings via ${s.embed_model}`;
+  } catch (e) {
+    dot.className = 'status-dot down';
+    dot.title = 'Cannot reach server';
   }
 }
 
@@ -349,7 +476,7 @@ async function sendMessage() {
   textInput.value = '';
   autoResize();
   sendBtn.disabled = true;
-  addMessage('user', text);
+  addMessage('user', text, null, null, null, null, true);
   showTyping();
 
   try {
@@ -361,13 +488,18 @@ async function sendMessage() {
     const data = await res.json();
     hideTyping();
     if (data.error) {
-      addMessage('assistant', `[Error: ${data.error}]`);
+      addMessage('assistant', `[Error: ${data.error}]`, null, null, null, null, true);
     } else {
-      addMessage('assistant', data.answer, data.message_id, null);
+      const meta = {
+        model: data.model, sources: data.sources,
+        prompt_tokens: data.prompt_tokens, response_tokens: data.response_tokens,
+        elapsed_seconds: data.elapsed_seconds,
+      };
+      addMessage('assistant', data.answer, data.message_id, null, null, meta, true);
     }
   } catch (e) {
     hideTyping();
-    addMessage('assistant', `[Connection error: ${e.message}. The request may still be processing server-side for a slow query -- try asking again in a moment, or check "New chat" still shows your history.]`);
+    addMessage('assistant', `[Connection error: ${e.message}. The request may still be processing server-side for a slow query -- try asking again in a moment, or check "New chat" still shows your history.]`, null, null, null, null, true);
   } finally {
     sendBtn.disabled = false;
     textInput.focus();
@@ -389,6 +521,7 @@ newChatBtn.addEventListener('click', async () => {
 });
 
 loadHistory();
+loadStatus();
 </script>
 </body>
 </html>

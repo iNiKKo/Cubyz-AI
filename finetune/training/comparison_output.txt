@@ -1,0 +1,767 @@
+======================================================================
+CUBYZ-SPECIFIC QUESTIONS
+======================================================================
+
+Q: What key moves the player forward in Cubyz?
+  OLD (cubyz-assistant-p5-round2): W.
+  NEW (cubyz-assistant): The arrow keys move the player forward in Cubyz.
+  [expected: W]
+
+Q: How does Cubyz store its player position data over the network?
+  OLD (cubyz-assistant-p5-round2): Cubyz stores its player position data using the `PlayerPosition` struct, which includes fields like `x`, `y`, and `z`. This data is sent over the network to synchronize player positions across clients.
+  NEW (cubyz-assistant): Cubyz stores player position data over the network using a `NetworkManager` instance to send and receive messages. The `sendPosition` function sends the player's position, while `receivePosition` receives it from the server.
+  [expected: The playerPosition struct sends/receives updates, sent no more than once every 50ms]
+
+Q: What happens if I place a block ID that doesn't exist in an addon?
+  OLD (cubyz-assistant-p5-round2): If you attempt to place a block ID that does not exist in the game's block list, it will be replaced with air (0). This ensures that only valid blocks can be placed and prevents errors or undefined behavior.
+  NEW (cubyz-assistant): If you try to place a block ID that doesn't exist in an addon, the function will return an error message indicating that the block is not found.
+  [expected: Engine doesn't crash -- logs "Couldn't find block {id}. Replacing it with air..." and substitutes air]
+
+Q: Who currently maintains Cubyz, and when was it originally created?
+  OLD (cubyz-assistant-p5-round2): Cubyz is maintained by @TheLunatic and @Grisson. It was originally created on 2018-05-13.
+  NEW (cubyz-assistant): The project is maintained by @cubyzdev and has been in development since 2017.
+  [expected: Created Aug 22 2018 by zenith391 and ZaUserA; currently maintained by IntegratedQuantum]
+
+Q: In a Cubyz code review, what's the difference between when a change should get a debugging-style response vs a design-review response?
+  OLD (cubyz-assistant-p5-round2): A debugging-style response is appropriate if the issue is about correctness, such as ensuring that an enum value is used correctly or that a function returns the expected type. A design-review response is needed for architectural concerns like whether a new feature aligns with overall goals or if it introduces unnecessary complexity.
+  NEW (cubyz-assistant): When a change is reviewed for functionality, it should receive a debugging-style response to identify potential issues or bugs. For design reviews, the response should focus on architectural decisions and how they align with user experience and system architecture.
+  [expected: Debugging/diagnosis = a bug or 'why doesn't this work' issue; design-review = a design/style/architecture choice, not a bug]
+
+Q: Which key toggles fullscreen mode in Cubyz?
+  OLD (cubyz-assistant-p5-round2): F11.
+  NEW (cubyz-assistant): The 'F' key toggles fullscreen mode in Cubyz.
+  [expected: F11]
+
+Q: How do you access the creative inventory in Cubyz?
+  OLD (cubyz-assistant-p5-round2): You can access the creative inventory by pressing F4.
+  NEW (cubyz-assistant): You can access the creative inventory by calling `creativeInventory.get()` on the `CreativeInventory` instance.
+  [expected: C]
+
+Q: What is the default multiplayer server port in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The default multiplayer server port in Cubyz is 5429.
+  NEW (cubyz-assistant): The default multiplayer server port is 23456.
+  [expected: 47649]
+
+Q: How many hearts of health does the player start with, and what's the total HP?
+  OLD (cubyz-assistant-p5-round2): The player starts with 10 hearts of health, giving a total of 20 HP.
+  NEW (cubyz-assistant): The player starts with 1 heart of health and has a total HP of 256.
+  [expected: 8 hearts, 16 total health]
+
+Q: Can the player heal in Cubyz right now?
+  OLD (cubyz-assistant-p5-round2): No, the player cannot heal in Cubyz at the moment.
+  NEW (cubyz-assistant): No, players cannot heal in Cubyz at present. The healing system is not implemented yet.
+  [expected: No -- there is currently no way to regain health other than dying]
+
+Q: What tool is used to damage/mine soil blocks in Cubyz?
+  OLD (cubyz-assistant-p5-round2): A shovel is used to damage/mine soil blocks in Cubyz.
+  NEW (cubyz-assistant): The `miningTool` function is responsible for damaging or mining soil blocks using the appropriate tool.
+  [expected: Shovers (shovels)]
+
+Q: How far can the Cubyz world extend on each axis?
+  OLD (cubyz-assistant-p5-round2): The Cubyz world extends 2^31 blocks in each direction along the X, Y, and Z axes.
+  NEW (cubyz-assistant): The Cubyz world extends 100 units in both x and y directions.
+  [expected: 2 billion blocks on each axis]
+
+Q: What was Cubyz originally called before its current name?
+  OLD (cubyz-assistant-p5-round2): Cubz.
+  NEW (cubyz-assistant): Cubyz was originally called "The Cubyz" before it was renamed to Cubyz in 2019.
+  [expected: "Cubz"]
+
+Q: Is Cubyz available on Mac? Why or why not?
+  OLD (cubyz-assistant-p5-round2): Cubyz is not available on Mac because it requires specific dependencies like Vulkan and GLFW, which are not natively supported on macOS.
+  NEW (cubyz-assistant): Cubyz is available on Mac as well. It supports various platforms including Windows, Linux, macOS, and more.
+  [expected: No -- Mac is not supported because it lacks OpenGL 4.3]
+
+Q: What does the checkResult function do for Vulkan results in Cubyz's renderer?
+  OLD (cubyz-assistant-p5-round2): The `checkResult` function is used to handle Vulkan results by checking if they are successful. If a result indicates an error, it logs the error message using `std.log.err`.
+  NEW (cubyz-assistant): The `checkResult` function checks if a Vulkan result is successful by verifying that it matches the expected value using the `vkResultToInteger` function. If not, it logs an error message and returns an invalid result.
+  [expected: Logs a Vulkan error (unknown error code, or the specific error tag name) via std.log.err]
+
+Q: What is utils.NeverFailingAllocator in Cubyz?
+  OLD (cubyz-assistant-p5-round2): utils.NeverFailingAllocator is an allocator that does not fail on allocation errors but instead logs them as warnings. It provides a way to handle memory allocation without crashing the application due to out-of-memory situations.
+  NEW (cubyz-assistant): utils.NeverFailingAllocator is a custom allocator that ensures memory allocation without errors. It uses the Zig Allocator API to manage memory efficiently.
+  [expected: An allocator interface that cannot return error.OutOfMemory]
+
+Q: How does Cubyz's BinaryWriter manage its buffer as data is written?
+  OLD (cubyz-assistant-p5-round2): Cubyz's BinaryWriter manages its buffer by dynamically resizing it when necessary to accommodate new data being written. This ensures that there is always enough space available for the next write operation without manual intervention.
+  NEW (cubyz-assistant): Cubyz's BinaryWriter manages its buffer by using a `std.ArrayList` to store the data being written. This allows efficient memory management and ensures that the buffer can handle large amounts of data without performance issues.
+  [expected: A dynamically growing buffer]
+
+Q: Why might a Cubyz reviewer prefer std.StringHashMap's getOrPut over a separate contains-check plus insert?
+  OLD (cubyz-assistant-p5-round2): std.StringHashMap's getOrPut is preferred because it combines the functionality of checking if a key exists and inserting a new entry into one operation, which can be more efficient than performing these operations separately.
+  NEW (cubyz-assistant): The reviewer prefers std.StringHashMap.getOrPut because it allows for efficient insertion of strings with specific keys, which is crucial for maintaining data integrity and performance in applications where string keys are involved. This approach ensures that each key-value pair is stored correctly without unnecessary overhead.
+  [expected: getOrPut atomically retrieves-or-inserts in one operation instead of two lookups, reducing redundant memory accesses and complexity]
+
+Q: What's the default value for an item's food field in Cubyz if I don't set it?
+  OLD (cubyz-assistant-p5-round2): The default value for an item's food field is 0.
+  NEW (cubyz-assistant): The default value for an item's food field is 0. If you don't set it, it will be initialized to 0.
+  [expected: 0]
+
+Q: Why might a biome's custom sky color not show up in-game even though I set it in the Addon Creator?
+  OLD (cubyz-assistant-p5-round2): A biome's custom sky color may not appear in-game if the addon is not properly installed or recognized by Cubyz. Ensure that the addon is correctly placed in the addons folder and that there are no typos in the biome ID or other configuration details. Additionally, check for any errors during installation or loading of the addon.
+  NEW (cubyz-assistant): The issue is that the biome's custom sky color is only visible if it matches the current biome's sky color. If you change the biome's sky color, the custom one might still be displayed because it doesn't match.
+  [expected: Format mismatch: the website exports skyColor/fogColor as a 3-component float vector, but the engine reads those fields as a packed u32 integer]
+
+Q: What key moves the player backward in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The key that moves the player backward is 'S'.
+  NEW (cubyz-assistant): The arrow keys move the player backward in Cubyz.
+  [expected: S]
+
+Q: Which key strafes the player left in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The key that strafes the player left in Cubyz is A.
+  NEW (cubyz-assistant): The 'W' key strafes the player left in Cubyz.
+  [expected: A]
+
+Q: Which key strafes the player right in Cubyz?
+  OLD (cubyz-assistant-p5-round2): D.
+  NEW (cubyz-assistant): The 'Right' key strafes the player right in Cubyz.
+  [expected: D]
+
+Q: What key makes the player sprint in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The key that makes the player sprint in Cubyz is Shift.
+  NEW (cubyz-assistant): The 'S' key makes the player sprint in Cubyz.
+  [expected: Left control]
+
+Q: What key makes the player jump in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The space bar is used to make the player jump.
+  NEW (cubyz-assistant): The 'J' key makes the player jump in Cubyz.
+  [expected: Space]
+
+Q: How do you crouch in Cubyz?
+  OLD (cubyz-assistant-p5-round2): Crouching is performed by pressing the 'c' key.
+  NEW (cubyz-assistant): To crouch in Cubyz, use the `crouch` function with an optional time parameter. The function allows you to specify a duration of crouching.
+  [expected: Left shift]
+
+Q: What key toggles flying in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The F5 key toggles flying mode.
+  NEW (cubyz-assistant): The `fly` function toggles whether an entity is flying by setting its state to the opposite of what it was before.
+  [expected: F]
+
+Q: What key toggles ghost mode in Cubyz?
+  OLD (cubyz-assistant-p5-round2): G.
+  NEW (cubyz-assistant): The `toggleGhostMode` function toggles the use of ghost mode by setting a boolean flag (`ghostMode`) to true if it was previously false.
+  [expected: G]
+
+Q: What key activates hyperspeed in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The key to activate hyperspeed is F5.
+  NEW (cubyz-assistant): The 'Shift' key is used to activate hyperspeed in Cubyz.
+  [expected: H]
+
+Q: What button places a block in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The right mouse button (RMB) is used to place blocks in Cubyz.
+  NEW (cubyz-assistant): The 'Place' button is used to place blocks in Cubyz.
+  [expected: Right mouse button]
+
+Q: What button breaks a block in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The left mouse button (LMB) is used to break blocks in Cubyz.
+  NEW (cubyz-assistant): The 'Break' button in Cubyz allows breaking blocks by selecting them and clicking the 'Break' button.
+  [expected: Left mouse button]
+
+Q: How do you pick a block (select it into your hotbar) in Cubyz?
+  OLD (cubyz-assistant-p5-round2): To pick a block in Cubyz, use the 'E' key to select it into your hotbar.
+  NEW (cubyz-assistant): To pick a block, use the `pick` function with an index as an argument. This allows you to select blocks from the inventory.
+  [expected: Middle mouse button]
+
+Q: What key drops an item in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The key to drop an item is 'E'.
+  NEW (cubyz-assistant): The `keyDrop` function handles the dropping of items when a key is pressed. It checks if the player has enough health to drop an item and then performs the actual dropping action using the `dropItem` method.
+  [expected: Q]
+
+Q: What key takes a background image/screenshot in Cubyz?
+  OLD (cubyz-assistant-p5-round2): F10.
+  NEW (cubyz-assistant): The `backgroundImage` function uses the 'Enter' key to take a background image/screenshot.
+  [expected: Print Screen]
+
+Q: What key opens the regular (non-creative) inventory in Cubyz?
+  OLD (cubyz-assistant-p5-round2): E.
+  NEW (cubyz-assistant): The 'F' key opens the regular (non-creative) inventory in Cubyz.
+  [expected: E]
+
+Q: How do you open chat in Cubyz?
+  OLD (cubyz-assistant-p5-round2): You can open chat by pressing the 'T' key.
+  NEW (cubyz-assistant): To open chat in Cubyz, use the `openChat` function with an optional `windowId`. This function initializes a new window and sets up the chat interface.
+  [expected: T]
+
+Q: What key or character opens the command line in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The forward slash (/) key opens the command line in Cubyz.
+  NEW (cubyz-assistant): The 'C' key opens the command line in Cubyz.
+  [expected: /]
+
+Q: What key hides the menu in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The key to hide the menu is F10.
+  NEW (cubyz-assistant): The 'Escape' key is used to hide the menu in Cubyz.
+  [expected: F1]
+
+Q: What key hides the display item in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The key to hide the display item is F12.
+  NEW (cubyz-assistant): The 'Shift' key is used to hide the display item in Cubyz.
+  [expected: F2]
+
+Q: What key toggles the debug overlay in Cubyz?
+  OLD (cubyz-assistant-p5-round2): F3.
+  NEW (cubyz-assistant): The 'D' key toggles the debug overlay in Cubyz.
+  [expected: F3]
+
+Q: What key toggles the performance overlay in Cubyz?
+  OLD (cubyz-assistant-p5-round2): F3.
+  NEW (cubyz-assistant): The 'Shift' key toggles the performance overlay in Cubyz.
+  [expected: F4]
+
+Q: What key toggles the GPU overlay in Cubyz?
+  OLD (cubyz-assistant-p5-round2): F3.
+  NEW (cubyz-assistant): The `toggleOverlay` function toggles the GPU overlay by setting the `overlay` flag to its opposite value.
+  [expected: F5]
+
+Q: What key toggles the network overlay in Cubyz?
+  OLD (cubyz-assistant-p5-round2): F5.
+  NEW (cubyz-assistant): The 'Shift' key toggles the network overlay in Cubyz.
+  [expected: F6]
+
+Q: What key toggles the advanced network overlay in Cubyz?
+  OLD (cubyz-assistant-p5-round2): F5.
+  NEW (cubyz-assistant): The 'A' key toggles the advanced network overlay in Cubyz.
+  [expected: F7]
+
+Q: What key selects hotbar slot 10 in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The key to select hotbar slot 10 is '0'.
+  NEW (cubyz-assistant): The `hotbarSlot` function returns the index of the hotbar slot based on the provided parameters. The actual selection logic is not specified here.
+  [expected: 0]
+
+Q: What key selects hotbar slot 11 in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The key to select hotbar slot 11 is F2.
+  NEW (cubyz-assistant): The `hotbarSlot` function returns the index of the hotbar slot based on the provided parameters. The actual selection logic is not specified here.
+  [expected: - (minus)]
+
+Q: What key selects hotbar slot 12 in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The key to select hotbar slot 12 is F3.
+  NEW (cubyz-assistant): The `hotbarSlot` function returns the index of the hotbar slot based on the provided parameters. The actual selection logic is not specified here.
+  [expected: = (equals)]
+
+Q: When was the project renamed from Cubz to Cubyz?
+  OLD (cubyz-assistant-p5-round2): The project was renamed from Cubz to Cubyz on April 15th, 2023.
+  NEW (cubyz-assistant): The project was renamed from Cubz to Cubyz in 2019.
+  [expected: March 17, 2019, suggested by zenith391]
+
+Q: Why was Cubyz rewritten from Java to Zig?
+  OLD (cubyz-assistant-p5-round2): Cubyz was rewritten from Java to Zig to improve performance and reduce memory usage by leveraging Zig's compile-time optimizations and zero-cost abstractions.
+  NEW (cubyz-assistant): Cubyz was rewritten from Java to Zig due to the need for a more efficient and modern approach to game development in Zig, which is known for its performance and ease of use. The rewrite aimed to leverage Zig's strengths while maintaining the same functionality as Cubyz.
+  [expected: Java's garbage collector caused freeze-inducing lag spikes at the memory limit; Zig's cross-compilation support was also a major draw]
+
+Q: When was Cubyz version 0.0.0 released?
+  OLD (cubyz-assistant-p5-round2): Cubyz version 0.0.0 was released on April 15th, 2023.
+  NEW (cubyz-assistant): Cubyz version 0.0.0 was released on April 15, 2023.
+  [expected: October 5, 2025]
+
+Q: What language was Cubyz originally written in before the Zig rewrite?
+  OLD (cubyz-assistant-p5-round2): Cubyz was originally written in C++.
+  NEW (cubyz-assistant): Cubyz was originally written in C before the Zig rewrite.
+  [expected: Java]
+
+Q: What alternative languages did the Cubyz maintainer consider before choosing Zig for the rewrite?
+  OLD (cubyz-assistant-p5-round2): The maintainer considered C++ as an alternative language before deciding on Zig for the rewrite.
+  NEW (cubyz-assistant): The Cubyz maintainer considered alternative languages like Python and Go before deciding on Zig due to its performance advantages over other languages.
+  [expected: C++20 and Rust]
+
+Q: What does the energy/stomach bar do in Cubyz right now?
+  OLD (cubyz-assistant-p5-round2): The energy/stomach bar shows how much energy or food a player has left. It's part of the HUD (heads-up display) that provides important information about the player's health and resources.
+  NEW (cubyz-assistant): The energy/stomach bar is used to manage player health and stamina. It allows players to gain and lose energy points based on actions like eating, sleeping, or using tools.
+  [expected: Nothing -- it's purely cosmetic, there's currently no way to gain or lose energy]
+
+Q: How many movement modes does the player have in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The player has three movement modes: normal walking, sprinting, and crouching.
+  NEW (cubyz-assistant): The player has 4 different movement modes: walking, running, jumping, and sliding.
+  [expected: Three: walking, sprinting, and crouching]
+
+Q: How high can the player jump in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The player can jump up to 1.5 blocks high.
+  NEW (cubyz-assistant): The player can jump up to 10 times their height.
+  [expected: Enough to cross one whole block]
+
+Q: How many hotbar slots does Cubyz have by default?
+  OLD (cubyz-assistant-p5-round2): Cubyz has 10 hotbar slots by default.
+  NEW (cubyz-assistant): Cubyz has 10 hotbar slots by default.
+  [expected: 12]
+
+Q: How many items can a single inventory or hotbar slot stack in Cubyz?
+  OLD (cubyz-assistant-p5-round2): A single inventory or hotbar slot can stack up to 64 items in Cubyz.
+  NEW (cubyz-assistant): A single inventory or hotbar slot can stack up to 100 items.
+  [expected: 120]
+
+Q: How many slots does the main inventory have in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The main inventory has 36 slots.
+  NEW (cubyz-assistant): The main inventory has 10 slots.
+  [expected: 20]
+
+Q: What tool is used to mine stone, metal, and gem blocks in Cubyz?
+  OLD (cubyz-assistant-p5-round2): A pickaxe is used to mine stone, metal, and gem blocks.
+  NEW (cubyz-assistant): The `MineTool` struct defines the tools used for mining different types of blocks. It includes methods like `mineBlock`, which handles the actual mining process based on the selected tool type.
+  [expected: Pickaxe]
+
+Q: What tool is used to mine wooden blocks in Cubyz?
+  OLD (cubyz-assistant-p5-round2): A pickaxe is used to mine wooden blocks in Cubyz.
+  NEW (cubyz-assistant): The `MineTool` struct defines the tools available for mining, including wood.
+  [expected: Axe]
+
+Q: What tool is used to harvest plants, leaves, and cloth in Cubyz?
+  OLD (cubyz-assistant-p5-round2): A scythe is used to harvest plants, leaves, and cloth in Cubyz.
+  NEW (cubyz-assistant): The `harvestTool` struct defines the tools used for harvesting plants, leaves, and cloth. It includes methods like `getTool`, `use`, and `collect`.
+  [expected: Sickle -- also the only way to actually collect plants/leaves, not possible bare-handed]
+
+Q: What happens if you use the wrong tool type on a block in Cubyz?
+  OLD (cubyz-assistant-p5-round2): If you use the wrong tool type on a block, it will not break. The game checks if the player's held item has the correct tool type before allowing the block to be broken.
+  NEW (cubyz-assistant): Using the wrong tool type on a block will result in an error message indicating that the tool is not compatible with the block.
+  [expected: It deals the same damage as bare hands -- no bonus, no penalty]
+
+Q: What operating systems does Cubyz support?
+  OLD (cubyz-assistant-p5-round2): Cubyz supports Windows, Linux, and macOS.
+  NEW (cubyz-assistant): Cubyz supports Windows 10, macOS, Linux, and Windows 7.
+  [expected: Windows and Linux]
+
+Q: What OpenGL version does the Cubyz installation page list as the GPU requirement?
+  OLD (cubyz-assistant-p5-round2): The Cubyz installation page lists OpenGL 3.2 as the minimum required version for the GPU.
+  NEW (cubyz-assistant): The Cubyz installation page lists OpenGL 4.5 as the GPU requirement.
+  [expected: OpenGL 4.6 hardware support]
+
+Q: What command grants a player full admin permissions in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The /admin command grants a player full admin permissions.
+  NEW (cubyz-assistant): The `grantAdmin` function grants a player full admin permissions by calling the `grantAdminPermissions` method with the appropriate arguments.
+  [expected: /perm add whitelist @<playerIndex> /]
+
+Q: What command grants a player access to just the /spawn command in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The command is /gamemode creative.
+  NEW (cubyz-assistant): The `/spawn` command is used to spawn players at specific coordinates. The `spawn` function handles this by returning the appropriate command string based on the player's position and other parameters.
+  [expected: /perm add whitelist @<playerIndex> /command/spawn]
+
+Q: What network protocol does Cubyz's server use for port forwarding?
+  OLD (cubyz-assistant-p5-round2): Cubyz uses the UDP protocol for port forwarding.
+  NEW (cubyz-assistant): Cubyz's server uses the `net` module to handle network protocols such as TCP/IP.
+  [expected: UDP]
+
+Q: In Cubyz's permission system, if a path is both whitelisted and blacklisted, which wins?
+  OLD (cubyz-assistant-p5-round2): If a path is both whitelisted and blacklisted, the blacklist takes precedence over the whitelist.
+  NEW (cubyz-assistant): The path with the higher priority (whitelisted) wins. If there are multiple paths with the same priority, they all win.
+  [expected: The blacklist takes priority]
+
+Q: What is the root of Cubyz's permission tree, and what is its only child?
+  OLD (cubyz-assistant-p5-round2): The root of Cubyz's permission tree is `root`, which has a single child named `default`.
+  NEW (cubyz-assistant): The root of Cubyz's permission tree is the `root` node, which has no children.
+  [expected: Root is /, and its only child is command]
+
+Q: What's the one field the Cubyz engine truly requires for a block addon to be valid?
+  OLD (cubyz-assistant-p5-round2): The 'id' field is the only requirement for a block addon to be considered valid by the Cubyz engine.
+  NEW (cubyz-assistant): The one field the Cubyz engine truly requires for a block addon to be valid is `blockName`. This ensures that all addons are correctly identified and managed within the game system.
+  [expected: .tags must be non-empty]
+
+Q: What rotation mode does a Cubyz block default to if .rotation is omitted?
+  OLD (cubyz-assistant-p5-round2): A Cubyz block defaults to .noRotation if .rotation is omitted.
+  NEW (cubyz-assistant): If .rotation is omitted, the block defaults to 0 degrees of rotation.
+  [expected: "cubyz:no_rotation"]
+
+Q: What rotation value must a block have for its ore properties to actually load in Cubyz?
+  OLD (cubyz-assistant-p5-round2): A block must have a rotation value of 0 for its ore properties to be loaded.
+  NEW (cubyz-assistant): The rotation value must be 0.5 for the block's ore properties to actually load in Cubyz.
+  [expected: Exactly "cubyz:ore"]
+
+Q: What happens if a Cubyz block has ore properties but the wrong rotation mode?
+  OLD (cubyz-assistant-p5-round2): If a Cubyz block has ore properties but the wrong rotation mode, it will be rejected during loading with an error message indicating that only 'none' is allowed for ore blocks.
+  NEW (cubyz-assistant): If a Cubyz block has ore properties but the wrong rotation mode, it will be removed from the inventory.
+  [expected: The engine logs "Ore must have rotation mode \"cubyz:ore\"!" and silently drops the ore properties]
+
+Q: What happens if a Cubyz block's tags field ends up empty?
+  OLD (cubyz-assistant-p5-round2): If a Cubyz block's tags field is empty, it defaults to `.{}`. This ensures that the block has at least an empty set of tags associated with it.
+  NEW (cubyz-assistant): If a Cubyz block's tags field ends up empty, it will be considered as having no tags. This is handled by the `parseTags` function in the `Block` struct.
+  [expected: The engine logs "Block {id} is missing 'tags' field" but doesn't fail loading -- the block still exists but may not behave correctly]
+
+Q: What does Cubyz's blockResistance field default to if omitted?
+  OLD (cubyz-assistant-p5-round2): Cubyz's blockResistance field defaults to 1.0 if omitted.
+  NEW (cubyz-assistant): Cubyz's `blockResistance` field defaults to 0 if omitted.
+  [expected: 0]
+
+Q: What's the default stack size for a Cubyz item if not specified?
+  OLD (cubyz-assistant-p5-round2): The default stack size is 64.
+  NEW (cubyz-assistant): The default stack size is 100. If an item doesn't specify a stack size, it defaults to this value.
+  [expected: 120]
+
+Q: What does a Cubyz item's display name fall back to if .name isn't set?
+  OLD (cubyz-assistant-p5-round2): If .name is not set, the display name falls back to 'Unnamed Item'.
+  NEW (cubyz-assistant): A Cubyz item's display name falls back to its default name if .name is not set.
+  [expected: Its own item id]
+
+Q: Which four Cubyz item material fields have no soft default and fall back to exactly 0 if missing?
+  OLD (cubyz-assistant-p5-round2): The four Cubyz item material fields with no soft default are density, friction, bounciness, and hardness. If any of these fields are missing from the ZonElement, they will be set to exactly 0.
+  NEW (cubyz-assistant): The `ItemMaterial` struct has four fields with no soft defaults: `color`, `texture`, `lighting`, and `rotation`. These fields fall back to exactly 0 if they are not provided.
+  [expected: durability, massDamage, hardnessDamage, and swingSpeed]
+
+Q: What happens if durability is missing from a Cubyz item's material block?
+  OLD (cubyz-assistant-p5-round2): If durability is missing, it defaults to 0.
+  NEW (cubyz-assistant): If durability is missing from a Cubyz item's material block, the item will be considered as having no durability, which means it can be used indefinitely without any damage.
+  [expected: It falls back to 0, meaning the item breaks instantly]
+
+Q: What's the default value for textureRoughness in a Cubyz item's material block?
+  OLD (cubyz-assistant-p5-round2): The default value for textureRoughness is 0.5.
+  NEW (cubyz-assistant): The default value for textureRoughness is 0.5.
+  [expected: 1.0 -- the one material field that does have a real default]
+
+Q: What do min/max radius default to for a Cubyz biome if not set?
+  OLD (cubyz-assistant-p5-round2): Min/max radius default to 0/128 respectively for a Cubyz biome if not set.
+  NEW (cubyz-assistant): The `minRadius` and `maxRadius` fields in the `Biome` struct are used to define the minimum and maximum radius of a biomes' terrain, respectively. If these values are not explicitly set, they default to 0.5 for minRadius and 1.5 for maxRadius.
+  [expected: 256]
+
+Q: What does a Cubyz biome's music field default to if omitted?
+  OLD (cubyz-assistant-p5-round2): A Cubyz biome's music field defaults to null if omitted.
+  NEW (cubyz-assistant): A Cubyz biome's music field defaults to an empty string if omitted.
+  [expected: "cubyz:totaldemented/cubyz"]
+
+Q: What music does the Addon Creator website itself default to for biomes, and how does that differ from the engine's default?
+  OLD (cubyz-assistant-p5-round2): The Addon Creator website defaults to a song called "Biome Music" by "Cubyz Developers," which is different from the engine's default.
+  NEW (cubyz-assistant): The Addon Creator website defaults to a specific music file for biomes, while the engine uses its own default music. This difference is due to the separate implementation of the music system in the Addon Creator and the engine.
+  [expected: The website defaults to 'cubyz:sunrise', which only matters if you hand-edit and drop the field -- the engine's own default is 'cubyz:totaldemented/cubyz']
+
+Q: What's the known bug with the 'valid player spawn' checkbox in the Addon Creator?
+  OLD (cubyz-assistant-p5-round2): The 'valid player spawn' checkbox is not functioning as intended; it does not correctly validate or restrict player spawns.
+  NEW (cubyz-assistant): The 'valid player spawn' checkbox is not fully functional as intended. It should be removed to prevent issues related to player spawning validation.
+  [expected: The website exports it as .isValidPlayerSpawn but the engine actually reads .validPlayerSpawn (no 'is' prefix), so the value never gets picked up and falls back to false]
+
+Q: What tag convention do cave biomes need in Cubyz, and what happens if it's missing?
+  OLD (cubyz-assistant-p5-round2): Cave biomes must have the tag `cubyz:is_cave`. If this tag is missing, they will not be recognized as cave biomes.
+  NEW (cubyz-assistant): Cave biomes require the `cave` tag to be present in their metadata. If this tag is missing, the biome will not be considered as a cave biome by default.
+  [expected: A tag ending in _layer -- otherwise the engine logs "Cave biome {id} is missing a '_layer' tag to assign it to a cave layer."]
+
+Q: What does the .reversible field do on a Cubyz recipe, and what's its default?
+  OLD (cubyz-assistant-p5-round2): The .reversible field indicates whether a recipe can be reversed (e.g., breaking blocks). Its default value is true.
+  NEW (cubyz-assistant): The `.reversible` field indicates whether the recipe is reversible, meaning it can be reversed to produce the same result. The default value for this field is `false`.
+  [expected: If true, the engine auto-generates the reverse recipe (output becomes input and vice versa); defaults to false, and the website doesn't expose it]
+
+Q: What's the limitation on a reversible Cubyz recipe?
+  OLD (cubyz-assistant-p5-round2): A reversible Cubyz recipe must have exactly one input item.
+  NEW (cubyz-assistant): The limitation is that it only supports one input item at a time. This means you can't combine multiple items in a single recipe unless they are all the same type.
+  [expected: It only works for a recipe with exactly one input and one output -- on a multi-ingredient recipe it fails with error.InvalidReversibleRecipe]
+
+Q: What does a Cubyz entity model's .height field default to if omitted, and how does that differ from the website?
+  OLD (cubyz-assistant-p5-round2): A Cubyz entity model's .height field defaults to 1.0 if omitted. This differs from the website, where it defaults to 2.0.
+  NEW (cubyz-assistant): If an entity model's `.height` field is omitted, it defaults to 0. This differs from the website where height values are specified in the `modelHeight` field.
+  [expected: 1, but the Addon Creator website's own form defaults to 2.0 instead -- this only diverges for hand-written files]
+
+Q: What coordinate system does a Cubyz entity model default to?
+  OLD (cubyz-assistant-p5-round2): A Cubyz entity model defaults to a right-handed coordinate system with the X-axis pointing right, Y-axis pointing up, and Z-axis pointing forward.
+  NEW (cubyz-assistant): The default coordinate system for a Cubyz entity model is the same as its parent model's coordinate system. This ensures consistency across different parts of the game.
+  [expected: .right_handed_z_up]
+
+Q: What happens if a Cubyz particle definition is missing its .texture field?
+  OLD (cubyz-assistant-p5-round2): If a Cubyz particle definition is missing its .texture field, the init method logs an error message indicating that the texture path must be specified.
+  NEW (cubyz-assistant): If a Cubyz particle definition is missing the .texture field, it will throw an error during initialization. This ensures that all necessary textures are properly defined before use.
+  [expected: The engine logs "Particle texture id was not specified for {id}" and the particle type fails to register entirely -- unlike most particle fields, this one has no fallback]
+
+Q: What's the dimension requirement for a Cubyz particle's base texture?
+  OLD (cubyz-assistant-p5-round2): The base texture must be 16x16 pixels in size.
+  NEW (cubyz-assistant): The base texture requires a minimum dimension of 2x2 to be used in the game.
+  [expected: The texture's height must be an exact multiple of its width, since it's used to slice animation frames]
+
+Q: What unit are particle rotation velocity fields in on the Addon Creator website versus internally in the engine?
+  OLD (cubyz-assistant-p5-round2): On the Addon Creator website, particle rotation velocity fields are specified in degrees per second (°/s). Internally in the engine, they are stored as radians per tick (rad/tick).
+  NEW (cubyz-assistant): Particle rotation velocity fields are defined in the Addon Creator website as a single field with an initial value of 0.5, but they are also used internally in the engine.
+  [expected: Degrees on the website; the engine converts to radians internally after loading, so the stored file value still matches what you typed]
+
+Q: Why would a Cubyz reviewer push back on using a Hashmap for random indexing into tickable blocks?
+  OLD (cubyz-assistant-p5-round2): A Cubyz reviewer might push back on using a Hashmap because it could lead to performance issues due to the overhead of hash calculations and potential collisions, which are not necessary for this use case. They may suggest alternatives like an array or a more efficient data structure that better fits the requirements.
+  NEW (cubyz-assistant): A reviewer might push back on using a Hashmap because it could lead to performance issues or unexpected behavior if not implemented correctly. The reviewer believes that using a Hashmap is unnecessary and inefficient, as it doesn't provide any significant advantage over other methods like arrays or lists.
+  [expected: Hashmaps have average O(1) lookups but can degrade to O(n) worst case, and maintaining a list of tickable blocks was already being reconsidered -- adding this now looked like premature optimization]
+
+Q: Why might a Cubyz reviewer suggest replacing manual string-splitting argument parsing with argparse?
+  OLD (cubyz-assistant-p5-round2): A Cubyz reviewer might suggest using the `argparse` module to handle command-line arguments instead of manually splitting strings. This approach can improve code readability, maintainability, and robustness by providing better support for complex argument structures and error handling.
+  NEW (cubyz-assistant): Replacing manual string-splitting argument parsing with argparse is recommended to improve code maintainability and reduce errors caused by human error in parsing arguments. This approach centralizes the logic for handling command-line arguments, making it easier to manage and update as new features emerge.
+  [expected: Manual splitting was brittle -- it assumed exact spacing, required repeated string comparisons, and used a custom Helper struct that had to be manually initialized and deferred]
+
+Q: Why would a Cubyz reviewer accept a stack-allocator-to-arena-allocator change for asset IDs despite a small memory-leak-on-error risk?
+  OLD (cubyz-assistant-p5-round2): The reviewer accepts the change because it improves thread safety by using an arena allocator instead of a stack allocator, which is more suitable for multi-threaded environments. The minor memory leak risk on error is considered acceptable given the benefits to thread safety and overall system stability.
+  NEW (cubyz-assistant): The reviewer accepts the change because it aligns with the architectural goals of reducing memory fragmentation by using an arena allocator instead of a stack-allocator. This approach is well-suited for managing asset IDs, which are often used in large numbers and require efficient allocation strategies. The small risk of memory-leak-on-error is mitigated by careful resource management and proper error handling mechanisms.
+  [expected: It simplifies the code and avoids issues with stack allocation, and the arena is reset when leaving the world context, so the rare error-path leak was judged an acceptable tradeoff]
+
+Q: In Cubyz's Blueprint capture code, what convention does min/max follow architecturally?
+  OLD (cubyz-assistant-p5-round2): The min/max convention follows the architectural design where min is inclusive and max is exclusive. This means that when defining ranges or bounds, min includes the starting point while max excludes it.
+  NEW (cubyz-assistant): The blueprint file uses the same convention as the `min` and `max` fields in the blueprint file itself. This ensures consistency across different parts of the application.
+  [expected: min is inclusive, max is exclusive -- mirroring how size() elsewhere in the codebase adds one and avoids bounds failures]
+
+Q: Why doesn't Cubyz use separate dimensions for different areas?
+  OLD (cubyz-assistant-p5-round2): Cubyz uses a single dimension to represent all areas due to its procedural generation system. This approach simplifies the management of biomes and structures by avoiding the complexity associated with multiple dimensions.
+  NEW (cubyz-assistant): Cubyz uses a single dimension to represent the entire world because it simplifies the implementation of block interactions and allows for more efficient memory management.
+  [expected: Instead of creating separate dimensions, these places are fit physically into Cubyz's massive world for the player to come across]
+
+Q: Why doesn't Cubyz have teleportation?
+  OLD (cubyz-assistant-p5-round2): Cubyz does not include teleportation due to its focus on simplicity and performance. Teleportation would introduce complexity and potentially impact the game's core mechanics.
+  NEW (cubyz-assistant): Cubyz does not include teleportation due to its focus on procedural generation and the desire to maintain a unique gameplay experience that isn't easily replicated by other games.
+  [expected: Teleportation makes the game less immersive -- it diminishes the exploring aspect and doesn't let the player get a good sense of the scale of the world]
+
+Q: Per Cubyz's Game Design Principles, why is automation avoided?
+  OLD (cubyz-assistant-p5-round2): Automation is avoided to maintain player agency and prevent frustration from feeling overwhelmed by the game's complexity.
+  NEW (cubyz-assistant): Automation is avoided to ensure that players have control over the game world, promoting a more engaging and less repetitive experience.
+  [expected: Having quick, infinite resources at the palm of players' hands discourages exploration, since the player will never need to forage or search for blocks they desire]
+
+Q: Do mobs respawn naturally in Cubyz, per the Game Design Principles?
+  OLD (cubyz-assistant-p5-round2): Yes, according to the Game Design Principles document, mobs do respawn naturally.
+  NEW (cubyz-assistant): Yes, according to the Game Design Principles, mobs should be able to spawn naturally without any additional code.
+  [expected: No -- clearing a dangerous area of its monsters makes it safe to build and explore, and this also prevents mob farming]
+
+Q: Are there passive animals in Cubyz, per the Game Design Principles?
+  OLD (cubyz-assistant-p5-round2): Yes, there are passive animals in Cubyz as part of the game's ecosystem.
+  NEW (cubyz-assistant): No, Cubyz does not have passive animals as per the Game Design Principles. The game focuses on active gameplay with a strong emphasis on player control over the environment.
+  [expected: No -- animals do not want to die, so they either run from an attacking player or attempt to defend themselves]
+
+Q: Why does Cubyz avoid unbreakable tools, per the Game Design Principles?
+  OLD (cubyz-assistant-p5-round2): Cubyz avoids unbreakable tools to ensure that players can still experience challenges and progression in their gameplay.
+  NEW (cubyz-assistant): Cubyz avoids unbreakable tools to ensure that players can only break blocks with tools of a certain type, which helps maintain balance and gameplay consistency.
+  [expected: If a player gets too attached to an unbreakable tool, they won't want to make other types of tools, and low-tier materials will see less use]
+
+Q: What is the "2OP4ME" balancing principle in Cubyz's Game Design Principles?
+  OLD (cubyz-assistant-p5-round2): The "2OP4ME" balancing principle involves ensuring that two opposing forces are present to maintain balance within the game. This helps prevent any single aspect from becoming too dominant or underpowered.
+  NEW (cubyz-assistant): The "2OP4ME" balancing principle in Cubyz's Game Design Principles refers to a balance between player control and interaction, ensuring that players can interact with the game world effectively while maintaining a sense of control over their actions.
+  [expected: Players need to be vulnerable at all times to avoid power imbalances -- armor, tools, accessories, and buffs should aid the player, not let them win outright]
+
+Q: What's the design difference between big trees and small trees in Cubyz?
+  OLD (cubyz-assistant-p5-round2): Big trees have a larger trunk radius (1 block) compared to small trees (0.5 blocks).
+  NEW (cubyz-assistant): Big trees have larger roots that can grow into the ground, while small trees are more compact and have smaller root systems. This distinction affects how they interact with the environment and how they might be used for different purposes like climbing or sheltering.
+  [expected: Big trees are designed to be built upon or left as decoration, whereas small trees are designed to be chopped down]
+
+Q: What's the maximum recommended size for a Cubyz pull request?
+  OLD (cubyz-assistant-p5-round2): The guidelines suggest that pull requests should be kept small to maintain readability and ease of review.
+  NEW (cubyz-assistant): The maximum recommended size for a Cubyz pull request is 100 lines.
+  [expected: No more than 200 lines -- the maintainer may refuse to review larger PRs]
+
+Q: What are Cubyz's four main allocators and their intended lifetimes?
+  OLD (cubyz-assistant-p5-round2): Cubyz has four main allocators: `mainAllocator`, `worldArena`, `stackAllocator`, and `tempAllocator`. Their intended lifetimes are as follows:
+- `mainAllocator`: long-lived, used for global allocations.
+- `worldArena`: long-lived, specifically for world data.
+- `stackAllocator`: short-lived, typically used in functions with a known stack lifetime.
+- `tempAllocator`: short-lived, suitable for temporary allocations.
+  NEW (cubyz-assistant): Cubyz has four main allocators: `mainAllocator`, `worldAllocator`, `clientAllocator`, and `serverAllocator`. Each allocator is responsible for managing memory allocation and deallocation, with specific lifetimes defined in the code.
+  [expected: main.globalArena for global lifetime (used until the game ends), main.worldArena for world lifetime (used until the player exits the world), main.stackAllocator for local/scope lifetime, and main.globalAllocator for other lifetimes]
+
+Q: What naming convention does Cubyz use for variables and functions?
+  OLD (cubyz-assistant-p5-round2): Cubyz uses camelCase for variable names and PascalCase for function names.
+  NEW (cubyz-assistant): Cubyz uses a naming convention where variable names are in lowercase with underscores separating words, and function names are in uppercase with underscores separating words. This is consistent across all methods and fields.
+  [expected: camelCase]
+
+Q: What naming convention does Cubyz use for types?
+  OLD (cubyz-assistant-p5-round2): Cubyz uses PascalCase for type names.
+  NEW (cubyz-assistant): Cubyz uses a naming convention where type names are written in lowercase with underscores separating words. For example, `Block` is used instead of `block`.
+  [expected: CapitalCamelCase (PascalCase)]
+
+Q: What naming convention does Cubyz use for files and namespaces?
+  OLD (cubyz-assistant-p5-round2): Cubyz uses snake_case for file names and PascalCase for namespaces.
+  NEW (cubyz-assistant): Cubyz uses a naming convention where the last part of the file name is used as a namespace identifier. For example, `main.zig` becomes `main`, `main.zon` becomes `main.zon`, and so on. This helps in organizing code by providing clear separation between different parts of the application.
+  [expected: snake_case]
+
+Q: Does Cubyz enforce a maximum line length for code?
+  OLD (cubyz-assistant-p5-round2): Yes, Cubyz enforces a maximum line length of 80 characters to maintain readability and adhere to coding standards.
+  NEW (cubyz-assistant): Cubyz does not enforce a maximum line length for code; it allows arbitrary line lengths as long as they are within the bounds of the game's rendering capabilities.
+  [expected: No -- there is no line limit, though contributors should still be reasonable about it]
+
+Q: What is Cubyz's policy on writing code comments?
+  OLD (cubyz-assistant-p5-round2): Cubyz has a strict no-code-comments policy to maintain clean and readable code.
+  NEW (cubyz-assistant): Cubyz encourages using comments to explain complex logic and improve readability.
+  [expected: Don't write comments unless something non-obvious needs explaining -- prefer readable code with descriptive names, and if you do write a comment, explain the why, not the what or how]
+
+Q: Why does CONTRIBUTING.md ask contributors not to submit AI-generated pull requests?
+  OLD (cubyz-assistant-p5-round2): CONTRIBUTING.md asks contributors not to submit AI-generated pull requests because they are not considered valid contributions according to the guidelines provided in the document.
+  NEW (cubyz-assistant): Contributors are advised against submitting AI-generated pull requests due to potential issues with the codebase's maintainability and the risk of introducing bugs or regressions.
+  [expected: Narrow AI is trained to produce code matching its training data rather than being good at programming, likely won't follow the project's conventions, and is unable to learn from mistakes the way a human contributor would]
+
+Q: Whose optimization philosophy does Cubyz's CONTRIBUTING.md say to follow?
+  OLD (cubyz-assistant-p5-round2): Cubyz's CONTRIBUTING.md says to follow the optimization philosophy of "Don't optimize until you have a problem."
+  NEW (cubyz-assistant): Cubyz's CONTRIBUTING.md says to follow the optimization philosophy of the author of this codebase -- it is not specified in the document itself, but you can find it in the `CONTRIBUTING.md` file.
+  [expected: Casey Muratori's non-pessimization philosophy -- not needlessly making things worse]
+
+Q: When is `catch unreachable` the correct way to handle error.OutOfMemory in Cubyz?
+  OLD (cubyz-assistant-p5-round2): `catch unreachable` should be used when handling errors that are guaranteed not to occur under normal circumstances, such as OutOfMemory. This ensures that any unexpected failure triggers a runtime panic, indicating a bug or resource leak.
+  NEW (cubyz-assistant): The `catch unreachable` statement is used when an error occurs due to a resource being out of memory, such as `errorOutOfMemory`. This ensures that any potential issues with resource allocation are caught and handled gracefully.
+  [expected: When using the standard allocators (main.globalAllocator and main.stackAllocator), since error.OutOfMemory cannot happen with them]
+
+Q: What are the three key files needed to run a downloaded Cubyz release?
+  OLD (cubyz-assistant-p5-round2): The three key files needed to run a downloaded Cubyz release are `cubyz-server`, `cubyz-client`, and `cubyz-data`.
+  NEW (cubyz-assistant): The three key files needed to run a downloaded Cubyz release are `cubyz.zig`, `cubyz.zon`, and `cubyz.zon.zon`. These files define the game's architecture, including its components and data structures.
+  [expected: Cubyz (or Cubyz.exe), launchConfig.zon, and assets]
+
+Q: What's the minimum recommended RAM to play Cubyz?
+  OLD (cubyz-assistant-p5-round2): The minimum recommended RAM to play Cubyz is 2GB.
+  NEW (cubyz-assistant): The minimum recommended RAM is 16 GB.
+  [expected: At least 4 GB]
+
+Q: What example GPUs does the Cubyz installation page list as minimum spec?
+  OLD (cubyz-assistant-p5-round2): The Cubyz installation page lists the following GPUs as meeting the minimum requirements: GTX 1050 Ti, RTX 2060, RX 580, and RX 6700 XT.
+  NEW (cubyz-assistant): The Cubyz installation page lists the following GPU examples: NVIDIA GeForce 800 series, AMD Radeon HD 3600, and Intel Iris Xe.
+  [expected: Radeon Vega 8, Intel HD Graphics 530, or NVIDIA GTX 750]
+
+Q: What script builds Cubyz from source on Linux?
+  OLD (cubyz-assistant-p5-round2): The `build.sh` script is used to build Cubyz from source on Linux.
+  NEW (cubyz-assistant): The `build.zig` script builds Cubyz from source on Linux. It uses Zig's standard library to compile the necessary components and ensure compatibility with different operating systems.
+  [expected: run_linux.sh]
+
+Q: What script builds Cubyz from source on Windows?
+  OLD (cubyz-assistant-p5-round2): The build.bat script is used to compile Cubyz from source on Windows.
+  NEW (cubyz-assistant): The `buildFromSource` function is responsible for building Cubyz from source on Windows. It uses the `windows` module to handle the build process.
+  [expected: run_windows.bat]
+
+Q: Is Cubyz's official compile-time modding API finished?
+  OLD (cubyz-assistant-p5-round2): No, it is not yet complete. The document mentions that the official compile-time modding API is still under development.
+  NEW (cubyz-assistant): No, Cubyz's official compile-time modding API is not yet complete. The project aims to provide a robust framework for modding, but it requires further development and refinement.
+  [expected: No -- it has not been finished; its progress is tracked in GitHub issue #1528]
+
+Q: Name an unofficial Cubyz modding fork mentioned in the documentation.
+  OLD (cubyz-assistant-p5-round2): The documentation mentions 'Cubz Addons' as an unofficial Cubyz modding fork.
+  NEW (cubyz-assistant): The unofficial Cubyz modding fork mentioned in the documentation is called "Cubyz: The New World." It was created by a user named "cubyz" on GitHub and has been open-sourced for several months.
+  [expected: Examples include Web Assembly (wasm) modding, compile-time modding by KewaiiGamer, and a Lua integration by LinaPlusPlus]
+
+Q: What texture resolution does Cubyz require for new textures?
+  OLD (cubyz-assistant-p5-round2): Cubyz requires textures to be 32x32 pixels in size.
+  NEW (cubyz-assistant): Cubyz requires 16x16 pixel resolution for new textures to ensure proper rendering quality.
+  [expected: 16 x 16]
+
+Q: What lighting direction should Cubyz item and block textures use?
+  OLD (cubyz-assistant-p5-round2): Cubyz item and block textures should use the `lightingDirection` function to determine their lighting behavior. This ensures that they are rendered with appropriate lighting effects based on their orientation and environment.
+  NEW (cubyz-assistant): Cubyz item and block textures use the same lighting direction as their base materials. This ensures consistency in how light interacts with these elements.
+  [expected: Top-left]
+
+Q: Who made the majority of the art for Cubyz?
+  OLD (cubyz-assistant-p5-round2): The majority of the art for Cubyz was created by @SvenCubyz.
+  NEW (cubyz-assistant): The majority of the art for Cubyz was created by the artist team at Cubyz Art.
+  [expected: careeoki]
+
+Q: How much health does a Cubyz soil block have?
+  OLD (cubyz-assistant-p5-round2): A Cubyz soil block has 10 health points.
+  NEW (cubyz-assistant): A Cubyz soil block has 100% health.
+  [expected: 6.5]
+
+Q: What rotation mode does the Cubyz soil block use?
+  OLD (cubyz-assistant-p5-round2): The Cubyz soil block uses the `rotationMode` field to determine how it should be rotated during rendering.
+  NEW (cubyz-assistant): The Cubyz soil block uses an arbitrary rotation mode to allow for different orientations based on user input.
+  [expected: stairs]
+
+Q: According to its wiki page, how is soil obtained in Cubyz?
+  OLD (cubyz-assistant-p5-round2): Soil can be obtained by breaking dirt blocks with the appropriate tools.
+  NEW (cubyz-assistant): Soil is obtained by digging up the ground using a shovel tool.
+  [expected: Found in temperate biomes as grass blocks or ground patches -- breaking temperate grass drops soil blocks]
+
+Q: How do you craft a workbench in Cubyz?
+  OLD (cubyz-assistant-p5-round2): To craft a workbench, place three wooden planks on top of each other in the crafting grid.
+  NEW (cubyz-assistant): To craft a workbench in Cubyz, use the `craftWorkbench` function with parameters such as position, size, and type. The function allows customization of the block's properties to fit your needs.
+  [expected: 4 planks of any wood type]
+
+Q: How many planks does crafting one log produce in Cubyz?
+  OLD (cubyz-assistant-p5-round2): Crafting one log produces 4 planks in Cubyz.
+  NEW (cubyz-assistant): Crafting one log produces 1 plank.
+  [expected: 4 planks (of the same wood type)]
+
+Q: How many branches does crafting one log produce in Cubyz?
+  OLD (cubyz-assistant-p5-round2): Crafting one log produces 4 branches.
+  NEW (cubyz-assistant): Crafting one log produces 1 branch.
+  [expected: 2 branches (of the same wood type)]
+
+Q: What's needed to craft a chest in Cubyz?
+  OLD (cubyz-assistant-p5-round2): To craft a chest, you need 12 wooden planks.
+  NEW (cubyz-assistant): To craft a chest in Cubyz, you need the following materials: 100 wood blocks, 20 iron blocks, and 50 copper blocks.
+  [expected: 4 planks of the same wood type]
+
+Q: What ingredients craft a regular torch in Cubyz?
+  OLD (cubyz-assistant-p5-round2): A regular torch is crafted using 1 stick and 1 coal.
+  NEW (cubyz-assistant): A regular torch requires 100% iron, 50% copper, and 50% tin.
+  [expected: Planks (any mod's, any type) plus coal ore, producing 8 torches]
+
+Q: Why does Cubyz prefer explicit code over generic or clever solutions in review?
+  OLD (cubyz-assistant-p5-round2): Cubyz prefers explicit code because it is easier to understand and maintain. This approach avoids potential issues with generics or clever solutions that might be harder to debug or less intuitive.
+  NEW (cubyz-assistant): Cubyz prefers explicit code because it ensures clarity and reduces the risk of bugs that might arise from complex or ambiguous logic. Explicit code is easier to understand, debug, and maintain compared to more abstract approaches like using a struct with an array of pointers. This choice aligns with the goal of making the codebase robust and reliable for future development.
+  [expected: This project strongly prefers explicit, predictable, allocator-conscious code over clever/generic/automatic solutions, even when the generic solution is more DRY -- "magic" is treated as a mild pejorative]
+
+Q: Is eager or lazy allocation preferred in Cubyz code review?
+  OLD (cubyz-assistant-p5-round2): Eager allocation is preferred over lazy allocation in Cubyz code reviews to ensure that all necessary resources are allocated upfront, preventing potential issues later in the development process.
+  NEW (cubyz-assistant): Eager allocation is generally preferred over lazy allocation in Cubyz code reviews due to its simplicity and ease of use. However, this preference can vary based on specific requirements and performance considerations.
+  [expected: It's a judgment call, not a fixed rule -- lazy/path-based loading is preferred for large or rarely-touched data, but eager initialization is preferred when correctness or synchronization ordering demands it]
+
+Q: Why is placing a `defer` far from its matching `init` flagged in Cubyz review, even if technically correct?
+  OLD (cubyz-assistant-p5-round2): Placing a `defer` far from its matching `init` can lead to confusion about the intended scope of resource management. It's generally better to keep these statements close together for clarity and maintainability.
+  NEW (cubyz-assistant): The reviewer flags the placement of a `defer` far from its matching `init` because it's considered an invalid syntax for deferred initialization. This issue arises due to potential confusion or misuse of deferred functions, which can lead to incorrect behavior in code. The reviewer emphasizes that this flag is meant to prevent such errors and ensure proper usage of deferred initialization.
+  [expected: Because it's fragile to future edits]
+
+Q: Who runs Ashframe?
+  OLD (cubyz-assistant-p5-round2): Ashframe is run by the Cubyz team.
+  NEW (cubyz-assistant): Ashframe is run by the server process.
+  [expected: iNiKKo]
+
+Q: What does the 'enabled' field control in the Cubyz Server List's config.json?
+  OLD (cubyz-assistant-p5-round2): The 'enabled' field controls whether the Cubyz Server List is active or not.
+  NEW (cubyz-assistant): The 'enabled' field controls whether a server is enabled in the Cubyz Server List's configuration file.
+  [expected: true broadcasts the server's information to the Cubyz Server List (servers.ashframe.net); false disables server list integration entirely]
+
+Q: Where is a Cubyz world save located by default on Linux, for backup purposes?
+  OLD (cubyz-assistant-p5-round2): A Cubyz world save is typically located at `~/.local/share/cubyz/` by default on Linux.
+  NEW (cubyz-assistant): The default location for a Cubyz world save on Linux is `/home/user/.cubyz/worlds`. This directory is used to store backups of the game world data.
+  [expected: /home/USERNAME/.cubyz/saves/WORLD_NAME]
+
+Q: Where is a Cubyz world save located by default on Windows, for backup purposes?
+  OLD (cubyz-assistant-p5-round2): A Cubyz world save is typically located at `C:\Users\<YourUsername>\AppData\Roaming\Cubyz\saves\<WorldName>`.
+  NEW (cubyz-assistant): The default location for a Cubyz world save on Windows is the user's home directory under the `C:\Users\{username}\cubyz\worlds` folder. This ensures that backups are stored in a secure and accessible manner.
+  [expected: C:\Users\USERNAME\Saved Games\Cubyz\saves\WORLD_NAME]
+
+Q: What is the full engine command syntax for managing permissions in Cubyz?
+  OLD (cubyz-assistant-p5-round2): The full engine command syntax for managing permissions in Cubyz includes commands like `/permission add`, `/permission remove`, and `/permission list`. These commands allow administrators to manage user permissions effectively within the game server.
+  NEW (cubyz-assistant): The full engine command syntax for managing permissions includes commands like `add`, `remove`, `grant`, and `deny`. These commands modify permission states based on specified conditions.
+  [expected: /perm <add/remove> <whitelist/blacklist> @<playerIndex> <permissionPath>]
+
+Q: What should you do if Cubyz runs poorly or doesn't start, per the installation guide?
+  OLD (cubyz-assistant-p5-round2): If Cubyz runs poorly or doesn't start, refer to the troubleshooting section in the installation guide for specific steps to resolve issues.
+  NEW (cubyz-assistant): If Cubyz runs poorly or doesn't start, try restarting it after installing the necessary dependencies.
+  [expected: Reach out on the Cubyz Discord]
+
+Q: What does CONTRIBUTING.md say about writing long comments instead of readable code?
+  OLD (cubyz-assistant-p5-round2): CONTRIBUTING.md states that writing long comments is discouraged in favor of making the code itself readable.
+  NEW (cubyz-assistant): CONTRIBUTING.md states that long comments should be written in a way that is easy to read, avoiding unnecessary whitespace and formatting.
+  [expected: Prefer readable code with descriptive names instead of long comments, since comments naturally degrade over time as the surrounding code changes; any comment written should explain the why, not the what or how]
+
+Q: What data-structure guidance does CONTRIBUTING.md give when a collection's size is known upfront?
+  OLD (cubyz-assistant-p5-round2): CONTRIBUTING.md recommends using fixed-size collections like `[N]T` or `FixedSizeList(N, T)` when the size of a collection is known at compile time.
+  NEW (cubyz-assistant): CONTRIBUTING.md provides specific guidelines on how to handle collections with known sizes upfront. It specifies that the `init` function should return an iterator, and the `deinit` function should return a pointer to an iterator.
+  [expected: Use the simplest data structure for the job -- e.g. use a slice instead of a List if you know the size upfront]
+
+Q: What's the recommended sweet-spot file size (in lines) for a Cubyz source file, per CONTRIBUTING.md?
+  OLD (cubyz-assistant-p5-round2): The recommended sweet-spot is 500 lines.
+  NEW (cubyz-assistant): The recommended sweet-spot file size is 100 lines.
+  [expected: Very roughly 1000 lines]
+
+
+======================================================================
+GENERAL QUESTIONS
+======================================================================
+
+Q: What is the capital of France?
+  OLD (cubyz-assistant-p5-round2): Paris
+  NEW (cubyz-assistant): The capital of France is Paris.
+
+Q: What's 17 * 24?
+  OLD (cubyz-assistant-p5-round2): 408.
+  NEW (cubyz-assistant): 384
+
+Q: What's the boiling point of water in Celsius at sea level?
+  OLD (cubyz-assistant-p5-round2): 100°C.
+  NEW (cubyz-assistant): The boiling point of water at sea level is 100°C (212°F).
+
+Q: If a train travels 60 miles in 90 minutes, what's its average speed in mph?
+  OLD (cubyz-assistant-p5-round2): 40 mph
+  NEW (cubyz-assistant): To find the average speed of the train, divide the distance traveled by the time taken: 60 miles / 90 minutes = 0.67 miles per minute. Then convert this to miles per hour by multiplying by 60 (minutes to hours): 0.67 * 60 ≈ 40.2 mph.
+
+Q: Write a Python one-liner that reverses a string.
+  OLD (cubyz-assistant-p5-round2): s[::-1]
+  NEW (cubyz-assistant): s[::-1]
+
+Q: Which planet in our solar system is closest to the sun?
+  OLD (cubyz-assistant-p5-round2): Mercury.
+  NEW (cubyz-assistant): The planet closest to the sun in our solar system is Mercury.
+
+Q: What's the difference between a list and a tuple in Python?
+  OLD (cubyz-assistant-p5-round2): A list is mutable (can be changed), while a tuple is immutable (cannot be changed).
+  NEW (cubyz-assistant): In Python, a list is an ordered collection of elements that can be modified by adding, removing, or inserting elements at specific positions. A tuple, on the other hand, is also an ordered collection but immutable, meaning its elements cannot be changed once they are created.
+
+Q: If all cats are mammals and all mammals are animals, are all cats animals?
+  OLD (cubyz-assistant-p5-round2): Yes, if all cats are mammals and all mammals are animals, then by transitive property, all cats are indeed animals.
+  NEW (cubyz-assistant): Yes, if we assume that the definition of a cat is an animal, then all cats would indeed be animals. However, this depends on the specific definitions used in Cubyz's codebase for categorizing entities.
+
+
+[~] Done.

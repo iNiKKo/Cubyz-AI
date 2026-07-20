@@ -32,9 +32,17 @@ EMBED_MODEL = "qwen3-embedding:4b"
 # 27% correct, 66% wrong, some regressions round over round) to serve standalone -- it's kept
 # here specifically for the voice/judgment it DID learn reliably (review reasoning, debugging
 # hypotheses, general capability), with this script's deterministic retrieval as the actual
-# factual backstop. Run merge_adapter.py + convert to GGUF + `ollama create cubyz-assistant`
-# before pointing this at the new name (see finetune/README.md "Current state").
-ANSWER_MODEL = "cubyz-assistant"
+# factual backstop. Run merge_adapter.py + convert to GGUF + `ollama create` before pointing this
+# at a new name.
+#
+# Naming convention (2026-07-20 onward): SNALE-AI-<prototype>-<params>, e.g. SNALE-AI-P6-0.6B.
+# Every past and future trained model should follow this pattern -- update this constant (and
+# `ollama create`/`ollama cp` the model under the matching name) each time the active model
+# changes, rather than reusing a generic name that hides which prototype/size actually produced
+# a given answer. The Qwen2.5-Coder-7B-Instruct round-2 adapter stays SNALE-AI-P5-7B (trained as
+# part of Prototype 5); the model-swap pivot to Qwen3.x on 2026-07-20 -- and everything since --
+# is Prototype 6, so its models are SNALE-AI-P6-<params>.
+ANSWER_MODEL = "SNALE-AI-P6-0.6B"
 KNOWLEDGE_DIR = os.path.join(REPO_ROOT, "knowledge_base")
 CACHE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "rag_index_cache.json")
 GLOBAL_TOP_K = 8      # best chunks overall, regardless of collection
@@ -195,7 +203,7 @@ def retrieve(query, index, global_top_k=GLOBAL_TOP_K, min_per_collection=MIN_PER
     return hits
 
 
-def ask(question, index, verbose=True):
+def ask(question, index, verbose=True, return_meta=False):
     hits = retrieve(question, index)
 
     # Present the single best-matching chunk LAST, right next to the user's question, not first.
@@ -237,7 +245,26 @@ def ask(question, index, verbose=True):
         # matters more here since this is a fact-lookup assistant, not creative writing.
         "options": {"temperature": 0.0, "num_ctx": 16384, "seed": 42},
     })
-    return result["message"]["content"]
+    answer = result["message"]["content"]
+    if not return_meta:
+        return answer
+
+    # Opt-in richer return for callers that want to show their work (chat_server.py's UI) --
+    # default stays a bare string so the CLI/batch-test callers above are untouched. Sources use
+    # the same `ordered` list already built for the prompt, not a fresh computation.
+    return {
+        "answer": answer,
+        "model": ANSWER_MODEL,
+        "embed_model": EMBED_MODEL,
+        "sources": [
+            {"collection": h["collection"], "filename": h["filename"], "score": round(h["_score"], 4)}
+            for h in reversed(ordered)  # best match first for display, opposite of the prompt order
+        ],
+        # Ollama's own token counts, not a local re-tokenization -- present whenever the running
+        # Ollama version reports them, None otherwise (older versions may omit these fields).
+        "prompt_tokens": result.get("prompt_eval_count"),
+        "response_tokens": result.get("eval_count"),
+    }
 
 
 def main():

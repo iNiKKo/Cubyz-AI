@@ -1,0 +1,1230 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[~] Loading 4-bit base model: Qwen/Qwen3-0.6B
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]/home/nick/.local/lib/python3.14/site-packages/bitsandbytes/backends/cuda/ops.py:213: FutureWarning: _check_is_size will be removed in a future PyTorch release along with guard_size_oblivious.     Use _check(i >= 0) instead.
+  torch._check_is_size(blocksize)
+Loading weights:   2%|▏         | 5/311 [00:00<00:06, 49.84it/s]Loading weights:  60%|██████    | 188/311 [00:00<00:00, 1091.83it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 1162.07it/s]
+/home/nick/.local/lib/python3.14/site-packages/bitsandbytes/backends/cuda/ops.py:468: FutureWarning: _check_is_size will be removed in a future PyTorch release along with guard_size_oblivious.     Use _check(i >= 0) instead.
+  torch._check_is_size(blocksize)
+[~] Loading LoRA adapter from /home/nick/Desktop/Cubyz-AI/finetune/training/output/cubyz-qlora/final_adapter
+
+======================================================================
+CUBYZ-SPECIFIC QUESTIONS (checking domain knowledge landed)
+======================================================================
+
+Q: What key moves the player forward in Cubyz?
+A: <think>
+
+</think>
+
+The arrow keys are used to move the player forward in Cubyz.
+   [expected: W]
+
+Q: How does Cubyz store its player position data over the network?
+A: <think>
+
+</think>
+
+Cubyz stores player position data over the network using the `send` function, which sends the position data to the server.
+   [expected: The playerPosition struct sends/receives updates, sent no more than once every 50ms]
+
+Q: What happens if I place a block ID that doesn't exist in an addon?
+A: <think>
+
+</think>
+
+If you place a block ID that doesn't exist in an addon, the game will display a message indicating that the block ID is not found.
+   [expected: Engine doesn't crash -- logs "Couldn't find block {id}. Replacing it with air..." and substitutes air]
+
+Q: Who currently maintains Cubyz, and when was it originally created?
+A: <think>
+
+</think>
+
+Cubyz is maintained by the original author, who is currently working on the project. The game was originally created in 2014.
+   [expected: Created Aug 22 2018 by zenith391 and ZaUserA; currently maintained by IntegratedQuantum]
+
+Q: In a Cubyz code review, what's the difference between when a change should get a debugging-style response vs a design-review response?
+A: <think>
+
+</think>
+
+The difference between a debugging-style response and a design-review response is that debugging-style responses are used to inform users about specific issues, while design-review responses are used to discuss the design of the code.
+   [expected: Debugging/diagnosis = a bug or 'why doesn't this work' issue; design-review = a design/style/architecture choice, not a bug]
+
+Q: Which key toggles fullscreen mode in Cubyz?
+A: <think>
+
+</think>
+
+The 'F' key toggles fullscreen mode in Cubyz.
+   [expected: F11]
+
+Q: How do you access the creative inventory in Cubyz?
+A: <think>
+
+</think>
+
+The `creativeInventory` is accessed using the `creativeInventory` function.
+   [expected: C]
+
+Q: What is the default multiplayer server port in Cubyz?
+A: <think>
+
+</think>
+
+The default multiplayer server port in Cubyz is 22222.
+   [expected: 47649]
+
+Q: How many hearts of health does the player start with, and what's the total HP?
+A: <think>
+
+</think>
+
+The player starts with 1 heart of health, and the total HP is 1.
+   [expected: 8 hearts, 16 total health]
+
+Q: Can the player heal in Cubyz right now?
+A: <think>
+
+</think>
+
+Yes, the player can heal in Cubyz. The `onHealth` function is responsible for handling health-related actions, including healing.
+   [expected: No -- there is currently no way to regain health other than dying]
+
+Q: What tool is used to damage/mine soil blocks in Cubyz?
+A: <think>
+
+</think>
+
+The tool used to damage/mine soil blocks in Cubyz is the "Mine" tool.
+   [expected: Shovers (shovels)]
+
+Q: How far can the Cubyz world extend on each axis?
+A: <think>
+
+</think>
+
+The Cubyz world is designed to extend up to 1000 blocks on each axis, with a maximum of 1000 blocks in any single direction.
+   [expected: 2 billion blocks on each axis]
+
+Q: What was Cubyz originally called before its current name?
+A: <think>
+
+</think>
+
+Cubyz was originally called "Cubyz" before its current name.
+   [expected: "Cubz"]
+
+Q: Is Cubyz available on Mac? Why or why not?
+A: <think>
+
+</think>
+
+Cubyz is not available on Mac. It is designed for Windows and Linux.
+   [expected: No -- Mac is not supported because it lacks OpenGL 4.3]
+
+Q: What does the checkResult function do for Vulkan results in Cubyz's renderer?
+A: <think>
+
+</think>
+
+The checkResult function verifies that Vulkan results are valid, ensuring that the Vulkan API is being used correctly and that the application is not encountering errors.
+   [expected: Logs a Vulkan error (unknown error code, or the specific error tag name) via std.log.err]
+
+Q: What is utils.NeverFailingAllocator in Cubyz?
+A: <think>
+
+</think>
+
+utils.NeverFailingAllocator is a Zig allocator that ensures memory allocation is safe even if the allocator is not available. It provides a way to safely allocate memory without causing an error.
+   [expected: An allocator interface that cannot return error.OutOfMemory]
+
+Q: How does Cubyz's BinaryWriter manage its buffer as data is written?
+A: <think>
+
+</think>
+
+Cubyz's BinaryWriter manages its buffer by writing data to it in sequence, ensuring that the buffer is properly filled with the data.
+   [expected: A dynamically growing buffer]
+
+Q: Why might a Cubyz reviewer prefer std.StringHashMap's getOrPut over a separate contains-check plus insert?
+A: <think>
+
+</think>
+
+The reviewer prefers std.StringHashMap's getOrPut over a separate contains-check plus insert because it avoids unnecessary checks for the presence of the key. This can improve performance by reducing the number of operations required to determine if a key exists.
+   [expected: getOrPut atomically retrieves-or-inserts in one operation instead of two lookups, reducing redundant memory accesses and complexity]
+
+Q: What's the default value for an item's food field in Cubyz if I don't set it?
+A: <think>
+
+</think>
+
+The default value for an item's food field is 0.0. If you don't set it, it will default to this value.
+   [expected: 0]
+
+Q: Why might a biome's custom sky color not show up in-game even though I set it in the Addon Creator?
+A: <think>
+
+</think>
+
+The issue is that the biome's custom sky color is not being applied to the game's UI. This means that the Addon Creator settings might not be sufficient to display the custom sky color in the UI, and you need to ensure that the custom sky color is set in the biome and also in the UI.
+   [expected: Format mismatch: the website exports skyColor/fogColor as a 3-component float vector, but the engine reads those fields as a packed u32 integer]
+
+Q: What key moves the player backward in Cubyz?
+A: <think>
+
+</think>
+
+The arrow keys are used to move the player backward in Cubyz.
+   [expected: S]
+
+Q: Which key strafes the player left in Cubyz?
+A: <think>
+
+</think>
+
+The left strafe key is 'W'.
+   [expected: A]
+
+Q: Which key strafes the player right in Cubyz?
+A: <think>
+
+</think>
+
+The right key strafes the player right in Cubyz.
+   [expected: D]
+
+Q: What key makes the player sprint in Cubyz?
+A: <think>
+
+</think>
+
+The player can sprint by pressing the 'S' key.
+   [expected: Left control]
+
+Q: What key makes the player jump in Cubyz?
+A: <think>
+
+</think>
+
+The player jumps by pressing the jump key.
+   [expected: Space]
+
+Q: How do you crouch in Cubyz?
+A: <think>
+
+</think>
+
+To crouch in Cubyz, you need to press the 'C' key. This will allow you to move your character into a crouched state.
+   [expected: Left shift]
+
+Q: What key toggles flying in Cubyz?
+A: <think>
+
+</think>
+
+The `toggleFlying` function toggles whether the player is flying or not, based on the `key` parameter.
+   [expected: F]
+
+Q: What key toggles ghost mode in Cubyz?
+A: <think>
+
+</think>
+
+The `toggleGhostMode` function toggles the ghost mode state.
+   [expected: G]
+
+Q: What key activates hyperspeed in Cubyz?
+A: <think>
+
+</think>
+
+Hyperspeed is activated by pressing the 'H' key.
+   [expected: H]
+
+Q: What button places a block in Cubyz?
+A: <think>
+
+</think>
+
+The 'Place' button places a block in Cubyz.
+   [expected: Right mouse button]
+
+Q: What button breaks a block in Cubyz?
+A: <think>
+
+</think>
+
+The 'Break' button in Cubyz is used to break a block.
+   [expected: Left mouse button]
+
+Q: How do you pick a block (select it into your hotbar) in Cubyz?
+A: <think>
+
+</think>
+
+To pick a block, use the `pick` function. This function allows you to select a block from the hotbar, which can be used for various actions like crafting or mining.
+   [expected: Middle mouse button]
+
+Q: What key drops an item in Cubyz?
+A: <think>
+
+</think>
+
+The `keyDrop` function drops an item when a key is pressed.
+   [expected: Q]
+
+Q: What key takes a background image/screenshot in Cubyz?
+A: <think>
+
+</think>
+
+The `onBackgroundImage` function is responsible for taking a background image/screenshot.
+   [expected: Print Screen]
+
+Q: What key opens the regular (non-creative) inventory in Cubyz?
+A: <think>
+
+</think>
+
+The 'F' key opens the regular (non-creative) inventory in Cubyz.
+   [expected: E]
+
+Q: How do you open chat in Cubyz?
+A: <think>
+
+</think>
+
+To open chat in Cubyz, you can use the `openChat` function. This function will display the chat window for you.
+   [expected: T]
+
+Q: What key or character opens the command line in Cubyz?
+A: <think>
+
+</think>
+
+The 'C' key opens the command line in Cubyz.
+   [expected: /]
+
+Q: What key hides the menu in Cubyz?
+A: <think>
+
+</think>
+
+The 'Esc' key hides the menu in Cubyz.
+   [expected: F1]
+
+Q: What key hides the display item in Cubyz?
+A: <think>
+
+</think>
+
+The 'Escape' key hides the display item in Cubyz.
+   [expected: F2]
+
+Q: What key toggles the debug overlay in Cubyz?
+A: <think>
+
+</think>
+
+The 'F' key toggles the debug overlay in Cubyz.
+   [expected: F3]
+
+Q: What key toggles the performance overlay in Cubyz?
+A: <think>
+
+</think>
+
+The `togglePerformanceOverlay` function toggles the visibility of the performance overlay.
+   [expected: F4]
+
+Q: What key toggles the GPU overlay in Cubyz?
+A: <think>
+
+</think>
+
+The `toggleOverlay` function toggles the GPU overlay.
+   [expected: F5]
+
+Q: What key toggles the network overlay in Cubyz?
+A: <think>
+
+</think>
+
+The `toggleNetworkOverlay` function toggles the visibility of the network overlay.
+   [expected: F6]
+
+Q: What key toggles the advanced network overlay in Cubyz?
+A: <think>
+
+</think>
+
+The `toggleAdvancedNetworkOverlay` function toggles the visibility of the advanced network overlay.
+   [expected: F7]
+
+Q: What key selects hotbar slot 10 in Cubyz?
+A: <think>
+
+</think>
+
+The `hotbarSelect` function is used to select the hotbar slot 10.
+   [expected: 0]
+
+Q: What key selects hotbar slot 11 in Cubyz?
+A: <think>
+
+</think>
+
+The `hotbar` function is used to select the hotbar slot 11.
+   [expected: - (minus)]
+
+Q: What key selects hotbar slot 12 in Cubyz?
+A: <think>
+
+</think>
+
+The `hotbar` function is used to select the hotbar slot 12.
+   [expected: = (equals)]
+
+Q: When was the project renamed from Cubz to Cubyz?
+A: <think>
+
+</think>
+
+The project was renamed from Cubz to Cubyz on 2019-07-15.
+   [expected: March 17, 2019, suggested by zenith391]
+
+Q: Why was Cubyz rewritten from Java to Zig?
+A: <think>
+
+</think>
+
+Cubyz was rewritten from Java to Zig to improve performance and maintainability, especially given the complexity of the game's architecture. The transition was necessary to ensure that the codebase remained up-to-date and efficient.
+   [expected: Java's garbage collector caused freeze-inducing lag spikes at the memory limit; Zig's cross-compilation support was also a major draw]
+
+Q: When was Cubyz version 0.0.0 released?
+A: <think>
+
+</think>
+
+Cubyz version 0.0.0 was released on 2019-07-12.
+   [expected: October 5, 2025]
+
+Q: What language was Cubyz originally written in before the Zig rewrite?
+A: <think>
+
+</think>
+
+Cubyz was originally written in Zig before the Zig rewrite.
+   [expected: Java]
+
+Q: What alternative languages did the Cubyz maintainer consider before choosing Zig for the rewrite?
+A: <think>
+
+</think>
+
+The maintainer considered alternative languages like Python, C++, and Rust before choosing Zig.
+   [expected: C++20 and Rust]
+
+Q: What does the energy/stomach bar do in Cubyz right now?
+A: <think>
+
+</think>
+
+The energy/stomach bar in Cubyz is used to manage player health and energy. It provides a way to recover health and energy when the player is in a state of hunger.
+   [expected: Nothing -- it's purely cosmetic, there's currently no way to gain or lose energy]
+
+Q: How many movement modes does the player have in Cubyz?
+A: <think>
+
+</think>
+
+The player has three movement modes: walk, jump, and run.
+   [expected: Three: walking, sprinting, and crouching]
+
+Q: How high can the player jump in Cubyz?
+A: <think>
+
+</think>
+
+The player can jump up to 1.5 times the height of the game window.
+   [expected: Enough to cross one whole block]
+
+Q: How many hotbar slots does Cubyz have by default?
+A: <think>
+
+</think>
+
+Cubyz has 12 hotbar slots by default.
+   [expected: 12]
+
+Q: How many items can a single inventory or hotbar slot stack in Cubyz?
+A: <think>
+
+</think>
+
+A single inventory or hotbar slot can stack up to 16 items in Cubyz.
+   [expected: 120]
+
+Q: How many slots does the main inventory have in Cubyz?
+A: <think>
+
+</think>
+
+The main inventory in Cubyz has 16 slots.
+   [expected: 20]
+
+Q: What tool is used to mine stone, metal, and gem blocks in Cubyz?
+A: <think>
+
+</think>
+
+The tool used to mine stone, metal, and gem blocks in Cubyz is a simple one.
+   [expected: Pickaxe]
+
+Q: What tool is used to mine wooden blocks in Cubyz?
+A: <think>
+
+</think>
+
+The tool used to mine wooden blocks in Cubyz is a pickaxe.
+   [expected: Axe]
+
+Q: What tool is used to harvest plants, leaves, and cloth in Cubyz?
+A: <think>
+
+</think>
+
+The tool used to harvest plants, leaves, and cloth in Cubyz is the shovel.
+   [expected: Sickle -- also the only way to actually collect plants/leaves, not possible bare-handed]
+
+Q: What happens if you use the wrong tool type on a block in Cubyz?
+A: <think>
+
+</think>
+
+If you use the wrong tool type on a block, it will break the block, causing a crash.
+   [expected: It deals the same damage as bare hands -- no bonus, no penalty]
+
+Q: What operating systems does Cubyz support?
+A: <think>
+
+</think>
+
+Cubyz supports Windows, macOS, and Linux.
+   [expected: Windows and Linux]
+
+Q: What OpenGL version does the Cubyz installation page list as the GPU requirement?
+A: <think>
+
+</think>
+
+The Cubyz installation page lists OpenGL 4.5 as the GPU requirement.
+   [expected: OpenGL 4.6 hardware support]
+
+Q: What command grants a player full admin permissions in Cubyz?
+A: <think>
+
+</think>
+
+The `grantAdmin` command grants a player full admin permissions in Cubyz.
+   [expected: /perm add whitelist @<playerIndex> /]
+
+Q: What command grants a player access to just the /spawn command in Cubyz?
+A: <think>
+
+</think>
+
+The `/spawn` command is used to spawn a player in Cubyz. It is not a command that grants access to other commands like `/help`.
+   [expected: /perm add whitelist @<playerIndex> /command/spawn]
+
+Q: What network protocol does Cubyz's server use for port forwarding?
+A: <think>
+
+</think>
+
+The server uses the `net` module to handle network protocols.
+   [expected: UDP]
+
+Q: In Cubyz's permission system, if a path is both whitelisted and blacklisted, which wins?
+A: <think>
+
+</think>
+
+The permission system uses a combination of `isWhitelist` and `isBlacklist` to determine the final result. If a path is both whitelisted and blacklisted, it means the path is not allowed, so the `isAllowed` function returns false.
+   [expected: The blacklist takes priority]
+
+Q: What is the root of Cubyz's permission tree, and what is its only child?
+A: <think>
+
+</think>
+
+The root of Cubyz's permission tree is the root node, which is the global permission tree. The only child of this root node is the global permission tree itself.
+   [expected: Root is /, and its only child is command]
+
+Q: What's the one field the Cubyz engine truly requires for a block addon to be valid?
+A: <think>
+
+</think>
+
+The one field the Cubyz engine truly requires for a block addon to be valid is the block's name.
+   [expected: .tags must be non-empty]
+
+Q: What rotation mode does a Cubyz block default to if .rotation is omitted?
+A: <think>
+
+</think>
+
+If .rotation is omitted, a Cubyz block defaults to a random rotation mode.
+   [expected: "cubyz:no_rotation"]
+
+Q: What rotation value must a block have for its ore properties to actually load in Cubyz?
+A: <think>
+
+</think>
+
+The rotation value must be set to 0.0001 to ensure that the ore properties are loaded correctly.
+   [expected: Exactly "cubyz:ore"]
+
+Q: What happens if a Cubyz block has ore properties but the wrong rotation mode?
+A: <think>
+
+</think>
+
+If a Cubyz block has ore properties but the wrong rotation mode, it will be removed from the inventory.
+   [expected: The engine logs "Ore must have rotation mode \"cubyz:ore\"!" and silently drops the ore properties]
+
+Q: What happens if a Cubyz block's tags field ends up empty?
+A: <think>
+
+</think>
+
+If a Cubyz block's tags field ends up empty, it means the block has no additional tags beyond what was already present. This could be due to a bug in the code that allows empty fields to be treated as invalid.
+   [expected: The engine logs "Block {id} is missing 'tags' field" but doesn't fail loading -- the block still exists but may not behave correctly]
+
+Q: What does Cubyz's blockResistance field default to if omitted?
+A: <think>
+
+</think>
+
+If the blockResistance field is omitted, it defaults to 0.
+   [expected: 0]
+
+Q: What's the default stack size for a Cubyz item if not specified?
+A: <think>
+
+</think>
+
+The default stack size for a Cubyz item is 1.
+   [expected: 120]
+
+Q: What does a Cubyz item's display name fall back to if .name isn't set?
+A: <think>
+
+</think>
+
+A Cubyz item's display name falls back to its .name if .name is not set.
+   [expected: Its own item id]
+
+Q: Which four Cubyz item material fields have no soft default and fall back to exactly 0 if missing?
+A: <think>
+
+</think>
+
+The four fields that have no soft default and fall back to exactly 0 if missing are `amount`, `weight`, `maxAmount`, and `maxWeight`.
+   [expected: durability, massDamage, hardnessDamage, and swingSpeed]
+
+Q: What happens if durability is missing from a Cubyz item's material block?
+A: <think>
+
+</think>
+
+If durability is missing from a Cubyz item's material block, the item will be considered as having no durability, and its durability will be set to 0.
+   [expected: It falls back to 0, meaning the item breaks instantly]
+
+Q: What's the default value for textureRoughness in a Cubyz item's material block?
+A: <think>
+
+</think>
+
+The default value for textureRoughness in a Cubyz item's material block is 0.5.
+   [expected: 1.0 -- the one material field that does have a real default]
+
+Q: What do min/max radius default to for a Cubyz biome if not set?
+A: <think>
+
+</think>
+
+The default min/max radius for a Cubyz biome is set to 0.5.
+   [expected: 256]
+
+Q: What does a Cubyz biome's music field default to if omitted?
+A: <think>
+
+</think>
+
+The music field defaults to an empty string if omitted.
+   [expected: "cubyz:totaldemented/cubyz"]
+
+Q: What music does the Addon Creator website itself default to for biomes, and how does that differ from the engine's default?
+A: <think>
+
+</think>
+
+The Addon Creator website uses a specific music file for biomes, while the engine uses a different one. This difference is due to the specific music files used in the Addon Creator and the engine.
+   [expected: The website defaults to 'cubyz:sunrise', which only matters if you hand-edit and drop the field -- the engine's own default is 'cubyz:totaldemented/cubyz']
+
+Q: What's the known bug with the 'valid player spawn' checkbox in the Addon Creator?
+A: <think>
+
+</think>
+
+The 'valid player spawn' checkbox in the Addon Creator has been reported to cause a crash when the player is not logged in. This issue is being addressed in the next release.
+   [expected: The website exports it as .isValidPlayerSpawn but the engine actually reads .validPlayerSpawn (no 'is' prefix), so the value never gets picked up and falls back to false]
+
+Q: What tag convention do cave biomes need in Cubyz, and what happens if it's missing?
+A: <think>
+
+</think>
+
+Cave biomes require the `cave` tag in Cubyz. If this tag is missing, the biome will be considered a non-cave biome.
+   [expected: A tag ending in _layer -- otherwise the engine logs "Cave biome {id} is missing a '_layer' tag to assign it to a cave layer."]
+
+Q: What does the .reversible field do on a Cubyz recipe, and what's its default?
+A: <think>
+
+</think>
+
+The .reversible field indicates whether the recipe is reversible, meaning it can be reversed to produce the same result. The default value is false.
+   [expected: If true, the engine auto-generates the reverse recipe (output becomes input and vice versa); defaults to false, and the website doesn't expose it]
+
+Q: What's the limitation on a reversible Cubyz recipe?
+A: <think>
+
+</think>
+
+The limitation on a reversible Cubyz recipe is that it must be reversible, meaning that the recipe can be reversed to produce the same result.
+   [expected: It only works for a recipe with exactly one input and one output -- on a multi-ingredient recipe it fails with error.InvalidReversibleRecipe]
+
+Q: What does a Cubyz entity model's .height field default to if omitted, and how does that differ from the website?
+A: <think>
+
+</think>
+
+The .height field in Cubyz entities defaults to 0 if omitted, while the website specifies the height as a field.
+   [expected: 1, but the Addon Creator website's own form defaults to 2.0 instead -- this only diverges for hand-written files]
+
+Q: What coordinate system does a Cubyz entity model default to?
+A: <think>
+
+</think>
+
+A Cubyz entity model defaults to a 32x32 coordinate system.
+   [expected: .right_handed_z_up]
+
+Q: What happens if a Cubyz particle definition is missing its .texture field?
+A: <think>
+
+</think>
+
+If a Cubyz particle definition is missing its .texture field, it will be treated as a null value, which will cause an error during initialization.
+   [expected: The engine logs "Particle texture id was not specified for {id}" and the particle type fails to register entirely -- unlike most particle fields, this one has no fallback]
+
+Q: What's the dimension requirement for a Cubyz particle's base texture?
+A: <think>
+
+</think>
+
+The base texture for a Cubyz particle has a dimension requirement of 16x16.
+   [expected: The texture's height must be an exact multiple of its width, since it's used to slice animation frames]
+
+Q: What unit are particle rotation velocity fields in on the Addon Creator website versus internally in the engine?
+A: <think>
+
+</think>
+
+Particle rotation velocity fields in the Addon Creator website are not the same as internally used in the engine.
+   [expected: Degrees on the website; the engine converts to radians internally after loading, so the stored file value still matches what you typed]
+
+Q: Why would a Cubyz reviewer push back on using a Hashmap for random indexing into tickable blocks?
+A: <think>
+
+</think>
+
+The reviewer suggests using a HashMap for random indexing into tickable blocks to avoid potential issues with thread safety and ensure that the indexing process is thread-safe.
+   [expected: Hashmaps have average O(1) lookups but can degrade to O(n) worst case, and maintaining a list of tickable blocks was already being reconsidered -- adding this now looked like premature optimization]
+
+Q: Why might a Cubyz reviewer suggest replacing manual string-splitting argument parsing with argparse?
+A: <think>
+
+</think>
+
+The reviewer suggests using argparse for more robust and flexible argument parsing, which can handle various types of arguments and provide better error handling.
+   [expected: Manual splitting was brittle -- it assumed exact spacing, required repeated string comparisons, and used a custom Helper struct that had to be manually initialized and deferred]
+
+Q: Why would a Cubyz reviewer accept a stack-allocator-to-arena-allocator change for asset IDs despite a small memory-leak-on-error risk?
+A: <think>
+
+</think>
+
+The reviewer accepts the change because it aligns with the project's goals of maintaining thread safety and ensuring that the allocator is used in a way that doesn't introduce unnecessary memory leaks. The reviewer also acknowledges the potential risk of a small memory-leak-on-error, which is a concern, but the project may have other factors in play that outweigh this risk.
+   [expected: It simplifies the code and avoids issues with stack allocation, and the arena is reset when leaving the world context, so the rare error-path leak was judged an acceptable tradeoff]
+
+Q: In Cubyz's Blueprint capture code, what convention does min/max follow architecturally?
+A: <think>
+
+</think>
+
+The Blueprint capture code uses a specific architecture convention for min/max, which is defined in the `BlueprintCapture.zig` file.
+   [expected: min is inclusive, max is exclusive -- mirroring how size() elsewhere in the codebase adds one and avoids bounds failures]
+
+Q: Why doesn't Cubyz use separate dimensions for different areas?
+A: <think>
+
+</think>
+
+Cubyz uses a single dimension for all areas to optimize memory usage and improve performance.
+   [expected: Instead of creating separate dimensions, these places are fit physically into Cubyz's massive world for the player to come across]
+
+Q: Why doesn't Cubyz have teleportation?
+A: <think>
+
+</think>
+
+Cubyz does not have teleportation due to the complexity of the game's mechanics and the need for a more complex system to handle it.
+   [expected: Teleportation makes the game less immersive -- it diminishes the exploring aspect and doesn't let the player get a good sense of the scale of the world]
+
+Q: Per Cubyz's Game Design Principles, why is automation avoided?
+A: <think>
+
+</think>
+
+Automation is avoided to ensure that the game remains a unique experience, avoiding repetition and maintaining a balance between complexity and simplicity.
+   [expected: Having quick, infinite resources at the palm of players' hands discourages exploration, since the player will never need to forage or search for blocks they desire]
+
+Q: Do mobs respawn naturally in Cubyz, per the Game Design Principles?
+A: <think>
+
+</think>
+
+Yes, mobs respawning naturally in Cubyz, as per the Game Design Principles. This ensures a smooth gameplay experience and maintains consistency across all game modes.
+   [expected: No -- clearing a dangerous area of its monsters makes it safe to build and explore, and this also prevents mob farming]
+
+Q: Are there passive animals in Cubyz, per the Game Design Principles?
+A: <think>
+
+</think>
+
+No, there are no passive animals in Cubyz. The game focuses on creating a world where players can interact with and manipulate elements, such as trees, to achieve various goals. The design principles emphasize active participation rather than passive animals.
+   [expected: No -- animals do not want to die, so they either run from an attacking player or attempt to defend themselves]
+
+Q: Why does Cubyz avoid unbreakable tools, per the Game Design Principles?
+A: <think>
+
+</think>
+
+Cubyz avoids unbreakable tools to ensure they are not used for tasks that require them to be broken, thereby maintaining the balance between tool usage and the game's mechanics.
+   [expected: If a player gets too attached to an unbreakable tool, they won't want to make other types of tools, and low-tier materials will see less use]
+
+Q: What is the "2OP4ME" balancing principle in Cubyz's Game Design Principles?
+A: <think>
+
+</think>
+
+The "2OP4ME" balancing principle in Cubyz's Game Design Principles is a method for balancing gameplay by ensuring that the difficulty is appropriate for the player's skill level. This principle emphasizes the importance of maintaining a consistent difficulty curve throughout the game.
+   [expected: Players need to be vulnerable at all times to avoid power imbalances -- armor, tools, accessories, and buffs should aid the player, not let them win outright]
+
+Q: What's the design difference between big trees and small trees in Cubyz?
+A: <think>
+
+</think>
+
+Big trees in Cubyz are designed to have a larger root system, while small trees have smaller root systems. This difference is due to the game's design where big trees are considered more significant, and their roots are larger than the tree itself.
+   [expected: Big trees are designed to be built upon or left as decoration, whereas small trees are designed to be chopped down]
+
+Q: What's the maximum recommended size for a Cubyz pull request?
+A: <think>
+
+</think>
+
+The maximum recommended size for a Cubyz pull request is 100 lines.
+   [expected: No more than 200 lines -- the maintainer may refuse to review larger PRs]
+
+Q: What are Cubyz's four main allocators and their intended lifetimes?
+A: <think>
+
+</think>
+
+Cubyz's four main allocators are `main`, `main2`, `main3`, and `main4`. Each has a specific lifetime: `main` is used for the main thread, `main2` for the main thread, `main3` for the main thread, and `main4` for the main thread.
+   [expected: main.globalArena for global lifetime (used until the game ends), main.worldArena for world lifetime (used until the player exits the world), main.stackAllocator for local/scope lifetime, and main.globalAllocator for other lifetimes]
+
+Q: What naming convention does Cubyz use for variables and functions?
+A: <think>
+
+</think>
+
+Cubyz uses a naming convention that follows the style of the Zig standard, which includes using underscores for lowercase identifiers. This ensures consistency and readability in the codebase.
+   [expected: camelCase]
+
+Q: What naming convention does Cubyz use for types?
+A: <think>
+
+</think>
+
+Cubyz uses a naming convention that follows the Zig standard, which includes using underscores for lowercase identifiers. This ensures consistency and readability in the codebase.
+   [expected: CapitalCamelCase (PascalCase)]
+
+Q: What naming convention does Cubyz use for files and namespaces?
+A: <think>
+
+</think>
+
+Cubyz uses a naming convention where the first part of the file name is the package name, and the second part is the file name. This is consistent with the naming conventions used in Zig.
+   [expected: snake_case]
+
+Q: Does Cubyz enforce a maximum line length for code?
+A: <think>
+
+</think>
+
+Cubyz does not enforce a maximum line length for code. The game allows for arbitrary line lengths as long as they are not excessively long.
+   [expected: No -- there is no line limit, though contributors should still be reasonable about it]
+
+Q: What is Cubyz's policy on writing code comments?
+A: <think>
+
+</think>
+
+Cubyz's policy on writing code comments is to ensure they are clear and helpful, not just for readability.
+   [expected: Don't write comments unless something non-obvious needs explaining -- prefer readable code with descriptive names, and if you do write a comment, explain the why, not the what or how]
+
+Q: Why does CONTRIBUTING.md ask contributors not to submit AI-generated pull requests?
+A: <think>
+
+</think>
+
+The purpose of this guideline is to ensure that contributors are aware of the specific requirements for contributing to the project. By avoiding AI-generated pull requests, contributors can maintain the quality and relevance of the code they submit.
+   [expected: Narrow AI is trained to produce code matching its training data rather than being good at programming, likely won't follow the project's conventions, and is unable to learn from mistakes the way a human contributor would]
+
+Q: Whose optimization philosophy does Cubyz's CONTRIBUTING.md say to follow?
+A: <think>
+
+</think>
+
+Cubyz's CONTRIBUTING.md states that the optimization philosophy should be followed by the author of the project.
+   [expected: Casey Muratori's non-pessimization philosophy -- not needlessly making things worse]
+
+Q: When is `catch unreachable` the correct way to handle error.OutOfMemory in Cubyz?
+A: <think>
+
+</think>
+
+`catch unreachable` is used to handle errors that are not recoverable, such as out-of-memory situations. In Cubyz, this is particularly relevant when dealing with large data structures or resources that cannot be safely accessed or managed without causing a crash.
+   [expected: When using the standard allocators (main.globalAllocator and main.stackAllocator), since error.OutOfMemory cannot happen with them]
+
+Q: What are the three key files needed to run a downloaded Cubyz release?
+A: <think>
+
+</think>
+
+The three key files needed to run a downloaded Cubyz release are `main.zig`, `main.zon`, and `main.zon.zig`. These files define the game's architecture and logic.
+   [expected: Cubyz (or Cubyz.exe), launchConfig.zon, and assets]
+
+Q: What's the minimum recommended RAM to play Cubyz?
+A: <think>
+
+</think>
+
+The minimum recommended RAM is 16 GB.
+   [expected: At least 4 GB]
+
+Q: What example GPUs does the Cubyz installation page list as minimum spec?
+A: <think>
+
+</think>
+
+The Cubyz installation page lists the minimum required GPU specifications for the game.
+   [expected: Radeon Vega 8, Intel HD Graphics 530, or NVIDIA GTX 750]
+
+Q: What script builds Cubyz from source on Linux?
+A: <think>
+
+</think>
+
+The script `build.zig` is used to build Cubyz from source on Linux.
+   [expected: run_linux.sh]
+
+Q: What script builds Cubyz from source on Windows?
+A: <think>
+
+</think>
+
+The script `build.zig` is used to build Cubyz from source on Windows.
+   [expected: run_windows.bat]
+
+Q: Is Cubyz's official compile-time modding API finished?
+A: <think>
+
+</think>
+
+Yes, Cubyz's official compile-time modding API is now complete. This includes all necessary functions and data structures for modding, making it easier for developers to add new content without needing to modify existing code.
+   [expected: No -- it has not been finished; its progress is tracked in GitHub issue #1528]
+
+Q: Name an unofficial Cubyz modding fork mentioned in the documentation.
+A: <think>
+
+</think>
+
+The unofficial Cubyz modding fork mentioned in the documentation is called "Cubyz."
+   [expected: Examples include Web Assembly (wasm) modding, compile-time modding by KewaiiGamer, and a Lua integration by LinaPlusPlus]
+
+Q: What texture resolution does Cubyz require for new textures?
+A: <think>
+
+</think>
+
+Cubyz requires a texture resolution of 16x16 pixels for new textures.
+   [expected: 16 x 16]
+
+Q: What lighting direction should Cubyz item and block textures use?
+A: <think>
+
+</think>
+
+Cubyz item and block textures use the lighting direction specified in the `LightingDirection` struct.
+   [expected: Top-left]
+
+Q: Who made the majority of the art for Cubyz?
+A: <think>
+
+</think>
+
+The majority of the art for Cubyz is made by the artist and designer team, specifically the artist and designer team.
+   [expected: careeoki]
+
+Q: How much health does a Cubyz soil block have?
+A: <think>
+
+</think>
+
+A Cubyz soil block has 100 health.
+   [expected: 6.5]
+
+Q: What rotation mode does the Cubyz soil block use?
+A: <think>
+
+</think>
+
+The Cubyz soil block uses a rotation mode that allows for rotation around the x-axis.
+   [expected: stairs]
+
+Q: According to its wiki page, how is soil obtained in Cubyz?
+A: <think>
+
+</think>
+
+Soil is obtained by adding a small amount of sand to the game world.
+   [expected: Found in temperate biomes as grass blocks or ground patches -- breaking temperate grass drops soil blocks]
+
+Q: How do you craft a workbench in Cubyz?
+A: <think>
+
+</think>
+
+To craft a workbench in Cubyz, you need to place a block of wood in a specific position. The block must be placed in a way that allows it to be used as a workbench.
+   [expected: 4 planks of any wood type]
+
+Q: How many planks does crafting one log produce in Cubyz?
+A: <think>
+
+</think>
+
+Crafting one log in Cubyz produces 1 plank.
+   [expected: 4 planks (of the same wood type)]
+
+Q: How many branches does crafting one log produce in Cubyz?
+A: <think>
+
+</think>
+
+Crafting one log in Cubyz produces 1 branch.
+   [expected: 2 branches (of the same wood type)]
+
+Q: What's needed to craft a chest in Cubyz?
+A: <think>
+
+</think>
+
+To craft a chest in Cubyz, you need a block that is compatible with the game's block system. The specific requirements for this block are not provided in the given text.
+   [expected: 4 planks of the same wood type]
+
+Q: What ingredients craft a regular torch in Cubyz?
+A: <think>
+
+</think>
+
+A regular torch requires 1 piece of wood, 1 piece of coal, and 1 piece of ember.
+   [expected: Planks (any mod's, any type) plus coal ore, producing 8 torches]
+
+Q: Why does Cubyz prefer explicit code over generic or clever solutions in review?
+A: <think>
+
+</think>
+
+Cubyz prefers explicit code over generic or clever solutions because it ensures that the code is well-structured and maintainable, which is crucial for the game's performance and reliability.
+   [expected: This project strongly prefers explicit, predictable, allocator-conscious code over clever/generic/automatic solutions, even when the generic solution is more DRY -- "magic" is treated as a mild pejorative]
+
+Q: Is eager or lazy allocation preferred in Cubyz code review?
+A: <think>
+
+</think>
+
+Eager allocation is preferred in Cubyz code review for better performance and memory management. This approach ensures that resources are allocated only when needed, optimizing memory usage and potentially improving overall performance.
+   [expected: It's a judgment call, not a fixed rule -- lazy/path-based loading is preferred for large or rarely-touched data, but eager initialization is preferred when correctness or synchronization ordering demands it]
+
+Q: Why is placing a `defer` far from its matching `init` flagged in Cubyz review, even if technically correct?
+A: <think>
+
+</think>
+
+The reviewer is concerned about potential issues with the use of `defer` in the `init` method, which could lead to incorrect behavior if the `defer` is not properly managed. They believe that this approach might cause problems when the `init` method is called multiple times, especially if the `defer` is not properly initialized.
+   [expected: Because it's fragile to future edits]
+
+Q: Who runs Ashframe?
+A: <think>
+
+</think>
+
+Ashframe is run by the game's server.
+   [expected: iNiKKo]
+
+Q: What does the 'enabled' field control in the Cubyz Server List's config.json?
+A: <think>
+
+</think>
+
+The 'enabled' field controls whether the server is enabled in the Cubyz Server List.
+   [expected: true broadcasts the server's information to the Cubyz Server List (servers.ashframe.net); false disables server list integration entirely]
+
+Q: Where is a Cubyz world save located by default on Linux, for backup purposes?
+A: <think>
+
+</think>
+
+The default location for a Cubyz world save on Linux is `/home/user/.cubyz/worlds`.
+   [expected: /home/USERNAME/.cubyz/saves/WORLD_NAME]
+
+Q: Where is a Cubyz world save located by default on Windows, for backup purposes?
+A: <think>
+
+</think>
+
+The default location for a Cubyz world save on Windows is the folder `C:\Users\[Your Name]\.cubyz\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\worlds\world
+   [expected: C:\Users\USERNAME\Saved Games\Cubyz\saves\WORLD_NAME]
+
+Q: What is the full engine command syntax for managing permissions in Cubyz?
+A: <think>
+
+</think>
+
+The full engine command syntax for managing permissions in Cubyz is `cubyz perm <command> <args>`. This allows developers to specify the command and arguments for managing permissions.
+   [expected: /perm <add/remove> <whitelist/blacklist> @<playerIndex> <permissionPath>]
+
+Q: What should you do if Cubyz runs poorly or doesn't start, per the installation guide?
+A: <think>
+
+</think>
+
+If Cubyz runs poorly or doesn't start, you should try reinstalling the game.
+   [expected: Reach out on the Cubyz Discord]
+
+Q: What does CONTRIBUTING.md say about writing long comments instead of readable code?
+A: <think>
+
+</think>
+
+CONTRIBUTING.md states that long comments should be written in readable code, not in comments.
+   [expected: Prefer readable code with descriptive names instead of long comments, since comments naturally degrade over time as the surrounding code changes; any comment written should explain the why, not the what or how]
+
+Q: What data-structure guidance does CONTRIBUTING.md give when a collection's size is known upfront?
+A: <think>
+
+</think>
+
+CONTRIBUTING.md provides guidance on how to use a data-structure when the size of a collection is known upfront.
+   [expected: Use the simplest data structure for the job -- e.g. use a slice instead of a List if you know the size upfront]
+
+Q: What's the recommended sweet-spot file size (in lines) for a Cubyz source file, per CONTRIBUTING.md?
+A: <think>
+
+</think>
+
+The recommended sweet-spot file size is 100 lines.
+   [expected: Very roughly 1000 lines]
+
+
+======================================================================
+GENERAL QUESTIONS (checking general capability wasn't damaged)
+======================================================================
+
+Q: What is the capital of France?
+A: <think>
+
+</think>
+
+The capital of France is Paris.
+
+Q: What's 17 * 24?
+A: <think>
+
+</think>
+
+17 * 24 = 408
+
+Q: What's the boiling point of water in Celsius at sea level?
+A: <think>
+
+</think>
+
+The boiling point of water at sea level is 100°C.
+
+Q: If a train travels 60 miles in 90 minutes, what's its average speed in mph?
+A: <think>
+
+</think>
+
+To find the average speed, we can use the formula: speed = distance / time. In this case, the distance is 60 miles and the time is 90 minutes. To convert the time from minutes to hours, we divide by 60. So, the average speed in miles per hour (mph) would be 60 / (90 / 60) = 40.
+
+Q: Write a Python one-liner that reverses a string.
+A: <think>
+
+</think>
+
+s = s[::-1]
+
+Q: Which planet in our solar system is closest to the sun?
+A: <think>
+
+</think>
+
+The planet closest to the sun in our solar system is Mercury.
+
+Q: What's the difference between a list and a tuple in Python?
+A: <think>
+
+</think>
+
+In Python, a list is an iterable collection of elements, while a tuple is a non-iterable collection of elements. Lists can be used to store multiple elements, whereas tuples cannot.
+
+Q: If all cats are mammals and all mammals are animals, are all cats animals?
+A: <think>
+
+</think>
+
+Yes, if all cats are mammals and all mammals are animals, then all cats are animals.
+
+
+[~] Done. Read every answer above -- specifically check the general questions
+    for anything degraded, repetitive, incoherent, or off-topic. That's the
+    'lobotomy' failure mode this whole pipeline was built to avoid.
