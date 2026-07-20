@@ -15,6 +15,8 @@ The reviewer points out a critical bug in the current implementation: uninitiali
 
 When using a world arena throughout gameplay, allocations are not resized but rather moved to different locations, leading to memory leaks until the world arena is reset. This can be mitigated by ensuring that any allocated resources are freed when they are no longer required. The reviewer specifically mentions the '2N' storage issue, where reallocations occur due to reaching capacity, and how this can lead to excessive memory usage if not properly managed.
 
+The code diff shows that the `loadModel` function now returns an optional pointer (`?*SbbGen`) instead of a non-optional pointer (`*SbbGen`). This change ensures that uninitialized objects are handled correctly. The reviewer also points out that uninitialized objects should have been removed to prevent memory leaks.
+
 ## Related Questions
 - What is the purpose of changing `loadModel` to return an optional pointer?
 - How does this change prevent uninitialized objects from being retained?

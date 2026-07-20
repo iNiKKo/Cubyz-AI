@@ -21,7 +21,7 @@ Pick a tier based on how hard the content is to analyze correctly (`easy` = shor
 `hard` = dense code or long files) -- this controls which volunteers' hardware get handed the
 chunk, not anything about correctness.
 
-**Naming determines how it's classified** (see `_classify_role_context()` in `server.py`):
+**Naming determines how it's classified** (see `_classify_role_context()` in `server_textual.py`):
 
 | Filename starts with... | Treated as |
 |---|---|
@@ -45,7 +45,7 @@ review comment + diff.
 ## 2. Does the data need to be organized/chunked before running RAG folding?
 
 **Only the placement above (tier + filename prefix) -- not the chunking itself.** Drop the whole
-raw file in; `rag_initialize_chunks()` (runs automatically every time `server.py` starts) splits
+raw file in; `rag_initialize_chunks()` (runs automatically every time `server_textual.py` starts) splits
 it into 150-line chunks with 30-line overlap and queues them. You never manually pre-split a doc.
 
 The one thing that *does* need to be correct before you drop a file in: it should read like an
@@ -59,21 +59,25 @@ becomes worth building -- not there today).
 
 ## 3. Run RAG folding
 
-1. Start (or restart) `pipeline_crunching/server.py`. It scans `organized_cubyz_dataset/` and
-   queues any new/changed chunks automatically.
-2. At the startup menu, choose **[1] LAUNCH IN RAG MODE**. The menu now shows live progress
-   (`[X/Y chunks]`) so you can see how much is left.
-3. Run `CUBYZ_FOLDING.py` (any volunteer machine, or your own) -- it auto-detects RAG mode from
+1. Start (or restart) `pipeline_crunching/server_textual.py`. It scans `organized_cubyz_dataset/`
+   and queues any new/changed chunks automatically. On a real terminal this opens the textual
+   admin console directly (no more numbered startup menu) -- pick **RAG** from the sidebar's
+   Campaign Mode selector. The header panel shows live progress (`completed/total (pct%)`) so you
+   can see how much is left. (Piped/non-interactive output, e.g. systemd, still falls back to the
+   old `server_startup_gate()` numbered menu since there's no console to pick a mode with there.)
+2. Run `CUBYZ_FOLDING.py` (any volunteer machine, or your own) -- it auto-detects RAG mode from
    the server and starts crunching. Output lands in `users/<user_id>/{wiki,codebase,addon_studio,github_reviews}.jsonl`.
-4. Repeat/leave running until the menu shows the RAG queue fully complete (or check
-   `GET /leaderboard`).
+3. Repeat/leave running until the admin console's header progress bar shows the RAG queue fully
+   complete (or check `GET /leaderboard`).
 
 ## 4. Fine-tune folding only runs after RAG folding is done
 
 This is now enforced, not just a convention to remember:
 
-- At the startup menu, choosing **[2] LAUNCH IN FINETUNE MODE** while RAG isn't finished shows a
-  warning with the real `X/Y` count and requires an explicit `y` to override.
+- Selecting **FINETUNE** from the admin console's sidebar Campaign Mode selector while RAG isn't
+  finished refuses the switch and shows the real `X/Y` count as a red hint under the selector,
+  reverting the radio button back to the current mode (`on_radio_set_changed` in
+  `server_textual.py`, which just calls the same `set_mode()` the HTTP endpoint uses underneath).
 - The live `POST /admin/mode?mode=finetune` endpoint returns `409 Conflict` under the same
   condition unless you pass `force=true`.
 
@@ -82,8 +86,9 @@ architectural codebase subset, `users/*/github_reviews.jsonl` -- see `finetune/R
 running it against a half-finished RAG campaign means training pairs get generated from
 incomplete/inconsistent source data.
 
-Once RAG is done, choose **[2]** normally and run `CUBYZ_FOLDING.py` again -- same client, it
-follows whatever mode the server is in. Output lands in `pairs/<user_id>/<source_type>_pairs.jsonl`.
+Once RAG is done, select **FINETUNE** in the sidebar and run `CUBYZ_FOLDING.py` again -- same
+client, it follows whatever mode the server is in. Output lands in
+`pairs/<user_id>/<source_type>_pairs.jsonl`.
 
 ## 5. What's the next step? Publishing crunched RAG output to the live site
 
@@ -132,11 +137,11 @@ what's live.
 
 ```
 1. Add raw source file -> organized_cubyz_dataset/{tier}/docs_*.md (or codebase_*/addon_creator_*)
-2. Restart pipeline_crunching/server.py -> auto-scans, auto-chunks, queues new work
-3. Startup menu: [1] RAG mode -> run CUBYZ_FOLDING.py until RAG queue is complete
+2. Restart pipeline_crunching/server_textual.py -> auto-scans, auto-chunks, queues new work
+3. Admin console sidebar: select RAG -> run CUBYZ_FOLDING.py until RAG queue is complete
 4. python3 pipeline_crunching/build_knowledge_base.py -> publishes to knowledge_base/
 5. Restart webapp/chat_server.py (or --rebuild) -> live site now answers from the new content
-6. Startup menu: [2] FINETUNE mode (blocked/warned if step 3 isn't actually done)
+6. Admin console sidebar: select FINETUNE (blocked/warned if step 3 isn't actually done)
    -> run CUBYZ_FOLDING.py until finetune queue is complete
 7. finetune/README.md stages 4-8 -> audit, assemble, mix, train, merge, deploy
 ```
