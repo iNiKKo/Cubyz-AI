@@ -250,6 +250,17 @@ def _relative_time(ago_seconds: float) -> str:
 def _mode_stats_file(mode: str):
     return {"rag": RAG_STATS_FILE, "finetune": FINETUNE_STATS_FILE, "audit": AUDIT_STATS_FILE}.get(mode)
 
+def _get_user_mode_work(user_key: str, mode: str, stats_dict: dict) -> float:
+    if not user_key or not stats_dict:
+        return 0.0
+    entry = stats_dict.get(user_key) or stats_dict.get(user_key.lower()) or {}
+    if mode in ("rag", "finetune"):
+        return float(entry.get("chunks_completed", 0))
+    elif mode == "audit":
+        return float(entry.get("chunks_audited", 0) + entry.get("reviews_done", 0) + entry.get("fixes_applied", 0))
+    else:
+        return float(entry.get("chunks_completed", 0) or entry.get("chunks_audited", 0))
+
 def _gpu_tier_from_vram(total_vram_gb: float) -> str:
     """Mirrors CUBYZ_FOLDING.py's gpu_tier_from_vram() exactly -- same thresholds -- so the
     dashboard's explanation of a capability-based CPU-over-GPU choice (see
@@ -597,8 +608,24 @@ def _build_connections_lines(width: int = None) -> list:
     itself unchanged from the original hand-rolled-ANSI version. This was never where any of the
     real redraw bugs lived; it's pure content generation."""
     mode = CURRENT_MODE
-    stats_file = _mode_stats_file(mode)
-    user_stats = read_json_file(stats_file, {}) if stats_file else {}
+    if mode in ("rag", "finetune", "audit"):
+        stats_file = _mode_stats_file(mode)
+        mode_user_stats = read_json_file(stats_file, {}) if stats_file else {}
+        total_campaign_work = sum(_get_user_mode_work(u, mode, mode_user_stats) for u in mode_user_stats)
+    else:
+        rag_s = read_json_file(RAG_STATS_FILE, {})
+        fine_s = read_json_file(FINETUNE_STATS_FILE, {})
+        aud_s = read_json_file(AUDIT_STATS_FILE, {})
+        all_users = set(rag_s.keys()) | set(fine_s.keys()) | set(aud_s.keys())
+        mode_user_stats = {}
+        for u in all_users:
+            w_rag = _get_user_mode_work(u, "rag", rag_s)
+            w_fine = _get_user_mode_work(u, "finetune", fine_s)
+            w_aud = _get_user_mode_work(u, "audit", aud_s)
+            mode_user_stats[u.lower()] = {"work": w_rag + w_fine + w_aud}
+        total_campaign_work = sum(v["work"] for v in mode_user_stats.values())
+
+    user_stats = mode_user_stats
 
     # Real PANEL width, not a hardcoded guess and NOT the raw terminal width -- confirmed live
     # that using shutil.get_terminal_size() (the whole terminal) produced content wider than the
@@ -629,17 +656,17 @@ def _build_connections_lines(width: int = None) -> list:
     # ARE independent identities server-side, e.g. for per-lane audit model diversity), but they're
     # the same physical machine as their parent -- see _group_online_by_machine's comment. Grouped
     clusters = _group_online_by_machine(online)
-    # Calculate throughput and contribution % per machine
-    machine_throughputs = {}
+
+    # Calculate campaign work completed per machine for the active mode
+    machine_campaign_work = {}
     for pid, c_list in clusters.items():
-        m_tp = 0.0
+        m_w = 0.0
         for uid in [pid] + c_list:
-            if uid in online:
-                sp = (online_clients.get(uid) or {}).get("speed")
-                if sp and sp > 0:
-                    m_tp += 1.0 / sp
-        machine_throughputs[pid] = m_tp
-    total_network_tp = sum(machine_throughputs.values())
+            if mode in ("rag", "finetune", "audit"):
+                m_w += _get_user_mode_work(uid, mode, mode_user_stats)
+            else:
+                m_w += (mode_user_stats.get(uid.lower()) or {}).get("work", 0.0)
+        machine_campaign_work[pid] = m_w
 
     for parent_id in sorted(clusters):
         children = clusters[parent_id]
@@ -653,8 +680,9 @@ def _build_connections_lines(width: int = None) -> list:
         u_color = _user_color(parent_id)
         lane_word = "lane" if lane_count == 1 else "lanes"
 
-        m_tp = machine_throughputs.get(parent_id, 0.0)
-        contrib_str = f" • {m_tp / total_network_tp * 100.0:.1f}% contrib" if total_network_tp > 0 else ""
+        m_work = machine_campaign_work.get(parent_id, 0.0)
+        contrib_pct = (m_work / total_campaign_work * 100.0) if total_campaign_work > 0 else 0.0
+        contrib_str = f" • {contrib_pct:.1f}% contrib"
         title = f"─ {parent_id} ({lane_count} {lane_word}{contrib_str})" + " "
         badge_w = len(" ") + len("ONLINE") + len(" ─┐") + 1  # +1 for the leading fill space
         title = _truncate(title, max(1, box_w - badge_w - 1))

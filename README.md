@@ -328,7 +328,7 @@ To resolve long-standing terminal redraw artifacts, screen flickering, and ANSI 
 - **Server TUI (`pipeline_crunching/server_textual.py`):**
   - Interactive Textual application featuring a full-height sidebar (mode selection RadioSet, confirmation-guarded reset actions, advanced controls) and main panel (global campaign progress, per-machine connection clustering, and real-time event logs).
   - Machine clustering (`_group_online_by_machine` & `_fold_lane_children`) groups secondary lanes (dual-mode) and parallel workers under their parent machine ID, displaying all 4 concurrent lanes (`GPU`, `CPU`, `P1`, `P2`).
-  - Renders live **Contribution %** per volunteer machine (`(4 lanes • 42.5% contrib)`) calculated from relative processing throughput across all active nodes.
+  - Renders live **Contribution %** per volunteer machine (`(4 lanes • 42.5% contrib)`) calculated from total campaign work completed in the current active mode (RAG: `chunks_completed`, Finetune: `chunks_completed`, Audit: `chunks_audited + reviews_done + fixes_applied`, Idle: cumulative overall work).
   - Added a `POST /disconnect` endpoint allowing clients to instantly mark lanes as offline upon exit instead of waiting out the 60-second `ONLINE_STALE_SECONDS` timeout.
   - Dynamically calculates Audit mode campaign ETA and progress based on active lock files, remaining tasks, and task duration moving averages.
 
