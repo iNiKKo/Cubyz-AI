@@ -13,6 +13,9 @@ The change refactors the initialization function for `EntityModel` by renaming i
 
 The new `init` function takes three parameters: `assetFolder`, `id`, and `zon`. The `assetFolder` is used to specify the folder containing assets, `id` is the unique identifier for the entity model, and `zon` is a ZonElement that likely contains zone-specific data or configuration.
 
+**Critical Architectural Review:**
+The comment mentions using worldArena for things that stay in memory for the lifetime of the world. This is an important architectural guideline to ensure efficient memory management and consistency across the application.
+
 ## Related Questions
 - What is the purpose of changing from stack to global allocator in this refactoring?
 - How does the addition of the `zon` parameter affect the functionality of the `EntityModel` initialization?

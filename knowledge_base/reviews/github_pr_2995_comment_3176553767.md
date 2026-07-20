@@ -13,6 +13,8 @@ The change introduces a new method `print` within the `ListUnmanaged` struct, en
 
 The test `ListUnmanaged.print single call` checks if the formatted string is correctly appended and if the buffer address changes after printing with a different format specifier (`{d:.1}`). The test `ListUnmanaged.print with a string` verifies that a string can be printed correctly. The test `ListUnmanaged.print multiple writes` ensures that multiple print calls work as expected, and the test `ListUnmanaged.print buffer preserved` checks if the buffer address is preserved during printing.
 
+The implementation of the `print` method involves creating an `std.ArrayList` from the current items of the list and using `std.Io.Writer.Allocating.fromArrayList` to create a writer that writes into this buffer. The formatted string is printed using the writer, and the buffer is updated with the new contents. During multiple writes, the tricky part of the implementation is correctly reassigning buffer bounds so that every time the list is used as a print destination, it retains normal list behavior by inserting a single element.
+
 ## Related Questions
 - What is the purpose of the `print` method in `ListUnmanaged`?
 - How does the `print` method handle dynamic resizing of the list?

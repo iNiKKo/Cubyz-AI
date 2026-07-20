@@ -15,6 +15,8 @@ The function now processes items by iterating over a `zonArray` and converting e
 
 The role of `reverseIndices` in the modified function is to map item IDs to their corresponding indices. Using indices instead of pointers simplifies item management and can lead to more efficient code execution.
 
+In the `save` method, the function processes items by iterating over the `craftingGrid` array. For each item index, if it is not null, its ID is appended to a `zonArray`. This ensures that the crafting grid data is correctly saved in the ZonElement format.
+
 ## Related Questions
 - What is the purpose of changing the return type from `*const BaseItem` to `BaseItemIndex`?
 - Why does the reviewer suggest renaming local variables to 'item'?

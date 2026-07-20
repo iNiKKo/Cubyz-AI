@@ -11,6 +11,8 @@ Refactored `SelectionRule` to `SelectionCapability` and updated the function par
 ## Explanation
 The change involves renaming the `SelectionRule` enum to `SelectionCapability`, which now includes the capability `toolEffective`. The function `loadSelectionCapabilitiesFromZon` was updated to use the parameter name 'arena' instead of '_allocator'. This aligns with the architectural guideline that functions accepting only arena allocators should call the parameter just 'arena'. The refactoring ensures consistency in naming conventions, improving code readability and maintainability.
 
+The `SelectionCapability` enum now includes the capability `toolEffective`. The function `loadSelectionCapabilitiesFromZon` uses an arena allocator for memory allocation. The 'zon' parameter is of type `main.ZonElement`, which is used to load selection capabilities from a ZON element. This change does not affect backward compatibility with existing code, as it only involves renaming and parameter naming changes. There are no potential performance implications or thread safety concerns introduced by this refactoring.
+
 ## Related Questions
 - What is the purpose of renaming `SelectionRule` to `SelectionCapability`?
 - Why was the parameter name changed from '_allocator' to 'arena'?

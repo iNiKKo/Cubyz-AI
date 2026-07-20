@@ -17,12 +17,13 @@ workbench: struct { playerId: u32 },
 ```
 This change improves code maintainability by allowing additional fields to be added to the `workbench` source type in the future without breaking existing code.
 
+The new `onLastCloseCallback` function signature in the `Callbacks` struct has been updated to include a pointer to a `main.server.User`. This allows for more context-aware operations when an inventory is last closed, potentially improving security or functionality related to user-specific actions.
+
 ## Related Questions
 - What is the purpose of the `onLastCloseCallback` function in the `Callbacks` struct?
 - How does the new `workbench` variant in the `SourceType` enum and `Source` union improve code maintainability?
 - Why was it decided to use a struct for the `workbench` source type instead of a simple `u32`?
 - What potential future enhancements could be facilitated by the inclusion of user context in the callback function?
 - How does this change affect the overall architecture of the inventory system?
-- Are there any backward compatibility concerns with this modification?
 
 *Source: unknown | chunk_id: github_pr_2770_comment_2971306861*

@@ -9,8 +9,7 @@
 Added an `initInline` function to initialize structure building blocks inline, with error handling for missing blueprints and child blocks.
 
 ## Explanation
-**Explanation**
-The change introduces a new function `initInline` in the `StructureBuildingBlock` struct to handle initialization of structures without children. The function checks if the blueprint exists in the `blueprintCache`. If not, it logs an error message and returns `error.MissingBlueprint`. It also checks if the blueprint has child blocks; if so, it logs another error message and returns `error.InlineStructureCannotContainChildBlocks`. The reviewer raises concerns about making these checks fatal, suggesting that it might be beneficial to allow structures to spawn even if they lack child block definitions, enabling quick visual checks by creators.
+The change introduces a new function `initInline` in the `StructureBuildingBlock` struct to handle initialization of structures without children. The function checks if the blueprint exists in the `blueprintCache`. If not, it logs an error message 'Could not find blueprint '{s}'.', where '{s}' is the sbbId, and returns `error.MissingBlueprint`. It also checks if the blueprint has child blocks; if so, it logs another error message 'Inline structures cannot contain child blocks.' and returns `error.InlineStructureCannotContainChildBlocks`. The reviewer raises concerns about making these checks fatal, suggesting that it might be beneficial to allow structures to spawn even if they lack child block definitions, enabling quick visual checks by creators.
 
 ## Related Questions
 - What is the purpose of the `initInline` function in the `StructureBuildingBlock` struct?

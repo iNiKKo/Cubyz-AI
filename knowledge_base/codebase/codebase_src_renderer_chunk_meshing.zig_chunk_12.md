@@ -31,6 +31,12 @@ The `prepareRendering` function adds opaque chunks to the render list if they ha
 
 The `prepareTransparentRendering` function includes conditions such as checking if the transparent mesh or block breaking faces have changed, updating relative positions based on the player's position, and re-sorting faces if necessary. The bucket sort algorithm organizes faces into buckets based on their distance from the camera, ensuring they are drawn in the correct order.
 
+The `prepareRendering` function adds opaque chunks to the render list if they have vertices. Specifically, it checks if `self.opaqueMesh.vertexCount` is zero and returns early if true. Otherwise, it appends the chunk allocation start to the appropriate LOD list using `std.math.log2_int(u32, self.pos.voxelSize)` to determine the LOD index. It also increments the global `quadsDrawn` counter by dividing the vertex count by 6.
+
+The `updateTransparencyDataAfterMeshUpload` function updates sorting data for transparent faces. It first asserts that the mesh upload mutex is locked. It then calculates the total length of the current sorting array and reallocates it if necessary. It also recalculates the sorting output buffer size based on the total face count and block breaking faces. The function iterates over core and neighbor lists, updating the sorting data for each face. If a neighbor LOD is not used, it retrieves the complete list for that direction; otherwise, it retrieves the complete list for the neighbor LOD.
+
+The `prepareTransparentRendering` function checks if the transparent mesh or block breaking faces have changed. It updates the relative position based on the player's position and recalculates distances for sorting. If any changes are detected, it re-sorts the faces using a bucket sort algorithm. The bucket sort organizes faces into buckets based on their distance from the camera, ensuring they are drawn in the correct order.
+
 ## Code Example
 ```zig
 pub fn prepareRendering(self: *ChunkMesh, chunkLists: *[main.settings.highestSupportedLod + 1]main.ListManaged(u32)) void {

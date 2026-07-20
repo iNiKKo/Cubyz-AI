@@ -9,7 +9,11 @@
 Added a `print` method to `ListUnmanaged` that allows printing formatted strings into the list. The implementation uses an `ArrayList` for temporary storage and updates the original list with the printed content.
 
 ## Explanation
-The change introduces a new method `print` in the `ListUnmanaged` struct, which enables users to append formatted strings directly into the list. This is achieved by using an `ArrayList` as a temporary buffer, where the formatted string is written. After writing, the contents of the buffer are transferred back to the original list. The implementation uses `NeverFailingAllocator` for memory allocation and ensures that the original list retains its capacity after printing by updating the list's items and capacity accordingly. The reviewer suggests considering alternatives to using a single value and implies that more complex data structures might be needed for future enhancements.
+The change introduces a new method `print` in the `ListUnmanaged` struct, which enables users to append formatted strings directly into the list. This is achieved by using an `ArrayList` as a temporary buffer, where the formatted string is written. After writing, the contents of the buffer are transferred back to the original list. The implementation uses `NeverFailingAllocator` for memory allocation and ensures that the original list retains its capacity after printing by updating the list's items and capacity accordingly.
+
+The `print` method takes a format string (`fmt`) and arguments (`args`). It creates an `ArrayList` with the same items and capacity as the original list. A writer is then created from this `ArrayList`, and the formatted string is written to it using the provided format and arguments. After writing, the buffer is updated to reflect the new contents, and the original list's items and capacity are set to match those of the buffer.
+
+The reviewer suggests considering alternatives to using a single value and implies that more complex data structures might be needed for future enhancements. This comment highlights the need for flexibility in handling different types of data beyond just single values.
 
 The test cases provided in the raw content demonstrate how the `print` method works with different types of input, including integers and strings. The test case `ListUnmanaged.print multiple writes` ensures that the list behaves correctly after multiple print operations by appending a single element to the list before each print operation.
 

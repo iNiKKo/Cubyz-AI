@@ -15,6 +15,21 @@ The previous implementation used an array of `Window.Key` structures, which led 
 
 The benefits of using a union for menu entries include cleaner code, easier maintenance, and better handling of different types of menu items without the need for multiple arrays or complex type management. The reviewer also mentions that this approach is the cleanest solution found among various attempts, indicating its effectiveness in addressing the original issues.
 
+Here is an example of how the `MenuEntry` union might be used in the code:
+
+```zig
+const MenuEntry = union(enum) {
+    heading: []const u8,
+    binding: Window.Key,
+};
+
+pub var keys = [_]MenuEntry {
+    .{.heading = "Display"},
+    .{.binding = .{.key = c.GLFW_KEY_1, .pressAction = setHotbarSlot(1)}},
+    // other entries...
+};
+```
+
 ## Related Questions
 - What was the primary issue with the previous keyboard binding implementation?
 - How does the new `MenuEntry` union improve the code structure?

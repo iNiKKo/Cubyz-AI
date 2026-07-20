@@ -11,7 +11,11 @@ The script handles various UI interactions and updates for the addon creation st
 ## Explanation
 **Explanation**
 
-This JavaScript file contains several functions that manage different aspects of the addon creation interface. The `handleRotationChange` function updates multiple UI elements based on a selected value, such as enabling or disabling certain checkboxes and updating dropdown options. Specifically, when 'cubyz:ore' is selected, it checks an item icon checkbox and disables it; for 'cubyz:decayable', it enables several block-related checkboxes (blockTransparent, blockDegradable, blockViewThrough, blockAlwaysViewThrough, blockHasBackFace) and disables the ore allowance checkbox. When 'cubyz:stairs' is selected, it disables all block-related checkboxes and sets the ore allowance checkbox based on whether the value is 'cubyz:ore'. The `toggleDropInput` function controls the visibility of a custom drop wrapper based on a checkbox state. The `toggleItemIconInput` function toggles the visibility of an item icon wrapper based on a checkbox state. The `initDynamicTagSystem` function initializes a dynamic tagging system where users can add tags to an element, with validation and removal functionality. Tags must be alphanumeric and unique within the container. Other functions like `handleSimpleTouchChange` manage touch settings, setting the touch type to 'hurt' and updating related dropdowns based on the selected value ('none', 'support', 'decay', 'vine_decay'). The `handleSimpleInteractChange` function manages interaction logic settings, showing or hiding specific UI elements based on the selected interaction type ('open_window').
+This JavaScript file contains several functions that manage different aspects of the addon creation interface. The `handleRotationChange` function updates multiple UI elements based on a selected value, such as enabling or disabling certain checkboxes and updating dropdown options. Specifically, when 'cubyz:ore' is selected, it checks an item icon checkbox and disables it; for 'cubyz:decayable', it enables several block-related checkboxes (blockTransparent, blockDegradable, blockViewThrough, blockAlwaysViewThrough, blockHasBackFace) and disables the ore allowance checkbox. When 'cubyz:stairs' is selected, it disables all block-related checkboxes and sets the ore allowance checkbox based on whether the value is 'cubyz:ore'. The `toggleDropInput` function controls the visibility of a custom drop wrapper based on a checkbox state. The `toggleItemIconInput` function toggles the visibility of an item icon wrapper based on a checkbox state. The `initDynamicTagSystem` function initializes a dynamic tagging system where users can add tags to an element, with validation and removal functionality. Tags must be alphanumeric and unique within the container.
+
+The `autoToggleTransparentTag` function is responsible for automatically toggling the transparent tag based on certain conditions (not detailed in the provided script).
+
+Other functions like `handleSimpleTouchChange` manage touch settings, setting the touch type to 'hurt' and updating related dropdowns based on the selected value ('none', 'support', 'decay', 'vine_decay'). The `handleSimpleInteractChange` function manages interaction logic settings, showing or hiding specific UI elements based on the selected interaction type ('open_window').
 
 **Specific Details:**
 - **Dropdown Options for Different Block Types:*
@@ -27,6 +31,15 @@ This JavaScript file contains several functions that manage different aspects of
 
 - **UI Elements Affected by `handleSimpleInteractChange`:*
   - Shows or hides the advanced interaction window wrapper based on whether the selected interaction type is 'open_window'.
+
+**Event Handlers:**
+- `window.handleRotationChange`
+- `window.toggleDropInput`
+- `window.toggleItemIconInput`
+- `window.autoToggleTransparentTag`
+- `window.initDynamicTagSystem`
+- `window.handleSimpleTouchChange`
+- `window.handleSimpleInteractChange`
 
 ## Related Questions
 - What does the `handleRotationChange` function do?

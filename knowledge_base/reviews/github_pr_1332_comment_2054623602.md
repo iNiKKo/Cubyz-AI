@@ -11,6 +11,8 @@ Removed 'strength' and 'grip' from MaterialProperty enum and changed the default
 ## Explanation
 The reviewer suggests that invalid material properties should be ignored instead of replaced with a default value, as there is no universally appropriate default. The current change removes both 'strength' and 'grip' from the MaterialProperty enum and changes the default replacement from 'strength' to 'density' when an unknown property is encountered. The reviewer argues that this is arbitrary and could lead to incorrect scaling assumptions by asset designers. The reviewer proposes adding an 'ignored' enum value to handle such cases more appropriately.
 
+The code change also includes a modification in the error handling logic within the `fromString` function. Previously, if an invalid material property was encountered, it would be replaced with 'strength'. Now, it is replaced with 'density'. The reviewer believes that this choice is equally arbitrary and could lead to incorrect scaling assumptions by asset designers.
+
 ## Related Questions
 - Why were 'strength' and 'grip' removed from the MaterialProperty enum?
 

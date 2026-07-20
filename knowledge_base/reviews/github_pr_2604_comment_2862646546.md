@@ -9,7 +9,7 @@
 Refactored particle argument parsing to use `command.parseCoordinates` for cleaner code and potential performance improvements.
 
 ## Explanation
-Refactored particle argument parsing to use `command.parseCoordinates` for cleaner code and potential performance improvements. The change replaces individual calls to `parsePosition` with a single call to `command.parseCoordinates`, which parses the coordinates directly from the split arguments. This not only simplifies the code but also potentially improves performance by reducing redundant operations. The reviewer suggests that the previous method of parsing coordinates into separate variables (x, y, z) and then combining them into a vector is unnecessary, as `parseCoordinates` can handle this directly.
+Refactored particle argument parsing to use `command.parseCoordinates` for cleaner code and potential performance improvements. The change replaces individual calls to `parsePosition` with a single call to `command.parseCoordinates`, which parses the coordinates directly from the split arguments. This not only simplifies the code but also potentially improves performance by reducing redundant operations. The reviewer suggests that the previous method of parsing coordinates into separate variables (x, y, z) and then combining them into a vector is unnecessary, as `parseCoordinates` can handle this directly. Additionally, the variable declarations for x, y, and z are now explicitly defined as f64.
 
 ## Related Questions
 - What is the purpose of `command.parseCoordinates` in this context?

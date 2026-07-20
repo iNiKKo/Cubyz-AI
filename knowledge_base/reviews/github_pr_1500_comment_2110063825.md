@@ -9,7 +9,7 @@
 Added a new `initInline` function to initialize StructureBuildingBlocks directly from an ID, with error handling for missing blueprints.
 
 ## Explanation
-The change introduces a new method `initInline` in the `StructureBuildingBlock` struct to initialize building blocks inline using their ID. This method checks if the blueprint exists in the cache and returns an error (`error.MissingBlueprint`) if it doesn't. The reviewer suggests allocating empty AliasTables for inline SBBs if the current solution causes issues, indicating potential architectural concerns around resource management and initialization strategies. Additionally, the code includes a warning message that logs when attempting to sample a child structure from an SBB with no children defined.
+The change introduces a new method `initInline` in the `StructureBuildingBlock` struct to initialize building blocks inline using their ID. This method checks if the blueprint exists in the cache and returns an error (`error.MissingBlueprint`) if it doesn't. The `children` field is initialized to an empty array (`&.{}`). Additionally, the code includes a warning message that logs when attempting to sample a child structure from an SBB with no children defined. The reviewer suggests allocating empty AliasTables for inline SBBs if the current solution causes issues, indicating potential architectural concerns around resource management and initialization strategies.
 
 ## Related Questions
 - What is the purpose of the `initInline` function in StructureBuildingBlock?

@@ -11,7 +11,7 @@ The ECS module introduces new data structures and components for entity manageme
 ## Explanation
 This code snippet defines the ECS (Entity-Component-System) module, which includes various utility types and functions for managing entities and their components. The ECS module introduces new data structures such as `EntityTypeIndex`, `EntityIndex`, and `ComponentEnum` to handle entity management efficiently. It uses `SparseSet` to map entity indices to entity type indices, ensuring efficient access and manipulation of entity data.
 
-The reviewer notes a discrepancy in the order of type parameters in the `SparseSet` implementation compared to `HashMap`, suggesting that the target type should be second instead of first. This architectural concern is flagged for correction in a separate PR.
+The reviewer notes a discrepancy in the order of type parameters in the `SparseSet` implementation compared to `HashMap`. Specifically, the `SparseSet` has the target type first and the index type second, while for `HashMap`, it is the other way around. This architectural concern is flagged for correction in a separate PR.
 
 The `NeverFailingArenaAllocator` and `NeverFailingAllocator` are used to manage memory allocation without failing, ensuring robustness in the ECS module. The `ComponentMask` is a static bitset that represents the presence or absence of components for an entity, closely tied to the `component_list` which defines all possible components.
 

@@ -31,6 +31,9 @@ test "read/write mixed" {
     try std.testing.expect(reader.remaining.len == 0);
 }
 ```
+The SparseSet function uses comptime parameters to allow for generic type handling. This means that the function can be used with any data type specified at compile time, making it highly flexible and reusable in various parts of the codebase.
+
+Following Zig's naming conventions for types improves code readability and maintainability, as it makes it clear which identifiers are intended to represent types. This consistency is particularly important in a large codebase like Cubyz, where understanding the purpose of each identifier quickly becomes crucial.
 
 ## Related Questions
 - What is the purpose of the SparseSet function in utils.zig?

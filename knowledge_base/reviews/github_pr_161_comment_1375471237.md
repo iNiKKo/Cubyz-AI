@@ -15,6 +15,8 @@ The code now includes two new debug prints:
 - `Connections number: {}`, which displays the length of `main.game.world.manager.connections.items.len`.
 - `PacketsSent number: {}`, which displays the value of `Connection.packetsSent.value.load()` with the correct memory order (`Monotonic`).
 
+The reviewer also noted that the current implementation uses `Monotonic` memory order, but it is recommended to double-check this for correctness.
+
 ## Related Questions
 - What is the correct memory order to use with `Connection.packetsSent.value.load()`?
 - How does using `Monotonic` memory order affect atomic operations in this context?

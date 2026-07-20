@@ -11,7 +11,9 @@ Added base64 encoding and decoding functions for Inventory serialization.
 ## Explanation
 The changes introduce methods to serialize and deserialize the Inventory object using base64 encoding. The `toBase64` function converts the inventory to a byte array, which is then encoded into a base64 string. Conversely, `fromBase64` decodes a base64 string back into a byte array and reconstructs the inventory from it. These methods utilize helper functions like `toBytes` for writing inventory data to a binary writer and `fromBytes` for reading inventory data from a binary reader.
 
-The `toBytes` function writes the length of the inventory items as a variable-length integer, followed by each item stack's byte representation. The `fromBytes` function reads the length of the inventory items, then reconstructs each item stack from its byte representation. If an error occurs during reading, it logs the error and clears the stack.
+The `toBytes` function writes the length of the inventory items as a variable-length integer (`u32`), followed by each item stack's byte representation. The `fromBytes` function reads the length of the inventory items, then reconstructs each item stack from its byte representation. If an error occurs during reading, it logs the error and clears the stack.
+
+The base64 encoding/decoding process uses `std.base64.url_safe.Encoder.encode` and `std.base64.url_safe.Decoder.decode`. The `toBase64` function calculates the destination size using `std.base64.url_safe.Encoder.calcSize`, while `fromBase64` calculates the destination size using `std.base64.url_safe.Decoder.calcSizeForSlice`.
 
 The reviewer notes that while this is pre-alpha, there should be flexibility in adjusting the inventory size to fit gameplay needs, suggesting potential future enhancements.
 

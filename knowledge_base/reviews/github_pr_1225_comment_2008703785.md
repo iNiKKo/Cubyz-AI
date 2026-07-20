@@ -9,7 +9,7 @@
 The code introduces a new command `/rotate` for rotating clipboard content around the Z-axis. The reviewer suggests improving the variable handling and simplifying the logic.
 
 ## Explanation
-The change adds a new world edit command `/rotate` that allows users to rotate the content of their clipboard by 90 degrees counterclockwise around the Z-axis. The command expects no arguments, and if any are provided, it sends an error message: `#ff0000Too many arguments for command /rotate. Expected no arguments.` If there is no clipboard content available, it sends another error message: `#ff0000Error: No clipboard content to rotate.` The reviewer points out architectural improvements, such as placing the `defer` statement immediately after variable declaration for better resource management and suggests simplifying the code by directly rotating the clipboard content without intermediate variables.
+The code introduces a new world edit command `/rotate` that allows users to rotate the content of their clipboard by 90 degrees counterclockwise around the Z-axis. The command expects no arguments, and if any are provided, it sends an error message: `#ff0000Too many arguments for command /rotate. Expected no arguments.` If there is no clipboard content available, it sends another error message: `#ff0000Error: No clipboard content to rotate.` The reviewer points out architectural improvements, such as placing the `defer` statement immediately after variable declaration for better resource management and suggests simplifying the code by directly rotating the clipboard content without intermediate variables. The `rotateZ` method uses the global allocator to perform the rotation.
 
 ## Related Questions
 - What is the purpose of the `rotate.zig` file?

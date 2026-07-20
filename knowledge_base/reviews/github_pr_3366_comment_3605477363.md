@@ -23,8 +23,8 @@ return @max(@min(light, 1), 0);
 The range of values returned by `calculateLight` function is between 0 and 1.
 
 The constants used in the code are:
-- `eightOffsets`: An array of eight offsets for neighboring points.
-- `diagonalOffsets`: An array of four diagonal offsets.
+- `eightOffsets`: An array of eight offsets for neighboring points: `[.{-1, -1}, .{0, -1}, .{1, -1}, .{-1, 0}, .{1, 0}, .{-1, 1}, .{0, 1}, .{1, 1}]`.
+- `diagonalOffsets`: An array of four diagonal offsets: `[.{-1, -1}, .{1, -1}, .{-1, 1}, .{1, 1}]`.
 - `maxTipWalkSteps`: A constant value set to 5.
 
 The refactoring improves type safety by using optional parameters and ensuring that the function handles null values correctly. The use of `neighborCoord` simplifies call sites for `materialAt` by abstracting the index calculations.

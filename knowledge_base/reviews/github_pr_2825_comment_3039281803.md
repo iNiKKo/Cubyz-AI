@@ -9,9 +9,18 @@
 The reviewer suggests improving the `Blueprint.capture` function by changing its parameter to a `Selection` struct that includes methods for initialization and size calculation, reducing redundancy in min/max operations.
 
 ## Explanation
-The reviewer suggests improving the `Blueprint.capture` function by changing its parameter to a `Selection` struct that includes methods for initialization and size calculation, reducing redundancy in min/max operations. The `Selection` struct should be defined in `blueprint.zig` with `minPos`, `maxPos`, and an `init` method that automatically handles min/maxing of the provided positions. Additionally, adding a `size` method to the `Selection` struct could further simplify related logic in other parts of the codebase. This change aims to enhance code organization and reduce duplication.
+The reviewer suggests improving the `Blueprint.capture` function by changing its parameter to a `Selection` struct that includes methods for initialization and size calculation, reducing redundancy in min/max operations. Additionally, a new function `getSelectionBounds` is introduced to handle selection bounds.
+
+The `getSelectionBounds` function is introduced to handle selection bounds. It takes a `User` pointer as an argument and returns an array of two `Vec3i` vectors representing the selection bounds. If the position is not set, it throws an error.
+
+```zig
+pub fn getSelectionBounds(source: *User) error{PositionNotSet}![2]main.vec.Vec3i {
+    // Implementation details
+}
+```
 
 The `Selection` struct would be defined as follows:
+
 ```zig
 const Selection = struct {
     minPos: Vec3i,
@@ -43,6 +52,7 @@ const Selection = struct {
 ```
 
 The `Blueprint.capture` function would then be updated to accept a `Selection` struct instead of raw positions:
+
 ```zig
 pub fn capture(allocator: NeverFailingAllocator, selection: Selection) CaptureResult {
     const startX = selection.minPos.x;

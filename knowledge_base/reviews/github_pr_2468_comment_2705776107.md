@@ -9,11 +9,7 @@
 The `generate` function in `SbbGen.zig` was modified to remove the `Neighbor.dirUp` parameter, allowing any origin block for structure placement.
 
 ## Explanation
-The reviewer identified an issue where unused structures did not have an upwards origin block, causing trouble during generation. The change allows for more flexible placement of structures, enabling natural formations like hanging vines or directional structures. This modification also supports reusing existing intermediate models, enhancing modularity and reducing redundancy.
-
-Previously, the `generate` function required a specific upwards origin block (`Neighbor.dirUp`) for structure placement. This limitation made it difficult to generate structures that naturally hang from ceilings or other surfaces without an upward-facing starting point. By removing this restriction, the new implementation allows any block to serve as the origin, providing greater flexibility in structure design and placement.
-
-With this change, structures such as vine clusters can now hang directly from cave ceilings or tree branches, creating more natural and varied environments. Additionally, existing intermediate models can be reused for different orientations and placements, reducing redundancy and improving modularity.
+The `generate` function in `SbbGen.zig` was modified to remove the `Neighbor.dirUp` parameter from the `placeSbb` call, allowing any origin block for structure placement. Previously, the `generate` function required a specific upwards origin block (`Neighbor.dirUp`) for structure placement. This limitation made it difficult to generate structures that naturally hang from ceilings or other surfaces without an upward-facing starting point. By removing this restriction, the new implementation allows any block to serve as the origin, providing greater flexibility in structure design and placement. The reviewer also suggested allowing any origin block for the start node to make it more natural to build hanging or directional structures and to allow reusing existing intermediate models for that (e.g., a vine cluster could hang on a tree or directly a cave ceiling). This suggestion aligns with the change made in the code, further enhancing the flexibility and modularity of structure generation.
 
 ## Related Questions
 - What was the previous behavior of the `generate` function regarding the origin block?

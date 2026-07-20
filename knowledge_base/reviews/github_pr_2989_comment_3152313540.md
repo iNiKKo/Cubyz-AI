@@ -9,9 +9,9 @@
 A new file `BagSlot.zig` has been added to the Cubyz project, implementing a GUI component for bag slots in the inventory system.
 
 ## Explanation
-The review focuses on the addition of a new file `BagSlot.zig`, which introduces a new GUI component for handling bag slots within the inventory. The reviewer notes that there is significant overlap with existing code from `ItemSlot.zig` and suggests potential opportunities for generalization, such as creating a shared function or struct to handle item stack information rendering. This could help reduce code duplication and improve maintainability.
+A new file `BagSlot.zig` has been added to the Cubyz project, implementing a GUI component for bag slots in the inventory system. The reviewer notes that there is significant overlap with existing code from `ItemSlot.zig` and suggests potential opportunities for generalization, such as creating a shared function or struct to handle item stack information rendering. This could help reduce code duplication and improve maintainability.
 
-- **globalInit Function**: Initializes the texture used in the bag slot component by loading it from a file.
+- **globalInit Function**: Initializes the texture used in the bag slot component by loading it from the file 'assets/cubyz/ui/inventory/bag_slot.png'.
 - **mainButtonReleased Function**: Handles the release of the main button, moving items between inventories based on whether an item is carried or not. If an item is carried, it moves the specified amount to the player's bag; otherwise, it takes all items from the player's bag.
 - **Code Duplication**: Significant overlap with `ItemSlot.zig`, which could lead to maintenance issues if changes are needed in both files.
 - **Generalization**: Suggesting a shared function or struct for rendering item stack information could reduce code duplication and improve maintainability.

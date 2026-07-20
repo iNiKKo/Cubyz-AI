@@ -13,6 +13,14 @@ The `clone` method is implemented to recursively copy all fields of a `ZonElemen
 
 The `clone` method handles memory allocation failures by using an unreachable statement (`catch unreachable`) when the allocator fails to duplicate a string. The `join` method's overlap handling is implemented such that if an entry exists in both objects and the `overlapMode` is set to `.keep`, the existing entry is retained; otherwise, it is replaced with the entry from the other object.
 
+For each type of `ZonElement`, the `clone` method handles them as follows:
+- `.int`, `.float`, `.string`, `.bool`, and `.null`: These are directly copied without any additional allocation.
+- `.stringOwned`: The string is duplicated using the allocator, and if the duplication fails, an unreachable statement is executed to handle the error.
+- `.array`: Each element in the array is recursively cloned using the `clone` method, and the resulting elements are appended to a new array.
+- `.object`: Each key-value pair in the object is iterated over, and each value is recursively cloned. The cloned key-value pairs are then added to a new object.
+
+The `join` method handles nested objects during merging by iterating over the entries of the other object. If an entry exists in both objects and the `overlapMode` is set to `.keep`, the existing entry is retained; otherwise, it is replaced with the entry from the other object.
+
 ## Related Questions
 - How does the `clone` method handle memory allocation failures?
 - What is the purpose of the `overlapMode` parameter in the `join` method?

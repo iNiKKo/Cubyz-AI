@@ -11,7 +11,7 @@ The main GUI window has been updated to include a logo and icons instead of text
 ## Explanation
 The main GUI window has been updated to include a logo and icons instead of text-based buttons. The changes involve replacing the previous text-based button layout with an icon-based one, using the `Icon` component initialized from a texture loaded from a file (`assets/cubyz/ui/logo.png`). The reviewer emphasizes that full-screen windows should not fill the entire height of the window to avoid issues like text wrapping and content overflow. They also suggest breaking down the main window into smaller, independently movable components such as logo, buttons, and version number for enhanced user experience and flexibility.
 
-The `init` function loads the logo texture from the specified file, while the `deinit` function ensures proper resource management by deinitializing the texture. The new layout includes 2 buttons initialized with icons instead of text.
+The `init` function loads the logo texture from the specified file, while the `deinit` function ensures proper resource management by deinitializing the texture. The new layout includes 2 buttons initialized with icons instead of text. Each button is positioned at coordinates (0, 0) with dimensions (384, 96). The critical architectural review image shows a reason why full-screen windows should not fill the entire height of the window and highlights potential issues like text wrapping and content overflow.
 
 ## Related Questions
 - What is the purpose of the `init` function in the main GUI window?

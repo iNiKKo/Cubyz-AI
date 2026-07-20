@@ -17,14 +17,12 @@ Using an enum over a boolean provides more flexibility and clarity, as it allows
 
 There may be a slight performance impact associated with replacing a boolean with an enum due to the additional overhead of handling different cases, but this is generally minimal and outweighed by the benefits of increased flexibility and future-proofing.
 
+The possible values for the `SelectionRule` enum are `.always`, `.never`, and `.conditional`. The default value is `.always`, meaning that blocks are always selectable unless explicitly defined otherwise. This change affects backward compatibility because any code or systems relying on the previous boolean flag will need to be updated to handle the new enum type.
+
 To test the correctness of this change in the block registration system, one would need to ensure that all blocks continue to be selectable as expected when no specific selection rule is defined. Additionally, testing should verify that any new selection rules (e.g., `.never`, `.conditional`) are applied correctly and do not interfere with existing functionality.
 
 ## Related Questions
-- What is the purpose of the `SelectionRule` enum in the block registration process?
-- How does this change affect backward compatibility with existing blocks?
-- Can you explain the benefits of using an enum over a boolean for selection rules?
-- What potential future enhancements could be facilitated by this architectural change?
-- Is there any performance impact associated with replacing a boolean with an enum?
-- How would you test the correctness of this change in the block registration system?
+- What are the possible values for the `SelectionRule` enum?
+- What is the default value for the `selectionRule` enum?
 
 *Source: unknown | chunk_id: github_pr_2958_comment_3143229912*

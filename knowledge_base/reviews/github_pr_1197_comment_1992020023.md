@@ -11,7 +11,7 @@ Added a `rotateX` function for rotating stair data along the X-axis. The functio
 ## Explanation
 The change introduces a new function `rotateX` within the `RotationModes.Stairs` struct in `rotation.zig`. This function is designed to rotate stair data by 90 degrees around the X-axis. The implementation uses an inline table (`rotateTable`) to precompute the rotated positions of sub-blocks, aiming to avoid conditional branches for performance optimization.
 
-The `rotateX` function computes a rotation matrix using sine and cosine values for a 90-degree rotation around the X-axis. It then maps each sub-block position (x, y, z) to its new position after rotation using the precomputed `rotateTable`. The `rotateTable` is generated at compile time by iterating over all possible sub-block positions and calculating their rotated counterparts.
+The `rotateX` function computes a rotation matrix using sine and cosine values for a 90-degree rotation around the X-axis. Specifically, it uses `sin(std.math.pi / 2.0)` which equals 1 and `cos(std.math.pi / 2.0)` which equals 0. It then maps each sub-block position (x, y, z) to its new position after rotation using the precomputed `rotateTable`. The `rotateTable` is generated at compile time by iterating over all possible sub-block positions (i.e., x, y, z ranging from 0 to 1) and calculating their rotated counterparts based on the rotation matrix.
 
 The reviewer notes that while this approach avoids explicit branching, it may be unnecessary if the compiler optimizes away such branches anyway. The `subBlockMask` and `hasSubBlock` functions are marked as inline to improve performance by reducing function call overhead.
 

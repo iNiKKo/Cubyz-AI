@@ -11,6 +11,12 @@ Handles chunk meshing by iterating over block positions and neighbors, checking 
 ## Explanation
 The code handles chunk meshing by iterating over each block position in the chunk and its neighboring chunks. For each block, it checks if the block is transparent or needs to check through a neighbor block. It then appends facing quads to either opaque or transparent cores based on these conditions. The iteration is done using nested loops for x, y, and z coordinates within the chunk size. The `bitMask` variable is used to efficiently track which faces need processing. If a block is transparent and has a back face, it appends quads for both the front and back faces. For opaque blocks, it checks if they are view-through and not always view-through, in which case it compares with the neighbor block to avoid duplicates. After processing all blocks, it unlocks the mutex, replaces ranges in the mesh, and finishes neighbor handling by updating last neighbors' LOD information.
 
+**Specific Details:**
+- **Iteration Ranges:** The loops iterate over x from 0 to `chunk.chunkSize`, y from 0 to `chunk.chunkSize - 1` for dirPosY, and z from 0 to `chunk.chunkSize` for other directions. For dirDown, the loop for y starts from 0.
+- **Conditions for Appending Quads:** If a block is transparent, it appends quads for both front and back faces if it has a back face. For opaque blocks, it checks if they are view-through and not always view-through, comparing with the neighbor block to avoid duplicates.
+- **Handling of `bitMask` and `setBit`:** The `bitMask` variable is used to track which faces need processing. The `setBit` variable is a bitmask for the current z-coordinate. The code uses bitwise operations to efficiently process each face.
+- **Neighbor Directions:** The code processes six neighbor directions: dirNegX, dirPosX, dirNegY, dirPosY, dirDown, and dirUp. Each direction has its own loop with specific conditions and calculations.
+
 ## Related Questions
 - What is the purpose of the `sameLodBlock` label in the code?
 - How does the code handle blocks that are transparent?

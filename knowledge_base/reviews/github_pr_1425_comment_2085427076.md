@@ -9,7 +9,7 @@
 The code introduces a new `Parser` struct in `argparse.zig` to handle command-line argument parsing for structs and unions, with support for nested types and error handling.
 
 ## Explanation
-The `Parser` struct is designed to parse command-line arguments into a specified type `T`, which can be either a struct or a union. The `_parse` function determines the type of `T` and delegates parsing to `parseStruct` or `parseUnion`. The `parseStruct` function splits the input string by spaces, iterates over the fields of the struct, and attempts to parse each field using `parseArgument`. If an error occurs during parsing, it constructs a detailed error message. The reviewer suggests changing the failure handling to store messages in a `ListUnmanaged([]const u8)` instead of joining them into a single string, which could improve performance by avoiding reallocations.
+The code introduces a new `Parser` struct in `argparse.zig` to handle command-line argument parsing for structs and unions, with support for nested types and error handling. The `_parse` function determines the type of `T` and delegates parsing to `parseStruct` or `parseUnion`. The `parseStruct` function splits the input string by spaces, iterates over the fields of the struct, and attempts to parse each field using `parseArgument`. If an error occurs during parsing, it constructs a detailed error message. The reviewer suggests changing the failure handling to store messages in a `ListUnmanaged([]const u8)` instead of joining them into a single string, which could improve performance by avoiding reallocations.
 
 The `parseArgument` function handles different types as follows:
 - **Optional Types:** If the argument is null, it returns null. Otherwise, it recursively parses the child type.
@@ -19,6 +19,8 @@ The `parseArgument` function handles different types as follows:
 - **Integers:** It parses the string into an integer using `std.fmt.parseInt`.
 
 Error messages returned by `parseArgument` include details such as the argument index, error name, and offset in the input string. Memory management for these messages is handled using `NeverFailingAllocator`, which ensures that allocations never fail.
+
+The `parseUnion` function handles unions by iterating over their fields and attempting to parse each field using `parseArgument`. If an error occurs during parsing, it adds the error message to a list of failure messages. The reviewer suggests changing the failure handling to store messages in a `ListUnmanaged([]const u8)` instead of joining them into a single string, which could improve performance by avoiding reallocations.
 
 ## Related Questions
 - What is the purpose of the `NeverFailingAllocator` in this code?

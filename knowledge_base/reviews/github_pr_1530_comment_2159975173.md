@@ -13,7 +13,9 @@ This change introduces a new `rotation` field in the `SbbGen` struct, which is u
 
 The `loadModel` function uses `NeverFailingAllocator` to allocate memory for the `SbbGen` instance. The `getHash` function utilizes the new `rotation` field to generate a unique hash for the structure building block based on its ID and rotation mode. The addition of the rotation parameter can have implications for backwards compatibility with existing structures, as it may require updates to how rotations are handled in older versions.
 
-To specify a valid rotation in the input parameters, you need to provide a string that corresponds to one of the known rotations supported by the system.
+To specify a valid rotation in the input parameters, you need to provide a string that corresponds to one of the known rotations supported by the system. The valid rotations include 'north', 'east', 'south', and 'west'.
+
+If the `structure` parameter is missing or invalid, the function logs an error message and panics with the message 'Error loading generator 'cubyz:sbb' structure field is mandatory.'.
 
 ## Related Questions
 - What is the purpose of the `rotation` field in the `SbbGen` struct?

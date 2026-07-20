@@ -1,24 +1,20 @@
 {
   "locked": {
-    "github_pr_2770_comment_2971306861": {
-      "user_id": "NickSRVR",
-      "timestamp": 1784493796.968094
-    },
-    "github_pr_2570_comment_2828776036": {
+    "codebase_src_zon.zig_chunk_1": {
       "user_id": "NickPCc",
-      "timestamp": 1784493812.0656939
+      "timestamp": 1784534292.8126023
     },
-    "github_pr_2524_comment_2725910383": {
-      "user_id": "NickPCp",
-      "timestamp": 1784493819.1214414
-    },
-    "github_pr_2506_comment_2707990592": {
+    "codebase_src_assets.zig_chunk_5": {
       "user_id": "NickPC",
-      "timestamp": 1784493820.3998194
+      "timestamp": 1784534471.6457589
     },
-    "github_pr_2506_comment_2709435173": {
+    "codebase_src_utils_heap.zig_chunk_6": {
       "user_id": "NickPCq",
-      "timestamp": 1784493821.4691927
+      "timestamp": 1784534492.0085328
+    },
+    "codebase_src_models.zig_chunk_3": {
+      "user_id": "NickPCp",
+      "timestamp": 1784534493.372665
     }
   },
   "completed": [
@@ -3271,5 +3267,5 @@
     "codebase_src_sync.zig_chunk_3"
   ],
   "actions_baseline_completed": 543,
-  "actions_count": 13353
+  "actions_count": 14745
 }

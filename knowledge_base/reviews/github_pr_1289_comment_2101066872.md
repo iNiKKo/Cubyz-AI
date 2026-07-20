@@ -9,9 +9,9 @@
 The reviewer suggests modifying the `refAllDeclsRecursiveExceptCImports` function to skip processing of 'Managed' declarations instead of returning immediately.
 
 ## Explanation
-The current implementation returns from the entire function when encountering a 'Managed' declaration, which could lead to unintentional skipping of subsequent fields. The reviewer recommends changing this behavior to continue processing after skipping 'Managed', ensuring that all other declarations are properly handled. This change aims to prevent potential issues related to incomplete processing and maintain the integrity of the declaration reference mechanism.
+The current implementation of the `refAllDeclsRecursiveExceptCImports` function returns immediately when it encounters a 'Managed' declaration, which can lead to unintentional skipping of subsequent fields. The reviewer suggests modifying this behavior by using `continue` instead of `return`, allowing the function to continue processing other declarations and ensuring that all fields are properly handled. This change is intended to prevent issues related to incomplete processing and maintain the integrity of the declaration reference mechanism.
 
-Additionally, there is a TODO comment in the code indicating that the handling of 'Managed' should be removed once Zig removes its Managed hashmap functionality (PixelGuys/Cubyz#308). The suggested code change is to replace `return` with `continue` when encountering 'Managed'.
+Additionally, there is a TODO comment in the code indicating that the handling of 'Managed' should be removed once Zig removes its Managed hashmap functionality (PixelGuys/Cubyz#308). The suggested code change is to replace `return` with `continue` when encountering 'Managed'. This modification aims to ensure that the function behaves correctly even as Zig evolves.
 
 ## Related Questions
 - What is the purpose of the 'Managed' declaration in Zig?

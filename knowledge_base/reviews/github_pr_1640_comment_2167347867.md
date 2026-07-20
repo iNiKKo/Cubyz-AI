@@ -16,7 +16,7 @@ The specific line of code that was changed is:
 - reverseIndices.put(newItem.id, .{.index = itemListSize}) catch unreachable;
 + reverseIndices.put(newItem.id, @enumFromInt(itemListSize)) catch unreachable;
 ```
-The `nextIndex` function is intended to provide a way to get the next available index in the enum, which can help prevent errors related to invalid index values.
+The `nextIndex` function is intended to provide a way to get the next available index in the enum, which can help prevent errors related to invalid index values. The reviewer suggests that this function could be implemented to return the next integer value converted to an enum type, ensuring that each item has a unique and valid index.
 
 ## Related Questions
 - What is the purpose of converting item indices to enums?

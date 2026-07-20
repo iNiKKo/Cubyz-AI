@@ -19,6 +19,20 @@ The function also supports optional substitutions through a `SubstitutionMap`, w
 
 The `pasteInGeneration` function ensures that blocks are within the chunk's bounds by checking if each block lies in the chunk using the `liesInChunk` method. If a block is outside the chunk's bounds, it skips updating that block.
 
+**Implementation Details:**
+- The `pasteInGeneration` function iterates over the blueprint's blocks and checks if they lie within the specified chunk boundaries.
+- It uses the `SubstitutionMap` to replace block types during the pasting process if substitutions are provided.
+- The paste modes are implemented using a switch statement (`sw: switch(mode)`) that determines how each block is handled based on the selected mode.
+
+**Optimization Suggestions:**
+- Create a function to generate a copy of the blueprint with substitution tables applied, which could simplify handling child and origin blocks during loading.
+- Implement paste modes like `noAir` and `replaceAir` using substitution tables or masks for better flexibility.
+- Pre-compute blueprints with substitution tables applied when given to the generator to optimize performance.
+
+**Potential Issues:**
+- Deferring optimization might lead to increased complexity in future development if not handled carefully.
+- Ensuring thread safety and backwards compatibility should be considered during any optimizations.
+
 ## Related Questions
 - What are the different paste modes available in the `pasteInGeneration` function?
 - How does the function handle substitutions during the pasting process?

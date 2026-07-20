@@ -11,6 +11,8 @@ A new method `createManagedInventory` is added to the `Sync` struct within `Inve
 ## Explanation
 The addition of `createManagedInventory` introduces a new function responsible for creating an inventory that is externally managed. This method is added to the `Sync` struct within `Inventory.zig`. The reviewer highlights the importance of clear naming conventions, emphasizing that the term 'externally' should be included in the method name to indicate the nature of the inventory management. This suggestion aligns with the need for better code readability and maintainability, especially given the context of different inventory behaviors within the same struct.
 
+The reviewer also notes that there are currently no other create methods present in the `Sync` struct, which is an important detail to include for clarity.
+
 ## Related Questions
 - What is the purpose of the `createManagedInventory` method?
 - Why does the reviewer suggest including 'externally' in the method name?

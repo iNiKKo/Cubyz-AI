@@ -9,7 +9,7 @@
 Added `meta` module to the top-level utils.zig file.
 
 ## Explanation
-The change introduces the `meta` module into the top-level `utils.zig` file, making it more accessible. The reviewer suggests creating a separate PR to move related functionalities like function pointer casts to this new module. This architectural decision aims to organize code better and improve maintainability. Specifically, the functionalities being moved include function pointer casts.
+Added `meta` module to the top-level utils.zig file. Specifically, the functionalities being moved include function pointer casts. The change aims to organize code better and improve maintainability by moving these functionalities to a separate module.
 
 ## Related Questions
 - What are the specific functionalities being moved to the `meta` module?

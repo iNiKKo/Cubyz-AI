@@ -15,6 +15,8 @@ The `BlueprintEntry` struct contains a blueprint and its associated information.
 
 Error handling mechanisms include logging errors for missing or incorrect data in blueprints, such as multiple origin blocks or empty children lists. Memory allocation is managed using an arena allocator, which is significant for efficient memory usage. The `initChildTableFromZon` function ensures that child structures are correctly initialized by converting ZonElement arrays into Child structs. The `finalize` method in the `Children` struct finalizes all child structures, ensuring proper cleanup.
 
+The `originBlockStringId` variable is set to 'cubyz:sbb/origin', and `originBlockNumericId` is a u16 variable initialized to 0. The `childBlockStringId` array holds up to 20 string IDs for child blocks. The critical architectural review note states that child structures must be resolved in a second pass because they may not be loaded when the parent structure is, requiring an ID to fetch the correct structure later.
+
 ## Related Questions
 - What is the purpose of the `structureCache` and `blueprintCache` variables?
 - How does the module handle multiple origin blocks in a blueprint?

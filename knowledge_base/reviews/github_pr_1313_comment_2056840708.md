@@ -13,7 +13,9 @@ A new function `batchUpdateBlocks` is introduced to handle batch updates of bloc
 
 A new function `batchUpdateBlocks` is introduced to handle batch updates of block meshes. This function uses a hashmap (`std.HashMapUnmanaged`) to store chunk positions and their corresponding mesh pointers, but the reviewer suggests using a list instead due to the expected small number of entries. The use of `main.stackAllocator` simplifies memory management by allocating memory on the stack rather than the heap. The `defer lightRefreshList.deinit();` statement ensures that the `lightRefreshList` is properly deallocated when the function exits, preventing potential memory leaks.
 
-The reviewer raises concerns about the performance implications of using a hashmap with few entries and suggests that a list might be more appropriate for this specific use case. The expected number of entries in the `regenerateMesh` hashmap is not explicitly stated but is implied to be small based on the architectural review comment.
+The reviewer raises concerns about the performance implications of using a hashmap with few entries and suggests that a list might be more appropriate for this specific use case. The expected number of entries in the `regenerateMesh` hashmap is not explicitly stated but is implied to be small based on the architectural review comment. However, the original implementation used a hashmap, which implies that there were reasons for choosing it over a list.
+
+The explanation now includes the fact that the original implementation used a hashmap and raises questions about why this choice was made.
 
 ## Related Questions
 - Why was a hashmap chosen instead of a list in the original implementation?

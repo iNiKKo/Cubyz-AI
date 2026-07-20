@@ -9,7 +9,7 @@
 The change adds a calculation for `fontUnitPerPixel` by dividing the units per EM of the FreeType face by the texture height. The reviewer suggests removing the dereference operator.
 
 ## Explanation
-The addition of `fontUnitPerPixel` aims to compute a scaling factor between font units and pixels, which is crucial for accurate text rendering. Specifically, the calculation is performed as follows: `fontUnitPerPixel = @as(f32, @floatFromInt(freetypeFace.*.units_per_EM)) / @as(f32, @floatFromInt(textureHeight));`. The reviewer points out that the dereference operation on `freetypeFace` is unnecessary since `freetypeFace` is already a pointer type. This simplification could improve code readability and maintainability without altering functionality.
+The addition of `fontUnitPerPixel` aims to compute a scaling factor between font units and pixels, which is crucial for accurate text rendering. Specifically, the calculation is performed as follows: `fontUnitPerPixel = @as(f32, @floatFromInt(freetypeFace.units_per_EM)) / @as(f32, @floatFromInt(textureHeight));`. This line calculates the number of font units per pixel by dividing the number of units per EM (units_per_EM) of the FreeType face by the texture height. The reviewer points out that the dereference operation on `freetypeFace` is unnecessary since `freetypeFace` is already a pointer type. This simplification could improve code readability and maintainability without altering functionality.
 
 ## Related Questions
 - Why is the dereference operator unnecessary in this context?

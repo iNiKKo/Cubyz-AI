@@ -15,6 +15,16 @@ The function `loadModel` now includes error handling for the missing 'structure'
 
 This change ensures that the function can handle cases where the required 'structure' field is missing and provides a mechanism to efficiently manage the size of `structureList` by creating a new smaller list from an existing slice and reassigning it.
 
+To create a new smaller list from a slice in Zig, you can use the following syntax:
+```zig
+var originalList = std.ArrayList(u32).init(allocator);
+// Populate originalList with elements...
+const stage1Count: usize = 5; // Example value for stage1Count
+var newList = originalList.toOwnedSlice()[0..stage1Count].toArrayList();
+```
+
+This code snippet demonstrates how to create a new `ArrayList` from a slice of the original list, effectively reducing its size.
+
 ## Related Questions
 - How can the list be resized to a smaller size in Zig?
 - What is the impact of returning an optional pointer from `loadModel`?

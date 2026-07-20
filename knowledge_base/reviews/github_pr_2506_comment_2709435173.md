@@ -15,14 +15,14 @@ The `run` method checks if the crafting can be performed by comparing required i
 
 The `serialize` method handles the serialization of the struct's data using varint for efficient storage and transmission. It writes the lengths of the destination and source inventories, followed by their IDs, the result stack, and the source stacks.
 
-The `deserialize` method reads the serialized data back into a `CraftFrom` instance. It reads the lengths of the destination and source inventories, reconstructs the inventory objects using their IDs, and then reads the result stack and source stacks.
+The `deserialize` method reads the serialized data back into a `CraftFrom` instance. It first reads the length of the destination inventories using varint, then reconstructs these inventory objects using their IDs. Similarly, it reads the length of the source inventories, reconstructs these inventory objects, and finally reads the result stack and source stacks.
 
 ## Related Questions
-- What is the purpose of the `CraftFrom` struct in the code?
-- How does the `init` method handle memory allocation for inventories and item stacks?
-- What steps are taken to ensure that crafting can be performed in the `run` method?
-- How does the `serialize` method use varint for efficient storage?
-- What is the role of the `finalize` method in resource management?
-- How does the deserialization process handle reading inventory and item stack data?
+-  What is the purpose of the `CraftFrom` struct in the code?
+-  How does the `init` method handle memory allocation for inventories and item stacks?
+-  What steps are taken to ensure that crafting can be performed in the `run` method?
+-  How does the `serialize` method use varint for efficient storage?
+-  What is the role of the `finalize` method in resource management?
+-  How does the deserialization process handle reading inventory and item stack data?
 
 *Source: unknown | chunk_id: github_pr_2506_comment_2709435173*

@@ -11,7 +11,18 @@ The review discusses the need for a pointer to an `EnvMap` in a function, noting
 ## Explanation
 The review discusses a critical architectural issue in the function located at `src/graphics/Window.zig`. The reviewer notes that the function requires a pointer to an `EnvMap`, but there is no clear way to obtain a non-copy version of the current process's `EnvMap`. Additionally, the comment indicates that `stdlib.h` is used for setting Vulkan environment variables on macOS. This suggests potential platform-specific considerations in the codebase.
 
-The reviewer also mentions that `glad/gl.h` and `vulkan/vulkan.h` are included conditionally based on the operating system. Specifically, if the OS is macOS, the Vulkan header from the Vulkan-Headers repository (`vulkan/vulkan.h`) is used instead of the one provided by glad (`glad/vulkan.h`). This change is noted in the code diff context.
+The reviewer also mentions that `glad/gl.h` and `vulkan/vulkan.h` are included conditionally based on the operating system. Specifically, if the OS is macOS, the Vulkan header from the Vulkan-Headers repository (`vulkan/vulkan.h`) is used instead of the one provided by glad (`glad/vulkan.h`). This change is noted in the code diff context:
+
+```diff
+@@ -11,8 +11,16 @@ const vulkan = @import("vulkan.zig");
+
+ pub const c = @cImport({
+   @cInclude("glad/gl.h");
++
+   // NOTE(blackedout): glad is currently not used on macOS, so use Vulkan header from the Vulkan-Headers repository instead
+-   @cInclude(if(builtin.os.tag == .macos) "vulkan/vulkan.h" else "glad/vulkan.h");
++   // stdlib.h is used to set the Vulkan environment variables on macOS
+```
 
 The review highlights the need for careful consideration of thread safety and backwards compatibility when dealing with `EnvMap` pointers and cross-platform compatibility issues.
 

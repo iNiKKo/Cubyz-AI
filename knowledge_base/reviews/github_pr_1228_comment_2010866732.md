@@ -9,7 +9,14 @@
 A new method `full` is added to the CircularBufferQueue struct in utils.zig, which checks if the buffer is at its capacity.
 
 ## Explanation
-A new method `full` is added to the CircularBufferQueue struct in utils.zig, which checks if the buffer is at its capacity. The reviewer suggests renaming the `full` method to `atCapacity` or `reachedCapacity` because a resizeable data structure cannot truly be 'full'. This naming change would better reflect the behavior of a circular buffer that can expand when needed. The addition of this method is likely intended to provide a way to check if the buffer has reached its current capacity before adding more elements, which could trigger a resize operation.
+A new method `full` is added to the CircularBufferQueue struct in utils.zig. This method checks if the buffer has reached its current capacity. The reviewer suggests renaming the `full` method to `atCapacity` or `reachedCapacity` because a resizeable data structure cannot truly be 'full'. This naming change would better reflect the behavior of a circular buffer that can expand when needed. The addition of this method is likely intended to provide a way to check if the buffer has reached its current capacity before adding more elements, which could trigger a resize operation.
+
+The code snippet showing the addition of the `full` method is as follows:
+```zig
+pub fn full(self: *Self) bool {
+    return self.startIndex == self.endIndex;
+}
+```
 
 ## Related Questions
 - What is the purpose of the `full` method in CircularBufferQueue?

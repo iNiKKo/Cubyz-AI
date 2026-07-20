@@ -9,7 +9,9 @@
 Added MoveToPlayerBag and TakeFromPlayerBag structs with run, serialize, and deserialize methods.
 
 ## Explanation
-The changes introduce two new command structs, `MoveToPlayerBag` and `TakeFromPlayerBag`, which handle moving items between player bags. The `MoveToPlayerBag` struct has a `source` field of type `InventoryAndSlot` and an `amount` field of type `u16`. The `run` method in `MoveToPlayerBag` checks if the context side is client or server, retrieves the appropriate bag, and executes a move operation. The `serialize` method writes the source and amount to a binary writer, while the `deserialize` method reads these values from a binary reader. The reviewer suggests using the `Inventories` struct as a destination for these operations, potentially simplifying future refactoring. They also propose that shift clicking should have the hand as a fallback, enhancing user interaction.
+The changes introduce two new command structs, `MoveToPlayerBag` and `TakeFromPlayerBag`, which handle moving items between player bags. The `MoveToPlayerBag` struct has a `source` field of type `InventoryAndSlot` and an `amount` field of type `u16`. The `run` method in `MoveToPlayerBag` checks if the context side is client or server, retrieves the appropriate bag, and executes a move operation. The `serialize` method writes the source and amount to a binary writer, while the `deserialize` method reads these values from a binary reader.
+
+The `TakeFromPlayerBag` struct has a `dest` field of type `InventoryAndSlot`. The reviewer suggests using the `Inventories` struct as a destination for these operations, potentially simplifying future refactoring. They also propose that shift clicking should have the hand as a fallback, enhancing user interaction.
 
 ## Related Questions
 - What is the purpose of the `MoveToPlayerBag` struct?

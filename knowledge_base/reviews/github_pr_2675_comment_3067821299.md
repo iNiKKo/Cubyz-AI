@@ -9,11 +9,13 @@
 The EntityComponentVTable struct has been expanded to include serverUnload and clientUnload functions, improving the lifecycle management of entity components.
 
 ## Explanation
-The EntityComponentVTable struct has been expanded to include serverUnload and clientUnload functions, improving the lifecycle management of entity components. The reviewer emphasizes the need for type safety, suggesting that a separate struct for component IDs would enhance this aspect. This modification aims to provide a more robust framework for managing entity components' lifecycles, ensuring proper cleanup and resource management.
+The EntityComponentVTable struct has been expanded to include serverUnload and clientUnload functions, which are responsible for properly cleaning up entity components on both the server and client sides when they are no longer needed. This modification aims to provide a more robust framework for managing entity components' lifecycles, ensuring proper cleanup and resource management.
 
 The EntityComponentLoadError enum now includes specific error codes: UnreadableID, UnreadableVersion, UnreadableComponentData, and unknownComponentID. These errors are returned when there are issues reading the component's ID, version, or data, respectively. The BinaryReader is used in both serverLoad and clientLoad functions to read the component data from a binary format.
 
 The addition of serverUnload and clientUnload functions ensures that components can be properly cleaned up on both the server and client sides when they are no longer needed. This helps prevent resource leaks and ensures efficient management of entity components.
+
+The reviewer suggests adding a separate struct for component IDs to enhance type safety, ensuring that component IDs are handled more robustly within the system.
 
 ## Related Questions
 - What is the purpose of the serverUnload and clientUnload functions in EntityComponentVTable?

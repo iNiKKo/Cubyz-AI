@@ -27,6 +27,13 @@ Specifically, the following changes were made:
 - Updated the `KeyBoard` struct to use this new union for menu entries.
 - Ensured that all existing keyboard bindings and menu headings are correctly mapped to the new structure.
 
+Here is a list of some of the key changes:
+
+- **Display**: Added a heading for the display section.
+- **Hotbar shortcuts**: Replaced individual hotbar keys with a more flexible binding system using the `MenuEntry` union.
+- **Camera controls**: Updated camera controls to use the new `MenuEntry` union.
+- **Debug overlays**: Mapped debug overlay keys to the new structure.
+
 ## Related Questions
 - What is the purpose of the `MenuEntry` union in the `KeyBoard` struct?
 - How does the use of a union improve the extensibility of keyboard bindings?

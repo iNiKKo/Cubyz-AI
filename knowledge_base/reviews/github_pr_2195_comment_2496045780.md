@@ -17,6 +17,8 @@ The specific changes made include:
 
 The reviewer explains that appending elements to a list does not always result in immediate reallocation, but rather allocates a larger block of memory when necessary. This can lead to unused allocations if the Arena allocator is used, as it may still own old allocations even after they are no longer needed.
 
+When you call append on a list, it doesn't change its allocation size by exactly one. It allocates a continuous array of capacity of X elements but exposes size of 1. Then, you can freely append to it without reallocating until you try to append `X+1` element. Then, list requests a resize (reallocation) of its allocation to `2*X` size. Allocator can decide to either grow that allocation, if it has unused space behind it, or has to create new memory region, copy old allocation into it and return a new pointer. Regardless of the path, list will expose size of `X+1`, but will have capacity of `2*X`. This will be repeated until list can contain all N elements. In case of Arena allocator, second reallocation path will result in old allocation being unused, but still owned by the arena.
+
 ## Related Questions
 - What is the purpose of changing the return type of `loadModel` to `?*SbbGen`?
 - How does removing the preallocation line for hashmap memory affect performance?

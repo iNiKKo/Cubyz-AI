@@ -9,13 +9,17 @@
 A new Zig file `structure_building_blocks.zig` is introduced, defining structures for handling structure building blocks and blueprints. It includes error handling for missing or invalid data.
 
 ## Explanation
-The code introduces a comprehensive system for managing structure building blocks and their associated blueprints. Key components include `StructureBuildingBlock`, `BlueprintEntry`, and `Children`. The `BlueprintEntry` struct contains detailed information about the blueprint, including an origin block and child blocks. The `initFromBlueprint` function processes the blueprint data, ensuring that there is exactly one origin block and handling errors if multiple origins or unrecognized child blocks are found. The `Children` struct manages color-specific alias tables for child blocks, allowing for dynamic selection based on a seed.
+A new Zig file `structure_building_blocks.zig` is introduced, defining structures for handling structure building blocks and blueprints. It includes error handling for missing or invalid data.
+
+The code introduces a comprehensive system for managing structure building blocks and their associated blueprints. Key components include `StructureBuildingBlock`, `BlueprintEntry`, and `Children`. The `BlueprintEntry` struct contains detailed information about the blueprint, including an origin block and child blocks. The `initFromBlueprint` function processes the blueprint data, ensuring that there is exactly one origin block and handling errors if multiple origins or unrecognized child blocks are found.
 
 The `childBlockStringId` array holds string IDs for different child blocks, while `originBlockNumericId` stores the numeric ID of the origin block type. The `childBlockNumericIdMap` is an auto hash map that maps global child block numeric IDs to local indices used to represent those child blocks.
 
 The code logs specific error messages when encountering issues such as multiple origin blocks or missing blueprints. For example, it logs `[stringId] Multiple origin blocks found.` if more than one origin block is detected and `[stringId] Could not find blueprint '{blueprintId}'.` if a referenced blueprint cannot be located.
 
 The `finalize` method in both `StructureBuildingBlock` and `Children` ensures proper cleanup of dynamically allocated resources. The use of a global arena allocator (`arena`) helps manage memory efficiently for dynamic data structures, reducing the overhead associated with frequent allocations and deallocations.
+
+The `StructureBlock` struct contains fields such as `x`, `y`, `z`, `index`, and `block`. It also includes a method `direction` that returns the direction of the block based on its data. The `initFromZon` function in `StructureBuildingBlock` initializes a structure building block from a ZON element, ensuring that the blueprint ID is present and valid.
 
 ## Related Questions
 - How does the code handle multiple origin blocks in a blueprint?

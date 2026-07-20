@@ -11,7 +11,10 @@ Added a new `Mask` struct with nested `AndList` and `OrList` to handle complex b
 ## Explanation
 The addition of the `Mask` struct introduces a sophisticated mechanism for defining and evaluating complex conditions on blocks. The nested `AndList` and `OrList` structures allow for logical combinations of block properties, tags, and data. The reviewer suggests an optimization in the inner loop to break early if a non-matching condition is found, which could improve performance by reducing unnecessary checks.
 
-The `generatePropertyEnum` function dynamically generates an enum type based on the boolean-returning methods defined in the `Block` struct. This enum is used to represent block properties that can be matched against blocks.
+The `generatePropertyEnum` function dynamically generates an enum type based on the boolean-returning methods defined in the `Block` struct. This enum is used to represent block properties that can be matched against blocks. The exact syntax for specifying block types, tags, and properties in the input string is as follows:
+- Block type: `blockType`
+- Tag: `$tagName`
+- Property: `@propertyName`
 
 The `Inner` union in the `Mask.Entry` struct represents different types of conditions that can be applied to a block, including matching by block type and data, tags, or specific properties. The `initFromString` method parses an input string into a `Mask` object by splitting it into logical expressions using `|` for OR operations and `&` for AND operations. It also handles inverse matching indicated by the `!` prefix.
 
@@ -24,15 +27,15 @@ The `isInverse` flag in the `Mask.Entry` struct indicates whether a condition sh
 The `initFromString` method can return several error conditions, including `MaskSyntaxError`, which occurs when the input string has invalid syntax or contains unsupported operations.
 
 ## Related Questions
-- How does the `generatePropertyEnum` function work?
-- What is the purpose of the `Inner` union in the `Mask.Entry` struct?
-- How does the `initFromString` method parse the input string into a `Mask` object?
-- Why is there an early break suggestion in the inner loop of the `match` method?
-- What are the potential performance implications of using nested lists for block matching?
-- How does the `deinit` method ensure proper resource management?
-- Can you explain the role of the `isInverse` flag in the `Mask.Entry` struct?
-- How is the `blockProperty` matched against a block in the `match` method?
-- What are the error conditions that can be returned by the `initFromString` method?
-- How does the `Mask` struct handle memory allocation and deallocation?
+-  How does the `generatePropertyEnum` function work?
+-  What is the purpose of the `Inner` union in the `Mask.Entry` struct?
+-  How does the `initFromString` method parse the input string into a `Mask` object?
+-  Why is there an early break suggestion in the inner loop of the `match` method?
+-  What are the potential performance implications of using nested lists for block matching?
+-  How does the `deinit` method ensure proper resource management?
+-  Can you explain the role of the `isInverse` flag in the `Mask.Entry` struct?
+-  How is the `blockProperty` matched against a block in the `match` method?
+-  What are the error conditions that can be returned by the `initFromString` method?
+-  How does the `Mask` struct handle memory allocation and deallocation?
 
 *Source: unknown | chunk_id: github_pr_1284_comment_2081054884*

@@ -9,7 +9,7 @@
 Added LOD (Level of Detail) enumeration with utility functions for min, max, next, previous, toInt, and voxelSize.
 
 ## Explanation
-The change introduces an enum `Lod` representing different levels of detail from LOD0 to LOD5. It includes inline functions to get the minimum and maximum LOD values (`min`, `max`), navigate between adjacent LODs (`next`, `previous`), convert to integer representation (`toInt`), and determine the voxel size based on the LOD level (`voxelSize`). The `voxelSize` function uses a compile-time table where each LOD level is mapped to a specific voxel size, calculated as `1 << i`, where `i` is the index of the LOD in the enum. The reviewer emphasizes that while preserving the status quo is important, future changes should be minimal and preferably applied in follow-up PRs to avoid stacking refactors.
+The change introduces an enum `Lod` representing different levels of detail from LOD0 to LOD5. It includes inline functions to get the minimum and maximum LOD values (`min`, `max`), navigate between adjacent LODs (`next`, `previous`), convert to integer representation (`toInt`), and determine the voxel size based on the LOD level (`voxelSize`). The `voxelSize` function uses a compile-time table where each LOD level is mapped to a specific voxel size, calculated as `1 << i`, where `i` is the index of the LOD in the enum. Specifically, the voxel sizes for each LOD level are as follows: LOD0 = 1, LOD1 = 2, LOD2 = 4, LOD3 = 8, LOD4 = 16, and LOD5 = 32. The reviewer emphasizes that while preserving the status quo is important, future changes should be minimal and preferably applied in follow-up PRs to avoid stacking refactors.
 
 ## Related Questions
 - What is the purpose of the `Lod` enum in the code?

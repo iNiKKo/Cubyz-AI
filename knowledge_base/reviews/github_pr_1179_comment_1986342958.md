@@ -9,11 +9,13 @@
 The `hashGeneric` function in `biomes.zig` has been modified to be public and reviewed for performance concerns.
 
 ## Explanation
-The reviewer points out that the current implementation of the `hashGeneric` function, which is used in a hashmap with millions of entries, could be optimized by computing the hash value once during construction instead of repeatedly on each access. The reviewer also mentions that using XOR in the hash function can cause issues and suggests considering alternative hashing strategies to improve performance and correctness.
+The reviewer points out that the current implementation of the `hashGeneric` function, which is used in a hashmap with millions of entries, could be optimized by computing the hash value once during construction instead of repeatedly on each access. The reviewer also mentions that using XOR in the hash function can cause problems and suggests considering alternative hashing strategies to improve performance and correctness.
 
 The current implementation of `hashGeneric` uses XOR in its hash function, which can lead to predictable patterns or vulnerabilities. To address this, the function has been modified to compute the hash value once during construction instead of on each access. This change is expected to result in significant performance gains, especially for large datasets.
 
 The reviewer also notes that the current hash function does not handle collisions efficiently and suggests exploring alternative hashing strategies to improve collision resolution and overall performance.
+
+Additionally, the `hashGeneric` function has been made public, which allows it to be accessed from other modules. This change is intended to enhance modularity and reusability of the codebase.
 
 ## Related Questions
 - What is the impact of making `hashGeneric` public?

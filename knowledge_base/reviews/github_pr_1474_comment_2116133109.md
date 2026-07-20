@@ -9,7 +9,15 @@
 The ECS system is initialized with an arena allocator and various data structures for managing entities and components. The `reset` function needs to be updated to also clear these data structures to prevent memory leaks.
 
 ## Explanation
-The ECS system is initialized with an arena allocator and various data structures for managing entities and components. The `reset` function needs to be updated to also clear all essential data structures, such as `freeList`, `entityIdToEntityType`, `entityIndexToEntityTypeIndex`, and `entitySpawnComponents`, to prevent memory leaks. Currently, the `reset` function only resets component-specific data but does not clear other critical data structures. This oversight could lead to memory leaks as old arena memory would still be referenced after a reset. The reviewer emphasizes that all data structures must be properly reset to ensure complete isolation between different ECS sessions. Specifically, the `freeList` should be cleared by resetting its capacity and contents, while `entityIdToEntityType`, `entityIndexToEntityTypeIndex`, and `entitySpawnComponents` should be deinitialized or reset to their initial states. This ensures that all memory allocated during an ECS session is properly released when the system is reset.
+The ECS system is initialized with an arena allocator and various data structures for managing entities and components. The `reset` function needs to be updated to also clear all essential data structures, such as `freeList`, `entityIdToEntityType`, `entityIndexToEntityTypeIndex`, and `entitySpawnComponents`, to prevent memory leaks. Currently, the `reset` function only resets component-specific data but does not clear other critical data structures. This oversight could lead to memory leaks as old arena memory would still be referenced after a reset. The reviewer emphasizes that all data structures must be properly reset to ensure complete isolation between different ECS sessions.
+
+Specifically:
+- `freeList` should be cleared by resetting its capacity and contents using the following commands: `freeList.deinit(); freeList = .initCapacity(allocator, @intFromEnum(EntityIndex.noValue)); for(0..@intFromEnum(EntityIndex.noValue)) |i| { freeList.append(allocator, @enumFromInt(@intFromEnum(EntityIndex.noValue) - i - 1)); }`
+- `entityIdToEntityType` should be deinitialized using the command: `entityIdToEntityType.deinit();`
+- `entityIndexToEntityTypeIndex` should be reset to its initial state using the command: `entityIndexToEntityTypeIndex = .{};`
+- `entitySpawnComponents` should be reset to its initial state using the command: `entitySpawnComponents = .{};`
+
+These steps ensure that all memory allocated during an ECS session is properly released when the system is reset.
 
 ## Related Questions
 - How does the ECS system handle memory allocation and deallocation?

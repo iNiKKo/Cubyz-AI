@@ -29,8 +29,6 @@ The addition of the `Branch` struct introduces a new way to manage branch blocks
 
 The `BranchData` struct is used to store connection data for each branch block, with a single field `enabledConnections` that represents which directions are connected using a bitmask. The methods `init`, `isConnected`, and `setConnection` allow for initializing, checking, and updating these connections.
 
-Reviewers noted that the code is self-explanatory but suggested removing redundant comments to improve clarity.
-
 ## Related Questions
 - What is the purpose of the `Branch` struct in Cubyz?
 - How does the `branchTransform` function modify quad corners based on connection data?

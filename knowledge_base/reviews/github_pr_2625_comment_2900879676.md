@@ -27,6 +27,9 @@ The specific key bindings for the actions are as follows:
   - Key: GLFW_KEY_Q
   - Repeat Action: &game.Player.dropFromHand
   - Notify Requirement: inGame
+- 'modifier0':
+  - Key: GLFW_KEY_LEFT_SHIFT
+  - Tag: Tag.controlModifier0
 
 ## Related Questions
 - What is the purpose of renaming existing modifier actions to `actionModifier`?

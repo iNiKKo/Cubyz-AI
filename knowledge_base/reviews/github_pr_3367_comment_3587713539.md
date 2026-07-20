@@ -13,6 +13,10 @@ The change introduces a new parameter `subPath` to the `open_vorbis_file_by_id` 
 
 The function now constructs file paths using the format `assets/{addon}/{subPath}/{fileName}.ogg` and also checks a secondary path `{main.files.cubyzDirStr()}/serverAssets/{addon}/{subPath}/{fileName}.ogg`. If both paths fail, it logs an error with the specific error code obtained from `getMaError(err)`, the audio ID, and the searched paths.
 
+The `AudioData` struct has been updated to include a new field `isMono` which is set to `false` by default. The function `open_vorbis_file_by_id` now returns a pointer to an `stb_vorbis` stream if successful, or `null` if it fails to open the file.
+
+The error handling function `handleError` takes a `miniaudioError` and logs an error message if the result is not successful. The error message includes the specific error code obtained from `getMaError(err)`.
+
 ## Related Questions
 - What is the purpose of the `subPath` parameter in the `open_vorbis_file_by_id` function?
 - How does the error logging change improve debugging?

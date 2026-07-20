@@ -18,6 +18,8 @@ The following variables were removed or made public in the MeshSelection struct:
 - `lastSelectedBlockPos`: Made public
 - `lastDir`: Made public
 
+Additionally, the reviewer suggests creating a struct to hold `lastPos` and `playerOrientation`, which would then be passed to the callback function. This struct could be named something like `PlayerState` or similar.
+
 ## Related Questions
 - What are the potential benefits of encapsulating `lastSelectedBlockPos` and `lastDir` within the MeshSelection struct?
 - How does passing these variables as parameters to a callback function improve code maintainability?

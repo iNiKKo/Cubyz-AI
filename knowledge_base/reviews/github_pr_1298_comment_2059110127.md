@@ -9,9 +9,7 @@
 The code introduces a conditional check for server-side connections and suggests refactoring to use a member function instead of direct access. The reviewer points out that the current implementation directly checks if `conn.user != null` to determine if a connection is server-side. This approach is suggested to be replaced with a member function `isServerSide()` for better encapsulation and maintainability. The reviewer emphasizes that this change should be applied consistently across all relevant parts of the codebase to ensure architectural consistency and prevent potential bugs related to connection type checks.
 
 ## Explanation
-The reviewer points out that the current implementation directly checks if `conn.user != null` to determine if a connection is server-side. This approach is suggested to be replaced with a member function `isServerSide()` for better encapsulation and maintainability. The reviewer emphasizes that this change should be applied consistently across all relevant parts of the codebase to ensure architectural consistency and prevent potential bugs related to connection type checks.
-
-The specific change made in the code is replacing `conn.user != null` with `isServerSide(conn)`. Additionally, the reviewer suggests that other places in the codebase where similar connection checks are used should be updated to use the new member function for consistency.
+The reviewer points out that the current implementation directly checks if `conn.user != null` to determine if a connection is server-side. This approach is suggested to be replaced with a member function `isServerSide()` for better encapsulation and maintainability. The specific change made in the code is replacing `conn.user != null` with `isServerSide(conn)`. Additionally, the reviewer suggests that other places in the codebase where similar connection checks are used should be updated to use the new member function for consistency. This ensures architectural consistency and prevents potential bugs related to connection type checks.
 
 ## Related Questions
 - What is the purpose of the `isServerSide()` member function?

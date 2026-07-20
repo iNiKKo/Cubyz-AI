@@ -14,15 +14,15 @@ This chunk handles parsing elements in a configuration file format, including nu
 The `printError` function takes parameters such as `filePath`, `chars`, `index`, and an error message. It formats the error message to include a caret (`^`) at the position of the error in the input characters, ensuring that the error message is no longer than 512 characters.
 
 The `parseElement` function assumes that the region starts with a non-space character. It uses a switch statement to handle different types of elements:
-- **Numbers**: If the current character is a digit or one of '+', '-', it calls `parseNumber`.
-- **Booleans**: If the current character is 't' (for true) or 'f' (for false), it checks for the full keyword and sets the boolean value accordingly.
-- **Null**: If the current character is 'n', it checks for the full keyword and sets the null value.
-- **Strings**: If the current character is '"', it calls `parseString` to parse the string.
-- **Identifiers or Enum Literals**: If the current character is '.', it calls `parseIdentifierOrStringOrEnumLiteral`.
-- **Objects**: If the current character is '{' and an equal sign ('=') is found, it calls `parseObject`.
-- **Arrays**: If the current character is '{' but no equal sign is found, it calls `parseArray`.
+- **Numbers**: If the current character is a digit or one of '+', '-', it calls `parseNumber(chars, index)`.
+- **Booleans**: If the current character is 't' (for true) or 'f' (for false), it checks for the full keyword ('true' or 'false') and sets the boolean value accordingly. For example, if the input is 'true', it increments the index by 4 and returns a boolean value of `true`.
+- **Null**: If the current character is 'n', it checks for the full keyword ('null') and sets the null value. For example, if the input is 'null', it increments the index by 4 and returns a null value.
+- **Strings**: If the current character is '"', it calls `parseString(allocator, chars, index)` to parse the string.
+- **Identifiers or Enum Literals**: If the current character is '.', it checks if the next character is a digit. If so, it decrements the index by 1 and calls `parseNumber(chars, index)`. Otherwise, it calls `parseIdentifierOrStringOrEnumLiteral(allocator, chars, index)`.
+- **Objects**: If the current character is '{' and an equal sign ('=') is found, it calls `parseObject(allocator, filePath, chars, index)`.
+- **Arrays**: If the current character is '{' but no equal sign is found, it calls `parseArray(allocator, filePath, chars, index)`.
 
-If an unexpected character is encountered, the function logs an error message and returns a null value. The function also skips whitespace and comments by calling `skipWhitespaceAndComments` during parsing.
+If an unexpected character is encountered, the function logs an error message and returns a null value. The function also skips whitespace and comments by calling `skipWhitespaceAndComments(chars, index)` during parsing.
 
 ## Related Questions
 - What is the purpose of the `printError` function?

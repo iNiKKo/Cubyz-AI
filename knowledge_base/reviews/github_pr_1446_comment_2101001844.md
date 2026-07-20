@@ -13,16 +13,10 @@ This change adds a GUI window for editing signs, including a text input componen
 
 The sign editor handles text input validation by checking if the text length exceeds 500 characters or if the visible character count exceeds 100. If either condition is met, an error message is logged. The `deinit` function frees the memory allocated for the old text. Character counting is cached in the `apply` function to avoid redundant calculations of `main.graphics.TextBuffer.Parser.countVisibleCharacters(textComponent.currentString.items)`. The sign editor manages memory allocation and deallocation by using `main.globalAllocator.dupe(u8, _oldText)` to duplicate the old text and `main.globalAllocator.free(oldText)` to free it. The character limit is enforced in the text input component by checking the length of the current string items and the visible character count against the limits of 500 and 100 respectively.
 
+The reviewer suggests caching the result of character counting to avoid redundant calculations, which could improve performance. This can be done by storing the result of `main.graphics.TextBuffer.Parser.countVisibleCharacters(textComponent.currentString.items)` in a variable and reusing it instead of recalculating it each time.
+
 ## Related Questions
-- How does the sign editor handle text input validation?
-- What is the purpose of the `deinit` function in the sign editor?
-- Why is character counting cached in the apply function?
+- What are the specific values for the text length and visible character count limits in the sign editor?
 - How does the sign editor manage memory allocation and deallocation?
-- What improvements are suggested for displaying error messages to users?
-- How does the sign editor interact with other GUI components?
-- What architectural considerations are taken into account when designing the sign editor?
-- How is the character limit enforced in the text input component?
-- What changes were made to improve code readability and performance?
-- How does the sign editor handle user interactions, such as opening and closing windows?
 
 *Source: unknown | chunk_id: github_pr_1446_comment_2101001844*

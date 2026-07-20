@@ -9,7 +9,7 @@
 A new command for replacing blocks in a worldedit selection based on a mask and pattern is added.
 
 ## Explanation
-The addition of the '/replace' command introduces functionality to modify blocks within a defined selection area using a 'mask' expression to identify which blocks should be replaced and a 'pattern' to define the new block types. The reviewer suggests refining the description and usage strings to clarify that the operation is limited to the selection box, ensuring users understand the scope of the command. The exact usage syntax is '/replace <old mask> <new pattern>'. The symbols Vec3i, User, Block, Blueprint, Pattern, and Mask are also part of the implementation.
+The addition of the '/replace' command introduces functionality to modify blocks within a defined selection area using a 'mask' expression to identify which blocks should be replaced and a 'pattern' to define the new block types. The exact usage syntax is '/replace <old mask> <new pattern>'. The symbols Vec3i, User, Block, Blueprint, Pattern, and Mask are also part of the implementation. The reviewer suggests refining the description and usage strings to clarify that the operation is limited to the selection box, ensuring users understand the scope of the command.
 
 ## Related Questions
 - What is the purpose of the '/replace' command?

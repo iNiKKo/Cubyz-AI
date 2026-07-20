@@ -11,6 +11,8 @@ Added `parseAxis` function to handle axis parsing and updated `parseCoordinates`
 ## Explanation
 The change introduces a new function `parseAxis` that parses an axis argument, which can either be a number or a tilde (`~`) indicating relative positioning. The function checks if the input starts with a tilde and then parses the rest of the string as a floating-point number. If the input is just a tilde, it returns 0. If the input is invalid (i.e., not a number), it sends an error message to the user and returns `error.InvalidNumber`. The reviewer suggests using a `Vec3d` instead of pointers for coordinates in the `parseCoordinates` function, advocating for returning a vector object to simplify handling and potential future changes. This would involve changing the function signature to return a `Vec3d` instead of taking pointers to individual coordinates.
 
+The `parseCoordinates` function uses the `parseAxis` function to parse each coordinate (x, y, z) from the input string. If any coordinate parsing fails (i.e., returns an error), the function sends an appropriate error message to the user and propagates the error. The function takes a `std.mem.SplitIterator(u8, .scalar)` as input, which is used to split the input string into individual axis arguments.
+
 ## Related Questions
 - What is the purpose of the `parseAxis` function?
 - Why does the reviewer suggest using a Vec3d instead of pointers?

@@ -29,6 +29,28 @@ The parser supports optional fields by checking if the argument is `null`. If an
 **Extending the Parser:**
 The parser can be extended to support more complex data structures by adding additional cases in the `_parse` function. For example, if a new data type needs to be supported, you can add a new `switch` case in the `parseArgument` function to handle that type. Similarly, if more complex parsing logic is required for certain fields, you can implement custom parsing functions and call them from within the parser.
 
+**Implementation Details:**
+The `Parser` function takes two parameters: a type `T` and an optional callback function. The `_parse` function handles the actual parsing of the input arguments based on the type of `T`. If `T` is a struct, it calls `parseStruct`; if `T` is a union, it calls `parseUnion`. The `parseStruct` function iterates over the fields of the struct and parses each one. The `parseArgument` function handles parsing individual arguments based on their type. The `parseUnion` function attempts to parse the input arguments as each field in the union and returns the first successful result.
+
+**Syntax:**
+The `Parser` function is defined as follows:
+```zig
+pub fn Parser(comptime T: type, comptime callback: ?fn(self: T) anyerror!void) type {
+    return struct {
+        const Self = @This();
+        pub const Args = T;
+
+        pub fn parse(allocator: NeverFailingAllocator, args: []const u8) !ParseResult(T) {
+            const result = _parse(allocator, args);
+            if(callback != null and result == .success) {
+                try callback.?(result.success);
+            }
+            return result;
+        }
+        pub fn _parse(allocator: NeverFailingAllocator, args: []const u8) ParseResult(T) {
+            switch(@typeInfo(T)) {
+                inline .@
+
 ## Related Questions
 - How does the parser handle optional fields?
 - What are the supported data types in the argument parsing system?

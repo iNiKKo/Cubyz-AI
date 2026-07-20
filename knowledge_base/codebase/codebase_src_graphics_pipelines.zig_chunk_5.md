@@ -9,7 +9,11 @@
 Defines structures for Vulkan color blending and descriptor set layout bindings.
 
 ## Explanation
-The chunk defines two main structures: `ColorBlendState` and `DescriptorSetLayoutBinding`. The `ColorBlendState` structure is used to configure color blending in a Vulkan pipeline, including logic operations (`clear`, `and`, `andReverse`, `copy`, `andInverted`, `noOp`, `xor`, `or`, `nor`, `equivalent`, `invert`, `orReverse`, `copyInverted`, `orInverted`, `nand`, `set`), blend attachments, and blend constants. It provides a method `toVulkan` that converts the state into a Vulkan-specific structure for use with the graphics API. The `DescriptorSetLayoutBinding` structure describes how resources are bound to shader stages in a Vulkan descriptor set layout, specifying details like binding number, type of descriptor (`sampler`, `combinedImageSampler`, `sampledImage`, `storageImage`, `uniformTexelBuffer`, `storageTexelBuffer`, `uniformBuffer`, `storageBuffer`, `uniformBufferDynamic`, `storageBufferDynamic`, `inputAttachment`), count, stage flags (vertex, tessellationControl, tessellationEvaluation, geometry, fragment, compute), and optional immutable samplers.
+The chunk defines two main structures: `ColorBlendState` and `DescriptorSetLayoutBinding`. The `ColorBlendState` structure is used to configure color blending in a Vulkan pipeline. It includes logic operations (`clear`, `and`, `andReverse`, `copy`, `andInverted`, `noOp`, `xor`, `or`, `nor`, `equivalent`, `invert`, `orReverse`, `copyInverted`, `orInverted`, `nand`, `set`), blend attachments, and blend constants. The structure provides a method `toVulkan` that converts the state into a Vulkan-specific structure for use with the graphics API.
+
+The `DescriptorSetLayoutBinding` structure describes how resources are bound to shader stages in a Vulkan descriptor set layout. It specifies details such as binding number, type of descriptor (`sampler`, `combinedImageSampler`, `sampledImage`, `storageImage`, `uniformTexelBuffer`, `storageTexelBuffer`, `uniformBuffer`, `storageBuffer`, `uniformBufferDynamic`, `storageBufferDynamic`, `inputAttachment`), count, stage flags (vertex, tessellationControl, tessellationEvaluation, geometry, fragment, compute), and optional immutable samplers.
+
+The `stageFlags` field in the `DescriptorSetLayoutBinding` structure is a packed struct with boolean fields for each shader stage: vertex, tessellationControl, tessellationEvaluation, geometry, fragment, and compute.
 
 ## Code Example
 ```zig

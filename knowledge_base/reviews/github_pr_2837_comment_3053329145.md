@@ -11,7 +11,15 @@ Refactored AccountCode initialization to use Utf8View for better Unicode handlin
 ## Explanation
 The change refactors the AccountCode struct's initFromUserInput function to utilize std.unicode.Utf8View instead of directly using an iterator. This approach is more idiomatic in Zig and provides a safer way to handle UTF-8 encoded strings. The reviewer suggests this change for better architectural alignment with Zig's standard library practices, aiming to improve code readability and maintainability.
 
-Additionally, the printInvalidCharError function has been added to handle cases where the Account Code contains invalid characters (non-ASCII letters and non-whitespace). This function prints an error message indicating the invalid character and its Unicode code point.
+Additionally, the printInvalidCharError function has been added to handle cases where the Account Code contains invalid characters (non-ASCII letters and non-whitespace). This function prints an error message indicating the invalid character and its Unicode code point. The exact implementation of this function is as follows:
+
+```zig
+fn printInvalidCharError(failureText: *main.List(u8), codepoint: u21) void {
+    failureText.print("Account Code contains invalid character '{u}' (U+{X}), only ASCII letters and whitespaces are allowed.\n", .{codepoint, codepoint});
+}
+```
+
+This function takes a `failureText` pointer to a `main.List(u8)` and a `codepoint` of type `u21`. It prints an error message that specifies the invalid character and its Unicode code point, ensuring that only ASCII letters and whitespaces are allowed in the Account Code.
 
 ## Related Questions
 - What is the purpose of using Utf8View in this refactoring?
