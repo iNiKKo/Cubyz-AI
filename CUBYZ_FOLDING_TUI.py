@@ -297,10 +297,11 @@ def download_update(download_url: str, expected_version: str) -> bool:
     except Exception as e:
         _log_queue.append(f"{Colors.RED}[X] Update download failed: {e}{Colors.RESET}")
         return False
-    match = re.search(rb'^VERSION\s*=\s*["\']([\d.]+)["\']', new_content, re.MULTILINE)
-    downloaded_version = match.group(1).decode() if match else None
+    text = new_content.decode('utf-8', errors='ignore')
+    match = re.search(r'VERSION\s*=\s*["\']([^"\']+)["\']', text)
+    downloaded_version = match.group(1) if match else None
     if downloaded_version != expected_version:
-        _log_queue.append(f"{Colors.YELLOW}[!] Downloaded v{downloaded_version or '?'} != expected v{expected_version}. Skipping.{Colors.RESET}")
+        _log_queue.append(f"{Colors.YELLOW}[!] Downloaded file from GitHub has v{downloaded_version or 'unknown'}, but expected v{expected_version}. (Did you push the new commit to GitHub?) Skipping.{Colors.RESET}")
         return False
     this_file = os.path.abspath(__file__)
     try:
