@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+# Force Python files to always use LF line endings on GitHub so that old
+# clients using the byte-mode VERSION regex (rb'^VERSION\s*=') can always
+# match the version string correctly, even when run on Windows.
+*.py text eol=lf

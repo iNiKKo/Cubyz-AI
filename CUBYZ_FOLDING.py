@@ -215,7 +215,10 @@ def save_user(user_id: str):
 
 
 def load_auto_update_preference():
-    return load_config().get("auto_update", None)
+    # Default to True -- auto-update is always enabled unless the volunteer has
+    # explicitly turned it off via the settings menu. This ensures old clients
+    # (which default to None/unset) also auto-update without blocking on input().
+    return load_config().get("auto_update", True)
 
 
 def save_auto_update_preference(enabled: bool):
@@ -318,16 +321,19 @@ def offer_update(status: str, info: dict, mandatory: bool):
     latest_v     = info.get("latest_client_version", "?")
     download_url = info.get("download_url", "")
     if mandatory:
-        _log_queue.append(f"\n{Colors.RED}{Colors.BOLD}[X] Client v{VERSION} no longer accepted -- update required (latest v{latest_v}).{Colors.RESET}")
+        _log_queue.append(f"{Colors.RED}{Colors.BOLD}[X] Client v{VERSION} no longer accepted -- update required (latest v{latest_v}).{Colors.RESET}")
     else:
-        _log_queue.append(f"\n{Colors.YELLOW}[i] Update available: v{latest_v} (you have v{VERSION}).{Colors.RESET}")
-    
-    if mandatory or load_auto_update_preference():
-        _log_queue.append(f"{Colors.CYAN}[~] Downloading update from {download_url}...{Colors.RESET}")
+        _log_queue.append(f"{Colors.YELLOW}[i] Update available: v{latest_v} (you have v{VERSION}).{Colors.RESET}")
+
+    auto = load_auto_update_preference()  # True by default, False only if explicitly disabled
+    if mandatory or auto:
+        _log_queue.append(f"{Colors.CYAN}[~] Auto-update enabled -- downloading v{latest_v}...{Colors.RESET}")
         if download_update(download_url, latest_v):
-            _log_queue.append(f"{Colors.GREEN}[OK] Restarting into new version...{Colors.RESET}")
-            time.sleep(1)
+            _log_queue.append(f"{Colors.GREEN}[OK] Update installed. Restarting into v{latest_v}...{Colors.RESET}")
+            time.sleep(2)
             os.execv(sys.executable, [sys.executable] + sys.argv)
+        elif mandatory:
+            _log_queue.append(f"{Colors.RED}[X] Could not auto-update. Update manually: {download_url}{Colors.RESET}")
 
 
 OLLAMA_HOST = OLLAMA_URL.rsplit("/api/", 1)[0]
