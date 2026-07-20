@@ -12,15 +12,15 @@ Defines a LargeBuffer struct for managing shader storage buffer objects (SSBOs) 
 The LargeBuffer struct is designed to handle large shader storage buffer objects (SSBOs) by allocating and freeing smaller regions within it. It uses OpenGL functions to manage the buffer's lifecycle, including creation, binding, and synchronization with GPU operations. The struct maintains a list of free blocks and fenced lists for managing allocations that are safe to reuse after certain GPU commands have completed.
 
 Key methods include:
-- `init`: Initializes the buffer, setting up fences and free lists.
+- `init`: Initializes the buffer, setting up fences and free lists. It sets the initial capacity, used space, and binding. Fences are created using `glFenceSync` with the flag `GL_SYNC_GPU_COMMANDS_COMPLETE`.
 - `deinit`: Cleans up resources by deleting sync objects and deinitializing lists.
-- `beginRender` and `endRender`: Manage fences to ensure that memory is safe to reuse after GPU operations have completed.
-- `rawAlloc`: Allocates memory for a new allocation, resizing the buffer if necessary.
+- `beginRender` and `endRender`: Manage fences to ensure that memory is safe to reuse after GPU operations have completed. `beginRender` increments the active fence index, processes fenced free lists, and waits for synchronization using `glClientWaitSync`. `endRender` deletes the current fence and creates a new one.
+- `rawAlloc`: Allocates memory for a new allocation, resizing the buffer if necessary. When resizing, it doubles the capacity, copies existing data to the new buffer, and frees the old one. The buffer size is limited by OpenGL's 2 GiB limit.
 - `finalFree`: Finalizes deallocation by merging adjacent free blocks.
 - `free`: Queues deallocations for later processing.
-- `allocateAndMapRange`: Maps a region of the buffer for writing, ensuring synchronization with GPU operations.
-- `unmapRange`: Unmaps the buffer after use.
-- `uploadData`: Uploads data to the buffer, handling memory allocation and mapping.
+- `allocateAndMapRange`: Maps a region of the buffer for writing, ensuring synchronization with GPU operations. It uses `glMapBufferRange` with flags `GL_MAP_WRITE_BIT` and `GL_MAP_INVALIDATE_RANGE_BIT` to map the buffer range.
+- `unmapRange`: Unmaps the buffer after use using `glUnmapBuffer`.
+- `uploadData`: Uploads data to the buffer, handling memory allocation and mapping. It uses `glMapBufferRange` with flags `GL_MAP_WRITE_BIT` and `GL_MAP_INVALIDATE_RANGE_BIT` to map the buffer range and then copies data using `@memcpy`.
 
 The struct ensures that memory is efficiently managed and reused while maintaining synchronization with GPU operations. When the buffer runs out of space, it resizes by doubling its capacity, copying existing data to the new buffer, and freeing the old one. The `createBuffer` method initializes the buffer with specified size and flags, including `GL_MAP_WRITE_BIT` and `GL_DYNAMIC_STORAGE_BIT`, which allow for dynamic storage and writing operations. Fences are used to synchronize buffer access, ensuring that memory is only reused after GPU commands have completed.
 

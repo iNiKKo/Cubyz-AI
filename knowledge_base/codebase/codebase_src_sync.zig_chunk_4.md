@@ -11,9 +11,11 @@ The chunk implements serialization and deserialization for command payloads and 
 ## Explanation
 This chunk defines the `Command` struct with methods for serializing and deserializing payload data. It includes specific logic for different types of sync operations such as useDurability, health, kill, and energy.
 
-The `useDurability` operation reads an inventory and a durability value from the reader, while the `health`, `energy`, and `kill` operations read a float or vector value respectively. The `serializePayload` method writes the command's payload to a binary format using a `BinaryWriter`. The `do` method executes the command based on its payload type, and the `undo` method reverses the effects of previously executed base operations by iterating in reverse order.
+The `useDurability` operation reads an inventory (`InventoryAndSlot`) and a durability value (u32) from the reader. The `health` operation reads a float (f32) representing the target's health. The `energy` operation also reads a float (f32) representing the target's energy. The `kill` operation reads a vector (`Vec3d`) representing the spawn point where the entity will be respawned.
 
-The `serialize` method for `SyncOperation` writes different types of data depending on the operation type: inventory and durability for `useDurability`, a float for `health` and `energy`, and a vector for `kill`. The `do` method asserts that the base operations list is empty before executing the payload, and the `undo` method handles various inventory management operations such as move, swap, delete, create, moveToBag, and takeFromBag.
+The `serializePayload` method writes the command's payload to a binary format using a `BinaryWriter`. The `do` method executes the command based on its payload type, and the `undo` method reverses the effects of previously executed base operations by iterating in reverse order. The `undo` method handles various inventory management operations such as move, swap, delete, create, moveToBag, and takeFromBag.
+
+The `serialize` method for `SyncOperation` writes different types of data depending on the operation type: inventory and durability for `useDurability`, a float for `health` and `energy`, and a vector for `kill`. The `do` method asserts that the base operations list is empty before executing the payload.
 
 ## Code Example
 ```zig

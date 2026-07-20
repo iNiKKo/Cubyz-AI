@@ -17,11 +17,11 @@ The `charCallback` function handles character input by passing it to the GUI tex
 
 The `framebufferSize` callback updates the width and height of the framebuffer, calls `main.renderer.updateViewport`, and refreshes the GUI scale and positions.
 
-Mouse cursor position changes are smoothed out using a circular buffer (`deltas`) that averages mouse movements over multiple frames. The `cursorPosition` function updates the current position and calculates the delta, which is then applied to the camera rotation in `applyCursorPositionChanges`. This function averages the deltas over the last three frames before applying them to the camera.
+Mouse cursor position changes are smoothed out using a circular buffer (`deltas`) that averages mouse movements over multiple frames. The buffer has a length of 3 (`deltasLen: u2 = 3`), and it is updated by calculating the delta between the new and current positions, multiplying it by the mouse sensitivity, and adjusting for inverted Y-axis if necessary. The `cursorPosition` function updates the current position and calculates the delta, which is then applied to the camera rotation in `applyCursorPositionChanges`. This function averages the deltas over the last three frames before applying them to the camera.
 
 The `mouseButton` function processes mouse button presses and releases similarly to the `keyCallback`, updating the corresponding key state in `main.KeyBoard.keys`.
 
-The `scroll` function updates the scroll offset, separating it into integer and fractional parts for smooth scrolling.
+The `scroll` function updates the scroll offset, separating it into integer and fractional parts for smooth scrolling. The `_ = xOffset;` line indicates that the horizontal scroll offset is ignored. The vertical scroll offset (`yOffset`) is added to `scrollOffset`, and both the integer and fractional parts of this sum are updated separately.
 
 The `glDebugOutput` function categorizes and logs OpenGL debug messages based on their source, type, and severity.
 

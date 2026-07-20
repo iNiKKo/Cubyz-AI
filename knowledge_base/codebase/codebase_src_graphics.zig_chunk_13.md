@@ -13,7 +13,7 @@ The chunk defines two main structures, VertexArray and SSBO, which are used to m
 
 The VertexArray.init function generates a VAO and VBO, binds them, and uploads vertex data using glBufferData. If indices are provided, it also generates an IBO and uploads index data. The VertexArray.deinit function deletes the VAO, VBO, and IBO if present. The VertexArray.bind function binds the VAO.
 
-The SSBO.init function generates a buffer ID for shader storage buffers. The SSBO.initStatic function initializes a static buffer with provided data. The SSBO.initStaticSize function initializes a static buffer of a specified size without data. The SSBO.deinit function deletes the buffer. The SSBO.bind function binds the buffer to a specific binding point. The SSBO.bufferData function updates the entire buffer with new data. The SSBO.bufferSubData function updates a portion of the buffer with new data. The SSBO.createDynamicBuffer function creates a dynamic buffer of a specified size.
+The SSBO.init function generates a buffer ID for shader storage buffers. The SSBO.initStatic function initializes a static buffer with provided data using glBufferStorage. The SSBO.initStaticSize function initializes a static buffer of a specified size without data using glBufferStorage. The SSBO.deinit function deletes the buffer using glDeleteBuffers. The SSBO.bind function binds the buffer to a specific binding point using glBindBufferBase. The SSBO.bufferData function updates the entire buffer with new data using glBufferData. The SSBO.bufferSubData function updates a portion of the buffer with new data using glBufferSubData. The SSBO.createDynamicBuffer function creates a dynamic buffer of a specified size using glBufferData.
 
 ## Code Example
 ```zig

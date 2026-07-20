@@ -15,6 +15,8 @@ The `preProcessAnimationData` function binds the animation compute pipeline, set
 
 The `reloadTextures` function clears existing texture lists, reloads textures from paths, and regenerates the texture array. The `generateTextureArray` function creates block, emission, reflectivity, absorption, and combined reflectivity-absorption texture arrays. It also initializes SSBOs for animation data, animated texture indices, and fog data, binding them to specific buffer slots.
 
+The loop in the code snippet loads breaking textures by iterating through a sequence of numbers starting from 0. For each number `i`, it constructs two file paths: one using a fixed prefix (`assets/cubyz/blocks/textures/breaking/{}.png`) and the other using an asset folder (`{s}/cubyz/blocks/textures/breaking/{}.png`). If neither path exists, the loop breaks. It then creates a texture ID (`cubyz:breaking/{}`) and appends the corresponding texture to the `blockBreakingTextures` array.
+
 The `main.stackAllocator` is used to manage memory for temporary strings like file paths and IDs during the loading process.
 
 ## Code Example

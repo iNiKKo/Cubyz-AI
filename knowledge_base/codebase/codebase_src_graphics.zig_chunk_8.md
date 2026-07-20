@@ -11,7 +11,7 @@ Handles text parsing, rendering, and interaction logic.
 ## Explanation
 This chunk implements the TextBuffer struct, which manages text rendering and interaction. It includes methods for initializing text buffers from parsed text, deinitializing resources, converting mouse positions to character indices, and calculating cursor positions. The code uses Harfbuzz for shaping text and handles line breaks based on font size and maximum line width.
 
-The `parse` method initializes the parser, sets up Harfbuzz buffer, adds UTF-32 characters, sets direction, script, language, shapes the text, retrieves glyph information and positions, guesses text indices from cluster indices, merges it all together into glyphs, finds lines, and appends line breaks.
+The `parse` method initializes the parser, sets up Harfbuzz buffer, adds UTF-32 characters, sets direction, script, language, shapes the text, retrieves glyph information and positions, guesses text indices from cluster indices, merges it all together into glyphs, finds lines, and appends line breaks. Specifically, it creates a Harfbuzz buffer, adds parsed text as UTF-32 characters, sets the buffer's direction to left-to-right, script to common, and language to default. It then shapes the text using the Harfbuzz font, retrieves glyph information and positions, guesses text indices from cluster indices, and merges this information into glyphs. The method also finds lines by iterating through the glyphs and appending line breaks based on the calculated width.
 
 The `deinit` method frees allocated resources for glyphs, lines, and line breaks.
 
@@ -21,7 +21,7 @@ The `mousePosToIndex` method converts mouse positions to character indices by it
 
 The `indexToCursorPos` method calculates cursor positions by iterating through glyphs and finding the position of a specific character index.
 
-The `calculateLineBreaks` method calculates line breaks based on font size, maximum line width, and handling spaces and newlines.
+The `calculateLineBreaks` method calculates line breaks based on font size, maximum line width, and handling spaces and newlines. It clears existing line breaks, sets up space character width, appends initial line break, iterates through glyphs to calculate line width, handles spaces by storing last space width and index, handles newlines by appending line breaks, and if the line width exceeds the scaled maximum width, it either breaks at the last space or continues without breaking.
 
 ## Code Example
 ```zig

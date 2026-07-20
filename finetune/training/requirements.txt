@@ -1,12 +1,24 @@
 # QLoRA fine-tuning stack for the Cubyz assistant model.
 #
-# ROCm note (RX9070): install the ROCm build of PyTorch FIRST, from
-# https://pytorch.org/get-started/locally/ (select ROCm as the compute platform), before
-# installing the packages below -- pip's default torch wheel is CUDA-only and will silently
-# fail to see the GPU. bitsandbytes added a multi-backend refactor with ROCm support; if
-# `import bitsandbytes` errors on load or 4-bit quantization silently falls back to CPU, that's
-# the first thing to check (`bitsandbytes-rocm` or a from-source build may be needed depending
-# on your exact ROCm version).
+# ROCm note (RX9070): install the ROCm build of PyTorch FIRST, before installing the packages
+# below -- pip's default torch wheel is CUDA-only and will silently fail to see the GPU (found
+# live 2026-07-20: a stable-channel install had landed torch as CPU-only while torchvision/
+# torchaudio were ROCm-tagged, a broken mismatch that would have silently trained on CPU or
+# failed outright). The RX9070 is new enough hardware that only the nightly channel reliably
+# tracks it -- match the ROCm tag to `cat /opt/rocm/.info/version` on the actual training
+# machine (confirmed available up to rocm7.2 as of 2026-07-20, matching this project's system):
+#
+#   pip uninstall -y torch torchvision torchaudio
+#   pip install --pre torch torchvision torchaudio \
+#       --index-url https://download.pytorch.org/whl/nightly/rocm7.2
+#
+# Verify before trusting it: `python -c "import torch; print(torch.cuda.is_available())"` must
+# print True, not False -- a successful `pip install` alone does NOT confirm the GPU is visible.
+#
+# bitsandbytes added a multi-backend refactor with ROCm support; if `import bitsandbytes` errors
+# on load or 4-bit quantization silently falls back to CPU, that's the next thing to check
+# (`bitsandbytes-rocm` or a from-source build may be needed depending on your exact ROCm
+# version).
 
 transformers>=4.46.0
 peft>=0.13.0

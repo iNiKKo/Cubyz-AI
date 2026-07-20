@@ -15,12 +15,20 @@ the report, same as the docs audit earlier in this project.
 """
 import os
 import re
+import sys
 import json
+import shutil
+import time
 from collections import defaultdict
 
-WIKI_GLOB_DIRS = "users"
-CODEBASE_SUBSET_FILE = "finetune/source_data/codebase_architectural_subset.jsonl"
-REVIEWS_GLOB_DIRS = "users"
+# Per-pair correctness/quality issues -- safe to auto-remove, since each is a specific pair that's
+# either an explicit non-answer (hedge), a claim not traceable to the source it was generated from
+# (grounding/numeric), or structurally broken (malformed). "shape" and "stub-source" are flagged at
+# the CHUNK level, not a specific pair, and need a human judgment call (e.g. a review chunk's 2nd
+# pair might be a perfectly good, just-redundant answer, not a wrong one) -- left report-only.
+REMOVE_CATEGORIES = {"hedge", "grounding", "numeric", "malformed"}
+
+KNOWLEDGE_DIR = "knowledge_base"
 PAIRS_DIR = "finetune/pairs"
 
 HEDGE_PATTERNS = [
@@ -56,24 +64,56 @@ def load_jsonl(path):
     return records
 
 
+def _extract_kb_section(text: str, heading: str) -> str:
+    match = re.search(rf"## {re.escape(heading)}\n(.*?)(?=\n\n## |\n\n\*Source)", text, re.S)
+    return match.group(1).strip() if match else ""
+
+
+def _parse_kb_md_record(collection: str, chunk_id: str) -> dict:
+    """Mirrors pipeline_crunching/server_textual.py's _parse_kb_md_record() -- kept as a separate
+    copy here rather than imported, matching this project's existing pattern of standalone scripts
+    (see that function's own docstring for why knowledge_base/*.md, not users/*.jsonl, is the
+    source of truth: users/*.jsonl is the frozen one-time crunch dump that audit mode's fixes never
+    touch, so QC-checking pairs against it means checking grounding against stale, possibly
+    already-corrected-elsewhere content -- silently missing real hallucinations that were only
+    introduced/left uncorrected in the version actually used to generate these pairs, or flagging a
+    fact as ungrounded when an audit fix already added it to the real source)."""
+    kb_path = os.path.join(KNOWLEDGE_DIR, collection, f"{chunk_id}.md")
+    if not os.path.exists(kb_path):
+        return None
+    with open(kb_path, encoding="utf-8") as f:
+        text = f.read()
+
+    symbols_m = re.search(r"^\*\*Symbols:\*\*\s*(.+)$", text, re.M)
+    code_example = _extract_kb_section(text, "Code Example")
+    if code_example:
+        code_example = re.sub(r"^```\w*\n|\n```$", "", code_example).strip() or None
+
+    return {
+        "chunk_id": chunk_id,
+        "symbols": [s.strip() for s in symbols_m.group(1).split(",")] if symbols_m else [],
+        "summary": _extract_kb_section(text, "Summary"),
+        "comprehensive_explanation": _extract_kb_section(text, "Explanation"),
+        "code_example": code_example,
+    }
+
+
 def load_source_records():
-    """chunk_id -> record, across docs (wiki.jsonl), codebase (subset file), reviews (github_reviews.jsonl)"""
+    """chunk_id -> (source_type, record), read live from knowledge_base/*.md -- the same
+    audit-corrected content finetune_initialize_chunks() actually generates pairs from, not the
+    frozen pre-audit users/*.jsonl dump this function used to read."""
     by_chunk_id = {}
-
-    if os.path.isdir(WIKI_GLOB_DIRS):
-        for user in os.listdir(WIKI_GLOB_DIRS):
-            path = os.path.join(WIKI_GLOB_DIRS, user, "wiki.jsonl")
-            for rec in load_jsonl(path):
-                by_chunk_id[rec["chunk_id"]] = ("docs", rec)
-
-    for rec in load_jsonl(CODEBASE_SUBSET_FILE):
-        by_chunk_id[rec["chunk_id"]] = ("codebase", rec)
-
-    if os.path.isdir(REVIEWS_GLOB_DIRS):
-        for user in os.listdir(REVIEWS_GLOB_DIRS):
-            path = os.path.join(REVIEWS_GLOB_DIRS, user, "github_reviews.jsonl")
-            for rec in load_jsonl(path):
-                by_chunk_id[rec["chunk_id"]] = ("reviews", rec)
+    for collection in ("docs", "codebase", "reviews"):
+        d = os.path.join(KNOWLEDGE_DIR, collection)
+        if not os.path.isdir(d):
+            continue
+        for fname in sorted(os.listdir(d)):
+            if not fname.endswith(".md"):
+                continue
+            chunk_id = fname[:-3]
+            rec = _parse_kb_md_record(collection, chunk_id)
+            if rec:
+                by_chunk_id[chunk_id] = (collection, rec)
 
     return by_chunk_id
 
@@ -201,6 +241,57 @@ def main():
     with open("finetune/output/audit_report.json", "w", encoding="utf-8") as f:
         json.dump(out, f, indent=2)
     print(f"\n[OK] Full machine-readable report written to finetune/output/audit_report.json")
+
+    if "--apply" in sys.argv:
+        apply_removals(flagged)
+    else:
+        removable = sum(1 for _, _, cat, _, _ in flagged if cat in REMOVE_CATEGORIES)
+        if removable:
+            print(f"\n[i] {removable} flagged pairs are in auto-removable categories "
+                  f"({', '.join(sorted(REMOVE_CATEGORIES))}). Re-run with --apply to strip them "
+                  f"from finetune/pairs/**/*.jsonl in place (backs up first).")
+
+
+def apply_removals(flagged):
+    """Strips every flagged pair in REMOVE_CATEGORIES out of finetune/pairs/**/*.jsonl in place.
+    Backs up the whole pairs directory first (timestamped, next to it) since this is a real,
+    non-trivially-reversible edit to training data -- report-only was this script's original
+    design, this is opt-in and explicit."""
+    to_remove = defaultdict(set)  # chunk_id -> set of pair indices to drop
+    for chunk_id, _src_type, category, _detail, pair_idx in flagged:
+        if category in REMOVE_CATEGORIES and pair_idx is not None:
+            to_remove[chunk_id].add(pair_idx)
+
+    if not to_remove:
+        print("\n[i] Nothing to apply -- no flagged pairs in an auto-removable category.")
+        return
+
+    backup_dir = f"{PAIRS_DIR}_backup_{int(time.time())}"
+    shutil.copytree(PAIRS_DIR, backup_dir)
+    print(f"\n[~] Backed up {PAIRS_DIR} -> {backup_dir}")
+
+    total_removed = 0
+    for filepath in collect_pair_files():
+        records = load_jsonl(filepath)
+        changed = False
+        for rec in records:
+            chunk_id = rec.get("chunk_id")
+            if chunk_id not in to_remove:
+                continue
+            bad_indices = to_remove[chunk_id]
+            kept = [p for i, p in enumerate(rec.get("pairs", [])) if i not in bad_indices]
+            removed_here = len(rec.get("pairs", [])) - len(kept)
+            if removed_here:
+                rec["pairs"] = kept
+                total_removed += removed_here
+                changed = True
+        if changed:
+            with open(filepath, "w", encoding="utf-8") as f:
+                for rec in records:
+                    f.write(json.dumps(rec) + "\n")
+
+    print(f"[OK] Removed {total_removed} flagged pairs from {PAIRS_DIR}/**/*.jsonl "
+          f"(backup at {backup_dir}).")
 
 
 if __name__ == "__main__":

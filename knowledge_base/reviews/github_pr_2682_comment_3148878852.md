@@ -9,9 +9,11 @@
 The `entity_manager.zig` file has been refactored by replacing a `VirtualList` with a `SparseSet`. The reviewer suggests pausing further work on this PR until issues in the interpolation system are resolved.
 
 ## Explanation
-The `entity_manager.zig` file has been refactored by replacing a `VirtualList` with a `SparseSet`. This change is part of an ongoing architectural review aimed at improving batch processing and addressing issues in the interpolation system. The reviewer suggests pausing further work on this PR until these issues are resolved. The decision to use a `SparseSet` over a `VirtualList` was made to potentially improve performance and memory usage, as well as to address design flaws in the current system. Specifically, the reviewer notes that entities are sometimes small and sometimes big, making smooth lighting computationally expensive. Therefore, a non-smooth shader is used for these entities. The use of a `SparseSet` is expected to provide better performance and more efficient memory usage compared to a `VirtualList`, especially in scenarios involving large numbers of entities.
+The `entity_manager.zig` file has been refactored by replacing a `VirtualList` with a `SparseSet`. This change is part of an ongoing architectural review aimed at improving batch processing and addressing issues in the interpolation system. The reviewer suggests pausing further work on this PR until these issues are resolved.
 
-The reviewer also mentions that there are currently no smooth lighting due to poor design decisions in the interpolation system, which necessitates the use of a non-smooth shader. Additionally, the specific reasons for switching from `VirtualList` to `SparseSet` include better performance and more efficient memory usage, especially when dealing with large numbers of entities.
+The decision to use a `SparseSet` over a `VirtualList` was made to potentially improve performance and memory usage, as well as to address design flaws in the current system. Specifically, the reviewer notes that entities are sometimes small and sometimes big, making smooth lighting computationally expensive. Therefore, a non-smooth shader is used for these entities.
+
+The use of a `SparseSet` is expected to provide better performance and more efficient memory usage compared to a `VirtualList`, especially in scenarios involving large numbers of entities. Additionally, there is currently no smooth lighting due to poor design decisions in the interpolation system, which necessitates the use of a non-smooth shader.
 
 ## Related Questions
 - What are the specific reasons for switching from VirtualList to SparseSet?

@@ -15,19 +15,21 @@ This JavaScript code defines two primary functions: `saveBiomeToProject` and `sa
 
 ### saveBiomeToProject Function
 - **Input Validation**: The function first checks if a Biome ID is specified. If not, it alerts the user to specify one and exits.
-- **Color Conversion**: It uses the `getHexColorAsRGBVector` function to convert hexadecimal color values for sky and fog into RGB vectors.
+- **Color Conversion**: It uses the `getHexColorAsRGBVector` function to convert hexadecimal color values for sky and fog into RGB vectors. For example, if no value is provided, it defaults to `#75b2ff` for sky and `#e2f2ff` for fog.
 - **Block Namespace Handling**: The `autoNamespaceBlock` function ensures that block IDs are correctly namespaced. If a block ID is not already in the correct format, it adds the appropriate namespace based on whether the block exists in the project or defaults to 'cubyz'.
 - **Structural Layers**: The function processes structural layers by iterating over each row in the structure table. Depending on the type of structural layer (e.g., simple_tree, simple_vegetation), it extracts and validates specific properties such as log types, leaf types, block types, sizes, heights, variations, etc.
-- **Biome Properties**: The function collects various biome properties like temperature, humidity, zone, growth, and height properties from the form inputs.
-- **Updating Project Data**: It updates the project data by removing any existing biomes with the same ID and adding the new biome configuration. It also ensures that certain flags are reset and the sidebar project tree is updated to reflect changes.
+  - **simple_tree**: Extracts `log`, `leaves`, `height`, `height_variation`, `leafRadius`. Defaults to 'cubyz:oak_log' for `log` and calculates other properties based on these defaults.
+  - **simple_vegetation**: Extracts `blockType`, `size`, `variation`. Uses default values if not provided.
+- **Biome Properties**: The function collects various biome properties like temperature, humidity, zone, growth, and height properties from the form inputs. These are represented by radio buttons or dropdowns in the UI.
+- **Updating Project Data**: It updates the project data by removing any existing biomes with the same ID and adding the new biome configuration. It also ensures that certain flags are reset (e.g., `hasUnsavedChanges`) and the sidebar project tree is updated to reflect changes.
 
 ### saveEntityToProject Function
 - **Input Validation**: Similar to `saveBiomeToProject`, it checks if an Entity ID is specified. If not, it alerts the user and exits.
 - **Entity Configuration**: It collects entity properties such as height, coordinate system, model, default texture, and tags from the form inputs.
-- **Updating Project Data**: It updates the project data by removing any existing entities with the same ID and adding the new entity configuration. It also ensures that certain flags are reset and the sidebar project tree is updated to reflect changes.
+- **Updating Project Data**: It updates the project data by removing any existing entities with the same ID and adding the new entity configuration. It also ensures that certain flags are reset (e.g., `hasUnsavedChanges`) and the sidebar project tree is updated to reflect changes.
 
 ### Supporting Functions
-- **getHexColorAsRGBVector**: Converts a hexadecimal color string into an RGB vector format.
+- **getHexColorAsRGBVector**: Converts a hexadecimal color string into an RGB vector format. For example, `#75b2ff` becomes `[0.4588, 0.6902, 1]`.
 - **autoNamespaceBlock**: Ensures block IDs are correctly namespaced based on their existence in the project or defaults to 'cubyz'.
 
 ### UI Updates

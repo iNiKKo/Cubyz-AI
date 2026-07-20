@@ -13,18 +13,17 @@ The Texture struct encapsulates OpenGL texture management. It provides methods t
 
 The `initFromFile` method initializes a texture from an image file. If the image cannot be read, it logs an error and uses a default image.
 
-The `initFromMipmapFiles` method initializes a texture with mipmaps. It generates multiple levels of detail for the texture based on the largest size provided and loads each level from a corresponding image file.
-
-Error handling is implemented in both `initFromFile` and `initFromMipmapFiles` methods, where errors during image loading are logged using `std.log.err`.
-
-The parameters that can be set on a texture include:
-- `GL_TEXTURE_MIN_FILTER`
-- `GL_TEXTURE_MAG_FILTER`
-- `GL_TEXTURE_WRAP_S`
-- `GL_TEXTURE_WRAP_T`
-- `GL_TEXTURE_LOD_BIAS`
+The `initFromMipmapFiles` method initializes a texture with mipmaps. It generates multiple levels of detail for the texture based on the largest size provided and loads each level from a corresponding image file. The method uses `glTexImage2D` to specify the texture storage for each mipmap level and `glTexSubImage2D` to upload the image data. The parameters set on the texture include:
+- `GL_TEXTURE_MAX_LOD`: Set to the maximum level of detail calculated from the largest size.
+- `GL_TEXTURE_MIN_FILTER`: Set to `GL_NEAREST_MIPMAP_LINEAR` for filtering between mipmap levels.
+- `GL_TEXTURE_MAG_FILTER`: Set to `GL_NEAREST` for magnification.
+- `GL_TEXTURE_WRAP_S`: Set to `GL_REPEAT` for wrapping in the S direction.
+- `GL_TEXTURE_WRAP_T`: Set to `GL_REPEAT` for wrapping in the T direction.
+- `GL_TEXTURE_LOD_BIAS`: Set to a specified bias value to adjust the level of detail.
 
 These parameters are set using the `glTexParameteri` and `glTexParameterf` functions.
+
+Error handling is implemented in both `initFromFile` and `initFromMipmapFiles` methods, where errors during image loading are logged using `std.log.err`.
 
 ## Code Example
 ```zig

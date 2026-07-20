@@ -9,7 +9,7 @@
 The Bloom struct manages the bloom post-processing effect, initializing and deinitializing resources, and rendering the effect in multiple passes.
 
 ## Explanation
-The Bloom struct manages the bloom post-processing effect by handling frame buffers, pipelines, and textures. It initializes resources such as frame buffers and pipelines with specific shaders. The `init` method sets up the frame buffers and pipelines using the provided shader paths and configurations. The `render` method orchestrates the bloom effect by resizing buffers if necessary, executing three passes (extracting image data and downscaling, first pass, and second pass), and measuring GPU performance for each step. The `deinit` method cleans up all allocated resources. The struct also includes methods to bind replacement images and extract image data with downsampling.
+The Bloom struct manages the bloom post-processing effect by handling frame buffers, pipelines, and textures. It initializes resources such as frame buffers and pipelines with specific shaders. The `init` method sets up the frame buffers (`buffer1` and `buffer2`) with linear filtering and clamp-to-edge wrapping. It generates an empty texture for `emptyBuffer`. It then initializes three pipelines: `firstPassPipeline`, `secondPassPipeline`, and `colorExtractAndDownsamplePipeline` using different shader paths and configurations.
 
 **Initialization Process:**
 The `init` method initializes the frame buffers (`buffer1` and `buffer2`) with linear filtering and clamp-to-edge wrapping. It generates an empty texture for `emptyBuffer`. It then initializes three pipelines: `firstPassPipeline`, `secondPassPipeline`, and `colorExtractAndDownsamplePipeline` using different shader paths and configurations.
@@ -24,6 +24,21 @@ GPU performance is measured during each pass of the bloom effect using `gpu_perf
 - **First Pass:** Shaders located at "assets/cubyz/shaders/bloom/first_pass.vert" and "assets/cubyz/shaders/bloom/first_pass.frag"
 - **Second Pass:** Shaders located at "assets/cubyz/shaders/bloom/second_pass.vert" and "assets/cubyz/shaders/bloom/second_pass.frag"
 - **Color Extract and Downsample:** Shaders located at "assets/cubyz/shaders/bloom/color_extractor_downsample.vert" and "assets/cubyz/shaders/bloom/color_extractor_downsample.frag"
+
+**Uniform Variables in Color Extraction Pipeline:**
+The `colorExtractAndDownsamplePipeline` uses several uniform variables, including:
+- `zNear`: Type `c_int`
+- `zFar`: Type `c_int`
+- `tanXY`: Type `c_int`
+- `fog.color`: Type `c_int`
+- `fog.density`: Type `c_int`
+- `fog.fogLower`: Type `c_int`
+- `fog.fogHigher`: Type `c_int`
+- `invViewMatrix`: Type `c_int`
+- `playerPositionInteger`: Type `c_int`
+- `playerPositionFraction`: Type `c_int`
+
+These uniform variables are set in the `extractImageDataAndDownsample` method based on various conditions and inputs, such as player position, view matrix, and fog settings.
 
 ## Code Example
 ```zig

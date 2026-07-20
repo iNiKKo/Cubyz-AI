@@ -17,15 +17,15 @@ The `depositOrSwap` method deposits or swaps items between inventories. If the d
 
 The `takeHalf` method takes half of an item stack and places it in another inventory. If the destination inventory is creative, it fills from the creative inventory; otherwise, it sends a take half command to the server. The `distribute` method distributes items across multiple inventories by calculating the amount per inventory and sending deposit commands.
 
-The `depositOrDrop` method deposits items into specified destinations or drops them if no destination is available. The `depositToAny` method deposits items into any of the specified destinations. The `dropStack` method drops an entire stack from an inventory, while the `dropOne` method drops a single item.
+The `depositOrDrop` method deposits items into specified destinations or drops them if no destination is available. It sends a deposit or drop command to the server. The `depositToAny` method deposits items into any of the specified destinations, sending a deposit to any command to the server. The `dropStack` method drops an entire stack from an inventory by sending a drop command to the server. The `dropOne` method drops a single item by sending a drop command with a desired amount of 1.
 
-The `fillFromCreative` and `fillAmountFromCreative` methods fill inventories with items from the creative inventory, either filling a specific slot or specifying an amount. The `fillAnyFromCreative` method fills any of the specified destinations with items from the creative inventory.
+The `fillFromCreative` and `fillAmountFromCreative` methods fill inventories with items from the creative inventory, either filling a specific slot or specifying an amount. The `fillAnyFromCreative` method fills any of the specified destinations with items from the creative inventory by sending a fill any command to the server.
 
-The `craftFrom` method crafts items using a crafting inventory, sending a craft command to the server. The `craftProceduralItem` method crafts procedural items by interacting with the workbench inventory.
+The `craftFrom` method crafts items using a crafting inventory, sending a craft command to the server. The `craftProceduralItem` method crafts procedural items by interacting with the workbench inventory and sending a craft procedural item command to the server.
 
-The `placeBlock` and `breakBlock` methods handle block placement and breaking, respectively, by interacting with the renderer's mesh selection system.
+The `placeBlock` and `breakBlock` methods handle block placement and breaking, respectively, by interacting with the renderer's mesh selection system and sending place or break commands to the server.
 
-The struct also provides methods for retrieving inventory size (`size`), items (`getItem`), stacks (`getStack`), and amounts (`getAmount`).
+The struct also provides methods for retrieving inventory size (`size`), items (`getItem`), stacks (`getStack`), and amounts (`getAmount`). These methods return the respective properties of the inventory without additional operations.
 
 ## Code Example
 ```zig

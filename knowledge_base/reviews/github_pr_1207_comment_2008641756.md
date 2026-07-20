@@ -17,6 +17,8 @@ Error handling mechanisms include logging errors for missing or incorrect data i
 
 The `originBlockStringId` variable is set to 'cubyz:sbb/origin', and `originBlockNumericId` is a u16 variable initialized to 0. The `childBlockStringId` array holds up to 20 string IDs for child blocks. The critical architectural review note states that child structures must be resolved in a second pass because they may not be loaded when the parent structure is, requiring an ID to fetch the correct structure later.
 
+The `childBlockNumericIdMap` is a map that associates global child block numeric IDs with local indices used to represent those blocks. The `originBlockNumericId` variable holds the numeric ID for the origin block type.
+
 ## Related Questions
 - What is the purpose of the `structureCache` and `blueprintCache` variables?
 - How does the module handle multiple origin blocks in a blueprint?
