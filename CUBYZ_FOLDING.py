@@ -121,7 +121,7 @@ SERVER_URL       = "http://ashframe.net:7000"
 OLLAMA_URL       = "http://localhost:11434/api/generate"
 CONFIG_FILE      = os.path.expanduser("~/.cubyz_node_config.json")
 DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
-VERSION          = "1.3.0"
+VERSION          = "1.3.1"
 
 print_lock = threading.Lock()
 
