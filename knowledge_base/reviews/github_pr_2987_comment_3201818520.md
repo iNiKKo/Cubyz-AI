@@ -9,7 +9,7 @@
 The change introduces a new variable `selectionCapabilities` to store selection capabilities, but the reviewer notes that the callsite does not have an extra constant and suggests using a struct with local constants for better architecture.
 
 ## Explanation
-The change introduces a new variable `selectionCapabilities` to store selection capabilities. The reviewer notes that the current approach lacks an extra constant at the callsite, which could lead to architectural issues. The reviewer recommends using a struct with a struct-local constant and associated load and check functions to improve the design and prevent potential bugs.
+The change introduces a new variable `selectionCapabilities` to store selection capabilities and initializes it to `null`. The reviewer notes that the current approach lacks an extra constant at the callsite, which could lead to architectural issues. The reviewer recommends using a struct with a struct-local constant and associated load and check functions to improve the design and prevent potential bugs.
 
 ## Related Questions
 - What is the purpose of introducing `selectionCapabilities`?

@@ -9,53 +9,22 @@
 Refactored the permission command handling to use an argument parser and improved error messages.
 
 ## Explanation
-Refactored the permission command handling to use an argument parser and improved error messages.
+Refactored the permission command handling to use an argument parser (`ArgParser`) and improved error messages, including more detailed path validation and better memory management using a list unmanaged allocator. The new `Args` union defines two variants for different command formats: one with player indices and another without. This improves code readability and maintainability. The `execute` function now uses this parser to validate and process arguments, replacing the previous manual parsing logic.
 
-The change refactors the permission command execution by introducing a structured argument parser (`ArgParser`) that handles different command formats. The new `Args` union defines two variants: one for commands with player indices and another for commands without. This improves code readability and maintainability. The `execute` function now uses this parser to validate and process arguments, replacing the previous manual parsing logic.
-
-The argument formats are as follows:
+The new argument formats are:
 - `/perm <action> <list> <playerIndex> <permissionPath>`
-  - `<action>` can be `add` or `remove`
-  - `<list>` can be `whitelist` or `blacklist`
 - `/perm <playerIndex> <permissionPath>`
 
-The new `Args` union is defined as follows:
-```zig
-const Args = union(enum) {
-    @"/perm <action> <list> <playerIndex> <permissionPath>": struct {
-        action: enum { add, remove },
-        list: enum { whitelist, blacklist },
-        playerIndex: ?command.PlayerIndex,
-        permissionPath: Path,
-    },
-    @"/perm <playerIndex> <permissionPath>": struct { playerIndex: ?command.PlayerIndex, permissionPath: Path },
-};
-```
+The `Path` struct includes a `parse` method that checks if the permission path starts with a `/`. If not, it appends an error message to the provided list unmanaged allocator.
 
-The new `Path` struct with a parse method checks if permission paths start with a '/'. Error messages are more detailed and use a list unmanaged allocator for better memory management. The refactoring also includes improvements to error handling, such as correcting a typo in the error message format string.
-
-```zig
-const Path = struct {
-    path: []const u8,
-
-    pub fn parse(allocator: NeverFailingAllocator, name: []const u8, arg: []const u8, errorMessage: *ListUnmanaged(u8)) error{ParseError}!Path {
-        if (arg[0] != '/') {
-            errorMessage.print(allocator, "Permission path got for <{s}> doens't begin with a "/", got: {s}", .{name, arg});
-            return error.ParseError;
-        }
-        return Path{ .path = arg };
-    }
-};
-```
-
-The original implementation used a `Helper` struct to handle argument parsing and validation, which has been replaced by the structured argument parser. This change simplifies the code and improves its maintainability.
+The refactored code prevents invalid permission paths by checking if the path starts with a `/` and provides more detailed error messages for missing arguments or invalid player indices. The use of `ListUnmanaged` for error messages helps manage memory more efficiently, reducing potential performance overhead.
 
 ## Related Questions
--  What is the purpose of the `ArgParser` in this refactoring?
--  How does the new `Path` struct improve permission path handling?
--  Why was it necessary to use a list unmanaged allocator for error messages?
--  What changes were made to handle player index arguments?
--  How does the refactored code prevent invalid permission paths?
--  What is the impact of this refactoring on command execution performance?
+- What is the purpose of the `ArgParser` in this refactoring?
+- How does the new `Path` struct improve permission path handling?
+- Why was it necessary to use a list unmanaged allocator for error messages?
+- What changes were made to handle player index arguments?
+- How does the refactored code prevent invalid permission paths?
+- What is the impact of this refactoring on command execution performance?
 
 *Source: unknown | chunk_id: github_pr_3112_comment_3294305091*
