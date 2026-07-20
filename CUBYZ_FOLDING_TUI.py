@@ -41,11 +41,36 @@ import queue
 import builtins
 from collections import deque
 
-# -- Textual / Rich ------------------------------------------------------------
-from rich.text import Text
-from textual.app import App, ComposeResult
-from textual.containers import Vertical, Horizontal
-from textual.widgets import Static, RichLog, Button, Input, Label
+# -- Textual / Rich Auto-installation ------------------------------------------
+try:
+    from rich.text import Text
+    from textual.app import App, ComposeResult
+    from textual.containers import Vertical, Horizontal
+    from textual.widgets import Static, RichLog, Button, Input, Label
+except ImportError:
+    print("[~] Textual and Rich libraries not found. Auto-installing now...")
+    for cmd in [
+        [sys.executable, "-m", "pip", "install", "textual", "rich"],
+        [sys.executable, "-m", "pip", "install", "--user", "textual", "rich"],
+        [sys.executable, "-m", "pip", "install", "--break-system-packages", "textual", "rich"],
+        [sys.executable, "-m", "pip", "install", "--user", "--break-system-packages", "textual", "rich"],
+    ]:
+        try:
+            res = subprocess.run(cmd, capture_output=True, text=True)
+            if res.returncode == 0:
+                break
+        except Exception:
+            pass
+    try:
+        from rich.text import Text
+        from textual.app import App, ComposeResult
+        from textual.containers import Vertical, Horizontal
+        from textual.widgets import Static, RichLog, Button, Input, Label
+        print("[OK] TUI dependencies (textual, rich) installed successfully!")
+    except ImportError as e:
+        print(f"[X] Auto-install of textual/rich failed: {e}")
+        print("Please manually run: pip install textual rich")
+        sys.exit(1)
 
 # -- Platform detection --------------------------------------------------------
 if sys.platform.startswith("linux"):
@@ -96,7 +121,7 @@ SERVER_URL       = "http://ashframe.net:7000"
 OLLAMA_URL       = "http://localhost:11434/api/generate"
 CONFIG_FILE      = os.path.expanduser("~/.cubyz_node_config.json")
 DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
-VERSION          = "1.2.7"
+VERSION          = "1.3.0"
 
 print_lock = threading.Lock()
 
@@ -543,6 +568,73 @@ def get_cpu_model_tier(ram_gb: float):
     if ram_gb >= 6.0:
         return "qwen2.5-coder:3b", "easy"
     return None, None
+
+
+def get_cpu_name() -> str:
+    try:
+        if PLATFORM == "darwin":
+            res = subprocess.run(["sysctl", "-n", "machdep.cpu.brand_string"], capture_output=True, text=True, timeout=5)
+            if res.returncode == 0 and res.stdout.strip():
+                return res.stdout.strip()
+        elif PLATFORM == "win32":
+            res = subprocess.run(["wmic", "cpu", "get", "name"], capture_output=True, text=True, timeout=5)
+            lines = [l.strip() for l in res.stdout.splitlines() if l.strip() and "Name" not in l]
+            if lines:
+                return lines[0]
+        else:
+            try:
+                res = subprocess.run(["lscpu"], capture_output=True, text=True, timeout=5)
+                for line in res.stdout.splitlines():
+                    if "Model name:" in line:
+                        return line.split(":", 1)[1].strip()
+            except Exception:
+                pass
+            with open("/proc/cpuinfo", "r") as f:
+                for line in f:
+                    if "model name" in line:
+                        return line.split(":", 1)[1].strip()
+    except Exception:
+        pass
+    return "CPU"
+
+
+def get_gpu_name(gpu_type: str) -> str:
+    try:
+        if gpu_type == "nvidia":
+            res = subprocess.run(['nvidia-smi', '--query-gpu=name', '--format=csv,nounits,noheader'],
+                                 capture_output=True, text=True, timeout=5)
+            if res.returncode == 0 and res.stdout.strip():
+                return res.stdout.strip().splitlines()[0]
+        elif gpu_type == "amd":
+            for tool in ["rocm-smi", "/opt/rocm/bin/rocm-smi"]:
+                try:
+                    res = subprocess.run([tool, "--showproductname", "--json"], capture_output=True, text=True, timeout=5)
+                    data = json.loads(res.stdout)
+                    for card in data.values():
+                        name = card.get("Card series") or card.get("Card model")
+                        if name:
+                            return str(name)
+                except Exception:
+                    pass
+            try:
+                res = subprocess.run(['lspci'], capture_output=True, text=True, timeout=5)
+                for line in res.stdout.splitlines():
+                    if any(k in line.lower() for k in ["vga", "3d", "display"]) and ("amd" in line.lower() or "radeon" in line.lower()):
+                        if "[" in line and "]" in line:
+                            parts = line.split("[")
+                            for p in parts[1:]:
+                                if "]" in p:
+                                    clean = p.split("]")[0].replace("Advanced Micro Devices, Inc.", "").replace("AMD/ATI", "").strip()
+                                    if clean:
+                                        return f"AMD {clean}"
+            except Exception:
+                pass
+            return "AMD Radeon GPU"
+        elif gpu_type == "apple_silicon":
+            return get_cpu_name()
+    except Exception:
+        pass
+    return gpu_type.upper()
 
 
 def get_vram_and_choose_model() -> tuple:
@@ -2024,11 +2116,13 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
         return f"{avg:.1f}s/chunk avg (last {len(task_durations)})"
 
 
-    def report(task_desc, step_msg, is_first, comp, tot, eta):
+    def report(task_desc, step_msg, is_first, comp, tot, eta, speed=None):
+        s = speed if speed is not None else speed_str()
         if board is not None:
-            board.update(lane_tag, task_desc, step_msg, comp, tot, eta, speed_str())
+            board.update(lane_tag, task_desc, step_msg, comp, tot, eta, s)
         else:
             _log_queue.append(f"[{lane_tag}] {task_desc}: {step_msg}")
+
 
     def banner(msg):
         if board is not None:
@@ -2104,13 +2198,17 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
                     else:
                         banner(f"\n[{lane_tag}] [{MODE_BANNERS.get(mode, mode.upper() + ' MODE ACTIVATED')}]\n")
                 current_mode = mode
+                with _progress_lock:
+                    _global_progress["mode"] = mode
 
             if mode == "idle":
+                report("(idle)", "No tasks (idle)", True, 0, 0, None, speed="idle")
                 time.sleep(30)
                 continue
 
             if mode not in ("rag", "finetune", "audit"):
                 banner(f"{Colors.YELLOW}[{lane_tag}] [!] Unrecognized mode '{mode}' from server -- skipping this cycle.{Colors.RESET}")
+                report("(error)", "Unrecognized mode", True, 0, 0, None, speed="idle")
                 time.sleep(5)
                 continue
 
@@ -2122,11 +2220,14 @@ def crunch_lane(lane_tag: str, user_id: str, hardware_tier: str, chosen_model: s
                 # to idle) later, and it should just keep following along rather than requiring a
                 # manual restart every time one campaign's queue empties out.
                 banner(f"\n{mode_color(mode)}{Colors.BOLD}[{lane_tag}] [★] {mode.upper()} campaign complete -- all chunks processed. Waiting for the next campaign...{Colors.RESET}")
+                report("(done)", "Campaign complete!", True, total_chunks, total_chunks, None, speed="idle")
                 time.sleep(30)
                 continue
             if work_package.get("status") == "waiting":
                 banner(f"{Colors.GRAY}[{lane_tag}] [~] Server online -- no matched tasks left for hardware tier '{hardware_tier}'. Sleeping...{Colors.RESET}")
+                report("(waiting)", "No matched tasks", True, completed_chunks, total_chunks, None, speed="idle")
                 time.sleep(30); continue
+
 
             task = work_package["task"]
             task_start_time = time.time()
@@ -2538,7 +2639,7 @@ class _HeaderPanel(Static):
         bar_w  = max(10, width - 55)
         filled = round(bar_w * pct / 100)
         bar    = f"\033[92m{chr(9608) * filled}\033[0m\033[2m{chr(9617) * (bar_w - filled)}\033[0m"
-        eta_s  = format_eta(eta)
+        eta_s  = "N/A" if mode == "idle" else format_eta(eta)
 
         left_plain  = f" CUBYZ CLIENT  [{ml}]  {vol}"
         right_plain = clock
@@ -2976,19 +3077,22 @@ def main():
         gpu_native_model = chosen_model
         gpu_native_tier  = gpu_tier_from_vram(total_vram_gb) if gpu_type != "cpu" else None
 
+        real_cpu_name = get_cpu_name()
+        real_gpu_name = get_gpu_name(gpu_type) if gpu_type != "cpu" else ""
+
         if not primary_is_gpu:
             chosen_model      = cpu_model
             hardware_tier     = cpu_tier
-            mode_desc         = f"Eco Profile (CPU, {cpu_model})"
+            mode_desc         = f"Eco Profile ({real_cpu_name}, {cpu_model})"
             cooldown          = 4.0
             max_threads       = max(2, (os.cpu_count() or 4) - 1)
-            primary_hw_label  = f"CPU ({system_ram_gb:.1f} GB RAM)"
+            primary_hw_label  = f"{real_cpu_name} ({system_ram_gb:.1f} GB RAM)"
         else:
             hardware_tier     = gpu_tier_from_vram(total_vram_gb)
             cooldown          = 0.0 if total_vram_gb > 8.0 else 1.5
             max_threads       = None if total_vram_gb > 8.0 else 4
-            mode_desc         = "Performance Profile (GPU)"
-            primary_hw_label  = f"{gpu_type.upper()} ({total_vram_gb:.1f} GB VRAM)"
+            mode_desc         = f"Performance Profile ({real_gpu_name})"
+            primary_hw_label  = f"{real_gpu_name} ({total_vram_gb:.1f} GB VRAM)"
 
         primary_lane_tag = "GPU" if primary_is_gpu else "CPU"
 
@@ -3037,8 +3141,8 @@ def main():
                 sec_threads   = max(2, (os.cpu_count() or 4) - 2)
                 sec_cooldown  = 1.0
                 sec_force_cpu = True
-                sec_hw_label  = f"{sec_threads} threads, {system_ram_gb:.1f} GB RAM"
-                sec_desc      = "Eco Profile (Secondary CPU lane)"
+                sec_hw_label  = f"{real_cpu_name} ({system_ram_gb:.1f} GB RAM)"
+                sec_desc      = f"Eco Profile ({real_cpu_name})"
             else:
                 sec_tag       = "GPU"
                 sec_model     = gpu_native_model
@@ -3046,8 +3150,8 @@ def main():
                 sec_threads   = None if total_vram_gb > 8.0 else 4
                 sec_cooldown  = 0.0 if total_vram_gb > 8.0 else 1.5
                 sec_force_cpu = False
-                sec_hw_label  = f"{gpu_type.upper()} ({total_vram_gb:.1f} GB VRAM)"
-                sec_desc      = "Performance Profile (Secondary GPU lane)"
+                sec_hw_label  = f"{real_gpu_name} ({total_vram_gb:.1f} GB VRAM)"
+                sec_desc      = f"Performance Profile ({real_gpu_name})"
 
             print(f"[96m[OK] Dual-lane: {primary_hw_label} + {sec_hw_label}[0m")
             board.set_label(sec_tag, sec_hw_label)

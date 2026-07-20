@@ -628,36 +628,34 @@ def _build_connections_lines(width: int = None) -> list:
     # A dual-lane secondary or parallel worker gets its own online_clients/user_stats entry (they
     # ARE independent identities server-side, e.g. for per-lane audit model diversity), but they're
     # the same physical machine as their parent -- see _group_online_by_machine's comment. Grouped
-    # into one panel per machine here so "nickpc" and "nickpcc" don't look like two volunteers.
     clusters = _group_online_by_machine(online)
+    # Calculate throughput and contribution % per machine
+    machine_throughputs = {}
+    for pid, c_list in clusters.items():
+        m_tp = 0.0
+        for uid in [pid] + c_list:
+            if uid in online:
+                sp = (online_clients.get(uid) or {}).get("speed")
+                if sp and sp > 0:
+                    m_tp += 1.0 / sp
+        machine_throughputs[pid] = m_tp
+    total_network_tp = sum(machine_throughputs.values())
 
     for parent_id in sorted(clusters):
         children = clusters[parent_id]
-        lane_ids = [parent_id] + children  # every identity on this machine -- used for the
-        # shared System/Joined/Progress footer below, which reflects the WHOLE machine's real
-        # contribution regardless of what's individually displayed as a lane.
+        lane_ids = [parent_id] + children  # every identity on this machine
         has_parallel = any(cid[-1] in _PARALLEL_WORKER_SUFFIXES for cid in children)
         has_dual = any(cid[-1] in _DUAL_SECONDARY_SUFFIXES for cid in children)
-        # When parallel workers are active, the primary lane's own identity is hidden from the
-        # per-lane display AND the lane count -- confirmed with Nick live: parallel workers reuse
-        # the exact same physical resource as the primary (worker_kwargs' force_cpu mirrors the
-        # primary's own), so the primary sits effectively idle/redundant once P1/P2/etc are doing
-        # that resource's real concurrent work, and counting it separately overstated the true
-        # lane count (he saw "4 lanes" -- GPU/CPU/P1/P2 -- for what's actually 3 real concurrent
-        # workers: CPU + P1 + P2). Without parallel workers, the primary is real and stays counted
-        # (dual-lane: primary + secondary = 2; solo: just the primary = 1).
-        display_lane_ids = children if has_parallel else lane_ids
-        display_lane_ids = [lid for lid in display_lane_ids if lid in online]
+
+        # Show all online lanes on this machine (GPU/CPU primary + dual secondary + parallel workers)
+        display_lane_ids = [lid for lid in lane_ids if lid in online]
         lane_count = len(display_lane_ids)
         u_color = _user_color(parent_id)
         lane_word = "lane" if lane_count == 1 else "lanes"
-        title = f"─ {parent_id} ({lane_count} {lane_word})" + " "
-        # ONLINE badge width is reserved FIRST and title truncated to whatever's left, not the
-        # other way around -- confirmed live that on a narrow panel, letting a long title (e.g. a
-        # multi-lane machine name) eat the whole width just floored `fill` at 1 and pushed the
-        # actual rendered line past box_w, silently cropping the ONLINE badge itself off the right
-        # edge (RichLog's overflow="crop"). A shortened machine name is still useful; a missing
-        # status badge isn't.
+
+        m_tp = machine_throughputs.get(parent_id, 0.0)
+        contrib_str = f" • {m_tp / total_network_tp * 100.0:.1f}% contrib" if total_network_tp > 0 else ""
+        title = f"─ {parent_id} ({lane_count} {lane_word}{contrib_str})" + " "
         badge_w = len(" ") + len("ONLINE") + len(" ─┐") + 1  # +1 for the leading fill space
         title = _truncate(title, max(1, box_w - badge_w - 1))
         fill = max(1, box_w - len(title) - len("ONLINE ─") - 2)
@@ -1208,8 +1206,8 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # get_work/submit_work reject anything below MIN_CLIENT_VERSION with HTTP 426 and a message
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
-MIN_CLIENT_VERSION = "1.1.2"
-LATEST_CLIENT_VERSION = "1.2.7"
+MIN_CLIENT_VERSION = "1.3.0"
+LATEST_CLIENT_VERSION = "1.3.0"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:

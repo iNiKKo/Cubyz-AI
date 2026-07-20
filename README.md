@@ -321,28 +321,26 @@ sequences can fix cursor-based redraw only ever affecting the live viewport, nev
 un-writing what's already scrolled into terminal history — confirmed as the real complaint once a
 user described scrolling *up* to see the "duplication."
 
-That whole saga is the reason **a migration to a real terminal library is underway** — hand-rolling
-raw ANSI escape codes for a live-redrawing multi-panel display kept hitting the same class of bug
-from a different angle every time. As a brand-new file (not an in-place rewrite):
-`pipeline_crunching/server_textual.py` (pivoted from an initial `rich`-only attempt,
-`server_rich.py`, to `textual` for real interactive widgets — RadioSet mode selection, buttons,
-etc, not just a live-redrawing display). Current shape: full-height left sidebar (mode RadioSet +
-collapsed "Advanced Settings" with two-step-confirm hard-reset buttons), right column stacked
-top-to-bottom as a header bar (mode/online/offline/clock) + connections panel (one box per
-volunteer machine, auto-hiding scrollbar) + a capped 10-line recent-events panel. Client-side
-(`CUBYZ_FOLDING.py`) TUI migration not started — server first, per plan. A 2026-07-19 round of live
-dual-lane+parallel-workers testing on Nick's own machine (nickpc) turned up two more rounds of real
-fixes, both now done: lane-counting now hides a machine's primary identity from its own lane count
-whenever parallel workers are active (it shares the exact same physical resource as the parallel
-pool, so it was double-counted — a dual-lane+parallel machine now correctly shows "3 lanes" instead
-of "4"), lane counts are shown even for a single lane, "DUAL-LANE" gets a "+ PARALLEL" suffix when
-both are active, the per-client Status line now shows a short state ("PROPOSED FIX", "FIX APPLIED",
-etc.) instead of the full message (Recent Events still shows the full message, untouched), "Joined"
-was replaced with a resettable "Connected" duration, the header gained a global per-mode progress
-bar and dropped its decorative border lines, and — caught immediately after — the header's
-online/offline counts were fixed to count distinct physical machines instead of raw lane identities
-(a dual-lane+parallel machine was inflating the count by 3-4x; it said "6 online" for 3 real
-volunteers). See the `project_tui_migration_plan` memory for full technical detail on each fix.
+### Textual TUI Rewrite (Server & Client v1.3.0)
+
+To resolve long-standing terminal redraw artifacts, screen flickering, and ANSI escape sequence limitations during multi-lane / parallel worker execution, the entire system interface was migrated to the `textual` TUI framework:
+
+- **Server TUI (`pipeline_crunching/server_textual.py`):**
+  - Interactive Textual application featuring a full-height sidebar (mode selection RadioSet, confirmation-guarded reset actions, advanced controls) and main panel (global campaign progress, per-machine connection clustering, and real-time event logs).
+  - Machine clustering (`_group_online_by_machine` & `_fold_lane_children`) groups secondary lanes (dual-mode) and parallel workers under their parent machine ID, displaying all 4 concurrent lanes (`GPU`, `CPU`, `P1`, `P2`).
+  - Renders live **Contribution %** per volunteer machine (`(4 lanes • 42.5% contrib)`) calculated from relative processing throughput across all active nodes.
+  - Added a `POST /disconnect` endpoint allowing clients to instantly mark lanes as offline upon exit instead of waiting out the 60-second `ONLINE_STALE_SECONDS` timeout.
+  - Dynamically calculates Audit mode campaign ETA and progress based on active lock files, remaining tasks, and task duration moving averages.
+
+- **Client TUI Rewrite (`CUBYZ_FOLDING_TUI.py` & `CUBYZ_FOLDING.py` v1.3.0):**
+  - Full rewrite of `CUBYZ_FOLDING.py` into a modern Textual TUI application featuring a sidebar menu, top header status bar (mode badge, volunteer ID, global progress, dynamic ETA), central active lane boxes (GPU, CPU, P1, P2...), scrolling terminal output log, and an interactive input prompt.
+  - Auto-detects and displays **exact GPU and CPU model names** (e.g. `AMD Radeon RX 9070/9070 XT (15.9 GB VRAM)`, `AMD Ryzen 5 9600X (30.8 GB RAM)`).
+  - Integrated all RAG, FINETUNE, and AUDIT campaign processing loops (with automatic model checking via Ollama's HTTP `/api/tags` endpoint to support Docker environments without local `ollama` binaries).
+  - Added dependency auto-installation (`pip install textual rich`) wrapped around top-level imports so the client automatically installs required libraries on clean environments.
+  - Added graceful exit hooks (`_notify_server_disconnect()`) bound to both the Safe Exit button and `Q` keybind.
+  - Corrected parallel worker VRAM/RAM floor constants (`GPU_TIER_VRAM_FLOOR_GB`, `PARALLEL_WORKERS_BY_TIER`, `PARALLEL_WORKERS_VRAM_HEADROOM_PER_WORKER_GB`), allowing 15.9 GB GPUs to clear `check_headroom()` and run 2 parallel workers.
+  - Polished IDLE mode behavior to display `No tasks (idle)` on lane status boxes and `N/A` for ETA instead of remaining stuck on `"calculating..."`.
+  - Bumped client version to `1.3.0` and server `MIN_CLIENT_VERSION`/`LATEST_CLIENT_VERSION` to `1.3.0` to enforce auto-updating for older clients.
 
 ---
 
