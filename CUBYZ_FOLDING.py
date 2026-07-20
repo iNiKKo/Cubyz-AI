@@ -2933,6 +2933,7 @@ def _notify_server_disconnect():
         try:
             make_request(
                 f"{SERVER_URL}/disconnect?user_id={uid}&lane={lane_tag}",
+                method="POST",
                 timeout=5,
             )
             _log_queue.append(f"{Colors.GRAY}    [{lane_tag}] offline.{Colors.RESET}")

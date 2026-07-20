@@ -3151,20 +3151,15 @@ def delete_user(user_id: str):
 
     return {"status": "deleted", "user_id": user_id}
 
-@app.post("/disconnect")
+@app.api_route("/disconnect", methods=["GET", "POST"])
 def disconnect(user_id: str, lane: str = ""):
     """Called by the client on clean exit to immediately mark this lane as offline, rather than
-    waiting for the 60-second ONLINE_STALE_SECONDS timeout to expire naturally.  Only touches
-    the timestamp in online_clients (setting it to 0 so the next dashboard render sees it as
-    stale) -- doesn't purge stats or history, since this is a graceful disconnect, not a delete.
-    Silently succeeds even if the user_id was already unknown/offline (no error to propagate to
-    a client that's shutting down anyway)."""
+    waiting for the 60-second ONLINE_STALE_SECONDS timeout to expire naturally.  Removes the
+    lane from online_clients immediately so the dashboard sees it as offline on the very next frame."""
     user_key = user_id.lower()
     with campaign_state_lock:
-        entry = online_clients.get(user_key)
-        if entry is not None:
-            # Stamp to 0 -- any positive ONLINE_STALE_SECONDS check will now treat this as stale
-            online_clients[user_key] = {**entry, "timestamp": 0}
+        online_clients.pop(user_key, None)
+        _user_connected_since.pop(user_key, None)
         label = f" [{lane}]" if lane else ""
         log_event("info", user_id, "↓", Colors.GRAY, f"'{user_id}'{label} disconnected cleanly")
     return {"status": "ok"}
