@@ -22,6 +22,8 @@ Error messages returned by `parseArgument` include details such as the argument 
 
 The `parseUnion` function handles unions by iterating over their fields and attempting to parse each field using `parseArgument`. If an error occurs during parsing, it adds the error message to a list of failure messages. The reviewer suggests changing the failure handling to store messages in a `ListUnmanaged([]const u8)` instead of joining them into a single string, which could improve performance by avoiding reallocations.
 
+Nested types are handled during parsing by recursively calling `parseArgument` for each field of the struct or union. This allows for nested structs and unions to be parsed correctly.
+
 ## Related Questions
 - What is the purpose of the `NeverFailingAllocator` in this code?
 - How does the `_parse` function determine which parsing method to use?

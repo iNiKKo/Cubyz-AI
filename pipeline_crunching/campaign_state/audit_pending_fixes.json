@@ -20,39 +20,28 @@
       }
     ]
   },
-  "github_pr_3112_comment_3294305091": {
-    "stage": "revise_requested",
-    "collection": "reviews",
-    "proposer": "NickPC",
-    "reason": "The explanation does not provide the specific argument formats and detailed error messages as stated in raw_content. It also omits the new `Args` union definition and the changes to the `execute` function.",
-    "corrected_summary": null,
-    "corrected_explanation": "# [src/server/command/permission/perm.zig] - PR #3112 review diff\n\n**Type:** review\n**Keywords:** refactoring, argparse, permission command, error messages, allocator, path validation, typo correction\n**Symbols:** NeverFailingAllocator, ListUnmanaged, User, permission, ListType, command, Args, ArgParser, execute, Path\n**Concepts:** argument parsing, error handling, memory management\n\n## Summary\nRefactored the permission command handling to use an argument parser and improved error messages.\n\n## Explanation\nThe change refactors the permission command execution by introducing a structured argument parser (`ArgParser`) that handles different command formats. The new `Args` union defines two variants: one for commands with player indices and another for commands without. This improves code readability and maintainability. The `execute` function now uses this parser to validate and process arguments, replacing the previous manual parsing logic.\n\nThe argument formats are as follows:\n- `/perm <action> <list> <playerIndex> <permissionPath>`\n  - `<action>` can be `add` or `remove`\n  - `<list>` can be `whitelist` or `blacklist`\n- `/perm <playerIndex> <permissionPath>`\n\nThe new `Args` union is defined as follows:\n```zig\nconst Args = union(enum) {\n    @\"/perm <action> <list> <playerIndex> <permissionPath>\": struct {\n        action: enum { add, remove },\n        list: enum { whitelist, blacklist },\n        playerIndex: ?command.PlayerIndex,\n        permissionPath: Path,\n    },\n    @\"/perm <playerIndex> <permissionPath>\": struct { playerIndex: ?command.PlayerIndex, permissionPath: Path },\n};\n```\n\nThe new `Path` struct with a parse method checks if permission paths start with a '/'. Error messages are more detailed and use a list unmanaged allocator for better memory management. The refactoring also includes improvements to error handling, such as correcting a typo in the error message format string.\n\n```zig\nconst Path = struct {\n    path: []const u8,\n\n    pub fn parse(allocator: NeverFailingAllocator, name: []const u8, arg: []const u8, errorMessage: *ListUnmanaged(u8)) error{ParseError}!Path {\n        if (arg[0] != '/') {\n            errorMessage.print(allocator, \"Permission path got for <{s}> doens't begin with a \"/\", got: {s}\", .{name, arg});\n            return error.ParseError;\n        }\n        return Path{ .path = arg };\n    }\n};\n```\n\nThe original implementation used a `Helper` struct to handle argument parsing and validation, which has been replaced by the structured argument parser. This change simplifies the code and improves its maintainability.\n\n## Related Questions\n- What is the purpose of the `ArgParser` in this refactoring?\n- How does the new `Path` struct improve permission path handling?\n- Why was it necessary to use a list unmanaged allocator for error messages?\n- What changes were made to handle player index arguments?\n- How does the refactored code prevent invalid permission paths?\n- What is the impact of this refactoring on command execution performance?",
-    "corrected_related_questions": [],
-    "attempts": 2,
-    "last_reviewer": "NickPCq",
-    "approvals": [],
-    "history": [
-      {
-        "stage": "proposed",
-        "user_id": "NickPC",
-        "timestamp": 1784534688.807413,
-        "reason": "The explanation does not provide the specific argument formats and detailed error messages as stated in raw_content. It also omits the new `Args` union definition and the changes to the `execute` function.",
-        "corrected_summary": null,
-        "corrected_explanation": "# [src/server/command/permission/perm.zig] - PR #3112 review diff\n\n**Type:** review\n**Keywords:** refactoring, argparse, permission command, error messages, allocator, path validation, typo correction\n**Symbols:** NeverFailingAllocator, ListUnmanaged, User, permission, ListType, command, Args, ArgParser, execute, Path\n**Concepts:** argument parsing, error handling, memory management\n\n## Summary\nRefactored the permission command handling to use an argument parser and improved error messages.\n\n## Explanation\nThe change refactors the permission command execution by introducing a structured argument parser (`ArgParser`) that handles different command formats. The new `Args` union defines two variants: one for commands with player indices and another for commands without. This improves code readability and maintainability. The `execute` function now uses this parser to validate and process arguments, replacing the previous manual parsing logic.\n\nThe argument formats are as follows:\n- `/perm <action> <list> <playerIndex> <permissionPath>`\n  - `<action>` can be `add` or `remove`\n  - `<list>` can be `whitelist` or `blacklist`\n- `/perm <playerIndex> <permissionPath>`\n\nThe new `Args` union is defined as follows:\n```zig\nconst Args = union(enum) {\n    @\"/perm <action> <list> <playerIndex> <permissionPath>\": struct {\n        action: enum { add, remove },\n        list: enum { whitelist, blacklist },\n        playerIndex: ?command.PlayerIndex,\n        permissionPath: Path,\n    },\n    @\"/perm <playerIndex> <permissionPath>\": struct { playerIndex: ?command.PlayerIndex, permissionPath: Path },\n};\n```\n\nThe new `Path` struct with a parse method checks if permission paths start with a '/'. Error messages are more detailed and use a list unmanaged allocator for better memory management. The refactoring also includes improvements to error handling, such as correcting a typo in the error message format string.\n\n```zig\nconst Path = struct {\n    path: []const u8,\n\n    pub fn parse(allocator: NeverFailingAllocator, name: []const u8, arg: []const u8, errorMessage: *ListUnmanaged(u8)) error{ParseError}!Path {\n        if (arg[0] != '/') {\n            errorMessage.print(allocator, \"Permission path got for <{s}> doens't begin with a \"/\", got: {s}\", .{name, arg});\n            return error.ParseError;\n        }\n        return Path{ .path = arg };\n    }\n};\n```\n\nThe original implementation used a `Helper` struct to handle argument parsing and validation, which has been replaced by the structured argument parser. This change simplifies the code and improves its maintainability.\n\n## Related Questions\n- What is the purpose of the `ArgParser` in this refactoring?\n- How does the new `Path` struct improve permission path handling?\n- Why was it necessary to use a list unmanaged allocator for error messages?\n- What changes were made to handle player index arguments?\n- How does the refactored code prevent invalid permission paths?\n- What is the impact of this refactoring on command execution performance?",
-        "corrected_related_questions": []
-      },
-      {
-        "stage": "reviewed",
-        "user_id": "NickPCq",
-        "verdict": "approve",
-        "feedback": "",
-        "timestamp": 1784534714.9808724
-      }
-    ],
-    "review_feedback": "The approved fix could not be applied -- it likely contains a whole replacement document (its own '## Summary'/'## Explanation'/'## Related Questions' headings) instead of clean text for just one section. Write a corrected field containing ONLY that section's prose, with no '## ' headings inside it."
-  },
   "github_pr_2524_comment_2725910383": {
-    "attempts": 1,
+    "stage": "proposed",
+    "collection": "reviews",
+    "proposer": "NickPCp",
+    "reason": "The explanation does not provide specific details about the methods' implementations, such as exact parameter types and return values. Additionally, it omits information about the `toBytes` and `fromBytes` methods' functionalities.",
+    "corrected_summary": null,
+    "corrected_explanation": "# [src/Inventory.zig] - PR #2524 review diff\n\n**Type:** review\n**Keywords:** Inventories, init, deinit, canHold, putItemsInto, removeItems, toBytes, fromBytes, Provider, sync.Command, ItemStack, InventoryId\n**Symbols:** Inventory, Inventories, NeverFailingAllocator, ItemStack, Provider, sync.Command.InventoryAndSlot, Item, sync.Command.BaseOperation, main.items.BaseItemIndex\n**Concepts:** memory management, data serialization, inventory system, item handling\n\n## Summary\nAdded new struct `Inventories` with methods for initialization, deinitialization, and item management. The reviewer suggests placing the corresponding `toBytes` method directly below `deinit` to maintain architectural consistency.\n\n## Explanation\nThe review introduces a new struct `Inventories` that manages multiple inventory instances. It includes methods like `init`, `initWithClientInventories`, `deinit`, `getInventories`, `canHold`, `putItemsInto`, and `removeItems`. The reviewer suggests placing the corresponding `toBytes` method directly below `deinit` to maintain architectural consistency.\n\n### Methods\n- **init**: Initializes an `Inventories` struct with a list of `Inventory` instances. Takes an allocator (`NeverFailingAllocator`) and an array of `Inventory` as parameters. Returns an initialized `Inventories` struct.\n- **initWithClientInventories**: Initializes an `Inventories` struct with a list of client-side inventory instances. Takes an allocator (`NeverFailingAllocator`) and an array of `Inventory.ClientInventory` as parameters. Returns an initialized `Inventories` struct.\n- **deinit**: Deinitializes the `Inventories` struct by freeing the allocated memory for the inventory instances. Takes an allocator (`NeverFailingAllocator`) as a parameter.\n- **getInventories**: Returns the list of `Inventory` instances managed by the `Inventories` struct.\n- **canHold**: Determines if an item stack can be held in any of the inventories. Takes an `ItemStack` as a parameter and returns an `Inventory.CanHoldReturn`, which is either `.yes` or `.remainingAmount(u16)` indicating the remaining amount that could not be added.\n- **putItemsInto**: Puts a specified amount of items into the inventories. Takes a context (`sync.Command.Context`), item amount (`u16`), and a `Provider` as parameters and returns the remaining amount that could not be added (`u16`).\n- **removeItems**: Removes a specified amount of items from the inventories. Takes a context (`sync.Command.Context`) and a base item index (`main.items.BaseItemIndex`) as parameters.\n\n### Provider Union\nThe `Provider` union is used to manage different types of item providers. It includes the following members:\n- **move**: Represents an inventory and a specific slot within that inventory, containing a `sync.Command.InventoryAndSlot`.\n- **create**: Represents a generic item, containing an `Item`.\n\n#### Methods\n- **getBaseOperation**: Generates a base operation for the `Provider` union. Takes an inventory (`Inventory`) and a slot (`u32`) as parameters and returns a `sync.Command.BaseOperation`. Depending on the provider type, it either creates a move or create operation.\n- **getItem**: Retrieves the item associated with the `Provider` union. Returns the item (`Item`).\n\n### toBytes and fromBytes Methods\n- **toBytes**: Serializes the `Inventories` struct into bytes. Takes a writer (`*BinaryWriter`) as a parameter and writes the length of the inventories followed by each inventory's ID.\n- **fromBytes**: Deserializes the `Inventories` struct from bytes. Takes an allocator (`NeverFailingAllocator`), reader (`*BinaryReader`), side (`sync.Side`), and user (`?*main.server.User`) as parameters and returns an initialized `Inventories` struct.",
+    "corrected_related_questions": [
+      "What is the purpose of the `Inventories` struct?",
+      "How does the `init` method work in the `Inventories` struct?",
+      "What is the role of the `deinit` method in the `Inventories` struct?",
+      "How does the `canHold` method determine if an item can be held?",
+      "What is the functionality of the `putItemsInto` method?",
+      "How does the `removeItems` method work?",
+      "Where should the `toBytes` method be placed according to the reviewer's suggestion?",
+      "What is the purpose of the `Provider` union in the `Inventories` struct?",
+      "How does the `getBaseOperation` function in the `Provider` union work?",
+      "What is the role of the `getItem` function in the `Provider` union?"
+    ],
+    "attempts": 2,
+    "last_reviewer": null,
+    "approvals": [],
     "history": [
       {
         "stage": "proposed",
@@ -80,6 +69,108 @@
         "verdict": "reject",
         "feedback": "The explanation provided does not include specific details about the methods' implementations, such as exact parameter types and return values. Additionally, it omits the `fromBytes` method and its implementation details.",
         "timestamp": 1784534855.3275473
+      },
+      {
+        "stage": "proposed",
+        "user_id": "NickPCp",
+        "timestamp": 1784535208.4481583,
+        "reason": "The explanation does not provide specific details about the methods' implementations, such as exact parameter types and return values. Additionally, it omits information about the `toBytes` and `fromBytes` methods' functionalities.",
+        "corrected_summary": null,
+        "corrected_explanation": "# [src/Inventory.zig] - PR #2524 review diff\n\n**Type:** review\n**Keywords:** Inventories, init, deinit, canHold, putItemsInto, removeItems, toBytes, fromBytes, Provider, sync.Command, ItemStack, InventoryId\n**Symbols:** Inventory, Inventories, NeverFailingAllocator, ItemStack, Provider, sync.Command.InventoryAndSlot, Item, sync.Command.BaseOperation, main.items.BaseItemIndex\n**Concepts:** memory management, data serialization, inventory system, item handling\n\n## Summary\nAdded new struct `Inventories` with methods for initialization, deinitialization, and item management. The reviewer suggests placing the corresponding `toBytes` method directly below `deinit` to maintain architectural consistency.\n\n## Explanation\nThe review introduces a new struct `Inventories` that manages multiple inventory instances. It includes methods like `init`, `initWithClientInventories`, `deinit`, `getInventories`, `canHold`, `putItemsInto`, and `removeItems`. The reviewer suggests placing the corresponding `toBytes` method directly below `deinit` to maintain architectural consistency.\n\n### Methods\n- **init**: Initializes an `Inventories` struct with a list of `Inventory` instances. Takes an allocator (`NeverFailingAllocator`) and an array of `Inventory` as parameters. Returns an initialized `Inventories` struct.\n- **initWithClientInventories**: Initializes an `Inventories` struct with a list of client-side inventory instances. Takes an allocator (`NeverFailingAllocator`) and an array of `Inventory.ClientInventory` as parameters. Returns an initialized `Inventories` struct.\n- **deinit**: Deinitializes the `Inventories` struct by freeing the allocated memory for the inventory instances. Takes an allocator (`NeverFailingAllocator`) as a parameter.\n- **getInventories**: Returns the list of `Inventory` instances managed by the `Inventories` struct.\n- **canHold**: Determines if an item stack can be held in any of the inventories. Takes an `ItemStack` as a parameter and returns an `Inventory.CanHoldReturn`, which is either `.yes` or `.remainingAmount(u16)` indicating the remaining amount that could not be added.\n- **putItemsInto**: Puts a specified amount of items into the inventories. Takes a context (`sync.Command.Context`), item amount (`u16`), and a `Provider` as parameters and returns the remaining amount that could not be added (`u16`).\n- **removeItems**: Removes a specified amount of items from the inventories. Takes a context (`sync.Command.Context`) and a base item index (`main.items.BaseItemIndex`) as parameters.\n\n### Provider Union\nThe `Provider` union is used to manage different types of item providers. It includes the following members:\n- **move**: Represents an inventory and a specific slot within that inventory, containing a `sync.Command.InventoryAndSlot`.\n- **create**: Represents a generic item, containing an `Item`.\n\n#### Methods\n- **getBaseOperation**: Generates a base operation for the `Provider` union. Takes an inventory (`Inventory`) and a slot (`u32`) as parameters and returns a `sync.Command.BaseOperation`. Depending on the provider type, it either creates a move or create operation.\n- **getItem**: Retrieves the item associated with the `Provider` union. Returns the item (`Item`).\n\n### toBytes and fromBytes Methods\n- **toBytes**: Serializes the `Inventories` struct into bytes. Takes a writer (`*BinaryWriter`) as a parameter and writes the length of the inventories followed by each inventory's ID.\n- **fromBytes**: Deserializes the `Inventories` struct from bytes. Takes an allocator (`NeverFailingAllocator`), reader (`*BinaryReader`), side (`sync.Side`), and user (`?*main.server.User`) as parameters and returns an initialized `Inventories` struct.",
+        "corrected_related_questions": [
+          "What is the purpose of the `Inventories` struct?",
+          "How does the `init` method work in the `Inventories` struct?",
+          "What is the role of the `deinit` method in the `Inventories` struct?",
+          "How does the `canHold` method determine if an item can be held?",
+          "What is the functionality of the `putItemsInto` method?",
+          "How does the `removeItems` method work?",
+          "Where should the `toBytes` method be placed according to the reviewer's suggestion?",
+          "What is the purpose of the `Provider` union in the `Inventories` struct?",
+          "How does the `getBaseOperation` function in the `Provider` union work?",
+          "What is the role of the `getItem` function in the `Provider` union?"
+        ]
+      }
+    ]
+  },
+  "github_pr_2825_comment_3039281803": {
+    "stage": "proposed",
+    "collection": "reviews",
+    "proposer": "NickPCp",
+    "reason": "The explanation incorrectly states that the `init` function in the `Selection` struct performs min/max operations, which contradicts the raw content. The raw content does not provide an implementation for the `init` function, and it is mentioned that this logic should be removed from the `capture` function.",
+    "corrected_summary": null,
+    "corrected_explanation": "# [src/server/command/_command.zig] - PR #2825 review diff\n\n**Type:** review\n**Keywords:** Blueprint.capture, Selection, init, min/max, refactor, encapsulation, code organization, redundancy reduction, Vec3i, capture\n**Symbols:** Blueprint.capture, Selection, init, minPos, maxPos, Vec3i\n**Concepts:** Code Refactoring, Structural Improvements, Encapsulation, Redundancy Reduction\n\n## Summary\nThe reviewer suggests improving the `Blueprint.capture` function by changing its parameter to a `Selection` struct that includes methods for initialization and size calculation, reducing redundancy in min/max operations.\n\n## Explanation\nThe reviewer suggests improving the `Blueprint.capture` function by changing its parameter to a `Selection` struct that includes methods for initialization and size calculation, reducing redundancy in min/max operations. Additionally, a new function `getSelectionBounds` is introduced to handle selection bounds.\n\nThe `getSelectionBounds` function is introduced to handle selection bounds. It takes a `User` pointer as an argument and returns an array of two `Vec3i` vectors representing the selection bounds. If the position is not set, it throws an error.\n\n```zig\npub fn getSelectionBounds(source: *User) error{PositionNotSet}![2]main.vec.Vec3i {\n    // Implementation details\n}\n```\n\nThe `Selection` struct would be defined as follows:\n\n```zig\nconst Selection = struct {\n    minPos: Vec3i,\n    maxPos: Vec3i,\n\n    fn init(pos1: Vec3i, pos2: Vec3i) Selection {\n        // Implementation details\n    }\n\n    fn size(self: Selection) Vec3i {\n        return Vec3i{\n            .x = self.maxPos.x - self.minPos.x + 1,\n            .y = self.maxPos.y - self.minPos.y + 1,\n            .z = self.maxPos.z - self.minPos.z + 1,\n        };\n    }\n};\n```\n\nThe `Blueprint.capture` function would then be updated to accept a `Selection` struct instead of raw positions:\n\n```zig\npub fn capture(allocator: NeverFailingAllocator, selection: Selection) CaptureResult {\n    const startX = selection.minPos.x;\n    const startY = selection.minPos.y;\n    const startZ = selection.minPos.z;\n\n    const endX = selection.maxPos.x;\n    const endY = selection.maxPos.y;\n    const endZ = selection.maxPos.z;\n\n    // Existing capture logic using startX, startY, startZ, endX, endY, endZ\n}\n```\n\nBy encapsulating the selection logic within a dedicated struct, the code becomes more organized and reduces redundancy in min/max operations.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickPCp",
+        "timestamp": 1784534945.0818586,
+        "reason": "The explanation incorrectly states that the `init` function in the `Selection` struct performs min/max operations, which contradicts the raw content. The raw content does not provide an implementation for the `init` function, and it is mentioned that this logic should be removed from the `capture` function.",
+        "corrected_summary": null,
+        "corrected_explanation": "# [src/server/command/_command.zig] - PR #2825 review diff\n\n**Type:** review\n**Keywords:** Blueprint.capture, Selection, init, min/max, refactor, encapsulation, code organization, redundancy reduction, Vec3i, capture\n**Symbols:** Blueprint.capture, Selection, init, minPos, maxPos, Vec3i\n**Concepts:** Code Refactoring, Structural Improvements, Encapsulation, Redundancy Reduction\n\n## Summary\nThe reviewer suggests improving the `Blueprint.capture` function by changing its parameter to a `Selection` struct that includes methods for initialization and size calculation, reducing redundancy in min/max operations.\n\n## Explanation\nThe reviewer suggests improving the `Blueprint.capture` function by changing its parameter to a `Selection` struct that includes methods for initialization and size calculation, reducing redundancy in min/max operations. Additionally, a new function `getSelectionBounds` is introduced to handle selection bounds.\n\nThe `getSelectionBounds` function is introduced to handle selection bounds. It takes a `User` pointer as an argument and returns an array of two `Vec3i` vectors representing the selection bounds. If the position is not set, it throws an error.\n\n```zig\npub fn getSelectionBounds(source: *User) error{PositionNotSet}![2]main.vec.Vec3i {\n    // Implementation details\n}\n```\n\nThe `Selection` struct would be defined as follows:\n\n```zig\nconst Selection = struct {\n    minPos: Vec3i,\n    maxPos: Vec3i,\n\n    fn init(pos1: Vec3i, pos2: Vec3i) Selection {\n        // Implementation details\n    }\n\n    fn size(self: Selection) Vec3i {\n        return Vec3i{\n            .x = self.maxPos.x - self.minPos.x + 1,\n            .y = self.maxPos.y - self.minPos.y + 1,\n            .z = self.maxPos.z - self.minPos.z + 1,\n        };\n    }\n};\n```\n\nThe `Blueprint.capture` function would then be updated to accept a `Selection` struct instead of raw positions:\n\n```zig\npub fn capture(allocator: NeverFailingAllocator, selection: Selection) CaptureResult {\n    const startX = selection.minPos.x;\n    const startY = selection.minPos.y;\n    const startZ = selection.minPos.z;\n\n    const endX = selection.maxPos.x;\n    const endY = selection.maxPos.y;\n    const endZ = selection.maxPos.z;\n\n    // Existing capture logic using startX, startY, startZ, endX, endY, endZ\n}\n```\n\nBy encapsulating the selection logic within a dedicated struct, the code becomes more organized and reduces redundancy in min/max operations.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "github_pr_1425_comment_2127434910": {
+    "stage": "proposed",
+    "collection": "reviews",
+    "proposer": "NickPCc",
+    "reason": "The kb_content does not state the actual implementation details of the `format` function, which are provided in the raw_content.",
+    "corrected_summary": null,
+    "corrected_explanation": "A new function `format` is added to the `utils.zig` file. The `format` function is defined as follows:\n\n```zig\npub fn format(allocator: NeverFailingAllocator, comptime fmt: []const u8, args: anytype) []u8 {\n    return allocPrint(allocator, fmt, args);\n}\n```\nThe reviewer mentions not remembering the existence of `allocPrint`, leading them to add a new function instead. This could potentially lead to code duplication and maintenance issues if both functions are used interchangeably without clear distinction.\nThe reviewer states that they will just copy-paste `allocPrint` because it is only 20 extra characters. They also mention that they didn't remember that `allocPrint` was there, so they didn't change after the last discussion.",
+    "corrected_related_questions": [],
+    "attempts": 1,
+    "last_reviewer": null,
+    "approvals": [],
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickPCc",
+        "timestamp": 1784534958.516407,
+        "reason": "The kb_content does not state the actual implementation details of the `format` function, which are provided in the raw_content.",
+        "corrected_summary": null,
+        "corrected_explanation": "A new function `format` is added to the `utils.zig` file. The `format` function is defined as follows:\n\n```zig\npub fn format(allocator: NeverFailingAllocator, comptime fmt: []const u8, args: anytype) []u8 {\n    return allocPrint(allocator, fmt, args);\n}\n```\nThe reviewer mentions not remembering the existence of `allocPrint`, leading them to add a new function instead. This could potentially lead to code duplication and maintenance issues if both functions are used interchangeably without clear distinction.\nThe reviewer states that they will just copy-paste `allocPrint` because it is only 20 extra characters. They also mention that they didn't remember that `allocPrint` was there, so they didn't change after the last discussion.",
+        "corrected_related_questions": []
+      }
+    ]
+  },
+  "github_pr_2987_comment_3201818520": {
+    "attempts": 2,
+    "history": [
+      {
+        "stage": "proposed",
+        "user_id": "NickPCp",
+        "timestamp": 1784535153.5275433,
+        "reason": "The explanation does not mention the specific variable `selectionCapabilities` being initialized to `null`, which is explicitly stated in raw_content. Additionally, the explanation omits the exact context of the architectural review and the specific suggestion for using a struct with local constants and associated load and check functions.",
+        "corrected_summary": null,
+        "corrected_explanation": "# [src/blocks.zig] - PR #2987 review diff\n\n**Type:** review\n**Keywords:** selectionCapabilities, callsite, constant, struct-local, load function, check function\n**Symbols:** register, zon, SelectionRule, SelectionCapability\n**Concepts:** architectural review, struct design\n\n## Summary\nThe change introduces a new variable `selectionCapabilities` to store selection capabilities and initializes it to `null`. The reviewer notes that the callsite does not have an extra constant and suggests using a struct with local constants for better architecture.\n\n## Explanation\nThe code modification adds a new variable `selectionCapabilities` and initializes it to `null`. However, the current approach lacks an extra constant at the callsite, which could lead to architectural issues. The reviewer recommends using a struct with a struct-local constant and associated load and check functions to improve the design and prevent potential bugs.\n\n## Related Questions\n- What is the purpose of introducing `selectionCapabilities`?\n- Why does the reviewer mention a lack of an extra constant at the callsite?\n- How can using a struct with local constants improve the architecture?\n- What are the potential benefits of adding load and check functions to the struct?\n- Could this change lead to any performance improvements or regressions?\n- How might this modification affect backwards compatibility?",
+        "corrected_related_questions": []
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "NickPCc",
+        "verdict": "approve",
+        "feedback": "",
+        "timestamp": 1784535169.3784778
+      },
+      {
+        "stage": "revised",
+        "user_id": "NickPC",
+        "timestamp": 1784535181.6039598,
+        "corrected_summary": null,
+        "corrected_explanation": "The code modification adds a new variable `selectionCapabilities` and initializes it to `null`. However, the current approach lacks an extra constant at the callsite, which could lead to architectural issues. The reviewer recommends using a struct with a struct-local constant and associated load and check functions to improve the design and prevent potential bugs.",
+        "corrected_related_questions": []
+      },
+      {
+        "stage": "reviewed",
+        "user_id": "NickPCc",
+        "verdict": "reject",
+        "feedback": "The proposer's diagnosis is correct in that the explanation does not mention the specific variable `selectionCapabilities` being initialized to `null`. However, the proposed explanation is identical to the current kb_content and does not address the architectural review or the suggestion for using a struct with local constants and associated load and check functions.",
+        "timestamp": 1784535195.9376228
       }
     ]
   }
