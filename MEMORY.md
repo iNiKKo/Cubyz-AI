@@ -45,20 +45,27 @@ Cubyz-AI is a hybrid local LLM system combining fine-tuning (for developer voice
 
 ---
 
-## 4. Recent Progress Notes (v1.3.0 Migration)
+<!-- GEMINI TOOK OVER FROM HERE -->
+## 4. Session Work & Technical Progress Log (v1.3.1)
+- **Author / Assistant:** Antigravity AI (Gemini)
 
-1. **Client TUI Rewrite (`CUBYZ_FOLDING_TUI.py` & `CUBYZ_FOLDING.py`):**
+1. **Client TUI Rewrite (`CUBYZ_FOLDING_TUI.py` & `CUBYZ_FOLDING.py` v1.3.1):**
    - Converted client to full Textual TUI interface with sidebar navigation, live global status header, lane cards, log viewer, and prompt input box.
-   - Auto-detects and displays exact GPU and CPU model names.
+   - Auto-detects and displays exact GPU and CPU model names (e.g. `AMD Radeon RX 9070/9070 XT`, `AMD Ryzen 5 9600X`).
+   - Added multi-fallback dependency auto-installer (`pip install textual rich` using `--user` and `--break-system-packages` flags) wrapped around top-level imports.
    - Restored complete auto-updater pipeline (`check_for_update`, `download_update`, `offer_update`, HTTP 426 exception handler).
+   - Fixed version string regex match using UTF-8 decoded text match (`r'VERSION\s*=\s*["\']([^"\']+)["\']'`) to handle Windows CRLF line endings.
+   - Added process exit hooks (`atexit.register(_notify_server_disconnect)`) and pre-disconnect thread stopping (`_primary_stop_event`) to eliminate disconnect race conditions.
+   - Added lane disconnect triggers to `DualLaneController.stop()` and `ParallelWorkerPoolController.stop()` so turning off dual/parallel lanes immediately updates server dashboard state.
+   - Enforced `*.py text eol=lf` in `.gitattributes` to guarantee raw GitHub downloads use LF line endings.
    - Fully integrated production processing logic for RAG, FINETUNE, and AUDIT modes.
-   - Added `_notify_server_disconnect()` to send `POST /disconnect` on exit for all active lanes.
    - Fixed IDLE mode display to show `No tasks (idle)` on status cards and `N/A` for ETA.
    - Fixed parallel worker VRAM headroom constants to match 15.9 GB GPUs.
 
 2. **Server TUI Updates (`pipeline_crunching/server_textual.py`):**
    - Restored full 4-lane display (`GPU`, `CPU`, `P1`, `P2`) in the connections panel.
-   - Added live machine **Contribution %** calculation relative to total network processing throughput.
-   - Added `POST /disconnect` route (supporting GET & POST methods).
+   - Re-architected machine **Contribution %** calculation to use total campaign work completed in the current active mode (RAG: `chunks_completed`, Finetune: `chunks_completed`, Audit: `chunks_audited + reviews_done + fixes_applied`, Idle: cumulative overall work) rather than live session throughput.
+   - Updated `@app.api_route("/disconnect", methods=["GET", "POST"])` to pop offline clients from `online_clients` and `_user_connected_since` immediately.
    - Dynamically calculates audit progress and ETA based on `AUDIT_LOCK_FILE` and action timing logs.
-   - Bumped `MIN_CLIENT_VERSION` and `LATEST_CLIENT_VERSION` to `1.3.0` to force auto-update across the volunteer network.
+   - Bumped `MIN_CLIENT_VERSION` and `LATEST_CLIENT_VERSION` to `1.3.1` to force auto-update across the volunteer network.
+<!-- GEMINI STOPPED HERE -->

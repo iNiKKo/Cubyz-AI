@@ -321,27 +321,34 @@ sequences can fix cursor-based redraw only ever affecting the live viewport, nev
 un-writing what's already scrolled into terminal history — confirmed as the real complaint once a
 user described scrolling *up* to see the "duplication."
 
-### Textual TUI Rewrite (Server & Client v1.3.0)
-
-To resolve long-standing terminal redraw artifacts, screen flickering, and ANSI escape sequence limitations during multi-lane / parallel worker execution, the entire system interface was migrated to the `textual` TUI framework:
+<!-- GEMINI TOOK OVER FROM HERE -->
+### Textual TUI Migration & System Architecture Polish (v1.3.1)
+- **Author / Assistant:** Antigravity AI (Gemini)
+- **Session Scope:** Migration of volunteer client & coordinator server to Textual TUI, hardware name detection, 4-lane panel display, mode-specific contribution %, auto-updater restoration & regex fixes, line-ending normalization, and graceful disconnect race condition fixes.
 
 - **Server TUI (`pipeline_crunching/server_textual.py`):**
   - Interactive Textual application featuring a full-height sidebar (mode selection RadioSet, confirmation-guarded reset actions, advanced controls) and main panel (global campaign progress, per-machine connection clustering, and real-time event logs).
   - Machine clustering (`_group_online_by_machine` & `_fold_lane_children`) groups secondary lanes (dual-mode) and parallel workers under their parent machine ID, displaying all 4 concurrent lanes (`GPU`, `CPU`, `P1`, `P2`).
-  - Renders live **Contribution %** per volunteer machine (`(4 lanes • 42.5% contrib)`) calculated from total campaign work completed in the current active mode (RAG: `chunks_completed`, Finetune: `chunks_completed`, Audit: `chunks_audited + reviews_done + fixes_applied`, Idle: cumulative overall work).
-  - Added a `POST /disconnect` endpoint allowing clients to instantly mark lanes as offline upon exit instead of waiting out the 60-second `ONLINE_STALE_SECONDS` timeout.
+  - Renders live **Contribution %** per volunteer machine (`(4 lanes • 42.5% contrib)`) calculated from total campaign work completed in the active mode:
+    - **RAG Mode:** `chunks_completed` (from `pipeline_crunching/campaign_state/user_stats.json`).
+    - **Finetune Mode:** `chunks_completed` (from `finetune/campaign_state/user_stats.json`).
+    - **Audit Mode:** `chunks_audited + reviews_done + fixes_applied` (from `pipeline_crunching/campaign_state/audit_user_stats.json`).
+    - **Idle Mode:** Cumulative overall work across all 3 modes.
+  - Added `@app.api_route("/disconnect", methods=["GET", "POST"])` allowing clients to instantly mark lanes as offline upon exit instead of waiting out the 60-second `ONLINE_STALE_SECONDS` timeout.
   - Dynamically calculates Audit mode campaign ETA and progress based on active lock files, remaining tasks, and task duration moving averages.
 
-- **Client TUI Rewrite (`CUBYZ_FOLDING_TUI.py` & `CUBYZ_FOLDING.py` v1.3.0):**
-  - Full rewrite of `CUBYZ_FOLDING.py` into a modern Textual TUI application featuring a sidebar menu, top header status bar (mode badge, volunteer ID, global progress, dynamic ETA), central active lane boxes (GPU, CPU, P1, P2...), scrolling terminal output log, and an interactive input prompt.
+- **Client TUI Rewrite (`CUBYZ_FOLDING_TUI.py` & `CUBYZ_FOLDING.py` v1.3.1):**
+  - Complete rewrite of `CUBYZ_FOLDING.py` into a modern Textual TUI application featuring a sidebar menu, top header status bar (mode badge, volunteer ID, global progress, dynamic ETA), central active lane boxes (GPU, CPU, P1, P2...), scrolling terminal output log, and an interactive input prompt.
   - Auto-detects and displays **exact GPU and CPU model names** (e.g. `AMD Radeon RX 9070/9070 XT (15.9 GB VRAM)`, `AMD Ryzen 5 9600X (30.8 GB RAM)`).
-  - Integrated all RAG, FINETUNE, and AUDIT campaign processing loops (with automatic model checking via Ollama's HTTP `/api/tags` endpoint to support Docker environments without local `ollama` binaries).
-  - Added dependency auto-installation (`pip install textual rich`) wrapped around top-level imports so the client automatically installs required libraries on clean environments.
-  - Fully restored `check_for_update()`, `download_update()`, and `offer_update()` auto-updater routines with HTTP 426 exception handling, allowing clients to automatically detect server version updates, log update notifications to the TUI terminal log, download new client versions from GitHub, overwrite local files, and restart seamlessly via `os.execv()`.
-  - Added graceful exit hooks (`_notify_server_disconnect()`) bound to both the Safe Exit button and `Q` keybind.
+  - Multi-fallback dependency bootstrapper (`pip install textual rich` using `--user` and `--break-system-packages` flags) wrapped around top-level imports so clean systems auto-install required TUI libraries without manual commands.
+  - Fully restored `check_for_update()`, `download_update()`, and `offer_update()` auto-updater routines with HTTP 426 exception handling. Parses version strings via UTF-8 decoded text match to resist CRLF line-ending mismatches and reports explicit GitHub push delay warnings when CDN cache is pending.
+  - Added process exit hooks (`atexit.register(_notify_server_disconnect)`) and pre-disconnect thread stopping (`_primary_stop_event`) to prevent polling race conditions and ensure clients mark offline on Safe Exit, keybinds (`Q`), `Ctrl+C`, or terminal window closing.
+  - Added lane disconnect triggers to `DualLaneController.stop()` and `ParallelWorkerPoolController.stop()` so turning off dual/parallel lanes immediately updates server dashboard state.
   - Corrected parallel worker VRAM/RAM floor constants (`GPU_TIER_VRAM_FLOOR_GB`, `PARALLEL_WORKERS_BY_TIER`, `PARALLEL_WORKERS_VRAM_HEADROOM_PER_WORKER_GB`), allowing 15.9 GB GPUs to clear `check_headroom()` and run 2 parallel workers.
   - Polished IDLE mode behavior to display `No tasks (idle)` on lane status boxes and `N/A` for ETA instead of remaining stuck on `"calculating..."`.
-  - Bumped client version to `1.3.0` and server `MIN_CLIENT_VERSION`/`LATEST_CLIENT_VERSION` to `1.3.0` to enforce auto-updating for older clients.
+  - Enforced `*.py text eol=lf` in `.gitattributes` so GitHub raw CDN serves LF line endings compatible with all client version regex parsers.
+  - Bumped client version to `1.3.1` and server `MIN_CLIENT_VERSION`/`LATEST_CLIENT_VERSION` to `1.3.1`.
+<!-- GEMINI STOPPED HERE -->
 
 ---
 
