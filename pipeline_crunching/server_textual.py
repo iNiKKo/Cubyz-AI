@@ -2217,6 +2217,15 @@ def _get_audit_work(user_id: str, hardware_tier: str, client_local_models: set =
             continue
         p = pending.get(cid)
         if not p or not p.get("stage"):
+            # After a "reject" verdict, this chunk is back here with no "stage" -- but excluded
+            # proposers from prior rejected attempts are still recorded (see the reject handler's
+            # comment): confirmed live via audit_needs_human_review.jsonl analysis that 35% of
+            # "disagreed repeatedly" escalations were the SAME proposer reassigned the identical
+            # already-rejected chunk, resubmitting a near-identical diagnosis each time -- burning
+            # all 3 review rounds on one no-op loop instead of ever getting a genuinely different
+            # pair of eyes, exactly the failure the original comment claimed was already prevented.
+            if p and user_id.lower() in p.get("rejected_proposers", []):
+                continue
             candidates.append(("propose", t, p))
         elif not can_review:
             continue
@@ -2455,12 +2464,21 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
                 save_lock_state(AUDIT_LOCK_FILE, state)
                 save_user_stats(AUDIT_STATS_FILE, user_stats)
                 return {"status": "success", "result": "fix_failed_to_apply_requeued"}
-            append_jsonl(AUDIT_APPLIED_LOG, {
+            # "history" is only included when this fix took more than one attempt to land --
+            # a first-try approval has nothing to learn from, but a fix that needed rework had
+            # real revise/reject rounds behind it that used to just get discarded here (only
+            # escalations to AUDIT_NEEDS_HUMAN_FILE kept their history; a chunk that eventually DID
+            # get resolved lost the story of why the first attempt(s) failed, even though that's
+            # exactly the same class of signal worth mining for prompt/process improvements).
+            applied_entry = {
                 "chunk_id": submission.chunk_id, "collection": collection,
                 "reason": entry.get("reason"), "proposer": entry.get("proposer"),
                 "reviewers": approvals, "required_approvals": required,
                 "attempts": entry.get("attempts", 1), "applied_at": time.time(),
-            }, "audit applied fix")
+            }
+            if entry.get("attempts", 1) > 1:
+                applied_entry["history"] = entry.get("history", [])
+            append_jsonl(AUDIT_APPLIED_LOG, applied_entry, "audit applied fix")
             pkey = entry["proposer"].lower()
             user_stats.setdefault(pkey, _new_user_stats_entry())
             user_stats[pkey]["fixes_applied"] += 1
@@ -2474,8 +2492,18 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
             # wrong, not just the wording of the fix. Don't just re-ask the same proposer -- clear
             # the proposal and send the chunk back for a completely fresh, independent pass, so a
             # single reviewer's opinion isn't the last word either.
+            #
+            # This comment used to just be an intention, not an enforced rule: nothing here actually
+            # recorded who'd been rejected, so _get_audit_work's "propose" candidate filter (which
+            # only checks state["locked"]) had no way to exclude them, and the exact same proposer
+            # could get reassigned the identical chunk on their very next poll. Confirmed live via
+            # audit_needs_human_review.jsonl: 35% (50/144) of "disagreed repeatedly" escalations were
+            # a single proposer resubmitting a near-identical diagnosis 2-3 times in a row, using up
+            # the whole MAX_REVIEW_ROUNDS budget on one no-op loop instead of ever getting fresh eyes.
+            # Fixed by accumulating rejected_proposers here and filtering on it in _get_audit_work.
             attempts = entry.get("attempts", 1)
             log_event("audit", submission.user_id, "✗", Colors.RED, f"rejected {Colors.BOLD}{entry['proposer']}{Colors.RESET}'s proposal for {submission.chunk_id}: {submission.review_feedback[:100]}", short="REJECTED FIX")
+            rejected_proposers = list(set(entry.get("rejected_proposers", []) + [entry["proposer"].lower()]))
             if attempts >= MAX_REVIEW_ROUNDS:
                 append_jsonl(AUDIT_NEEDS_HUMAN_FILE, {
                     "chunk_id": submission.chunk_id, "collection": collection,
@@ -2484,7 +2512,8 @@ def _submit_audit_work(submission: UnifiedSubmission) -> dict:
                 }, "audit needs human review")
                 save_user_stats(AUDIT_STATS_FILE, user_stats)
                 return _mark_done("needs_human_review")
-            pending[submission.chunk_id] = {"attempts": attempts, "history": entry["history"]}
+            pending[submission.chunk_id] = {"attempts": attempts, "history": entry["history"],
+                                             "rejected_proposers": rejected_proposers}
             write_json_file(AUDIT_PENDING_FILE, pending, "audit pending fixes")
             save_lock_state(AUDIT_LOCK_FILE, state)
             save_user_stats(AUDIT_STATS_FILE, user_stats)

@@ -25,6 +25,8 @@ The reviewer proposes simplifying the `JoinFilter` by removing its allocator man
 2. Moving the `whitelisted` boolean to `ServerWorld`.
 3. Moving the `playerMayJoin` method to `ServerWorld`, which now takes a `ServerWorld` instance as an argument and checks the `whitelisted` status directly.
 
+The original code snippet shows the removal of the `neverFailingAllocator` field and the modification of the `init`, `deinit`, and `load` methods. The new code snippet demonstrates how the `playerMayJoin` method is moved to `ServerWorld` and simplified to check the `whitelisted` status directly.
+
 This simplification reduces memory management overhead and centralizes related functionality within `ServerWorld`. The reviewer also notes that this change could lead to potential performance improvements by reducing memory usage and simplifying the code structure. However, thorough testing is recommended to ensure compatibility with existing code and to evaluate any potential risks or implications for future scalability and maintainability.
 
 ## Related Questions

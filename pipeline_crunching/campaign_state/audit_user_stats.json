@@ -12,10 +12,10 @@
     "reviews_done": 64
   },
   "nicksrvr": {
-    "chunks_audited": 266,
-    "issues_found": 58,
-    "fixes_applied": 75,
-    "reviews_done": 782
+    "chunks_audited": 269,
+    "issues_found": 60,
+    "fixes_applied": 78,
+    "reviews_done": 788
   },
   "caleb": {
     "chunks_audited": 1543,
@@ -24,27 +24,27 @@
     "reviews_done": 1612
   },
   "nickpc": {
-    "chunks_audited": 4087,
-    "issues_found": 2763,
-    "fixes_applied": 2329,
-    "reviews_done": 1312
+    "chunks_audited": 4104,
+    "issues_found": 2773,
+    "fixes_applied": 2333,
+    "reviews_done": 1328
   },
   "nickpcc": {
-    "chunks_audited": 158,
-    "issues_found": 65,
-    "fixes_applied": 76,
-    "reviews_done": 170
+    "chunks_audited": 168,
+    "issues_found": 69,
+    "fixes_applied": 80,
+    "reviews_done": 176
   },
   "nickpcq": {
-    "chunks_audited": 1297,
-    "issues_found": 328,
-    "fixes_applied": 194,
-    "reviews_done": 438
+    "chunks_audited": 1318,
+    "issues_found": 343,
+    "fixes_applied": 196,
+    "reviews_done": 453
   },
   "nickpcp": {
-    "chunks_audited": 1298,
-    "issues_found": 351,
-    "fixes_applied": 201,
-    "reviews_done": 428
+    "chunks_audited": 1318,
+    "issues_found": 364,
+    "fixes_applied": 206,
+    "reviews_done": 444
   }
 }

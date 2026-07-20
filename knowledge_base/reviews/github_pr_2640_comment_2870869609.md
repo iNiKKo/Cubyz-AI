@@ -9,11 +9,7 @@
 The `lang.zig` file introduces a new module for language management in Cubyz, including initialization, setting languages, loading translations, and translating strings based on categories.
 
 ## Explanation
-The `lang.zig` file introduces a new module for language management in Cubyz, including initialization, setting languages, loading translations, and translating strings based on categories. The `init` function initializes the language map by iterating over available languages and loads the default language specified in settings. The `setLanguage` function allows changing the current language, updating settings, and saving them. The `load` function retrieves the ZonElement for a given language ID. The `translate` function handles translation based on different categories such as blocks, items, labels, etc., using the `standardTranslate` helper function. The reviewer notes potential performance concerns due to the overhead of translating strings throughout the codebase.
-
-The `Category` enum includes values like `block`, `item`, `label`, `language`, `modifier`, `tag`, `tool`, and `world_preset`. The `languages` array is populated during initialization by iterating over the entries in the language map. If a language ID is not found during initialization, an error message is logged, and the default language (English) is loaded. The `standardTranslate` function retrieves translations from the ZonElement for a given section and category. If a string to be translated is not found, an error message is logged, and the original string is returned.
-
-The `setLanguage` function handles memory allocation by duplicating the new language ID using `main.globalAllocator.dupe(u8, newLanguageId)` and deallocates the old language ID using `main.globalAllocator.free(main.settings.language)`. The `load` function returns an error if a language ID is not found. If a string to be translated is not found in the current language ZonElement, an error message is logged, and the original string is returned.
+The `lang.zig` file introduces a new module for language management in Cubyz, including initialization, setting languages, loading translations, and translating strings based on categories. The `init` function initializes the language map by iterating over available languages using `main.assets.languages()` and loads the default language specified in settings. If a language ID is not found during initialization, an error message is logged, and the default language (English) is loaded. The `setLanguage` function allows changing the current language, updating settings, and saving them. It handles memory allocation by duplicating the new language ID using `main.globalAllocator.dupe(u8, newLanguageId)` and deallocates the old language ID using `main.globalAllocator.free(main.settings.language)`. The `load` function retrieves the ZonElement for a given language ID. The `translate` function handles translation based on different categories such as blocks, items, labels, etc., using the `standardTranslate` helper function. If a string to be translated is not found, an error message is logged, and the original string is returned.
 
 ## Related Questions
 - What is the purpose of the `init` function in `lang.zig`?
@@ -25,6 +21,5 @@ The `setLanguage` function handles memory allocation by duplicating the new lang
 - What is the role of `standardTranslate` in the translation process?
 - How is the `languages` array populated during initialization?
 - What happens if a string to be translated is not found in the current language ZonElement?
-- How does the module ensure thread safety when managing languages?
 
 *Source: unknown | chunk_id: github_pr_2640_comment_2870869609*

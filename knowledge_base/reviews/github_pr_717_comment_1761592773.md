@@ -9,20 +9,15 @@
 The review suggests refactoring the gamepad state handling in `Window.zig` to use a stack allocator and simplify the allocation process.
 
 ## Explanation
-The reviewer points out that the current implementation of gamepad state management in `Window.zig` unnecessarily allocates memory on the heap. The reviewer recommends using a stack allocator, which is freed within the same function, to avoid this overhead. Additionally, the reviewer suggests directly storing the gamepad state on the stack instead of duplicating it, which simplifies the code and potentially improves performance by reducing memory allocations.
+The reviewer suggests refactoring the gamepad state handling in `Window.zig` to use a stack allocator and simplify the allocation process. The current implementation of gamepad state management unnecessarily allocates memory on the heap, which can be optimized by using a stack allocator that is freed within the same function. This reduces overhead and potentially improves performance. Additionally, storing the gamepad state directly on the stack instead of duplicating it simplifies the code and further optimizes memory usage.
 
-The `applyDeadzone` function is responsible for applying a deadzone to the gamepad input values. It takes an input value as a parameter and returns a new value with the deadzone applied. The deadzone is defined by the `controllerAxisDeadzone` setting, which specifies the minimum range of input values that will be considered zero. For example, if `controllerAxisDeadzone` is set to 0.25, any input value between -0.25 and 0.25 will be treated as zero.
+The `applyDeadzone` function is responsible for applying a deadzone to the gamepad input values. It takes an input value as a parameter and returns a new value with the deadzone applied. The deadzone is defined by the `controllerAxisDeadzone` setting, which specifies the minimum range of input values that will be considered zero.
 
 The code changes include adding a stack allocator to manage gamepad state and modifying the `updateGamepadState` function to use this allocator instead of duplicating the gamepad state on the heap. The reviewer also suggests simplifying the allocation process by directly storing the gamepad state on the stack.
 
-First of all, this can use the stackAllocator, since it's freed in this function. Secondly, this entire allocation seems pointless (and also overcomplicated) why not just store it on the stack.
-
 ## Related Questions
-- Why is the stack allocator recommended over heap allocation in this context?
-- What are the potential performance benefits of using a stack allocator?
-- How does simplifying the gamepad state storage impact memory usage?
-- Can you explain the purpose of the `applyDeadzone` function in the code?
-- What changes would be necessary to implement the reviewer's suggestions?
-- How might this refactoring affect the overall stability of the application?
+- What are the specific code changes required to implement the stack allocator in `Window.zig`?
+- How does using a stack allocator impact the performance of the application?
+- What is the memory usage benefit of storing the gamepad state directly on the stack?
 
 *Source: unknown | chunk_id: github_pr_717_comment_1761592773*

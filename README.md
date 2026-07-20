@@ -1,11 +1,107 @@
-# Cubyz AI — Project History
+# Cubyz AI
 
-Four prototypes, building a local AI assistant that actually knows the Cubyz codebase and
-community, without losing general competence along the way.
+A local AI assistant that actually knows the [Cubyz](https://github.com/PixelGuys/Cubyz) codebase
+and community — engine internals, keybindings, addon-creator tooling, GitHub PR review history —
+without losing general competence along the way. Built by combining a deterministic RAG retrieval
+layer with a QLoRA fine-tune, both fed by a distributed, volunteer-powered crunching pipeline
+rather than one person hand-writing a knowledge base.
+
+Four earlier prototypes explored fine-tuning alone, RAG alone, and distributed crunching before
+landing on the current hybrid architecture. That history is preserved below, in case a future dead
+end looks tempting again.
 
 ---
 
-## Prototype 1 — Fine-Tuning Only
+## What's in this repo
+
+### Client — `CUBYZ_FOLDING.py`
+
+![Client screenshot placeholder](docs/images/client.png)
+<!-- TODO: replace with a real screenshot of the running client TUI -->
+
+The volunteer-facing app. Anyone can run this to donate spare compute to whichever campaign
+(RAG knowledge extraction, fine-tune pair generation, or knowledge-base auditing) is currently
+active, using their own local Ollama install.
+
+Current features:
+- **Textual-based TUI** — sidebar menu, live per-lane status boxes, scrolling log, interactive
+  prompts, no more hand-rolled ANSI redraw code.
+- **Auto-detected hardware** — real GPU/CPU model names and VRAM/RAM readings (AMD sysfs, Windows
+  WMI, Apple Silicon, Nvidia), never a fabricated fallback number when detection fails.
+- **Dual-lane + parallel workers** — a machine with spare headroom can run a GPU lane and a
+  CPU-only lane concurrently, plus multiple parallel worker identities hitting the same local
+  Ollama instance, gated by a real pre-flight VRAM/RAM headroom check.
+- **Auto-update** — checks the server every crunching cycle, downloads and restarts automatically
+  (or prompts, depending on saved preference), with a hard version gate for outdated clients.
+- **Clean disconnect** — notifies the server immediately on exit (`Ctrl+C`, quit keybind, or
+  window close) instead of waiting out a stale-connection timeout.
+
+### Server — `pipeline_crunching/server_textual.py`
+
+![Server screenshot placeholder](docs/images/server.png)
+<!-- TODO: replace with a real screenshot of the running admin console -->
+
+The coordinator. Scans and chunks source material, hands out work to connected volunteers, tracks
+progress/leaderboard stats, and hosts an interactive admin console for switching between campaign
+modes live.
+
+Current features:
+- **Textual admin console** — sidebar Campaign Mode selector (Idle/RAG/Finetune/Audit), live
+  per-machine connection panels (grouped by physical machine, folding dual-lane/parallel-worker
+  identities together), a recent-events log, and a global campaign progress bar.
+- **Three campaign modes on one process** — `CURRENT_MODE` switches live via the console or
+  `POST /admin/mode`, with RAG/fine-tune/audit state kept fully separate.
+- **Distributed audit mode** — one volunteer's LLM proposes a fix for a knowledge-base chunk that
+  dropped a real fact, a different volunteer's LLM independently reviews it, capped at 3 rounds
+  before escalating to a human — see [Current stage](#current-stage) below for where this actually
+  stands.
+- **Per-volunteer contribution tracking** — lifetime chunks/reviews/fixes per user, renamed/merged/
+  deleted identities migrate their whole history instead of orphaning it.
+
+---
+
+## Current stage
+
+- **RAG campaign:** complete (3,247/3,247 chunks), knowledge base rebuilt and serving the live
+  webapp (`webapp/chat_server.py`).
+- **Fine-tune campaign:** complete (2,193/2,193 chunks → 3,742 training pairs), and a further QLoRA
+  training round on a larger mixed dataset has finished — `cubyz-assistant-f16.gguf` /
+  `cubyz-assistant-q4.gguf` are built in `finetune/training/output/`, but **not yet loaded into
+  Ollama or re-benchmarked** against the 144-question test. That's the next concrete step before
+  calling this training round done.
+- **Audit campaign:** actively running (re-passes continue as chunks change). As of the latest
+  check: ~3,313 fixes applied, ~328 escalated to human review (~9% escalation rate). Two real
+  process bugs were just found and fixed by mining the escalation logs instead of guessing:
+  1. After a reviewer rejected a proposal, nothing actually stopped the *same* proposer from being
+     reassigned the identical chunk and resubmitting a near-identical (wrong) diagnosis — 35% of
+     the largest escalation bucket was exactly this loop. Fixed: rejected proposers are now
+     excluded from re-proposing the same chunk.
+  2. Fixes that needed more than one attempt to land discarded their whole deliberation history the
+     moment they succeeded — only chunks that got escalated kept a record of what went wrong along
+     the way. Fixed: that history is now persisted in `audit_applied_log.jsonl` for any fix that
+     took more than one attempt.
+  Run `python3 pipeline_crunching/analyze_audit.py` any time for a live breakdown of escalation
+  reasons, attempt distribution, and per-proposer rejection rates.
+- **Client/server infra:** consolidated onto one client (`CUBYZ_FOLDING.py`) and one server
+  (`pipeline_crunching/server_textual.py`) as of 2026-07-20; the older plain-print server and a
+  duplicate client file were archived, not deleted (`archive/`).
+
+**Open goals**, roughly in order: get the new adapter benchmarked and confirm it clears the prior
+95.8%/144 mark; keep an eye on `analyze_audit.py`'s escalation-reason breakdown as the campaign
+keeps running to catch the next systemic bug the way the two above were found; decide on
+`/disconnect`'s current lack of auth/validation (flagged, not yet fixed — deliberate open
+decision, not an oversight).
+
+---
+
+## History
+
+Each prototype below is collapsed by default — expand the one you want to read. Preserved in full
+because each dead end is the reason the current system works the way it does; the raw code for
+everything upstream of the current system lives in `archive/`, organized by prototype.
+
+<details>
+<summary><strong>Prototype 1 — Fine-Tuning Only</strong> (unusable, shelved)</summary>
 
 **What it was:** Direct LoRA fine-tune on the Cubyz codebase, no RAG, no general-data mixing.
 
@@ -23,9 +119,10 @@ real slice of general instruction data in the mix — ideally both.
 
 **Result:** Unusable. Shelved. Preserved in `archive/prototype_1_finetune_only/`.
 
----
+</details>
 
-## Prototype 2 — Early RAG
+<details>
+<summary><strong>Prototype 2 — Early RAG</strong> (validated the approach)</summary>
 
 **What it was:** Retrieval instead of retraining — a Chroma vector DB over one merged knowledge
 file (`cubyz_master_knowledgebase.md`), served via `rag_server.py`. Model weights untouched, so
@@ -45,9 +142,10 @@ just having a vector DB at all.
 benchmark didn't exist yet. Preserved in `archive/prototype_2_early_rag/` and
 `archive/prototype_2_review_extraction/`.
 
----
+</details>
 
-## Prototype 3 — Crunch-Party (Distributed Data Crunching)
+<details>
+<summary><strong>Prototype 3 — Crunch-Party (Distributed Data Crunching)</strong> (bigger KB, introduced a bug found later)</summary>
 
 **What it was:** Not a model — infrastructure to scale Prototype 2's knowledge base. A
 coordinator (`server.py`, now in `pipeline_crunching/`) handed out source chunks (wiki, codebase,
@@ -68,9 +166,10 @@ preservation) so future campaign runs don't repeat it.
 **Result:** Bigger, broader knowledge base; introduced a fact-loss bug that stayed invisible
 until real testing in Prototype 4.
 
----
+</details>
 
-## Prototype 4 — Hybrid: Fine-Tune + RAG (current production model)
+<details>
+<summary><strong>Prototype 4 — Hybrid: Fine-Tune + RAG (production model)</strong> (89% on the 96-question benchmark)</summary>
 
 **What it was:** Fine-tuning for voice and judgment (how a Cubyz dev reasons, reviews code,
 debugs), RAG for hard facts (keybindings, defaults, protocol details) — combining what Prototype
@@ -119,15 +218,16 @@ the model's own discretion (inconsistent grounding) and its frontend gave up on 
 and like/dislike feedback with an optional note — real user-flagged issues feed straight back
 into fixing the knowledge base.
 
----
+</details>
 
-## Prototype 5 — Consolidation & Cleanup (in progress)
+<details>
+<summary><strong>Prototype 5 — Consolidation, Regression Hunt & TUI Migration</strong> (95.8% on the expanded 144-question benchmark)</summary>
 
-**What it was:** Before extending Prototype 4's system further, a pass to pay down accumulated
-maintenance debt in the project's infrastructure, then use that cleaner base to re-verify (and
-push past) Prototype 4's 89% benchmark. This section keeps growing as work continues.
+Before extending Prototype 4's system further, a pass to pay down accumulated maintenance debt in
+the project's infrastructure, then use that cleaner base to re-verify (and push past) Prototype
+4's 89% benchmark.
 
-### Infrastructure consolidation
+#### Infrastructure consolidation
 
 - **Client scripts merged.** Each campaign shipped three ~85-90%-identical per-OS scripts
   (`client_{linux,mac,windows}.py`); merged into one cross-platform script per campaign
@@ -150,15 +250,13 @@ push past) Prototype 4's 89% benchmark. This section keeps growing as work conti
   last run didn't shut down cleanly. Also fixed a real **auto-update infinite loop**: a stale CDN
   cache could serve old content that "installed" as a no-op and re-triggered the same version
   mismatch forever — fixed by verifying the downloaded file's own `VERSION` line before installing.
-- **Terminal UI.** Live status display is color-coded by campaign (RAG cyan, fine-tune magenta)
-  with severity coloring on status lines, auto-disabled on non-terminal stdout.
 - **Port conflict resolved:** `webapp/chat_server.py` and `pipeline_crunching/server.py` used to
   share port 7000 (run one at a time). `chat_server.py` was moved to port 7001 so the live AI chat
   website and a distributed campaign can now run concurrently.
 - **Known, not-yet-fixed:** none of `/admin/mode`, `/submit_work`, or the volunteer `user_id`
   scheme have authentication — needs a real design decision, not fixed yet.
 
-### Dual-lane crunching & hardware detection
+#### Dual-lane crunching & hardware detection
 
 - **GPU+CPU concurrent lanes.** On a machine with a real GPU and spare RAM, `CUBYZ_FOLDING.py` runs
   a GPU lane and a second CPU-only lane (`num_gpu=0`) at once, roughly doubling throughput, with a
@@ -178,7 +276,7 @@ push past) Prototype 4's 89% benchmark. This section keeps growing as work conti
   speed, since a fast lane stuck on the smallest model tier is excluded from fine-tune work
   server-side. CPU-only lane model choice also now scales with system RAM instead of a fixed floor.
 
-### Campaign completion & the benchmark regression saga
+#### Campaign completion & the benchmark regression saga
 
 Both distributed campaigns finished: **RAG 3,247/3,247 chunks** (verified clean — 0 malformed, 0
 duplicate IDs, 0 empty fields), **fine-tune 2,193/2,193 chunks** → 3,742 training pairs. Rebuilding
@@ -222,10 +320,11 @@ scrutiny against over-compression; raw PR diff/comment text should be retained a
 review summaries so a future grounding audit has something to check against.
 
 **In parallel, a new QLoRA training round** (`Qwen2.5-Coder-7B-Instruct`, 7,110 train / 374 val
-examples after 1:1 general-data mixing) is running on the larger fine-tune dataset, targeting the
-95.8%/144 RAG-side figure once merged, not the stale 71.9%/96 number.
+examples after 1:1 general-data mixing) targeted the 95.8%/144 RAG-side figure once merged. As of
+the current stage, the merged GGUF is built but not yet re-benchmarked — see
+[Current stage](#current-stage) above.
 
-### Distributed audit mode
+#### Distributed audit mode
 
 Every fix in the regression saga above was found and applied by hand. A third campaign mode,
 **`audit`** (alongside `rag`/`finetune`, same infrastructure), automates that process going
@@ -244,50 +343,41 @@ chunks specifically, since that's the most user-facing content and where every s
 saga was found. Post-fix, the escalation rate dropped from 30% to under 3% with zero leakage from
 the gated-out weak reviewer — confirmed against live campaign data, not just in theory.
 
-### Audit campaign completion, review, and closing the reprocessing loop
-
-The `audit` campaign (above) ran to completion: **3,247/3,247 chunks**, 2,255 fixes applied, 168
+The `audit` campaign then ran to completion once: **3,247/3,247 chunks**, 2,255 fixes applied, 168
 escalated to human review. A full review pass followed the plan agreed earlier (verify against raw
 source, never trust a chunk's or reviewer's own claim): a mechanical sweep across the whole
-`knowledge_base/` for known bug patterns (double-bullets, structural doc-corruption, literal `\n`,
-non-question "Related Questions") came back clean except one isolated bad generation; all 168
+`knowledge_base/` for known bug patterns came back clean except one isolated bad generation; all 168
 escalations were reviewed (15 "malformed content" ones all traced to the *same* root cause — a
-proposer re-generating a whole wrapped document instead of just prose — and the structural guard
-correctly blocked every one, zero corruption; the other 153 never wrote anything, the reviewer was
-correctly catching regressions each round); and a sample of ~35 applied fixes across all four
-collections found and fixed 3 real fabrication errors (a model misreading a UI slider's width
-parameter as a value range, and two cases of garbling a value+variance pair into a nonsensical
-range) — an isolated failure pattern, not a new systemic bug class.
+proposer re-generating a whole wrapped document instead of just prose — and a structural guard
+correctly blocked every one, zero corruption); and a sample of ~35 applied fixes across all four
+collections found and fixed 3 real fabrication errors — an isolated failure pattern, not a new
+systemic bug class.
 
-This surfaced two real gaps in the pipeline itself, both fixed at the root:
+This surfaced two real pipeline gaps, both fixed at the root:
 
 - **Fine-tune training data never actually benefited from any audit fix.** `finetune_initialize_chunks()`
-  sourced content from `users/*/{wiki,codebase,github_reviews}.jsonl` — the raw, one-time crunch
-  output, frozen forever, completely separate from the `knowledge_base/*.md` files audit mode
-  actually edits. Fixed by re-deriving finetune's source content live from `knowledge_base/*.md`
-  instead (`_parse_kb_md_record()`), so every past and future audit fix flows into the next
-  training run automatically. A related landmine: `build_knowledge_base.py` (which republishes
-  `users/*.jsonl` → `knowledge_base/*.md`) would have silently overwritten every audit-corrected
-  chunk back to its original, pre-fix content the next time anyone ran it — fixed to permanently
-  skip any chunk_id already present in `audit_lock_state.json`'s completed set.
-- **A completed chunk could never be dispatched or resubmitted again, even when it genuinely needed
-  to be** (a chunk whose combined raw+kb content hash changed since its last audit pass). Fixing
-  that (checking live queue membership, not just the lifetime `completed` list) then exposed a
-  second, more severe bug: nothing ever pruned a *just-resolved* chunk from the in-memory dispatch
-  queue, so it was immediately re-offered again on the very next poll — a live infinite loop,
-  confirmed with a direct dispatch→resolve→dispatch-again test, and the actual explanation for "100%
-  complete but every client is still working." Fixed across all three campaign modes (RAG/finetune/
-  audit) by pruning a chunk from its in-memory queue at the moment it resolves, independent of the
-  lifetime completed-count. Progress reporting was also switched from that lifetime count (which
-  doesn't move during a repeat pass) to a live "how much of the current queue is still outstanding"
-  number.
+  sourced content from the raw, one-time crunch output, completely separate from the
+  `knowledge_base/*.md` files audit mode actually edits. Fixed by re-deriving finetune's source
+  content live from `knowledge_base/*.md` instead, so every past and future audit fix flows into
+  the next training run automatically. A related landmine (`build_knowledge_base.py` silently
+  overwriting audit-corrected chunks back to their original content) was fixed to permanently skip
+  any chunk already in `audit_lock_state.json`'s completed set.
+- **A completed chunk could never be dispatched or resubmitted again**, even when its combined
+  raw+kb content hash genuinely changed since its last audit pass — and fixing that then exposed a
+  second, more severe bug: nothing pruned a just-resolved chunk from the in-memory dispatch queue,
+  so it was immediately re-offered on the very next poll, a live infinite loop that was the actual
+  explanation for "100% complete but every client is still working." Fixed across all three
+  campaign modes by pruning a chunk from its queue at the moment it resolves.
 - Two new server endpoints, `rename_user` and `merge_user`, properly migrate/combine a volunteer's
-  stats, hardware info, and first-seen date server-side — the pause menu's rename option used to
-  only change what the client remembered locally, silently orphaning the old identity's entire
-  history under a name nobody used anymore. `delete_user` (pause menu `[X]`) does the thorough
-  opposite: purges every trace of an identity, including releasing any chunk it had locked.
+  stats, hardware info, and first-seen date server-side, instead of the pause menu's rename option
+  only changing what the client remembered locally and orphaning the old identity's history.
+  `delete_user` does the thorough opposite: purges every trace of an identity.
 
-### Parallel workers, hardware guardrails, and a multi-lane terminal UI
+The audit campaign has continued running re-passes since (chunks become re-eligible when their
+source content changes). See [Current stage](#current-stage) for the live numbers and the two
+process bugs found most recently by mining the escalation logs.
+
+#### Parallel workers, hardware guardrails, and a multi-lane terminal UI
 
 Raised by a volunteer's own question ("can Ollama process multiple requests at once on consumer
 hardware?"): yes, via `OLLAMA_NUM_PARALLEL`, and the client now can too. `ParallelWorkerPoolController`
@@ -298,61 +388,45 @@ initial version that would happily enable this on hardware that couldn't actuall
 real `check_headroom()` pre-flight check now refuses to start if the machine's detected VRAM/RAM
 doesn't clear a conservative per-tier estimate, rather than finding out via an OOM or stall.
 
-Also added this round: a GPU architecture compatibility database (`GPU_ARCH_COMPATIBILITY`) that
-checks for a small, deliberately conservative deny-list of *confirmed*-dead architectures (e.g.
-`gfx803`/Polaris, dropped from ROCm since 4.5 — the root cause finally nailed down for a volunteer's
-long-mysterious RX 550) *before* spending up to two minutes running a real benchmark that was
-always going to fail anyway; a pause-menu redesign (vertical, grouped sections instead of one long
-wrapped line) with new options to rename, change primary lane (GPU ONLY / CPU ONLY / DUAL MODE), and
-delete an identity; and the volunteer name length limit raised from 9 to 12 characters.
+Also added this round: a GPU architecture compatibility database that checks for a small,
+deliberately conservative deny-list of *confirmed*-dead architectures (e.g. `gfx803`/Polaris,
+dropped from ROCm since 4.5) *before* spending up to two minutes running a real benchmark that was
+always going to fail anyway; a pause-menu redesign with new options to rename, change primary lane,
+and delete an identity; and the volunteer name length limit raised from 9 to 12 characters.
 
-Making all this visible without the terminal falling apart took several real iterations. Dual-lane
-and parallel workers, run together, corrupted each other's display the same way a lone fancy box
-and a second lane always had — so `DualStatusBoard` was generalized from a fixed GPU/CPU pair into a
-dynamic N-lane board that any lane (primary, dual secondary, or any number of parallel workers)
-joins and leaves live. That surfaced its own bug: a newly-joined lane makes the next frame longer,
-but the redraw was still erasing based on the *previous, shorter* frame's line count — undershooting
-and leaving stale lines behind, fixed by forcing a fresh (non-erasing) redraw the moment a lane's
-row count changes in either direction. Separately, the admin dashboard's own redraw went through
-three attempts (a full-screen clear, then a per-line cursor-up erase, then a cursor-up +
-erase-to-end-of-screen) before landing on the actual fix: switching to the terminal's *alternate
-screen buffer* (the same mechanism `htop`/`vim`/`less` use), since no amount of tuning the escape
-sequences can fix cursor-based redraw only ever affecting the live viewport, never retroactively
-un-writing what's already scrolled into terminal history — confirmed as the real complaint once a
-user described scrolling *up* to see the "duplication."
+Making all this visible without the terminal falling apart took several real iterations
+(hand-rolled ANSI redraw hit at least 5 distinct bugs across dual-lane, parallel workers, and the
+admin dashboard) before landing on the actual fix: switching to the terminal's *alternate screen
+buffer*, the same mechanism `htop`/`vim`/`less` use.
 
-<!-- GEMINI TOOK OVER FROM HERE -->
-### Textual TUI Migration & System Architecture Polish (v1.3.1)
-- **Author / Assistant:** Antigravity AI (Gemini)
-- **Session Scope:** Migration of volunteer client & coordinator server to Textual TUI, hardware name detection, 4-lane panel display, mode-specific contribution %, auto-updater restoration & regex fixes, line-ending normalization, and graceful disconnect race condition fixes.
+#### Textual TUI migration (v1.3.1) and a follow-up bug audit
 
-- **Server TUI (`pipeline_crunching/server_textual.py`):**
-  - Interactive Textual application featuring a full-height sidebar (mode selection RadioSet, confirmation-guarded reset actions, advanced controls) and main panel (global campaign progress, per-machine connection clustering, and real-time event logs).
-  - Machine clustering (`_group_online_by_machine` & `_fold_lane_children`) groups secondary lanes (dual-mode) and parallel workers under their parent machine ID, displaying all 4 concurrent lanes (`GPU`, `CPU`, `P1`, `P2`).
-  - Renders live **Contribution %** per volunteer machine (`(4 lanes • 42.5% contrib)`) calculated from total campaign work completed in the active mode:
-    - **RAG Mode:** `chunks_completed` (from `pipeline_crunching/campaign_state/user_stats.json`).
-    - **Finetune Mode:** `chunks_completed` (from `finetune/campaign_state/user_stats.json`).
-    - **Audit Mode:** `chunks_audited + reviews_done + fixes_applied` (from `pipeline_crunching/campaign_state/audit_user_stats.json`).
-    - **Idle Mode:** Cumulative overall work across all 3 modes.
-  - Added `@app.api_route("/disconnect", methods=["GET", "POST"])` allowing clients to instantly mark lanes as offline upon exit instead of waiting out the 60-second `ONLINE_STALE_SECONDS` timeout.
-  - Dynamically calculates Audit mode campaign ETA and progress based on active lock files, remaining tasks, and task duration moving averages.
+The hand-rolled ANSI redraw problems above led to a full migration onto the `textual` library for
+both the server's admin console and the client's status display (superseding an intermediate
+`rich`-only attempt, `server_rich.py`, kept in `archive/` as a real working step along the way).
+This covered: a signal-handling crash fixed by inverting which thread owns `textual` vs. `uvicorn`
+(Python's `signal` module requires the main thread); a `Live.update(refresh=True)` bug that froze
+the dashboard on one static frame despite real traffic; per-machine lane clustering and a live
+"Contribution %" per volunteer; exact GPU/CPU model-name detection; a restored auto-updater; and
+numerous panel-width/layout fixes found only by watching it run on a real terminal, not headless
+tests alone — several real bugs across this migration were only caught that way.
 
-- **Client TUI Rewrite (`CUBYZ_FOLDING_TUI.py` & `CUBYZ_FOLDING.py` v1.3.1):**
-  - Complete rewrite of `CUBYZ_FOLDING.py` into a modern Textual TUI application featuring a sidebar menu, top header status bar (mode badge, volunteer ID, global progress, dynamic ETA), central active lane boxes (GPU, CPU, P1, P2...), scrolling terminal output log, and an interactive input prompt.
-  - Auto-detects and displays **exact GPU and CPU model names** (e.g. `AMD Radeon RX 9070/9070 XT (15.9 GB VRAM)`, `AMD Ryzen 5 9600X (30.8 GB RAM)`).
-  - Multi-fallback dependency bootstrapper (`pip install textual rich` using `--user` and `--break-system-packages` flags) wrapped around top-level imports so clean systems auto-install required TUI libraries without manual commands.
-  - Fully restored `check_for_update()`, `download_update()`, and `offer_update()` auto-updater routines with HTTP 426 exception handling. Parses version strings via UTF-8 decoded text match to resist CRLF line-ending mismatches and reports explicit GitHub push delay warnings when CDN cache is pending.
-  - Added process exit hooks (`atexit.register(_notify_server_disconnect)`) and pre-disconnect thread stopping (`_primary_stop_event`) to prevent polling race conditions and ensure clients mark offline on Safe Exit, keybinds (`Q`), `Ctrl+C`, or terminal window closing.
-  - Added lane disconnect triggers to `DualLaneController.stop()` and `ParallelWorkerPoolController.stop()` so turning off dual/parallel lanes immediately updates server dashboard state.
-  - Corrected parallel worker VRAM/RAM floor constants (`GPU_TIER_VRAM_FLOOR_GB`, `PARALLEL_WORKERS_BY_TIER`, `PARALLEL_WORKERS_VRAM_HEADROOM_PER_WORKER_GB`), allowing 15.9 GB GPUs to clear `check_headroom()` and run 2 parallel workers.
-  - Polished IDLE mode behavior to display `No tasks (idle)` on lane status boxes and `N/A` for ETA instead of remaining stuck on `"calculating..."`.
-  - Enforced `*.py text eol=lf` in `.gitattributes` so GitHub raw CDN serves LF line endings compatible with all client version regex parsers.
-  - Bumped client version to `1.3.1` and server `MIN_CLIENT_VERSION`/`LATEST_CLIENT_VERSION` to `1.3.1`.
-<!-- GEMINI STOPPED HERE -->
+A follow-up audit of that work (once it was done) found and fixed three further real bugs the hard
+way — by actually executing the code, not just reading it: a missing `import atexit` that prevented
+the client from starting at all; two silently-duplicated auto-update functions where three separate
+"fix" commits were all editing dead, shadowed code while a broken regex in the live copy kept every
+real download rejected; and fatal startup errors hanging the TUI forever instead of exiting, since
+`sys.exit()` on a background thread doesn't stop the main `textual` event loop. All three are fixed.
+The redundant duplicate client file (`CUBYZ_FOLDING_TUI.py`) and the two now-superseded servers
+(`server.py`, `server_rich.py`) were archived, leaving one canonical client and server going
+forward — see [What's in this repo](#whats-in-this-repo) above.
+
+</details>
 
 ---
 
-## Summary
+<details>
+<summary><strong>Summary table</strong></summary>
 
 | Prototype | Approach | Outcome |
 |---|---|---|
@@ -360,7 +434,6 @@ user described scrolling *up* to see the "duplication."
 | 2 | RAG only, single-file KB | Facts good, code examples wrong |
 | 3 | Distributed crunching | 1,134/1,134 chunks, bigger KB (introduced a fact-loss bug found later) |
 | 4 | Fine-tune + RAG hybrid | 89% on 96-question benchmark, general capability fully intact |
-| 5 | Consolidation & cleanup | RAG (3,247) + fine-tune (2,193) campaigns both complete; dual-lane crunching; 89%->71.9% regression found, corrected root cause (live crunching fact-loss bugs + context ordering/list-format issues, not corpus dilution); systematic RAG-side fixes plus a benchmark expansion to 144 questions brought it to 138/144 (95.8%); new distributed `audit` campaign mode (propose/review/apply LLM conversation) now catches this bug class on an ongoing basis, live-testing across 3 machines; new fine-tune training round in progress to beat 95.8% on the adapter side |
+| 5 | Consolidation & cleanup | RAG (3,247) + fine-tune (2,193) campaigns both complete; dual-lane crunching; 89%->71.9% regression found and root-caused (live crunching fact-loss bugs + context ordering/list-format issues, not corpus dilution); systematic RAG-side fixes plus a benchmark expansion to 144 questions brought it to 138/144 (95.8%); distributed `audit` campaign mode now catches this bug class on an ongoing basis; client/server migrated to `textual` and consolidated to one canonical file each; new fine-tune training round built but not yet re-benchmarked |
 
-Everything upstream of the current system is kept in `archive/`, organized by prototype, because
-each dead end is the reason the current one works.
+</details>
