@@ -39,7 +39,8 @@ Cubyz-AI is a hybrid local LLM system combining fine-tuning (for developer voice
   - `hard` tier: VRAM floor 8.5 GB + 3.5 GB per worker (2 workers) = 15.5 GB required.
   - `medium` tier: VRAM floor 4.5 GB + 2.0 GB per worker (2 workers).
   - `easy` tier: VRAM floor 0.0 GB + 1.0 GB per worker (3 workers).
-- **Auto-Bootstrapper:** Imports `textual` and `rich` inside a `try...except ImportError` block that automatically runs `pip install textual rich` if missing on a new system.
+- **Auto-Bootstrapper:** Imports `textual` and `rich` inside a `try...except ImportError` block that automatically runs `pip install textual rich` using multiple environment flags (`--user`, `--break-system-packages`) if missing on a new system.
+- **Auto-Updater & Version Handling:** Fully integrates `check_for_update()`, `download_update()`, and `offer_update()`. On HTTP 426 or version mismatch, automatically fetches `download_url`, verifies version tag, overwrites local script, and calls `os.execv()` to restart process seamlessly.
 - **Docker Ollama Verification:** Checks model availability using HTTP `GET /api/tags` and `POST /api/pull` to avoid CLI `FileNotFoundError` when Ollama is running inside Docker containers.
 
 ---
@@ -49,6 +50,7 @@ Cubyz-AI is a hybrid local LLM system combining fine-tuning (for developer voice
 1. **Client TUI Rewrite (`CUBYZ_FOLDING_TUI.py` & `CUBYZ_FOLDING.py`):**
    - Converted client to full Textual TUI interface with sidebar navigation, live global status header, lane cards, log viewer, and prompt input box.
    - Auto-detects and displays exact GPU and CPU model names.
+   - Restored complete auto-updater pipeline (`check_for_update`, `download_update`, `offer_update`, HTTP 426 exception handler).
    - Fully integrated production processing logic for RAG, FINETUNE, and AUDIT modes.
    - Added `_notify_server_disconnect()` to send `POST /disconnect` on exit for all active lanes.
    - Fixed IDLE mode display to show `No tasks (idle)` on status cards and `N/A` for ETA.
@@ -57,6 +59,6 @@ Cubyz-AI is a hybrid local LLM system combining fine-tuning (for developer voice
 2. **Server TUI Updates (`pipeline_crunching/server_textual.py`):**
    - Restored full 4-lane display (`GPU`, `CPU`, `P1`, `P2`) in the connections panel.
    - Added live machine **Contribution %** calculation relative to total network processing throughput.
-   - Added `POST /disconnect` route.
+   - Added `POST /disconnect` route (supporting GET & POST methods).
    - Dynamically calculates audit progress and ETA based on `AUDIT_LOCK_FILE` and action timing logs.
    - Bumped `MIN_CLIENT_VERSION` and `LATEST_CLIENT_VERSION` to `1.3.0` to force auto-update across the volunteer network.

@@ -337,6 +337,7 @@ To resolve long-standing terminal redraw artifacts, screen flickering, and ANSI 
   - Auto-detects and displays **exact GPU and CPU model names** (e.g. `AMD Radeon RX 9070/9070 XT (15.9 GB VRAM)`, `AMD Ryzen 5 9600X (30.8 GB RAM)`).
   - Integrated all RAG, FINETUNE, and AUDIT campaign processing loops (with automatic model checking via Ollama's HTTP `/api/tags` endpoint to support Docker environments without local `ollama` binaries).
   - Added dependency auto-installation (`pip install textual rich`) wrapped around top-level imports so the client automatically installs required libraries on clean environments.
+  - Fully restored `check_for_update()`, `download_update()`, and `offer_update()` auto-updater routines with HTTP 426 exception handling, allowing clients to automatically detect server version updates, log update notifications to the TUI terminal log, download new client versions from GitHub, overwrite local files, and restart seamlessly via `os.execv()`.
   - Added graceful exit hooks (`_notify_server_disconnect()`) bound to both the Safe Exit button and `Q` keybind.
   - Corrected parallel worker VRAM/RAM floor constants (`GPU_TIER_VRAM_FLOOR_GB`, `PARALLEL_WORKERS_BY_TIER`, `PARALLEL_WORKERS_VRAM_HEADROOM_PER_WORKER_GB`), allowing 15.9 GB GPUs to clear `check_headroom()` and run 2 parallel workers.
   - Polished IDLE mode behavior to display `No tasks (idle)` on lane status boxes and `N/A` for ETA instead of remaining stuck on `"calculating..."`.
