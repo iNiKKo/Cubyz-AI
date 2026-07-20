@@ -12,17 +12,15 @@ Added new file `permission.zig` with functions for mapping between string hash m
 The added code introduces a new module for handling permissions in the server. It includes two main functions: `mapFromZon` and `mapToZon`, which facilitate converting between string hash maps and ZonElements. The `Permissions` struct manages permission lists using white and black lists, implemented as string hash maps. The reviewer notes that generally, any structure with a deinit function should also have an init function to ensure proper resource management, specifically mentioning the need for initializing the arena allocator.
 
 **Detailed Explanation:**
-- **mapFromZon Function**: This function takes an allocator, a string hash map, and a ZonElement as input. It checks if the ZonElement is an array and iterates through its items. If an item is a string or owned string, it duplicates the string and adds it to the hash map if it doesn't already exist.
+- **mapFromZon Function**: This function takes an allocator (`NeverFailingAllocator`), a string hash map (`std.StringHashMapUnmanaged(void)`), and a ZonElement as input. It checks if the ZonElement is an array and iterates through its items. If an item is a string or owned string, it duplicates the string and adds it to the hash map if it doesn't already exist.
 
-- **mapToZon Function**: This function takes an allocator and a string hash map as input and returns a ZonElement. It initializes a new ZonElement array and appends each key from the hash map to this array.
+- **mapToZon Function**: This function takes an allocator (`NeverFailingAllocator`) and a string hash map as input and returns a ZonElement. It initializes a new ZonElement array and appends each key from the hash map to this array.
 
-- **Permissions Struct**: The `Permissions` struct contains an arena allocator, a white list (permissionWhiteList), and a black list (permissionBlackList). Both lists are implemented as string hash maps. The `ListType` enum defines two types: `white` and `black`, representing the different modes of permission management.
+- **Permissions Struct**: The `Permissions` struct contains an arena allocator (`NeverFailingArenaAllocator`), a white list (`permissionWhiteList`), and a black list (`permissionBlackList`). Both lists are implemented as string hash maps. The `ListType` enum defines two types: `white` and `black`, representing the different modes of permission management.
 
 - **Initialization**: The `Permissions` struct should have an init function to initialize the arena allocator before use. This ensures that all resources are properly allocated and managed.
 
 - **Deinitialization**: The deinit function is responsible for cleaning up resources allocated by the struct, such as freeing memory used by the string hash maps. This ensures that all allocated resources are released when the struct is no longer needed.
-
-**Specific Enum Values**: The `ListType` enum has two values: `white` and `black`, which are used to manage permissions in different modes.
 
 ## Related Questions
 - What is the purpose of the `mapFromZon` function?

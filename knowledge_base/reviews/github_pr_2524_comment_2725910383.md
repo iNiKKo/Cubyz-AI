@@ -29,6 +29,10 @@ The `Provider` union is used to manage different types of item providers. It inc
 - **getBaseOperation**: Generates a base operation for the `Provider` union. Takes an inventory (`Inventory`) and a slot (`u32`) as parameters and returns a `sync.Command.BaseOperation`. Depending on the provider type, it either creates a move or create operation.
 - **getItem**: Retrieves the item associated with the `Provider` union. Returns the item (`Item`).
 
+### toBytes and fromBytes Methods
+- **toBytes**: Serializes the `Inventories` struct into bytes. Takes a writer (`*BinaryWriter`) as a parameter and writes the length of the inventories followed by each inventory's ID.
+- **fromBytes**: Deserializes the `Inventories` struct from bytes. Takes an allocator (`NeverFailingAllocator`), reader (`*BinaryReader`), side (`sync.Side`), and user (`?*main.server.User`) as parameters and returns an initialized `Inventories` struct.
+
 ## Related Questions
 - What is the purpose of the `Inventories` struct?
 - How does the `init` method work in the `Inventories` struct?

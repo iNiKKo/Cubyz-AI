@@ -24,27 +24,27 @@
     "reviews_done": 1612
   },
   "nickpc": {
-    "chunks_audited": 3997,
-    "issues_found": 2701,
+    "chunks_audited": 3999,
+    "issues_found": 2702,
     "fixes_applied": 2315,
-    "reviews_done": 1245
+    "reviews_done": 1248
   },
   "nickpcc": {
-    "chunks_audited": 110,
-    "issues_found": 42,
-    "fixes_applied": 55,
+    "chunks_audited": 112,
+    "issues_found": 43,
+    "fixes_applied": 57,
     "reviews_done": 141
   },
   "nickpcq": {
-    "chunks_audited": 1220,
-    "issues_found": 279,
-    "fixes_applied": 167,
-    "reviews_done": 367
+    "chunks_audited": 1221,
+    "issues_found": 280,
+    "fixes_applied": 168,
+    "reviews_done": 371
   },
   "nickpcp": {
-    "chunks_audited": 1224,
-    "issues_found": 299,
-    "fixes_applied": 173,
-    "reviews_done": 361
+    "chunks_audited": 1226,
+    "issues_found": 301,
+    "fixes_applied": 174,
+    "reviews_done": 363
   }
 }
