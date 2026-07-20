@@ -6,7 +6,7 @@
 **Concepts:** memory management, caching, initialization, dependency resolution, arena allocator
 
 ## Summary
-Added new module for handling structure building blocks with caching and initialization logic.
+Added new module for handling structure building blocks with caching and initialization logic. The module uses an arena allocator for efficient memory management and defines structures like `BlueprintEntry`, `Info`, and `StructureBuildingBlock`. Key functionalities include parsing blueprints, handling origin and child blocks, and resolving child structures in a second pass to ensure all dependencies are loaded correctly.
 
 ## Explanation
 The added code introduces a new module `structure_building_blocks.zig` that manages structure building blocks, including caching mechanisms and detailed initialization processes. The module uses an arena allocator for efficient memory management and defines structures like `BlueprintEntry`, `Info`, and `StructureBuildingBlock`. Key functionalities include parsing blueprints, handling origin and child blocks, and resolving child structures in a second pass to ensure all dependencies are loaded correctly.

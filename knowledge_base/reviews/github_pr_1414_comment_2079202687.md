@@ -17,23 +17,11 @@ pub fn SparseSet(comptime T: type, comptime idType: type) type { // MARK: Sparse
 ```
 The reviewer also mentions a critical architectural review that suggests changing `idType` to `IdType` to adhere to Zig's naming conventions.
 
-Additionally, the raw content includes a test case for reading and writing mixed data:
-```zig
-test "read/write mixed" {
-    var buffer: [10]u8 = undefined;
-    const writer = std.io.bufferedWriter(std.io.null_writer);
-    try writer.writer().writeAll("hello world");
-    try writer.flush();
-    const reader = std.io.fixedBufferStream(buffer[0..writer.getWritten()]);
-    var result: [11]u8 = undefined;
-    _ = try reader.reader().read(result[0..]);
-    try std.testing.expectEqualSlices(u8, "hello world", &result);
-    try std.testing.expect(reader.remaining.len == 0);
-}
-```
 The SparseSet function uses comptime parameters to allow for generic type handling. This means that the function can be used with any data type specified at compile time, making it highly flexible and reusable in various parts of the codebase.
 
 Following Zig's naming conventions for types improves code readability and maintainability, as it makes it clear which identifiers are intended to represent types. This consistency is particularly important in a large codebase like Cubyz, where understanding the purpose of each identifier quickly becomes crucial.
+
+The SparseSet function handles sparse data structures by using an array of indices to map keys to values. Each index corresponds to a value in the underlying array, and only non-zero indices are considered valid entries. This allows for efficient storage and retrieval of sparse data without wasting memory on unused entries.
 
 ## Related Questions
 - What is the purpose of the SparseSet function in utils.zig?

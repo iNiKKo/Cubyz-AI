@@ -12,13 +12,17 @@ The `particles.zig` file introduces a new module for managing particle systems a
 This code snippet is part of the Cubyz game engine's particle system implementation. The `ParticleManager` struct manages various aspects of particles, including their types, textures, and registration from ZonElement configurations. It initializes and deinitializes resources such as SSBOs, texture arrays, and lists for storing particle data. The `ParticleSystem` struct handles the dynamic behavior of particles, including their movement, collision detection, and rendering using shaders. The code includes functions for reading texture data, generating texture arrays, updating particle states, and rendering them. The reviewer notes a potential optimization opportunity by separating colliding particles into a separate array to reduce branch mispredicts.
 
 The `ParticleType` struct contains fields such as:
-- `isBlockTexture`: A boolean indicating whether the particle is associated with a block texture.
-- `animationFrames`: An integer specifying the number of animation frames for the particle.
+- `isBlockTexture`: A boolean indicating whether the particle is associated with a block texture (default: false).
+- `animationFrames`: An integer specifying the number of animation frames for the particle (default: 1).
 - `startFrame`: An integer representing the starting frame index for animations.
 
 The default texture for particles is set to 'cubyz:spark', and animation frames are handled by splitting the texture into multiple frames based on the specified number of frames. Textures are loaded from paths constructed using the module name and texture ID, with both base textures and emission textures being read and stored in separate lists.
 
 The shader program for particle rendering is initialized with vertex and fragment shaders located at 'assets/cubyz/shaders/particles/particles.vs' and 'assets/cubyz/shaders/particles/particles.fs', respectively. The maximum capacity of particles in a single system is set to 65,536. Memory allocation for particle data is handled using the global allocator, with dynamic buffers created for SSBOs to store particle properties. The rendering process involves binding textures and shaders, setting uniform values, and drawing particles using OpenGL commands.
+
+The `ParticleSystem` struct includes a constant `maxCapacity` set to 65,536, which defines the maximum number of particles that can be handled in a single system. The `update` function processes each particle's life left, velocity, and collision detection, while the `render` function handles the rendering of particles using shaders.
+
+The shader program uses uniform variables such as `projectionMatrix`, `viewMatrix`, `billboardMatrix`, `playerPositionInteger`, `playerPositionFraction`, `ambientLight`, `textureSampler`, and `emissionTextureSampler`. These uniforms are set during the rendering process to provide necessary data for particle shading.
 
 ## Related Questions
 - What is the purpose of the `ParticleManager` struct in Cubyz?

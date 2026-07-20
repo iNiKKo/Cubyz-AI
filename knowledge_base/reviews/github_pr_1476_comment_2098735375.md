@@ -13,6 +13,8 @@ The reviewer criticizes the current implementation of `TickFunction` in `blocks.
 
 The `TickFunction` signature has been updated to include an additional parameter `_param: ?*anyopaque`, which allows for more flexible function calls. A new enum `FunctionName` with values `null` and `replaceWith` has been introduced to manage different tick behaviors.
 
+The `replaceWithCobble` function, which was previously defined in the `TickFunctions` struct, now logs a debug message indicating that cobblestone will replace the block at the specified coordinates. The function then parses the block type "cubyz:cobblestone" and performs the replacement.
+
 ## Related Questions
 - What are the potential performance implications of using a VTable instead of enums for tick functions?
 - How does the current enum-based design limit modularity in Cubyz?

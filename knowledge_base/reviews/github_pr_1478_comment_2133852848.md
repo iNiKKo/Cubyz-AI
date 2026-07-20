@@ -9,9 +9,9 @@
 Refactored tool type storage from a StringHashMap to a ListUnmanaged, raising concerns about allocator visibility and suggesting potential use of comptime allocators.
 
 ## Explanation
-The change involves replacing a `std.StringHashMap` with a `ListUnmanaged` for storing tool types. The previous `std.StringHashMap` stored tool types based on their names, while the new `ListUnmanaged` stores them in a list format. This change affects how tool types are accessed and managed within the codebase.
+The change involves replacing a `std.StringHashMap(ToolType)` with a `ListUnmanaged(ToolType)` for storing tool types. The previous `std.StringHashMap(ToolType)` stored tool types based on their names, while the new `ListUnmanaged(ToolType)` stores them in a list format. This change affects how tool types are accessed and managed within the codebase.
 
-The reviewer expresses dissatisfaction with the current approach because it is unclear whether the arena allocator is being used (`arena`), which could lead to issues in memory management and debugging. The reviewer suggests considering comptime allocators as an alternative to improve clarity and potentially enhance performance by reducing runtime overhead.
+The reviewer expresses dissatisfaction with the current approach because it is unclear whether the arena allocator (`arena`) is being used, which could lead to issues in memory management and debugging. The reviewer suggests considering comptime allocators as an alternative to improve clarity and potentially enhance performance by reducing runtime overhead.
 
 ## Related Questions
 - What are the potential benefits of using comptime allocators in this context?

@@ -15,11 +15,11 @@ The `StructureBuildingBlock` struct has the following fields:
 - `children`: An array of `AliasTable(Child)` objects representing the child blocks.
 - `blueprints`: A pointer to an array of `BlueprintEntry` objects representing the blueprints for the structure.
 
-The `initFromZon` function handles missing blueprint fields by logging an error and returning an error code. The function also initializes child tables from ZON arrays using the `initChildTableFromZon` helper function. If the children list is empty or if the child node has an empty structure field, a warning is logged.
+The `initFromZon` function handles missing blueprint fields by logging an error and returning an error code. Specifically, if the `blueprint` field is missing, it logs an error message using `std.log.err` and returns `error.MissingBlueprintIdField`. If the blueprint cannot be found in the cache, it logs another error message using `std.log.err` and returns `error.MissingBlueprint`. The function also initializes child tables from ZON arrays using the `initChildTableFromZon` helper function. If the children list is empty or if the child node has an empty structure field, a warning is logged.
 
 The `pickChild` method selects a child structure based on a seed and returns a pointer to it. The method includes error handling that logs warnings if the children list is empty or if the child node has an empty structure field.
 
-The ZON data parsing involves creating a new `StructureBuildingBlock` instance from ZON elements, initializing child tables from ZON arrays, and resolving child structures using the `childrenToResolve` list. The `childrenToResolve` list stores information about unresolved child nodes to be processed later.
+The ZON data parsing involves creating a new `StructureBuildingBlock` instance from ZON elements, initializing child tables from ZON arrays, and resolving child structures using the `childrenToResolve` list. The `childrenToResolve` list stores information about unresolved child nodes to be processed later. Each entry in the list contains the parent ID, color name, color index, child index, and structure ID.
 
 The `registerSBB` function ensures that all structures are registered correctly by asserting that the structure cache is empty before starting registration. It also logs a debug message for each registered structure building block.
 

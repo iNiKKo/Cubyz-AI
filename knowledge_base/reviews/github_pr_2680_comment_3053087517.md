@@ -13,6 +13,15 @@ The change refactors the initialization function for `EntityModel` by renaming i
 
 The new `init` function takes three parameters: `assetFolder`, `id`, and `zon`. The `assetFolder` is used to specify the folder containing assets, `id` is the unique identifier for the entity model, and `zon` is a ZonElement that likely contains zone-specific data or configuration.
 
+The code snippet shows the new `init` function:
+```zig
+pub fn init(assetFolder: []const u8, id: []const u8, zon: ZonElement) EntityModel {
+    var self: EntityModel = undefined;
+    self.id = main.globalAllocator.dupe(u8, id);
+}
+```
+This function initializes an `EntityModel` by duplicating the `id` string using the global allocator and assigning it to the `self.id` field.
+
 **Critical Architectural Review:**
 The comment mentions using worldArena for things that stay in memory for the lifetime of the world. This is an important architectural guideline to ensure efficient memory management and consistency across the application.
 

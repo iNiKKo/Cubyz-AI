@@ -13,6 +13,8 @@ The change involves moving the entity component system initialization and deinit
 
 The refactored code uses `@typeInfo` to get information about the `entityComponent` struct's declarations and `@field` to access each field by name. An inline for loop iterates over these declarations, initializing each client component system with `Client.init()`. This approach ensures that all entity components are properly initialized without manually listing each one.
 
+The critical architectural review comment advises against putting implementation details in the global main and suggests moving them into a dedicated function like `client.entity.init/deinit`.
+
 ## Related Questions
 - What is the purpose of separating entity initialization and deinitialization into dedicated functions?
 - How does this refactoring improve code maintainability?

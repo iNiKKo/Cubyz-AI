@@ -27,6 +27,7 @@ import os
 import re
 import sys
 import ssl
+import atexit
 import json
 import glob
 import time
@@ -272,70 +273,6 @@ def make_request(url, payload=None, timeout=180, method=None):
     # minutes with nothing on screen and no way out short of Ctrl+C.
     with urllib.request.urlopen(req, timeout=timeout) as res: return json.loads(res.read().decode('utf-8'))
 
-def _https_context():
-    ctx = ssl.create_default_context()
-    ctx.check_hostname = False
-    ctx.verify_mode = ssl.CERT_NONE
-    return ctx
-
-
-def check_for_update():
-    try:
-        info = make_request(f"{SERVER_URL}/version", timeout=10)
-    except Exception:
-        return "check_failed", None
-    min_v    = info.get("min_client_version", "0.0.0")
-    latest_v = info.get("latest_client_version", VERSION)
-    if _parse_version(VERSION) < _parse_version(min_v):
-        return "must_update", info
-    if _parse_version(VERSION) < _parse_version(latest_v):
-        return "update_available", info
-    return "current", info
-
-
-def download_update(download_url: str, expected_version: str) -> bool:
-    try:
-        with urllib.request.urlopen(download_url, timeout=30, context=_https_context()) as res:
-            new_content = res.read()
-    except Exception as e:
-        _log_queue.append(f"{Colors.RED}[X] Update download failed: {e}{Colors.RESET}")
-        return False
-    text = new_content.decode('utf-8', errors='ignore')
-    match = re.search(r'VERSION\s*=\s*["\']([^"\']+)["\']', text)
-    downloaded_version = match.group(1) if match else None
-    if downloaded_version != expected_version:
-        _log_queue.append(f"{Colors.YELLOW}[!] Downloaded file from GitHub has v{downloaded_version or 'unknown'}, but expected v{expected_version}. (Did you push the new commit to GitHub?) Skipping.{Colors.RESET}")
-        return False
-    this_file = os.path.abspath(__file__)
-    try:
-        with open(this_file, "wb") as f:
-            f.write(new_content)
-    except Exception as e:
-        _log_queue.append(f"{Colors.RED}[X] Could not write update: {e}{Colors.RESET}")
-        return False
-    _log_queue.append(f"{Colors.GREEN}[OK] Update downloaded to {this_file}.{Colors.RESET}")
-    return True
-
-
-def offer_update(status: str, info: dict, mandatory: bool):
-    latest_v     = info.get("latest_client_version", "?")
-    download_url = info.get("download_url", "")
-    if mandatory:
-        _log_queue.append(f"{Colors.RED}{Colors.BOLD}[X] Client v{VERSION} no longer accepted -- update required (latest v{latest_v}).{Colors.RESET}")
-    else:
-        _log_queue.append(f"{Colors.YELLOW}[i] Update available: v{latest_v} (you have v{VERSION}).{Colors.RESET}")
-
-    auto = load_auto_update_preference()  # True by default, False only if explicitly disabled
-    if mandatory or auto:
-        _log_queue.append(f"{Colors.CYAN}[~] Auto-update enabled -- downloading v{latest_v}...{Colors.RESET}")
-        if download_update(download_url, latest_v):
-            _log_queue.append(f"{Colors.GREEN}[OK] Update installed. Restarting into v{latest_v}...{Colors.RESET}")
-            time.sleep(2)
-            os.execv(sys.executable, [sys.executable] + sys.argv)
-        elif mandatory:
-            _log_queue.append(f"{Colors.RED}[X] Could not auto-update. Update manually: {download_url}{Colors.RESET}")
-
-
 OLLAMA_HOST = OLLAMA_URL.rsplit("/api/", 1)[0]
 
 def get_local_ollama_models() -> set:
@@ -455,7 +392,7 @@ def download_update(download_url: str, expected_version: str) -> bool:
     except Exception as e:
         print(f"{Colors.RED}[X] Update download failed: {e}{Colors.RESET}")
         return False
-    match = re.search(rb'^VERSION\s*=\s*["\']([\\d.]+)["\']', new_content, re.MULTILINE)
+    match = re.search(rb'^VERSION\s*=\s*["\']([\d.]+)["\']', new_content, re.MULTILINE)
     downloaded_version = match.group(1).decode() if match else None
     if downloaded_version != expected_version:
         print(f"{Colors.YELLOW}[!] Downloaded v{downloaded_version or '?'} != expected v{expected_version}. Skipping.{Colors.RESET}")
@@ -3278,7 +3215,23 @@ def main():
             parallel_controller=parallel_controller, has_gpu=_has_gpu,
         )
 
-    startup_thread = threading.Thread(target=_startup, daemon=True)
+    def _startup_wrapper():
+        try:
+            _startup()
+        except SystemExit as se:
+            # _startup() and everything it calls (hardware checks, Ollama setup, the primary
+            # crunch_lane) run on this background thread, not main -- a bare SystemExit here only
+            # kills this thread, leaving app.run() on main spinning forever on a frozen screen with
+            # nothing happening and no way out short of Ctrl+C. Log it and shut the whole app down
+            # from the thread that's actually allowed to touch it (call_from_thread), so a fatal
+            # startup/crunch error genuinely exits instead of silently hanging.
+            _log_queue.append(f"\n{Colors.RED}[X] {se}{Colors.RESET}")
+            try:
+                app.call_from_thread(app.exit)
+            except Exception:
+                os._exit(1)
+
+    startup_thread = threading.Thread(target=_startup_wrapper, daemon=True)
     startup_thread.start()
     app.run()
 

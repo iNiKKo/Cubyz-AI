@@ -9,7 +9,14 @@
 A reviewer points out that a removed line in the code served an important purpose related to lifetime management.
 
 ## Explanation
-A reviewer points out that a removed line in the code served an important purpose related to lifetime management, specifically by separating lifetime management from the algorithm. This separation is crucial for managing resources and ensuring variable scope correctly. Removing this line could lead to potential issues with resource management and variable scope, which are critical aspects of ensuring the stability and correctness of the code. The deleted line was responsible for collecting all unique child blocks used in blueprints of the StructureBuildingBlock.
+A reviewer points out that a removed line in the code served an important purpose related to lifetime management. Specifically, the line was responsible for collecting all unique child blocks used in blueprints of the StructureBuildingBlock. This separation is crucial for managing resources and ensuring variable scope correctly. Removing this line could lead to potential issues with resource management and variable scope, which are critical aspects of ensuring the stability and correctness of the code.
+
+The deleted line was:
+```zig
+var childBlocksInBlueprints: ListUnmanaged(LocalBlockIndex) = .{};
+defer childBlocksInBlueprints.deinit(main.stackAllocator);
+```
+This line initializes a list to store unique child blocks and ensures proper cleanup using `defer`. Removing this line would result in potential memory leaks or undefined behavior, as the list of child blocks would not be properly deinitialized.
 
 ## Related Questions
 - What was the specific purpose of the removed line in managing variable lifetimes?

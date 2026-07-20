@@ -11,9 +11,13 @@ A new struct `ReadWriteTest` is introduced with initialization and deinitializat
 ## Explanation
 **Explanation**
 
-A new struct `ReadWriteTest` is introduced with methods for initializing (`init`) and deinitializing (`deinit`) thread locals. The `init` method calls `main.initThreadLocals()`, while the `deinit` method calls `main.deinitThreadLocals()`. The reviewer suggests modifying `main.zig` to assign testing allocators conditionally during test builds using `if(builtin.is_test)`. This approach would simplify future tests by avoiding repetitive setup code and align with Cubyz's overall testing strategy.
+A new struct `ReadWriteTest` is introduced with methods for initializing (`init`) and deinitializing (`deinit`) thread locals. The `init` method calls `main.initThreadLocals()`, while the `deinit` method calls `main.deinitThreadLocals()`. This struct is defined in `src/utils.zig`.
 
-The reviewer also notes that instead of requiring these initialization and deinitialization functions for every test, the testing allocator should be assigned in `main.zig` if the build is a test build. This change would make the testing framework more efficient by reducing boilerplate code and ensuring consistent allocator management across all tests.
+The reviewer suggests modifying `main.zig` to assign testing allocators conditionally during test builds using `if(builtin.is_test)`. This approach would simplify future tests by avoiding repetitive setup code and align with Cubyz's overall testing strategy. The reviewer notes that instead of requiring these initialization and deinitialization functions for every test, the testing allocator should be assigned in `main.zig` if the build is a test build. This change would make the testing framework more efficient by reducing boilerplate code and ensuring consistent allocator management across all tests.
+
+The critical architectural review suggests that instead of requiring these for every test (and every future test for that matter), how about just assigning the `stack`/`globalAllocator`s in `main.zig` the testing allocator if we are in a test build. You can use `if(builtin.is_test)` for this.
+
+*Source: unknown | chunk_id: github_pr_1273_comment_2027141708*
 
 ## Related Questions
 - How does the `ReadWriteTest` struct impact test execution?

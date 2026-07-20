@@ -9,9 +9,17 @@
 Added a new `pasteInGeneration` function to the Blueprint struct, allowing for different paste modes including 'all', 'noAir', and 'replaceAir'.
 
 ## Explanation
-The change introduces a new method `pasteInGeneration` in the Blueprint struct, which allows pasting blueprint blocks into a server chunk with various modes. The `.all` mode replaces everything within the specified area, while the `.noAir` mode only replaces non-air blocks. The `.replaceAir` mode is used as a safer alternative for small houses where air blocks prevent terrain destruction while walls replace existing terrain. The reviewer highlights the need for further polishing when void blocks are introduced.
+The change introduces a new method `pasteInGeneration` in the Blueprint struct, which allows pasting blueprint blocks into a server chunk with various modes. The `.all` mode replaces everything within the specified area, including air blocks. This mode should not be used for structures that can overlap as it will break existing terrain. The `.noAir` mode only replaces non-air blocks, leaving air blocks unchanged. The `.replaceAir` mode is used as a safer alternative for small houses where air blocks prevent terrain destruction while walls replace existing terrain. The reviewer highlights the need for further polishing when void blocks are introduced.
 
 The function handles block substitutions by checking if a substitution map is provided and replacing the block type accordingly. Origin and child blocks are skipped during pasting. The `liesInChunk` method is used to ensure that only blocks within the chunk bounds are updated.
+
+### Paste Modes
+- **`.all`:** Replaces all blocks in the specified area, including air blocks. This mode should not be used for structures that can overlap as it will break existing terrain.
+- **`.noAir`:** Only replaces non-air blocks, leaving air blocks unchanged.
+- **`.replaceAir`:** Used for small houses where air blocks prevent terrain destruction while walls replace existing terrain.
+
+### Future Enhancements
+The reviewer suggests introducing a `.degradable` mode to handle structures that can overlap without breaking existing terrain. This mode is intended to be used when void blocks are introduced, ensuring compatibility and preventing unintended destruction of terrain.
 
 ## Related Questions
 - What is the purpose of the `.all` paste mode in the `pasteInGeneration` function?

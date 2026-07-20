@@ -13,6 +13,8 @@ The change introduces a new `EntityModel` struct with fields for vertex array ob
 
 The `EntityVertex` struct contains fields for position (`pos`), normal (`normal`), and UV coordinates (`uv`). Each field is of type `[3]f32` for `pos` and `normal`, and `[2]f32` for `uv`. The `initFromObj` function processes the OBJ file to populate these fields accordingly.
 
+The error handling mechanism in the `initFromObj` function is implemented using a `catch |err|` block, which returns an error value if there's an issue reading the OBJ file.
+
 ## Related Questions
 - What is the purpose of the `EntityModel` struct?
 - How does the `initFromObj` function initialize an `EntityModel`?

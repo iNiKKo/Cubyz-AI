@@ -15,7 +15,11 @@ The constant `maxMtu` is set to 65507, representing the maximum UDP packet size.
 
 New atomic variables (`packetsSent`, `packetsResent`, `internalMessageOverhead`, `internalHeaderOverhead`, `externalHeaderOverhead`) have been introduced with initial values of 0, enhancing the modularity and maintainability of the network module.
 
-The `send` method calls now include an additional parameter specifying the type of sending (e.g., `.fast`). This change is intended to improve the flexibility and clarity of the network communication methods.
+The new `send` method parameter in the `Protocols` struct allows for different types of sending, such as `.fast`. This change is intended to improve the flexibility and clarity of the network communication methods. The renaming of `startInclusive` and `endExclusive` to `start` and `end` aligns with Zig's convention for range definitions.
+
+The introduction of `receiveBufferSize` improves the network module's performance by providing a larger buffer size for incoming data, which can help reduce latency and improve throughput. The `SequenceIndex` type is used to represent sequence indices in network communication, ensuring that messages are processed in the correct order.
+
+The atomic variables (`packetsSent`, `packetsResent`) contribute to thread safety in this module by providing a way to safely increment counters without causing race conditions. This ensures that multiple threads can update these values concurrently without corrupting the data.
 
 ## Related Questions
 - What is the purpose of the new `send` method parameter in the `Protocols` struct?
@@ -23,6 +27,5 @@ The `send` method calls now include an additional parameter specifying the type 
 - How does the introduction of `receiveBufferSize` improve the network module's performance?
 - What is the significance of the `SequenceIndex` type in the context of network communication?
 - How do the atomic variables (`packetsSent`, `packetsResent`) contribute to thread safety in this module?
-- What potential issues could arise from changing the range field names in the `Range` struct?
 
 *Source: unknown | chunk_id: github_pr_1297_comment_2049396477*

@@ -15,9 +15,18 @@ The reviewer points out that the current implementation uses an intricate and po
 
 The original inverted logic construct in the code is as follows:
 ```zig
-while(itemIterator.next()) |item| {
-    if(searchString.len != 0 and !std.mem.containsAtLeast(u8, item.id(), 1, searchString)) continue;
-    items.append(Item{.baseItem = item.*});
+if(searchString.len > 1 and searchString[0] == '.') blk: {
+    const bestTag = main.Tag.findSimilar(searchString[1..]) orelse break :blk;
+    while(itemIterator.next()) |item| {
+        if(!item.hasTag(bestTag)) {
+            if(item.block()) |blockIndex| {
+                if(!(main.blocks.Block{.typ = blockIndex, .data = 0}).hasTag(bestTag)) continue;
+            } else {
+                continue;
+            }
+        }
+        items.append(Item{.baseItem = item.*});
+    }
 }
 ```
 The suggested simplification is to replace the complex logic with a simpler conditional check:

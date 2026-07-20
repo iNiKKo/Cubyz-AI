@@ -9,7 +9,7 @@
 Removed an optimization check in the `updateData` function.
 
 ## Explanation
-Removed an optimization check in the `updateData` function. The reviewer suggests keeping this optimization check that was previously removed. The check compares the current data's enabled connections with the block's existing data and returns false if they are the same, potentially avoiding unnecessary updates. The specific value of 'result' is a u16 representing the enabled connections. The reviewer believes this optimization is unrelated to any bug being addressed in the code.
+Removed an optimization check in the `updateData` function. The reviewer suggests keeping this optimization check that was previously removed. The check compares the current data's enabled connections with the block's existing data and returns false if they are the same, potentially avoiding unnecessary updates. Specifically, the variable 'result' is of type u16 and represents the enabled connections. The reviewer believes this optimization is unrelated to any bug being addressed in the code.
 
 ## Related Questions
 - Why was the optimization check removed from updateData?

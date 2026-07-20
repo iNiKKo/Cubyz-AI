@@ -15,12 +15,11 @@ The `TickEventVTableMap` struct contains a `vTableMap` field, which is a `std.St
 
 The previous block ticking system used a static approach with named callbacks, such as the `replaceWithCobble` function. This function was responsible for replacing blocks with cobblestone and logging the coordinates. In the new system, this functionality is handled through the dynamic vtable map, which allows for more flexible and modular event handling.
 
+The `vTableMap` stores a mapping of event names to their corresponding vtables. The `registerEventStruct` function iterates over each field in the `TickEvents` struct and registers it into the `vTableMap`. This allows for efficient lookup and execution of block events based on their names.
+
 ## Related Questions
-- How does the new `TickEventVTableMap` struct improve modularity in the block ticking system?
-- What is the purpose of the `registerEventStruct` function in this refactoring?
-- Why is it suggested to automatically construct the vtable during initialization instead of on every tick event?
-- How does this change impact memory usage and performance?
-- Can you explain the role of the `vTableMap` in the new ticking system?
-- What are the potential benefits of using a dynamic vtable map for block events?
+- What is the purpose of the `vTableMap` in the new ticking system?
+- How does the `registerEventStruct` function register each event structure's fields into the `vTableMap`?
+- What are the benefits of using a dynamic vtable map for block events?
 
 *Source: unknown | chunk_id: github_pr_1476_comment_2127427443*

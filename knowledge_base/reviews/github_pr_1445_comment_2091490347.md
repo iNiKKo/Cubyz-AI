@@ -9,13 +9,13 @@
 The function `extractItemsFromZon` has been modified to return an array of `BaseItemIndex` instead of pointers to `BaseItem`. The reviewer suggests renaming local variables to better reflect their meaning.
 
 ## Explanation
-The change involves altering the return type of the `extractItemsFromZon` function from `[25]?*const BaseItem` to `[25]?BaseItemIndex`. This modification aligns with a shift towards using indices rather than direct pointers for item management. The reviewer emphasizes that local variables should be named more descriptively, such as 'item', instead of generic terms like 'pointer'. This change is part of an architectural review aimed at improving code clarity and maintainability.
+The function `extractItemsFromZon` has been modified to return an array of `BaseItemIndex` instead of pointers to `BaseItem`. This modification aligns with a shift towards using indices rather than direct pointers for item management. The reviewer emphasizes that local variables should be named more descriptively, such as 'item', instead of generic terms like 'pointer'. This change is part of an architectural review aimed at improving code clarity and maintainability.
 
-The function now processes items by iterating over a `zonArray` and converting each item's ID to a `BaseItemIndex`. If the item has no material, it is set to null. The reviewer suggests renaming local variables to 'item' for better clarity. This change impacts memory management by reducing the use of pointers and potentially improving performance.
+The function now processes items by iterating over a `zonArray` and converting each item's ID to a `BaseItemIndex`. Specifically, for each item in the `zonArray`, its ID is retrieved using `zonArray.getAtIndex([]const u8, i, "null")`, and then converted to a `BaseItemIndex` using `BaseItemIndex.fromId()`. If the item has no material (checked by `item.*.?.material() == null`), it is set to null. The reviewer suggests renaming local variables to 'item' for better clarity. This change impacts memory management by reducing the use of pointers and potentially improving performance.
+
+In the `save` method, the function processes items by iterating over the `craftingGrid` array. For each item index (`_index`), if it is not null, its ID is appended to a `zonArray`. This ensures that the crafting grid data is correctly saved in the ZonElement format.
 
 The role of `reverseIndices` in the modified function is to map item IDs to their corresponding indices. Using indices instead of pointers simplifies item management and can lead to more efficient code execution.
-
-In the `save` method, the function processes items by iterating over the `craftingGrid` array. For each item index, if it is not null, its ID is appended to a `zonArray`. This ensures that the crafting grid data is correctly saved in the ZonElement format.
 
 ## Related Questions
 - What is the purpose of changing the return type from `*const BaseItem` to `BaseItemIndex`?

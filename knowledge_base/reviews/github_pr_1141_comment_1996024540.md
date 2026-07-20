@@ -25,7 +25,7 @@ pub const FileHeader = packed struct {
 };
 ```
 
-The reviewer points out that while automatic serialization (referred to as 'magic') can simplify code, it may lead to unforeseen consequences and difficulties in debugging. In contrast, explicit serialization, though more verbose, provides better control and clarity, making it easier to spot mistakes and ensure compatibility with changes over time.
+The `blueprintVersion` constant is set to `0`, and the `GameIdToBlueprintIdMapType` type is defined as a `std.AutoHashMap<u16, u16>`. The reviewer points out that while automatic serialization (referred to as 'magic') can simplify code, it may lead to unforeseen consequences and difficulties in debugging. In contrast, explicit serialization, though more verbose, provides better control and clarity, making it easier to spot mistakes and ensure compatibility with changes over time.
 
 The reviewer also mentions the potential for file size reduction through compression but questions its necessity given that the palette and block array are already compressed using deflate. The reviewer suggests that implementing additional compression in the binary reader would add minimal complexity to the code while potentially reducing file size slightly.
 

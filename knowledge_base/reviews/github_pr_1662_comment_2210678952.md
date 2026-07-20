@@ -9,7 +9,7 @@
 The code introduces a constant `base64EncodedEmptyInventory` with the value "AA==" to handle empty inventory data. The reviewer suggests that the parser should be modified to handle empty strings instead.
 
 ## Explanation
-The change involves adding a new constant `base64EncodedEmptyInventory` initialized to "AA==", which represents an empty base64 encoded string. This is intended to manage cases where there might not be any inventory data available. The reviewer points out that this approach introduces gibberish and suggests that the parser should be updated to correctly handle empty strings, implying that the current implementation may not properly interpret or process such cases.
+The code introduces a constant `base64EncodedEmptyInventory` with the value "AA==" to handle empty inventory data. The reviewer suggests that the parser should be modified to handle empty strings instead. The current implementation creates an externally managed inventory for both the main and hand inventories using `main.items.Inventory.Sync.ServerSide.createExternallyManagedInventory`. However, it does not explicitly handle cases where there might not be any inventory data available. The use of "AA==" as a placeholder for empty inventories could introduce issues with inventory synchronization if not properly managed. The reviewer is concerned that the current implementation may not properly interpret or process empty strings, and suggests updating the parser to correctly handle such cases.
 
 ## Related Questions
 - What is the purpose of the `base64EncodedEmptyInventory` constant?
