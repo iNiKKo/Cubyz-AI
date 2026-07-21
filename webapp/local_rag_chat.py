@@ -154,13 +154,22 @@ def build_index(existing_entries=None):
     else:
         print(f"[~] Building embedding index from scratch: {len(to_embed)} chunks...")
 
+    total_batches = -(-len(to_embed) // EMBED_BATCH_SIZE)  # ceil division
+    # Aims for ~10-20 progress lines regardless of run size, instead of a fixed "every 10th
+    # batch" -- that fixed interval was sized for a full from-scratch rebuild (150+ batches) and
+    # went completely silent for a small incremental catch-up. Confirmed live: a 77-chunk/4-batch
+    # run printed once after the first batch, then nothing until the very last one, looking
+    # exactly like a hang for however long those middle batches actually took (each one is real,
+    # possibly slow-on-CPU work -- see BENCHMARK_TIMEOUT_CPU's reasoning elsewhere in this
+    # project -- just never reported).
+    print_every = max(1, total_batches // 15)
     for i in range(0, len(to_embed), EMBED_BATCH_SIZE):
         batch = to_embed[i:i + EMBED_BATCH_SIZE]
         embeddings = embed_batch([e["text"] for e in batch])
         for e, emb in zip(batch, embeddings):
             e["embedding"] = emb
         done = min(i + EMBED_BATCH_SIZE, len(to_embed))
-        if (i // EMBED_BATCH_SIZE) % 10 == 0 or done == len(to_embed):
+        if (i // EMBED_BATCH_SIZE) % print_every == 0 or done == len(to_embed):
             print(f"    ... {done}/{len(to_embed)}")
     final_entries.extend(to_embed)
 
