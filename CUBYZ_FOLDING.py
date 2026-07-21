@@ -386,15 +386,31 @@ def check_for_update():
 
 
 def download_update(download_url: str, expected_version: str) -> bool:
-    try:
-        with urllib.request.urlopen(download_url, timeout=30, context=_https_context()) as res:
-            new_content = res.read()
-    except Exception as e:
-        print(f"{Colors.RED}[X] Update download failed: {e}{Colors.RESET}")
-        return False
-    match = re.search(rb'^VERSION\s*=\s*["\']([\d.]+)["\']', new_content, re.MULTILINE)
-    downloaded_version = match.group(1).decode() if match else None
-    if downloaded_version != expected_version:
+    # Retries once after a short pause specifically when the download has NO parseable VERSION
+    # line at all (downloaded_version is None) -- that shape of failure (not a real version
+    # mismatch, an outright unparseable fetch) is what a raw.githubusercontent.com request made
+    # right as a push lands looks like: GitHub's CDN can serve a stale/incomplete edge-cached
+    # response for a short window right after a push. Confirmed live: a volunteer's auto-update
+    # hit exactly this ("Downloaded v? != expected v1.3.2") at a moment the target version was
+    # already live on GitHub's main branch by the time it was checked afterward -- a plain retry
+    # would very likely have succeeded without the volunteer needing to notice and re-run by hand.
+    # An actual version MISMATCH (a real, different number) is not retried -- that's a genuine
+    # integrity concern, not a transient fetch glitch, and should surface immediately.
+    for attempt in range(2):
+        try:
+            with urllib.request.urlopen(download_url, timeout=30, context=_https_context()) as res:
+                new_content = res.read()
+        except Exception as e:
+            print(f"{Colors.RED}[X] Update download failed: {e}{Colors.RESET}")
+            return False
+        match = re.search(rb'^VERSION\s*=\s*["\']([\d.]+)["\']', new_content, re.MULTILINE)
+        downloaded_version = match.group(1).decode() if match else None
+        if downloaded_version == expected_version:
+            break
+        if downloaded_version is None and attempt == 0:
+            print(f"{Colors.YELLOW}[~] Download didn't look like a real update yet (likely still propagating) -- retrying in 3s...{Colors.RESET}")
+            time.sleep(3)
+            continue
         print(f"{Colors.YELLOW}[!] Downloaded v{downloaded_version or '?'} != expected v{expected_version}. Skipping.{Colors.RESET}")
         return False
     this_file = os.path.abspath(__file__)

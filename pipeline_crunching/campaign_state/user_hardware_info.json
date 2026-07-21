@@ -10,7 +10,7 @@
     "benchmark_gpu_time": null,
     "benchmark_cpu_time": null,
     "benchmark_gpu_error": "timeout: timed out",
-    "benchmark_cpu_error": "timeout: HTTP Error 500: Internal Server Error"
+    "benchmark_cpu_error": "timeout: timed out"
   },
   "nicksrvr": {
     "platform": "linux",

@@ -1,14 +1,5 @@
 {
-  "locked": {
-    "addon_creator_FIELD_REFERENCE.md_chunk_1": {
-      "user_id": "Caleb",
-      "timestamp": 1784633752.3912265
-    },
-    "addon_creator_FIELD_REFERENCE.md_chunk_2": {
-      "user_id": "NickSRVR",
-      "timestamp": 1784633766.9635935
-    }
-  },
+  "locked": {},
   "completed": [
     "codebase_src_server_storage.zig_chunk_0",
     "codebase_src_server_storage.zig_chunk_1",
@@ -3266,6 +3257,12 @@
     "docs_GAME_DESIGN_PRINCIPLES.md_chunk_3",
     "docs_GAME_DESIGN_PRINCIPLES.md_chunk_5",
     "docs_GAME_DESIGN_PRINCIPLES.md_chunk_4",
-    "docs_CONTENT_SUGGESTIONS.md_chunk_1"
+    "docs_CONTENT_SUGGESTIONS.md_chunk_1",
+    "addon_creator_FIELD_REFERENCE.md_chunk_2",
+    "addon_creator_FIELD_REFERENCE.md_chunk_1",
+    "addon_creator_FIELD_REFERENCE.md_chunk_3",
+    "addon_creator_FIELD_REFERENCE.md_chunk_4",
+    "addon_creator_FIELD_REFERENCE.md_chunk_5",
+    "addon_creator_FIELD_REFERENCE.md_chunk_6"
   ]
 }
