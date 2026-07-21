@@ -103,7 +103,14 @@ def http_post_json(path, payload, timeout=180):
 
 
 def embed_batch(texts):
-    result = http_post_json("/api/embed", {"model": EMBED_MODEL, "input": texts})
+    # Explicit, generous timeout -- http_post_json's 180s default is sized for a normal
+    # GPU-backed embedding call, not a CPU-only, memory-bandwidth-bound one. Confirmed live: a
+    # single batch of 20 embeddings legitimately took longer than 180s on a CPU-only deployment
+    # (Threadripper, no usable GPU) and crashed the whole server's startup with a timeout, even
+    # though Ollama itself was actively working the whole time (docker stats/logs showed
+    # continuous real progress, not a hang). 20 minutes gives real headroom for slow hardware
+    # without masking an actual hang forever.
+    result = http_post_json("/api/embed", {"model": EMBED_MODEL, "input": texts}, timeout=1200)
     return result["embeddings"]
 
 
