@@ -2184,7 +2184,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # ============================================================
 MIN_CLIENT_VERSION = "1.3.1"
 LATEST_CLIENT_VERSION = "1.4.3"
-CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/pipeline_crunching/client.py"
+CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/ASH-AI/main/pipeline_crunching/client.py"
 
 def _parse_version(v: str) -> tuple:
     try:
