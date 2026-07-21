@@ -122,7 +122,7 @@ SERVER_URL       = "http://ashframe.net:7000"
 OLLAMA_URL       = "http://localhost:11434/api/generate"
 CONFIG_FILE      = os.path.expanduser("~/.cubyz_node_config.json")
 DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
-VERSION          = "1.3.3"
+VERSION          = "1.3.4"
 
 print_lock = threading.Lock()
 
@@ -465,8 +465,38 @@ def get_system_ram_gb() -> float:
             out = subprocess.run(["sysctl", "-n", "hw.memsize"], capture_output=True, text=True, check=True).stdout.strip()
             return int(out) / (1024.0 ** 3)
         except Exception:
-            return 8.0
+            pass
+        print(f"{Colors.YELLOW}[!] Could not detect system RAM -- treating as unknown (0.0 GB), not guessing.{Colors.RESET}")
+        return 0.0
     if PLATFORM == "win32":
+        # ctypes/GlobalMemoryStatusEx first, not wmic -- confirmed live: a volunteer's real 16GB
+        # machine reported as 8GB (the old hardcoded fallback below, silently triggered) because
+        # `wmic` itself is deprecated and has been removed from newer Windows 11 builds entirely
+        # (subprocess.run raised FileNotFoundError, caught by the bare except, fell through to
+        # the fallback). That wrong 8GB then incorrectly blocked "enable parallel" (needs 14GB)
+        # on a machine that actually had plenty. GlobalMemoryStatusEx is a raw Win32 API call via
+        # the stdlib's ctypes -- no external process, nothing to be missing/deprecated out from
+        # under it, works identically on every Windows version back to XP.
+        try:
+            import ctypes
+
+            class _MEMORYSTATUSEX(ctypes.Structure):
+                _fields_ = [
+                    ("dwLength", ctypes.c_ulong), ("dwMemoryLoad", ctypes.c_ulong),
+                    ("ullTotalPhys", ctypes.c_ulonglong), ("ullAvailPhys", ctypes.c_ulonglong),
+                    ("ullTotalPageFile", ctypes.c_ulonglong), ("ullAvailPageFile", ctypes.c_ulonglong),
+                    ("ullTotalVirtual", ctypes.c_ulonglong), ("ullAvailVirtual", ctypes.c_ulonglong),
+                    ("sullAvailExtendedVirtual", ctypes.c_ulonglong),
+                ]
+
+            stat = _MEMORYSTATUSEX()
+            stat.dwLength = ctypes.sizeof(_MEMORYSTATUSEX)
+            if ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(stat)):
+                return stat.ullTotalPhys / (1024.0 ** 3)
+        except Exception:
+            pass
+        # wmic as a fallback, not the primary path -- still works on older Windows builds that
+        # have it, so there's no harm trying it before giving up entirely.
         try:
             result = subprocess.run(["wmic", "ComputerSystem", "get", "TotalPhysicalMemory", "/value"],
                                     capture_output=True, text=True, timeout=15)
@@ -475,7 +505,8 @@ def get_system_ram_gb() -> float:
                     return int(line.split("=")[1].strip()) / (1024.0 ** 3)
         except Exception:
             pass
-        return 8.0
+        print(f"{Colors.YELLOW}[!] Could not detect system RAM -- treating as unknown (0.0 GB), not guessing.{Colors.RESET}")
+        return 0.0
     try:
         with open("/proc/meminfo", "r") as f:
             for line in f:
@@ -483,7 +514,8 @@ def get_system_ram_gb() -> float:
                     return int(line.split()[1]) / (1024.0 * 1024.0)
     except Exception:
         pass
-    return 8.0
+    print(f"{Colors.YELLOW}[!] Could not detect system RAM -- treating as unknown (0.0 GB), not guessing.{Colors.RESET}")
+    return 0.0
 
 
 def is_apple_silicon() -> bool:
@@ -742,7 +774,20 @@ def benchmark_lane(model: str, force_cpu: bool):
     except Exception as e:
         elapsed = time.time() - start
         kind = "timeout" if elapsed >= BENCHMARK_TIMEOUT - 1 else type(e).__name__
-        return None, f"{kind}: {e}"[:200]
+        # HTTPError's own str() is just "HTTP Error 500: Internal Server Error" -- the generic
+        # reason phrase, not why. Ollama's actual JSON error body (e.g. an OOM message, "model
+        # requires more system memory than is available", a malformed-request detail) lives in
+        # the response body instead, and was being silently dropped here -- confirmed live, a
+        # volunteer's failed benchmark showed only the generic 500 text with no way to tell
+        # whether that meant "Ollama ran out of memory," "the model failed to load," or something
+        # else entirely, all of which need different fixes.
+        detail = ""
+        if isinstance(e, urllib.error.HTTPError):
+            try:
+                detail = f" -- {e.read().decode('utf-8', errors='replace').strip()}"
+            except Exception:
+                pass
+        return None, f"{kind}: {e}{detail}"[:300]
     elapsed = time.time() - start
 
     if not force_cpu:
