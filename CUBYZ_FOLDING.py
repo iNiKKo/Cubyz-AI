@@ -122,7 +122,7 @@ SERVER_URL       = "http://ashframe.net:7000"
 OLLAMA_URL       = "http://localhost:11434/api/generate"
 CONFIG_FILE      = os.path.expanduser("~/.cubyz_node_config.json")
 DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
-VERSION          = "1.4.1"
+VERSION          = "1.4.2"
 
 print_lock = threading.Lock()
 
@@ -596,8 +596,17 @@ CPU_TIER_RAM_FLOOR_GB  = {"easy": 6.0, "medium": 8.0}
 DUAL_LANE_MIN_RAM_GB   = 12.0
 DUAL_LANE_MIN_VRAM_GB  = 4.0
 TIER_RANK              = {"easy": 0, "medium": 1, "hard": 2}
-BENCHMARK_VERSION      = 8
-BENCHMARK_TIMEOUT      = 45
+BENCHMARK_VERSION      = 9
+# CPU decoding is inherently much slower per-token than GPU -- especially with the JSON-schema
+# grammar constraint used here, which adds real per-token validation overhead on top of ordinary
+# generation. The same BENCHMARK_NUM_PREDICT token count that comfortably finishes on GPU well
+# under a short timeout can legitimately (not hung, just slower hardware) take longer than that
+# same short timeout on CPU. Confirmed live: a volunteer's CPU lane failed with a plain timeout
+# at 45s right after that ceiling was tightened for GPU's sake -- one timeout for two very
+# different-speed lanes was wrong. GPU keeps the tight ceiling (a real GPU hang should still be
+# caught fast); CPU gets a longer one sized for legitimately-slower-but-working hardware.
+BENCHMARK_TIMEOUT_GPU  = 45
+BENCHMARK_TIMEOUT_CPU  = 120
 # Caps how much the benchmark call is allowed to generate -- the prompt/system/JSON-schema
 # constraint stay exactly the same "real work" shape as an actual crunching call (see
 # benchmark_lane's own comment on why a trivial prompt was rejected before), but nothing was
@@ -778,14 +787,15 @@ def benchmark_lane(model: str, force_cpu: bool):
         "format": RAG_JSON_SCHEMA,
         "options": {"temperature": 0.15, "num_predict": BENCHMARK_NUM_PREDICT, **({"num_gpu": 0} if force_cpu else {})},
     }
+    lane_timeout = BENCHMARK_TIMEOUT_CPU if force_cpu else BENCHMARK_TIMEOUT_GPU
     start = time.time()
     for attempt in range(2):
         try:
-            make_request(OLLAMA_URL, payload, timeout=BENCHMARK_TIMEOUT)
+            make_request(OLLAMA_URL, payload, timeout=lane_timeout)
             break
         except Exception as e:
             elapsed = time.time() - start
-            kind = "timeout" if elapsed >= BENCHMARK_TIMEOUT - 1 else type(e).__name__
+            kind = "timeout" if elapsed >= lane_timeout - 1 else type(e).__name__
             # HTTPError's own str() is just "HTTP Error 500: Internal Server Error" -- the generic
             # reason phrase, not why. Ollama's actual JSON error body (e.g. an OOM message, "model
             # requires more system memory than is available", a corrupted-file read error) lives
