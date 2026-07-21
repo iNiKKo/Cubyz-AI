@@ -15,7 +15,7 @@ Every biome is defined by a `zig.zon` file that contains all the data the world 
     .wet,
 },
 ```
-The 15 valid values for this field, grouped by category, are: temperature -- `.hot` / `.temperate` / `.cold`; land/water -- `.inland` / `.land` / `.ocean`; moisture -- `.wet` / `.neitherWetNorDry` / `.dry`; vegetation density -- `.barren` / `.balanced` / `.overgrown`; terrain shape -- `.mountain` / `.lowTerrain` / `.antiMountain`.
+The 15 valid values for this field are: temperature -- `.hot` / `.temperate` / `.cold`; land/water -- `.inland` / `.land` / `.ocean`; moisture -- `.wet` / `.neitherWetNorDry` / `.dry`; vegetation density -- `.barren` / `.balanced` / `.overgrown`; terrain shape -- `.mountain` / `.lowTerrain` / `.antiMountain`. Each of these tags can be combined to define the properties of a biome.
 
 ## Related Questions
 - What are the 15 valid values for a Cubyz biome's generation properties field?

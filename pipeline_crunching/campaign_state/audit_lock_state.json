@@ -1,5 +1,22 @@
 {
-  "locked": {},
+  "locked": {
+    "docs_GAME_DESIGN_PRINCIPLES.md_chunk_1": {
+      "user_id": "Caleb",
+      "timestamp": 1784643736.3464515
+    },
+    "addon_creator_FIELD_REFERENCE.md_chunk_3": {
+      "user_id": "Calebc",
+      "timestamp": 1784643779.063707
+    },
+    "addon_creator_FIELD_REFERENCE.md_chunk_6": {
+      "user_id": "NickPCc",
+      "timestamp": 1784643782.8132615
+    },
+    "addon_creator_FIELD_REFERENCE.md_chunk_7": {
+      "user_id": "NickPC",
+      "timestamp": 1784643788.0186088
+    }
+  },
   "completed": [
     "codebase_assets_cubyz_sbb_tree_oak_old_growth_branch_extender.zig.zon_chunk_0",
     "codebase_assets_cubyz_blocks_clay.zig.zon_chunk_0",
@@ -3247,8 +3264,14 @@
     "addon_creator_app-save.js_chunk_4",
     "addon_creator_app-save.js_chunk_0",
     "addon_creator_app-save.js_chunk_3",
-    "codebase_src_sync.zig_chunk_3"
+    "codebase_src_sync.zig_chunk_3",
+    "docs_GAME_DESIGN_PRINCIPLES.md_chunk_2",
+    "docs_GAME_DESIGN_PRINCIPLES.md_chunk_3",
+    "docs_GAME_DESIGN_PRINCIPLES.md_chunk_4",
+    "docs_GAME_DESIGN_PRINCIPLES.md_chunk_5",
+    "addon_creator_FIELD_REFERENCE.md_chunk_4",
+    "addon_creator_FIELD_REFERENCE.md_chunk_1"
   ],
   "actions_baseline_completed": 543,
-  "actions_count": 15913
+  "actions_count": 15942
 }

@@ -122,7 +122,7 @@ SERVER_URL       = "http://ashframe.net:7000"
 OLLAMA_URL       = "http://localhost:11434/api/generate"
 CONFIG_FILE      = os.path.expanduser("~/.cubyz_node_config.json")
 DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
-VERSION          = "1.4.2"
+VERSION          = "1.4.3"
 
 print_lock = threading.Lock()
 
@@ -595,6 +595,12 @@ GPU_TIER_VRAM_FLOOR_GB = {"easy": 0.0, "medium": 4.5, "hard": 8.5}
 CPU_TIER_RAM_FLOOR_GB  = {"easy": 6.0, "medium": 8.0}
 DUAL_LANE_MIN_RAM_GB   = 12.0
 DUAL_LANE_MIN_VRAM_GB  = 4.0
+# CPU crunching used to only ever hold back 1 logical thread (2 for a dual-lane secondary) out
+# of however many the machine has -- confirmed live, a volunteer with 16 logical cores saw 100%
+# CPU usage across all of them, leaving nothing free for the OS/their other programs to stay
+# responsive. This is how many logical threads always stay unused by Ollama's own num_thread
+# option, regardless of core count.
+CPU_THREAD_HEADROOM    = 4
 TIER_RANK              = {"easy": 0, "medium": 1, "hard": 2}
 BENCHMARK_VERSION      = 9
 # CPU decoding is inherently much slower per-token than GPU -- especially with the JSON-schema
@@ -3364,7 +3370,7 @@ def main():
             hardware_tier     = cpu_tier
             mode_desc         = f"Eco Profile ({real_cpu_name}, {cpu_model})"
             cooldown          = 4.0
-            max_threads       = max(2, (os.cpu_count() or 4) - 1)
+            max_threads       = max(2, (os.cpu_count() or 4) - CPU_THREAD_HEADROOM)
             primary_hw_label  = f"{real_cpu_name} ({system_ram_gb:.1f} GB RAM)"
         else:
             hardware_tier     = gpu_tier_from_vram(total_vram_gb)
@@ -3428,7 +3434,7 @@ def main():
                 sec_tag       = "CPU"
                 sec_model     = cpu_model
                 sec_tier      = cpu_tier
-                sec_threads   = max(2, (os.cpu_count() or 4) - 2)
+                sec_threads   = max(2, (os.cpu_count() or 4) - CPU_THREAD_HEADROOM)
                 sec_cooldown  = 1.0
                 sec_force_cpu = True
                 sec_hw_label  = f"{real_cpu_name} ({system_ram_gb:.1f} GB RAM)"

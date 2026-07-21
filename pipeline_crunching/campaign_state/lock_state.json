@@ -1,10 +1,5 @@
 {
-  "locked": {
-    "docs_docs_development_modding.md_chunk_1": {
-      "user_id": "Caleb",
-      "timestamp": 1784641079.4548063
-    }
-  },
+  "locked": {},
   "completed": [
     "codebase_src_server_storage.zig_chunk_0",
     "codebase_src_server_storage.zig_chunk_1",
@@ -3343,6 +3338,7 @@
     "docs_docs_faq.md_chunk_10",
     "docs_docs_faq.md_chunk_11",
     "docs_docs_gameplay_index.md_chunk_1",
-    "docs_docs_gameplay_crafting.md_chunk_1"
+    "docs_docs_gameplay_crafting.md_chunk_1",
+    "docs_docs_development_modding.md_chunk_1"
   ]
 }
