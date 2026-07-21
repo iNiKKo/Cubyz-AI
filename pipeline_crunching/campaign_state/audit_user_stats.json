@@ -14,20 +14,20 @@
   "nicksrvr": {
     "chunks_audited": 285,
     "issues_found": 68,
-    "fixes_applied": 84,
+    "fixes_applied": 85,
     "reviews_done": 804
   },
   "caleb": {
     "chunks_audited": 1551,
     "issues_found": 576,
     "fixes_applied": 374,
-    "reviews_done": 1613
+    "reviews_done": 1615
   },
   "nickpc": {
-    "chunks_audited": 4170,
-    "issues_found": 2815,
+    "chunks_audited": 4177,
+    "issues_found": 2817,
     "fixes_applied": 2355,
-    "reviews_done": 1346
+    "reviews_done": 1347
   },
   "nickpcc": {
     "chunks_audited": 180,

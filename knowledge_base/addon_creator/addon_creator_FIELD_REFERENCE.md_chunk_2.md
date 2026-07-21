@@ -12,10 +12,17 @@ Item ID (`itemId`) becomes the filename. Item Sprite Texture (`itemTextureSearch
 
 Material Color hex picker (`matColorBase`) is converted to HSL, then re-sampled at 5 lightness steps (0.22/0.38/0.52/0.72/0.88) to generate a shading gradient, exported as `.colors = .{0xff..., ...}` -- **only emitted if the item has the `.material` tag**. Durability (`matDurability`), Swing Speed (`matSwingSpeed`), Texture Roughness (`matTexRoughness`), Mass Damage (`matMassDamage`), and Hardness Damage (`matHardnessDamage`) all export as their matching `.material.*` fields, and are **all only emitted if the `.material` tag is present**. Modifier type/strength export as `.material.modifiers = .{.{.id=.type, .strength=v}}`, only if the modifier type isn't "none".
 
+Default values:
+- Max Stack Size: 120
+- Food Saturation Value: 0 (not emitted)
+- Durability: Not specified (only emitted if `.material` tag is present)
+- Swing Speed: Not specified (only emitted if `.material` tag is present)
+- Texture Roughness: Not specified (only emitted if `.material` tag is present)
+- Mass Damage: Not specified (only emitted if `.material` tag is present)
+- Hardness Damage: Not specified (only emitted if `.material` tag is present)
+
 ## Related Questions
-- When is a Cubyz item's food value field emitted in the Addon Creator's export?
-- How does the Cubyz Addon Creator generate an item's shading gradient from its material color?
-- When are a Cubyz item's material fields (durability, swingSpeed, etc.) emitted by the Addon Creator?
 - What's the default max stack size a Cubyz item is assumed to have if the field is omitted?
+- What happens if the food saturation value of a Cubyz item is set to 0 in the Addon Creator?
 
 *Source: unknown | chunk_id: addon_creator_FIELD_REFERENCE.md_chunk_2*
