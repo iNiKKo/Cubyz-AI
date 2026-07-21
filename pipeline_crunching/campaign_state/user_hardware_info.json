@@ -9,7 +9,7 @@
     "hardware_tier": "medium",
     "benchmark_gpu_time": null,
     "benchmark_cpu_time": null,
-    "benchmark_gpu_error": "timeout: timed out",
+    "benchmark_gpu_error": "HTTPError: HTTP Error 500: Internal Server Error -- {\"error\":\"llama-server process has terminated: exit status 1: error loading model: read error: Data error (cyclic redundancy check).\"}",
     "benchmark_cpu_error": "timeout: timed out"
   },
   "nicksrvr": {

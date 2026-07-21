@@ -122,7 +122,7 @@ SERVER_URL       = "http://ashframe.net:7000"
 OLLAMA_URL       = "http://localhost:11434/api/generate"
 CONFIG_FILE      = os.path.expanduser("~/.cubyz_node_config.json")
 DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
-VERSION          = "1.3.6"
+VERSION          = "1.3.7"
 
 print_lock = threading.Lock()
 
@@ -595,7 +595,7 @@ CPU_TIER_RAM_FLOOR_GB  = {"easy": 6.0, "medium": 8.0}
 DUAL_LANE_MIN_RAM_GB   = 12.0
 DUAL_LANE_MIN_VRAM_GB  = 4.0
 TIER_RANK              = {"easy": 0, "medium": 1, "hard": 2}
-BENCHMARK_VERSION      = 5
+BENCHMARK_VERSION      = 6
 BENCHMARK_TIMEOUT      = 90
 # hard tier uses 2 workers (not 3) -- a 14b/32b model already saturates the GPU, so
 # adding a third concurrent slot just causes thrashing rather than throughput gains.
@@ -769,25 +769,28 @@ def benchmark_lane(model: str, force_cpu: bool):
         "options": {"temperature": 0.15, **({"num_gpu": 0} if force_cpu else {})},
     }
     start = time.time()
-    try:
-        make_request(OLLAMA_URL, payload, timeout=BENCHMARK_TIMEOUT)
-    except Exception as e:
-        elapsed = time.time() - start
-        kind = "timeout" if elapsed >= BENCHMARK_TIMEOUT - 1 else type(e).__name__
-        # HTTPError's own str() is just "HTTP Error 500: Internal Server Error" -- the generic
-        # reason phrase, not why. Ollama's actual JSON error body (e.g. an OOM message, "model
-        # requires more system memory than is available", a malformed-request detail) lives in
-        # the response body instead, and was being silently dropped here -- confirmed live, a
-        # volunteer's failed benchmark showed only the generic 500 text with no way to tell
-        # whether that meant "Ollama ran out of memory," "the model failed to load," or something
-        # else entirely, all of which need different fixes.
-        detail = ""
-        if isinstance(e, urllib.error.HTTPError):
-            try:
-                detail = f" -- {e.read().decode('utf-8', errors='replace').strip()}"
-            except Exception:
-                pass
-        return None, f"{kind}: {e}{detail}"[:300]
+    for attempt in range(2):
+        try:
+            make_request(OLLAMA_URL, payload, timeout=BENCHMARK_TIMEOUT)
+            break
+        except Exception as e:
+            elapsed = time.time() - start
+            kind = "timeout" if elapsed >= BENCHMARK_TIMEOUT - 1 else type(e).__name__
+            # HTTPError's own str() is just "HTTP Error 500: Internal Server Error" -- the generic
+            # reason phrase, not why. Ollama's actual JSON error body (e.g. an OOM message, "model
+            # requires more system memory than is available", a corrupted-file read error) lives
+            # in the response body instead, and was being silently dropped here -- confirmed live,
+            # a volunteer's failed benchmark showed only the generic 500 text with no way to tell
+            # whether that meant "Ollama ran out of memory," "the model file is corrupted," or
+            # something else entirely, all of which need different fixes.
+            detail = _http_error_body(e)
+            # Belt-and-suspenders with warm_up_model()'s own repull -- this catches the case where
+            # warm-up itself already "succeeded" against a corrupted file (some corruption doesn't
+            # surface until a longer, differently-shaped request) and only shows up here instead.
+            if attempt == 0 and _is_corrupt_model_error(detail) and _repull_model(model):
+                start = time.time()
+                continue
+            return None, f"{kind}: {e}{(' -- ' + detail.strip()) if detail else ''}"[:300]
     elapsed = time.time() - start
 
     if not force_cpu:
@@ -902,26 +905,76 @@ def _start_ollama_native():
         pass
 
 
+def _http_error_body(e: Exception) -> str:
+    if isinstance(e, urllib.error.HTTPError):
+        try:
+            return e.read().decode("utf-8", errors="replace")
+        except Exception:
+            pass
+    return ""
+
+
+def _is_corrupt_model_error(text: str) -> bool:
+    """True for Ollama's own "this model's files on disk are broken" signature -- not a GPU
+    problem, not this script's request, not slowness. Confirmed live: a volunteer's GPU benchmark
+    failed with `"error loading model: read error: Data error (cyclic redundancy check)"` -- a
+    corrupted GGUF blob, almost certainly from an interrupted first download -- which had been
+    surfacing as an opaque "HTTP Error 500" (and, before that fix, as what looked like a plain
+    timeout, since Ollama loads, fails immediately, and unloads with no visible generation
+    progress under stream:false) until the error body itself was actually being read and shown."""
+    if not text:
+        return False
+    low = text.lower()
+    return any(s in low for s in ("cyclic redundancy check", "data error", "error loading model", "checksum"))
+
+
+def _repull_model(model_name: str) -> bool:
+    """Deletes and re-downloads model_name -- the actual fix for _is_corrupt_model_error, not
+    just a better error message for it. Without this, a volunteer with one corrupted download
+    would silently lose their GPU lane forever (every future run hits the identical error and
+    falls back to CPU) unless they happened to notice the raw error and knew to run `ollama rm`/
+    `ollama pull` themselves."""
+    print(f"{Colors.YELLOW}[~] {model_name} looks corrupted on disk (failed integrity check) -- re-downloading...{Colors.RESET}")
+    try:
+        make_request(f"{OLLAMA_HOST}/api/delete", {"name": model_name}, timeout=30, method="DELETE")
+    except Exception:
+        pass  # already gone / never existed -- the pull below is what actually matters
+    try:
+        make_request(f"{OLLAMA_HOST}/api/pull", {"name": model_name, "stream": False}, timeout=1800)
+        print(f"{Colors.GREEN}[OK] {model_name} re-downloaded.{Colors.RESET}")
+        return True
+    except Exception as e:
+        print(f"{Colors.RED}[X] Re-download failed: {e}{Colors.RESET}")
+        return False
+
+
 def warm_up_model(model_name: str):
     """Forces Ollama to actually load model_name into memory, with a generous, untimed-feeling
-    budget and errors swallowed -- called once before the real timed benchmark so a slow FIRST
-    load (reading a multi-GB file off disk, GPU driver/kernel JIT on first use, antivirus
-    scanning the model file on Windows -- all real, all observed) doesn't eat into
-    BENCHMARK_TIMEOUT and get misreported as "GPU benchmark timed out"/GPU failure. Confirmed
-    live: a volunteer on an RTX 4060 Ti (12GB, plenty for these models, CUDA fully supported)
-    got a benchmark timeout on Windows -- a machine that capable timing out on ~90s of actual
-    generation makes far less sense than the FIRST-load overhead alone blowing that budget before
-    generation even started, which this eliminates by paying that cost here instead, off the
-    benchmark clock. If warm-up itself fails, the real benchmark right after will hit the same
-    problem and report a real, actionable error -- so there's no downside to always trying.
+    budget -- called once before the real timed benchmark so a slow FIRST load (reading a
+    multi-GB file off disk, GPU driver/kernel JIT on first use, antivirus scanning the model file
+    on Windows -- all real, all observed) doesn't eat into BENCHMARK_TIMEOUT and get misreported
+    as "GPU benchmark timed out"/GPU failure. Confirmed live: a volunteer on an RTX 4060 Ti (12GB,
+    plenty for these models, CUDA fully supported) got a benchmark timeout on Windows -- a machine
+    that capable timing out on ~90s of actual generation makes far less sense than the FIRST-load
+    overhead alone blowing that budget before generation even started, which this eliminates by
+    paying that cost here instead, off the benchmark clock.
+
+    Also self-heals a corrupted local model file (see _is_corrupt_model_error) by re-pulling and
+    retrying once -- this is the earliest point that failure can be caught, before the real timed
+    benchmark ever runs into the same dead end. Any other failure just returns quietly; the real
+    benchmark right after will hit the same problem and report a real, actionable error there.
     """
-    try:
-        make_request(OLLAMA_URL, {
-            "model": model_name, "prompt": "hi", "stream": False,
-            "options": {"num_predict": 1},
-        }, timeout=300)
-    except Exception:
-        pass
+    for attempt in range(2):
+        try:
+            make_request(OLLAMA_URL, {
+                "model": model_name, "prompt": "hi", "stream": False,
+                "options": {"num_predict": 1},
+            }, timeout=300)
+            return
+        except Exception as e:
+            if attempt == 0 and _is_corrupt_model_error(_http_error_body(e)) and _repull_model(model_name):
+                continue
+            return
 
 
 def ensure_ollama_running_and_model_pulled(model_name: str):
