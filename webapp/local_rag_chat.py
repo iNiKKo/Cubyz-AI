@@ -47,7 +47,22 @@ KNOWLEDGE_DIR = os.path.join(REPO_ROOT, "knowledge_base")
 CACHE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "rag_index_cache.json")
 GLOBAL_TOP_K = 8      # best chunks overall, regardless of collection
 MIN_PER_COLLECTION = 2  # floor to guarantee small collections (docs, addon) get a fair look
+# Below this cosine similarity, a chunk is empirically noise, not signal -- measured directly
+# against this index: genuinely off-topic queries ("Hello!", "How are you?") top out around
+# 0.30-0.35 with no real winner (a long flat tail, nothing actually relevant exists), while every
+# real Cubyz question's best-matching chunk scored 0.50+, often 0.65+. Set well below that real
+# floor for margin. Only gates the MIN_PER_COLLECTION top-up below, not the global top-K -- that
+# selection is unchanged, since it's the exact mechanism this project's 99%-accuracy benchmark
+# runs validated; only the "force-include a collection's chunk regardless of relevance" behavior
+# needed fixing, not core retrieval.
+MIN_SIMILARITY_FOR_TOPUP = 0.40
 EMBED_BATCH_SIZE = 20
+# Shared context-window size for both the answer call and the compaction/summarize call below --
+# system prompt + RAG chunks + conversation history + this question + the response all have to
+# fit in this. chat_server.py compares this against Ollama's own reported prompt_tokens to warn
+# if a real request ever gets close to it, since the HISTORY_CHAR_BUDGET char-count budget there
+# is a rough proxy, not an exact token count.
+NUM_CTX = 16384
 
 SYSTEM_PROMPT = """You are the Cubyz Assistant, a technical expert on Cubyz, an open-source voxel sandbox game written in Zig. Answer directly and precisely, in the voice of a developer who already knows this codebase.
 
@@ -173,7 +188,8 @@ def load_index(rebuild=False):
     return build_index(existing_entries=None if rebuild else existing)
 
 
-def retrieve(query, index, global_top_k=GLOBAL_TOP_K, min_per_collection=MIN_PER_COLLECTION):
+def retrieve(query, index, global_top_k=GLOBAL_TOP_K, min_per_collection=MIN_PER_COLLECTION,
+             min_similarity_for_topup=MIN_SIMILARITY_FOR_TOPUP):
     q_emb = embed_batch([query])[0]
     for e in index:
         e["_score"] = cosine(q_emb, e["embedding"])
@@ -185,7 +201,11 @@ def retrieve(query, index, global_top_k=GLOBAL_TOP_K, min_per_collection=MIN_PER
 
     # Then top up any collection with zero/thin representation, so a small collection
     # (docs, addon) with a genuinely relevant chunk that just missed the global cut still
-    # gets a look, without forcing in irrelevant filler from every collection unconditionally.
+    # gets a look -- but only if that chunk actually clears min_similarity_for_topup. Without
+    # this gate, a collection with nothing relevant to the query still got force-fed
+    # min_per_collection chunks unconditionally (e.g. a plain "Hello!" pulling in 13-14 sources
+    # total instead of 8), wasting context/generation time on noise the model then has to
+    # correctly ignore.
     by_collection = {}
     for e in scored:
         by_collection.setdefault(e["collection"], []).append(e)
@@ -194,7 +214,7 @@ def retrieve(query, index, global_top_k=GLOBAL_TOP_K, min_per_collection=MIN_PER
         have = sum(1 for e in entries if id(e) in seen)
         if have < min_per_collection:
             for e in entries:
-                if id(e) not in seen:
+                if id(e) not in seen and e["_score"] >= min_similarity_for_topup:
                     hits.append(e)
                     seen.add(id(e))
                     have += 1
@@ -203,7 +223,7 @@ def retrieve(query, index, global_top_k=GLOBAL_TOP_K, min_per_collection=MIN_PER
     return hits
 
 
-def ask(question, index, verbose=True, return_meta=False):
+def ask(question, index, verbose=True, return_meta=False, conversation_history=None):
     hits = retrieve(question, index)
 
     # Present the single best-matching chunk LAST, right next to the user's question, not first.
@@ -227,12 +247,20 @@ def ask(question, index, verbose=True, return_meta=False):
     if verbose:
         print(f"[Retrieved {len(hits)} chunks: {', '.join(h['filename'] for h in hits)}]\n")
 
+    # conversation_history is the same-chat context chat_server.py builds up: prior user/assistant
+    # turns (and a compaction summary standing in for older ones -- see summarize_conversation
+    # below), inserted between the system prompt and this question so multi-turn references
+    # ("what about that one?") resolve. Each retrieval call above is still independent of it --
+    # RAG grounding runs fresh on `question` alone -- this only changes what the model sees, not
+    # what gets retrieved.
+    messages = [{"role": "system", "content": system}]
+    if conversation_history:
+        messages.extend(conversation_history)
+    messages.append({"role": "user", "content": question})
+
     result = http_post_json("/api/chat", {
         "model": ANSWER_MODEL,
-        "messages": [
-            {"role": "system", "content": system},
-            {"role": "user", "content": question},
-        ],
+        "messages": messages,
         "stream": False,
         # Ollama defaults num_ctx far too low (often 2048-4096) for a system prompt plus ~14
         # retrieved chunks -- silent truncation there would drop exactly the grounding context
@@ -243,9 +271,13 @@ def ask(question, index, verbose=True, return_meta=False):
         # runs of the 96-question batch test, which made it impossible to tell a real fix from
         # noise. Greedy decoding trades a little phrasing variety for reproducibility, which
         # matters more here since this is a fact-lookup assistant, not creative writing.
-        "options": {"temperature": 0.0, "num_ctx": 16384, "seed": 42},
+        "options": {"temperature": 0.0, "num_ctx": NUM_CTX, "seed": 42},
     })
-    answer = result["message"]["content"]
+    # .strip() -- Ollama chat responses often carry a leading/trailing newline from the model's
+    # chat template. Harmless when rendered with normal white-space collapsing, but the frontend
+    # uses white-space:pre-wrap (to keep code-block formatting intact), which renders that stray
+    # newline as a literal blank line above the answer.
+    answer = result["message"]["content"].strip()
     if not return_meta:
         return answer
 
@@ -265,6 +297,36 @@ def ask(question, index, verbose=True, return_meta=False):
         "prompt_tokens": result.get("prompt_eval_count"),
         "response_tokens": result.get("eval_count"),
     }
+
+
+SUMMARIZE_PROMPT = """You are compacting an ongoing chat conversation so it can keep going without re-sending every prior message. Write a compact recap of the conversation below.
+
+Rules:
+- Third person, past tense, plain prose -- not a transcript.
+- Keep every specific fact, name, number, or file/setting the user gave or asked about.
+- If the user corrected the assistant on something (told it a previous answer was wrong, or gave the right value after a wrong one), keep that correction explicitly and clearly -- it matters more than anything else here, since the point of this recap is that the assistant doesn't repeat the same mistake later in this chat.
+- Drop pleasantries and anything not useful for understanding what's already been discussed.
+- A few sentences is enough unless the conversation genuinely covered a lot of distinct ground.
+"""
+
+
+def summarize_conversation(prior_summary, messages):
+    """Folds `messages` (a list of {"role","content"} dicts, oldest first) into a compact recap,
+    carried forward alongside `prior_summary` (the recap of everything already compacted before
+    this batch, or None on a chat's first compaction). One extra Ollama call, only made when
+    chat_server.py decides the verbatim history has grown past its budget -- not on every turn."""
+    transcript = "\n".join(f"{m['role']}: {m['content']}" for m in messages)
+    user_content = transcript if not prior_summary else f"Existing recap so far:\n{prior_summary}\n\nNew messages to fold in:\n{transcript}"
+    result = http_post_json("/api/chat", {
+        "model": ANSWER_MODEL,
+        "messages": [
+            {"role": "system", "content": SUMMARIZE_PROMPT},
+            {"role": "user", "content": user_content},
+        ],
+        "stream": False,
+        "options": {"temperature": 0.0, "num_ctx": NUM_CTX, "seed": 42},
+    })
+    return result["message"]["content"].strip()
 
 
 def main():

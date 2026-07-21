@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Bubble wrap test</title>
+<style>
+  body { font-family: sans-serif; padding: 20px; background: #f7f7f8; }
+  .row { display: flex; justify-content: flex-end; margin-bottom: 20px; border: 1px dashed #ccc; }
+  .label { font-size: 11px; color: #666; margin-bottom: 4px; }
+
+  /* Variant A: exactly current chat_frontend.html CSS */
+  .col-a { display: flex; flex-direction: column; width: max-content; max-width: 100%; align-items: flex-end; }
+  .bubble-a {
+    width: max-content; max-width: min(80%, 760px); padding: 10px 14px; border-radius: 14px;
+    line-height: 1.5; font-size: 14.5px; flex-shrink: 0;
+    white-space: pre-wrap; word-wrap: break-word; background: #2f6feb; color: #fff;
+  }
+
+  /* Variant B: no wrapper at all, bubble is direct flex child */
+  .bubble-b {
+    max-width: min(80%, 760px); padding: 10px 14px; border-radius: 14px;
+    line-height: 1.5; font-size: 14.5px;
+    white-space: nowrap; background: #2f6feb; color: #fff;
+  }
+
+  /* Variant C: table display, old-school shrink-to-fit, zero flex involvement */
+  .row-c { display: table; margin-left: auto; border: 1px dashed #ccc; margin-bottom: 20px; }
+  .bubble-c {
+    display: table-cell; padding: 10px 14px; border-radius: 14px;
+    line-height: 1.5; font-size: 14.5px;
+    background: #2f6feb; color: #fff;
+  }
+</style>
+</head>
+<body>
+  <div class="label">Variant A (current chat_frontend.html approach, flex + max-content):</div>
+  <div class="row"><div class="col-a"><div class="bubble-a">Hello</div></div></div>
+
+  <div class="label">Variant B (bubble is a direct flex child, no wrapper div, white-space:nowrap):</div>
+  <div class="row"><div class="bubble-b">Hello</div></div>
+
+  <div class="label">Variant C (display:table / table-cell, no flexbox at all):</div>
+  <div class="row-c"><div class="bubble-c">Hello</div></div>
+
+  <hr>
+  <p>Open this file directly in your browser (no server needed). Tell me which variant(s) show "Hello" correctly on one line, and which (if any) still break it into "He" / "llo".</p>
+</body>
+</html>
