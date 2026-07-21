@@ -1,0 +1,26 @@
+{
+  "nickmac": {
+    "chunks_completed": 83,
+    "lines_crunched": 4455
+  },
+  "orng": {
+    "chunks_completed": 19,
+    "lines_crunched": 2603
+  },
+  "caleb": {
+    "chunks_completed": 1426,
+    "lines_crunched": 90436
+  },
+  "babab": {
+    "chunks_completed": 105,
+    "lines_crunched": 6097
+  },
+  "nickpc": {
+    "chunks_completed": 3947,
+    "lines_crunched": 174033
+  },
+  "nicksrvr": {
+    "chunks_completed": 57,
+    "lines_crunched": 1490
+  }
+}

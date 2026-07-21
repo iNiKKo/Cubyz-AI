@@ -24,7 +24,7 @@ Run (from anywhere -- all paths are anchored to this file's own location, not th
     pip install fastapi uvicorn
     python3 webapp/chat_server.py
 Then open http://localhost:7001 . Moved off 7000 (2026-07-18) so this can run at the same time as
-pipeline_crunching/server.py, which owns 7000 for the distributed crunching/audit campaigns --
+pipeline/server.py, which owns 7000 for the distributed crunching/audit campaigns --
 the two used to have to run one at a time on the same port. It still binds to 0.0.0.0, so once the
 router forwards 7001 to this machine, it's reachable from outside as a real shareable URL (your
 public IP:7001, or a domain pointed at it) -- the router's forwarding rule needs updating to match
@@ -150,7 +150,7 @@ def _compute_training_stats():
     collections = {k: {"chunks": v["chunks"], "sources": len(v["sources"])} for k, v in collections.items()}
 
     finetune_examples = None
-    sft_path = os.path.join(local_rag_chat.REPO_ROOT, "finetune", "output", "cubyz_sft_dataset.jsonl")
+    sft_path = os.path.join(local_rag_chat.REPO_ROOT, "pipeline", "finetune", "output", "cubyz_sft_dataset.jsonl")
     if os.path.exists(sft_path):
         with open(sft_path, encoding="utf-8") as f:
             finetune_examples = sum(1 for line in f if line.strip())

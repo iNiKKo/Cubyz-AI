@@ -10,7 +10,7 @@ before), the addon-creator field-export reference (UI-to-zon mapping details), t
 creation docs (biomes.md/blocks.md/items.md/models.md), game_mechanics.md/crafting.md's remaining
 detail, CONTENT_SUGGESTIONS.md's art/SBB guidance, and multiplayer.md's hosting/security/add-on/
 Discord-bot sections. Every answer below was verified directly against the raw source files in
-pipeline_crunching/raw_cubyz_dataset/ (not against a crunched knowledge_base chunk, and not
+pipeline/raw_cubyz_dataset/ (not against a crunched knowledge_base chunk, and not
 against the website's own claims where the engine reference explicitly says the website differs)
 before being added here.
 

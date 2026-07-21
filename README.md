@@ -9,13 +9,13 @@ volunteer-powered crunching pipeline.
 
 ## What's in this repo
 
-### Client — `pipeline_crunching/client.py`
+### Client — `pipeline/client.py`
 Donates spare compute to whichever campaign is active.
 - Connects to the server, crunches assigned work with local Ollama, submits results
 - Auto-detects hardware and picks a model that fits; auto-updates itself
 - Runs multiple lanes at once when hardware allows (GPU + CPU, or parallel workers)
 
-### Server — `pipeline_crunching/server.py`
+### Server — `pipeline/server.py`
 The coordinator.
 - Scans source material, chunks it, hands out work, tracks stats/leaderboard
 - Switches between RAG / Finetune / Audit campaigns live, no restart needed
@@ -31,8 +31,9 @@ The coordinator.
   with RAG** across two independent 144-question sets. Fine-tune data is `reviews`-only
   (judgment/voice, not facts) since Prototype 7 — RAG carries all fact recall.
 - **Audit:** complete (3,247/3,247), re-runs automatically as chunks change.
-- **Infra:** one client, one server — `pipeline_crunching/` holds just those two files. Old/dup
-  versions and superseded scripts archived, not deleted.
+- **Infra:** one client, one server — `pipeline/` holds the two of them plus `finetune/` (training
+  pipeline) and `users/` (raw crunched output). Old/dup versions and superseded scripts archived,
+  not deleted.
 
 **Open items:** RAG retrieval efficiency (fewer chunks pulled before landing on the right one);
 client/server auto-wiring for new fine-tune rounds; `/disconnect`'s missing auth (known).

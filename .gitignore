@@ -1,6 +1,6 @@
 # Model weights and training checkpoints -- multi-GB binaries, not git material.
-# Re-derivable from finetune/training/train_qlora.py + finetune/training/merge_adapter.py.
-finetune/training/output/
+# Re-derivable from pipeline/finetune/training/train_qlora.py + pipeline/finetune/training/merge_adapter.py.
+pipeline/finetune/training/output/
 archive/prototype_1_finetune_only/cubyz_ai_3b_merged/
 archive/prototype_1_finetune_only/cubyz_ai_3b_v0.1/
 
@@ -8,9 +8,10 @@ archive/prototype_1_finetune_only/cubyz_ai_3b_v0.1/
 # rather than vendoring it in this repo's history.
 llama.cpp/
 
-# sync_codebase.py's working clone of the real PixelGuys/Cubyz repo -- regenerated on every run,
-# not git material (would also mean vendoring a second repo's full history into this one).
-pipeline_crunching/_cubyz_upstream_clone/
+# server.py's "Sync Codebase" action's working clone of the real PixelGuys/Cubyz repo --
+# regenerated on every run, not git material (would also mean vendoring a second repo's full
+# history into this one).
+pipeline/_cubyz_upstream_clone/
 
 # Regenerable caches
 webapp/rag_index_cache.json
