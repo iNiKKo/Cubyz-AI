@@ -1,17 +1,26 @@
 """
-LoRA fine-tune of the Cubyz assistant model.
+QLoRA fine-tune of the Cubyz assistant model.
 
 Switched from QLoRA (4-bit NF4) to plain LoRA in full bf16 on 2026-07-20 after dropping the base
-model to Qwen3.5-0.8B for iteration speed. QLoRA's 4-bit quantization existed purely to fit a
-7B/14B model's weights into 16GB VRAM; at 0.8B (~1.6GB in bf16) that constraint is gone, and
-paying the quant/dequant overhead now would only cost speed and precision for no benefit -- a
-model this small has less redundant capacity to absorb 4-bit quantization noise than a 7B did.
-Gradient checkpointing was dropped for the same reason (it trades speed for memory that's no
-longer scarce), and the optimizer switched off `paged_adamw_8bit` (also memory-motivated, and the
-one under suspicion for an unexplained resume-NaN bug on the earlier 7B run) to plain
-`adamw_torch`. If this project ever swaps back to a 7B+ model, reintroduce
-`BitsAndBytesConfig`/`prepare_model_for_kbit_training`/gradient checkpointing/`paged_adamw_8bit`
-together -- they're a matched set for VRAM-constrained training, not independent choices.
+model to Qwen3.5-0.8B for iteration speed (0.6B/0.8B are small enough that quantization was pure
+overhead with no benefit). **Switched back to QLoRA on 2026-07-20** for Qwen3-4B-Instruct-2507
+after diffing this file against the commit from the working 7B run (6e7ea68): the only real
+config differences were quantization (4-bit vs plain bf16), optimizer (`paged_adamw_8bit` vs
+`adamw_torch`), and batch size -- LoRA hyperparameters were identical in both. The 7B's fresh
+(non-resumed) runs never had a spontaneous unrecoverable NaN collapse mid-training, only transient
+huge-but-finite grad_norm spikes that recovered; this 4B run, in plain bf16, spontaneously
+diverged to permanent NaN at epoch 1.685 with no resume involved. Since that's the one thing that
+changed between "stable" and "spontaneously diverges," reverting to the more battle-tested 4-bit
+QLoRA numerical path is the fix, not a further batch-size/checkpointing tweak. Accept the
+quant/dequant speed cost in exchange for stability at this size -- this was always the plan (see
+the note this replaced): "if this project ever swaps back to a 7B+ model, reintroduce
+BitsAndBytesConfig/prepare_model_for_kbit_training/gradient checkpointing/paged_adamw_8bit
+together -- they're a matched set for VRAM-constrained training, not independent choices."
+
+Separately, unresolved: resuming from ANY checkpoint on this stack causes near-instant
+catastrophic divergence, reproduced now on both `paged_adamw_8bit` (7B) and `adamw_torch` (4B) --
+confirms it's not optimizer-specific. Root cause still unknown; the only safe practice for now is
+never interrupting a run, since resuming is not a safety net here.
 
 Why LoRA at all (not a full fine-tune): the previous attempt at this project full-fine-tuned
 a small model with no general-data mixing and "lobotomized" it -- catastrophic forgetting of
@@ -39,8 +48,8 @@ os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
 
 import torch
 from datasets import load_dataset
-from peft import LoraConfig, get_peft_model
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from trl import SFTConfig, SFTTrainer
 
 # Anchor paths to the repo root (three levels up: training/ -> finetune/ -> repo root) rather
@@ -106,14 +115,16 @@ LORA_TARGET_MODULES = [
 # overly aggressive LR is one of the most direct ways a fine-tune degrades general capability
 # even with LoRA/QLoRA's inherent protection.
 #
-# Raised from 2 to 3 epochs after the first trained adapter's test results showed narrow, rarely-
-# repeated facts (exact keybindings, exact numbers, exact names) didn't reliably stick, unlike
-# judgment/reasoning patterns that got reinforced across hundreds of similar review pairs.
-# Combined with generate_core_facts_pairs.py (dense, multiply-phrased coverage of exactly the
-# facts that failed) and dropping the general:domain ratio to 1.0 in prepare_training_data.py,
-# this meaningfully increases how many times each specific fact is actually seen during training.
+# Was raised from 2 to 3 epochs specifically because narrow, rarely-repeated facts (exact
+# keybindings, exact numbers, exact names) didn't reliably stick at 2 epochs. Dropped BACK to 2
+# for Prototype 7 (2026-07-20): that justification no longer applies once assemble_sft_dataset.py
+# cut the domain data to reviews-only (fact Q&A removed entirely, RAG's job now) -- and 3 epochs
+# on the much smaller resulting set (1,436 domain examples, down from ~3,850) risks overfitting to
+# the exact phrasing of this specific set of PR/issue discussions rather than generalizing the
+# judgment pattern, which is the opposite of what a purely behavioral fine-tune needs. Judgment/
+# reasoning patterns were already reinforcing reliably at 2 epochs even in earlier rounds.
 LEARNING_RATE = 1e-4
-NUM_EPOCHS = 3
+NUM_EPOCHS = 2
 # Raised from 1 to 2 after switching to the 7B model freed up substantial VRAM headroom (~3.7GB
 # weights vs the 14B model's ~7.4GB) -- gradient accumulation dropped from 16 to 8 in lockstep so
 # the EFFECTIVE batch size (16) and therefore the learning rate schedule / training dynamics are
@@ -131,16 +142,12 @@ NUM_EPOCHS = 3
 # combo is known flaky under sustained load, so dialed back to 8/2 (same effective batch 16, half
 # the peak per-step compute/VRAM pressure) rather than chasing max throughput on unstable hardware.
 #
-# Dropped further to 1/16 for Qwen3.5-4B -- even 2/8 OOM'd ("tried to allocate 2.37 GiB... free:
-# 1.92 GiB", a close miss, not a wild overshoot). Base weights alone take 8.31GB of the 15.92GB
-# card in plain bf16, leaving thin margin for everything else -- trl's chunked cross-entropy loss
-# upcasts each logits chunk to fp32 for numerical stability, which is what actually blew the
-# budget, not the model's own forward activations. If 1/16 still OOMs, the next lever isn't batch
-# size (already at the floor) -- it's reintroducing 4-bit QLoRA for the base model (matching the
-# original 7B setup): at 4B params, unlike the 0.6B, quantization saves enough real VRAM (~8GB ->
-# ~2-2.5GB weights) to be worth its overhead again.
-PER_DEVICE_BATCH_SIZE = 1
-GRADIENT_ACCUMULATION_STEPS = 16  # effective batch size 16 (unchanged from before)
+# Dropped to 1/16 for Qwen3.5-4B in plain bf16 (even 2/8 OOM'd there), then that whole plain-bf16
+# path got reverted in favor of 4-bit QLoRA (see module docstring -- plain bf16 is what's
+# suspected in the spontaneous mid-training NaN, not batch size). Restored to 2/8 to match the
+# proven 7B recipe exactly, now that 4-bit quantization frees the VRAM plain bf16 didn't have.
+PER_DEVICE_BATCH_SIZE = 2
+GRADIENT_ACCUMULATION_STEPS = 8  # effective batch size 16 (unchanged from before)
 
 
 def format_example(example: dict, tokenizer) -> str:
@@ -162,34 +169,43 @@ def main():
     if not os.path.exists(TRAIN_FILE):
         raise SystemExit(f"[X] {TRAIN_FILE} not found -- run prepare_training_data.py first.")
 
-    print(f"[~] Loading tokenizer + bf16 base model: {args.model_id}")
+    print(f"[~] Loading tokenizer + 4-bit base model: {args.model_id}")
     tokenizer = AutoTokenizer.from_pretrained(args.model_id)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
+    bnb_config = BitsAndBytesConfig(
+        load_in_4bit=True,
+        bnb_4bit_quant_type="nf4",
+        bnb_4bit_compute_dtype=torch.bfloat16,
+        bnb_4bit_use_double_quant=True,
+    )
+
     model = AutoModelForCausalLM.from_pretrained(
         args.model_id,
-        # Forced onto GPU 0 explicitly rather than "auto" -- a model this size comfortably fits
-        # inside 16GB alone, so there's no legitimate reason for any of it to land on CPU. "auto"
-        # asks accelerate to plan device placement using a memory estimate that can be based on
-        # a pessimistic size, which can wrongly decide to offload chunks to system RAM -- that's
-        # what caused an OOM kill on a 32GB-RAM machine earlier in this project (with the
-        # original, much larger model choice).
+        quantization_config=bnb_config,
+        # Forced onto GPU 0 explicitly rather than "auto" -- a model this size in real 4-bit NF4
+        # comfortably fits inside 16GB alone, so there's no legitimate reason for any of it to
+        # land on CPU. "auto" asks accelerate to plan device placement using a memory estimate
+        # that can be based on the pre-quantization size, which can wrongly decide to offload
+        # chunks to system RAM -- that's what caused an OOM kill on a 32GB-RAM machine earlier
+        # in this project (with the original, larger model choice).
         device_map={"": 0},
         dtype=torch.bfloat16,
         # Explicit rather than relying on transformers' auto-selection -- SDPA is PyTorch's own
         # built-in optimized attention (no extra package, works on ROCm), and being explicit
-        # guards against silently falling back to the much slower "eager" implementation.
+        # guards against silently falling back to the much slower "eager" implementation, which
+        # some quantized-model loading paths have defaulted to in the past.
         attn_implementation="sdpa",
     )
-    # Required for gradient checkpointing on a frozen base model -- without this, the checkpointed
-    # segments' input tensor has no grad_fn once it reaches a frozen (non-LoRA) parameter, and
-    # backward fails with "element 0 of tensors does not require grad and does not have a
-    # grad_fn". QLoRA's prepare_model_for_kbit_training() used to call this automatically; dropped
-    # along with the rest of that function when switching to plain bf16 LoRA, and it happened not
-    # to matter for Qwen3-0.6B's forward pass -- Qwen3.5-4B's different (hybrid-fallback) forward
-    # pass hit the gap that was latent there all along. Cheap and harmless to call unconditionally.
-    model.enable_input_require_grads()
+    # Also calls the equivalent of enable_input_require_grads() internally -- required for
+    # gradient checkpointing on a frozen base model, otherwise backward fails with "element 0 of
+    # tensors does not require grad and does not have a grad_fn" once the checkpointed segment's
+    # input tensor loses its grad_fn at a frozen (non-LoRA) parameter.
+    model = prepare_model_for_kbit_training(
+        model, use_gradient_checkpointing=True,
+        gradient_checkpointing_kwargs={"use_reentrant": False},
+    )
 
     lora_config = LoraConfig(
         r=LORA_R,
@@ -247,13 +263,18 @@ def main():
         learning_rate=LEARNING_RATE,
         lr_scheduler_type="cosine",
         warmup_ratio=0.03,
-        optim="adamw_torch",
+        optim="paged_adamw_8bit",  # memory-efficient optimizer, standard pairing with QLoRA
         bf16=True,
         logging_steps=10,
         eval_strategy="steps",
-        eval_steps=100,
+        # Recalibrated from 100 for Prototype 7 (2026-07-20): the reviews-only dataset is much
+        # smaller (~1,436 domain examples vs. ~3,850 before), so at 2 epochs the whole run is only
+        # ~340 steps -- eval_steps=100 would give just 3 eval checkpoints, too coarse to catch
+        # overfitting onset early on a set this size. 25 keeps roughly the same ~13-14 eval
+        # checkpoints across the run as the prior (100-step, ~1,371-step) round had.
+        eval_steps=25,
         save_strategy="steps",
-        save_steps=100,
+        save_steps=25,
         save_total_limit=3,
         load_best_model_at_end=True,
         metric_for_best_model="eval_loss",

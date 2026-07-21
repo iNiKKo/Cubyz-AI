@@ -1,23 +1,31 @@
 # [easy/docs_GAME_DESIGN_PRINCIPLES.md] - Chunk 1
 
 **Type:** documentation
-**Keywords:** player engagement, balancing, 2OP4ME, trade-offs, big trees, small trees, vegetation, caves
-**Concepts:** Game Design Principles, Cubyz, Player Engagement, Balancing, Little Details
+**Keywords:** no dimensions, no teleportation, no automation, mobs don't respawn, no passive animals, no unbreakable tools, mob farming
+**Concepts:** Break the Cycle (part 1)
 
 ## Summary
-Continuation of Cubyz's Game Design Principles: player engagement guidance, balancing rules (including the "2OP4ME" principle), and specific little-details design choices.
+The first six "Break the Cycle" design rules: no dimensions, no teleportation, no automation, mobs don't respawn naturally, no passive animals, no unbreakable tools.
 
 ## Explanation
-Player Engagement: ask "how would the player feel?" when designing a mechanic; aim for depth in simplicity (approachable surface, expandable depth); fuel the player's curiosity with secrets; ensure problems have multiple solutions (e.g. several ways to get light before finding coal); explain progression mechanics only when needed, leaving room for player intuition; embrace "micro moments" (traveling, parkour, mining, building, crafting, inventory management, fighting) since they strongly affect player mood; make the world feel alive via creature behaviors that happen outside player input (hunting, playing, migrating, eating, sleeping). Balancing: the "2OP4ME" rule means players must be vulnerable at all times to avoid power imbalances -- armor, tools, accessories, and buffs should aid the player, never let them win outright. Trade-offs: anything that aids the player should have an appropriate cost (e.g. a rare-resource strong tool, a healing accessory that costs energy, enemies with type-specific strengths/weaknesses). Little Details: big trees are designed to be built upon or left as decoration, while small trees are designed to be chopped down; vegetation should fit its biome's climate (e.g. toadstools prefer humid areas, boletes prefer nutritious areas); caves get creepier as the player descends (scarier music, more vicious monsters, more precarious generation), adding stress the player must overcome for larger rewards.
+No Dimensions: instead of creating separate dimensions, Cubyz fits these places physically into its massive world for the player to come across.
+
+No Teleportation: teleportation makes the game less immersive, as it diminishes the exploring aspect and doesn't let the player get a good sense of the scale of the world.
+
+No Automation: having quick, infinite resources at the palm of players' hands discourages exploration, as the player will never need to forage or search for blocks they desire.
+
+Mobs Don't Respawn Naturally: clearing a dangerous area of its monsters will make it safe to build and explore. This rule is also here to prevent mob farming.
+
+No Passive Animals: animals do not want to die, so they will either run from an attacking player or attempt to defend themselves. The player will have to strategize to be able to hunt.
+
+No Unbreakable Tools: if a player gets too attached to their amazing tool, they won't want to make other types of tools, and low-tier materials will see less use, as they will never be used in tool-making.
 
 ## Related Questions
-- What is the "2OP4ME" balancing principle in Cubyz?
-- What's the design difference between big trees and small trees in Cubyz?
-- What is the "Depth in Simplicity" principle in Cubyz's game design?
-- How does Cubyz keep problems solvable in multiple ways (e.g. the "Pre-Caves Age" coal example)?
-- What are Cubyz's "micro moments," and why do they matter?
-- What is the "Trade-offs" balancing rule in Cubyz?
-- How does biome climate affect vegetation choice in Cubyz?
-- How does the game change as the player descends into caves?
+- Why doesn't Cubyz use separate dimensions for different areas?
+- Why doesn't Cubyz have teleportation?
+- Per Cubyz's Game Design Principles, why is automation avoided?
+- Do mobs respawn naturally in Cubyz, per the Game Design Principles?
+- Are there passive animals in Cubyz, per the Game Design Principles?
+- Why does Cubyz avoid unbreakable tools, per the Game Design Principles?
 
 *Source: unknown | chunk_id: docs_GAME_DESIGN_PRINCIPLES.md_chunk_1*

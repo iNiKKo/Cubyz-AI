@@ -15,6 +15,19 @@ PAIRS_DIR = "finetune/pairs"  # server_finetune.py's own managed output -- wiped
 HANDWRITTEN_DIR = "finetune/handwritten_pairs"  # never touched by the campaign's reset logic
 OUTPUT_FILE = "finetune/output/cubyz_sft_dataset.jsonl"
 
+# Restricted to "reviews" only (2026-07-20+): every benchmark round showed fine-tuning cannot
+# reliably store narrow facts (SNALE-AI-P6-4B standalone: 29.2% domain accuracy; served with RAG:
+# 91.7%) -- fine-tuning changes model BEHAVIOR, not model KNOWLEDGE, and RAG is the only thing
+# that's actually been carrying fact recall. Training on "docs"/"codebase"/"addon_reference"
+# Q&A pairs was asking the model to memorize narrow facts it would almost always get wrong anyway,
+# while diluting/slowing training that could instead reinforce the "reviews" pairs (PR-discussion
+# judgment/voice, e.g. debugging-style vs. design-review reasoning) -- the one thing fine-tuning
+# alone has consistently learned well across every round so far. Cutting the Q&A source types
+# forces every fact answer to come from RAG (the tool that's actually good at it), removes the
+# risk of the fine-tune confidently stating a wrong fact that contradicts retrieved context, and
+# shrinks + speeds up training since the domain set drops from ~3,850 to ~1,436 pairs.
+SOURCE_TYPES = {"reviews"}
+
 # Catches a real failure mode found in early generation output: the client would ask itself a
 # question it couldn't actually answer from the grounding it was given, and instead of dropping
 # that pair (as instructed), it kept the pair with a hedge like "is not specified in the given
@@ -132,6 +145,8 @@ def main():
                         seen_chunk_ids.add(chunk_id)
 
                     source_type = record.get("source_type", "unknown")
+                    if source_type not in SOURCE_TYPES:
+                        continue
                     pairs = record.get("pairs", [])
                     boilerplate_indices = find_boilerplate_sentence_indices(pairs)
 

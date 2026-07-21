@@ -1,23 +1,25 @@
 # [medium/addon_creator_ENGINE_VALIDATION_REFERENCE.md] - Chunk 0
 
-**Type:** ui
-**Keywords:** addon validation, engine defaults, field names, format mismatches, bug fixes, hand-editing, error messages
-**Symbols:** blocks.zig:register(), items.zig:BaseItem.init(), Material.init(), registerProceduralItem(), items/recipes.zig:parseRecipe(), server/terrain/biomes.zig:Biome.init(), entityModel.zig:EntityModel.init()
-**Concepts:** data-binding, form validation, live preview
+**Type:** documentation
+**Keywords:** precedence rule, isValidPlayerSpawn bug, skyColor bug, fogColor bug, u32ToVec3, getHexColorAsRGBVector
+**Symbols:** validPlayerSpawn, isValidPlayerSpawn, zon.get, u32ToVec3
 
 ## Summary
-This chunk provides a comprehensive reference for the Cubyz engine's validation rules and default values for addon fields, including detailed notes on format mismatches, bug fixes, and advanced features. It serves as a critical guide for developers to ensure their addons are correctly formatted and compatible with the game environment.
+Intro to Cubyz's engine-side addon validation reference: the precedence rule between website and engine, and two likely real bugs found in the website's export logic.
 
 ## Explanation
-The document outlines the expected fields, types, and defaults for various components of an addon, such as blocks, items, recipes, biomes, and entities. It highlights discrepancies between the website's form defaults and the engine's expectations, including specific field name mismatches (e.g., `isValidPlayerSpawn` vs `validPlayerSpawn`) and format issues (e.g., packed integers for colors). The reference is essential for developers to avoid common pitfalls and ensure their addons function correctly within the game environment.
+This is the companion to FIELD_REFERENCE.md. That document covers what the Addon Creator *website* exports; this one covers what the *game engine* actually reads back when loading a `.zig.zon` addon file, compiled by reading the real Zig loader functions in full: `blocks.zig:register()`, `items.zig:BaseItem.init()`/`Material.init()`/`registerProceduralItem()`, `items/recipes.zig:parseRecipe()`, `server/terrain/biomes.zig:Biome.init()`, `entityModel.zig:EntityModel.init()`, and `particles.zig:register()`/`EmitterProperties`/`SpawnShape`/`DirectionMode`.
+
+**Precedence rule**: where this reference and FIELD_REFERENCE.md disagree (field names, defaults, formats), the engine is the source of truth, not the website -- the website is a convenience tool and can have bugs. When generating new example addon code, use the engine-expected field name/format even where it differs from what the website currently produces. Only describe the website's actual (buggy) behavior when specifically explaining why something exported from the website isn't working.
+
+**Bug 1, biome player-spawn flag field name mismatch**: the website's `saveBiomeToProject` (`app-save.js`) exports the spawn checkbox as `.isValidPlayerSpawn`. The engine's `Biome.init()` (`server/terrain/biomes.zig` line 297) reads `zon.get(bool, "validPlayerSpawn")` -- a different field name. Because `ZonElement.get` returns the `orelse` default (`false`) when a field isn't present, a biome exported from the website with "spawn" checked will still load with `isValidPlayerSpawn = false` in-game.
+
+**Bug 2, biome sky/fog color format mismatch (likely, not fully confirmed)**: the website exports `.skyColor`/`.fogColor` as a 3-component float vector (`.{r, g, b}`, values 0-1) via `getHexColorAsRGBVector()`. The engine reads them with `zon.get(u32, "fogColor")` / `zon.get(u32, "skyColor")` -- a packed integer (e.g. the fallback default is literally `0xffbfe2ff`), then converts to a vector internally via a separate `u32ToVec3()` helper. A vector literal being read through a `u32` getter looks very likely to fail to parse and silently fall back to the default color rather than crash.
 
 ## Related Questions
-- What is the correct field name for player spawn in biomes?
-- How does the engine handle missing fields in block definitions?
-- Are there any discrepancies between website form defaults and engine expectations for items, such as material properties?
-- What happens if a recipe has more than two items when trying to set it as reversible?
-- Can procedural items be created using the Addon Creator website, or must they be hand-written?
-- How does the engine handle invalid height ranges in biome definitions?
-- Are there any specific tags required for cave biomes that are not enforced by the website UI?
+- What's the overall precedence rule when Cubyz's Addon Creator website and the game engine disagree on a field name or default?
+- What is the known bug with the 'valid player spawn' checkbox in the Addon Creator?
+- What's the likely bug with Cubyz's biome sky/fog color export?
+- What six Zig loader functions does this engine validation reference document?
 
 *Source: unknown | chunk_id: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0*

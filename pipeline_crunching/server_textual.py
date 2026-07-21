@@ -1572,6 +1572,10 @@ def _classify_role_context(file_lower: str, tier_path: str) -> str:
         is_wiki_ext = file_lower.endswith(('.md', '.txt', '.html'))
         return "DEFINITIVE_WIKI_DOCUMENTATION" if is_wiki_ext else "FUNCTIONAL_CODEBASE_LOGIC"
 
+# Matches a level-1 or level-2 ATX markdown header ("# " / "## ..."). See _structural_chunks()
+# for why only these two levels count as a hard chunk boundary.
+_MD_HARD_BOUNDARY = re.compile(r"^#{1,2}(\s|$)")
+
 def _structural_chunks(lines: list, target: int = 150, max_size: int = 300, overlap: int = 30) -> list:
     """Splits a file's lines into chunks that respect logical boundaries instead of blindly
     slicing every `target` lines regardless of what's in the middle. A fixed-size sliding window
@@ -1589,11 +1593,26 @@ def _structural_chunks(lines: list, target: int = 150, max_size: int = 300, over
     per-language keyword list.
 
     Consecutive small units are greedily merged up to `target` lines (matching the previous flat
-    chunk size, so typical output stays similarly sized). A single unit larger than `target` but
+    chunk size, so typical output stays similarly sized), EXCEPT across a top-level markdown
+    header (`#`/`##`) -- see `_MD_HARD_BOUNDARY` below. A single unit larger than `target` but
     not larger than `max_size` becomes its own chunk rather than being split (a complete large
     function beats an arbitrarily-cut one). Only a single unit that's *itself* bigger than
     `max_size` falls back to the old sliding-window slicing, scoped to just that unit, so no chunk
     is ever unbounded.
+
+    Why the header rule exists: a doc with many short `##` sections (each individually well under
+    `target` lines) used to get several unrelated sections silently packed into one chunk purely
+    because the running total hadn't hit `target` yet -- the crunching LLM then had to compress
+    multiple distinct topics into one summary, either dropping specific facts entirely or burying
+    them mid-paragraph where the model could retrieve but not reliably extract them. This is the
+    exact root cause manually diagnosed and fixed by hand across `CUBYZ_DEVELOPER_JUDGMENT.md`,
+    `GAME_DESIGN_PRINCIPLES.md`, `docs/gameplay/controls.md`, `docs_README.md`,
+    `docs/development/multiplayer.md`, and `docs/development/addons/blocks.md` during the
+    2026-07-20/21 RAG accuracy pushes (see README.md's Prototype 7 history) -- fixing it here so
+    the next full re-crunch doesn't reproduce the same bug class on the next new doc. `#`/`##` were
+    chosen (not `###`+) because that's the level every affected doc actually used for its
+    real topic divisions -- deeper headers are usually just sub-points of the same topic and
+    still benefit from being merged together into one coherent chunk.
     """
     if not lines:
         return []
@@ -1627,7 +1646,13 @@ def _structural_chunks(lines: list, target: int = 150, max_size: int = 300, over
             current_start = current_end = end
             continue
 
-        if end - current_start > target and current_end > current_start:
+        # A top-level markdown header always starts a new chunk rather than being silently
+        # absorbed into whatever's already accumulated, regardless of the running line count --
+        # never appears in Zig/JS source, so this is safe to check unconditionally without a
+        # per-language branch.
+        starts_new_topic = bool(_MD_HARD_BOUNDARY.match(lines[start])) if start < len(lines) else False
+
+        if current_end > current_start and (starts_new_topic or end - current_start > target):
             chunk_spans.append((current_start, current_end))
             current_start = start
 
@@ -1870,12 +1895,21 @@ def finetune_initialize_chunks(verbose: bool = True):
     old_hashes = read_json_file(FINETUNE_HASH_DB_FILE, {})
     current_hashes = {}
 
-    docs_entries = _load_kb_records_for_finetune("docs")
+    # Prototype 7 onward, fine-tune data is reviews-only (behavior/judgment, no fact Q&A) --
+    # finetune/scripts/assemble_sft_dataset.py's SOURCE_TYPES = {"reviews"} already discards any
+    # docs/codebase pairs at assembly time, so generating them here was pure wasted volunteer
+    # crunching effort (previously ~2,417 discarded examples' worth). Left the docs/codebase
+    # candidate-loading code below commented out, not deleted, in case a future prototype
+    # deliberately decides to bring fact Q&A back into fine-tuning -- flip the
+    # `for source_type, entries in (...)` line back to the 3-tuple version below if so.
+    # docs_entries = _load_kb_records_for_finetune("docs")
+    # codebase_entries = [r for r in _load_kb_records_for_finetune("codebase") if _finetune_codebase_qualifies(r)]
+    docs_entries = []
+    codebase_entries = []
     review_entries = _load_kb_records_for_finetune("reviews")
-    codebase_entries = [r for r in _load_kb_records_for_finetune("codebase") if _finetune_codebase_qualifies(r)]
 
     skipped_unchanged = 0
-    for source_type, entries in (("docs", docs_entries), ("codebase", codebase_entries), ("reviews", review_entries)):
+    for source_type, entries in (("reviews", review_entries),):
         for entry in entries:
             content_hash = calculate_content_hash(entry)
             current_hashes[entry["chunk_id"]] = content_hash
@@ -1899,8 +1933,8 @@ def finetune_initialize_chunks(verbose: bool = True):
         print("\n" + "─"*55)
         print("            FINE-TUNE PIPELINE METRICS                ")
         print("─"*55)
-        print(f" Docs candidates:       {len(docs_entries)}")
-        print(f" Codebase candidates:   {len(codebase_entries)}")
+        print(f" Docs candidates:       skipped (reviews-only since Prototype 7)")
+        print(f" Codebase candidates:   skipped (reviews-only since Prototype 7)")
         print(f" Review candidates:     {len(review_entries)}")
         print(f" Bypassed (unchanged):  {skipped_unchanged}")
         print(f" Active task targets:   {len(finetune_chunk_queue)}")

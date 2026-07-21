@@ -1,0 +1,1204 @@
+
+======================================================================
+[1/144] Q: What key moves the player forward in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_2225_discussion.md, docs_docs_gameplay_index.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_1922_discussion.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_0.md, codebase_assets_cubyz_entity_models_cubert.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The player moves forward by pressing the 'W' key.
+   [expected: W]
+
+======================================================================
+[2/144] Q: How does Cubyz store its player position data over the network?
+======================================================================
+[Retrieved 11 chunks: codebase_src_network_protocols_playerposition.md, docs_docs_development_multiplayer.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_index.md_chunk_0.md, github_issue_310_discussion.md, github_issue_1836_discussion.md, codebase_assets_cubyz_entity_models_cubert.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_engine_validation_bugs.md]
+
+A: Cubyz stores its player position data over the network using a protocol called `playerPosition`. This protocol is defined as a struct (`src/network/protocols.zig`, protocol id 4) that contains the player's current position, velocity, and a timestamp. The data is sent from the client to the server every time the world updates, with a maximum frequency of once every 50 milliseconds due to throttling.
+   [expected: The playerPosition struct sends/receives updates, sent no more than once every 50ms]
+
+======================================================================
+[3/144] Q: What happens if I place a block ID that doesn't exist in an addon?
+======================================================================
+[Retrieved 11 chunks: addon_creator_engine_validation_blocks.md, github_issue_1378_discussion.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, github_issue_2037_discussion.md, codebase_assets_cubyz_sbb_rock_hoodoo_large.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, github_pr_1509_comment_2113621541.md, github_issue_1150_discussion.md, codebase_assets_cubyz_sbb_cave_mantle_lava_pool.zig.zon_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md, docs_docs_faq.md_chunk_0.md]
+
+A: If you place a block ID that doesn't exist in an addon, the Cubyz engine will not crash. Instead, it will log "Couldn't find block {id}. Replacing it with air..." and substitute air for the non-existent block ID. This is one of the most useful diagnostic lines in the entire engine for troubleshooting issues related to missing or incorrect block references.
+   [expected: Engine doesn't crash -- logs "Couldn't find block {id}. Replacing it with air..." and substitutes air]
+
+======================================================================
+[4/144] Q: Who currently maintains Cubyz, and when was it originally created?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_history.md_chunk_0.md, docs_docs_development_how_to_contribute.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_0.md, github_issue_55_discussion.md, docs_docs_installation.md_chunk_1.md, docs_docs_development_modding.md_chunk_0.md, addon_creator_README.md_chunk_0.md, github_issue_1908_discussion.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, codebase_src_files.zig_chunk_0.md, codebase_assets_cubyz_sbb_tree_curl.zig.zon_chunk_0.md]
+
+A: Cubyz was initially created by zenith391 and ZaUserA on August 22, 2018. The project is now primarily maintained by QuantumDeveloper (also known as IntegratedQuantum), with others also contributing to its development.
+   [expected: Created Aug 22 2018 by zenith391 and ZaUserA; currently maintained by IntegratedQuantum]
+
+======================================================================
+[5/144] Q: In a Cubyz code review, what's the difference between when a change should get a debugging-style response vs a design-review response?
+======================================================================
+[Retrieved 12 chunks: docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_1.md, docs_CONTRIBUTING.md_chunk_1.md, docs_docs_development_history.md_chunk_0.md, docs_docs_development_how_to_contribute.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1449_discussion.md, docs_CONTRIBUTING.md_chunk_0.md, github_issue_1954_discussion.md, codebase_assets_cubyz_sbb_tree_cirrus_vine.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_mushroom_small_bolete.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md]
+
+A: A debugging-style response applies when a change addresses a genuine bug or "why doesn't this work" problem -- broken/incorrect runtime behavior. A design-review response applies when the discussion is about a design, style, or architectural choice with no broken behavior involved (e.g., issue #3279's excessive Zig cache disk usage was explicitly treated as "not a bug per se," just something to optionally mitigate; PR #2682's SparseSet-vs-VirtualList revert was an architectural/pointer-stability tradeoff discussion, not a bug fix). Misreading a design preference as a bug report (or vice versa) leads to fixing something that was never broken, or dismissing a real defect as "just style."
+   [expected: Debugging/diagnosis = a bug or 'why doesn't this work' issue; design-review = a design/style/architecture choice, not a bug]
+
+======================================================================
+[6/144] Q: Which key toggles fullscreen mode in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_2437_discussion.md, docs_docs_development_history.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_425_discussion.md, github_issue_1971_discussion.md, docs_docs_development_modding.md_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_sbb_mushroom_big_glimmergill_cap.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The key that toggles fullscreen mode in Cubyz is F11.
+   [expected: F11]
+
+======================================================================
+[7/144] Q: How do you access the creative inventory in Cubyz?
+======================================================================
+[Retrieved 13 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_gameplay_crafting.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_workbench_crafting.md_chunk_0.md, github_issue_2437_discussion.md, github_issue_1212_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, codebase_assets_cubyz_blocks_cloth_cyan.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_fence_cirrus.zig.zon_chunk_0.md]
+
+A: To access the Creative Inventory in Cubyz, you can press 'C'. This keybind is specifically designed for opening and closing the Creative menu. However, it's worth noting that there are suggestions to improve user experience by adding a visual button inside the inventory to open the Creative menu, which could make the functionality more intuitive and discoverable, especially for new players who may not be aware of the 'C' shortcut.
+   [expected: C]
+
+======================================================================
+[8/144] Q: What is the default multiplayer server port in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_multiplayer.md_chunk_0.md, github_issue_2410_discussion.md, github_issue_2449_discussion.md, docs_docs_development_multiplayer.md_chunk_1.md, docs_docs_development_multiplayer.md_chunk_2.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_biomes_highlands__defaults.zig.zon_chunk_0.md, addon_creator_engine_validation_biomes.md, addon_creator_engine_validation_blocks.md]
+
+A: The default multiplayer server port in Cubyz is 47649. This can be changed directly in the `settings.zig` file within the game's configuration.
+   [expected: 47649]
+
+======================================================================
+[9/144] Q: How many hearts of health does the player start with, and what's the total HP?
+======================================================================
+[Retrieved 10 chunks: github_issue_932_discussion.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_pr_2309_comment_2542699648.md, codebase_src_gui_windows_healthbar.zig_chunk_0.md, docs_docs_faq.md_chunk_0.md, codebase_assets_cubyz_biomes_forest_lush__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_fence__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_planks__defaults.zig.zon_chunk_0.md, addon_creator_engine_validation_items.md, addon_creator_engine_validation_biomes.md]
+
+A: The player starts with 8 hearts of health, which corresponds to a total of 16 health points. This information is derived from the discussion on Issue #932 regarding the design of health representation in Cubyz, where it was suggested that displaying health as a number could offer more modularity and clarity for players who need to manage their health carefully.
+   [expected: 8 hearts, 16 total health]
+
+======================================================================
+[10/144] Q: Can the player heal in Cubyz right now?
+======================================================================
+[Retrieved 12 chunks: docs_docs_faq.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_966_discussion.md, docs_docs_development_history.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_0.md, docs_docs_gameplay_index.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, github_issue_2569_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, codebase_assets_cubyz_entity_models_cubert.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_soil.zig.zon_chunk_0.md]
+
+A: No, there is currently no way to heal in Cubyz. Dying is the only way health resets, and there is no other means to regain it.
+   [expected: No -- there is currently no way to regain health other than dying]
+
+======================================================================
+[11/144] Q: What tool is used to damage/mine soil blocks in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_blocks_soil.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, codebase_assets_cubyz_blocks_soil.zig.zon_chunk_0.md, docs_docs_index.md_chunk_0.md, github_issue_2362_discussion.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, codebase_assets_cubyz_blocks_dirt.zig.zon_chunk_0.md, github_issue_172_discussion.md, addon_creator_engine_validation_blocks.md, addon_creator_README.md_chunk_0.md]
+
+A: In Cubyz, the Shover tool is required to break and mine soil blocks.
+   [expected: Shovers (shovels)]
+
+======================================================================
+[12/144] Q: How far can the Cubyz world extend on each axis?
+======================================================================
+[Retrieved 13 chunks: docs_docs_index.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_3316_discussion.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_0.md, docs_GAME_DESIGN_PRINCIPLES.md_chunk_0.md, github_issue_310_discussion.md, codebase_assets_cubyz_world_presets_flat.zig.zon_chunk_0.md, codebase_assets_cubyz_world_presets_default.zig.zon_chunk_0.md, addon_creator_engine_validation_biomes.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The Cubyz world is 2 billion blocks wide and deep on each axis, effectively making it infinite for regular gameplay. This extensive size allows players to explore vast distances without significant performance loss due to high-level of detail rendering up to 2400 blocks ahead.
+   [expected: 2 billion blocks on each axis]
+
+======================================================================
+[13/144] Q: What was Cubyz originally called before its current name?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_history.md_chunk_0.md, github_issue_427_discussion.md, docs_docs_development_how_to_contribute.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_3308_discussion.md, docs_docs_index.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, codebase_assets_cubyz_items__migrations.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes__migrations.zig.zon_chunk_0.md]
+
+A: Cubyz was initially called "Cubz" when it was created by zenith391 and ZaUserA on August 22, 2018. The project was later renamed to "Cubyz" on March 17, 2019, as suggested by zenith391.
+   [expected: "Cubz"]
+
+======================================================================
+[14/144] Q: Is Cubyz available on Mac? Why or why not?
+======================================================================
+[Retrieved 13 chunks: docs_docs_development_history.md_chunk_0.md, docs_README.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_installation.md_chunk_0.md, github_issue_324_discussion.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, github_issue_3329_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, codebase_assets_cubyz_sbb_tree_cirrus_upper_trunk.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md]
+
+A: Cubyz does not officially support Mac. The documented reason for this is that Mac lacks OpenGL 4.3, which Cubyz requires. However, there have been discussions about merging changes to allow Cubyz to compile on Mac in the future, with considerations for Vulkan support and avoiding unnecessary complexity.
+   [expected: No -- Mac is not supported because it lacks OpenGL 4.3]
+
+======================================================================
+[15/144] Q: What does the checkResult function do for Vulkan results in Cubyz's renderer?
+======================================================================
+[Retrieved 13 chunks: github_pr_1620_comment_2264982887.md, github_pr_1620_comment_2264975294.md, codebase_src_graphics_vulkan.zig_chunk_0.md, github_pr_1620_comment_2264999231.md, github_issue_102_discussion.md, github_pr_1620_comment_2265120721.md, github_issue_2962_discussion.md, github_issue_1955_discussion.md, codebase_src_gui_windows_debug_vulkan_info.zig_chunk_0.md, addon_creator_engine_validation_bug_skycolor.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, docs_CONTRIBUTING.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md]
+
+A: The `checkResult` function in Cubyz's renderer is responsible for handling and logging Vulkan error codes. It takes a Vulkan result code as input, converts it to a corresponding enum value using `std.enums.fromInt(VkResultEnum, result)`, and then checks if the result is successful (`VK_SUCCESS`). If the result is not successful, it logs an error message with the human-readable string from `VkResultEnum`. This function helps in debugging by providing clear error messages when Vulkan operations fail.
+   [expected: Logs a Vulkan error (unknown error code, or the specific error tag name) via std.log.err]
+
+======================================================================
+[16/144] Q: What is utils.NeverFailingAllocator in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_CONTRIBUTING.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_pr_1861_comment_2376168366.md, github_pr_1425_comment_2127380619.md, docs_docs_development_modding.md_chunk_0.md, codebase_assets_cubyz_sbb_mushroom_big_glimmergill_cap.zig.zon_chunk_0.md, codebase_assets_cubyz_world_presets_flat.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_engine_validation_blocks.md]
+
+A: utils.NeverFailingAllocator is a separate allocator interface that cannot return error.OutOfMemory. It is used to simplify code by providing a way to handle memory allocation errors without crashing the program. This is particularly useful for data structures like main.List and other utils structures built on it, as they can avoid complex error handling logic.
+   [expected: An allocator interface that cannot return error.OutOfMemory]
+
+======================================================================
+[17/144] Q: How does Cubyz's BinaryWriter manage its buffer as data is written?
+======================================================================
+[Retrieved 12 chunks: github_issue_1262_discussion.md, github_pr_1473_comment_2180912411.md, codebase_src_utils.zig_chunk_13.md, github_pr_1141_comment_1986336335.md, docs_docs_development_history.md_chunk_0.md, github_issue_1156_discussion.md, github_pr_1141_comment_1986320582.md, github_pr_1473_comment_2160432230.md, codebase_src_server_storage.zig_chunk_0.md, docs_CONTRIBUTING.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: The BinaryWriter struct manages a dynamic list of bytes, which serves as its internal buffer. As data is written using various methods like `writeInt`, `writeFloat`, and others, the buffer grows to accommodate the serialized data. The writer ensures proper alignment and endianness handling for integer writes and uses variable-length encoding for large integers. This approach allows for efficient storage of different data types within a single byte stream.
+
+For example, when writing an integer with non-standard bit sizes, BinaryWriter calculates the next full byte boundary and writes the integer using that type to ensure proper alignment and endianness handling. Similarly, the `writeVarInt` method serializes integers using variable-length encoding, which is efficient for large integers by repeatedly writing 7 bits of the integer value to a byte.
+
+The writer also supports appending raw byte slices and writing slices prefixed by their length, allowing for easy deserialization later. The use of `NeverFailingAllocator` ensures that memory allocation never fails, which is crucial for maintaining system stability. However, this approach may lead to increased memory usage if not managed properly.
+
+In summary, BinaryWriter manages its buffer as data is written by dynamically growing the internal list of bytes and ensuring proper alignment and endianness handling for different data types. This allows for efficient storage and retrieval of serialized data within a single byte stream.
+   [expected: A dynamically growing buffer]
+
+======================================================================
+[18/144] Q: Why might a Cubyz reviewer prefer std.StringHashMap's getOrPut over a separate contains-check plus insert?
+======================================================================
+[Retrieved 14 chunks: github_pr_2640_comment_2870794551.md, github_pr_2640_comment_2870929950.md, github_issue_3202_discussion.md, github_pr_1207_comment_2008814108.md, github_pr_1179_comment_1986342958.md, github_pr_2640_comment_2870918977.md, github_issue_1167_discussion.md, github_pr_1338_comment_2056762354.md, docs_docs_development_history.md_chunk_0.md, docs_CONTRIBUTING.md_chunk_0.md, codebase_src_server_terrain_biomes.zig_chunk_6.md, codebase_src_server_storage.zig_chunk_2.md, addon_creator_engine_validation_blocks.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The reviewer suggests that using `std.StringHashMap`'s `getOrPut` method is more efficient than performing a separate check for existence and then inserting the value. This approach avoids the overhead of two operations (checking if an element exists and then inserting it) by combining them into one call, which can lead to better performance and reduced code complexity.
+   [expected: getOrPut atomically retrieves-or-inserts in one operation instead of two lookups, reducing redundant memory accesses and complexity]
+
+======================================================================
+[19/144] Q: What's the default value for an item's food field in Cubyz if I don't set it?
+======================================================================
+[Retrieved 9 chunks: codebase_assets_cubyz_items_raw_meat.zig.zon_chunk_0.md, codebase_assets_cubyz_items_apple.zig.zon_chunk_0.md, addon_creator_engine_validation_items.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_addons_items.md_chunk_0.md, github_issue_966_discussion.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, addon_creator_engine_validation_blocks.md, github_issue_1150_discussion.md]
+
+A: The default value for an item's food field in Cubyz is 0. This means that if you do not specify a food value when creating an item, it will have no effect on the player's health or hunger levels.
+   [expected: 0]
+
+======================================================================
+[20/144] Q: Why might a biome's custom sky color not show up in-game even though I set it in the Addon Creator?
+======================================================================
+[Retrieved 10 chunks: addon_creator_engine_validation_bug_skycolor.md, github_issue_1401_discussion.md, github_issue_942_discussion.md, codebase_assets_cubyz_biomes_rare_crimson_wasteland__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_volcano__defaults.zig.zon_chunk_0.md, addon_creator_engine_validation_bugs.md, codebase_assets_cubyz_biomes_savannah__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_sky_islands__defaults.zig.zon_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md, docs_docs_faq.md_chunk_0.md]
+
+A: The issue arises because there is a mismatch between how the Addon Creator website exports biome colors and how the engine actually reads them. The website exports `.skyColor`/`.fogColor` as a 3-component float vector (`.{r, g, b}`, values 0-1) via `getHexColorAsRGBVector()`, while the engine reads them with `zon.get(u32, "fogColor")` / `zon.get(u32, "skyColor")`. This means that a packed integer (the fallback default is literally `0xffbfe2ff`) is expected by the engine. When a vector literal is read through a `u32` getter, it's very likely to fail to parse and silently fall back to the default color rather than crashing.
+   [expected: Format mismatch: the website exports skyColor/fogColor as a 3-component float vector, but the engine reads those fields as a packed u32 integer]
+
+======================================================================
+[21/144] Q: What key moves the player backward in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_2225_discussion.md, docs_docs_development_multiplayer.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_gameplay_index.md_chunk_0.md, github_issue_1922_discussion.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The player moves backward by pressing 'S'.
+   [expected: S]
+
+======================================================================
+[22/144] Q: Which key strafes the player left in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_2566_discussion.md, github_issue_3007_discussion.md, docs_docs_development_history.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_1922_discussion.md, docs_docs_development_multiplayer.md_chunk_0.md, codebase_assets_cubyz_entity_models_cubert.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: The key used to move the player left in Cubyz is 'A'.
+   [expected: A]
+
+======================================================================
+[23/144] Q: Which key strafes the player right in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_3007_discussion.md, github_issue_2566_discussion.md, github_issue_2437_discussion.md, docs_docs_development_history.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_0.md, codebase_assets_cubyz_entity_models_cubert.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: The retrieved context does not contain information about which key is used for strafing the player right.
+   [expected: D]
+
+======================================================================
+[24/144] Q: What key makes the player sprint in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_2225_discussion.md, github_issue_1971_discussion.md, github_issue_1978_discussion.md, github_pr_2026_comment_2437601267.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_entity_models_cubert.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: The player can sprint by holding down the Left control key. This is mentioned in the Controls documentation under the section for movement controls, where it specifies that sprinting is associated with the Left control key.
+   [expected: Left control]
+
+======================================================================
+[25/144] Q: What key makes the player jump in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_2225_discussion.md, github_issue_1971_discussion.md, docs_docs_development_history.md_chunk_0.md, github_issue_1922_discussion.md, docs_docs_faq.md_chunk_0.md, docs_docs_gameplay_index.md_chunk_0.md, codebase_assets_cubyz_entity_models_cubert.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_pyrolite_bricks.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: The player jumps by pressing the Space key.
+   [expected: Space]
+
+======================================================================
+[26/144] Q: How do you crouch in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_2225_discussion.md, github_issue_561_discussion.md, docs_docs_development_history.md_chunk_0.md, github_issue_1770_discussion.md, docs_docs_gameplay_index.md_chunk_0.md, codebase_assets_cubyz_biomes_cave_mantle_lower_base.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_rare_crying_cave.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: To crouch in Cubyz, press the left shift key. This action allows the player to move more slowly and prevents falling off blocks unless the block is slippery. Additionally, while crouching, the player can fit into 1.5-block-tall spaces.
+   [expected: Left shift]
+
+======================================================================
+[27/144] Q: What key toggles flying in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_controls.md_chunk_0.md, github_issue_1922_discussion.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_2225_discussion.md, docs_docs_development_multiplayer.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_biomes_cave_sky_islands__defaults.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: The key that toggles flying in Cubyz is F.
+   [expected: F]
+
+======================================================================
+[28/144] Q: What key toggles ghost mode in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_741_discussion.md, docs_docs_development_modding.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_0.md, github_issue_297_discussion.md, codebase_assets_cubyz_sbb_mushroom_big_glimmergill_cap.zig.zon_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: The key that toggles ghost mode in Cubyz is G.
+   [expected: G]
+
+======================================================================
+[29/144] Q: What key activates hyperspeed in Cubyz?
+======================================================================
+[Retrieved 13 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_2225_discussion.md, docs_docs_development_history.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, docs_docs_index.md_chunk_0.md, github_issue_1978_discussion.md, codebase_assets_cubyz_biomes_highlands__defaults.zig.zon_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The key that activates hyperspeed in Cubyz is H.
+   [expected: H]
+
+======================================================================
+[30/144] Q: What button places a block in Cubyz?
+======================================================================
+[Retrieved 13 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, github_issue_1787_discussion.md, docs_docs_gameplay_crafting.md_chunk_0.md, github_issue_307_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, codebase_assets_cubyz_blocks_pyrolite_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md]
+
+A: The right mouse button is used to place a block in Cubyz. This action allows players to interact with the game world by placing blocks into their surroundings, which can be used for building structures or creating various types of terrain. The placement of blocks is an essential part of gameplay, enabling players to construct and modify the environment according to their needs and preferences.
+   [expected: Right mouse button]
+
+======================================================================
+[31/144] Q: What button breaks a block in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, docs_docs_gameplay_controls.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_2362_discussion.md, docs_automation_not_supported.md_chunk_0.md, github_issue_1116_discussion.md, docs_docs_faq.md_chunk_0.md, codebase_assets_cubyz_blocks_cactus.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_cut_jade_block.zig.zon_chunk_0.md, addon_creator_engine_validation_blocks.md, addon_creator_README.md_chunk_0.md]
+
+A: In Cubyz, the left mouse button is used to break a block. This action starts the destruction process for the block that is currently selected with the crosshair.
+   [expected: Left mouse button]
+
+======================================================================
+[32/144] Q: How do you pick a block (select it into your hotbar) in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, github_pr_3313_comment_3560517031.md, github_issue_1212_discussion.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, codebase_assets_cubyz_blocks_pyrolite_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_slate_bricks.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: To pick a block into your hotbar, you need to hold down the middle mouse button. This action will select the block that is currently under your cursor and place it into one of the available slots in your hotbar.
+   [expected: Middle mouse button]
+
+======================================================================
+[33/144] Q: What key drops an item in Cubyz?
+======================================================================
+[Retrieved 14 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, docs_docs_index.md_chunk_0.md, codebase_assets_cubyz_blocks_copper_ore.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_ruins_slate_circle_treasure.zig.zon_chunk_0.md, github_issue_2732_discussion.md, github_issue_1269_discussion.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: In Cubyz, pressing Q drops an item. This action is part of the game's control scheme for interacting with blocks and items. When you press Q while holding an item in your hand or hotbar, it will be dropped to the ground.
+   [expected: Q]
+
+======================================================================
+[34/144] Q: What key takes a background image/screenshot in Cubyz?
+======================================================================
+[Retrieved 11 chunks: github_issue_1814_discussion.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_development_addons_models.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, codebase_assets_cubyz_blocks_cloth_cyan.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_sbb_child_cyan.zig.zon_chunk_0.md, github_issue_8_discussion.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: The key used to take a background image or screenshot in Cubyz is Print Screen.
+   [expected: Print Screen]
+
+======================================================================
+[35/144] Q: What key opens the regular (non-creative) inventory in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_gameplay_controls.md_chunk_0.md, github_issue_2437_discussion.md, docs_docs_development_history.md_chunk_0.md, docs_docs_gameplay_crafting.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, github_issue_2638_discussion.md, codebase_assets_cubyz_blocks_fence_cirrus.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_cloth_cyan.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The 'E' key opens the regular (non-creative) inventory in Cubyz. This is mentioned in the Controls documentation under the Utilities section, where it states that escaping menus is Escape, opening the regular inventory is E, and opening the creative inventory is C.
+   [expected: E]
+
+======================================================================
+[36/144] Q: How do you open chat in Cubyz?
+======================================================================
+[Retrieved 13 chunks: docs_docs_faq.md_chunk_0.md, docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_development_how_to_contribute.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_713_discussion.md, docs_docs_installation.md_chunk_1.md, github_issue_3349_discussion.md, codebase_src_gui_windows__list.zig_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: To open chat in Cubyz, press the 'T' key. This action will allow you to enter and interact with the chat window within the game.
+   [expected: T]
+
+======================================================================
+[37/144] Q: What key or character opens the command line in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_2437_discussion.md, docs_docs_development_multiplayer.md_chunk_0.md, github_issue_2566_discussion.md, github_issue_3349_discussion.md, docs_docs_development_history.md_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_src_gui_windows__list.zig_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The key that opens the command line in Cubyz is `/`. This allows players to enter commands directly within the game.
+   [expected: /]
+
+======================================================================
+[38/144] Q: What key hides the menu in Cubyz?
+======================================================================
+[Retrieved 13 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_2437_discussion.md, docs_docs_gameplay_crafting.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_gameplay_index.md_chunk_0.md, github_issue_3007_discussion.md, codebase_assets_cubyz_sbb_mushroom_big_glimmergill_cap.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_mushroom_small_bolete.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The F1 key is used to hide the main menu in Cubyz.
+   [expected: F1]
+
+======================================================================
+[39/144] Q: What key hides the display item in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_2566_discussion.md, docs_docs_faq.md_chunk_0.md, github_issue_3007_discussion.md, github_issue_2638_discussion.md, codebase_assets_cubyz_sbb_mushroom_big_glimmergill_cap.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_cloth_cyan.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: The F2 key hides the display item in Cubyz.
+   [expected: F2]
+
+======================================================================
+[40/144] Q: What key toggles the debug overlay in Cubyz?
+======================================================================
+[Retrieved 13 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, github_issue_1983_discussion.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_development_index.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1387_discussion.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_sbb_mushroom_big_glimmergill_cap.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The key that toggles the debug overlay in Cubyz is F3.
+   [expected: F3]
+
+======================================================================
+[41/144] Q: What key toggles the performance overlay in Cubyz?
+======================================================================
+[Retrieved 13 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_index.md_chunk_0.md, github_issue_2713_discussion.md, github_issue_1922_discussion.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_sbb_mushroom_big_glimmergill_cap.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The key that toggles the performance overlay in Cubyz is F4.
+   [expected: F4]
+
+======================================================================
+[42/144] Q: What key toggles the GPU overlay in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_installation.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, github_issue_2713_discussion.md, github_issue_1922_discussion.md, codebase_assets_cubyz_sbb_mushroom_big_glimmergill_cap.zig.zon_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The key that toggles the GPU overlay in Cubyz is F5.
+   [expected: F5]
+
+======================================================================
+[43/144] Q: What key toggles the network overlay in Cubyz?
+======================================================================
+[Retrieved 13 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1387_discussion.md, docs_docs_development_modding.md_chunk_0.md, github_issue_2784_discussion.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_blocks_sbb_child_cyan.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The key that toggles the network overlay in Cubyz is F6.
+   [expected: F6]
+
+======================================================================
+[44/144] Q: What key toggles the advanced network overlay in Cubyz?
+======================================================================
+[Retrieved 13 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_2784_discussion.md, github_issue_1387_discussion.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_blocks_leaves_cirrus.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The key that toggles the advanced network overlay in Cubyz is F7.
+   [expected: F7]
+
+======================================================================
+[45/144] Q: What key selects hotbar slot 10 in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_342_discussion.md, github_issue_715_discussion.md, github_issue_2713_discussion.md, github_issue_2437_discussion.md, github_issue_1622_discussion.md, github_issue_3007_discussion.md, codebase_src_gui_windows_hotbar.zig_chunk_0.md, codebase_src_main.zig_chunk_2.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: The key that selects hotbar slot 10 in Cubyz is the number key '0'.
+   [expected: 0]
+
+======================================================================
+[46/144] Q: What key selects hotbar slot 11 in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_342_discussion.md, github_issue_715_discussion.md, github_issue_2437_discussion.md, github_issue_1622_discussion.md, github_issue_2713_discussion.md, github_issue_3007_discussion.md, codebase_src_gui_windows_hotbar.zig_chunk_0.md, codebase_src_main.zig_chunk_1.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: The key that selects hotbar slot 11 in Cubyz is the minus (-) key.
+   [expected: - (minus)]
+
+======================================================================
+[47/144] Q: What key selects hotbar slot 12 in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_342_discussion.md, github_issue_715_discussion.md, github_issue_1622_discussion.md, github_issue_2437_discussion.md, github_issue_1282_discussion.md, github_issue_3007_discussion.md, codebase_src_gui_windows_hotbar.zig_chunk_0.md, codebase_assets_cubyz_items_selection_wand.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: The key that selects hotbar slot 12 in Cubyz is the equals sign (=).
+   [expected: = (equals)]
+
+======================================================================
+[48/144] Q: When was the project renamed from Cubz to Cubyz?
+======================================================================
+[Retrieved 13 chunks: docs_docs_development_history.md_chunk_0.md, github_issue_427_discussion.md, docs_docs_development_how_to_contribute.md_chunk_0.md, docs_CONTRIBUTING.md_chunk_1.md, docs_docs_index.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_1.md, github_issue_3308_discussion.md, codebase_assets_cubyz_items__migrations.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks__migrations.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: The project was renamed from Cubz to Cubyz on March 17 2019.
+   [expected: March 17, 2019, suggested by zenith391]
+
+======================================================================
+[49/144] Q: Why was Cubyz rewritten from Java to Zig?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_history.md_chunk_0.md, docs_CONTRIBUTING.md_chunk_0.md, docs_README.md_chunk_0.md, github_issue_1954_discussion.md, docs_docs_development_modding.md_chunk_0.md, github_issue_118_discussion.md, github_issue_3329_discussion.md, github_issue_2609_discussion.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md, codebase_assets_cubyz_sbb_tree_cirrus_vine.zig.zon_chunk_0.md, codebase_src_blueprint.zig_chunk_0.md]
+
+A: Cubyz was rewritten from Java to Zig primarily due to issues with Java's garbage collector. When the upper memory limit was hit, Java would try to free memory, causing the game to freeze for a noticeable time. This lag spike was not the only complaint QuantumDeveloper had with Java. Before choosing Zig, he considered C++20 (rejected because its new "modules" feature wasn't supported by major compilers like GCC or Clang at the time) and Rust (rejected because found its borrow checker "kind of annoying").
+   [expected: Java's garbage collector caused freeze-inducing lag spikes at the memory limit; Zig's cross-compilation support was also a major draw]
+
+======================================================================
+[50/144] Q: When was Cubyz version 0.0.0 released?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_history.md_chunk_0.md, docs_docs_installation.md_chunk_0.md, github_issue_1667_discussion.md, docs_docs_development_how_to_contribute.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_README.md_chunk_0.md, github_issue_2569_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, codebase_assets_cubyz_sbb_tree_cirrus_vine.zig.zon_chunk_0.md, codebase_src_blueprint.zig_chunk_0.md]
+
+A: Cubyz version 0.0.0 was released on October 5, 2025. This information can be found in the "Development History" section of the documentation (docs_docs_development_history.md_chunk_0.md).
+   [expected: October 5, 2025]
+
+======================================================================
+[51/144] Q: What language was Cubyz originally written in before the Zig rewrite?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_history.md_chunk_0.md, docs_README.md_chunk_0.md, docs_CONTRIBUTING.md_chunk_0.md, github_issue_1449_discussion.md, docs_docs_development_modding.md_chunk_0.md, github_issue_118_discussion.md, github_issue_1954_discussion.md, docs_docs_faq.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md, codebase_assets_cubyz_sbb_tree_curl.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md]
+
+A: Cubyz was initially created by zenith391 and ZaUserA on August 22, 2018 as "Cubz". The project was later rewritten from Java to Zig.
+   [expected: Java]
+
+======================================================================
+[52/144] Q: What alternative languages did the Cubyz maintainer consider before choosing Zig for the rewrite?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_history.md_chunk_0.md, docs_CONTRIBUTING.md_chunk_0.md, github_issue_1449_discussion.md, docs_README.md_chunk_0.md, github_issue_118_discussion.md, github_pr_2640_comment_2870929950.md, github_issue_111_discussion.md, github_issue_973_discussion.md, codebase_assets_cubyz_items__migrations.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_cirrus_vine.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md]
+
+A: The Cubyz maintainer considered C++20 and Rust as alternatives to Zig. However, they rejected both options: C++20 was rejected because its new "modules" feature wasn't supported by major compilers like GCC or Clang at the time, while Rust was rejected due to finding its borrow checker "kind of annoying."
+   [expected: C++20 and Rust]
+
+======================================================================
+[53/144] Q: What does the energy/stomach bar do in Cubyz right now?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_257_discussion.md, github_issue_966_discussion.md, docs_docs_gameplay_controls.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_965_discussion.md, codebase_assets_cubyz_blocks_bars__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_items_apple.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The energy/stomach bar currently does nothing in Cubyz. There is no way to gain or lose energy, and food cannot be eaten as it only serves as a cosmetic representation of hunger.
+   [expected: Nothing -- it's purely cosmetic, there's currently no way to gain or lose energy]
+
+======================================================================
+[54/144] Q: How many movement modes does the player have in Cubyz?
+======================================================================
+[Retrieved 14 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_gameplay_controls.md_chunk_0.md, docs_docs_gameplay_index.md_chunk_0.md, docs_GAME_DESIGN_PRINCIPLES.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_index.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, github_issue_2225_discussion.md, github_issue_1937_discussion.md, codebase_assets_cubyz_entity_models_cubert.zig.zon_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The player has three means of movement available: walking, sprinting (which is faster than walking), and crouching. Crouching allows the player to move more slowly but prevents falling off blocks unless the block is slippery. Additionally, stepping down from smaller blocks like stairs is still possible while crouching.
+   [expected: Three: walking, sprinting, and crouching]
+
+======================================================================
+[55/144] Q: How high can the player jump in Cubyz?
+======================================================================
+[Retrieved 13 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_2225_discussion.md, docs_docs_faq.md_chunk_0.md, docs_docs_index.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_gameplay_index.md_chunk_0.md, docs_GAME_DESIGN_PRINCIPLES.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1937_discussion.md, codebase_assets_cubyz_biomes_ferrock_mountains.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_tall_mountain_summit2.zig.zon_chunk_0.md, addon_creator_engine_validation_biomes.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The player can jump with enough elevation to cross exactly 1 whole block. This is a separate fact from the 1.5-block crouch-space number -- do not confuse the two.
+   [expected: Enough to cross one whole block]
+
+======================================================================
+[56/144] Q: How many hotbar slots does Cubyz have by default?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_342_discussion.md, docs_docs_gameplay_controls.md_chunk_0.md, github_issue_1282_discussion.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_index.md_chunk_0.md, codebase_src_gui_windows_hotbar.zig_chunk_0.md, codebase_assets_cubyz_blocks_bars__defaults.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: Cubyz has 12 hotbar slots by default. Each slot is bound to its own specific key, with the exact keys listed in the Controls documentation.
+   [expected: 12]
+
+======================================================================
+[57/144] Q: How many items can a single inventory or hotbar slot stack in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_342_discussion.md, github_issue_1282_discussion.md, github_issue_913_discussion.md, github_issue_875_discussion.md, docs_docs_development_addons_items.md_chunk_0.md, docs_docs_gameplay_controls.md_chunk_0.md, github_issue_1060_discussion.md, codebase_assets_cubyz_items_selection_wand.zig.zon_chunk_0.md, codebase_src_gui_components_BagSlot.zig_chunk_0.md, addon_creator_engine_validation_items.md, addon_creator_README.md_chunk_0.md]
+
+A: In Cubyz, each slot in both the inventory and the hotbar can hold up to 120 stacks of items. This means that if you have an item with a stack size of 64, for example, you could fit two full stacks into one slot. The exact number of items per stack is determined by the specific properties of each item, which are defined in the game's configuration files (`.zig.zon` files).
+   [expected: 120]
+
+======================================================================
+[58/144] Q: How many slots does the main inventory have in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_1282_discussion.md, github_issue_342_discussion.md, docs_docs_development_history.md_chunk_0.md, github_issue_1004_discussion.md, docs_docs_development_addons_items.md_chunk_0.md, github_issue_1060_discussion.md, docs_docs_gameplay_controls.md_chunk_0.md, codebase_src_gui_components_BagSlot.zig_chunk_0.md, codebase_assets_cubyz_items_selection_wand.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The main inventory has 20 slots. This information is mentioned in the retrieved context under the "Inventory and hotbar" section, where it states that pressing E (by default) opens the separate inventory screen, which has 20 slots.
+   [expected: 20]
+
+======================================================================
+[59/144] Q: What tool is used to mine stone, metal, and gem blocks in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_blocks_index.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, docs_docs_index.md_chunk_0.md, github_issue_2362_discussion.md, github_issue_869_discussion.md, github_issue_1269_discussion.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, codebase_assets_cubyz_blocks_cut_jade_block.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_copper_ore.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_engine_validation_blocks.md]
+
+A: In Cubyz, pickaxes are used to mine stone, metal, and gem blocks.
+   [expected: Pickaxe]
+
+======================================================================
+[60/144] Q: What tool is used to mine wooden blocks in Cubyz?
+======================================================================
+[Retrieved 13 chunks: docs_docs_blocks_index.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, github_issue_2362_discussion.md, docs_docs_index.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_1643_discussion.md, codebase_assets_cubyz_blocks_cut_jade_block.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_copper_ore.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_engine_validation_blocks.md]
+
+A: In Cubyz, axes are used to mine wooden blocks.
+   [expected: Axe]
+
+======================================================================
+[61/144] Q: What tool is used to harvest plants, leaves, and cloth in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, github_issue_1547_discussion.md, github_issue_1558_discussion.md, docs_docs_gameplay_crafting.md_chunk_0.md, docs_workbench_crafting.md_chunk_0.md, github_issue_2849_discussion.md, docs_docs_blocks_index.md_chunk_0.md, codebase_assets_cubyz_recipes_cloth_recipes.zig.zon_chunk_0.md, codebase_assets_cubyz_recipes_grass_recipes.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: In Cubyz, the sickle is the only tool that can be used to actually collect plants/leaves. This means that players must use a sickle to gather these items from their surroundings.
+   [expected: Sickle -- also the only way to actually collect plants/leaves, not possible bare-handed]
+
+======================================================================
+[62/144] Q: What happens if you use the wrong tool type on a block in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_blocks_index.md_chunk_0.md, github_issue_2362_discussion.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_1387_discussion.md, docs_automation_not_supported.md_chunk_0.md, github_issue_297_discussion.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_pyrolite_bricks.zig.zon_chunk_0.md, addon_creator_engine_validation_blocks.md, addon_creator_README.md_chunk_0.md]
+
+A: Using the wrong tool type on a block in Cubyz deals the same damage as bare hands. This means there is no bonus or penalty when using an inappropriate tool, and it can lead to inefficient mining or destruction of blocks.
+   [expected: It deals the same damage as bare hands -- no bonus, no penalty]
+
+======================================================================
+[63/144] Q: What operating systems does Cubyz support?
+======================================================================
+[Retrieved 14 chunks: docs_docs_installation.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_README.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, docs_docs_development_how_to_contribute.md_chunk_0.md, github_issue_55_discussion.md, github_issue_3329_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, codebase_src_files.zig_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md]
+
+A: Cubyz supports Windows and Linux. It does not support macOS due to OpenGL 4.3 compatibility issues.
+   [expected: Windows and Linux]
+
+======================================================================
+[64/144] Q: What OpenGL version does the Cubyz installation page list as the GPU requirement?
+======================================================================
+[Retrieved 12 chunks: docs_docs_installation.md_chunk_0.md, github_issue_694_discussion.md, github_issue_228_discussion.md, github_issue_1955_discussion.md, github_issue_2975_discussion.md, github_issue_324_discussion.md, docs_docs_development_history.md_chunk_0.md, docs_README.md_chunk_0.md, codebase_assets_cubyz_blocks_glass_cyan.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glacite_smooth.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_engine_validation_bug_skycolor.md]
+
+A: The retrieved context indicates that the minimum hardware requirements for Cubyz include a specific GPU with hardware support for OpenGL 4.6, such as Radeon Vega 8, Intel HD Graphics 530, or NVIDIA GTX 750. This information is mentioned in the documentation on installation requirements.
+   [expected: OpenGL 4.6 hardware support]
+
+======================================================================
+[65/144] Q: What command grants a player full admin permissions in Cubyz?
+======================================================================
+[Retrieved 11 chunks: docs_docs_development_permission_layer.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, github_issue_1961_discussion.md, docs_docs_faq.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_2802_discussion.md, github_issue_3349_discussion.md, codebase_assets_cubyz_entity_models_cubert.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The command `/perm add whitelist @<playerIndex> /` grants a player full admin permissions in Cubyz. This command whitelists the root path, which gives access to every command since whitelisting grants access to a path and all its children.
+   [expected: /perm add whitelist @<playerIndex> /]
+
+======================================================================
+[66/144] Q: What command grants a player access to just the /spawn command in Cubyz?
+======================================================================
+[Retrieved 11 chunks: docs_docs_development_permission_layer.md_chunk_0.md, github_issue_3349_discussion.md, github_pr_2447_comment_2679917426.md, docs_docs_development_multiplayer.md_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_pr_2862_comment_3064718532.md, github_pr_2862_comment_3064832857.md, codebase_src_server_command_spawn.zig_chunk_0.md, addon_creator_engine_validation_bugs.md, addon_creator_README.md_chunk_0.md]
+
+A: To grant a player access to just the `/spawn` command, you can use the following command:
+
+```
+/perm add whitelist @<playerIndex> /command/spawn
+```
+
+This command adds the specified player (`@<playerIndex>`) to the whitelist for the path `/command/spawn`, which grants them access to only the `/spawn` command.
+   [expected: /perm add whitelist @<playerIndex> /command/spawn]
+
+======================================================================
+[67/144] Q: What network protocol does Cubyz's server use for port forwarding?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_multiplayer.md_chunk_0.md, github_issue_2449_discussion.md, github_issue_1681_discussion.md, github_issue_2784_discussion.md, docs_docs_development_multiplayer.md_chunk_1.md, docs_docs_development_multiplayer.md_chunk_2.md, github_issue_266_discussion.md, github_issue_2894_discussion.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_src_network_protocols_playerposition.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: Cubyz's server uses UDP (User Datagram Protocol) for port forwarding. This is specified in the retrieved context under "Port forwarding uses this same default port unless changed, and the router's port-forward rule must select the UDP protocol specifically (not TCP) -- Cubyz's server networking runs over UDP."
+   [expected: UDP]
+
+======================================================================
+[68/144] Q: In Cubyz's permission system, if a path is both whitelisted and blacklisted, which wins?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_permission_layer.md_chunk_0.md, github_issue_2566_discussion.md, docs_docs_development_multiplayer.md_chunk_0.md, github_issue_2666_discussion.md, github_issue_2802_discussion.md, github_issue_3336_discussion.md, github_pr_2530_comment_2755005145.md, docs_docs_development_history.md_chunk_0.md, codebase_src_server_permission.zig_chunk_0.md, codebase_assets_cubyz_blocks_cloth_block_black.zig.zon_chunk_0.md, addon_creator_engine_validation_bugs.md, addon_creator_engine_validation_blocks.md]
+
+A: If a path is both whitelisted and blacklisted in Cubyz's permission system, the blacklist takes precedence. This means that even though the path was granted access through whitelisting, it will be blocked by the blacklist instead.
+   [expected: The blacklist takes priority]
+
+======================================================================
+[69/144] Q: What is the root of Cubyz's permission tree, and what is its only child?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_permission_layer.md_chunk_0.md, codebase_assets_cubyz_sbb_tree_baobab_grandidieri_roots.zig.zon_chunk_0.md, docs_docs_development_multiplayer.md_chunk_0.md, codebase_assets_cubyz_sbb_tree_coniferous_pine_eastern_white.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_oak_old_growth_root.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_birch_silver_1.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_coniferous_tree_roots.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_baobab_grandidieri_branch.zig.zon_chunk_0.md, github_issue_2802_discussion.md, github_pr_2530_comment_2755005145.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The root of Cubyz's permission tree is at `/`, with `command` as its only child. This structure allows for a hierarchical organization of permissions within the game.
+   [expected: Root is /, and its only child is command]
+
+======================================================================
+[70/144] Q: What's the one field the Cubyz engine truly requires for a block addon to be valid?
+======================================================================
+[Retrieved 12 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md, addon_creator_engine_validation_blocks.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, addon_creator_README.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_development_addons_models.md_chunk_0.md, github_issue_1150_discussion.md, github_issue_1705_discussion.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_pyrolite_bricks.zig.zon_chunk_0.md]
+
+A: The one field the Cubyz engine truly requires for a block addon to be valid is `.tags`. If this field ends up empty, it logs `"Block {id} is missing 'tags' field"` and the block still gets fully registered with an empty tag list. This is because tag-dependent behavior (drops, tool interactions, etc.) may not work correctly on it.
+   [expected: .tags must be non-empty]
+
+======================================================================
+[71/144] Q: What rotation mode does a Cubyz block default to if .rotation is omitted?
+======================================================================
+[Retrieved 13 chunks: docs_docs_development_addons_blocks.md_chunk_0.md, codebase_assets_cubyz_blocks_pyrolite_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_voidstone_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_nimbusite_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_ferrock_tile.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_ferrock_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_basalt_bricks.zig.zon_chunk_0.md, docs_docs_development_addons_models.md_chunk_0.md, addon_creator_engine_validation_blocks.md, addon_creator_engine_validation_entities_particles.md, github_issue_1150_discussion.md, github_issue_1016_discussion.md]
+
+A: If the `.rotation` field is omitted, a Cubyz block defaults to `"cubyz:no_rotation"`. This means that no rotation will be applied to the block.
+   [expected: "cubyz:no_rotation"]
+
+======================================================================
+[72/144] Q: What rotation value must a block have for its ore properties to actually load in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_addons_blocks.md_chunk_0.md, codebase_assets_cubyz_blocks_basalt_rough.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_pyrolite_rough.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_terracotta_rough.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_voidstone_rough.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_pyrolite_smooth.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_ferrock_tile.zig.zon_chunk_0.md, addon_creator_engine_validation_blocks.md, docs_docs_development_addons_models.md_chunk_0.md, addon_creator_engine_validation_items.md, github_issue_1150_discussion.md, github_issue_2030_discussion.md]
+
+A: The rotation value that must be specified for a block's ore properties to actually load in Cubyz is `"cubyz:ore"`. If an `.ore` block exists but the rotation isn't set to `"cubyz:ore"`, the engine logs "Ore must have rotation mode \"cubyz:ore\"!" and silently drops the ore properties, meaning the block still loads without its ore behavior.
+   [expected: Exactly "cubyz:ore"]
+
+======================================================================
+[73/144] Q: What happens if a Cubyz block has ore properties but the wrong rotation mode?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_addons_blocks.md_chunk_0.md, addon_creator_engine_validation_blocks.md, codebase_assets_cubyz_blocks_basalt_rough.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_terracotta_rough.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_voidstone_rough.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_pyrolite_rough.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_pyrolite_smooth.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_terracotta_smooth.zig.zon_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, github_issue_2030_discussion.md, github_issue_1150_discussion.md]
+
+A: If a Cubyz block has ore properties but the wrong rotation mode, the engine logs "Ore must have rotation mode \"cubyz:ore\"!" and silently drops the ore properties. The block still loads, just without its ore behavior.
+   [expected: The engine logs "Ore must have rotation mode \"cubyz:ore\"!" and silently drops the ore properties]
+
+======================================================================
+[74/144] Q: What happens if a Cubyz block's tags field ends up empty?
+======================================================================
+[Retrieved 10 chunks: github_issue_3195_discussion.md, addon_creator_engine_validation_blocks.md, codebase_assets_cubyz_blocks_sbb_child__defaults.zig.zon_chunk_0.md, docs_docs_development_history.md_chunk_0.md, codebase_assets_cubyz_blocks_pebbles.zig.zon_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, codebase_assets_cubyz_blocks_ice.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_sign__defaults.zig.zon_chunk_0.md, github_issue_3312_discussion.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: If a Cubyz block's tags field ends up empty, the engine logs `"Block {id} is missing 'tags' field"` as a warning-level problem. This logging occurs because tag-dependent behavior (drops, tool interactions, etc.) may not work correctly on it. However, the block does NOT fail to load or get skipped; instead, it still gets fully registered with an empty tag list.
+   [expected: The engine logs "Block {id} is missing 'tags' field" but doesn't fail loading -- the block still exists but may not behave correctly]
+
+======================================================================
+[75/144] Q: What does Cubyz's blockResistance field default to if omitted?
+======================================================================
+[Retrieved 12 chunks: addon_creator_engine_validation_blocks.md, docs_docs_development_addons_blocks.md_chunk_0.md, codebase_assets_cubyz_blocks_ruby_block.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_bars_copper.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_cut_amber_block.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_terracotta__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_bars_meteorite.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_cut_jade_block.zig.zon_chunk_0.md, addon_creator_engine_validation_items.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1150_discussion.md, github_issue_81_discussion.md]
+
+A: Cubyz's blockResistance field defaults to `0` if omitted. This means that any block without explicitly defined resistance will have no resistance to damage or explosions, making it easier for players to mine and break the block.
+   [expected: 0]
+
+======================================================================
+[76/144] Q: What's the default stack size for a Cubyz item if not specified?
+======================================================================
+[Retrieved 10 chunks: github_issue_875_discussion.md, docs_docs_development_addons_items.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, addon_creator_engine_validation_items.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1077_discussion.md, github_issue_2846_discussion.md, codebase_assets_cubyz_items_selection_wand.zig.zon_chunk_0.md, addon_creator_engine_validation_blocks.md, codebase_assets_cubyz_biomes_peak.zig.zon_chunk_0.md]
+
+A: The default stack size for a Cubyz item, if not specified, is 120. This value can be found in the documentation under 'docs_docs_development_addons_items.md'.
+   [expected: 120]
+
+======================================================================
+[77/144] Q: What does a Cubyz item's display name fall back to if .name isn't set?
+======================================================================
+[Retrieved 10 chunks: docs_docs_development_history.md_chunk_0.md, github_issue_427_discussion.md, addon_creator_engine_validation_items.md, codebase_assets_cubyz_items__migrations.zig.zon_chunk_0.md, github_issue_1378_discussion.md, github_issue_3195_discussion.md, github_issue_973_discussion.md, docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_1.md, addon_creator_engine_validation_blocks.md, codebase_assets_cubyz_blocks_cloth_cyan.zig.zon_chunk_0.md]
+
+A: A Cubyz item's display name falls back to the item's own `.id` if `.name` isn't set. This means that items exported via the website always display their raw ID as the tooltip name.
+   [expected: Its own item id]
+
+======================================================================
+[78/144] Q: Which four Cubyz item material fields have no soft default and fall back to exactly 0 if missing?
+======================================================================
+[Retrieved 9 chunks: addon_creator_engine_validation_items.md, docs_docs_development_addons_items.md_chunk_0.md, addon_creator_engine_validation_blocks.md, codebase_assets_cubyz_blocks_nimbusite__defaults.zig.zon_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, codebase_assets_cubyz_blocks_voidstone__defaults.zig.zon_chunk_0.md, github_pr_1332_comment_2054644152.md, codebase_assets_cubyz_items_copper_ingot.zig.zon_chunk_0.md, github_issue_604_discussion.md]
+
+A: The four Cubyz item material fields that have no soft default and fall back to exactly 0 if missing are:
+- `.massDamage`
+- `.hardnessDamage`
+- `.durability`
+- `.swingSpeed`
+
+If any of these fields are missing from a Cubyz item's material block, an error message will be logged indicating the missing attribute, and the field will be set to 0. For example, if durability is missing, it will log "Couldn't find material attribute 'durability'" and become 0, which means the item would break instantly.
+   [expected: durability, massDamage, hardnessDamage, and swingSpeed]
+
+======================================================================
+[79/144] Q: What happens if durability is missing from a Cubyz item's material block?
+======================================================================
+[Retrieved 11 chunks: addon_creator_engine_validation_items.md, codebase_assets_cubyz_blocks_voidstone__defaults.zig.zon_chunk_0.md, docs_docs_development_addons_items.md_chunk_0.md, codebase_assets_cubyz_blocks_nimbusite__defaults.zig.zon_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, codebase_assets_cubyz_blocks_marble__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_branch_bolete.zig.zon_chunk_0.md, addon_creator_engine_validation_blocks.md, github_issue_172_discussion.md, github_issue_1661_discussion.md]
+
+A: If durability is missing from a Cubyz item's material block, it falls back to exactly 0. This means the item will break instantly.
+   [expected: It falls back to 0, meaning the item breaks instantly]
+
+======================================================================
+[80/144] Q: What's the default value for textureRoughness in a Cubyz item's material block?
+======================================================================
+[Retrieved 12 chunks: addon_creator_engine_validation_items.md, docs_docs_development_addons_items.md_chunk_0.md, codebase_assets_cubyz_blocks_nimbusite__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_marble_rough.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_planks_birch.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_terracotta_rough.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_planks_cirrus.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_voidstone__defaults.zig.zon_chunk_0.md, addon_creator_engine_validation_blocks.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1074_discussion.md, github_pr_1332_comment_2054644152.md]
+
+A: The default value for `textureRoughness` in a Cubyz item's material block is 1.0 if it's missing, which differs from the website's own form default of 0.0.
+   [expected: 1.0 -- the one material field that does have a real default]
+
+======================================================================
+[81/144] Q: What do min/max radius default to for a Cubyz biome if not set?
+======================================================================
+[Retrieved 12 chunks: addon_creator_engine_validation_biomes.md, codebase_assets_cubyz_biomes_prairie_base.zig.zon_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_0.md, codebase_assets_cubyz_biomes_rare_crimson_wasteland_black_pit.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_volcano_slope4.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_desert_hoodoos_pit.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_volcano_base.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_bushlands__defaults.zig.zon_chunk_0.md, addon_creator_biomes.html_chunk_1.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_3312_discussion.md, github_issue_3235_discussion.md]
+
+A: The default values for minRadius and maxRadius are 256. If the maxRadius is not specified, it defaults to the value of minRadius.
+   [expected: 256]
+
+======================================================================
+[82/144] Q: What does a Cubyz biome's music field default to if omitted?
+======================================================================
+[Retrieved 13 chunks: codebase_assets_cubyz_biomes_highlands__defaults.zig.zon_chunk_0.md, addon_creator_engine_validation_biomes.md, codebase_assets_cubyz_biomes_ocean_temperate_island__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_ocean_cold_island__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_jungle__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_desert_oasis__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_rare_crimson_wasteland__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_bushlands__defaults.zig.zon_chunk_0.md, addon_creator_biomes.html_chunk_1.md, github_issue_3123_discussion.md, github_issue_796_discussion.md, docs_docs_development_addons_biomes.md_chunk_0.md, docs_docs_faq.md_chunk_0.md]
+
+A: A Cubyz biome's music field defaults to `"cubyz:totaldemented/cubyz"` if omitted. This is different from the Addon Creator website's own form default, which uses `'cubyz:sunrise'`.
+   [expected: "cubyz:totaldemented/cubyz"]
+
+======================================================================
+[83/144] Q: What music does the Addon Creator website itself default to for biomes, and how does that differ from the engine's default?
+======================================================================
+[Retrieved 13 chunks: codebase_assets_cubyz_biomes_highlands__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_ocean_temperate_island__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_ocean_cold_island__defaults.zig.zon_chunk_0.md, addon_creator_engine_validation_biomes.md, codebase_assets_cubyz_biomes_ocean_warm_island__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_tundra_snowy__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_rare_crimson_wasteland__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_jungle__defaults.zig.zon_chunk_0.md, addon_creator_biomes.html_chunk_0.md, github_issue_534_discussion.md, github_issue_732_discussion.md, docs_docs_development_addons_index.md_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_0.md]
+
+A: The Addon Creator website defaults to 'cubyz:sunrise' as the music track for biomes. This differs from the engine's default of 'cubyz:totaldemented/cubyz'.
+   [expected: The website defaults to 'cubyz:sunrise', which only matters if you hand-edit and drop the field -- the engine's own default is 'cubyz:totaldemented/cubyz']
+
+======================================================================
+[84/144] Q: What's the known bug with the 'valid player spawn' checkbox in the Addon Creator?
+======================================================================
+[Retrieved 11 chunks: addon_creator_engine_validation_bugs.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, github_issue_2300_discussion.md, github_issue_2097_discussion.md, github_pr_2862_comment_3064718532.md, docs_docs_faq.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, github_issue_2044_discussion.md, docs_docs_development_addons_index.md_chunk_0.md, codebase_assets_cubyz_biomes_development_flat.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_desert_oasis_pond.zig.zon_chunk_0.md]
+
+A: The known bug is that the Addon Creator website exports the biome "valid player spawn" checkbox under a field name (`isValidPlayerSpawn`) that the engine doesn't actually read. As a result, the setting silently never takes effect when using the website to create addons. The fix would be renaming the exported field in `app-save.js` to `validPlayerSpawn`, or hand-editing the exported file to use the correct engine field name (`validPlayerSpawn`).
+   [expected: The website exports it as .isValidPlayerSpawn but the engine actually reads .validPlayerSpawn (no 'is' prefix), so the value never gets picked up and falls back to false]
+
+======================================================================
+[85/144] Q: What tag convention do cave biomes need in Cubyz, and what happens if it's missing?
+======================================================================
+[Retrieved 13 chunks: codebase_assets_cubyz_biomes_cave_mantle_lower_base.zig.zon_chunk_0.md, addon_creator_engine_validation_biomes.md, codebase_assets_cubyz_biomes_cave_void_void.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_void_void_cavern.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_void_void_crystal.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_stone_forest.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_dropoff.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_starlit.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, github_issue_3312_discussion.md, github_issue_1463_discussion.md, docs_docs_development_addons_biomes.md_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md]
+
+A: Cave biomes in Cubyz require a specific tag convention that ends with "_layer". If this convention is not followed or if the required tag is missing, the engine will log an error message indicating that the cave biome is missing its '_layer' tag. This ensures proper assignment of the biome to a cave layer within the game world.
+   [expected: A tag ending in _layer -- otherwise the engine logs "Cave biome {id} is missing a '_layer' tag to assign it to a cave layer."]
+
+======================================================================
+[86/144] Q: What does the .reversible field do on a Cubyz recipe, and what's its default?
+======================================================================
+[Retrieved 10 chunks: addon_creator_engine_validation_recipes.md, codebase_assets_cubyz_recipes_special_recipes.zig.zon_chunk_0.md, github_issue_2037_discussion.md, codebase_assets_cubyz_recipes_cloth_recipes.zig.zon_chunk_0.md, codebase_assets_cubyz_recipes_brick_recipes.zig.zon_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, addon_creator_recipes.html_chunk_0.md, github_issue_2301_discussion.md]
+
+A: The `.reversible` field in a Cubyz recipe determines whether the engine auto-generates the reverse recipe when it is set to `true`. This means that if the recipe has exactly two items total (one input and one output), the engine will create a corresponding reverse recipe where the output becomes an input and vice versa. If any other combination of inputs and outputs is used, parsing fails with an error called `InvalidReversibleRecipe`.
+
+The default value for `.reversible` is `false`.
+   [expected: If true, the engine auto-generates the reverse recipe (output becomes input and vice versa); defaults to false, and the website doesn't expose it]
+
+======================================================================
+[87/144] Q: What's the limitation on a reversible Cubyz recipe?
+======================================================================
+[Retrieved 10 chunks: addon_creator_engine_validation_recipes.md, codebase_assets_cubyz_recipes_special_recipes.zig.zon_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, codebase_assets_cubyz_recipes_cloth_recipes.zig.zon_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_2301_discussion.md, addon_creator_recipes.html_chunk_0.md, github_issue_2037_discussion.md]
+
+A: The limitation on a reversible Cubyz recipe is that it must have exactly two items total (1 input + 1 output). If any other combination of inputs and outputs is used, parsing will fail with an error called `InvalidReversibleRecipe`. This means that for a recipe to be reversible, the engine needs to be able to generate the reverse recipe by swapping the input and output items.
+   [expected: It only works for a recipe with exactly one input and one output -- on a multi-ingredient recipe it fails with error.InvalidReversibleRecipe]
+
+======================================================================
+[88/144] Q: What does a Cubyz entity model's .height field default to if omitted, and how does that differ from the website?
+======================================================================
+[Retrieved 12 chunks: codebase_assets_cubyz_entity_models_moffalo.zig.zon_chunk_0.md, codebase_assets_cubyz_entity_models_missing.zig.zon_chunk_0.md, addon_creator_engine_validation_entities_particles.md, codebase_assets_cubyz_entity_models_snail.zig.zon_chunk_0.md, codebase_assets_cubyz_entity_models_cubert.zig.zon_chunk_0.md, codebase_assets_cubyz_entity_models_snale.zig.zon_chunk_0.md, codebase_assets_cubyz_entity_models_snela.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, docs_docs_development_addons_models.md_chunk_0.md, docs_docs_development_addons_blocks.md_chunk_0.md, github_issue_1649_discussion.md, github_pr_2733_comment_2964407240.md]
+
+A: A Cubyz entity model's `.height` field defaults to `1` if omitted. This differs from the website's own form default of `2.0`. However, this divergence only applies to hand-written files since the website always writes a value for this field.
+   [expected: 1, but the Addon Creator website's own form defaults to 2.0 instead -- this only diverges for hand-written files]
+
+======================================================================
+[89/144] Q: What coordinate system does a Cubyz entity model default to?
+======================================================================
+[Retrieved 12 chunks: codebase_assets_cubyz_entity_models_moffalo.zig.zon_chunk_0.md, codebase_assets_cubyz_entity_models_cubert.zig.zon_chunk_0.md, codebase_assets_cubyz_entity_models_snail.zig.zon_chunk_0.md, codebase_assets_cubyz_entity_models_snela.zig.zon_chunk_0.md, docs_docs_development_addons_models.md_chunk_0.md, codebase_assets_cubyz_entity_models_missing.zig.zon_chunk_0.md, codebase_assets_cubyz_entity_models_snale.zig.zon_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_310_discussion.md, github_issue_1649_discussion.md, addon_creator_entities.html_chunk_0.md, addon_creator_engine_validation_entities_particles.md]
+
+A: A Cubyz entity model defaults to using the right-handed Z-up coordinate system. This means that the positive Y-axis points upwards, and the positive X-axis points towards the viewer. The coordinate system is specified in the configuration file for each entity model, with the field `.coordinateSystem` set to `.right_handed_z_up`.
+   [expected: .right_handed_z_up]
+
+======================================================================
+[90/144] Q: What happens if a Cubyz particle definition is missing its .texture field?
+======================================================================
+[Retrieved 10 chunks: addon_creator_engine_validation_entities_particles.md, github_issue_3231_discussion.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_3122_discussion.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, docs_docs_development_addons_models.md_chunk_0.md, github_issue_1521_discussion.md, github_pr_1367_comment_2068705882.md, codebase_assets_cubyz_particles_poof.zig.zon_chunk_0.md, codebase_assets_cubyz_entity_models_missing.zig.zon_chunk_0.md]
+
+A: If a Cubyz particle definition is missing its `.texture` field, it will result in a hard failure during registration. The engine logs an error message indicating that the texture ID was not specified for the given particle type (`"Particle texture id was not specified for {id}"`) and fails to register the particle entirely. This means that any attempt to use this particle type will be unsuccessful until the missing `.texture` field is provided.
+   [expected: The engine logs "Particle texture id was not specified for {id}" and the particle type fails to register entirely -- unlike most particle fields, this one has no fallback]
+
+======================================================================
+[91/144] Q: What's the dimension requirement for a Cubyz particle's base texture?
+======================================================================
+[Retrieved 9 chunks: docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_3122_discussion.md, docs_docs_development_addons_models.md_chunk_0.md, codebase_assets_cubyz_blocks_sbb_child_cyan.zig.zon_chunk_0.md, addon_creator_engine_validation_entities_particles.md, codebase_assets_cubyz_blocks_sbb_child_crimson.zig.zon_chunk_0.md, github_issue_8_discussion.md, codebase_assets_cubyz_blocks_nimbusite_pillar.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md]
+
+A: The engine logs an error if the base texture dimensions are incorrect, specifically if the height is not a multiple of the width. This ensures that the texture can be properly sliced into animation frames.
+   [expected: The texture's height must be an exact multiple of its width, since it's used to slice animation frames]
+
+======================================================================
+[92/144] Q: What unit are particle rotation velocity fields in on the Addon Creator website versus internally in the engine?
+======================================================================
+[Retrieved 11 chunks: addon_creator_engine_validation_entities_particles.md, codebase_assets_cubyz_particles_flame.zig.zon_chunk_0.md, codebase_assets_cubyz_particles_poof.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, addon_creator_particles.html_chunk_0.md, codebase_src_particles.zig_chunk_5.md, github_pr_2066_comment_2472308275.md, addon_creator_engine_validation_blocks.md, github_pr_3297_comment_3560914855.md, docs_docs_development_addons_blocks.md_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md]
+
+A: The Addon Creator website uses degrees for particle rotation velocity fields, while the engine converts these values to radians internally after loading. This means that when you type a value in degrees on the website or in the file, it is interpreted as degrees and then converted to radians within the engine.
+   [expected: Degrees on the website; the engine converts to radians internally after loading, so the stored file value still matches what you typed]
+
+======================================================================
+[93/144] Q: Why would a Cubyz reviewer push back on using a Hashmap for random indexing into tickable blocks?
+======================================================================
+[Retrieved 14 chunks: github_pr_1338_comment_2056762354.md, github_pr_1338_comment_2063812403.md, github_pr_1338_comment_2058529850.md, github_pr_1476_comment_2117642766.md, github_pr_1476_comment_2127423845.md, github_pr_1476_comment_2127416960.md, github_pr_2381_comment_2637109731.md, github_pr_1476_comment_2098735375.md, docs_docs_development_history.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, codebase_src_server_SimulationChunk.zig_chunk_0.md, codebase_assets_cubyz_sbb_mushroom_big_glimmergill_cap.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_engine_validation_blocks.md]
+
+A: The reviewer suggests that using a hashmap for random indexing is inefficient. They recommend reconsidering the need for a list of tickable blocks, as it may be premature optimization. The choice between a hashmap and a list depends on the specific requirements and constraints of the application. In this case, the reviewer believes that a list might be more suitable for random indexing, although they do not provide a detailed explanation or alternative solution.
+   [expected: Hashmaps have average O(1) lookups but can degrade to O(n) worst case, and maintaining a list of tickable blocks was already being reconsidered -- adding this now looked like premature optimization]
+
+======================================================================
+[94/144] Q: Why might a Cubyz reviewer suggest replacing manual string-splitting argument parsing with argparse?
+======================================================================
+[Retrieved 12 chunks: github_issue_3284_discussion.md, github_pr_1425_comment_2087332925.md, github_pr_1425_comment_2084857028.md, docs_docs_development_history.md_chunk_0.md, github_issue_1449_discussion.md, docs_CONTRIBUTING.md_chunk_0.md, docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_1.md, github_issue_3073_discussion.md, codebase_src_argparse.zig_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: A reviewer might suggest replacing manual string-splitting argument parsing with argparse for several reasons:
+
+1. **Improved Code Readability**: Using `argparse.zig` can make the code more readable and maintainable by providing a structured way to handle arguments, reducing redundancy.
+
+2. **Enhanced Error Handling**: The `Parser` function in `argparse.zig` allows for better error handling by explicitly managing errors through `try`. This ensures that any issues with argument parsing are caught and handled appropriately.
+
+3. **Better Debugging Information**: By using a named struct within the `Parser` function, the code becomes easier to debug as it provides clearer variable names and structure.
+
+4. **Consistent API Design**: The change aligns with Zig's philosophy of explicitness and safety, ensuring that the API is both powerful and easy to understand.
+
+5. **Flexibility and Reusability**: Using generics (`comptime T: type`) allows the `Parser` function to be flexible and reusable across different argument types, promoting a more modular design.
+
+6. **Simplified Usage**: The introduction of `ArgParser.Args` directly simplifies the usage of arguments by eliminating the need for separate aliases.
+
+Overall, these benefits contribute to a more robust and user-friendly command-line interface in Cubyz.
+   [expected: Manual splitting was brittle -- it assumed exact spacing, required repeated string comparisons, and used a custom Helper struct that had to be manually initialized and deferred]
+
+======================================================================
+[95/144] Q: Why would a Cubyz reviewer accept a stack-allocator-to-arena-allocator change for asset IDs despite a small memory-leak-on-error risk?
+======================================================================
+[Retrieved 12 chunks: docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_0.md, docs_CONTRIBUTING.md_chunk_0.md, github_issue_1866_discussion.md, github_pr_1125_comment_1980124844.md, github_pr_1861_comment_2376168366.md, github_pr_1861_comment_2376216985.md, github_pr_1861_comment_2376034996.md, github_pr_1478_comment_2133792801.md, codebase_src_utils_heap.zig_chunk_0.md, codebase_src_utils_heap.zig_chunk_2.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_engine_validation_bug_skycolor.md]
+
+A: The reviewer's acceptance of this change likely stems from the prioritization of performance and efficiency over minor risks like potential memory leaks on error paths. By using an arena allocator, which can handle larger data structures more effectively than a stack allocator, the codebase may benefit from improved performance and reduced overhead associated with managing multiple small allocations. Additionally, the reviewer might have considered that the specific use case for asset IDs does not require the same level of memory management as other components, making the change less risky in terms of overall system stability.
+
+However, it's important to note that any potential memory leak on error paths should be carefully evaluated and addressed if necessary. This could involve implementing additional error handling mechanisms or using alternative allocators that are more resilient to such issues. The decision ultimately depends on a balance between performance gains and the risk of introducing new problems, which is why thorough testing and review processes are essential in maintaining code quality and reliability.
+   [expected: It simplifies the code and avoids issues with stack allocation, and the arena is reset when leaving the world context, so the rare error-path leak was judged an acceptable tradeoff]
+
+======================================================================
+[96/144] Q: In Cubyz's Blueprint capture code, what convention does min/max follow architecturally?
+======================================================================
+[Retrieved 10 chunks: docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_pr_1141_comment_1986336335.md, github_pr_2825_comment_3039281803.md, docs_docs_development_history.md_chunk_0.md, github_pr_1141_comment_1986320582.md, docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_1.md, codebase_assets_cubyz_sbb_cave_mantle_ruins.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_candy_cane_thin_top_small.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md]
+
+A: The architectural convention followed by min/max operations in the Blueprint capture code is to calculate the bounds for capturing blocks from the world. This involves determining the minimum and maximum coordinates between two positions and then iterating through the range to capture each block. The reviewer suggests encapsulating this logic within a dedicated struct, such as `Selection`, which includes methods for initialization and size calculation, reducing redundancy in min/max operations.
+   [expected: min is inclusive, max is exclusive -- mirroring how size() elsewhere in the codebase adds one and avoids bounds failures]
+
+======================================================================
+[97/144] Q: Why doesn't Cubyz use separate dimensions for different areas?
+======================================================================
+[Retrieved 13 chunks: docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_index.md_chunk_0.md, docs_GAME_DESIGN_PRINCIPLES.md_chunk_0.md, github_issue_3316_discussion.md, docs_docs_blocks_index.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_1463_discussion.md, codebase_assets_cubyz_world_presets_flat.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_void_void_crystal.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: Cubyz avoids using separate dimensions because it aims to maintain immersion and exploration within its single, infinite world. By keeping all areas physically connected rather than splitting them into distinct dimensions, the game encourages players to explore continuously without encountering abrupt transitions or barriers between worlds. This design choice aligns with Cubyz's focus on creating a cohesive and engaging environment where players can freely choose their own path through the vast terrain.
+   [expected: Instead of creating separate dimensions, these places are fit physically into Cubyz's massive world for the player to come across]
+
+======================================================================
+[98/144] Q: Why doesn't Cubyz have teleportation?
+======================================================================
+[Retrieved 13 chunks: docs_docs_faq.md_chunk_0.md, docs_GAME_DESIGN_PRINCIPLES.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_2574_discussion.md, docs_docs_development_multiplayer.md_chunk_0.md, docs_docs_index.md_chunk_0.md, docs_docs_gameplay_controls.md_chunk_0.md, github_issue_3349_discussion.md, codebase_assets_cubyz_blocks_void.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_pyrolite_bricks.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: Cubyz avoids teleportation because it diminishes immersion and exploration. The game's design principles emphasize creating an immersive experience where players are encouraged to explore and interact with the world rather than using shortcuts like teleportation. This decision aligns with the 'Break the Cycle' rule, which aims to enhance player engagement by discouraging certain behaviors that could make exploration less meaningful or engaging.
+   [expected: Teleportation makes the game less immersive -- it diminishes the exploring aspect and doesn't let the player get a good sense of the scale of the world]
+
+======================================================================
+[99/144] Q: Per Cubyz's Game Design Principles, why is automation avoided?
+======================================================================
+[Retrieved 13 chunks: docs_GAME_DESIGN_PRINCIPLES.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, docs_GAME_DESIGN_PRINCIPLES.md_chunk_1.md, github_issue_1705_discussion.md, docs_docs_gameplay_index.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_984_discussion.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md, codebase_assets_cubyz_blocks_copper_ore.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_cut_amber_block.zig.zon_chunk_0.md]
+
+A: Automation is avoided in Cubyz to enhance player engagement and encourage actual exploration. The game design principle "No Automation" aims to discourage players from relying on quick, infinite resources that could diminish the immersive experience of exploring and building within the world. By requiring all crafting and resource gathering to be done manually, Cubyz promotes a more hands-on approach to gameplay, ensuring that players must actively engage with the environment rather than simply automating tasks.
+   [expected: Having quick, infinite resources at the palm of players' hands discourages exploration, since the player will never need to forage or search for blocks they desire]
+
+======================================================================
+[100/144] Q: Do mobs respawn naturally in Cubyz, per the Game Design Principles?
+======================================================================
+[Retrieved 12 chunks: docs_GAME_DESIGN_PRINCIPLES.md_chunk_0.md, github_issue_242_discussion.md, github_issue_1201_discussion.md, docs_docs_faq.md_chunk_0.md, github_issue_904_discussion.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, codebase_assets_cubyz_biomes_savannah_base.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_ferrock_mountains.zig.zon_chunk_0.md, addon_creator_engine_validation_biomes.md, addon_creator_engine_validation_blocks.md]
+
+A: No, mobs do not respawn naturally in Cubyz. According to the discussion on Issue #242, the maintainer suggests that clearing dangerous areas makes them safe for building and exploration, preventing mob farming. Additionally, there is a proposal to trigger chunk saving upon enemy death (e.g., spawning a loot chest instead of dropping items) to discourage mob grinding. This approach aligns with the 'Break the Cycle' design rule mentioned in the Game Design Principles document.
+   [expected: No -- clearing a dangerous area of its monsters makes it safe to build and explore, and this also prevents mob farming]
+
+======================================================================
+[101/144] Q: Are there passive animals in Cubyz, per the Game Design Principles?
+======================================================================
+[Retrieved 14 chunks: docs_GAME_DESIGN_PRINCIPLES.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_gameplay_index.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_GAME_DESIGN_PRINCIPLES.md_chunk_1.md, github_issue_1385_discussion.md, github_issue_1705_discussion.md, codebase_assets_cubyz_sbb_cactus_saguaro.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_birch_silver_1.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: No, Cubyz doesn't have passive animals. According to the 'Break the Cycle' design rules mentioned in the Game Design Principles, it's important to avoid having passive animals because they would defend themselves or flee when threatened, which forces players to strategize for hunting instead of simply being able to catch them easily.
+   [expected: No -- animals do not want to die, so they either run from an attacking player or attempt to defend themselves]
+
+======================================================================
+[102/144] Q: Why does Cubyz avoid unbreakable tools, per the Game Design Principles?
+======================================================================
+[Retrieved 12 chunks: docs_GAME_DESIGN_PRINCIPLES.md_chunk_0.md, github_issue_2362_discussion.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_984_discussion.md, github_issue_172_discussion.md, github_issue_1584_discussion.md, github_issue_1705_discussion.md, docs_automation_not_supported.md_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_engine_validation_items.md, codebase_assets_cubyz_tools_axe.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_cut_amber_block.zig.zon_chunk_0.md]
+
+A: According to the retrieved context, Cubyz avoids unbreakable tools as part of its "Break the Cycle" design rules. This decision is intended to prevent tool misuse and ensure that players understand the importance of resource management. By making tools breakable, Cubyz aims to guide new players through the world without needing tutorials or random experimentation.
+   [expected: If a player gets too attached to an unbreakable tool, they won't want to make other types of tools, and low-tier materials will see less use]
+
+======================================================================
+[103/144] Q: What is the "2OP4ME" balancing principle in Cubyz's Game Design Principles?
+======================================================================
+[Retrieved 13 chunks: docs_GAME_DESIGN_PRINCIPLES.md_chunk_1.md, docs_GAME_DESIGN_PRINCIPLES.md_chunk_0.md, github_issue_1705_discussion.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_gameplay_index.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_427_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, codebase_assets_cubyz_biomes_prairie__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_ferrock_mountains.zig.zon_chunk_0.md]
+
+A: The "2OP4ME" (Players need to be vulnerable at all times) balancing principle in Cubyz means that players must always be at risk or vulnerable during gameplay. This ensures that no player can win outright with an advantage, maintaining a balanced and fair experience for everyone involved. The principle applies to various aspects of the game, such as armor, tools, accessories, and buffs, which should aid the player rather than letting them dominate completely.
+   [expected: Players need to be vulnerable at all times to avoid power imbalances -- armor, tools, accessories, and buffs should aid the player, not let them win outright]
+
+======================================================================
+[104/144] Q: What's the design difference between big trees and small trees in Cubyz?
+======================================================================
+[Retrieved 14 chunks: codebase_assets_cubyz_sbb_tree_tuften_tuft_canopy.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_mahogany_sapele_small.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_mahogany_khaya_ivorensis_small.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_tuften_young_tuft_canopy.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_birch_silver_1.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_cirrus_upper_trunk.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_mahogany_sapele_large.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_mahogany_khaya_ivorensis_medium.zig.zon_chunk_0.md, github_issue_2220_discussion.md, github_issue_1396_discussion.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_GAME_DESIGN_PRINCIPLES.md_chunk_1.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: According to the retrieved context, the design difference between big trees and small trees in Cubyz is that big trees are designed to be built upon or left as decoration, while small trees are designed to be chopped down. This distinction helps create a variety of gameplay experiences and encourages players to interact with different types of trees in unique ways.
+   [expected: Big trees are designed to be built upon or left as decoration, whereas small trees are designed to be chopped down]
+
+======================================================================
+[105/144] Q: What's the maximum recommended size for a Cubyz pull request?
+======================================================================
+[Retrieved 14 chunks: docs_CONTRIBUTING.md_chunk_1.md, docs_CONTRIBUTING.md_chunk_2.md, docs_docs_development_how_to_contribute.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_CONTRIBUTING.md_chunk_0.md, docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_1.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_1705_discussion.md, github_issue_1954_discussion.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md, codebase_assets_cubyz_sbb_rock_hoodoo_large.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md]
+
+A: According to the retrieved context, the maximum recommended size for a Cubyz pull request is 200 lines. This limit ensures that each PR remains focused on a single concern and reduces the risk of merge conflicts as other work lands in parallel.
+   [expected: No more than 200 lines -- the maintainer may refuse to review larger PRs]
+
+======================================================================
+[106/144] Q: What are Cubyz's four main allocators and their intended lifetimes?
+======================================================================
+[Retrieved 12 chunks: docs_CONTRIBUTING.md_chunk_0.md, docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_409_discussion.md, github_pr_1861_comment_2376168366.md, github_pr_1125_comment_1980129103.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_pr_2285_comment_2528589117.md, codebase_src_utils_heap.zig_chunk_0.md, codebase_assets_cubyz_sbb_tree_curl_curl.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: Cubyz's four main allocators and their intended lifetimes are:
+
+1. `main.globalArena`: For global/game-lifetime data, such as mod registry data.
+2. `main.worldArena`: For world-lifetime data, including assets/addons that are freed when the player exits the world.
+3. `main.stackAllocator`: For local/scope-lifetime data, which is freed at the end of its scope.
+4. `main.globalAllocator`: For other lifetimes.
+
+These allocators are chosen based on their intended use and lifetime to ensure efficient memory management in Cubyz.
+   [expected: main.globalArena for global lifetime (used until the game ends), main.worldArena for world lifetime (used until the player exits the world), main.stackAllocator for local/scope lifetime, and main.globalAllocator for other lifetimes]
+
+======================================================================
+[107/144] Q: What naming convention does Cubyz use for variables and functions?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_history.md_chunk_0.md, docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_1.md, docs_CONTRIBUTING.md_chunk_2.md, github_issue_427_discussion.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1152_discussion.md, docs_docs_faq.md_chunk_0.md, docs_CONTRIBUTING.md_chunk_0.md, codebase_assets_cubyz_sbb_mushroom_small_bolete.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_oak_old_growth_top.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: Cubyz uses camelCase for variables, constants, and functions. This means that the first letter of each word should be lowercase, except for the first word which starts with a capital letter. For example, a variable named "myVariable" or a function named "calculateSum".
+   [expected: camelCase]
+
+======================================================================
+[108/144] Q: What naming convention does Cubyz use for types?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_history.md_chunk_0.md, github_issue_427_discussion.md, docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_1.md, github_issue_1762_discussion.md, docs_CONTRIBUTING.md_chunk_2.md, github_issue_1378_discussion.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md, codebase_assets_cubyz_sbb_tree_oak_old_growth_top.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_mushroom_big_glimmergill_cap.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: Cubyz uses PascalCase for types.
+   [expected: CapitalCamelCase (PascalCase)]
+
+======================================================================
+[109/144] Q: What naming convention does Cubyz use for files and namespaces?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_history.md_chunk_0.md, docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_1.md, docs_CONTRIBUTING.md_chunk_2.md, github_issue_1943_discussion.md, github_issue_1285_discussion.md, github_issue_427_discussion.md, github_issue_1152_discussion.md, github_issue_973_discussion.md, codebase_assets_cubyz_items__migrations.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_mushroom_big_glimmergill_cap.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: According to the retrieved context from docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_1.md, Cubyz uses snake_case for files and namespaces.
+   [expected: snake_case]
+
+======================================================================
+[110/144] Q: Does Cubyz enforce a maximum line length for code?
+======================================================================
+[Retrieved 12 chunks: docs_CONTRIBUTING.md_chunk_2.md, github_issue_1954_discussion.md, docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_1.md, docs_CONTRIBUTING.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_1449_discussion.md, docs_CONTRIBUTING.md_chunk_1.md, docs_docs_development_how_to_contribute.md_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_candy_cane_thin_top_small.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: No, there is no fixed line limit enforced by Cubyz. However, if a line needs around 200 characters, it's recommended to consider splitting it or adding well-named helper variables instead.
+   [expected: No -- there is no line limit, though contributors should still be reasonable about it]
+
+======================================================================
+[111/144] Q: What is Cubyz's policy on writing code comments?
+======================================================================
+[Retrieved 13 chunks: docs_docs_development_history.md_chunk_0.md, docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_1.md, docs_docs_development_how_to_contribute.md_chunk_0.md, github_issue_1954_discussion.md, docs_CONTRIBUTING.md_chunk_2.md, docs_CONTRIBUTING.md_chunk_0.md, docs_CONTRIBUTING.md_chunk_1.md, docs_docs_faq.md_chunk_0.md, github_issue_1152_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md]
+
+A: According to the retrieved context from `docs_CONTRIBUTING.md_chunk_2.md`, Cubyz's policy on writing code comments is as follows:
+
+- Don't write comments unless something non-obvious needs explaining.
+- Prefer readable code with descriptive names over comments, since comments naturally degrade as surrounding code changes.
+- When a comment is written, it should explain the why, not the what or how.
+
+This means that Cubyz encourages developers to make their code self-explanatory by using clear and descriptive variable and function names. If there's something non-obvious in the code that needs clarification, then a comment can be used to explain it. However, comments should not be used to repeat what is already obvious from the code itself or to explain how the code works, as this information will likely become outdated when the surrounding code changes.
+   [expected: Don't write comments unless something non-obvious needs explaining -- prefer readable code with descriptive names, and if you do write a comment, explain the why, not the what or how]
+
+======================================================================
+[112/144] Q: Why does CONTRIBUTING.md ask contributors not to submit AI-generated pull requests?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_how_to_contribute.md_chunk_0.md, docs_CONTRIBUTING.md_chunk_0.md, docs_CONTRIBUTING.md_chunk_1.md, github_issue_2332_discussion.md, github_issue_2301_discussion.md, docs_CONTRIBUTING.md_chunk_2.md, github_issue_1705_discussion.md, docs_docs_faq.md_chunk_0.md, codebase_src_proceduralItem_modifiers_restrictions__list.zig_chunk_0.md, codebase_assets_cubyz_sbb_starlit_star.zig.zon_chunk_0.md, addon_creator_engine_validation_bugs.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: According to CONTRIBUTING.md, contributors should avoid submitting AI-generated pull requests because narrow AI is trained on its training data rather than being good at programming. This means that AI-generated code may not follow the project's conventions and could potentially introduce errors or unintended modifications. Additionally, AI cannot learn from mistakes like humans can, which increases the risk of repeating errors in future submissions. Instead, contributors are encouraged to invest their own time in learning how to code properly and adhere to the project's guidelines.
+   [expected: Narrow AI is trained to produce code matching its training data rather than being good at programming, likely won't follow the project's conventions, and is unable to learn from mistakes the way a human contributor would]
+
+======================================================================
+[113/144] Q: Whose optimization philosophy does Cubyz's CONTRIBUTING.md say to follow?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_how_to_contribute.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_CONTRIBUTING.md_chunk_0.md, docs_CONTRIBUTING.md_chunk_1.md, docs_docs_faq.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1705_discussion.md, github_issue_1954_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_pyrolite_bricks.zig.zon_chunk_0.md]
+
+A: Cubyz's CONTRIBUTING.md says to follow Casey Muratori's non-pessimization philosophy. This means avoiding needlessly making things worse, such as using the right/simplest data structure, keeping dependencies flat/minimal, using f32 over f64 when extra precision isn't needed, avoiding unnecessary human-readable (zon) storage, locking mutexes in the tightest possible scope, and always measuring real optimizations rather than assuming they help.
+   [expected: Casey Muratori's non-pessimization philosophy -- not needlessly making things worse]
+
+======================================================================
+[114/144] Q: When is `catch unreachable` the correct way to handle error.OutOfMemory in Cubyz?
+======================================================================
+[Retrieved 12 chunks: docs_CONTRIBUTING.md_chunk_0.md, github_issue_1548_discussion.md, docs_docs_development_history.md_chunk_0.md, github_issue_630_discussion.md, docs_docs_faq.md_chunk_0.md, github_issue_1505_discussion.md, github_pr_1125_comment_1976014713.md, docs_docs_development_modding.md_chunk_0.md, addon_creator_engine_validation_blocks.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, codebase_src_server_command_worldedit_copy.zig_chunk_0.md, codebase_assets_cubyz_sbb_mushroom_big_glimmergill_cap.zig.zon_chunk_0.md]
+
+A: According to the retrieved context, `catch unreachable` should be used specifically for handling `error.OutOfMemory` with the standard allocators (`main.globalAllocator`, `main.stackAllocator`) because it cannot happen with these allocators. This is mentioned in the CONTRIBUTING.md document under the section "Error handling".
+   [expected: When using the standard allocators (main.globalAllocator and main.stackAllocator), since error.OutOfMemory cannot happen with them]
+
+======================================================================
+[115/144] Q: What are the three key files needed to run a downloaded Cubyz release?
+======================================================================
+[Retrieved 14 chunks: docs_docs_installation.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_README.md_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_1.md, docs_docs_development_modding.md_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, github_issue_1791_discussion.md, github_issue_1836_discussion.md, codebase_assets_cubyz_sbb_cave_mantle_ruins.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_curl.zig.zon_chunk_0.md]
+
+A: The three key files needed to run a downloaded Cubyz release are `Cubyz`, `launchConfig.zon`, and `assets`. These files should be extracted from the archive containing them, after which you can run the executable.
+   [expected: Cubyz (or Cubyz.exe), launchConfig.zon, and assets]
+
+======================================================================
+[116/144] Q: What's the minimum recommended RAM to play Cubyz?
+======================================================================
+[Retrieved 14 chunks: docs_docs_installation.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_index.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_0.md, docs_CONTRIBUTING.md_chunk_0.md, github_issue_2204_discussion.md, github_issue_342_discussion.md, codebase_assets_cubyz_blocks_cut_amber_block.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_copper_ore.zig.zon_chunk_0.md, addon_creator_engine_validation_biomes.md, addon_creator_README.md_chunk_0.md]
+
+A: The minimum recommended RAM to play Cubyz is at least 4 GB.
+   [expected: At least 4 GB]
+
+======================================================================
+[117/144] Q: What example GPUs does the Cubyz installation page list as minimum spec?
+======================================================================
+[Retrieved 12 chunks: docs_docs_installation.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_694_discussion.md, docs_docs_index.md_chunk_0.md, docs_README.md_chunk_0.md, github_issue_1955_discussion.md, codebase_assets_cubyz_blocks_copper_ore.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glacite_bricks.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_engine_validation_biomes.md]
+
+A: The Cubyz installation page lists Radeon Vega 8, Intel HD Graphics 530, and NVIDIA GTX 750 as examples of GPUs that meet the minimum specifications for running Cubyz. These GPUs must have hardware support for OpenGL 4.6 specifically, with up-to-date drivers.
+   [expected: Radeon Vega 8, Intel HD Graphics 530, or NVIDIA GTX 750]
+
+======================================================================
+[118/144] Q: What script builds Cubyz from source on Linux?
+======================================================================
+[Retrieved 14 chunks: docs_docs_installation.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_README.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, docs_docs_development_how_to_contribute.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_installation.md_chunk_1.md, github_issue_118_discussion.md, github_issue_2782_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_recipes_special_recipes.zig.zon_chunk_0.md]
+
+A: The script that builds Cubyz from source on Linux is `run_linux.sh`. This script downloads and installs the appropriate Zig binary in the `compiler/` directory, allowing the game to build successfully.
+   [expected: run_linux.sh]
+
+======================================================================
+[119/144] Q: What script builds Cubyz from source on Windows?
+======================================================================
+[Retrieved 14 chunks: docs_docs_installation.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_README.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_development_how_to_contribute.md_chunk_0.md, docs_docs_index.md_chunk_0.md, github_issue_118_discussion.md, github_issue_2949_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, codebase_src_files.zig_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md]
+
+A: The `run_windows.bat` script is used to build Cubyz from source on Windows. This script runs a command that renames the Zig compiler directory, which is part of the process for compiling Cubyz on Windows. The exact steps for downloading and extracting the Zig compiler are as follows: `powershell -Command $ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -uri https://github.com/PixelGuys/Cubyz-zig-versions/releases/download/0.16.0/zig-x86_64-windows-0.16.0.zip -OutFile compiler\archive.zip` followed by `C:\Windows\System32\tar.exe -xf compiler\archive.zip --directory compiler`. The maintainer also notes that the exact version of the Zig compiler required is `zig-x86_64-windows-0.16.0`, and the script checks for this specific version.
+   [expected: run_windows.bat]
+
+======================================================================
+[120/144] Q: Is Cubyz's official compile-time modding API finished?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_modding.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_development_index.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_1507_discussion.md, github_issue_1528_discussion.md, docs_docs_development_how_to_contribute.md_chunk_0.md, docs_docs_development_api_documentation.md_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md]
+
+A: No, the official compile-time modding API for Cubyz is not finished. Progress on this feature is being tracked in issue #1528.
+   [expected: No -- it has not been finished; its progress is tracked in GitHub issue #1528]
+
+======================================================================
+[121/144] Q: Name an unofficial Cubyz modding fork mentioned in the documentation.
+======================================================================
+[Retrieved 13 chunks: docs_docs_development_modding.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_development_index.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_how_to_contribute.md_chunk_0.md, github_issue_1528_discussion.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md, github_issue_427_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, codebase_assets_cubyz_sbb_mushroom_big_glimmergill_cap.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_birch_silver_1.zig.zon_chunk_0.md]
+
+A: One of the unofficial Cubyz modding forks mentioned in the documentation is ElevatorMod-Cubyz.
+   [expected: Examples include Web Assembly (wasm) modding, compile-time modding by KewaiiGamer, and a Lua integration by LinaPlusPlus]
+
+======================================================================
+[122/144] Q: What texture resolution does Cubyz require for new textures?
+======================================================================
+[Retrieved 12 chunks: docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_8_discussion.md, docs_docs_development_addons_models.md_chunk_0.md, github_issue_3026_discussion.md, github_issue_3231_discussion.md, github_issue_1826_discussion.md, github_issue_1814_discussion.md, github_issue_2713_discussion.md, codebase_assets_cubyz_blocks_cloth_block_brown.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_cloth_block_violet.zig.zon_chunk_0.md, addon_creator_engine_validation_entities_particles.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md]
+
+A: Cubyz requires a resolution of 16 x 16 for new textures.
+   [expected: 16 x 16]
+
+======================================================================
+[123/144] Q: What lighting direction should Cubyz item and block textures use?
+======================================================================
+[Retrieved 12 chunks: docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_development_addons_models.md_chunk_0.md, codebase_assets_cubyz_blocks_lantern_sulfur.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_vine_glimmer_worms.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_lantern_coal.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_vine_cirrus.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_nimbusite_pillar.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_sbb_child_cyan.zig.zon_chunk_0.md, github_issue_372_discussion.md, github_issue_8_discussion.md, addon_creator_engine_validation_blocks.md, addon_creator_app-studio.js_chunk_4.md]
+
+A: Cubyz requires that item and block textures use a top-left lighting direction. This means the light source is positioned at the top-left corner of the texture, which affects how the colors are displayed on the surface of the blocks or items. The lighting direction impacts the way shadows and highlights are rendered, contributing to the overall visual quality and consistency across different elements in the game.
+   [expected: Top-left]
+
+======================================================================
+[124/144] Q: Who made the majority of the art for Cubyz?
+======================================================================
+[Retrieved 14 chunks: docs_docs_development_history.md_chunk_0.md, docs_docs_development_how_to_contribute.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, docs_docs_index.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_README.md_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, github_issue_1106_discussion.md, github_issue_2301_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, codebase_assets_cubyz_recipes_special_recipes.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_rare_modern_art.zig.zon_chunk_0.md]
+
+A: The majority of the art for Cubyz was created by careeoki. This information can be found in the [docs_CONTENT_SUGGESTIONS.md](https://github.com/PixelGuys/Cubyz/blob/master/docs/CONTENT_SUGGESTIONS.md) document, which provides guidelines for suggesting content additions to Cubyz and mentions that careeoki is the contact point (via Discord) for further texture questions.
+   [expected: careeoki]
+
+======================================================================
+[125/144] Q: How much health does a Cubyz soil block have?
+======================================================================
+[Retrieved 12 chunks: codebase_assets_cubyz_blocks_soil.zig.zon_chunk_0.md, docs_docs_blocks_soil.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, codebase_assets_cubyz_blocks_dirt.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_mud.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_grass__defaults.zig.zon_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, codebase_assets_cubyz_blocks_clay.zig.zon_chunk_0.md, addon_creator_engine_validation_blocks.md, addon_creator_engine_validation_items.md, github_issue_1047_discussion.md, github_issue_8_discussion.md]
+
+A: A Cubyz soil block has a health value of 6.5. This information is specified in the configuration file for the soil block, which defines its properties including tags (diggable), health value, drops items automatically when broken, model 'cubyz:cube', rotation property specifying 'cubyz:stairs' indicating it can be rotated like stairs, and texture applied to the block is 'cubyz:soil'.
+   [expected: 6.5]
+
+======================================================================
+[126/144] Q: What rotation mode does the Cubyz soil block use?
+======================================================================
+[Retrieved 12 chunks: codebase_assets_cubyz_blocks_soil.zig.zon_chunk_0.md, docs_docs_development_addons_blocks.md_chunk_0.md, docs_docs_blocks_soil.md_chunk_0.md, codebase_assets_cubyz_blocks_pyrolite_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_terracotta_rough.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_nimbusite_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_terracotta_smooth.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_ferrock_tile.zig.zon_chunk_0.md, addon_creator_engine_validation_blocks.md, addon_creator_engine_validation_items.md, github_issue_1150_discussion.md, github_issue_2030_discussion.md]
+
+A: The Cubyz soil block uses a 'cubyz:stairs' rotation mode, indicating that it can be rotated like stairs. This allows for more flexibility in placing and orienting the block within the game world.
+   [expected: stairs]
+
+======================================================================
+[127/144] Q: According to its wiki page, how is soil obtained in Cubyz?
+======================================================================
+[Retrieved 13 chunks: docs_docs_blocks_soil.md_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_2849_discussion.md, docs_docs_index.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_development_how_to_contribute.md_chunk_0.md, github_issue_546_discussion.md, codebase_assets_cubyz_blocks_soil.zig.zon_chunk_0.md, codebase_assets_cubyz_recipes_grass_recipes.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: Soil can be obtained by breaking grass blocks in temperate biomes.
+   [expected: Found in temperate biomes as grass blocks or ground patches -- breaking temperate grass drops soil blocks]
+
+======================================================================
+[128/144] Q: How do you craft a workbench in Cubyz?
+======================================================================
+[Retrieved 13 chunks: docs_docs_gameplay_crafting.md_chunk_0.md, docs_workbench_crafting.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_index.md_chunk_0.md, codebase_assets_cubyz_recipes_wood_recipes.zig.zon_chunk_0.md, docs_docs_faq.md_chunk_0.md, codebase_assets_cubyz_blocks_workbench.zig.zon_chunk_0.md, github_issue_752_discussion.md, github_issue_2301_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: To craft a workbench in Cubyz, you need 4 planks of any wood type. You can obtain these planks by crafting them from logs or branches using the Crafting Menu. Once you have the required number of planks, place them on the Workbench to create your own workbench.
+   [expected: 4 planks of any wood type]
+
+======================================================================
+[129/144] Q: How many planks does crafting one log produce in Cubyz?
+======================================================================
+[Retrieved 12 chunks: codebase_assets_cubyz_recipes_wood_recipes.zig.zon_chunk_0.md, docs_workbench_crafting.md_chunk_0.md, codebase_assets_cubyz_blocks_baobab_log.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_mahogany_log.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_log__defaults.zig.zon_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, codebase_assets_cubyz_blocks_birch_log.zig.zon_chunk_0.md, github_issue_752_discussion.md, github_issue_1730_discussion.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_engine_validation_items.md]
+
+A: Crafting one log produces four planks of the same wood type. This is specified in the `codebase_assets_cubyz_recipes_wood_recipes.zig.zon` chunk under the recipe definition for converting a single log into multiple planks.
+   [expected: 4 planks (of the same wood type)]
+
+======================================================================
+[130/144] Q: How many branches does crafting one log produce in Cubyz?
+======================================================================
+[Retrieved 12 chunks: codebase_assets_cubyz_recipes_wood_recipes.zig.zon_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, docs_docs_index.md_chunk_0.md, codebase_assets_cubyz_blocks_baobab_log.zig.zon_chunk_0.md, docs_README.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, codebase_assets_cubyz_blocks_log__defaults.zig.zon_chunk_0.md, github_issue_2301_discussion.md, github_issue_1325_discussion.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: Crafting one log produces two branches. This is specified in the recipe definition for converting a single log into two branches of the same wood type.
+   [expected: 2 branches (of the same wood type)]
+
+======================================================================
+[131/144] Q: What's needed to craft a chest in Cubyz?
+======================================================================
+[Retrieved 14 chunks: docs_automation_not_supported.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_gameplay_crafting.md_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_workbench_crafting.md_chunk_0.md, docs_docs_index.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, codebase_assets_cubyz_recipes_special_recipes.zig.zon_chunk_0.md, codebase_assets_cubyz_recipes_wood_recipes.zig.zon_chunk_0.md, github_issue_2301_discussion.md, github_issue_1608_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: To craft a chest in Cubyz, you need four planks of any wood type. This recipe is part of the game's crafting system, which allows players to create various structures and tools using different materials. The exact number of planks required for other items can be found in the provided documentation on recipes.
+   [expected: 4 planks of the same wood type]
+
+======================================================================
+[132/144] Q: What ingredients craft a regular torch in Cubyz?
+======================================================================
+[Retrieved 10 chunks: github_issue_2301_discussion.md, github_issue_1419_discussion.md, codebase_assets_cubyz_recipes_wood_recipes.zig.zon_chunk_0.md, codebase_assets_cubyz_recipes_special_recipes.zig.zon_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, codebase_assets_cubyz_blocks_sulfur_torch.zig.zon_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, codebase_assets_cubyz_blocks_torch_lumi.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: According to the retrieved context, specifically the `codebase_assets_cubyz_recipes_wood_recipes.zig.zon` chunk, planks (any wood type) and coal ore are required to craft 8 torches. This information is derived from the recipe definition provided in the chunk: "Planks + coal ore -> 8 torches."
+   [expected: Planks (any mod's, any type) plus coal ore, producing 8 torches]
+
+======================================================================
+[133/144] Q: Why does Cubyz prefer explicit code over generic or clever solutions in review?
+======================================================================
+[Retrieved 12 chunks: docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_1.md, docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_1449_discussion.md, github_issue_1954_discussion.md, docs_CONTRIBUTING.md_chunk_0.md, docs_CONTRIBUTING.md_chunk_1.md, github_issue_1152_discussion.md, codebase_assets_cubyz_sbb_tree_oak_old_growth_top.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_mushroom_small_bolete.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: Cubyz prefers explicit code over generic or clever solutions because it ensures that the code is allocator-conscious, predictable, and easier to understand. This approach helps maintain memory discipline, concurrency safety, and type system design while avoiding unnecessary complexity. By focusing on clear naming conventions and explicit return values, Cubyz aims to create a more reliable and maintainable codebase.
+   [expected: This project strongly prefers explicit, predictable, allocator-conscious code over clever/generic/automatic solutions, even when the generic solution is more DRY -- "magic" is treated as a mild pejorative]
+
+======================================================================
+[134/144] Q: Is eager or lazy allocation preferred in Cubyz code review?
+======================================================================
+[Retrieved 13 chunks: docs_CONTRIBUTING.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_pr_1414_comment_2079375532.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_1.md, github_pr_2285_comment_2528589117.md, codebase_assets_cubyz_sbb_tree_baobab_grandidieri_roots.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_branch_leafy_baobab.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: The retrieved context does not provide information on whether eager or lazy allocation is preferred in Cubyz code reviews.
+   [expected: It's a judgment call, not a fixed rule -- lazy/path-based loading is preferred for large or rarely-touched data, but eager initialization is preferred when correctness or synchronization ordering demands it]
+
+======================================================================
+[135/144] Q: Why is placing a `defer` far from its matching `init` flagged in Cubyz review, even if technically correct?
+======================================================================
+[Retrieved 12 chunks: docs_CONTRIBUTING.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_pr_2864_comment_3485758853.md, docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_1.md, docs_docs_development_modding.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_pr_2864_comment_3485758049.md, github_issue_2518_discussion.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_engine_validation_blocks.md, codebase_mods_cubyz_rotations_no_rotation.zig_chunk_0.md, codebase_src_renderer.zig_chunk_0.md]
+
+A: Placing a `defer` far from its matching `init` is flagged because it can lead to potential issues related to resource management and thread safety. The reviewer suggests reordering initialization calls to ensure proper sequence, which helps prevent problems such as uninitialized resources or dependency conflicts. By moving the initialization of certain components after others, the code adheres to a more logical flow that ensures all necessary resources are properly initialized before use. This approach enhances overall system stability and reliability within Cubyz's architecture.
+   [expected: Because it's fragile to future edits]
+
+======================================================================
+[136/144] Q: Who runs Ashframe?
+======================================================================
+[Retrieved 12 chunks: docs_ashframe_overview.md_chunk_0.md, codebase_assets_cubyz_blocks_ash.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_coniferous_pine_loblolly_branches_lushy_0_bottom.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_coniferous_pine_loblolly_branches_lushy_2_top.zig.zon_chunk_0.md, docs_docs_development_how_to_contribute.md_chunk_0.md, codebase_assets_cubyz_sbb_tree_palm_coconut_fronds.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_mahogany_sapele_large.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_candy_cane_thin_top_big.zig.zon_chunk_0.md, github_issue_1814_discussion.md, github_issue_2720_discussion.md, addon_creator_engine_validation_bugs.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: Ashframe is run by iNiKKo, who also created the Cubyz AI assistant.
+   [expected: iNiKKo]
+
+======================================================================
+[137/144] Q: What does the 'enabled' field control in the Cubyz Server List's config.json?
+======================================================================
+[Retrieved 11 chunks: docs_docs_development_multiplayer.md_chunk_2.md, github_issue_2449_discussion.md, docs_docs_development_multiplayer.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_1.md, github_pr_2084_comment_2478289227.md, codebase_src_server_command__list.zig_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, codebase_assets_cubyz_blocks_voidstone_bricks.zig.zon_chunk_0.md, addon_creator_engine_validation_bugs.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The 'enabled' boolean flag in the Cubyz Server List's config.json controls whether server data is broadcasted to servers.ashframe.net when set to true, or if it is disabled entirely when set to false. This allows users to choose whether they want their server information shared publicly with the community.
+   [expected: true broadcasts the server's information to the Cubyz Server List (servers.ashframe.net); false disables server list integration entirely]
+
+======================================================================
+[138/144] Q: Where is a Cubyz world save located by default on Linux, for backup purposes?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_multiplayer.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_2879_discussion.md, docs_docs_development_addons_index.md_chunk_0.md, github_issue_1921_discussion.md, docs_docs_development_multiplayer.md_chunk_1.md, github_issue_1836_discussion.md, codebase_assets_cubyz_sbb_tree_baobab_grandidieri_roots.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_sbb_child_cyan.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: The default location for a Cubyz world save on Linux is `/home/USERNAME/.cubyz/saves/WORLD_NAME`. This path should be used when backing up your Cubyz world files.
+   [expected: /home/USERNAME/.cubyz/saves/WORLD_NAME]
+
+======================================================================
+[139/144] Q: Where is a Cubyz world save located by default on Windows, for backup purposes?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_multiplayer.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md, github_issue_1921_discussion.md, github_issue_2879_discussion.md, docs_docs_development_multiplayer.md_chunk_1.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, codebase_src_files.zig_chunk_0.md, codebase_assets_cubyz_blocks_sbb_child_cyan.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: The default location of a Cubyz world save on Windows for backup purposes is `C:\Users\USERNAME\Saved Games\Cubyz\saves\WORLD_NAME`. This path should be used when manually backing up the world files to ensure that all necessary data is preserved.
+   [expected: C:\Users\USERNAME\Saved Games\Cubyz\saves\WORLD_NAME]
+
+======================================================================
+[140/144] Q: What is the full engine command syntax for managing permissions in Cubyz?
+======================================================================
+[Retrieved 11 chunks: docs_docs_development_permission_layer.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, github_issue_1961_discussion.md, docs_docs_faq.md_chunk_0.md, github_issue_2666_discussion.md, github_pr_3313_comment_3560517031.md, github_issue_2802_discussion.md, codebase_src_server_permission.zig_chunk_3.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md]
+
+A: The full engine command syntax for managing permissions in Cubyz is `/perm <add/remove> <whitelist/blacklist> @<playerIndex> <permissionPath>`. This allows you to grant or remove specific permissions from players, either by whitelisting (granting access) or blacklisting (blocking access).
+   [expected: /perm <add/remove> <whitelist/blacklist> @<playerIndex> <permissionPath>]
+
+======================================================================
+[141/144] Q: What should you do if Cubyz runs poorly or doesn't start, per the installation guide?
+======================================================================
+[Retrieved 13 chunks: docs_docs_faq.md_chunk_0.md, docs_docs_installation.md_chunk_1.md, docs_docs_installation.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_CONTRIBUTING.md_chunk_0.md, docs_README.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_694_discussion.md, github_issue_2782_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md, codebase_src_files.zig_chunk_0.md]
+
+A: If Cubyz runs poorly or doesn't start, you should check the Help Section on the Cubyz Discord server. This is where users can seek assistance and find solutions to common issues they might encounter while running the game.
+   [expected: Reach out on the Cubyz Discord]
+
+======================================================================
+[142/144] Q: What does CONTRIBUTING.md say about writing long comments instead of readable code?
+======================================================================
+[Retrieved 12 chunks: docs_CONTRIBUTING.md_chunk_2.md, docs_docs_development_how_to_contribute.md_chunk_0.md, github_issue_1954_discussion.md, docs_CONTRIBUTING.md_chunk_1.md, github_issue_2903_discussion.md, github_issue_2332_discussion.md, github_issue_634_discussion.md, github_issue_1152_discussion.md, codebase_src_proceduralItem_modifiers_restrictions__list.zig_chunk_0.md, codebase_src_proceduralItem_modifiers__list.zig_chunk_0.md, addon_creator_engine_validation_bug_skycolor.md, addon_creator_engine_validation_bugs.md]
+
+A: According to the retrieved context, CONTRIBUTING.md advises against writing comments unless something non-obvious needs explaining. It prefers readable code with descriptive names over comments because comments naturally degrade as surrounding code changes. When a comment is written, it should explain the why, not the what or how.
+   [expected: Prefer readable code with descriptive names instead of long comments, since comments naturally degrade over time as the surrounding code changes; any comment written should explain the why, not the what or how]
+
+======================================================================
+[143/144] Q: What data-structure guidance does CONTRIBUTING.md give when a collection's size is known upfront?
+======================================================================
+[Retrieved 12 chunks: github_issue_2177_discussion.md, docs_CONTRIBUTING.md_chunk_0.md, github_pr_1125_comment_1980124844.md, github_pr_1414_comment_2079375532.md, github_issue_1599_discussion.md, docs_docs_development_how_to_contribute.md_chunk_0.md, github_pr_1338_comment_2056762354.md, github_pr_2824_comment_3183957328.md, codebase_assets_cubyz_sbb_tree_birch_silver_small_branch.zig.zon_chunk_0.md, codebase_src_zon.zig_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_engine_validation_bug_skycolor.md]
+
+A: According to the retrieved context, CONTRIBUTING.md suggests using a slice instead of a List if the size of the collection is known upfront. This recommendation aligns with the principle of keeping things simple and choosing the simplest data structure for the job.
+   [expected: Use the simplest data structure for the job -- e.g. use a slice instead of a List if you know the size upfront]
+
+======================================================================
+[144/144] Q: What's the recommended sweet-spot file size (in lines) for a Cubyz source file, per CONTRIBUTING.md?
+======================================================================
+[Retrieved 12 chunks: docs_CONTRIBUTING.md_chunk_2.md, github_issue_1152_discussion.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1954_discussion.md, docs_CONTRIBUTING.md_chunk_0.md, github_issue_2412_discussion.md, docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_1.md, docs_docs_development_history.md_chunk_0.md, codebase_assets_cubyz_sbb_candy_cane_thin_top_small.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_ferrock_mountains.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: According to CONTRIBUTING.md, the sweet-spot file size is very roughly 1000 lines.
+   [expected: Very roughly 1000 lines]
+
+
+[~] Done -- 144 questions. Compare the first 96 against test_inference.py's fine-tune-alone baseline (round 2: 26 correct/7 partial/63 wrong out of 96) -- the 48 questions after that are new and have no fine-tune-alone baseline.

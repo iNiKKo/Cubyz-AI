@@ -1,25 +1,20 @@
 # [easy/addon_creator_FIELD_REFERENCE.md] - Chunk 0
 
-**Type:** ui
-**Keywords:** addon creator, ui form fields, project data, serialization, zig.zon
-**Symbols:** addonCreator_FIELD_REFERENCE.md, blocks.html, items.html, recipes.html, biomes.html, entities.html, particles.html, app-save.js, app-io.js
-**Concepts:** data-binding, form validation, live preview
+**Type:** documentation
+**Keywords:** app-save.js, app-io.js, projectData, saveXToProject, pipeline overview
+**Symbols:** window.projectData, saveXToProject
 
 ## Summary
-Provides a detailed mapping of UI form fields to internal project data and serialized ZIG.ZON files for Cubyz addons. Includes specific field mappings for blocks, items, recipes, biomes, entities, and particles.
+Overview of the Cubyz Addon Creator Studio's save/export/import pipeline, and the first step: saving a form to the project.
 
 ## Explanation
-- This document provides a detailed mapping of UI form fields in the Addon Creator Studio to their corresponding internal `projectData` properties and the exact format of the generated `.zig.zon` files for Cubyz addons.
-- It covers specific mappings for blocks, items, recipes, biomes, entities, and particles, including complex cases such as biome structures and particle spawn shapes.
-- The mappings are derived from reading the `app-save.js` file (save/export logic) and cross-checked against `app-io.js`'s import logic to ensure accuracy.
-- It includes detailed information on how UI inputs are serialized into structured data, providing a comprehensive reference for developers working with Cubyz addons.
+This document maps every Addon Creator Studio form field to its internal `projectData` property and its exact serialized `.zig.zon` output, compiled by reading `app-save.js` (the save/export logic) in full, cross-checked against `app-io.js`'s import logic. The pipeline has three steps, covered individually in sibling chunks: saving a form to the project (this chunk), exporting the full addon (see the dedicated export chunk), and importing an existing addon (see the dedicated import chunk).
+
+**Step 1 -- Save to Project:** the user fills in a form (`blocks.html`, `items.html`, etc.); clicking "Save to Project" calls the matching `saveXToProject()` function in `app-save.js`, which reads the DOM fields by ID and pushes a plain object into `window.projectData.X`.
 
 ## Related Questions
-- What is the mapping of UI fields to internal project data?
-- How are serialized ZIG.ZON files generated from Addon Creator Studio form fields?
-- Can you provide a detailed explanation of how the mappings between UI fields and internal project data are derived?
-- What are some common issues or limitations in using this reference for Addon Creator Studio development?
-- Are there any additional resources or tools available to help with Addon Creator Studio development?
-- How can I use this reference to troubleshoot problems related to form field mappings or serialization?
+- What function does the Cubyz Addon Creator call when "Save to Project" is clicked?
+- Where does the Cubyz Addon Creator store form data after "Save to Project" is clicked?
+- What are the three steps of the Cubyz Addon Creator's save/export/import pipeline?
 
 *Source: unknown | chunk_id: addon_creator_FIELD_REFERENCE.md_chunk_0*

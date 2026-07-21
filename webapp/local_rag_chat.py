@@ -42,7 +42,7 @@ EMBED_MODEL = "qwen3-embedding:4b"
 # a given answer. The Qwen2.5-Coder-7B-Instruct round-2 adapter stays SNALE-AI-P5-7B (trained as
 # part of Prototype 5); the model-swap pivot to Qwen3.x on 2026-07-20 -- and everything since --
 # is Prototype 6, so its models are SNALE-AI-P6-<params>.
-ANSWER_MODEL = "SNALE-AI-P6-0.6B"
+ANSWER_MODEL = "SNALE-AI-P7-4B"
 KNOWLEDGE_DIR = os.path.join(REPO_ROOT, "knowledge_base")
 CACHE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "rag_index_cache.json")
 GLOBAL_TOP_K = 8      # best chunks overall, regardless of collection

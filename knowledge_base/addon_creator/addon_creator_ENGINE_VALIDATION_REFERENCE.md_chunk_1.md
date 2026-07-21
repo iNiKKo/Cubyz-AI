@@ -1,25 +1,25 @@
 # [medium/addon_creator_ENGINE_VALIDATION_REFERENCE.md] - Chunk 1
 
-**Type:** ui
-**Keywords:** model properties, particle effects, validation rules, default values, texture dimensions, emitter properties, registration time, parse separately, hard failure, soft fallback
-**Symbols:** .model, .height, .coordinateSystem, .tags, .defaultTexture, .texture, .rotationVelocity, .density, .dragCoefficient, .loopTime, .speed, .lifeTime, .randomRotate, .mode, .direction, .shape
-**Concepts:** data-binding, form validation, engine defaults, particle registration, texture validation
+**Type:** documentation
+**Keywords:** blocks.zig register, blockHealth, blockResistance, selectionCapabilities, collide, viewThrough, friction, density, ore fallback, onTouch, drops
+**Symbols:** register(), getTypeById, loadBlockDrop
 
 ## Summary
-This chunk outlines validation rules and default values for various fields in the Cubyz Addon Creator, focusing on model properties and particle effects.
+Engine-side default values and error messages for every Cubyz block field, read directly from `blocks.zig: register()`.
 
 ## Explanation
-This chunk outlines validation rules and default values for various fields in the Cubyz Addon Creator, focusing on model properties and particle effects. For models, it specifies that `.model` defaults to `null`, `.height` defaults to `1` (with a website form default of `2.0`), `.coordinateSystem` defaults to `.right_handed_z_up`, and `.tags` are empty by default but can include a special `playerModel` tag which is not exposed in the website form. The `.defaultTexture` field has no default value but logs no error if both specified paths are missing, resolving to `{assetFolder}/{mod}/entity_models/textures/{name}.png` or falling back to `assets/{mod}/entity_models/textures/{name}.png`. For particles, it specifies that the `.texture` field is required and must have a texture with dimensions where height is an exact multiple of width. If the base texture dimensions are incorrect (height not a multiple of width), it logs an error like `Particle base texture has incorrect dimensions ({w}x{h}) expected height to be multiple of width...`. Additionally, if an emission texture (`_emission.png`) is present, its frame count must match the base texture's frame count or logs a frame-count-mismatch error. Default values for particle properties include `.rotationVelocity` set to `{20, 60}` (interpreted as degrees internally and converted to radians), `.density` set to `{2, 3}`, and `.dragCoefficient` set to `{0.5, 0.6}`. The `.speed`, `.lifeTime`, `.shape`, `.mode`, and `.direction` fields are parsed separately when the particle effect is triggered, with specific fallback behaviors for invalid values like `spread` for missing or invalid `.mode`. Additionally, `.loopTime` is not exposed by the website form.
+`.rotation` defaults to `"cubyz:no_rotation"` if missing (website form defaults to `"cubyz:stairs"` -- different, but the website always writes a value). `.blockHealth` defaults to `1`. `.blockResistance` defaults to `0`. `.tags`: if the resulting tag list is empty, logs `"Block {id} is missing 'tags' field"`. `.emittedLight` defaults to `0`. `.absorbedLight` defaults to `0xffffff` (16777215), matching the website's decimal default. `.degradable` defaults to `false`. **`.selectionCapabilities` is an optional array (`?[]SelectionCapability`) that determines which tools/items can select the block; it defaults to `.always` (any tool can select it), and is not exposed anywhere in the website UI -- hand-edit only.** `.replaceable` defaults to `false`. `.transparent` defaults to `false`. `.collide` defaults to **`true`** -- the default is "does collide," the opposite of leaving it off meaning no collision. `.viewThrough` defaults to `false`, but forced `true` if `transparent` or `alwaysViewThrough` is true. `.friction` defaults to `20`. `.bounciness` defaults to `0.0`. `.density` defaults to `main.physics.airDensity` (a named engine constant, not a literal number; website form defaults to `1.2`). `.terminalVelocity` defaults to `90`. `.mobility` defaults to `1.0`. `.allowOres` defaults to `false`. `.blockEntity` has no default, looked up via `block_entity.getByID`.
+
+`.ore`: only processed if `.rotation == "cubyz:ore"`; if an `.ore` block exists but rotation isn't `"cubyz:ore"`, logs `"Ore must have rotation mode \"cubyz:ore\"!"` and the ore properties are silently dropped. Within `.ore`, engine-side raw fallbacks if sub-fields are missing: `veins=0`, `size=0`, `maxHeight=i32 max`, `minHeight=i32 min`, `density=0.5` -- very different from the website's own hardcoded ore defaults (`veins=4.5, size=20, maxHeight=-600, density=0.25`).
+
+`.onInteract`/`.onBreak`/`.onUpdate`/`.onTick` default to `.noop`; if present but malformed, logs `"Failed to load onX event for block {id}"` and falls back to no-op. `.onTouch` follows the same pattern, message is `"Failed to load onTouch event for block {id}"`. `.drops` is parsed via `loadBlockDrop()`; each entry's item string supports `"auto"` (drops the block itself) or `"{count} {item}"`; unknown item ids are silently skipped (`continue`), not errored. Referencing a nonexistent block id anywhere (`.blockPlacement`, drop items, etc., via `getTypeById`) logs `"Couldn't find block {id}. Replacing it with air..."` and substitutes air -- doesn't crash.
 
 ## Related Questions
-- What is the default value for .height in the Cubyz Addon Creator?
-- How does the engine handle missing .texture fields for particles?
-- What happens if the base texture dimensions are incorrect for particles?
-- Are there any specific defaults for particle properties like .rotationVelocity?
-- How are emitter properties validated compared to particle type registration?
-- What is the fallback behavior for invalid .mode values in particle effects?
-- How does the engine resolve paths for .defaultTexture if both specified paths are missing?
-- Are there any specific validation rules for .direction and .shape fields?
-- What happens if a required field like .texture is not provided during registration?
+- What does a Cubyz block's .blockHealth/.emittedLight/.absorbedLight/.degradable/.replaceable/.transparent/.collide/.friction/.bounciness/.terminalVelocity/.mobility/.allowOres field default to if omitted?
+- What is a Cubyz block's .selectionCapabilities field, and how is it set?
+- What does a Cubyz block's .density field default to, and how does that differ from the website?
+- What are the engine's raw fallback values inside a Cubyz block's .ore sub-object?
+- What happens if a Cubyz block's onInteract/onBreak/onUpdate/onTick/onTouch callback is malformed?
+- How does a Cubyz block's .drops field handle an unknown item id?
 
 *Source: unknown | chunk_id: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1*

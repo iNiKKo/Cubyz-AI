@@ -1,65 +1,25 @@
 # [easy/docs_docs_development_addons_biomes.md] - Chunk 0
 
 **Type:** documentation
-**Keywords:** zig.zon, biomes, world generation, properties, isCave, radius, minHeight, maxHeight, smoothBeaches, interpolation, roughness, hills, mountains, stoneBlock, fogColor
-**Symbols:** zig.zon, properties: GenerationProperties, isCave, radius, minRadius, maxRadius, minHeight, maxHeight, minHeightLimit, maxHeightLimit, smoothBeaches, interpolation, interpolationWeight, roughness, hills, mountains, keepOriginalTerrain, caves, caveRadiusFactor, crystals, soilCreep, stoneBlock, fogLower, fogHigher, fogDensity, fogColor, skyColor, stripes, subBiomes, parentBiomes, transitionBiomes, ground_structure, structures, maxSubBiomeCount, music, isValidPlayerSpawn, chance
-**Concepts:** Biome Definition, World Generation, Generation Properties, Biome Characteristics, Environmental Effects
+**Keywords:** zig.zon, GenerationProperties, hot, temperate, cold, inland, land, ocean, wet, dry, barren, balanced, overgrown, mountain
+**Symbols:** properties: GenerationProperties, .cold, .wet
 
 ## Summary
-Describes the structure and properties of `zig.zon` files used to define biomes in Cubyz, including various generation parameters and settings.
+The `properties: GenerationProperties` field of a Cubyz biome `zig.zon` file: its 15 valid climate/terrain tag values, distinct from the biome's other top-level fields (covered in chunk 1).
 
 ## Explanation
-Every biome in Cubyz is defined by a `zig.zon` file which contains essential data for world generation. The `properties: GenerationProperties` field specifies basic information about the biome's characteristics, such as temperature, terrain type, and moisture levels. Each property has a specific type and default value that allows precise customization of biome generation.
-
-The table lists various properties like `isCave`, `radius`, `minHeight`, `maxHeight`, and others that control the biome's behavior, appearance, and environmental effects:
-- `isCave`: A boolean indicating whether the biome is a cave (`true`) or surface biome (`false`). Default: —
-- `radius`: Size of the biome. Use `minRadius` and `maxRadius` for variable sizes. Default: 256
-- `minHeight`: Lowest terrain height the biome can generate. Default: —
-- `maxHeight`: Highest terrain height the biome can generate. Default: —
-- `minRadius`: Minimum biome radius. Default: —
-- `maxRadius`: Maximum biome radius. Default: —
-- `minHeightLimit`: Hard lower terrain limit, even after interpolation. Default: —
-- `maxHeightLimit`: Hard upper terrain limit, even after interpolation. Default: —
-- `smoothBeaches`: Enables smooth beach generation. Default: false
-- `interpolation`: Border interpolation method (`none`, `linear`, or `square`). Default: square
-- `interpolationWeight`: Strength of biome interpolation. Minimum is `std.math.floatMin(f32)`. Default: 1
-- `roughness`: Applies terrain roughness by scattering blocks. Default: —
-- `hills`: Controls rolling hill generation. Default: —
-- `mountains`: Controls spiky mountain generation. Default: —
-- `keepOriginalTerrain`: Amount of the parent biome's terrain preserved in a sub-biome (`1` = all, `0.5` = 50%). Default: —
-- `caves`: Cave generation factor. Default: —
-- `caveRadiusFactor`: Multiplier for cave radius. Default: —
-- `crystals`: Average number of randomly placed Glow Crystals. Default: —
-- `soilCreep`: Controls erosion of surface blocks based on terrain slope. Default: —
-- `stoneBlock`: Base block the biome is constructed from (e.g., slate). Default: slate
-- `fogLower`: Lower fog boundary. Default: —
-- `fogHigher`: Upper fog boundary. Default: —
-- `fogDensity`: Density of biome fog. Default: —
-- `fogColor`: Fog color in RGB format. Default: —
-- `skyColor`: Sky color in RGB format. Default: {0.46, 0.7, 1.0}
-- `stripes`: Stripe definitions used by the biome. Default: —
-- `subBiomes`: Collection of sub-biomes. Default: —
-- `parentBiomes`: Parent biomes this biome can generate within. Default: —
-- `transitionBiomes`: Transition biome definitions. Default: —
-- `ground_structure`: Ground structure definitions. Default: —
-- `structures`: Structures that can generate in the biome. Default: —
-- `maxSubBiomeCount`: Maximum number of sub-biomes allowed per biome instance. Default: —
-- `music`: Music file that loops while the player is in the biome. Default: —
-- `isValidPlayerSpawn`: Whether players can spawn in this biome. Used to ensure the player starts in a biome with trees. Default: —
-- `chance`: Generation chance or weight. Default: —
-
-Each property has a specific type and default value that allows precise customization of biome generation.
+Every biome is defined by a `zig.zon` file that contains all the data the world generator needs to generate it. The `properties: GenerationProperties` field gives basic information about the biome that helps the game decide where it should be generated -- it's a list of tags, not a single value. Example usage:
+```zig
+.properties = .{
+    .cold,
+    .wet,
+},
+```
+The 15 valid values for this field, grouped by category, are: temperature -- `.hot` / `.temperate` / `.cold`; land/water -- `.inland` / `.land` / `.ocean`; moisture -- `.wet` / `.neitherWetNorDry` / `.dry`; vegetation density -- `.barren` / `.balanced` / `.overgrown`; terrain shape -- `.mountain` / `.lowTerrain` / `.antiMountain`.
 
 ## Related Questions
-- What is the purpose of the `zig.zon` file in Cubyz?
-- How do you define a cave biome using the `properties: GenerationProperties` field?
-- What are the valid values for the `interpolation` property in a `zig.zon` file?
-- How does the `smoothBeaches` property affect beach generation in Cubyz?
-- What is the default value for the `radius` property in a biome definition?
-- How can you specify multiple parent biomes for a single biome using the `parentBiomes` field?
-- What role does the `stoneBlock` property play in defining a biome's terrain?
-- How do you control the fog density and color in a Cubyz biome?
-- Can you explain the purpose of the `stripes` property in a `zig.zon` file?
-- What is the significance of the `isValidPlayerSpawn` property in a biome definition?
+- What are the 15 valid values for a Cubyz biome's generation properties field?
+- What does the .properties field of a Cubyz biome zig.zon file contain?
+- How do you mark a Cubyz biome as cold and wet using the properties field?
 
 *Source: unknown | chunk_id: docs_docs_development_addons_biomes.md_chunk_0*

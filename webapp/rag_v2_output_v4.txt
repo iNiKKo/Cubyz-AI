@@ -1,0 +1,1331 @@
+[~] Cache stale (files changed) -- incrementally re-embedding only what changed...
+[~] Reusing 3308 unchanged cached embeddings; embedding 1 new/changed chunks...
+    ... 1/1
+[OK] Index cached to /home/nick/Desktop/Cubyz-AI/webapp/rag_index_cache.json (3309 total chunks)
+
+======================================================================
+[1/144] Q: In Cubyz's Addon Creator, which texture slot index corresponds to the block's 'left' side?
+======================================================================
+[Retrieved 13 chunks: addon_creator_FIELD_REFERENCE.md_chunk_1.md, codebase_assets_cubyz_blocks_sbb_child_grey.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_sbb_child_black.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_sbb_child_indigo.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_sbb_child_white.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_sbb_child_red.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_sbb_child_crimson.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_sbb_child_violet.zig.zon_chunk_0.md, addon_creator_blocks.html_chunk_2.md, docs_docs_development_addons_models.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_345_discussion.md, github_issue_8_discussion.md]
+
+A: The texture slot index that corresponds to the block's 'left' side is 5. This is because the six directional texture slots are exported as `.texture0` through `.texture5`, with the index order being up=0, bottom=1, front=2, back=3, right=4, left=5.
+   [expected: Index 5 -- up=0, bottom=1, front=2, back=3, right=4, left=5 (not alphabetical or form order)]
+
+======================================================================
+[2/144] Q: What does setting a Cubyz block's render mode to "cubyz:ore" trigger in the Addon Creator, and what else does it require?
+======================================================================
+[Retrieved 9 chunks: addon_creator_FIELD_REFERENCE.md_chunk_1.md, docs_docs_development_addons_blocks.md_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md, codebase_assets_cubyz_blocks_voidstone_rough.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_engine_validation_blocks.md, github_issue_2037_discussion.md, codebase_assets_cubyz_blocks_basalt_rough.zig.zon_chunk_0.md, github_issue_1091_discussion.md]
+
+A: Setting a Cubyz block's render mode to "cubyz:ore" triggers a separate `.ore = {...}` block with fixed vein params. Additionally, it requires an item icon for the ore block.
+   [expected: A separate .ore = {...} block with fixed vein params is generated, and it requires an item icon]
+
+======================================================================
+[3/144] Q: What two block boolean fields does the Cubyz Addon Creator omit entirely for ore blocks?
+======================================================================
+[Retrieved 10 chunks: docs_docs_development_addons_blocks.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, addon_creator_engine_validation_blocks.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, codebase_assets_cubyz_blocks_voidstone_rough.zig.zon_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md, codebase_assets_cubyz_blocks_silver_ore.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_copper_ore.zig.zon_chunk_0.md, github_issue_1091_discussion.md, github_issue_1176_discussion.md]
+
+A: The Cubyz Addon Creator omits the 'transparent' and 'collide' checkboxes entirely for ore blocks.
+   [expected: Collide and Transparent]
+
+======================================================================
+[4/144] Q: How does the Cubyz Addon Creator convert a block's emitted/absorbed light color for export?
+======================================================================
+[Retrieved 12 chunks: addon_creator_FIELD_REFERENCE.md_chunk_1.md, github_issue_896_discussion.md, codebase_assets_cubyz_blocks_glass_cyan.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glow_crystal_cyan.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glow_crystal_indigo.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glass_yellow.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glow_crystal_dark_grey.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glow_crystal_crimson.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, github_issue_2301_discussion.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_development_addons_blocks.md_chunk_0.md]
+
+A: The Cubyz Addon Creator converts a block's emitted/absorbed light color for export by using hex pickers that convert the hexadecimal value to an integer via `parseInt(hex, 16)`. This conversion is only performed if the emitted light color is not default.
+   [expected: Hex color is converted to an integer via parseInt(hex, 16); only emitted if non-default]
+
+======================================================================
+[5/144] Q: What does the "heal" touch mode do to the dps value for a Cubyz block's onTouch callback?
+======================================================================
+[Retrieved 9 chunks: addon_creator_FIELD_REFERENCE.md_chunk_1.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, codebase_assets_cubyz_blocks_log_cactus.zig.zon_chunk_0.md, github_pr_1143_comment_1977731254.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, codebase_assets_cubyz_blocks_cactus.zig.zon_chunk_0.md, github_pr_1143_comment_1977647136.md, codebase_assets_cubyz_blocks_branch_cactus.zig.zon_chunk_0.md, docs_docs_development_addons_blocks.md_chunk_0.md]
+
+A: The "heal" touch mode negates the dps (damage per second) value for a Cubyz block's onTouch callback. This means that instead of dealing damage, it would heal the entity touching the block at a rate determined by the specified dps value.
+   [expected: It negates the dps value]
+
+======================================================================
+[6/144] Q: What does the "decay" onUpdate/onTick/onBreak hook type need, in Cubyz's Addon Creator?
+======================================================================
+[Retrieved 10 chunks: addon_creator_FIELD_REFERENCE.md_chunk_1.md, docs_docs_development_addons_index.md_chunk_0.md, codebase_src_callbacks_block_server_decay.zig_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_2258_discussion.md, codebase_src_callbacks_block_server_decay.zig_chunk_1.md, codebase_assets_cubyz_blocks_vine__defaults.zig.zon_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, addon_creator_README.md_chunk_0.md, github_pr_1476_comment_2098735375.md]
+
+A: The "decay" onUpdate/onTick/onBreak hook type needs a replacement block plus a prevention setting.
+   [expected: A replacement block plus a prevention setting]
+
+======================================================================
+[7/144] Q: What does the "replace_block" hook type need in Cubyz's Addon Creator?
+======================================================================
+[Retrieved 10 chunks: addon_creator_FIELD_REFERENCE.md_chunk_1.md, docs_docs_development_addons_index.md_chunk_0.md, github_pr_2990_comment_3172505722.md, github_issue_2258_discussion.md, github_issue_2701_discussion.md, github_pr_1476_comment_2098735375.md, addon_creator_README.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, codebase_src_callbacks_block_server_replace_block.zig_chunk_0.md, codebase_src_callbacks_block_server_decay.zig_chunk_0.md]
+
+A: The "replace_block" hook type needs an auto-namespaced target. This means that when using this hook, there should be a specific block designated as the replacement for another block within the game world. The target block will be automatically named based on certain rules or conventions defined by Cubyz's addon creation system.
+   [expected: An auto-namespaced target block]
+
+======================================================================
+[8/144] Q: When is the .name field present in a Cubyz block's onInteract export from the Addon Creator?
+======================================================================
+[Retrieved 11 chunks: addon_creator_FIELD_REFERENCE.md_chunk_1.md, github_issue_2409_discussion.md, docs_docs_development_addons_index.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, docs_docs_development_history.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_1150_discussion.md, codebase_assets_cubyz_blocks_sign__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_workbench.zig.zon_chunk_0.md]
+
+A: The `.name` field is present in a Cubyz block's `onInteract` export when the interaction type is "open_window". This means that if you want to open a window or UI element when interacting with a specific block, you need to specify the name of that window.
+   [expected: Only for the "open_window" interact type]
+
+======================================================================
+[9/144] Q: What's the difference between "auto" and manual drop selection for a Cubyz block in the Addon Creator?
+======================================================================
+[Retrieved 11 chunks: addon_creator_FIELD_REFERENCE.md_chunk_1.md, github_issue_2732_discussion.md, docs_automation_not_supported.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_gameplay_controls.md_chunk_1.md, docs_docs_development_addons_index.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_pr_3313_comment_3560517031.md, addon_creator_README.md_chunk_0.md, codebase_assets_cubyz_blocks_duckweed.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_osier.zig.zon_chunk_0.md]
+
+A: In the Cubyz Addon Creator, when you select an auto drop for a block, it exports as `.{.items=.{.auto}}`, which means that the block itself will be dropped instead of any specified item. On the other hand, manual drop selection allows you to specify a particular item that should be dropped when the block is broken or interacted with.
+   [expected: Auto exports as .{.items=.{.auto}} (drops the block itself); manual exports the specified item, auto-namespaced]
+
+======================================================================
+[10/144] Q: What happens if a Cubyz block has no item icon set in the Addon Creator?
+======================================================================
+[Retrieved 11 chunks: addon_creator_FIELD_REFERENCE.md_chunk_1.md, docs_docs_development_addons_index.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, addon_creator_README.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_3195_discussion.md, docs_automation_not_supported.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_1150_discussion.md, codebase_assets_cubyz_blocks_cloth_cyan.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_cloth_crimson.zig.zon_chunk_0.md]
+
+A: If a Cubyz block has no item icon set in the Addon Creator, a companion `items/{id}.zig.zon` file is auto-generated instead. This file references the block via `.block="{addon}:{id}"`.
+   [expected: A matching item file is auto-generated, referencing the block via .block="{addon}:{id}"]
+
+======================================================================
+[11/144] Q: When is a Cubyz item's food value field emitted in the Addon Creator's export?
+======================================================================
+[Retrieved 9 chunks: addon_creator_FIELD_REFERENCE.md_chunk_2.md, docs_docs_faq.md_chunk_0.md, codebase_assets_cubyz_items_raw_meat.zig.zon_chunk_0.md, codebase_assets_cubyz_items_apple.zig.zon_chunk_0.md, github_issue_966_discussion.md, docs_docs_development_addons_index.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_3.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, github_issue_604_discussion.md]
+
+A: A Cubyz item's food value field is only emitted when it has a positive value. This means that if the food value is greater than 0, the field will be included in the exported configuration file. If the food value is zero or negative, the field will not be emitted.
+   [expected: Only if it's greater than 0]
+
+======================================================================
+[12/144] Q: How does the Cubyz Addon Creator generate an item's shading gradient from its material color?
+======================================================================
+[Retrieved 10 chunks: addon_creator_FIELD_REFERENCE.md_chunk_2.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_896_discussion.md, github_issue_2301_discussion.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, github_issue_372_discussion.md, docs_docs_development_addons_index.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, codebase_assets_cubyz_blocks_amber_ore.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glass_cyan.zig.zon_chunk_0.md]
+
+A: The Cubyz Addon Creator generates an item's shading gradient by converting the material color hex picker to HSL (Hue, Saturation, Lightness), then re-sampling it at five lightness steps: 0.22/0.38/0.52/0.72/0.88. This process creates a shading gradient that is exported as `.colors = .{0xff..., ...}` in the Addon Creator's export, but only if the item has the `.material` tag.
+   [expected: The base hex color is converted to HSL, then re-sampled at 5 lightness steps (0.22/0.38/0.52/0.72/0.88)]
+
+======================================================================
+[13/144] Q: When are a Cubyz item's material fields (durability, swingSpeed, etc.) emitted by the Addon Creator?
+======================================================================
+[Retrieved 11 chunks: addon_creator_FIELD_REFERENCE.md_chunk_2.md, docs_docs_development_addons_items.md_chunk_0.md, addon_creator_engine_validation_items.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_2.md, codebase_assets_cubyz_items_copper_ingot.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_nimbusite__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_voidstone__defaults.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, docs_docs_development_addons_blocks.md_chunk_0.md, github_issue_172_discussion.md, github_issue_604_discussion.md]
+
+A: A Cubyz item's material fields (durability, swingSpeed, etc.) are emitted by the Addon Creator only if the `.material` tag is present. This means that for an item to have these properties exported, it must be tagged with `.material`.
+   [expected: Only if the item has the .material tag present]
+
+======================================================================
+[14/144] Q: How many ingredient slots does the Cubyz Addon Creator's recipe form support?
+======================================================================
+[Retrieved 10 chunks: addon_creator_FIELD_REFERENCE.md_chunk_3.md, addon_creator_recipes.html_chunk_0.md, github_issue_2037_discussion.md, docs_docs_development_addons_index.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_3.md, github_issue_944_discussion.md, addon_creator_engine_validation_recipes.md, codebase_assets_cubyz_recipes_special_recipes.zig.zon_chunk_0.md, codebase_assets_cubyz_recipes_brick_recipes.zig.zon_chunk_0.md]
+
+A: The Cubyz Addon Creator's recipe form supports up to four ingredient slots. This is specified in the retrieved context under the section "Recipe Data Structure" where it mentions that "Ingredient slots 1-4 plus counts (`recipeInputSearch1-4`/`recipeInputCount1-4`) export as `.inputs = .{"{count} {item}", ...}` -- empty slots are skipped, and the form supports **up to 4 ingredients**."
+   [expected: Up to 4]
+
+======================================================================
+[15/144] Q: How does the Cubyz Addon Creator handle a recipe output count of exactly 1 in its export?
+======================================================================
+[Retrieved 11 chunks: addon_creator_FIELD_REFERENCE.md_chunk_3.md, github_issue_2037_discussion.md, docs_docs_development_addons_index.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_2.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, addon_creator_README.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, addon_creator_recipes.html_chunk_0.md, github_issue_944_discussion.md, codebase_assets_cubyz_recipes_special_recipes.zig.zon_chunk_0.md, codebase_assets_cubyz_recipes_cloth_recipes.zig.zon_chunk_0.md]
+
+A: The Cubyz Addon Creator omits the count prefix when exporting a recipe output count of exactly 1. This means that if the count is 1, it will not be included in the exported recipe data.
+   [expected: The count prefix is omitted if the count is 1]
+
+======================================================================
+[16/144] Q: What two fields does the Cubyz Addon Creator combine a biome's surface and subsurface blocks into?
+======================================================================
+[Retrieved 11 chunks: docs_docs_development_addons_index.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, addon_creator_README.md_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_1.md, docs_docs_faq.md_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, codebase_assets_cubyz_biomes_volcano_base.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_mantle_lower_base.zig.zon_chunk_0.md, github_issue_3312_discussion.md, github_issue_1782_discussion.md]
+
+A: The Cubyz Addon Creator combines a biome's surface and subsurface blocks into one field called `.ground_structure`. This field is formatted as `{"{surface}", "0 to 3 {sub}"}`. Additionally, the stone layer is stored in a separate field named `.stoneBlock`.
+   [expected: One combined .ground_structure field; the stone layer is a separate .stoneBlock field]
+
+======================================================================
+[17/144] Q: What gates whether a Cubyz biome's cave-specific fields (density scale, radius factor, crystal frequency) are exported at all?
+======================================================================
+[Retrieved 12 chunks: codebase_assets_cubyz_biomes_cave_void_void_crystal.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, docs_docs_development_addons_biomes.md_chunk_1.md, codebase_assets_cubyz_biomes_cave_crystal_forest.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_rare_crying_cave.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_void_void.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_crystal.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_void_void_cavern.zig.zon_chunk_0.md, addon_creator_engine_validation_biomes.md, docs_docs_development_addons_biomes.md_chunk_0.md, github_issue_1463_discussion.md, github_issue_3312_discussion.md]
+
+A: The "Is Cave" checkbox (`bioIsCave`) in the Cubyz Addon Creator exports as `.isCave`, and this value gates whether the cave-only fields below are emitted at all. If `isCave` is checked, then the cave-specific fields like cave density scale, openness radius factor, and glow crystal frequency will be included; otherwise, they won't be exported.
+   [expected: Whether the "Is Cave" checkbox is checked]
+
+======================================================================
+[18/144] Q: How does the Cubyz Addon Creator handle a biome's five climate/humidity/zone/growth/elevation radio groups on export?
+======================================================================
+[Retrieved 10 chunks: addon_creator_FIELD_REFERENCE.md_chunk_4.md, docs_docs_development_addons_index.md_chunk_0.md, github_issue_3312_discussion.md, docs_docs_development_addons_biomes.md_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_1.md, addon_creator_README.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, codebase_assets_cubyz_biomes_savannah_base.zig.zon_chunk_0.md, github_issue_873_discussion.md, codebase_assets_cubyz_biomes_ferrock_mountains.zig.zon_chunk_0.md]
+
+A: The Cubyz Addon Creator combines all checked values from each of the five climate/humidity/zone/growth/elevation radio groups into one combined list for the `.properties` field. This means that instead of keeping separate fields for each group, it flattens them into a single list.
+   [expected: All 5 groups' checked values are flattened into one combined .properties list, not kept separate]
+
+======================================================================
+[19/144] Q: What fields does a Cubyz "simple_tree" structure row need in the Addon Creator?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_addons_index.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, codebase_assets_cubyz_sbb_tree_coniferous_pine_eastern_white.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_birch_silver_1.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_baobab_grandidieri_roots.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_baobab_grandidieri_branch.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_cirrus_base.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_cirrus_upper_trunk.zig.zon_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, addon_creator_README.md_chunk_0.md, github_issue_1762_discussion.md, github_issue_1403_discussion.md]
+
+A: A Cubyz "simple_tree" structure row needs the following fields in the Addon Creator:
+- log: The block type for the tree's trunk.
+- leaves: The block type for the tree's leaves.
+- top: The block type for the tree's top part.
+- height: The height of the tree.
+- height_variation: The variation in the tree's height.
+- leafRadius: The radius of the tree's leaves.
+   [expected: log, leaves, top, height, height_variation, and leafRadius]
+
+======================================================================
+[20/144] Q: What fields does a Cubyz "fallen_tree" structure row need in the Addon Creator?
+======================================================================
+[Retrieved 12 chunks: addon_creator_FIELD_REFERENCE.md_chunk_4.md, docs_docs_development_addons_index.md_chunk_0.md, codebase_assets_cubyz_structure_tables_wood_oak.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_birch_silver_1.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_coniferous_pine_eastern_white.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_baobab_grandidieri_roots.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_oak_young_trunk.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_mahogany_khaya_ivorensis_small.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, docs_docs_faq.md_chunk_0.md, github_issue_1396_discussion.md, github_issue_1762_discussion.md]
+
+A: A Cubyz "fallen_tree" structure row needs log, top, height fields.
+   [expected: log, top, and height]
+
+======================================================================
+[21/144] Q: What fields does an "sbb" structure row need in the Cubyz Addon Creator?
+======================================================================
+[Retrieved 9 chunks: docs_docs_development_addons_index.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1403_discussion.md, github_pr_1227_comment_2051594652.md, codebase_assets_cubyz_structure_tables_rare.zig.zon_chunk_0.md, github_issue_1882_discussion.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, codebase_assets_cubyz_blocks_sbb_origin.zig.zon_chunk_0.md]
+
+A: An "sbb" (Structure Building Block) structure row needs a structure and a placeMode. The structure field specifies the path to the SBB file, while the placeMode determines how the SBB should be placed within the world.
+   [expected: structure and placeMode]
+
+======================================================================
+[22/144] Q: What happens to a Cubyz entity's tags block in the Addon Creator export if it has no tags?
+======================================================================
+[Retrieved 11 chunks: github_issue_3195_discussion.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, addon_creator_FIELD_REFERENCE.md_chunk_5.md, docs_docs_development_addons_index.md_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_2.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_3312_discussion.md, codebase_assets_cubyz_blocks_sbb_child__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_leaves_opaque__defaults.zig.zon_chunk_0.md]
+
+A: In the Cubyz Addon Creator, if an entity has no tags, the entire tags block is omitted entirely during the export process. This means that any associated tags for the entity will not be included in the exported data.
+   [expected: The tags block is omitted entirely]
+
+======================================================================
+[23/144] Q: What controls whether a companion "_emission" texture file gets bundled for a Cubyz particle addon?
+======================================================================
+[Retrieved 11 chunks: addon_creator_FIELD_REFERENCE.md_chunk_5.md, github_pr_1367_comment_2068705882.md, github_issue_3122_discussion.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, codebase_assets_cubyz_particles_flame.zig.zon_chunk_0.md, addon_creator_particles.html_chunk_0.md, addon_creator_engine_validation_entities_particles.md, github_pr_1367_comment_2068718495.md, codebase_assets_cubyz_particles_poof.zig.zon_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md]
+
+A: The presence of the "has emission" checkbox in the Particles form (`particles.html`) controls whether a companion `{texture}_emission` texture file is also bundled into the export. If this checkbox is checked, the corresponding `_emission` texture will be included; if unchecked, it won't be.
+   [expected: The "has emission" checkbox -- it doesn't write a field directly, it controls whether a companion emission texture file is bundled]
+
+======================================================================
+[24/144] Q: What additional field does a Cubyz particle's "sphere" spawn shape add in the Addon Creator, and where does its value come from?
+======================================================================
+[Retrieved 11 chunks: addon_creator_FIELD_REFERENCE.md_chunk_5.md, addon_creator_particles.html_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, docs_docs_development_addons_index.md_chunk_0.md, addon_creator_engine_validation_entities_particles.md, github_issue_3122_discussion.md, docs_docs_faq.md_chunk_0.md, addon_creator_README.md_chunk_0.md, github_issue_3316_discussion.md, codebase_assets_cubyz_biomes_cave_slate_base.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_sky_islands_base.zig.zon_chunk_0.md]
+
+A: A Cubyz particle's "sphere" spawn shape adds a `.radius` field. The value for this radius comes from the `particleShapeRadius` input field in the UI. This allows users to specify the size of the sphere when creating particles with that particular spawn shape.
+   [expected: .radius, from the particleShapeRadius field]
+
+======================================================================
+[25/144] Q: What additional field does a Cubyz particle's "cube" spawn shape add in the Addon Creator?
+======================================================================
+[Retrieved 11 chunks: addon_creator_FIELD_REFERENCE.md_chunk_5.md, docs_docs_development_addons_index.md_chunk_0.md, addon_creator_README.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_3122_discussion.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, addon_creator_particles.html_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_3316_discussion.md, codebase_assets_cubyz_biomes_cave_slate_base.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_cactus_saguaro.zig.zon_chunk_0.md]
+
+A: A Cubyz particle's "cube" spawn shape adds a `.size` field. This field is populated with the value from `particleShapeSize`.
+   [expected: .size, from the particleShapeSize field]
+
+======================================================================
+[26/144] Q: What additional field does a Cubyz particle's "direction" spawn mode add in the Addon Creator?
+======================================================================
+[Retrieved 11 chunks: docs_docs_development_addons_index.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_5.md, docs_docs_faq.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, addon_creator_particles.html_chunk_0.md, addon_creator_README.md_chunk_0.md, github_issue_3122_discussion.md, docs_docs_development_addons_blocks.md_chunk_0.md, github_issue_3316_discussion.md, codebase_assets_cubyz_particles_flame.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_slate_base.zig.zon_chunk_0.md]
+
+A: A Cubyz particle's "direction" spawn mode adds a `.direction = .{x, y, z}` field. This field is populated with values from `particleDirX`/`particleDirY`/`particleDirZ`.
+   [expected: .direction = .{x, y, z}, from the particleDirX/Y/Z fields]
+
+======================================================================
+[27/144] Q: What two ID-handling conventions does the Cubyz Addon Creator apply almost everywhere?
+======================================================================
+[Retrieved 10 chunks: docs_docs_development_addons_index.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, github_issue_1378_discussion.md, addon_creator_README.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_1285_discussion.md, github_issue_2037_discussion.md, github_issue_2114_discussion.md, codebase_assets_cubyz_sbb_rock_hoodoo_large.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_cave_mantle_lava_pool.zig.zon_chunk_0.md]
+
+A: The two ID-handling conventions that the Cubyz Addon Creator applies almost everywhere are:
+
+1. **Namespace auto-prefixing**: Cross-references (a block's drop item, a biome's surface block, a recipe's ingredients) get auto-prefixed with `{addonName}:` if the referenced ID matches something already defined in the current project, or `cubyz:` otherwise (assumed vanilla asset). An explicit `:` in the input bypasses this entirely.
+
+2. **ID sanitization**: ID fields are lowercased and stripped to `[a-z0-9_]` before use as a filename.
+   [expected: Namespace auto-prefixing (addonName: or cubyz: based on whether the ID matches something in the project) and ID sanitization (lowercased, stripped to [a-z0-9_])]
+
+======================================================================
+[28/144] Q: What does an explicit colon in a Cubyz Addon Creator ID input field do?
+======================================================================
+[Retrieved 10 chunks: github_issue_1378_discussion.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, docs_docs_development_index.md_chunk_0.md, github_issue_1150_discussion.md, codebase_assets_cubyz_sbb_rare_mushroom_pole_spacer.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_cirrus_vine.zig.zon_chunk_0.md]
+
+A: An explicit colon in a Cubyz Addon Creator ID input field bypasses the namespace auto-prefixing convention. This means that if the referenced ID matches something already defined in the current project, it will not be prefixed with `{addonName}:` or `cubyz:` as usual. Instead, the exact ID provided by the user will be used directly.
+   [expected: It bypasses namespace auto-prefixing entirely]
+
+======================================================================
+[29/144] Q: What does clicking "Export Full Addon" do in the Cubyz Addon Creator?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_addons_index.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_app-save.js_chunk_4.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_1.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, github_issue_2114_discussion.md, github_issue_3308_discussion.md, codebase_assets_cubyz_sbb_mushroom_big_glimmergill_cap.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_mushroom_big_toadstool_large_cap.zig.zon_chunk_0.md]
+
+A: Clicking "Export Full Addon" in the Cubyz Addon Creator triggers a comprehensive process that generates an addon package. This involves creating a ZIP archive containing all necessary components of the addon, such as blocks, items, biomes, recipes, entities, particles, and textures. The data is structured according to Zig syntax rules and organized into standard Cubyz addon folder layouts (`blocks/`, `items/`, `biomes/`, `entityModels/`, `particles/`, `recipes/`). Finally, the generated ZIP file is triggered for download, allowing users to save their addon package locally or share it with others.
+   [expected: Calls exportFullAddon(), which walks every object in window.projectData and writes it out as .zig.zon files inside a zip]
+
+======================================================================
+[30/144] Q: How does the Cubyz Addon Creator import an existing addon?
+======================================================================
+[Retrieved 11 chunks: docs_docs_development_addons_index.md_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_1.md, docs_docs_faq.md_chunk_0.md, addon_creator_index.html_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, github_issue_2114_discussion.md, github_issue_2037_discussion.md, codebase_assets_cubyz_sbb_rare_triclops_statue_root_base.zig.zon_chunk_0.md, codebase_src_entityComponent__list.zig_chunk_0.md]
+
+A: The Cubyz Addon Creator imports an existing addon by reading the `.zig.zon` text of each file and regex-parses it back into the same internal field names, repopulating `window.projectData`. This process is handled by the `importExistingAddon()` function in `app-io.js`, which does the exact reverse of what happens during export.
+   [expected: importExistingAddon() regex-parses the .zig.zon text of each file back into the same internal field names]
+
+======================================================================
+[31/144] Q: What does a Cubyz block's .blockHealth field default to in the engine if omitted?
+======================================================================
+[Retrieved 10 chunks: addon_creator_engine_validation_blocks.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, codebase_assets_cubyz_blocks_grass__defaults.zig.zon_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, codebase_assets_cubyz_blocks_mud.zig.zon_chunk_0.md, docs_docs_development_addons_blocks.md_chunk_0.md, codebase_assets_cubyz_blocks_fog__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_ruby_block.zig.zon_chunk_0.md, github_issue_1150_discussion.md, github_issue_81_discussion.md]
+
+A: A Cubyz block's `.blockHealth` field defaults to `1` if omitted. This is specified in the retrieved context under the section "Engine defaults if a field is missing" within the file `[addon_creator/addon_creator_engine_validation_blocks.md]`.
+   [expected: 1]
+
+======================================================================
+[32/144] Q: What does a Cubyz block's .emittedLight field default to if omitted?
+======================================================================
+[Retrieved 14 chunks: codebase_assets_cubyz_blocks_glow_crystal_violet.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glow_crystal_cyan.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glow_crystal_grey.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glow_crystal_yellow.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glow_crystal_indigo.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glow_crystal_crimson.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glow_crystal_dark_grey.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glow_crystal_purple.zig.zon_chunk_0.md, github_issue_1178_discussion.md, github_issue_1091_discussion.md, docs_docs_development_addons_blocks.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, addon_creator_engine_validation_blocks.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md]
+
+A: A Cubyz block's `.emittedLight` field defaults to `0`. This means that if no specific light emission value is provided, the block will not emit any light.
+   [expected: 0]
+
+======================================================================
+[33/144] Q: What does a Cubyz block's .absorbedLight field default to if omitted?
+======================================================================
+[Retrieved 14 chunks: codebase_assets_cubyz_blocks_glass_white.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glass_pink.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glass_cyan.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glass_yellow.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glass_blue.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_fog_cyan.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glass_green.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glass_black.zig.zon_chunk_0.md, docs_docs_development_addons_blocks.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, addon_creator_engine_validation_blocks.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, github_issue_1777_discussion.md, github_issue_836_discussion.md]
+
+A: A Cubyz block's `.absorbedLight` field defaults to `0xffffff` (16777215) if omitted. This value represents the maximum amount of light that can be absorbed by a block, which is used in conjunction with other lighting properties such as emitted light and transparency to determine how much light passes through or reflects off the surface of the block.
+   [expected: 0xffffff (16777215)]
+
+======================================================================
+[34/144] Q: What does a Cubyz block's .degradable field default to if omitted?
+======================================================================
+[Retrieved 10 chunks: codebase_assets_cubyz_blocks_cloth__defaults.zig.zon_chunk_0.md, addon_creator_engine_validation_blocks.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, docs_docs_development_addons_blocks.md_chunk_0.md, codebase_assets_cubyz_blocks_vine__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_duckweed.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_castilleja.zig.zon_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1150_discussion.md, github_pr_2990_comment_3172505722.md]
+
+A: A Cubyz block's `.degradable` field defaults to `false` if omitted. This means that by default, blocks do not degrade over time unless explicitly set otherwise in their configuration.
+   [expected: false]
+
+======================================================================
+[35/144] Q: What is a Cubyz block's .selectionCapabilities field, and how is it set?
+======================================================================
+[Retrieved 11 chunks: github_pr_3313_comment_3560517031.md, github_pr_2987_comment_3177694224.md, docs_docs_development_addons_blocks.md_chunk_0.md, github_pr_2987_comment_3202703881.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, github_issue_1212_discussion.md, github_pr_2987_comment_3196803123.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, codebase_src_blocks.zig_chunk_0.md, codebase_assets_cubyz_blocks_osier.zig.zon_chunk_0.md]
+
+A: A Cubyz block's `.selectionCapabilities` field defines which tools can select the block. It defaults to `.always`, meaning any tool can select it, but this setting is not exposed in the website UI and must be hand-edited directly in the codebase. The reviewer suggests that allowing `.all` in the configuration could be redundant, as it would essentially have the same effect as `.always`.
+   [expected: Defaults to .always (any tool can select it); not exposed anywhere in the Addon Creator website UI, hand-edit only]
+
+======================================================================
+[36/144] Q: What does a Cubyz block's .replaceable field default to if omitted?
+======================================================================
+[Retrieved 9 chunks: addon_creator_engine_validation_blocks.md, docs_docs_development_addons_blocks.md_chunk_0.md, github_pr_2990_comment_3172505722.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, codebase_assets_cubyz_blocks_fog__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_castilleja.zig.zon_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, codebase_assets_cubyz_blocks_osier.zig.zon_chunk_0.md, github_issue_1220_discussion.md]
+
+A: A Cubyz block's `.replaceable` field defaults to `false` if omitted. This means that by default, blocks cannot be replaced by another block without being broken. However, this behavior can be changed using the new `Replaceability` enum introduced in PR #2990, which allows for more complex structures and clearer semantics for block interactions in the game.
+   [expected: false]
+
+======================================================================
+[37/144] Q: What does a Cubyz block's .transparent field default to if omitted?
+======================================================================
+[Retrieved 13 chunks: codebase_assets_cubyz_blocks_void.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_fog__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_air.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glass__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_amber_block.zig.zon_chunk_0.md, docs_docs_development_addons_blocks.md_chunk_0.md, codebase_assets_cubyz_blocks_cut_amber_block.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_water.zig.zon_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_3099_discussion.md, github_issue_2246_discussion.md, addon_creator_engine_validation_blocks.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md]
+
+A: A Cubyz block's `.transparent` field defaults to `false` if omitted. This means that by default, blocks are not transparent unless explicitly set otherwise in their configuration.
+   [expected: false]
+
+======================================================================
+[38/144] Q: What does a Cubyz block's .collide field default to, and what's notable about that default?
+======================================================================
+[Retrieved 11 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, docs_docs_development_addons_blocks.md_chunk_0.md, addon_creator_engine_validation_blocks.md, codebase_assets_cubyz_blocks_cloth__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_sign__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_grass_vegetation__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_castilleja.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_fog__defaults.zig.zon_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1436_discussion.md, github_issue_1150_discussion.md]
+
+A: A Cubyz block's `.collide` field defaults to `true`, meaning the default is "does collide." This is the opposite of leaving it off, which would mean no collision.
+   [expected: true -- the default is "does collide," the opposite of what leaving it unset might suggest]
+
+======================================================================
+[39/144] Q: What does a Cubyz block's .viewThrough field default to?
+======================================================================
+[Retrieved 11 chunks: docs_docs_development_addons_blocks.md_chunk_0.md, codebase_assets_cubyz_blocks_void.zig.zon_chunk_0.md, docs_docs_development_addons_models.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, docs_docs_blocks_index.md_chunk_0.md, codebase_assets_cubyz_blocks_voidstone_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_ivy.zig.zon_chunk_0.md, addon_creator_engine_validation_blocks.md, github_issue_3099_discussion.md, github_issue_1150_discussion.md]
+
+A: A Cubyz block's `.viewThrough` field defaults to `false`. However, if either `.transparent` or `.alwaysViewThrough` is true, it will be forced to `true`. This means that the block can be viewed through if any of these conditions are met.
+   [expected: false, but it's forced to true if transparent or alwaysViewThrough is true]
+
+======================================================================
+[40/144] Q: What does a Cubyz block's .friction field default to if omitted?
+======================================================================
+[Retrieved 10 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, codebase_assets_cubyz_blocks_frost.zig.zon_chunk_0.md, addon_creator_engine_validation_blocks.md, docs_docs_development_addons_blocks.md_chunk_0.md, codebase_assets_cubyz_blocks_ice.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_resin_block.zig.zon_chunk_0.md, github_issue_1397_discussion.md, codebase_assets_cubyz_blocks_ferrock_bricks.zig.zon_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1091_discussion.md]
+
+A: A Cubyz block's `.friction` field defaults to `20` if omitted. This value represents the surface friction of the block, which affects how entities interact with it in terms of movement and sliding.
+   [expected: 20]
+
+======================================================================
+[41/144] Q: What does a Cubyz block's .bounciness field default to if omitted?
+======================================================================
+[Retrieved 11 chunks: docs_docs_development_addons_blocks.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, addon_creator_engine_validation_blocks.md, codebase_assets_cubyz_blocks_bolete_cap.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_nimbusite__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_toadstool_cap.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glimmergill_cap.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_basalt__defaults.zig.zon_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_1704_discussion.md, github_issue_1770_discussion.md]
+
+A: A Cubyz block's `.bounciness` field defaults to `0.0`. This means that if no specific bounciness value is provided for a block, it will have no effect on the bounce behavior of entities interacting with or falling through the block.
+   [expected: 0.0]
+
+======================================================================
+[42/144] Q: What does a Cubyz block's .density field default to if omitted, and how does that differ from the website?
+======================================================================
+[Retrieved 10 chunks: docs_docs_development_addons_blocks.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, addon_creator_engine_validation_blocks.md, codebase_assets_cubyz_blocks_grass__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_copper_ore.zig.zon_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, codebase_assets_cubyz_biomes_wetlands__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_desert__defaults.zig.zon_chunk_0.md, github_issue_1150_discussion.md, github_issue_3122_discussion.md]
+
+A: A Cubyz block's `.density` field defaults to `main.physics.airDensity`, which is a named engine constant. This differs from the website's form default of `1.2`.
+   [expected: main.physics.airDensity (a named engine constant, not a literal number); the website form defaults to 1.2]
+
+======================================================================
+[43/144] Q: What does a Cubyz block's .terminalVelocity field default to if omitted?
+======================================================================
+[Retrieved 9 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, docs_docs_development_addons_blocks.md_chunk_0.md, addon_creator_engine_validation_blocks.md, codebase_assets_cubyz_blocks_water.zig.zon_chunk_0.md, codebase_src_physics.zig_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_2688_discussion.md, docs_docs_development_history.md_chunk_0.md, github_issue_2388_discussion.md]
+
+A: A Cubyz block's `.terminalVelocity` field defaults to `90`. This value represents the maximum falling velocity through the block, which is used by the physics system to simulate realistic behavior when entities fall. The default value of 90 blocks per second ensures that players and other entities do not fall at an unrealistic speed, maintaining a balance between realism and gameplay mechanics.
+   [expected: 90]
+
+======================================================================
+[44/144] Q: What does a Cubyz block's .mobility field default to if omitted?
+======================================================================
+[Retrieved 10 chunks: docs_docs_development_addons_blocks.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, addon_creator_engine_validation_blocks.md, codebase_assets_cubyz_blocks_water.zig.zon_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_development_addons_models.md_chunk_0.md, codebase_assets_cubyz_blocks_voidstone_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_nimbusite_bricks.zig.zon_chunk_0.md, github_issue_1150_discussion.md, github_pr_2990_comment_3172505722.md]
+
+A: A Cubyz block's `.mobility` field defaults to `1.0` if omitted. This value is used by the physics system to determine how easily entities can move through or around the block.
+   [expected: 1.0]
+
+======================================================================
+[45/144] Q: What does a Cubyz block's .allowOres field default to if omitted?
+======================================================================
+[Retrieved 11 chunks: docs_docs_development_addons_blocks.md_chunk_0.md, addon_creator_engine_validation_blocks.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, codebase_assets_cubyz_blocks_voidstone_rough.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_copper_ore.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_coal_ore.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_basalt_rough.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_silver_ore.zig.zon_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, github_issue_1150_discussion.md, github_issue_1269_discussion.md]
+
+A: A Cubyz block's `.allowOres` field defaults to `false` if omitted. This means that by default, ores cannot generate inside the specified block unless explicitly set otherwise in the configuration file.
+   [expected: false]
+
+======================================================================
+[46/144] Q: What are the engine's raw fallback values inside a Cubyz block's .ore sub-object, and how do they compare to the website's own ore defaults?
+======================================================================
+[Retrieved 11 chunks: addon_creator_engine_validation_blocks.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, docs_docs_development_addons_blocks.md_chunk_0.md, codebase_assets_cubyz_blocks_copper_ore.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_iron_ore.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_ruby_ore.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_uranium_ore.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_silver_ore.zig.zon_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1091_discussion.md, github_issue_1269_discussion.md]
+
+A: The engine's raw fallback values for a Cubyz block's `.ore` sub-object are as follows:
+- `veins=0`
+- `size=0`
+- `maxHeight=i32 max`
+- `minHeight=i32 min`
+- `density=0.5`
+
+These values differ from the website's own hardcoded ore defaults (`veins=4.5, size=20, maxHeight=-600, density=0.25`).
+   [expected: veins=0, size=0, maxHeight=i32 max, minHeight=i32 min, density=0.5 -- very different from the website's hardcoded ore defaults (veins=4.5, size=20, maxHeight=-600, density=0.25)]
+
+======================================================================
+[47/144] Q: What happens if a Cubyz block's onInteract/onBreak/onUpdate/onTick callback is present but malformed?
+======================================================================
+[Retrieved 10 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, docs_docs_development_history.md_chunk_0.md, github_issue_2768_discussion.md, addon_creator_engine_validation_blocks.md, github_pr_1143_comment_1977731254.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, github_issue_1150_discussion.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, codebase_src_callbacks_callbacks.zig_chunk_0.md, codebase_assets_cubyz_blocks_castilleja.zig.zon_chunk_0.md]
+
+A: If a Cubyz block's `onInteract`, `onBreak`, or `onUpdate` callback is present but malformed, the engine logs an error message indicating that it failed to load the specific event for the block. For example, if the callback is malformed, the log entry would be something like `"Failed to load onX event for block {id}"`. After logging this error, the engine falls back to a no-op (no operation) behavior for that particular callback. This means that even though the callback was defined in the block configuration file, it will not execute any actions when triggered by an interaction with the block.
+
+This fallback mechanism ensures that malformed callbacks do not cause crashes or unexpected behaviors within the game engine. Instead, they simply have no effect on how the block interacts with entities or other components of the game world. This approach helps maintain stability and prevents potential issues arising from invalid or incorrectly formatted configuration data.
+   [expected: The engine logs "Failed to load onX event for block {id}" and falls back to a no-op]
+
+======================================================================
+[48/144] Q: What happens if a Cubyz block's onTouch callback is malformed?
+======================================================================
+[Retrieved 9 chunks: github_pr_1143_comment_1977731254.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, github_issue_2768_discussion.md, github_pr_1143_comment_1977647136.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, docs_docs_development_history.md_chunk_0.md, codebase_assets_cubyz_blocks_log_cactus.zig.zon_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, codebase_assets_cubyz_blocks_cactus.zig.zon_chunk_0.md]
+
+A: If a Cubyz block's `onTouch` callback is malformed, the engine will log an error message stating `"Failed to load onTouch event for block {id}"`. Following this, it will fall back to using a no-op (null operation) function instead of executing the malformed callback. This ensures that the game does not crash due to invalid or improperly formatted callbacks while still allowing for some level of functionality through the fallback mechanism.
+   [expected: The engine logs "Failed to load onTouch event for block {id}" and falls back to a no-op]
+
+======================================================================
+[49/144] Q: How does a Cubyz block's .drops field handle an unknown item id in a drop entry?
+======================================================================
+[Retrieved 10 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, addon_creator_engine_validation_blocks.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, codebase_assets_cubyz_blocks_grass_cold.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_grass_dew.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_grass_sky.zig.zon_chunk_0.md, github_issue_2732_discussion.md, docs_docs_development_addons_blocks.md_chunk_0.md, github_issue_50_discussion.md]
+
+A: In the Cubyz engine, if there is an unknown item ID within a drop entry for a block's `.drops` field, it will be silently skipped. This means that instead of causing an error or crashing the game, the system simply continues processing the remaining entries without including this specific item in the drops list.
+   [expected: It's silently skipped (continue), not errored]
+
+======================================================================
+[50/144] Q: What are the two supported formats for an entry in a Cubyz block's .drops array?
+======================================================================
+[Retrieved 11 chunks: addon_creator_FIELD_REFERENCE.md_chunk_1.md, codebase_assets_cubyz_blocks_grass_dew.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_grass_sky.zig.zon_chunk_0.md, github_issue_2732_discussion.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, codebase_assets_cubyz_blocks_duckweed.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_grass_cold.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_branch_leafy_baobab.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, github_issue_1150_discussion.md, docs_docs_development_addons_models.md_chunk_0.md]
+
+A: The two supported formats for an entry in a Cubyz block's `.drops` array are:
+
+1. `"auto"`: This format drops the block itself when it is broken.
+2. `"{count} {item}"`: This format specifies the number of items to drop and the item type, where `{count}` is replaced with the specified count and `{item}` is replaced with the specified item ID.
+
+For example, if you want to specify that breaking a block drops 5 pieces of clay, you would use `"5 cubyz:clay"` in the `.drops` array.
+   [expected: "auto" (drops the block itself) or "{count} {item}"]
+
+======================================================================
+[51/144] Q: What does the engine actually check to decide whether a Cubyz item has a material, as opposed to what the Addon Creator checks?
+======================================================================
+[Retrieved 10 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_2.md, addon_creator_engine_validation_items.md, docs_docs_development_addons_items.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_2.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1269_discussion.md, github_issue_3195_discussion.md, codebase_assets_cubyz_blocks_cloth_cyan.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_cloth_crimson.zig.zon_chunk_0.md]
+
+A: The engine checks whether `.material` is an object (i.e., not `null`) to determine if a Cubyz item has a material. This is different from what the Addon Creator website does, which only checks for the presence of a `.material` tag in the item's tags array.
+   [expected: The engine checks whether .material is an object, not whether a .material tag is present -- these happen to be coupled by the website's own logic]
+
+======================================================================
+[52/144] Q: What does a Cubyz item's .block field default to if omitted?
+======================================================================
+[Retrieved 11 chunks: addon_creator_engine_validation_blocks.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, docs_docs_development_addons_blocks.md_chunk_0.md, docs_docs_development_addons_models.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_2.md, codebase_assets_cubyz_blocks_bars__defaults.zig.zon_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, codebase_assets_cubyz_blocks_voidstone_bricks.zig.zon_chunk_0.md, github_issue_1150_discussion.md, github_issue_3195_discussion.md]
+
+A: A Cubyz item's `.block` field defaults to `null`, which is looked up via the `blocks.getTypeById` function. If the reference block cannot be found, it falls back to air. This means that when an item has no associated block specified in its configuration, the engine will attempt to find a matching block by ID and use that instead; if no such block exists, it defaults to using air as the fallback value for the item's `.block` field.
+   [expected: null]
+
+======================================================================
+[53/144] Q: What happens if a Cubyz item material's modifier id doesn't match a known modifier?
+======================================================================
+[Retrieved 9 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_2.md, github_issue_172_discussion.md, docs_docs_development_addons_items.md_chunk_0.md, addon_creator_engine_validation_items.md, addon_creator_FIELD_REFERENCE.md_chunk_2.md, github_issue_604_discussion.md, docs_docs_development_modding.md_chunk_0.md, codebase_assets_cubyz_blocks_nimbusite__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_voidstone__defaults.zig.zon_chunk_0.md]
+
+A: If a Cubyz item material's modifier id doesn't match a known modifier, it logs an error message stating "Couldn't find modifier with id '{id}'. Replacing it with 'durable'" and silently substitutes the "durable" modifier. This means that even if the specified modifier is not recognized by the system, the item will still have some form of durability attribute to prevent it from breaking instantly.
+   [expected: The engine logs "Couldn't find modifier with id '{id}'. Replacing it with 'durable'" and substitutes the durable modifier]
+
+======================================================================
+[54/144] Q: What is a Cubyz "procedural item," and can the Addon Creator website create one?
+======================================================================
+[Retrieved 11 chunks: docs_docs_development_addons_index.md_chunk_0.md, addon_creator_README.md_chunk_0.md, github_issue_604_discussion.md, github_issue_2301_discussion.md, docs_docs_faq.md_chunk_0.md, github_issue_1608_discussion.md, docs_automation_not_supported.md_chunk_0.md, docs_README.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_2.md, codebase_assets_cubyz_recipes_special_recipes.zig.zon_chunk_0.md, codebase_src_gui_windows_workbench.zig_chunk_0.md]
+
+A: A Cubyz "procedural item" refers to items that are created through a specific system involving weighted parameter matrices mapping material properties to tool stats, as well as `disabled`/`optional` slot arrays. This advanced system is not supported by the Addon Creator website and can only be reached by hand-writing the zon file directly in the game's configuration files.
+   [expected: A separate, more advanced system using weighted parameter matrices mapping material properties to tool stats; the website does not support it at all -- hand-edit only]
+
+======================================================================
+[55/144] Q: What symbolic pattern-matching feature does Cubyz's recipe system support that the Addon Creator website doesn't expose?
+======================================================================
+[Retrieved 11 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_3.md, addon_creator_engine_validation_recipes.md, github_issue_2037_discussion.md, addon_creator_FIELD_REFERENCE.md_chunk_3.md, docs_docs_faq.md_chunk_0.md, github_issue_944_discussion.md, github_issue_1348_discussion.md, github_issue_1378_discussion.md, docs_docs_development_addons_index.md_chunk_0.md, codebase_assets_cubyz_recipes_special_recipes.zig.zon_chunk_0.md, codebase_assets_cubyz_recipes_wood_recipes.zig.zon_chunk_0.md]
+
+A: Cubyz's recipe system supports a powerful symbolic pattern-matching system (`{symbol}` wildcards in item IDs, e.g., `"foo:{bar}/{baz}"`) for recipes that match families of items rather than one exact item. This feature is entirely hand-edit only and not exposed by the Addon Creator website.
+   [expected: {symbol} wildcards in item ids, for recipes that match families of items rather than one exact item -- hand-edit only]
+
+======================================================================
+[56/144] Q: What does a Cubyz biome's .stoneBlock field default to if omitted?
+======================================================================
+[Retrieved 11 chunks: addon_creator_engine_validation_blocks.md, docs_docs_development_addons_biomes.md_chunk_1.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, codebase_assets_cubyz_biomes_desert_oasis__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_decorative_stone_rock.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, codebase_assets_cubyz_biomes_cave_void_void_crystal.zig.zon_chunk_0.md, addon_creator_engine_validation_biomes.md, docs_docs_development_addons_blocks.md_chunk_0.md, github_issue_1150_discussion.md, github_issue_3122_discussion.md]
+
+A: A Cubyz biome's `.stoneBlock` field defaults to `"cubyz:slate/smooth"` if omitted. This is specified in the documentation for engine-side default values and error messages for every Cubyz biome field, read directly from `server/terrain/biomes.zig: Biome.init()`.
+   [expected: "cubyz:slate/smooth"]
+
+======================================================================
+[57/144] Q: What does a Cubyz biome's .fogDensity field default to, and what happens to it internally?
+======================================================================
+[Retrieved 14 chunks: codebase_assets_cubyz_biomes_desert__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_bog__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_wetlands__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_swamp__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_volcano__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_savannah__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_rare_crimson_wasteland__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_jungle__defaults.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, addon_creator_engine_validation_biomes.md, docs_docs_development_addons_biomes.md_chunk_1.md, docs_docs_development_addons_biomes.md_chunk_0.md, github_issue_2096_discussion.md, github_issue_1401_discussion.md]
+
+A: A Cubyz biome's `.fogDensity` field defaults to `1.0`. Internally, this value is then divided by `15.0*128.0`, which is purely internal math. This means that the actual fog density used in the game will be a fraction of the default value, calculated as `1.0 / (15.0 * 128.0)`.
+   [expected: 1.0, then internally divided by 15.0*128.0]
+
+======================================================================
+[58/144] Q: What do a Cubyz biome's .roughness, .hills, .mountains, and .keepOriginalTerrain fields default to if omitted?
+======================================================================
+[Retrieved 11 chunks: docs_docs_development_addons_biomes.md_chunk_1.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, codebase_assets_cubyz_biomes_bushlands__defaults.zig.zon_chunk_0.md, addon_creator_engine_validation_biomes.md, codebase_assets_cubyz_biomes_ferrock_mountains.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_mountains.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_hills__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_bush_mountains.zig.zon_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_0.md, github_issue_843_discussion.md, github_issue_3312_discussion.md]
+
+A: According to the retrieved context from `addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md`, these fields have no default values. The explanation states: "`.roughness`/`.hills`/`.mountains`/`.keepOriginalTerrain`: no default each." This means that if a Cubyz biome's `.roughness`, `.hills`, `.mountains`, or `.keepOriginalTerrain` field is omitted, it will not have any specified value.
+   [expected: 0 each]
+
+======================================================================
+[59/144] Q: What does a Cubyz biome's .interpolation field default to if missing or invalid?
+======================================================================
+[Retrieved 10 chunks: docs_docs_development_addons_biomes.md_chunk_1.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, addon_creator_engine_validation_biomes.md, codebase_assets_cubyz_biomes_plateau__defaults.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, codebase_assets_cubyz_biomes_volcano_slope6.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_0.md, github_issue_2096_discussion.md, github_issue_3312_discussion.md]
+
+A: A Cubyz biome's `.interpolation` field defaults to `"square"` if it is missing or invalid. This value is used for border interpolation methods in the biome configuration, with options being `.none`, `.linear`, or `.square`. The documentation also notes that `.smooth` resolves to `.square`.
+   [expected: "square"]
+
+======================================================================
+[60/144] Q: What does a Cubyz biome's .caveSmoothness field default to, and is it exposed on the Addon Creator website?
+======================================================================
+[Retrieved 11 chunks: docs_docs_development_addons_biomes.md_chunk_1.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, addon_creator_engine_validation_biomes.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, codebase_assets_cubyz_biomes_cave_mantle_lower_base.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_dropoff.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_void_void_crystal.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_void_void_cavern.zig.zon_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_0.md, github_issue_3312_discussion.md, github_issue_843_discussion.md]
+
+A: A Cubyz biome's `.caveSmoothness` field defaults to `4.0`, which is then clamped to the range `[0.00001, 4.0]`. This field is not exposed by the Addon Creator website at all.
+   [expected: 4.0, clamped to [0.00001, 4.0]; not exposed by the website form at all]
+
+======================================================================
+[61/144] Q: What does a Cubyz biome's .caveNoiseStrength field default to, and is it exposed on the website?
+======================================================================
+[Retrieved 11 chunks: codebase_assets_cubyz_biomes_cave_dropoff.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_sky.zig.zon_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_1.md, addon_creator_engine_validation_biomes.md, codebase_assets_cubyz_biomes_cave_void_void.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, codebase_assets_cubyz_biomes_cave_ice_cave.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_void_void_cavern.zig.zon_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_0.md, github_issue_1463_discussion.md, github_issue_693_discussion.md]
+
+A: A Cubyz biome's `.caveNoiseStrength` field defaults to `8`. This value is not exposed by the Addon Creator website.
+   [expected: 8; not exposed by the Addon Creator website form]
+
+======================================================================
+[62/144] Q: What does a Cubyz biome's .caveRadiusFactor field default to if omitted?
+======================================================================
+[Retrieved 11 chunks: addon_creator_engine_validation_biomes.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, docs_docs_development_addons_biomes.md_chunk_1.md, codebase_assets_cubyz_biomes_cave_void_void.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_void_void_cavern.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_void_void_crystal.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_dropoff.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_basalt.zig.zon_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_0.md, github_issue_693_discussion.md, github_issue_1463_discussion.md]
+
+A: A Cubyz biome's `.caveRadiusFactor` field defaults to `1`. This value is then clamped to the range of `[-2, 2]`.
+   [expected: 1, clamped to [-2, 2]]
+
+======================================================================
+[63/144] Q: What does a Cubyz biome's .crystals field default to if omitted?
+======================================================================
+[Retrieved 11 chunks: codebase_assets_cubyz_biomes_cave_void_void_crystal.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_crystal_forest.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_crystal.zig.zon_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_1.md, addon_creator_engine_validation_biomes.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, codebase_assets_cubyz_biomes_rare_crimson_wasteland__defaults.zig.zon_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_0.md, github_issue_3312_discussion.md, github_issue_693_discussion.md]
+
+A: A Cubyz biome's `.crystals` field defaults to `0`. This means that if no specific number of crystals is defined in the biome configuration, there will be zero crystals generated within that biome.
+   [expected: 0]
+
+======================================================================
+[64/144] Q: What does a Cubyz biome's .soilCreep field default to, and how does that differ from the website?
+======================================================================
+[Retrieved 10 chunks: codebase_assets_cubyz_biomes_highlands__defaults.zig.zon_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_1.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, codebase_assets_cubyz_biomes_snowcapped_hill__defaults.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, docs_docs_blocks_soil.md_chunk_0.md, codebase_assets_cubyz_biomes_volcano_base.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_volcano_slope2.zig.zon_chunk_0.md, github_pr_1699_comment_2229141024.md, github_issue_3312_discussion.md]
+
+A: A Cubyz biome's `.soilCreep` field defaults to `0.5`, while the website form has a default value of `1.0`. This difference in default values can impact the erosion effects within biomes based on terrain slope, potentially leading to variations in gameplay experience depending on how these settings are configured and applied.
+   [expected: 0.5; the website form's default is 1.0]
+
+======================================================================
+[65/144] Q: What happens if a Cubyz biome's minimum height is greater than its maximum height?
+======================================================================
+[Retrieved 11 chunks: docs_docs_development_addons_biomes.md_chunk_1.md, codebase_assets_cubyz_biomes_ferrock_mountains.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, codebase_assets_cubyz_biomes_tall_mountain_summit1.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_volcano_slope4.zig.zon_chunk_0.md, addon_creator_engine_validation_biomes.md, codebase_assets_cubyz_biomes_development_flat.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_peak.zig.zon_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_0.md, github_issue_693_discussion.md, github_issue_1927_discussion.md]
+
+A: If a Cubyz biome's minimum height is greater than its maximum height, the engine logs an error message indicating that the biome has invalid height range. This ensures that the terrain generation process does not produce any valid heights for the biome.
+   [expected: The engine logs "Biome {id} has invalid height range ({min}, {max})"]
+
+======================================================================
+[66/144] Q: What does a Cubyz biome's .smoothBeaches field default to if omitted?
+======================================================================
+[Retrieved 13 chunks: docs_docs_development_addons_biomes.md_chunk_1.md, codebase_assets_cubyz_biomes_beach_warm_base.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_ocean_temperate_base.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_bushlands__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_beach_cold_base.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_ocean_warm_archipelago.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_beach_warm_wide.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_jungle__defaults.zig.zon_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, addon_creator_engine_validation_biomes.md, github_issue_3312_discussion.md, github_issue_1401_discussion.md]
+
+A: According to the retrieved context, specifically the `docs_docs_development_addons_biomes.md_chunk_1.md` file, the `.smoothBeaches` field defaults to `false`. This is mentioned in the explanation section of that chunk.
+   [expected: false]
+
+======================================================================
+[67/144] Q: Is a Cubyz biome's .rivers field exposed on the Addon Creator website?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_addons_index.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_1.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_1.md, docs_docs_development_addons_biomes.md_chunk_0.md, codebase_assets_cubyz_biomes_ocean_temperate_archipelago.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_bushlands__defaults.zig.zon_chunk_0.md, github_issue_3312_discussion.md, github_issue_1782_discussion.md]
+
+A: No, a Cubyz biome's `.rivers` field is not exposed on the Addon Creator website. The retrieved context indicates that this field defaults to `false`, and it is mentioned as being entirely unexposed by the website in the documentation for engine-side default values and error messages (chunk 4).
+   [expected: No, not exposed by the website form at all; it defaults to false]
+
+======================================================================
+[68/144] Q: What happens if a Cubyz biome's minRadius is greater than its maxRadius?
+======================================================================
+[Retrieved 11 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, addon_creator_engine_validation_biomes.md, docs_docs_development_addons_biomes.md_chunk_1.md, codebase_assets_cubyz_biomes_prairie_base.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_volcano_slope4.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_rare_crimson_wasteland_black_pit.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, codebase_assets_cubyz_biomes_desert_hoodoos_pit.zig.zon_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_0.md, github_issue_917_discussion.md, github_issue_3235_discussion.md]
+
+A: If a Cubyz biome's minimum radius (minRadius) is greater than its maximum radius (maxRadius), the engine will log an error message indicating that the biome has an invalid radius range. This means that the specified dimensions for the biome are not valid, and the biome cannot be generated as intended.
+   [expected: The engine logs "Biome {id} has invalid radius range ({min}, {max})"]
+
+======================================================================
+[69/144] Q: What happens if a Cubyz biome's minRadius is too small relative to the world's biome grid resolution?
+======================================================================
+[Retrieved 11 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, addon_creator_engine_validation_biomes.md, docs_docs_development_addons_biomes.md_chunk_1.md, codebase_assets_cubyz_biomes_rare_spawn.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_rare_crimson_wasteland_black_pit.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_volcano_base.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, codebase_assets_cubyz_biomes_prairie_base.zig.zon_chunk_0.md, docs_GAME_DESIGN_PRINCIPLES.md_chunk_5.md, github_issue_3312_discussion.md, github_issue_3316_discussion.md]
+
+A: If a Cubyz biome's minRadius is too small relative to the world's biome grid size, the engine will log an error message stating "Biome {id} has radius {r}, smaller than grid resolution...". This indicates that the specified radius for the biome is not large enough compared to the grid size of the world.
+   [expected: The engine logs "Biome {id} has radius {r}, smaller than grid resolution..."]
+
+======================================================================
+[70/144] Q: What are Cubyz's .parentBiomes and .transitionBiomes biome fields used for, and are they exposed on the Addon Creator website?
+======================================================================
+[Retrieved 10 chunks: github_issue_3312_discussion.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, docs_docs_development_addons_biomes.md_chunk_1.md, docs_docs_development_addons_index.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, docs_docs_development_addons_biomes.md_chunk_0.md, addon_creator_engine_validation_biomes.md, codebase_assets_cubyz_biomes__migrations.zig.zon_chunk_0.md, github_issue_2647_discussion.md, codebase_assets_cubyz_biomes_decorative_stone_rock.zig.zon_chunk_0.md]
+
+A: Cubyz's `.parentBiomes` and `.transitionBiomes` fields are used for sub-biome nesting and biome-transition-blending systems. These features allow biomes to generate within other biomes or transition smoothly between different biomes, creating more complex and varied terrain generation.
+
+However, these fields are not exposed on the Addon Creator website. The website's form does not include any options related to `.parentBiomes` or `.transitionBiomes`, which means that users cannot directly edit or configure these fields when creating new biomes through the Addon Creator interface.
+   [expected: Sub-biome nesting and biome-transition-blending systems; entirely unexposed by the website, hand-edit only]
+
+======================================================================
+[71/144] Q: What does a Cubyz entity model's .model field default to if omitted, and does the engine log an error?
+======================================================================
+[Retrieved 11 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, codebase_assets_cubyz_entity_models_missing.zig.zon_chunk_0.md, codebase_assets_cubyz_entity_models_moffalo.zig.zon_chunk_0.md, addon_creator_engine_validation_entities_particles.md, codebase_assets_cubyz_entity_models_cubert.zig.zon_chunk_0.md, codebase_assets_cubyz_entity_models_snail.zig.zon_chunk_0.md, codebase_assets_cubyz_entity_models_snela.zig.zon_chunk_0.md, docs_docs_development_addons_models.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_pr_2733_comment_2964407240.md, github_issue_1649_discussion.md]
+
+A: A Cubyz entity model's `.model` field defaults to `null` if omitted. The engine does not log an error in this case.
+   [expected: null, and no error is logged]
+
+======================================================================
+[72/144] Q: What special tag exists for Cubyz entity models that isn't exposed by the Addon Creator website form?
+======================================================================
+[Retrieved 11 chunks: codebase_assets_cubyz_entity_models_snela.zig.zon_chunk_0.md, addon_creator_entities.html_chunk_0.md, codebase_assets_cubyz_entity_models_snale.zig.zon_chunk_0.md, codebase_assets_cubyz_entity_models_cubert.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, addon_creator_FIELD_REFERENCE.md_chunk_5.md, github_issue_1649_discussion.md, codebase_assets_cubyz_blocks_sbb_child__defaults.zig.zon_chunk_0.md, github_issue_3195_discussion.md, docs_docs_development_addons_models.md_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md]
+
+A: The special tag that exists for Cubyz entity models and isn't exposed by the Addon Creator website form is `.playerModel`. This tag registers the entity as a selectable player skin in the game engine.
+   [expected: The playerModel tag, which registers the entity as a selectable player skin]
+
+======================================================================
+[73/144] Q: How does the Cubyz engine resolve an entity's default texture file path?
+======================================================================
+[Retrieved 12 chunks: codebase_assets_cubyz_entity_models_snail.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_cloth_block_yellow.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_chalk_violet.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_cloth_block_purple.zig.zon_chunk_0.md, docs_docs_development_addons_models.md_chunk_0.md, codebase_assets_cubyz_entity_models_moffalo.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, codebase_assets_cubyz_blocks_cloth_block_brown.zig.zon_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, addon_creator_engine_validation_entities_particles.md, github_issue_3282_discussion.md, github_issue_8_discussion.md]
+
+A: The Cubyz engine resolves an entity's default texture file path by splitting the `defaultTexture` field on the colon (`:`) character. The first part of the split is used as a module name, and the second part is used as a texture name. The engine then attempts to resolve the texture path using the following format: `{assetFolder}/{mod}/entity_models/textures/{name}.png`. If this path does not exist, it falls back to an alternative path: `assets/{mod}/entity_models/textures/{name}.png`. This fallback mechanism ensures that even if the primary path is missing, there is still a location where the texture can be found.
+   [expected: It splits the value on ':' and resolves the path as {assetFolder}/{mod}/entity_models/textures/{name}.png, falling back to assets/{mod}/entity_models/textures/{name}.png if the first doesn't exist]
+
+======================================================================
+[74/144] Q: What happens if a Cubyz particle's emission texture frame count doesn't match its base texture's?
+======================================================================
+[Retrieved 11 chunks: github_issue_3122_discussion.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_pr_1367_comment_2068705882.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, github_pr_1367_comment_2071276228.md, github_issue_1521_discussion.md, github_pr_1367_comment_2071284377.md, docs_docs_development_addons_models.md_chunk_0.md, addon_creator_engine_validation_entities_particles.md, codebase_assets_cubyz_particles_flame.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_sbb_child_cyan.zig.zon_chunk_0.md]
+
+A: If a Cubyz particle's emission texture frame count doesn't match its base texture's, an error will be logged indicating a mismatch in the number of frames. This ensures that the animation remains consistent and prevents any visual glitches or inconsistencies during rendering.
+   [expected: The engine logs a frame-count-mismatch error]
+
+======================================================================
+[75/144] Q: What does a Cubyz particle's .rotationVelocity field default to if omitted?
+======================================================================
+[Retrieved 11 chunks: addon_creator_engine_validation_entities_particles.md, codebase_assets_cubyz_particles_poof.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, codebase_assets_cubyz_particles_flame.zig.zon_chunk_0.md, docs_docs_development_addons_blocks.md_chunk_0.md, addon_creator_engine_validation_blocks.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, codebase_assets_cubyz_blocks_voidstone_bricks.zig.zon_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_3122_discussion.md, github_issue_1521_discussion.md]
+
+A: A Cubyz particle's `.rotationVelocity` field defaults to `{20, 60}` if omitted. This means that when a particle is defined without specifying its rotation velocity range, it will have a minimum value of 20 and a maximum value of 60 degrees per second.
+   [expected: {min: 20, max: 60}]
+
+======================================================================
+[76/144] Q: What does a Cubyz particle's .density field default to if omitted?
+======================================================================
+[Retrieved 10 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, addon_creator_engine_validation_entities_particles.md, codebase_assets_cubyz_particles_poof.zig.zon_chunk_0.md, codebase_assets_cubyz_particles_flame.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, github_issue_3122_discussion.md, docs_docs_development_addons_blocks.md_chunk_0.md, codebase_assets_cubyz_biomes_cave_void_void_crystal.zig.zon_chunk_0.md, github_pr_1332_comment_2054644152.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md]
+
+A: A Cubyz particle's `.density` field defaults to `{min:2, max:3}`. This means that the density of the particles will be within this range unless specified otherwise in the configuration.
+   [expected: {min: 2, max: 3}]
+
+======================================================================
+[77/144] Q: What does a Cubyz particle's .dragCoefficient field default to if omitted?
+======================================================================
+[Retrieved 11 chunks: codebase_assets_cubyz_particles_poof.zig.zon_chunk_0.md, codebase_assets_cubyz_particles_flame.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, addon_creator_engine_validation_entities_particles.md, codebase_src_physics.zig_chunk_0.md, github_issue_3122_discussion.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, codebase_src_particles.zig_chunk_5.md, github_issue_2388_discussion.md, docs_docs_development_addons_blocks.md_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_1.md]
+
+A: A Cubyz particle's `.dragCoefficient` field defaults to `{min:0.5, max:0.6}` if omitted. This value is consistent with the website's own default settings for this property.
+   [expected: {min: 0.5, max: 0.6}]
+
+======================================================================
+[78/144] Q: Is a Cubyz particle's .loopTime field exposed on the Addon Creator website?
+======================================================================
+[Retrieved 11 chunks: docs_docs_faq.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_5.md, github_issue_3122_discussion.md, github_issue_534_discussion.md, codebase_assets_cubyz_particles_flame.zig.zon_chunk_0.md, codebase_assets_cubyz_particles_poof.zig.zon_chunk_0.md]
+
+A: No, the `.loopTime` field is not exposed on the Addon Creator website. The documentation indicates that only certain fields are exported from the website to the game engine, and `.loopTime` is not one of them. This means that any settings related to looping times for particles must be handled within the game engine itself when creating or modifying particle configurations in Cubyz addons.
+   [expected: No, not exposed by the website form at all]
+
+======================================================================
+[79/144] Q: What does a Cubyz particle's .speed field default to if omitted?
+======================================================================
+[Retrieved 10 chunks: addon_creator_engine_validation_entities_particles.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, codebase_assets_cubyz_particles_poof.zig.zon_chunk_0.md, codebase_assets_cubyz_particles_flame.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_5.md, github_issue_1521_discussion.md, codebase_src_particles.zig_chunk_5.md, github_issue_3122_discussion.md, docs_docs_development_addons_blocks.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md]
+
+A: A Cubyz particle's `.speed` field defaults to `{min:1, max:1.5}` if omitted. This value is parsed separately via `EmitterProperties.parse`, not during the registration of the particle type in `register()`.
+   [expected: {min: 1, max: 1.5}]
+
+======================================================================
+[80/144] Q: What does a Cubyz particle's .lifeTime field default to if omitted?
+======================================================================
+[Retrieved 10 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, addon_creator_engine_validation_entities_particles.md, codebase_assets_cubyz_particles_poof.zig.zon_chunk_0.md, github_issue_3122_discussion.md, codebase_assets_cubyz_particles_flame.zig.zon_chunk_0.md, docs_docs_development_history.md_chunk_0.md, codebase_src_particles.zig_chunk_5.md, addon_creator_FIELD_REFERENCE.md_chunk_5.md, github_issue_1521_discussion.md, docs_docs_development_addons_biomes.md_chunk_1.md]
+
+A: According to the retrieved context, specifically in the `addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md` file, the `.lifeTime` field for a Cubyz particle defaults to `{min:0.75, max:1}` if it is omitted. This information is part of the engine-side default values and error messages for Cubyz entity model and particle fields as read directly from `particles.zig: register()`/`EmitterProperties`.
+   [expected: {min: 0.75, max: 1}]
+
+======================================================================
+[81/144] Q: What does a Cubyz particle's .randomRotate field default to if omitted?
+======================================================================
+[Retrieved 11 chunks: addon_creator_engine_validation_entities_particles.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, codebase_assets_cubyz_particles_poof.zig.zon_chunk_0.md, docs_docs_development_addons_blocks.md_chunk_0.md, addon_creator_engine_validation_blocks.md, codebase_assets_cubyz_blocks_voidstone_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_ferrock_tile.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_pyrolite_bricks.zig.zon_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_1107_discussion.md, github_issue_3122_discussion.md]
+
+A: A Cubyz particle's `.randomRotate` field defaults to `true`. This means that when this property is not explicitly set, particles will rotate randomly. However, it's worth noting that the Addon Creator website always writes an explicit value for this field, so in practice, this default rarely applies.
+   [expected: true (though this rarely applies in practice since the website always writes an explicit value)]
+
+======================================================================
+[82/144] Q: What happens if a Cubyz particle's .mode field has an invalid string value?
+======================================================================
+[Retrieved 11 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, addon_creator_engine_validation_entities_particles.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, docs_docs_development_history.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, github_issue_3122_discussion.md, addon_creator_engine_validation_blocks.md, github_issue_1378_discussion.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_voidstone_bricks.zig.zon_chunk_0.md]
+
+A: If a Cubyz particle's `.mode` field has an invalid string value, the engine logs `"Error while parsing direction mode"` and falls back to `spread`. This means that even though the specified value is not valid for the `.mode` field, the particle will still be registered with a default behavior of spreading.
+   [expected: The engine logs "Error while parsing direction mode" and falls back to "spread"]
+
+======================================================================
+[83/144] Q: What does a Cubyz particle's .direction field default to if omitted?
+======================================================================
+[Retrieved 9 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, addon_creator_engine_validation_entities_particles.md, addon_creator_FIELD_REFERENCE.md_chunk_5.md, github_issue_3122_discussion.md, codebase_assets_cubyz_particles_poof.zig.zon_chunk_0.md, codebase_assets_cubyz_particles_flame.zig.zon_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_development_addons_models.md_chunk_0.md, github_issue_1521_discussion.md]
+
+A: A Cubyz particle's `.direction` field defaults to `{0, 0, 1}` if omitted. This matches the website's default for `dirZ=1.0`.
+   [expected: A Vec3f of {0, 0, 1}]
+
+======================================================================
+[84/144] Q: What happens if a Cubyz particle's .shape field has an invalid string value?
+======================================================================
+[Retrieved 11 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, addon_creator_engine_validation_entities_particles.md, addon_creator_FIELD_REFERENCE.md_chunk_5.md, docs_docs_development_history.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_3122_discussion.md, github_pr_3313_comment_3560517031.md, codebase_assets_cubyz_particles_poof.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_voidstone_bricks.zig.zon_chunk_0.md]
+
+A: If a Cubyz particle's `.shape` field has an invalid string value, the engine will log an error message stating `"Error while parsing particle spawn data"` and fall back to using a point shape instead. This means that even if the specified shape is not recognized by the engine, it will still attempt to render the particle effect, albeit with a default configuration (a point shape).
+   [expected: The engine logs "Error while parsing particle spawn data" and falls back to a point shape]
+
+======================================================================
+[85/144] Q: What's the structural difference between a Cubyz particle's type-level properties and its emitter-level properties, in terms of when they're validated?
+======================================================================
+[Retrieved 10 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, addon_creator_engine_validation_entities_particles.md, codebase_src_particles.zig_chunk_5.md, github_pr_3297_comment_3564114095.md, addon_creator_FIELD_REFERENCE.md_chunk_5.md, github_issue_3122_discussion.md, github_pr_1367_comment_2068718495.md, codebase_assets_cubyz_particles_flame.zig.zon_chunk_0.md, docs_docs_development_addons_blocks.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md]
+
+A: The structural difference lies in when these properties are validated. Type-level properties like `.texture`, `.rotationVelocity`, `.density`, and `.dragCoefficient` are validated once at the time of particle-*type* registration (`register()`, called when the addon loads). On the other hand, emitter-level properties such as `.speed`, `.lifeTime`, `.shape`, `.mode`, and `.direction` are parsed separately whenever something actually spawns this particle type. This means that a broken emitter-side field won't cause an error at world-load time but will only surface when something in the world triggers that particle effect.
+   [expected: Type properties (.texture/.rotationVelocity/.density/.dragCoefficient) are validated once, at registration time when the addon loads; emitter properties (.speed/.lifeTime/.shape/.mode/.direction) are parsed separately whenever something actually spawns the particle -- so a broken emitter field won't error at world-load time, only when triggered in-world]
+
+======================================================================
+[86/144] Q: What's the overall precedence rule when Cubyz's Addon Creator website and the game engine disagree on a field name or default?
+======================================================================
+[Retrieved 10 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md, addon_creator_engine_validation_bugs.md, github_issue_1378_discussion.md, addon_creator_README.md_chunk_0.md, github_issue_2037_discussion.md, docs_docs_development_history.md_chunk_0.md, codebase_assets_cubyz_biomes_highlands__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_world_presets_default.zig.zon_chunk_0.md]
+
+A: The overall precedence rule is that where the website and the engine disagree on field names, defaults, or formats, the engine is the source of truth. This means that when generating new example addon code, you should use the engine-expected field name/format even if it differs from what the website currently produces.
+   [expected: The engine is the source of truth, not the website -- the website is a convenience tool that can have bugs]
+
+======================================================================
+[87/144] Q: What setting should you try lowering if Cubyz is lagging, per the FAQ?
+======================================================================
+[Retrieved 12 chunks: docs_docs_faq.md_chunk_0.md, github_issue_1689_discussion.md, docs_docs_development_history.md_chunk_0.md, docs_docs_index.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1502_discussion.md, github_issue_96_discussion.md, docs_README.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, codebase_assets_cubyz_biomes_highlands__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_cave_layers_surface_caves.zig.zon_chunk_0.md]
+
+A: According to the retrieved context in docs/docs_docs_faq.md_chunk_0.md, you should lower the "LOD Distance" setting if Cubyz is lagging. This setting only affects the detail of distant chunks and does not impact other aspects of gameplay.
+   [expected: "LOD Distance" -- you'll only see a difference in the detail of distant chunks]
+
+======================================================================
+[88/144] Q: What should you do if compiling Cubyz keeps running for more than 10 minutes without doing anything?
+======================================================================
+[Retrieved 13 chunks: docs_docs_development_history.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_installation.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, docs_CONTRIBUTING.md_chunk_0.md, github_issue_118_discussion.md, docs_README.md_chunk_0.md, docs_docs_installation.md_chunk_1.md, github_issue_2014_discussion.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md, codebase_assets_cubyz_sbb_mushroom_big_toadstool_large_cap.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md]
+
+A: If compiling Cubyz takes longer than expected, it might indicate a problem with the build process or your system's resources. Here are some steps you can take:
+
+1. **Check System Resources**: Ensure that your computer has enough RAM and CPU power to handle the compilation process. If not, consider upgrading your hardware.
+
+2. **Update Software**: Make sure that all necessary software, including the Zig compiler and any related tools, is up-to-date. Outdated software can sometimes cause issues during compilation.
+
+3. **Clear Cache**: Sometimes, clearing the cache can help resolve compilation problems. This includes deleting temporary files and logs generated by the build process.
+
+4. **Check for Errors**: Look at any error messages or warnings that might have been generated during the compilation process. These can provide valuable information about what went wrong.
+
+5. **Seek Help**: If you're still having trouble, consider reaching out to the Cubyz community for assistance. You can join the Discord server or create an issue on the GitHub issues board.
+
+6. **Try a Different Method**: As mentioned in the retrieved context, users have reported success with using scripts like `run.sh` and a Makefile to compile Cubyz. Try these methods if you're having trouble with the standard compilation process.
+
+By following these steps, you should be able to identify and resolve any issues that might be causing the long compilation time.
+   [expected: Kill and restart the process; deleting the zig-cache folder might also help]
+
+======================================================================
+[89/144] Q: What three unique features does Cubyz's top-level README highlight?
+======================================================================
+[Retrieved 14 chunks: docs_docs_development_history.md_chunk_0.md, docs_docs_index.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_how_to_contribute.md_chunk_0.md, docs_README.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, docs_docs_development_index.md_chunk_0.md, github_issue_2301_discussion.md, github_issue_1152_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, codebase_assets_cubyz_sbb_tree_oak_old_growth_top.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_candy_cane_thick_top.zig.zon_chunk_0.md]
+
+A: The top-level README highlights three unique features of Cubyz: Level of Detail, 3D Chunks for infinite terrain, and Procedural Crafting.
+   [expected: Level of Detail (far view distances), 3D Chunks (no height or depth limit), and Procedural Crafting (infinite tool-crafting possibilities)]
+
+======================================================================
+[90/144] Q: What are the three valid Cubyz biome interpolation modes, and what does .smooth resolve to?
+======================================================================
+[Retrieved 9 chunks: docs_docs_development_addons_biomes.md_chunk_1.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, addon_creator_engine_validation_biomes.md, docs_docs_development_addons_biomes.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, codebase_assets_cubyz_biomes_plateau__defaults.zig.zon_chunk_0.md, github_issue_3312_discussion.md, codebase_assets_cubyz_biomes_ocean_temperate_base.zig.zon_chunk_0.md, github_issue_2096_discussion.md]
+
+A: The three valid Cubyz biome interpolation modes are `.none`, `.linear`, and `.square`. The `.smooth` option resolves to `.square`.
+   [expected: .none, .linear, and .square; .smooth resolves to .square]
+
+======================================================================
+[91/144] Q: What is the minimum value for a Cubyz biome's interpolationWeight field?
+======================================================================
+[Retrieved 10 chunks: docs_docs_development_addons_biomes.md_chunk_1.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, addon_creator_engine_validation_biomes.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, docs_docs_development_addons_biomes.md_chunk_0.md, codebase_assets_cubyz_biomes_volcano_slope4.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_plateau__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_volcano_slope6.zig.zon_chunk_0.md, github_issue_310_discussion.md, github_issue_3312_discussion.md]
+
+A: The minimum value for a Cubyz biome's interpolationWeight field is `std.math.floatMin(f32)`. This means that the weight can be as low as possible, allowing for very subtle or almost imperceptible changes in terrain generation.
+   [expected: std.math.floatMin(f32) (default is 1)]
+
+======================================================================
+[92/144] Q: What does the keepOriginalTerrain field control for a Cubyz sub-biome?
+======================================================================
+[Retrieved 10 chunks: docs_docs_development_addons_biomes.md_chunk_1.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, codebase_assets_cubyz_biomes_volcano_base.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_tundra_snowy_rock.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_snowcapped_hill_snowcapped_rock.zig.zon_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_0.md, addon_creator_engine_validation_biomes.md, codebase_assets_cubyz_biomes_volcano_slope2.zig.zon_chunk_0.md, github_issue_3312_discussion.md, github_issue_1927_discussion.md]
+
+A: The `keepOriginalTerrain` field controls the amount of the parent biome's terrain that is preserved in a sub-biome. It ranges from 0 to 1, where 1 means all of the parent biome's terrain is kept, and lower values represent less preservation. This allows for more detailed and varied terrain generation within sub-biomes while still maintaining some connection to the original biome's characteristics.
+   [expected: How much of the parent biome's terrain is preserved -- 1 means all of it, 0.5 means 50%]
+
+======================================================================
+[93/144] Q: What is Cubyz's default biome sky color, per the addon development documentation?
+======================================================================
+[Retrieved 11 chunks: github_issue_1401_discussion.md, codebase_assets_cubyz_biomes_rare_crimson_wasteland__defaults.zig.zon_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_1.md, codebase_assets_cubyz_biomes_volcano__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_sky_islands__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_desert__defaults.zig.zon_chunk_0.md, addon_creator_engine_validation_bug_skycolor.md, codebase_assets_cubyz_biomes_savannah__defaults.zig.zon_chunk_0.md, github_issue_2168_discussion.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, addon_creator_engine_validation_biomes.md]
+
+A: According to the retrieved context, Cubyz's default biome sky color is `{0.46, 0.7, 1.0}` as mentioned in the `docs_docs_development_addons_biomes.md_chunk_1.md` file under the "skyColor" section of the field table for a Cubyz biome `zig.zon` file.
+   [expected: .{0.46, 0.7, 1.0}]
+
+======================================================================
+[94/144] Q: What does the chance field default to for an entry in a Cubyz biome's parentBiomes list, if omitted?
+======================================================================
+[Retrieved 11 chunks: addon_creator_engine_validation_biomes.md, docs_docs_development_addons_biomes.md_chunk_1.md, codebase_assets_cubyz_biomes_ocean_cold_island__defaults.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, codebase_assets_cubyz_biomes_decorative_stone_rock.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_prairie_hill.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_thicket.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_decorative_stone_pit.zig.zon_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_0.md, github_issue_2044_discussion.md, github_issue_3123_discussion.md]
+
+A: The chance field defaults to `1` if omitted. This means that when specifying parent biomes for a given biome, each entry will have a 100% chance of being considered as a potential parent biome unless otherwise specified.
+   [expected: 1]
+
+======================================================================
+[95/144] Q: What is the purpose of a Cubyz biome's isValidPlayerSpawn flag, per the addon docs?
+======================================================================
+[Retrieved 11 chunks: addon_creator_engine_validation_bugs.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_1.md, codebase_assets_cubyz_biomes_development_flat.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, addon_creator_engine_validation_biomes.md, codebase_assets_cubyz_biomes_desert_oasis_pond.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_jungle__defaults.zig.zon_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_0.md, github_issue_3312_discussion.md, github_issue_310_discussion.md]
+
+A: The purpose of a Cubyz biome's `isValidPlayerSpawn` flag is to ensure that the player starts in a biome with trees. This flag determines whether players can spawn within that specific biome.
+   [expected: Ensures the player starts in a biome with trees]
+
+======================================================================
+[96/144] Q: What are the 15 valid values for a Cubyz biome's generation properties field?
+======================================================================
+[Retrieved 10 chunks: docs_docs_development_addons_biomes.md_chunk_0.md, docs_docs_development_addons_biomes.md_chunk_1.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, addon_creator_engine_validation_biomes.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md, codebase_assets_cubyz_biomes_rare_glass_forest.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_void_void_crystal.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_ferrock_mountains.zig.zon_chunk_0.md, github_issue_3312_discussion.md, github_issue_1927_discussion.md]
+
+A: The 15 valid values for a Cubyz biome's generation properties field, grouped by category, are:
+
+- Temperature: `.hot`, `.temperate`, `.cold`
+- Land/Water: `.inland`, `.land`, `.ocean`
+- Moisture: `.wet`, `.neitherWetNorDry`, `.dry`
+- Vegetation Density: `.barren`, `.balanced`, `.overgrown`
+- Terrain Shape: `.mountain`, `.lowTerrain`, `.antiMountain`
+   [expected: hot, temperate, cold; inland, land, ocean; wet, neitherWetNorDry, dry; barren, balanced, overgrown; mountain, lowTerrain, antiMountain]
+
+======================================================================
+[97/144] Q: What are Cubyz's 12 named block rotation modes?
+======================================================================
+[Retrieved 11 chunks: docs_docs_development_addons_blocks.md_chunk_0.md, github_issue_1150_discussion.md, codebase_assets_cubyz_blocks_pyrolite_bricks.zig.zon_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, codebase_assets_cubyz_blocks_nimbusite_pillar.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_nimbusite_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_297_discussion.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, addon_creator_engine_validation_blocks.md]
+
+A: Cubyz has 12 named block rotation modes: no_rotation, branch, carpet, direction, fence, hanging, ore, planar, sign, stairs, texture_pile, and torch. Each mode defines how a block can be rotated in the game world.
+   [expected: no_rotation, branch, carpet, direction, fence, hanging, ore, planar, sign, stairs, texture_pile, torch]
+
+======================================================================
+[98/144] Q: What is a Cubyz block's lodReplacement field for?
+======================================================================
+[Retrieved 14 chunks: codebase_assets_cubyz_blocks_leaves_baobab.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_leaves_oak.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_leaves_cirrus.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_leaves_mahogany.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_leaves_birch.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_branch_leafy_baobab.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_leaves_palm.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_leaves_yellow.zig.zon_chunk_0.md, docs_docs_development_addons_blocks.md_chunk_0.md, docs_docs_development_addons_models.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, addon_creator_engine_validation_blocks.md, github_issue_1150_discussion.md, github_issue_482_discussion.md]
+
+A: The `lodReplacement` field specifies which block should replace the current one at lower levels of detail. This helps optimize performance by using simpler geometry or textures when viewed from a distance, improving rendering efficiency and reducing computational load on the system.
+   [expected: Specifies a block used as a replacement at LOD1 and higher]
+
+======================================================================
+[99/144] Q: What is a Cubyz block's opaqueVariant field for?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_addons_blocks.md_chunk_0.md, codebase_assets_cubyz_blocks_void.zig.zon_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, codebase_assets_cubyz_blocks_leaves_oak.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_leaves_cirrus.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_leaves_baobab.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_cut_amber_block.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_leaves_mahogany.zig.zon_chunk_0.md, github_issue_1150_discussion.md, github_issue_3122_discussion.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, addon_creator_engine_validation_blocks.md]
+
+A: The opaqueVariant field specifies an opaque version of the block that can be used in certain rendering scenarios. This allows for improved visual quality and better lighting calculations when rendering the block. The opaque variant is typically used in contexts where transparency might not be desired or could negatively impact the overall appearance of the scene.
+   [expected: An opaque variant used at LOD0.5 and with the Leaves Quality option]
+
+======================================================================
+[100/144] Q: What does the hasBackface field control for a Cubyz block?
+======================================================================
+[Retrieved 13 chunks: codebase_assets_cubyz_blocks_void.zig.zon_chunk_0.md, docs_docs_development_addons_blocks.md_chunk_0.md, codebase_assets_cubyz_blocks_voidstone_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glass__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_basalt_rough.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_basalt_pillar.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_bellows.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_ferrock_tile.zig.zon_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, addon_creator_engine_validation_blocks.md, github_issue_2248_discussion.md, github_issue_1150_discussion.md]
+
+A: The `hasBackface` field controls whether the block renders its back faces. If set to true, it will render the back side of the block; if false, it won't. This can be useful for creating more realistic or stylized appearances in certain blocks.
+   [expected: Whether the block renders back faces]
+
+======================================================================
+[101/144] Q: What dimensions is a Cubyz block model's UV texture grid, and how many texture slots does it have?
+======================================================================
+[Retrieved 11 chunks: docs_docs_development_addons_models.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, codebase_assets_cubyz_blocks_slate_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_sandstone_smooth.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_nimbusite_pillar.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, codebase_assets_cubyz_blocks_slate_rough.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_terracotta_bricks.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, github_issue_8_discussion.md, github_pr_2733_comment_2964407240.md]
+
+A: A Cubyz block model's UV texture grid has a resolution of 64x64. It has 16 texture slots specified in the `zig.zon` file under fields such as `texture`, `texture_top`, `texture_bottom`, `texture_front`, `texture_back`, `texture_right`, `texture_left`, and additional fields like `texture6` to `texture15`.
+   [expected: A 64x64 texture with 16 texture slots]
+
+======================================================================
+[102/144] Q: What coordinate-up convention does Cubyz use for its 3D block models?
+======================================================================
+[Retrieved 11 chunks: docs_docs_development_addons_models.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, codebase_assets_cubyz_entity_models_cubert.zig.zon_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, codebase_assets_cubyz_entity_models_moffalo.zig.zon_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, github_issue_272_discussion.md, github_issue_1150_discussion.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md]
+
+A: Cubyz uses a Z up coordinate system for its 3D block models. This means that the Z-axis is considered to be pointing upwards in the game world, which can affect how blocks are positioned and oriented within the environment.
+   [expected: Z up]
+
+======================================================================
+[103/144] Q: What file format does Cubyz use for block models?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_addons_models.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, codebase_assets_cubyz_blocks_slate_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_pyrolite_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glacite_bricks.zig.zon_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_642_discussion.md, github_issue_8_discussion.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md]
+
+A: Cubyz uses `.glb` files for block models. This information is found in the retrieved context under the section "Cubyz loads .glb files for block models and provides guidelines on creating and using them."
+   [expected: .glb]
+
+======================================================================
+[104/144] Q: Besides being unable to heal, what can cause the Cubyz player to lose health?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_922_discussion.md, github_issue_966_discussion.md, github_issue_2142_discussion.md, github_issue_3086_discussion.md, github_issue_51_discussion.md, github_issue_670_discussion.md, codebase_assets_cubyz_blocks_cactus.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_bolete.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md]
+
+A: The player can lose health in Cubyz due to fall damage or hazardous blocks such as cacti and lava. There is currently no way to regain health other than dying.
+   [expected: Fall damage and hazardous blocks such as cacti, lava, or magma]
+
+======================================================================
+[105/144] Q: What shape is Cubyz's health bar icon, per the wiki?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_932_discussion.md, docs_docs_development_history.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_development_how_to_contribute.md_chunk_0.md, github_issue_966_discussion.md, github_issue_1307_discussion.md, codebase_assets_cubyz_blocks_bars_copper.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_bars_silver.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, addon_creator_README.md_chunk_0.md]
+
+A: According to the retrieved context in `docs/docs_docs_gameplay_game_mechanics.md_chunk_0.md`, the player has 16 health points represented by 8 hearts. The health bar icon is shaped like an anatomical heart icon.
+
+The relevant sentence from the retrieved context is: "Health: the player has a total of 16 health points represented by 8 hearts, shaped like an anatomical heart icon."
+   [expected: An anatomical heart shape]
+
+======================================================================
+[106/144] Q: What shape is Cubyz's energy bar icon, per the wiki?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_development_how_to_contribute.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, github_issue_427_discussion.md, github_issue_3201_discussion.md, codebase_assets_cubyz_blocks_bars_copper.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_bars__defaults.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md]
+
+A: According to the retrieved context in `docs_docs_gameplay_game_mechanics.md_chunk_0.md`, Cubyz's energy bar icon is shaped like a stomach.
+   [expected: A stomach shape]
+
+======================================================================
+[107/144] Q: How many energy bars does the Cubyz player have?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_gameplay_controls.md_chunk_4.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_966_discussion.md, docs_docs_index.md_chunk_0.md, github_issue_257_discussion.md, codebase_assets_cubyz_blocks_bars__defaults.zig.zon_chunk_0.md, codebase_assets_cubyz_entity_models_cubert.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md]
+
+A: The player has 8 energy bars shaped like a stomach icon. However, it's important to note that currently, there is no way to gain or lose energy in the game.
+   [expected: 8]
+
+======================================================================
+[108/144] Q: What happens to the Cubyz player's directional control while moving mid-air?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_controls.md_chunk_0.md, github_issue_506_discussion.md, github_issue_2225_discussion.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_1682_discussion.md, docs_docs_gameplay_index.md_chunk_0.md, github_issue_1922_discussion.md, github_issue_1919_discussion.md, codebase_assets_cubyz_entity_models_cubert.zig.zon_chunk_0.md, codebase_src_physics.zig_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md]
+
+A: The retrieved context states that "Directional control is much weaker while airborne mid-jump." This means that when a player is in the air and jumping, their ability to move left or right (strafing) is significantly reduced compared to when they are on the ground. The exact degree of reduction isn't specified, but it's clear that it's substantial enough to affect gameplay.
+   [expected: It becomes much weaker]
+
+======================================================================
+[109/144] Q: How do you move an item from Cubyz's inventory into the hotbar?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_gameplay_controls.md_chunk_4.md, github_issue_342_discussion.md, docs_docs_gameplay_controls.md_chunk_2.md, docs_docs_gameplay_controls.md_chunk_1.md, github_issue_1282_discussion.md, docs_automation_not_supported.md_chunk_0.md, docs_docs_gameplay_controls.md_chunk_0.md, codebase_src_gui_windows_hotbar.zig_chunk_0.md, codebase_src_gui_components_BagSlot.zig_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md]
+
+A: To move an item from Cubyz's inventory into the hotbar, you need to left-click-drag the item. This action allows you to transfer the item from the separate inventory screen to the hotbar where it can be equipped and used during gameplay.
+   [expected: Left-click the item, drag it to the desired hotbar slot, then left-click again to place it]
+
+======================================================================
+[110/144] Q: How many stacks of items can Cubyz's bag slot hold, and how does that differ from a regular inventory slot?
+======================================================================
+[Retrieved 12 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, github_issue_1282_discussion.md, github_issue_73_discussion.md, github_issue_1060_discussion.md, github_pr_2989_comment_3152313540.md, github_issue_342_discussion.md, github_issue_913_discussion.md, codebase_src_gui_components_BagSlot.zig_chunk_0.md, docs_docs_development_addons_items.md_chunk_0.md, codebase_assets_cubyz_items_selection_wand.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_3.md, addon_creator_FIELD_REFERENCE.md_chunk_2.md]
+
+A: Cubyz's bag slot can hold 120 stacks of items. This is different from a regular inventory slot, which has a maximum capacity of 120 items per slot but not necessarily in terms of stacks. The bag slot specifically allows for the storage of multiple stacks within one slot, making it more efficient for managing large quantities of similar items.
+   [expected: 120 stacks -- unlike a regular slot, which holds up to 120 items of ONE stack, the bag slot holds multiple stacks]
+
+======================================================================
+[111/144] Q: What determines whether you can damage a Cubyz block at all, per the game mechanics page?
+======================================================================
+[Retrieved 10 chunks: docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, codebase_assets_cubyz_blocks_log_cactus.zig.zon_chunk_0.md, docs_docs_development_addons_blocks.md_chunk_0.md, codebase_assets_cubyz_blocks_cactus.zig.zon_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1116_discussion.md, github_issue_1137_discussion.md, addon_creator_engine_validation_blocks.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md]
+
+A: According to the retrieved context from the `docs_docs_gameplay_game_mechanics.md_chunk_0.md` file, the amount of resistance a block has determines whether you can deal any damage to it. If the resistance exceeds the damage you can deal, then the block cannot be damaged at all.
+   [expected: If the block's resistance is higher than the damage you can deal, you're unable to damage it at all]
+
+======================================================================
+[112/144] Q: What two ways can you craft items in Cubyz, per the wiki?
+======================================================================
+[Retrieved 14 chunks: docs_docs_gameplay_crafting.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, docs_workbench_crafting.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_index.md_chunk_0.md, codebase_assets_cubyz_recipes_special_recipes.zig.zon_chunk_0.md, codebase_assets_cubyz_recipes_wood_recipes.zig.zon_chunk_0.md, github_issue_1608_discussion.md, github_issue_2301_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_3.md]
+
+A: In Cubyz, there are two primary methods for crafting items: using a Workbench and utilizing the Crafting Menu. The Crafting Menu is an automated interface that lists all possible items that can be crafted based on available resources, simplifying the process by eliminating the need to manually search through recipes. On the other hand, the Workbench provides a more interactive and customizable crafting experience where players can combine various materials to create specific items with desired properties such as speed/damage or durability/slow.
+   [expected: Via a Workbench or via the Crafting Menu]
+
+======================================================================
+[113/144] Q: What does Cubyz's Crafting Menu automatically show you?
+======================================================================
+[Retrieved 13 chunks: docs_docs_gameplay_crafting.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, docs_workbench_crafting.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_index.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_752_discussion.md, github_issue_966_discussion.md, codebase_assets_cubyz_recipes_special_recipes.zig.zon_chunk_0.md, codebase_assets_cubyz_recipes_wood_recipes.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_3.md, addon_creator_README.md_chunk_0.md]
+
+A: Cubyz's Crafting Menu automatically shows you all craftable items based on available resources. This means that instead of manually searching through recipes, the menu provides a comprehensive list of what can be crafted with your current materials.
+   [expected: All possible items you can currently craft]
+
+======================================================================
+[114/144] Q: What qualifies an item to be usable for Workbench crafting in Cubyz?
+======================================================================
+[Retrieved 11 chunks: docs_docs_gameplay_crafting.md_chunk_0.md, docs_workbench_crafting.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, codebase_assets_cubyz_recipes_wood_recipes.zig.zon_chunk_0.md, github_issue_752_discussion.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, codebase_assets_cubyz_recipes_special_recipes.zig.zon_chunk_0.md, github_issue_2301_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_3.md]
+
+A: An item can be used for Workbench crafting if it is crafted from materials that are available in the game world. The specific recipe for crafting a workbench requires 4 planks (any wood type) as inputs, which can be obtained by cutting logs or branches into planks using tools like an axe or chisel. Once you have the required number of planks, you can place them on the Workbench to create it.
+
+To use the Workbench for crafting other items, you need to gather the necessary materials and place them in the designated slots on the Workbench UI. The exact recipe for each item will be displayed in the Crafting Menu or provided by the game's documentation. This allows players to combine various materials into specific items with desired properties like speed/damage or durability/slow.
+
+It is important to note that all crafting in Cubyz must be done manually, as there are no machines or automation systems available at this time. The Workbench provides a more interactive and customizable crafting experience compared to the Crafting Menu, allowing players to create specific items by combining materials according to their preferences.
+
+For detailed instructions on how to use the Workbench once obtained, refer to the separate crafting documentation provided in the game's resources.
+   [expected: Any item considered a "material"]
+
+======================================================================
+[115/144] Q: How far ahead can you see with Cubyz's Level of Detail system, per the wiki homepage?
+======================================================================
+[Retrieved 12 chunks: docs_docs_index.md_chunk_0.md, github_issue_75_discussion.md, docs_README.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_186_discussion.md, github_issue_1019_discussion.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1646_discussion.md, codebase_assets_cubyz_cave_layers_sky_islands.zig.zon_chunk_0.md, codebase_assets_cubyz_cave_layers_sky_island_fog.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md]
+
+A: According to the retrieved context, Cubyz supports high level of detail rendering up to 2400 blocks ahead. This allows players to explore vast distances without significant performance loss.
+   [expected: Up to 2400 blocks ahead]
+
+======================================================================
+[116/144] Q: What is the fourth "Unique Feature" listed on Cubyz's wiki homepage, alongside Level of Detail, 3D Chunks, and Procedural Crafting?
+======================================================================
+[Retrieved 13 chunks: docs_docs_index.md_chunk_0.md, docs_README.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_automation_not_supported.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_2301_discussion.md, docs_docs_faq.md_chunk_0.md, docs_docs_gameplay_crafting.md_chunk_0.md, github_issue_2810_discussion.md, codebase_assets_cubyz_recipes_special_recipes.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_void_void_crystal.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md]
+
+A: The fourth "Unique Feature" listed on Cubyz's wiki homepage, alongside Level of Detail, 3D Chunks, and Procedural Crafting, is **Highly Optimized**. This feature refers to the game's optimization for performance, making it playable even on low-end hardware without compromising visual quality.
+   [expected: Highly Optimized -- playable on low-end hardware]
+
+======================================================================
+[117/144] Q: What must you do before submitting a content suggestion for Cubyz on GitHub?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_how_to_contribute.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1705_discussion.md, docs_CONTRIBUTING.md_chunk_1.md, github_issue_2301_discussion.md, docs_docs_installation.md_chunk_1.md, docs_docs_development_history.md_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, codebase_assets_cubyz_sbb_cave_mantle_ruins.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_curl.zig.zon_chunk_0.md]
+
+A: Before submitting a content suggestion for Cubyz on GitHub, you should check that your suggestion follows the Game Design Principles. Additionally, you need to build a reference implementation as an addon/mod/fork (no content copied from other games). You also have to follow the requirements below if applicable and open a PR or a blank-template issue with screenshots.
+   [expected: Check it follows the Game Design Principles, make a reference implementation as an addon/mod/fork (no content from other games), follow the listed requirements, and open a PR or issue with screenshots]
+
+======================================================================
+[118/144] Q: How many colours does Cubyz recommend most block textures use?
+======================================================================
+[Retrieved 10 chunks: docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_2810_discussion.md, codebase_assets_cubyz_blocks_sbb_child_cyan.zig.zon_chunk_0.md, docs_docs_development_addons_models.md_chunk_0.md, github_issue_3339_discussion.md, github_issue_8_discussion.md, codebase_assets_cubyz_blocks_cloth_cyan.zig.zon_chunk_0.md, github_issue_2301_discussion.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, addon_creator_engine_validation_blocks.md]
+
+A: Cubyz recommends using around 4-6 colours per block texture. This helps maintain a small and consistent colour palette, avoiding near-duplicate colours and noise/filter/brush artifacts.
+   [expected: Roughly 4-6 colours]
+
+======================================================================
+[119/144] Q: What outline style do Cubyz item textures require, per the content guidelines?
+======================================================================
+[Retrieved 10 chunks: docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_379_discussion.md, github_issue_8_discussion.md, github_issue_372_discussion.md, codebase_assets_cubyz_blocks_cloth_cyan.zig.zon_chunk_0.md, docs_docs_development_addons_models.md_chunk_0.md, codebase_assets_cubyz_blocks_sbb_child_cyan.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_cloth_lime.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, addon_creator_FIELD_REFERENCE.md_chunk_2.md]
+
+A: According to the provided context, Cubyz item textures need a full 1-pixel coloured outline that is shaded so the top-left (lit) side is brighter and the bottom-right (shadow) side is darker. This ensures that items have higher contrast than their block counterparts.
+   [expected: A full, coloured, 1-pixel outline, shaded so the top-left (lit) side is brighter and the bottom-right (shadow) side is darker]
+
+======================================================================
+[120/144] Q: How should a Cubyz item texture's contrast compare to its block counterpart?
+======================================================================
+[Retrieved 11 chunks: docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_372_discussion.md, codebase_assets_cubyz_blocks_cloth_cyan.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_cloth_dark_grey.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_cloth_black.zig.zon_chunk_0.md, github_issue_1906_discussion.md, codebase_assets_cubyz_blocks_sbb_child_cyan.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_cloth_violet.zig.zon_chunk_0.md, docs_docs_development_addons_models.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, addon_creator_FIELD_REFERENCE.md_chunk_2.md]
+
+A: The recommended contrast level for items compared to blocks in Cubyz is that items should have higher contrast than their block counterparts. This ensures better visibility and distinction between the two forms of the same object within the game world.
+   [expected: Items should have higher contrast than their block counterparts]
+
+======================================================================
+[121/144] Q: What should Cubyz block textures avoid, so they tile smoothly?
+======================================================================
+[Retrieved 12 chunks: docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_8_discussion.md, codebase_assets_cubyz_blocks_terracotta_smooth.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_sandstone_smooth.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_sbb_child_cyan.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_basalt_smooth.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_voidstone_smooth.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_glacite_smooth.zig.zon_chunk_0.md, docs_docs_development_addons_models.md_chunk_0.md, github_issue_190_discussion.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, addon_creator_engine_validation_blocks.md]
+
+A: Cubyz block textures should avoid seams and repetition. They must also maintain consistent color palettes with no near-duplicate colors or noise/filter/brush artifacts. Additionally, blocks need to be designed to tile smoothly without any visible seams or repetitions.
+   [expected: Seams or repetitive patterns]
+
+======================================================================
+[122/144] Q: What must Cubyz Structure Building Blocks (SBBs) be filled with before saving, and why?
+======================================================================
+[Retrieved 12 chunks: docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, github_issue_3099_discussion.md, docs_docs_development_addons_index.md_chunk_0.md, github_issue_1882_discussion.md, github_issue_1403_discussion.md, github_issue_1387_discussion.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, codebase_assets_cubyz_blocks_sbb_origin.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_sbb_child_purple.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md]
+
+A: Cubyz Structure Building Blocks (SBBs) should be filled with `cubyz:void` blocks before saving unless terrain replacement is actually wanted. This practice helps to ensure that the structures are properly represented in the game world without any unwanted or unintended terrain features. By filling SBBs with void blocks, developers can maintain a clean and consistent environment while still allowing for creative design possibilities within the constraints of the game's mechanics.
+   [expected: cubyz:void blocks, unless you actually want the structure to replace surrounding terrain with air blocks]
+
+======================================================================
+[123/144] Q: What command must be used to convert degradable blocks like leaves and branches in a Cubyz SBB before saving?
+======================================================================
+[Retrieved 11 chunks: docs_CONTENT_SUGGESTIONS.md_chunk_0.md, docs_docs_blocks_index.md_chunk_0.md, codebase_assets_cubyz_blocks_branch_leafy_baobab.zig.zon_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md, codebase_assets_cubyz_blocks_dead_leaf_pile.zig.zon_chunk_0.md, github_issue_3099_discussion.md, codebase_assets_cubyz_blocks_osier.zig.zon_chunk_0.md, github_issue_1116_discussion.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md]
+
+A: The command `/toggledecay` is used to convert degradable blocks such as leaves and branches in a Cubyz Structure Building Block (SBB) before saving. This ensures that the structures are properly handled according to their degradation properties, which can be important for maintaining realistic environmental interactions within the game world.
+   [expected: /toggledecay]
+
+======================================================================
+[124/144] Q: What guidance does Cubyz give for SBB structures that appear in bulk in the world?
+======================================================================
+[Retrieved 12 chunks: docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_1882_discussion.md, github_issue_3099_discussion.md, github_issue_1403_discussion.md, github_issue_1387_discussion.md, github_pr_1227_comment_2051594652.md, docs_docs_blocks_index.md_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md, codebase_assets_cubyz_structure_tables_rare.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_sbb_origin.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, addon_creator_README.md_chunk_0.md]
+
+A: Cubyz suggests splitting bulk-appearing structures into multiple randomized parts to avoid visible repetition. This approach helps maintain a diverse and interesting landscape while preventing repetitive patterns from becoming noticeable.
+   [expected: Split it into multiple randomized parts to avoid clearly visible repetition]
+
+======================================================================
+[125/144] Q: Why must Cubyz SBB structures account for what's underground, per the content guidelines?
+======================================================================
+[Retrieved 13 chunks: docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_3099_discussion.md, github_issue_1403_discussion.md, github_issue_1463_discussion.md, github_issue_1882_discussion.md, github_pr_1227_comment_2051594652.md, github_issue_1047_discussion.md, github_issue_1408_discussion.md, docs_docs_blocks_index.md_chunk_0.md, codebase_assets_cubyz_biomes_cave_mantle_lava.zig.zon_chunk_0.md, codebase_assets_cubyz_biomes_cave_void_rare_phantasmal_starlight.zig.zon_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md]
+
+A: According to the retrieved context, Cubyz SBB structures must account for what's underground because they may generate on a slope or above a cave, exposing their underside. This means that when designing these structures, it's important to consider how they will interact with and be visible from below ground level.
+   [expected: Structures often generate on a slope or above a cave, exposing their underside, so the structure should continue underground and include roots where applicable]
+
+======================================================================
+[126/144] Q: What are Cubyz's two methods for hosting a multiplayer server?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_multiplayer.md_chunk_0.md, github_issue_2449_discussion.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_1.md, github_issue_1681_discussion.md, github_issue_267_discussion.md, docs_docs_development_history.md_chunk_0.md, docs_docs_development_how_to_contribute.md_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_sbb_mushroom_small_bolete.zig.zon_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md]
+
+A: Cubyz provides two main methods for hosting a multiplayer server:
+
+1. **In-game hosting**: This method allows players to host their own servers directly within the game, but it requires the game to keep running continuously. If the game is closed or restarted, all connected players will be disconnected.
+
+2. **Headless (dedicated) server**: A dedicated server runs in the background without a graphical user interface and can operate independently of the game client. To set up a headless server, you need to configure specific settings in the `launchConfig.zig` file, such as enabling it with `.headlessServer = true` and specifying an auto-enter world setting with `.autoEnterWorld = "<world name>"`. A world must already exist before enabling this feature.
+
+For more information on configuring these servers, refer to the documentation provided in the retrieved context.
+   [expected: In-Game Hosting and Headless Setup (dedicated server)]
+
+======================================================================
+[127/144] Q: What's the main drawback of Cubyz's in-game hosting method?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_multiplayer.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_2449_discussion.md, docs_docs_development_history.md_chunk_0.md, github_issue_266_discussion.md, github_issue_1681_discussion.md, github_issue_267_discussion.md, github_issue_763_discussion.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md]
+
+A: The main drawback of Cubyz's in-game hosting method is that it requires the game to keep running continuously. If you close the game, everyone connected to the server will be disconnected. This can be a significant limitation for users who want to host their own servers without having to run the game constantly.
+   [expected: It requires you to keep your game running -- leaving the world or closing the game disconnects everyone else]
+
+======================================================================
+[128/144] Q: What two settings must be configured in launchConfig.zig to set up a Cubyz headless server?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_multiplayer.md_chunk_0.md, github_pr_2084_comment_2478289227.md, github_issue_1097_discussion.md, github_issue_2449_discussion.md, docs_docs_development_multiplayer.md_chunk_1.md, docs_docs_development_history.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_2.md, docs_README.md_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_src_main.zig_chunk_3.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4.md]
+
+A: To set up a Cubyz headless server, you need to configure the following two settings in `launchConfig.zig`:
+
+1. `headlessServer`: Set this variable to `true` to indicate that the server is running in headless mode.
+2. `autoEnterWorld`: Specify the name of the world you want the headless server to load by setting this variable to the desired world name.
+
+These settings will allow your Cubyz server to run independently without a graphical user interface, making it suitable for dedicated server setups.
+   [expected: .headlessServer = true and .autoEnterWorld = <the world's name>]
+
+======================================================================
+[129/144] Q: What must already exist before you can set a Cubyz headless server to auto-enter a world?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_multiplayer.md_chunk_0.md, github_issue_2449_discussion.md, github_pr_2084_comment_2478289227.md, github_issue_1097_discussion.md, docs_docs_development_multiplayer.md_chunk_1.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, github_issue_2562_discussion.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_world_presets_flat.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: A world must already exist before enabling it in the launchConfig.zig file.
+   [expected: The world itself -- you must run the game in normal mode to create it first]
+
+======================================================================
+[130/144] Q: How do you find your machine's local gateway IP for Cubyz server port forwarding, on Linux?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_multiplayer.md_chunk_0.md, github_issue_2784_discussion.md, github_issue_1681_discussion.md, docs_docs_development_multiplayer.md_chunk_1.md, github_issue_2449_discussion.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_2.md, docs_docs_development_modding.md_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_sbb_tree_cirrus_upper_trunk.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md]
+
+A: To find your machine's local gateway IP for Cubyz server port forwarding on Linux, you can use the following command in the terminal:
+
+```bash
+ip route show default | awk '{print $5}'
+```
+
+This command will display the IP address of your local gateway. Make sure to replace `default` with the appropriate network interface name if needed.
+   [expected: Run `ip route | grep default` (or `ip a`) and look for the Gateway IP]
+
+======================================================================
+[131/144] Q: What protocol should you select when configuring a Cubyz server's port-forward rule on your router?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_multiplayer.md_chunk_0.md, github_issue_2449_discussion.md, docs_docs_development_multiplayer.md_chunk_1.md, github_issue_267_discussion.md, docs_docs_faq.md_chunk_0.md, github_issue_2784_discussion.md, docs_docs_development_multiplayer.md_chunk_2.md, github_issue_1681_discussion.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_blocks_ferrock_bricks.zig.zon_chunk_0.md]
+
+A: When configuring a Cubyz server's port-forward rule on your router, you should specifically select the UDP protocol. This is because Cubyz's server networking runs over UDP.
+   [expected: UDP]
+
+======================================================================
+[132/144] Q: How do you find a player's index/ID for Cubyz permission commands?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_multiplayer.md_chunk_0.md, docs_docs_development_permission_layer.md_chunk_0.md, docs_docs_gameplay_game_mechanics.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, github_issue_2615_discussion.md, github_issue_2566_discussion.md, docs_docs_development_history.md_chunk_0.md, docs_docs_development_how_to_contribute.md_chunk_0.md, codebase_assets_cubyz_entity_models_cubert.zig.zon_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md]
+
+A: To find a player's index/ID for Cubyz permission commands, you can either enable "Show Player ID" in the in-game Social tab or, as a server owner, check the `players` folder inside the world save directory. The config files within this folder are named after each player's ID.
+   [expected: Enable "Show Player ID" in the in-game Social tab, or as a server owner check the players folder inside the world save directory]
+
+======================================================================
+[133/144] Q: What three server-hardening options does Cubyz's multiplayer guide suggest against DDoS/exposure risk?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_multiplayer.md_chunk_0.md, github_issue_2449_discussion.md, docs_docs_development_multiplayer.md_chunk_1.md, docs_docs_faq.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, github_issue_267_discussion.md, github_issue_81_discussion.md, github_issue_1681_discussion.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_blocks_copper_ore.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: The Cubyz multiplayer guide suggests using a Virtual Private Server (VPS) to keep your home IP private, setting up a domain name behind a proxy like Cloudflare for DDoS mitigation, or running a relay/VPS proxy to hide your home IP at the cost of some latency.
+   [expected: Use a VPS, use a domain name with a proxy service like Cloudflare, or route traffic through a relay/VPS proxy]
+
+======================================================================
+[134/144] Q: Where can you download Cubyz add-ons, per the multiplayer guide?
+======================================================================
+[Retrieved 14 chunks: docs_docs_development_multiplayer.md_chunk_1.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md, docs_docs_development_index.md_chunk_0.md, docs_docs_installation.md_chunk_0.md, docs_docs_development_how_to_contribute.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_0.md, addon_creator_README.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, github_issue_2114_discussion.md, github_issue_763_discussion.md, codebase_assets_cubyz_blocks_sbb_child_cyan.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_tree_curl_curl.zig.zon_chunk_0.md]
+
+A: According to the retrieved context in the "docs_docs_development_multiplayer.md_chunk_1.md" file, you can download Cubyz add-ons from the official Discord server in the [#addons-mods](https://discord.com/invite/jM96g8pr25) channel or through an online marketplace [here](https://addons.ashframe.net/).
+   [expected: The official Discord's #addons-mods channel, or the community asset marketplace at addons.ashframe.net]
+
+======================================================================
+[135/144] Q: What happens when you install add-ons on a Cubyz dedicated server?
+======================================================================
+[Retrieved 13 chunks: docs_docs_development_multiplayer.md_chunk_1.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_addons_index.md_chunk_0.md, docs_docs_development_index.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_0.md, docs_ashframe_overview.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, github_issue_3308_discussion.md, github_issue_2449_discussion.md, addon_creator_README.md_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_blocks_limestone_bricks.zig.zon_chunk_0.md]
+
+A: When installing add-ons on a Cubyz dedicated server, you need to follow these steps:
+
+1. Navigate to your world save directory based on your operating system:
+   - **Windows:** `C:\Users\USERNAME\Saved Games\Cubyz\saves\WORLD_NAME`
+   - **Linux:** `/home/USERNAME/.cubyz/saves/WORLD_NAME`
+
+2. Extract the downloaded add-on archive and place it directly into the `assets` folder inside your specific world folder.
+
+This process allows you to integrate community-made extensions that modify or introduce new content to Cubyz, such as items, biomes, recipes, and other features.
+   [expected: They automatically sync and download for connecting players]
+
+======================================================================
+[136/144] Q: What does Cubyz's Mercur Discord bot do?
+======================================================================
+[Retrieved 14 chunks: docs_docs_development_multiplayer.md_chunk_1.md, docs_docs_development_how_to_contribute.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_modding.md_chunk_0.md, docs_docs_development_multiplayer.md_chunk_2.md, docs_docs_development_multiplayer.md_chunk_0.md, docs_docs_installation.md_chunk_1.md, github_pr_3313_comment_3560517031.md, github_issue_2566_discussion.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_sbb_mushroom_small_bolete.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_4.md]
+
+A: Cubyz's Mercur Discord bot facilitates communication between Discord and Cubyz servers. It can submit server information to the [Cubyz Server List](https://servers.ashframe.net/). To install Mercur, you need to follow these steps:
+
+1. Install Node.js and npm on your system using the following commands for different Linux distributions:
+   - **Debian / Ubuntu:**
+     ```bash
+     sudo apt update
+     sudo apt install nodejs npm
+     ```
+   - **Arch Linux:**
+     ```bash
+     sudo pacman -S nodejs npm
+     ```
+2. Create a folder for the bot (for example, `Mercur_Bot`). Open a terminal inside that folder and run:
+   ```bash
+   npx cubyz-discord-relay@latest
+   ```
+3. If no `config.json` file is found, it will be automatically generated.
+4. Configure the `config.json` file with necessary details such as server name, IP address, port, description, icon URL, and Discord invite link:
+   ```json
+   {
+     "enabled": true,
+     "serverName": "NAME_OF_YOUR_SERVER",
+     "serverIp": "HOSTNAME_OR_IP_ADDRESS",
+     "serverPort": YOUR_GAME_PORT,
+     "description": "SHORT_SERVER_DESCRIPTION",
+     "iconUrl": "DIRECT_URL_TO_IMAGE",
+     "discordServer": "DISCORD_INVITE_LINK",
+     "customClientDownloadUrl": "CUSTOM_CLIENT_DOWNLOAD_LINK"
+   }
+   ```
+5. After saving your changes, run the bot again:
+   ```bash
+   npx cubyz-discord-relay@latest
+   ```
+6. To update Mercur, simply run:
+   ```bash
+   npx cubyz-discord-relay@latest
+   ```
+7. If a newer version includes changes to the configuration file, rename your current `config.json` (for example, to `old_config.json`) and generate a new one by running the update command again. Copy settings from `old_config.json` into the newly generated `config.json`. Your bot is now updated and ready to use.
+
+The Cubyz Server List can be configured using the following fields in your `config.json`:
+- **enabled:** Set to `true` or `false` to enable or disable server list integration.
+- **serverName:** The name of your server.
+- **serverIp:** Your server's hostname or IP address.
+- **serverPort:** Your game port number.
+- **description:** A short description of your server.
+- **iconUrl:** Direct URL to the image hosting service for your server icon (e.g., [ImgBB](https://imgbb.com/)).
+- **discordServer:** Discord invite link (currently not displayed but reserved for future use).
+- **customClientDownloadUrl:** Custom client download link (currently not displayed but reserved for future use).
+   [expected: Provides bi-directional chat communication between your Discord server and your Cubyz server, and can transmit server status to the Cubyz Server List]
+
+======================================================================
+[137/144] Q: What happens if Mercur's config.json file isn't found the first time you run the bot?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_multiplayer.md_chunk_1.md, docs_docs_development_multiplayer.md_chunk_2.md, codebase_assets_cubyz_entity_models_missing.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_chalk_brown.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_chalk_magenta.zig.zon_chunk_0.md, codebase_assets_cubyz_structure_tables_meteorite.zig.zon_chunk_0.md, codebase_assets_cubyz_sbb_mushroom_side_bolete.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_cloth_block_blue.zig.zon_chunk_0.md, github_issue_1836_discussion.md, github_issue_733_discussion.md, addon_creator_engine_validation_bugs.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md]
+
+A: If Mercur's `config.json` file isn't found the first time you run the bot, it will be automatically generated. This means that you don't need to manually create or download the configuration file; the bot will generate a default one for you. After generating the initial `config.json`, you can then proceed with configuring the necessary details such as server name, IP address, port, description, icon URL, and Discord invite link within this generated file.
+   [expected: The bot automatically generates one, then exits]
+
+======================================================================
+[138/144] Q: What command installs and runs Mercur, Cubyz's Discord relay bot?
+======================================================================
+[Retrieved 14 chunks: docs_docs_development_multiplayer.md_chunk_1.md, docs_docs_installation.md_chunk_1.md, docs_docs_development_multiplayer.md_chunk_2.md, docs_docs_development_multiplayer.md_chunk_0.md, docs_docs_faq.md_chunk_0.md, docs_docs_development_how_to_contribute.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_installation.md_chunk_0.md, codebase_src_server_command__list.zig_chunk_0.md, codebase_assets_cubyz_sbb_tree_mahogany_khaya_ivorensis_small.zig.zon_chunk_0.md, github_issue_3349_discussion.md, github_issue_2844_discussion.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_README.md_chunk_0.md]
+
+A: To install and run Mercur, Cubyz's Discord relay bot, follow these steps:
+
+1. Install Node.js and npm on your system using the following commands for different Linux distributions:
+   - **Debian / Ubuntu:**
+     ```bash
+     sudo apt update
+     sudo apt install nodejs npm
+     ```
+   - **Arch Linux:**
+     ```bash
+     sudo pacman -S nodejs npm
+     ```
+
+2. Create a folder for the bot (for example, `Mercur_Bot`). Open a terminal inside that folder and run:
+   ```bash
+   npx cubyz-discord-relay@latest
+   ```
+
+3. If no `config.json` file is found, it will be automatically generated.
+
+4. Configure the `config.json` file with necessary details such as server name, IP address, port, description, icon URL, and Discord invite link:
+   ```json
+   {
+     "enabled": true,
+     "serverName": "NAME_OF_YOUR_SERVER",
+     "serverIp": "HOSTNAME_OR_IP_ADDRESS",
+     "serverPort": YOUR_GAME_PORT,
+     "description": "SHORT_SERVER_DESCRIPTION",
+     "iconUrl": "DIRECT_URL_TO_IMAGE",
+     "discordServer": "DISCORD_INVITE_LINK",
+     "customClientDownloadUrl": "CUSTOM_CLIENT_DOWNLOAD_LINK"
+   }
+   ```
+
+5. After saving your changes, run the bot again:
+   ```bash
+   npx cubyz-discord-relay@latest
+   ```
+
+6. To update Mercur, simply run:
+   ```bash
+   npx cubyz-discord-relay@latest
+   ```
+7. If a newer version includes changes to the configuration file, rename your current `config.json` (for example, to `old_config.json`) and generate a new one by running the update command again. Copy settings from `old_config.json` into the newly generated `config.json`. Your bot is now updated and ready to use.
+
+By following these steps, you will successfully install and run Mercur, Cubyz's Discord relay bot.
+   [expected: npx cubyz-discord-relay@latest (or @2.4.3 specifically for Cubyz 0.0.0)]
+
+======================================================================
+[139/144] Q: Per Cubyz's permission_layer.md, what does whitelisting a permission path grant?
+======================================================================
+[Retrieved 12 chunks: docs_docs_development_permission_layer.md_chunk_0.md, github_issue_2566_discussion.md, github_pr_2530_comment_2775418851.md, github_pr_2530_comment_2775469276.md, github_pr_2530_comment_2754927408.md, github_pr_2530_comment_2755005145.md, github_issue_1961_discussion.md, codebase_src_server_permission.zig_chunk_0.md, docs_docs_development_multiplayer.md_chunk_0.md, codebase_assets_cubyz_blocks_cloth_block_white.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md]
+
+A: Whitelisting a permission path grants access to that path and all its children. For example, whitelisting `/command` would allow a player to run every command except spawn if they were also blacklisted from `/command/spawn`.
+   [expected: Access to that path AND all of its children in the tree -- e.g. whitelisting /command lets a user run every command]
+
+======================================================================
+[140/144] Q: If you whitelist /command but blacklist /command/spawn for a Cubyz user, what happens?
+======================================================================
+[Retrieved 11 chunks: docs_docs_development_permission_layer.md_chunk_0.md, github_issue_2566_discussion.md, docs_docs_development_multiplayer.md_chunk_0.md, github_issue_2844_discussion.md, github_issue_1462_discussion.md, github_issue_3349_discussion.md, codebase_src_server_command__list.zig_chunk_0.md, github_pr_3313_comment_3560517031.md, codebase_assets_cubyz_sbb_tree_cirrus_upper_trunk.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, addon_creator_engine_validation_bugs.md]
+
+A: When a user's permissions are configured such that they have `/command` whitelisted but `/command/spawn` blacklisted, the user will be able to run all commands except for the spawn command. This is because whitelisting grants access to a path and its children, while blacklisting blocks a path and its children instead of granting them -- e.g., whitelisting `/command` but then blacklisting `/command/spawn` lets a player run every command except spawn.
+   [expected: They can run every command except /spawn]
+
+======================================================================
+[141/144] Q: What happens if a Cubyz block's tags list ends up empty after processing, per the engine validation reference?
+======================================================================
+[Retrieved 9 chunks: addon_creator_engine_validation_blocks.md, github_issue_3195_discussion.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, github_pr_2886_comment_3107328085.md, codebase_assets_cubyz_blocks_sbb_child__defaults.zig.zon_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_CONTENT_SUGGESTIONS.md_chunk_0.md, codebase_src_tag.zig_chunk_0.md]
+
+A: According to the retrieved context, if a Cubyz block's tags field ends up empty after processing, it logs `"Block {id} is missing 'tags' field"` as a warning-level problem. The block still gets fully registered with an empty tag list, but its tag-dependent behavior (drops, tool interactions, etc.) may not work correctly on it.
+   [expected: The engine logs "Block {id} is missing 'tags' field" -- every block needs at least one tag]
+
+======================================================================
+[142/144] Q: What is Cubyz's blocks.zig register() function's fallback when a referenced block id can't be found, regardless of which field referenced it?
+======================================================================
+[Retrieved 10 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, addon_creator_engine_validation_blocks.md, github_pr_3266_comment_3447098301.md, github_pr_1143_comment_1977731254.md, github_pr_1125_comment_1976014713.md, github_pr_2129_comment_2866356417.md, codebase_src_blocks.zig_chunk_2.md, codebase_src_blocks.zig_chunk_1.md, docs_CONTRIBUTING.md_chunk_0.md, docs_docs_development_addons_models.md_chunk_0.md]
+
+A: When a referenced block ID cannot be found in the `blocks.zig` file's `register()` function, the engine logs an error message stating "Couldn't find block {id}. Replacing it with air..." and substitutes air for that block. This process does not cause the engine to crash; instead, it continues loading other blocks while logging this diagnostic line as a warning.
+   [expected: Logs "Couldn't find block {id}. Replacing it with air..." and substitutes air -- it never crashes]
+
+======================================================================
+[143/144] Q: What Cubyz function is responsible for parsing a block's drop entries, per the engine validation reference?
+======================================================================
+[Retrieved 12 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_1.md, addon_creator_engine_validation_blocks.md, codebase_src_blocks.zig_chunk_1.md, addon_creator_FIELD_REFERENCE.md_chunk_1.md, codebase_assets_cubyz_blocks_castilleja.zig.zon_chunk_0.md, codebase_assets_cubyz_blocks_daffodil.zig.zon_chunk_0.md, codebase_src_blocks.zig_chunk_0.md, codebase_assets_cubyz_blocks_grass_sky.zig.zon_chunk_0.md, github_pr_2886_comment_3107328085.md, github_pr_1251_comment_2051510478.md, docs_docs_gameplay_controls.md_chunk_1.md, docs_docs_development_addons_blocks.md_chunk_0.md]
+
+A: The `loadBlockDrop` function in the `blocks.zig` file is responsible for parsing a block's drop entries. This function takes a ZonElement as input and returns an array of `BlockDrop` structures that contain the possible drops for each block. The function iterates over the drop configurations, creating a list of items that can be dropped along with their amounts and conditions under which they can be dropped (e.g., allowed or forbidden tool tags).
+   [expected: loadBlockDrop()]
+
+======================================================================
+[144/144] Q: What Zig function registers a Cubyz particle type, per the engine validation reference?
+======================================================================
+[Retrieved 11 chunks: addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md, github_pr_1367_comment_2068705882.md, codebase_src_particles.zig_chunk_5.md, github_pr_1367_comment_2071284377.md, codebase_src_particles.zig_chunk_0.md, codebase_assets_cubyz_particles_poof.zig.zon_chunk_0.md, github_pr_1367_comment_2068718495.md, codebase_assets_cubyz_particles_flame.zig.zon_chunk_0.md, addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_0.md, docs_docs_development_history.md_chunk_0.md, docs_docs_development_addons_items.md_chunk_0.md]
+
+A: According to the retrieved context in `addon_creator/addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5.md`, the Zig function that registers a Cubyz particle type is `register()`. This function is called when the addon loads and validates various properties of the particle types, such as texture dimensions, rotation velocity, density, drag coefficient, loop time, speed, life time, random rotate, mode, direction, and shape.
+   [expected: register() in particles.zig]
+
+
+[~] Done -- 144 questions (second, independent benchmark set, non-overlapping with rag_batch_test.py's CUBYZ_QUESTIONS).

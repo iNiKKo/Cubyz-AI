@@ -45,8 +45,28 @@ review comment + diff.
 ## 2. Does the data need to be organized/chunked before running RAG folding?
 
 **Only the placement above (tier + filename prefix) -- not the chunking itself.** Drop the whole
-raw file in; `rag_initialize_chunks()` (runs automatically every time `server_textual.py` starts) splits
-it into 150-line chunks with 30-line overlap and queues them. You never manually pre-split a doc.
+raw file in; `rag_initialize_chunks()` (runs automatically every time `server_textual.py` starts)
+splits it via `_structural_chunks()` and queues the result. You never manually pre-split a doc.
+
+`_structural_chunks()` targets ~150 lines per chunk (300 max, 30-line overlap on any oversized
+single unit that has to fall back to sliding-window slicing) but respects two structural rules
+first: it never cuts a code function/struct or markdown paragraph in half (boundaries are
+blank-line-separated, language-agnostic), and it never merges two top-level markdown sections
+(`#`/`##` headers) into the same chunk just because both are individually short. That second rule
+exists because the naive version of this (pack short units together up to the target size,
+regardless of topic) is what caused a real, repeatedly-rediscovered bug: a doc with many short `##`
+sections would get several unrelated topics silently packed into one chunk, and the crunching LLM
+either dropped facts entirely compressing multiple topics into one summary, or buried them
+mid-paragraph where retrieval could find the chunk but the model couldn't reliably extract the
+specific fact. `CUBYZ_DEVELOPER_JUDGMENT.md`, `GAME_DESIGN_PRINCIPLES.md`,
+`docs/gameplay/controls.md`, `docs_README.md`, `docs/development/multiplayer.md`, and
+`docs/development/addons/blocks.md` all needed manual re-chunking to fix this during the
+2026-07-20/21 RAG accuracy pushes before the root cause was found and fixed here -- any *new* doc
+with that same many-short-`##`-sections shape should now chunk correctly on the first pass. A
+single `##` section that's still huge on its own (a giant field-reference table with no internal
+headers, for example) isn't something structural chunking alone can fix -- that's a
+information-density problem, not a boundary problem, and may still need a manual re-chunk or a
+source-doc rewrite that adds finer-grained headers.
 
 The one thing that *does* need to be correct before you drop a file in: it should read like an
 actual wiki page (clear, factual prose) -- the crunching prompt has a "zero extrapolation" rule
@@ -81,10 +101,19 @@ This is now enforced, not just a convention to remember:
 - The live `POST /admin/mode?mode=finetune` endpoint returns `409 Conflict` under the same
   condition unless you pass `force=true`.
 
-**Why:** finetune pair generation reads from RAG's own output (`users/*/wiki.jsonl`, the
-architectural codebase subset, `users/*/github_reviews.jsonl` -- see `finetune/README.md`), so
-running it against a half-finished RAG campaign means training pairs get generated from
-incomplete/inconsistent source data.
+**Why:** finetune pair generation reads from RAG's own output (`users/*/github_reviews.jsonl` --
+see `finetune/README.md`), so running it against a half-finished RAG campaign means training pairs
+get generated from incomplete/inconsistent source data.
+
+**Reviews-only since Prototype 7:** `finetune_initialize_chunks()` only queues candidates from
+`reviews` (PR-discussion behavior/judgment pairs) -- `docs`/`codebase` candidate generation is
+skipped entirely, not just filtered out later. PT6 was the last round that trained on fact Q&A
+pairs generated from `docs`/`codebase`; every benchmark since confirmed RAG alone carries
+essentially all real fact-recall accuracy, so generating ~2,400 `docs`/`codebase` training pairs
+that `finetune/scripts/assemble_sft_dataset.py`'s `SOURCE_TYPES = {"reviews"}` filter would just
+discard at assembly time was pure wasted volunteer crunching effort. The `docs`/`codebase`
+candidate-loading code is still in `finetune_initialize_chunks()`, just commented out, in case a
+future prototype deliberately decides fact Q&A is worth bringing back.
 
 Once RAG is done, select **FINETUNE** in the sidebar and run `CUBYZ_FOLDING.py` again -- same
 client, it follows whatever mode the server is in. Output lands in

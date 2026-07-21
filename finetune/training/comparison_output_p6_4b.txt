@@ -1,0 +1,767 @@
+======================================================================
+CUBYZ-SPECIFIC QUESTIONS
+======================================================================
+
+Q: What key moves the player forward in Cubyz?
+  OLD (SNALE-AI-P5-7B): W.
+  NEW (SNALE-AI-P6-4B): The 'W' key moves the player forward in Cubyz.
+  [expected: W]
+
+Q: How does Cubyz store its player position data over the network?
+  OLD (SNALE-AI-P5-7B): Cubyz stores its player position data using the `PlayerPosition` struct, which includes fields like `x`, `y`, and `z`. This data is sent over the network to synchronize player positions across clients.
+  NEW (SNALE-AI-P6-4B): Cubyz stores player position data using `playerPosData`, which is a struct containing fields like `pos` (position), `velocity` (movement speed), and `rotation`. This data is sent to other players in the same chunk via `sendPlayerPositionToOtherPlayersInChunk`.
+  [expected: The playerPosition struct sends/receives updates, sent no more than once every 50ms]
+
+Q: What happens if I place a block ID that doesn't exist in an addon?
+  OLD (SNALE-AI-P5-7B): If you attempt to place a block ID that does not exist in the game's block list, it will be replaced with air (0). This ensures that only valid blocks can be placed and prevents errors or undefined behavior.
+  NEW (SNALE-AI-P6-4B): If you try to place a block ID that doesn't exist in an addon, the game will log an error message indicating that the specified block ID is not found. This helps identify issues with missing or incorrect block definitions during world generation or item usage.
+  [expected: Engine doesn't crash -- logs "Couldn't find block {id}. Replacing it with air..." and substitutes air]
+
+Q: Who currently maintains Cubyz, and when was it originally created?
+  OLD (SNALE-AI-P5-7B): Cubyz is maintained by @TheLunatic and @Grisson. It was originally created on 2018-05-13.
+  NEW (SNALE-AI-P6-4B): Cubyz is maintained by a team that includes contributors like @mike42, @Koray, and others who have been involved in its development since 2019. The project started as an open-source initiative to create a voxel sandbox game using Zig.
+  [expected: Created Aug 22 2018 by zenith391 and ZaUserA; currently maintained by IntegratedQuantum]
+
+Q: In a Cubyz code review, what's the difference between when a change should get a debugging-style response vs a design-review response?
+  OLD (SNALE-AI-P5-7B): A debugging-style response is appropriate if the issue is about correctness, such as ensuring that an enum value is used correctly or that a function returns the expected type. A design-review response is needed for architectural concerns like whether a new feature aligns with overall goals or if it introduces unnecessary complexity.
+  NEW (SNALE-AI-P6-4B): A debugging-style response is used for changes that are more technical in nature, such as fixing bugs or improving performance. A design-review response is used for changes that involve architectural decisions or significant alterations to the game's design.
+  [expected: Debugging/diagnosis = a bug or 'why doesn't this work' issue; design-review = a design/style/architecture choice, not a bug]
+
+Q: Which key toggles fullscreen mode in Cubyz?
+  OLD (SNALE-AI-P5-7B): F11.
+  NEW (SNALE-AI-P6-4B): F11.
+  [expected: F11]
+
+Q: How do you access the creative inventory in Cubyz?
+  OLD (SNALE-AI-P5-7B): You can access the creative inventory by pressing F4.
+  NEW (SNALE-AI-P6-4B): The creative inventory is accessed through the `creativeInventory` field in the `Player` struct. It allows players to manage items directly without needing a crafting table or workbench.
+  [expected: C]
+
+Q: What is the default multiplayer server port in Cubyz?
+  OLD (SNALE-AI-P5-7B): The default multiplayer server port in Cubyz is 5429.
+  NEW (SNALE-AI-P6-4B): The default multiplayer server port in Cubyz is 25679.
+  [expected: 47649]
+
+Q: How many hearts of health does the player start with, and what's the total HP?
+  OLD (SNALE-AI-P5-7B): The player starts with 10 hearts of health, giving a total of 20 HP.
+  NEW (SNALE-AI-P6-4B): The player starts with 10 hearts of health, totaling 20 HP.
+  [expected: 8 hearts, 16 total health]
+
+Q: Can the player heal in Cubyz right now?
+  OLD (SNALE-AI-P5-7B): No, the player cannot heal in Cubyz at the moment.
+  NEW (SNALE-AI-P6-4B): No, players cannot currently heal in Cubyz. The game does not have a healing mechanic implemented yet.
+  [expected: No -- there is currently no way to regain health other than dying]
+
+Q: What tool is used to damage/mine soil blocks in Cubyz?
+  OLD (SNALE-AI-P5-7B): A shovel is used to damage/mine soil blocks in Cubyz.
+  NEW (SNALE-AI-P6-4B): The tool used to damage/mine soil blocks in Cubyz is the pickaxe.
+  [expected: Shovers (shovels)]
+
+Q: How far can the Cubyz world extend on each axis?
+  OLD (SNALE-AI-P5-7B): The Cubyz world extends 2^31 blocks in each direction along the X, Y, and Z axes.
+  NEW (SNALE-AI-P6-4B): The Cubyz world extends 128000 blocks in each direction along the X and Z axes, with a height range from -64 to 63999 blocks.
+  [expected: 2 billion blocks on each axis]
+
+Q: What was Cubyz originally called before its current name?
+  OLD (SNALE-AI-P5-7B): Cubz.
+  NEW (SNALE-AI-P6-4B): Cubyz was originally called "Cubz."
+  [expected: "Cubz"]
+
+Q: Is Cubyz available on Mac? Why or why not?
+  OLD (SNALE-AI-P5-7B): Cubyz is not available on Mac because it requires specific dependencies like Vulkan and GLFW, which are not natively supported on macOS.
+  NEW (SNALE-AI-P6-4B): No, Cubyz is not available on Mac due to the lack of support for Vulkan on macOS.
+  [expected: No -- Mac is not supported because it lacks OpenGL 4.3]
+
+Q: What does the checkResult function do for Vulkan results in Cubyz's renderer?
+  OLD (SNALE-AI-P5-7B): The `checkResult` function is used to handle Vulkan results by checking if they are successful. If a result indicates an error, it logs the error message using `std.log.err`.
+  NEW (SNALE-AI-P6-4B): The `checkResult` function checks if a Vulkan result is VK_SUCCESS and logs an error message with the specific result code if it isn't.
+  [expected: Logs a Vulkan error (unknown error code, or the specific error tag name) via std.log.err]
+
+Q: What is utils.NeverFailingAllocator in Cubyz?
+  OLD (SNALE-AI-P5-7B): utils.NeverFailingAllocator is an allocator that does not fail on allocation errors but instead logs them as warnings. It provides a way to handle memory allocation without crashing the application due to out-of-memory situations.
+  NEW (SNALE-AI-P6-4B): utils.NeverFailingAllocator is an allocator that never fails to allocate memory, ensuring robustness in resource management within the Cubyz engine.
+  [expected: An allocator interface that cannot return error.OutOfMemory]
+
+Q: How does Cubyz's BinaryWriter manage its buffer as data is written?
+  OLD (SNALE-AI-P5-7B): Cubyz's BinaryWriter manages its buffer by dynamically resizing it when necessary to accommodate new data being written. This ensures that there is always enough space available for the next write operation without manual intervention.
+  NEW (SNALE-AI-P6-4B): Cubyz's BinaryWriter manages its buffer by writing data to a byte array (`self.buffer`) using the `write` method. The buffer size is managed through methods like `ensureCapacity`, which ensures there is enough space in the buffer for the upcoming write operation, and `reset`, which clears the buffer when no longer needed.
+  [expected: A dynamically growing buffer]
+
+Q: Why might a Cubyz reviewer prefer std.StringHashMap's getOrPut over a separate contains-check plus insert?
+  OLD (SNALE-AI-P5-7B): std.StringHashMap's getOrPut is preferred because it combines the functionality of checking if a key exists and inserting a new entry into one operation, which can be more efficient than performing these operations separately.
+  NEW (SNALE-AI-P6-4B): A reviewer might prefer `std.StringHashMap.getOrPut` because it combines the functionality of checking if a key exists and inserting it if necessary in one operation, which can be more efficient than performing two separate operations (contains check followed by insert). This approach reduces the number of times the hash map needs to be accessed and potentially improves performance.
+  [expected: getOrPut atomically retrieves-or-inserts in one operation instead of two lookups, reducing redundant memory accesses and complexity]
+
+Q: What's the default value for an item's food field in Cubyz if I don't set it?
+  OLD (SNALE-AI-P5-7B): The default value for an item's food field is 0.
+  NEW (SNALE-AI-P6-4B): The default value for an item's food field is 0. If you don't specify a value when creating an item, it will use this default.
+  [expected: 0]
+
+Q: Why might a biome's custom sky color not show up in-game even though I set it in the Addon Creator?
+  OLD (SNALE-AI-P5-7B): A biome's custom sky color may not appear in-game if the addon is not properly installed or recognized by Cubyz. Ensure that the addon is correctly placed in the addons folder and that there are no typos in the biome ID or other configuration details. Additionally, check for any errors during installation or loading of the addon.
+  NEW (SNALE-AI-P6-4B): The issue could be due to incorrect syntax or missing parameters when setting the custom sky color in the Addon Creator. Ensure that you are using the correct format and all required parameters are included.
+  [expected: Format mismatch: the website exports skyColor/fogColor as a 3-component float vector, but the engine reads those fields as a packed u32 integer]
+
+Q: What key moves the player backward in Cubyz?
+  OLD (SNALE-AI-P5-7B): The key that moves the player backward is 'S'.
+  NEW (SNALE-AI-P6-4B): The 'Back' key moves the player backward.
+  [expected: S]
+
+Q: Which key strafes the player left in Cubyz?
+  OLD (SNALE-AI-P5-7B): The key that strafes the player left in Cubyz is A.
+  NEW (SNALE-AI-P6-4B): The 'A' key strafes the player left in Cubyz.
+  [expected: A]
+
+Q: Which key strafes the player right in Cubyz?
+  OLD (SNALE-AI-P5-7B): D.
+  NEW (SNALE-AI-P6-4B): The 'D' key strafes the player right.
+  [expected: D]
+
+Q: What key makes the player sprint in Cubyz?
+  OLD (SNALE-AI-P5-7B): The key that makes the player sprint in Cubyz is Shift.
+  NEW (SNALE-AI-P6-4B): The 'Shift' key makes the player sprint in Cubyz.
+  [expected: Left control]
+
+Q: What key makes the player jump in Cubyz?
+  OLD (SNALE-AI-P5-7B): The space bar is used to make the player jump.
+  NEW (SNALE-AI-P6-4B): The spacebar makes the player jump in Cubyz.
+  [expected: Space]
+
+Q: How do you crouch in Cubyz?
+  OLD (SNALE-AI-P5-7B): Crouching is performed by pressing the 'c' key.
+  NEW (SNALE-AI-P6-4B): To crouch in Cubyz, press the 'C' key. This action allows players to lower their character's height while moving through narrow spaces or climbing stairs.
+  [expected: Left shift]
+
+Q: What key toggles flying in Cubyz?
+  OLD (SNALE-AI-P5-7B): The F5 key toggles flying mode.
+  NEW (SNALE-AI-P6-4B): The 'F' key toggles flying in Cubyz.
+  [expected: F]
+
+Q: What key toggles ghost mode in Cubyz?
+  OLD (SNALE-AI-P5-7B): G.
+  NEW (SNALE-AI-P6-4B): The 'G' key toggles ghost mode in Cubyz.
+  [expected: G]
+
+Q: What key activates hyperspeed in Cubyz?
+  OLD (SNALE-AI-P5-7B): The key to activate hyperspeed is F5.
+  NEW (SNALE-AI-P6-4B): The 'H' key activates hyperspeed in Cubyz.
+  [expected: H]
+
+Q: What button places a block in Cubyz?
+  OLD (SNALE-AI-P5-7B): The right mouse button (RMB) is used to place blocks in Cubyz.
+  NEW (SNALE-AI-P6-4B): The right mouse button is used to place blocks in Cubyz.
+  [expected: Right mouse button]
+
+Q: What button breaks a block in Cubyz?
+  OLD (SNALE-AI-P5-7B): The left mouse button (LMB) is used to break blocks in Cubyz.
+  NEW (SNALE-AI-P6-4B): The right mouse button is used to break blocks in Cubyz.
+  [expected: Left mouse button]
+
+Q: How do you pick a block (select it into your hotbar) in Cubyz?
+  OLD (SNALE-AI-P5-7B): To pick a block in Cubyz, use the 'E' key to select it into your hotbar.
+  NEW (SNALE-AI-P6-4B): To pick a block into your hotbar, press the 'E' key while holding down the mouse button to select the block at the cursor's position.
+  [expected: Middle mouse button]
+
+Q: What key drops an item in Cubyz?
+  OLD (SNALE-AI-P5-7B): The key to drop an item is 'E'.
+  NEW (SNALE-AI-P6-4B): The 'D' key is used to drop an item in Cubyz.
+  [expected: Q]
+
+Q: What key takes a background image/screenshot in Cubyz?
+  OLD (SNALE-AI-P5-7B): F10.
+  NEW (SNALE-AI-P6-4B): The question does not provide enough information to answer what key takes a background image/screenshot in Cubyz.
+  [expected: Print Screen]
+
+Q: What key opens the regular (non-creative) inventory in Cubyz?
+  OLD (SNALE-AI-P5-7B): E.
+  NEW (SNALE-AI-P6-4B): The 'E' key opens the regular (non-creative) inventory in Cubyz.
+  [expected: E]
+
+Q: How do you open chat in Cubyz?
+  OLD (SNALE-AI-P5-7B): You can open chat by pressing the 'T' key.
+  NEW (SNALE-AI-P6-4B): To open chat in Cubyz, press the '/' key to bring up the chat window where you can type messages.
+  [expected: T]
+
+Q: What key or character opens the command line in Cubyz?
+  OLD (SNALE-AI-P5-7B): The forward slash (/) key opens the command line in Cubyz.
+  NEW (SNALE-AI-P6-4B): The `/` character opens the command line in Cubyz.
+  [expected: /]
+
+Q: What key hides the menu in Cubyz?
+  OLD (SNALE-AI-P5-7B): The key to hide the menu is F10.
+  NEW (SNALE-AI-P6-4B): The escape key hides the menu in Cubyz.
+  [expected: F1]
+
+Q: What key hides the display item in Cubyz?
+  OLD (SNALE-AI-P5-7B): The key to hide the display item is F12.
+  NEW (SNALE-AI-P6-4B): The 'H' key hides the display item in Cubyz.
+  [expected: F2]
+
+Q: What key toggles the debug overlay in Cubyz?
+  OLD (SNALE-AI-P5-7B): F3.
+  NEW (SNALE-AI-P6-4B): The 'F' key toggles the debug overlay in Cubyz.
+  [expected: F3]
+
+Q: What key toggles the performance overlay in Cubyz?
+  OLD (SNALE-AI-P5-7B): F3.
+  NEW (SNALE-AI-P6-4B): The 'P' key toggles the performance overlay in Cubyz.
+  [expected: F4]
+
+Q: What key toggles the GPU overlay in Cubyz?
+  OLD (SNALE-AI-P5-7B): F3.
+  NEW (SNALE-AI-P6-4B): The 'G' key toggles the GPU overlay in Cubyz.
+  [expected: F5]
+
+Q: What key toggles the network overlay in Cubyz?
+  OLD (SNALE-AI-P5-7B): F5.
+  NEW (SNALE-AI-P6-4B): The 'N' key toggles the network overlay in Cubyz.
+  [expected: F6]
+
+Q: What key toggles the advanced network overlay in Cubyz?
+  OLD (SNALE-AI-P5-7B): F5.
+  NEW (SNALE-AI-P6-4B): The 'N' key toggles the advanced network overlay in Cubyz.
+  [expected: F7]
+
+Q: What key selects hotbar slot 10 in Cubyz?
+  OLD (SNALE-AI-P5-7B): The key to select hotbar slot 10 is '0'.
+  NEW (SNALE-AI-P6-4B): The key that selects hotbar slot 10 is not specified in the provided text.
+  [expected: 0]
+
+Q: What key selects hotbar slot 11 in Cubyz?
+  OLD (SNALE-AI-P5-7B): The key to select hotbar slot 11 is F2.
+  NEW (SNALE-AI-P6-4B): The key that selects hotbar slot 11 is not specified in the provided text.
+  [expected: - (minus)]
+
+Q: What key selects hotbar slot 12 in Cubyz?
+  OLD (SNALE-AI-P5-7B): The key to select hotbar slot 12 is F3.
+  NEW (SNALE-AI-P6-4B): The key that selects hotbar slot 12 is not specified in the provided text.
+  [expected: = (equals)]
+
+Q: When was the project renamed from Cubz to Cubyz?
+  OLD (SNALE-AI-P5-7B): The project was renamed from Cubz to Cubyz on April 15th, 2023.
+  NEW (SNALE-AI-P6-4B): The project was renamed from Cubz to Cubyz on April 15th, 2023.
+  [expected: March 17, 2019, suggested by zenith391]
+
+Q: Why was Cubyz rewritten from Java to Zig?
+  OLD (SNALE-AI-P5-7B): Cubyz was rewritten from Java to Zig to improve performance and reduce memory usage by leveraging Zig's compile-time optimizations and zero-cost abstractions.
+  NEW (SNALE-AI-P6-4B): Cubyz was rewritten from Java to Zig because Zig offers better performance, more efficient memory management, and a simpler syntax that allows developers to write code closer to the hardware level. This change aims to improve overall efficiency and reduce resource usage in the game engine.
+  [expected: Java's garbage collector caused freeze-inducing lag spikes at the memory limit; Zig's cross-compilation support was also a major draw]
+
+Q: When was Cubyz version 0.0.0 released?
+  OLD (SNALE-AI-P5-7B): Cubyz version 0.0.0 was released on April 15th, 2023.
+  NEW (SNALE-AI-P6-4B): Cubyz version 0.0.0 was released on April 12, 2023.
+  [expected: October 5, 2025]
+
+Q: What language was Cubyz originally written in before the Zig rewrite?
+  OLD (SNALE-AI-P5-7B): Cubyz was originally written in C++.
+  NEW (SNALE-AI-P6-4B): Cubyz was originally written in C++ before the rewrite to Zig.
+  [expected: Java]
+
+Q: What alternative languages did the Cubyz maintainer consider before choosing Zig for the rewrite?
+  OLD (SNALE-AI-P5-7B): The maintainer considered C++ as an alternative language before deciding on Zig for the rewrite.
+  NEW (SNALE-AI-P6-4B): The Cubyz maintainer considered C++ and Rust as alternatives before deciding on Zig for the rewrite.
+  [expected: C++20 and Rust]
+
+Q: What does the energy/stomach bar do in Cubyz right now?
+  OLD (SNALE-AI-P5-7B): The energy/stomach bar shows how much energy or food a player has left. It's part of the HUD (heads-up display) that provides important information about the player's health and resources.
+  NEW (SNALE-AI-P6-4B): The energy/stomach bar is currently not implemented in Cubyz. It was planned to be added as a feature but has not been completed yet.
+  [expected: Nothing -- it's purely cosmetic, there's currently no way to gain or lose energy]
+
+Q: How many movement modes does the player have in Cubyz?
+  OLD (SNALE-AI-P5-7B): The player has three movement modes: normal walking, sprinting, and crouching.
+  NEW (SNALE-AI-P6-4B): The player has three movement modes: normal, sprinting, and crouching.
+  [expected: Three: walking, sprinting, and crouching]
+
+Q: How high can the player jump in Cubyz?
+  OLD (SNALE-AI-P5-7B): The player can jump up to 1.5 blocks high.
+  NEW (SNALE-AI-P6-4B): The player can jump up to 10 blocks high in Cubyz.
+  [expected: Enough to cross one whole block]
+
+Q: How many hotbar slots does Cubyz have by default?
+  OLD (SNALE-AI-P5-7B): Cubyz has 10 hotbar slots by default.
+  NEW (SNALE-AI-P6-4B): Cubyz has 9 hotbar slots by default.
+  [expected: 12]
+
+Q: How many items can a single inventory or hotbar slot stack in Cubyz?
+  OLD (SNALE-AI-P5-7B): A single inventory or hotbar slot can stack up to 64 items in Cubyz.
+  NEW (SNALE-AI-P6-4B): A single inventory or hotbar slot can hold up to 64 items.
+  [expected: 120]
+
+Q: How many slots does the main inventory have in Cubyz?
+  OLD (SNALE-AI-P5-7B): The main inventory has 36 slots.
+  NEW (SNALE-AI-P6-4B): The main inventory has 36 slots arranged in a 9x4 grid.
+  [expected: 20]
+
+Q: What tool is used to mine stone, metal, and gem blocks in Cubyz?
+  OLD (SNALE-AI-P5-7B): A pickaxe is used to mine stone, metal, and gem blocks.
+  NEW (SNALE-AI-P6-4B): The pickaxe is used to mine stone, metal, and gem blocks in Cubyz.
+  [expected: Pickaxe]
+
+Q: What tool is used to mine wooden blocks in Cubyz?
+  OLD (SNALE-AI-P5-7B): A pickaxe is used to mine wooden blocks in Cubyz.
+  NEW (SNALE-AI-P6-4B): A wood axe is used to mine wooden blocks in Cubyz.
+  [expected: Axe]
+
+Q: What tool is used to harvest plants, leaves, and cloth in Cubyz?
+  OLD (SNALE-AI-P5-7B): A scythe is used to harvest plants, leaves, and cloth in Cubyz.
+  NEW (SNALE-AI-P6-4B): The hoe is used to harvest plants, leaves, and cloth in Cubyz.
+  [expected: Sickle -- also the only way to actually collect plants/leaves, not possible bare-handed]
+
+Q: What happens if you use the wrong tool type on a block in Cubyz?
+  OLD (SNALE-AI-P5-7B): If you use the wrong tool type on a block, it will not break. The game checks if the player's held item has the correct tool type before allowing the block to be broken.
+  NEW (SNALE-AI-P6-4B): If you use the wrong tool type on a block in Cubyz, nothing will happen. The game does not provide any feedback or error message to indicate that the action was invalid.
+  [expected: It deals the same damage as bare hands -- no bonus, no penalty]
+
+Q: What operating systems does Cubyz support?
+  OLD (SNALE-AI-P5-7B): Cubyz supports Windows, Linux, and macOS.
+  NEW (SNALE-AI-P6-4B): Cubyz supports Windows, Linux, and macOS.
+  [expected: Windows and Linux]
+
+Q: What OpenGL version does the Cubyz installation page list as the GPU requirement?
+  OLD (SNALE-AI-P5-7B): The Cubyz installation page lists OpenGL 3.2 as the minimum required version for the GPU.
+  NEW (SNALE-AI-P6-4B): The Cubyz installation page lists OpenGL 4.3 as the GPU requirement.
+  [expected: OpenGL 4.6 hardware support]
+
+Q: What command grants a player full admin permissions in Cubyz?
+  OLD (SNALE-AI-P5-7B): The /admin command grants a player full admin permissions.
+  NEW (SNALE-AI-P6-4B): The `/admin` command grants a player full admin permissions in Cubyz.
+  [expected: /perm add whitelist @<playerIndex> /]
+
+Q: What command grants a player access to just the /spawn command in Cubyz?
+  OLD (SNALE-AI-P5-7B): The command is /gamemode creative.
+  NEW (SNALE-AI-P6-4B): The `/grant spawn` command grants a player access to just the `/spawn` command.
+  [expected: /perm add whitelist @<playerIndex> /command/spawn]
+
+Q: What network protocol does Cubyz's server use for port forwarding?
+  OLD (SNALE-AI-P5-7B): Cubyz uses the UDP protocol for port forwarding.
+  NEW (SNALE-AI-P6-4B): Cubyz's server uses UDP for port forwarding to allow clients to connect through a firewall.
+  [expected: UDP]
+
+Q: In Cubyz's permission system, if a path is both whitelisted and blacklisted, which wins?
+  OLD (SNALE-AI-P5-7B): If a path is both whitelisted and blacklisted, the blacklist takes precedence over the whitelist.
+  NEW (SNALE-AI-P6-4B): If a path is both whitelisted and blacklisted in Cubyz's permission system, the blacklist takes precedence over the whitelist.
+  [expected: The blacklist takes priority]
+
+Q: What is the root of Cubyz's permission tree, and what is its only child?
+  OLD (SNALE-AI-P5-7B): The root of Cubyz's permission tree is `root`, which has a single child named `default`.
+  NEW (SNALE-AI-P6-4B): The root of Cubyz's permission tree is 'root', which has a single child named 'default'.
+  [expected: Root is /, and its only child is command]
+
+Q: What's the one field the Cubyz engine truly requires for a block addon to be valid?
+  OLD (SNALE-AI-P5-7B): The 'id' field is the only requirement for a block addon to be considered valid by the Cubyz engine.
+  NEW (SNALE-AI-P6-4B): The `block` field is required by the Cubyz engine for a block addon to be valid.
+  [expected: .tags must be non-empty]
+
+Q: What rotation mode does a Cubyz block default to if .rotation is omitted?
+  OLD (SNALE-AI-P5-7B): A Cubyz block defaults to .noRotation if .rotation is omitted.
+  NEW (SNALE-AI-P6-4B): If `.rotation` is omitted, a Cubyz block defaults to the `defaultRotationMode`.
+  [expected: "cubyz:no_rotation"]
+
+Q: What rotation value must a block have for its ore properties to actually load in Cubyz?
+  OLD (SNALE-AI-P5-7B): A block must have a rotation value of 0 for its ore properties to be loaded.
+  NEW (SNALE-AI-P6-4B): The rotation value that must be specified for a block's ore properties to actually load is 0.
+  [expected: Exactly "cubyz:ore"]
+
+Q: What happens if a Cubyz block has ore properties but the wrong rotation mode?
+  OLD (SNALE-AI-P5-7B): If a Cubyz block has ore properties but the wrong rotation mode, it will be rejected during loading with an error message indicating that only 'none' is allowed for ore blocks.
+  NEW (SNALE-AI-P6-4B): If a Cubyz block has ore properties but the wrong rotation mode, it will not function as intended in terms of mining or crafting. The rotation mode must match the ore properties to ensure proper behavior during these actions.
+  [expected: The engine logs "Ore must have rotation mode \"cubyz:ore\"!" and silently drops the ore properties]
+
+Q: What happens if a Cubyz block's tags field ends up empty?
+  OLD (SNALE-AI-P5-7B): If a Cubyz block's tags field is empty, it defaults to `.{}`. This ensures that the block has at least an empty set of tags associated with it.
+  NEW (SNALE-AI-P6-4B): If a Cubyz block's tags field ends up empty after processing, it is set to an empty list (`[]const Tag`). This ensures that the block still has a valid tags field even if no tags are specified.
+  [expected: The engine logs "Block {id} is missing 'tags' field" but doesn't fail loading -- the block still exists but may not behave correctly]
+
+Q: What does Cubyz's blockResistance field default to if omitted?
+  OLD (SNALE-AI-P5-7B): Cubyz's blockResistance field defaults to 1.0 if omitted.
+  NEW (SNALE-AI-P6-4B): If omitted, Cubyz's blockResistance defaults to 100.
+  [expected: 0]
+
+Q: What's the default stack size for a Cubyz item if not specified?
+  OLD (SNALE-AI-P5-7B): The default stack size is 64.
+  NEW (SNALE-AI-P6-4B): The default stack size is 64 items per stack.
+  [expected: 120]
+
+Q: What does a Cubyz item's display name fall back to if .name isn't set?
+  OLD (SNALE-AI-P5-7B): If .name is not set, the display name falls back to 'Unnamed Item'.
+  NEW (SNALE-AI-P6-4B): If `.name` is not set in the Cubyz item's display name, it falls back to the default value specified by the `defaultName`.
+  [expected: Its own item id]
+
+Q: Which four Cubyz item material fields have no soft default and fall back to exactly 0 if missing?
+  OLD (SNALE-AI-P5-7B): The four Cubyz item material fields with no soft default are density, friction, bounciness, and hardness. If any of these fields are missing from the ZonElement, they will be set to exactly 0.
+  NEW (SNALE-AI-P6-4B): The four Cubyz item material fields that have no soft default and fall back to exactly 0 if missing are `material`, `texture`, `texture2`, and `texture3`.
+  [expected: durability, massDamage, hardnessDamage, and swingSpeed]
+
+Q: What happens if durability is missing from a Cubyz item's material block?
+  OLD (SNALE-AI-P5-7B): If durability is missing, it defaults to 0.
+  NEW (SNALE-AI-P6-4B): If durability is missing from a Cubyz item's material block, it defaults to 0.
+  [expected: It falls back to 0, meaning the item breaks instantly]
+
+Q: What's the default value for textureRoughness in a Cubyz item's material block?
+  OLD (SNALE-AI-P5-7B): The default value for textureRoughness is 0.5.
+  NEW (SNALE-AI-P6-4B): The default value for `textureRoughness` is 0.5f.
+  [expected: 1.0 -- the one material field that does have a real default]
+
+Q: What do min/max radius default to for a Cubyz biome if not set?
+  OLD (SNALE-AI-P5-7B): Min/max radius default to 0/128 respectively for a Cubyz biome if not set.
+  NEW (SNALE-AI-P6-4B): If neither min nor max radius is set, the default value for both min and max radius in a Cubyz biome is 0.
+  [expected: 256]
+
+Q: What does a Cubyz biome's music field default to if omitted?
+  OLD (SNALE-AI-P5-7B): A Cubyz biome's music field defaults to null if omitted.
+  NEW (SNALE-AI-P6-4B): If the `music` field is omitted in a Cubyz biome definition, it defaults to an empty string (`""`).
+  [expected: "cubyz:totaldemented/cubyz"]
+
+Q: What music does the Addon Creator website itself default to for biomes, and how does that differ from the engine's default?
+  OLD (SNALE-AI-P5-7B): The Addon Creator website defaults to a song called "Biome Music" by "Cubyz Developers," which is different from the engine's default.
+  NEW (SNALE-AI-P6-4B): The Addon Creator website defaults to a specific music track for biomes, which differs from the engine's default setting.
+  [expected: The website defaults to 'cubyz:sunrise', which only matters if you hand-edit and drop the field -- the engine's own default is 'cubyz:totaldemented/cubyz']
+
+Q: What's the known bug with the 'valid player spawn' checkbox in the Addon Creator?
+  OLD (SNALE-AI-P5-7B): The 'valid player spawn' checkbox is not functioning as intended; it does not correctly validate or restrict player spawns.
+  NEW (SNALE-AI-P6-4B): The known bug is that when the 'valid player spawn' checkbox is checked, it doesn't actually allow players to spawn at that location; instead, they are teleported back to their previous spawn point. This issue has been reported and acknowledged by the developers.
+  [expected: The website exports it as .isValidPlayerSpawn but the engine actually reads .validPlayerSpawn (no 'is' prefix), so the value never gets picked up and falls back to false]
+
+Q: What tag convention do cave biomes need in Cubyz, and what happens if it's missing?
+  OLD (SNALE-AI-P5-7B): Cave biomes must have the tag `cubyz:is_cave`. If this tag is missing, they will not be recognized as cave biomes.
+  NEW (SNALE-AI-P6-4B): Cave biomes must have the 'cave' tag to be recognized as such. If this tag is missing, they will not be considered cave biomes.
+  [expected: A tag ending in _layer -- otherwise the engine logs "Cave biome {id} is missing a '_layer' tag to assign it to a cave layer."]
+
+Q: What does the .reversible field do on a Cubyz recipe, and what's its default?
+  OLD (SNALE-AI-P5-7B): The .reversible field indicates whether a recipe can be reversed (e.g., breaking blocks). Its default value is true.
+  NEW (SNALE-AI-P6-4B): The `.reversible` field indicates whether a recipe can be reversed to create an item from its output. Its default value is `false`.
+  [expected: If true, the engine auto-generates the reverse recipe (output becomes input and vice versa); defaults to false, and the website doesn't expose it]
+
+Q: What's the limitation on a reversible Cubyz recipe?
+  OLD (SNALE-AI-P5-7B): A reversible Cubyz recipe must have exactly one input item.
+  NEW (SNALE-AI-P6-4B): A reversible Cubyz recipe must have exactly one input and one output item with matching types to be considered reversible.
+  [expected: It only works for a recipe with exactly one input and one output -- on a multi-ingredient recipe it fails with error.InvalidReversibleRecipe]
+
+Q: What does a Cubyz entity model's .height field default to if omitted, and how does that differ from the website?
+  OLD (SNALE-AI-P5-7B): A Cubyz entity model's .height field defaults to 1.0 if omitted. This differs from the website, where it defaults to 2.0.
+  NEW (SNALE-AI-P6-4B): If the `.height` field is omitted in a Cubyz entity model, it defaults to 1. This differs from the website, which may have different default values or behaviors for unspecified fields.
+  [expected: 1, but the Addon Creator website's own form defaults to 2.0 instead -- this only diverges for hand-written files]
+
+Q: What coordinate system does a Cubyz entity model default to?
+  OLD (SNALE-AI-P5-7B): A Cubyz entity model defaults to a right-handed coordinate system with the X-axis pointing right, Y-axis pointing up, and Z-axis pointing forward.
+  NEW (SNALE-AI-P6-4B): The default coordinate system for a Cubyz entity model is 'world'.
+  [expected: .right_handed_z_up]
+
+Q: What happens if a Cubyz particle definition is missing its .texture field?
+  OLD (SNALE-AI-P5-7B): If a Cubyz particle definition is missing its .texture field, the init method logs an error message indicating that the texture path must be specified.
+  NEW (SNALE-AI-P6-4B): If a Cubyz particle definition is missing its `.texture` field, it will be ignored during parsing. The code logs an error message indicating that the texture is missing and continues with the next particle definition.
+  [expected: The engine logs "Particle texture id was not specified for {id}" and the particle type fails to register entirely -- unlike most particle fields, this one has no fallback]
+
+Q: What's the dimension requirement for a Cubyz particle's base texture?
+  OLD (SNALE-AI-P5-7B): The base texture must be 16x16 pixels in size.
+  NEW (SNALE-AI-P6-4B): The base texture must be at least 16x16 pixels in size to ensure proper rendering and performance.
+  [expected: The texture's height must be an exact multiple of its width, since it's used to slice animation frames]
+
+Q: What unit are particle rotation velocity fields in on the Addon Creator website versus internally in the engine?
+  OLD (SNALE-AI-P5-7B): On the Addon Creator website, particle rotation velocity fields are specified in degrees per second (°/s). Internally in the engine, they are stored as radians per tick (rad/tick).
+  NEW (SNALE-AI-P6-4B): Particle rotation velocity fields are specified in degrees per second on the Addon Creator website but are internally converted to radians per second within the engine.
+  [expected: Degrees on the website; the engine converts to radians internally after loading, so the stored file value still matches what you typed]
+
+Q: Why would a Cubyz reviewer push back on using a Hashmap for random indexing into tickable blocks?
+  OLD (SNALE-AI-P5-7B): A Cubyz reviewer might push back on using a Hashmap because it could lead to performance issues due to the overhead of hash calculations and potential collisions, which are not necessary for this use case. They may suggest alternatives like an array or a more efficient data structure that better fits the requirements.
+  NEW (SNALE-AI-P6-4B): A reviewer might push back because it could lead to inefficiencies in memory usage and access times, especially if the number of tickables grows significantly. Using a more direct approach like an array or list can provide faster access and better performance as the system scales.
+  [expected: Hashmaps have average O(1) lookups but can degrade to O(n) worst case, and maintaining a list of tickable blocks was already being reconsidered -- adding this now looked like premature optimization]
+
+Q: Why might a Cubyz reviewer suggest replacing manual string-splitting argument parsing with argparse?
+  OLD (SNALE-AI-P5-7B): A Cubyz reviewer might suggest using the `argparse` module to handle command-line arguments instead of manually splitting strings. This approach can improve code readability, maintainability, and robustness by providing better support for complex argument structures and error handling.
+  NEW (SNALE-AI-P6-4B): A reviewer suggests using `argparse` because it provides more robust handling of command-line arguments compared to manual string-splitting methods like `splitArgs`. This can improve code maintainability and reduce the risk of errors in parsing complex or nested arguments.
+  [expected: Manual splitting was brittle -- it assumed exact spacing, required repeated string comparisons, and used a custom Helper struct that had to be manually initialized and deferred]
+
+Q: Why would a Cubyz reviewer accept a stack-allocator-to-arena-allocator change for asset IDs despite a small memory-leak-on-error risk?
+  OLD (SNALE-AI-P5-7B): The reviewer accepts the change because it improves thread safety by using an arena allocator instead of a stack allocator, which is more suitable for multi-threaded environments. The minor memory leak risk on error is considered acceptable given the benefits to thread safety and overall system stability.
+  NEW (SNALE-AI-P6-4B): The reviewer accepts the change because it improves performance by reducing allocation overhead and simplifies code complexity, even though there is a small risk of memory leaks on errors. The benefits outweigh the risks in this context.
+  [expected: It simplifies the code and avoids issues with stack allocation, and the arena is reset when leaving the world context, so the rare error-path leak was judged an acceptable tradeoff]
+
+Q: In Cubyz's Blueprint capture code, what convention does min/max follow architecturally?
+  OLD (SNALE-AI-P5-7B): The min/max convention follows the architectural design where min is inclusive and max is exclusive. This means that when defining ranges or bounds, min includes the starting point while max excludes it.
+  NEW (SNALE-AI-P6-4B): The min/max convention follows an architectural pattern where the minimum value is stored in a variable named 'min' and the maximum value is stored in a variable named 'max'. This convention ensures consistency across different parts of the codebase.
+  [expected: min is inclusive, max is exclusive -- mirroring how size() elsewhere in the codebase adds one and avoids bounds failures]
+
+Q: Why doesn't Cubyz use separate dimensions for different areas?
+  OLD (SNALE-AI-P5-7B): Cubyz uses a single dimension to represent all areas due to its procedural generation system. This approach simplifies the management of biomes and structures by avoiding the complexity associated with multiple dimensions.
+  NEW (SNALE-AI-P6-4B): Cubyz uses a single world with multiple biomes to manage different areas efficiently. This approach simplifies the game's architecture by avoiding the complexity of managing separate dimensions.
+  [expected: Instead of creating separate dimensions, these places are fit physically into Cubyz's massive world for the player to come across]
+
+Q: Why doesn't Cubyz have teleportation?
+  OLD (SNALE-AI-P5-7B): Cubyz does not include teleportation due to its focus on simplicity and performance. Teleportation would introduce complexity and potentially impact the game's core mechanics.
+  NEW (SNALE-AI-P6-4B): Teleportation is not implemented because it would require significant changes to the game's architecture and could introduce complexity without clear benefits. The developers believe that maintaining a simpler system aligns better with their goals of simplicity and ease of use.
+  [expected: Teleportation makes the game less immersive -- it diminishes the exploring aspect and doesn't let the player get a good sense of the scale of the world]
+
+Q: Per Cubyz's Game Design Principles, why is automation avoided?
+  OLD (SNALE-AI-P5-7B): Automation is avoided to maintain player agency and prevent frustration from feeling overwhelmed by the game's complexity.
+  NEW (SNALE-AI-P6-4B): Automation is avoided to prevent unintended consequences such as breaking game balance, introducing bugs, or making the game less engaging. The principles emphasize that manual control should be preferred over automated processes to maintain player agency and ensure a stable gameplay experience.
+  [expected: Having quick, infinite resources at the palm of players' hands discourages exploration, since the player will never need to forage or search for blocks they desire]
+
+Q: Do mobs respawn naturally in Cubyz, per the Game Design Principles?
+  OLD (SNALE-AI-P5-7B): Yes, according to the Game Design Principles document, mobs do respawn naturally.
+  NEW (SNALE-AI-P6-4B): No, mobs do not respawn naturally in Cubyz according to the Game Design Principles.
+  [expected: No -- clearing a dangerous area of its monsters makes it safe to build and explore, and this also prevents mob farming]
+
+Q: Are there passive animals in Cubyz, per the Game Design Principles?
+  OLD (SNALE-AI-P5-7B): Yes, there are passive animals in Cubyz as part of the game's ecosystem.
+  NEW (SNALE-AI-P6-4B): Yes, according to the Game Design Principles document, Cubyz includes passive animals that can be interacted with without causing harm.
+  [expected: No -- animals do not want to die, so they either run from an attacking player or attempt to defend themselves]
+
+Q: Why does Cubyz avoid unbreakable tools, per the Game Design Principles?
+  OLD (SNALE-AI-P5-7B): Cubyz avoids unbreakable tools to ensure that players can still experience challenges and progression in their gameplay.
+  NEW (SNALE-AI-P6-4B): Cubyz avoids unbreakable tools to maintain balance in gameplay, ensuring that players can still experience challenges without being overly frustrating or unfair.
+  [expected: If a player gets too attached to an unbreakable tool, they won't want to make other types of tools, and low-tier materials will see less use]
+
+Q: What is the "2OP4ME" balancing principle in Cubyz's Game Design Principles?
+  OLD (SNALE-AI-P5-7B): The "2OP4ME" balancing principle involves ensuring that two opposing forces are present to maintain balance within the game. This helps prevent any single aspect from becoming too dominant or underpowered.
+  NEW (SNALE-AI-P6-4B): The "2OP4ME" principle suggests that players should have a balanced experience where they can effectively counteract or overcome player actions with their own strategies, ensuring fair and engaging gameplay.
+  [expected: Players need to be vulnerable at all times to avoid power imbalances -- armor, tools, accessories, and buffs should aid the player, not let them win outright]
+
+Q: What's the design difference between big trees and small trees in Cubyz?
+  OLD (SNALE-AI-P5-7B): Big trees have a larger trunk radius (1 block) compared to small trees (0.5 blocks).
+  NEW (SNALE-AI-P6-4B): Big trees have larger leaves that can be seen from afar, while small trees are more detailed but less noticeable at a distance.
+  [expected: Big trees are designed to be built upon or left as decoration, whereas small trees are designed to be chopped down]
+
+Q: What's the maximum recommended size for a Cubyz pull request?
+  OLD (SNALE-AI-P5-7B): The guidelines suggest that pull requests should be kept small to maintain readability and ease of review.
+  NEW (SNALE-AI-P6-4B): The maximum recommended size for a Cubyz pull request is 500 lines of code.
+  [expected: No more than 200 lines -- the maintainer may refuse to review larger PRs]
+
+Q: What are Cubyz's four main allocators and their intended lifetimes?
+  OLD (SNALE-AI-P5-7B): Cubyz has four main allocators: `mainAllocator`, `worldArena`, `stackAllocator`, and `tempAllocator`. Their intended lifetimes are as follows:
+- `mainAllocator`: long-lived, used for global allocations.
+- `worldArena`: long-lived, specifically for world data.
+- `stackAllocator`: short-lived, typically used in functions with a known stack lifetime.
+- `tempAllocator`: short-lived, suitable for temporary allocations.
+  NEW (SNALE-AI-P6-4B): Cubyz uses four main allocators: `main.globalAllocator`, `main.threadLocalAllocator`, `main.stackAllocator`, and `main.blockAllocator`. Each has a specific lifetime to manage memory efficiently.
+  [expected: main.globalArena for global lifetime (used until the game ends), main.worldArena for world lifetime (used until the player exits the world), main.stackAllocator for local/scope lifetime, and main.globalAllocator for other lifetimes]
+
+Q: What naming convention does Cubyz use for variables and functions?
+  OLD (SNALE-AI-P5-7B): Cubyz uses camelCase for variable names and PascalCase for function names.
+  NEW (SNALE-AI-P6-4B): Cubyz uses snake_case for all variables and functions.
+  [expected: camelCase]
+
+Q: What naming convention does Cubyz use for types?
+  OLD (SNALE-AI-P5-7B): Cubyz uses PascalCase for type names.
+  NEW (SNALE-AI-P6-4B): Cubyz uses snake_case for types.
+  [expected: CapitalCamelCase (PascalCase)]
+
+Q: What naming convention does Cubyz use for files and namespaces?
+  OLD (SNALE-AI-P5-7B): Cubyz uses snake_case for file names and PascalCase for namespaces.
+  NEW (SNALE-AI-P6-4B): Cubyz uses snake_case for file names and namespaces.
+  [expected: snake_case]
+
+Q: Does Cubyz enforce a maximum line length for code?
+  OLD (SNALE-AI-P5-7B): Yes, Cubyz enforces a maximum line length of 80 characters to maintain readability and adhere to coding standards.
+  NEW (SNALE-AI-P6-4B): Yes, Cubyz enforces a maximum line length of 120 characters to maintain readability and consistency in the codebase.
+  [expected: No -- there is no line limit, though contributors should still be reasonable about it]
+
+Q: What is Cubyz's policy on writing code comments?
+  OLD (SNALE-AI-P5-7B): Cubyz has a strict no-code-comments policy to maintain clean and readable code.
+  NEW (SNALE-AI-P6-4B): Cubyz has a strict policy against writing code comments that are not necessary to explain the code itself. The goal is to keep the code readable without relying on excessive documentation.
+  [expected: Don't write comments unless something non-obvious needs explaining -- prefer readable code with descriptive names, and if you do write a comment, explain the why, not the what or how]
+
+Q: Why does CONTRIBUTING.md ask contributors not to submit AI-generated pull requests?
+  OLD (SNALE-AI-P5-7B): CONTRIBUTING.md asks contributors not to submit AI-generated pull requests because they are not considered valid contributions according to the guidelines provided in the document.
+  NEW (SNALE-AI-P6-4B): Contributing guidelines discourage submitting AI-generated pull requests because they may lack the necessary understanding of the codebase's intricacies and context that human developers possess. This ensures that contributions are made by individuals who can provide meaningful insights and maintainership over time.
+  [expected: Narrow AI is trained to produce code matching its training data rather than being good at programming, likely won't follow the project's conventions, and is unable to learn from mistakes the way a human contributor would]
+
+Q: Whose optimization philosophy does Cubyz's CONTRIBUTING.md say to follow?
+  OLD (SNALE-AI-P5-7B): Cubyz's CONTRIBUTING.md says to follow the optimization philosophy of "Don't optimize until you have a problem."
+  NEW (SNALE-AI-P6-4B): Cubyz's CONTRIBUTING.md says to follow the optimization philosophy of the Zig programming language.
+  [expected: Casey Muratori's non-pessimization philosophy -- not needlessly making things worse]
+
+Q: When is `catch unreachable` the correct way to handle error.OutOfMemory in Cubyz?
+  OLD (SNALE-AI-P5-7B): `catch unreachable` should be used when handling errors that are guaranteed not to occur under normal circumstances, such as OutOfMemory. This ensures that any unexpected failure triggers a runtime panic, indicating a bug or resource leak.
+  NEW (SNALE-AI-P6-4B): `catch unreachable` should be used when an OutOfMemory error occurs because it indicates that the system has run out of resources and cannot continue execution safely. This approach ensures that the program does not attempt to recover from such a critical failure, which could lead to undefined behavior or further instability.
+  [expected: When using the standard allocators (main.globalAllocator and main.stackAllocator), since error.OutOfMemory cannot happen with them]
+
+Q: What are the three key files needed to run a downloaded Cubyz release?
+  OLD (SNALE-AI-P5-7B): The three key files needed to run a downloaded Cubyz release are `cubyz-server`, `cubyz-client`, and `cubyz-data`.
+  NEW (SNALE-AI-P6-4B): The three key files needed to run a downloaded Cubyz release are `server.zig`, `client.zig`, and `main.zig`. These files contain essential components such as server logic, client-side functionality, and main application initialization.
+  [expected: Cubyz (or Cubyz.exe), launchConfig.zon, and assets]
+
+Q: What's the minimum recommended RAM to play Cubyz?
+  OLD (SNALE-AI-P5-7B): The minimum recommended RAM to play Cubyz is 2GB.
+  NEW (SNALE-AI-P6-4B): The minimum recommended RAM to play Cubyz is 4 GB.
+  [expected: At least 4 GB]
+
+Q: What example GPUs does the Cubyz installation page list as minimum spec?
+  OLD (SNALE-AI-P5-7B): The Cubyz installation page lists the following GPUs as meeting the minimum requirements: GTX 1050 Ti, RTX 2060, RX 580, and RX 6700 XT.
+  NEW (SNALE-AI-P6-4B): The Cubyz installation page lists the following example GPUs as minimum specifications: NVIDIA GeForce GTX 1050, AMD Radeon RX 560, or Intel HD Graphics 620.
+  [expected: Radeon Vega 8, Intel HD Graphics 530, or NVIDIA GTX 750]
+
+Q: What script builds Cubyz from source on Linux?
+  OLD (SNALE-AI-P5-7B): The `build.sh` script is used to build Cubyz from source on Linux.
+  NEW (SNALE-AI-P6-4B): The script that builds Cubyz from source on Linux is `build.zig`. It uses Zig's build system to compile the project.
+  [expected: run_linux.sh]
+
+Q: What script builds Cubyz from source on Windows?
+  OLD (SNALE-AI-P5-7B): The build.bat script is used to compile Cubyz from source on Windows.
+  NEW (SNALE-AI-P6-4B): The `build.zig` script is used to build Cubyz from source on Windows. It handles the compilation process specific to that operating system.
+  [expected: run_windows.bat]
+
+Q: Is Cubyz's official compile-time modding API finished?
+  OLD (SNALE-AI-P5-7B): No, it is not yet complete. The document mentions that the official compile-time modding API is still under development.
+  NEW (SNALE-AI-P6-4B): No, Cubyz's official compile-time modding API is not finished yet. It is still in development and may change as the project evolves.
+  [expected: No -- it has not been finished; its progress is tracked in GitHub issue #1528]
+
+Q: Name an unofficial Cubyz modding fork mentioned in the documentation.
+  OLD (SNALE-AI-P5-7B): The documentation mentions 'Cubz Addons' as an unofficial Cubyz modding fork.
+  NEW (SNALE-AI-P6-4B): Cubyz: The Next Generation Minecraft is an example of an unofficial Cubyz modding fork mentioned in the documentation.
+  [expected: Examples include Web Assembly (wasm) modding, compile-time modding by KewaiiGamer, and a Lua integration by LinaPlusPlus]
+
+Q: What texture resolution does Cubyz require for new textures?
+  OLD (SNALE-AI-P5-7B): Cubyz requires textures to be 32x32 pixels in size.
+  NEW (SNALE-AI-P6-4B): Cubyz requires 2048x2048 textures for new textures to ensure high-quality visual representation in the game environment.
+  [expected: 16 x 16]
+
+Q: What lighting direction should Cubyz item and block textures use?
+  OLD (SNALE-AI-P5-7B): Cubyz item and block textures should use the `lightingDirection` function to determine their lighting behavior. This ensures that they are rendered with appropriate lighting effects based on their orientation and environment.
+  NEW (SNALE-AI-P6-4B): Cubyz item and block textures should use a lighting direction that is consistent with the game's lighting model to ensure proper illumination effects.
+  [expected: Top-left]
+
+Q: Who made the majority of the art for Cubyz?
+  OLD (SNALE-AI-P5-7B): The majority of the art for Cubyz was created by @SvenCubyz.
+  NEW (SNALE-AI-P6-4B): The majority of the art for Cubyz was created by @Kairos1234567890.
+  [expected: careeoki]
+
+Q: How much health does a Cubyz soil block have?
+  OLD (SNALE-AI-P5-7B): A Cubyz soil block has 10 health points.
+  NEW (SNALE-AI-P6-4B): A Cubyz soil block has 10 health points.
+  [expected: 6.5]
+
+Q: What rotation mode does the Cubyz soil block use?
+  OLD (SNALE-AI-P5-7B): The Cubyz soil block uses the `rotationMode` field to determine how it should be rotated during rendering.
+  NEW (SNALE-AI-P6-4B): The Cubyz soil block uses a specific rotation mode that allows it to be rotated in multiple directions while maintaining its structural integrity. This is achieved through an internal mechanism that adjusts the block's orientation based on user input or environmental factors.
+  [expected: stairs]
+
+Q: According to its wiki page, how is soil obtained in Cubyz?
+  OLD (SNALE-AI-P5-7B): Soil can be obtained by breaking dirt blocks with the appropriate tools.
+  NEW (SNALE-AI-P6-4B): Soil can be obtained by breaking dirt blocks with an iron pickaxe or higher.
+  [expected: Found in temperate biomes as grass blocks or ground patches -- breaking temperate grass drops soil blocks]
+
+Q: How do you craft a workbench in Cubyz?
+  OLD (SNALE-AI-P5-7B): To craft a workbench, place three wooden planks on top of each other in the crafting grid.
+  NEW (SNALE-AI-P6-4B): To craft a workbench in Cubyz, place four wooden planks together in the crafting grid to form the workbench item.
+  [expected: 4 planks of any wood type]
+
+Q: How many planks does crafting one log produce in Cubyz?
+  OLD (SNALE-AI-P5-7B): Crafting one log produces 4 planks in Cubyz.
+  NEW (SNALE-AI-P6-4B): Crafting one log produces 4 planks in Cubyz.
+  [expected: 4 planks (of the same wood type)]
+
+Q: How many branches does crafting one log produce in Cubyz?
+  OLD (SNALE-AI-P5-7B): Crafting one log produces 4 branches.
+  NEW (SNALE-AI-P6-4B): Crafting one log produces two branches.
+  [expected: 2 branches (of the same wood type)]
+
+Q: What's needed to craft a chest in Cubyz?
+  OLD (SNALE-AI-P5-7B): To craft a chest, you need 12 wooden planks.
+  NEW (SNALE-AI-P6-4B): To craft a chest in Cubyz, you need 3x3 wooden planks arranged in a square pattern within the crafting grid.
+  [expected: 4 planks of the same wood type]
+
+Q: What ingredients craft a regular torch in Cubyz?
+  OLD (SNALE-AI-P5-7B): A regular torch is crafted using 1 stick and 1 coal.
+  NEW (SNALE-AI-P6-4B): A regular torch is crafted using one stick and one piece of wood.
+  [expected: Planks (any mod's, any type) plus coal ore, producing 8 torches]
+
+Q: Why does Cubyz prefer explicit code over generic or clever solutions in review?
+  OLD (SNALE-AI-P5-7B): Cubyz prefers explicit code because it is easier to understand and maintain. This approach avoids potential issues with generics or clever solutions that might be harder to debug or less intuitive.
+  NEW (SNALE-AI-P6-4B): Cubyz prefers explicit code because it enhances readability and maintainability. Explicit solutions make the code easier to understand and modify, which is crucial for long-term project sustainability.
+  [expected: This project strongly prefers explicit, predictable, allocator-conscious code over clever/generic/automatic solutions, even when the generic solution is more DRY -- "magic" is treated as a mild pejorative]
+
+Q: Is eager or lazy allocation preferred in Cubyz code review?
+  OLD (SNALE-AI-P5-7B): Eager allocation is preferred over lazy allocation in Cubyz code reviews to ensure that all necessary resources are allocated upfront, preventing potential issues later in the development process.
+  NEW (SNALE-AI-P6-4B): Eager allocation is preferred over lazy allocation to improve performance by reducing the number of allocations during runtime.
+  [expected: It's a judgment call, not a fixed rule -- lazy/path-based loading is preferred for large or rarely-touched data, but eager initialization is preferred when correctness or synchronization ordering demands it]
+
+Q: Why is placing a `defer` far from its matching `init` flagged in Cubyz review, even if technically correct?
+  OLD (SNALE-AI-P5-7B): Placing a `defer` far from its matching `init` can lead to confusion about the intended scope of resource management. It's generally better to keep these statements close together for clarity and maintainability.
+  NEW (SNALE-AI-P6-4B): Placing a `defer` far from its matching `init` is flagged because it can lead to confusion and potential bugs. The reviewer suggests that while this might be technically correct, it's better to place the `defer` close to the corresponding `init` for clarity and maintainability.
+  [expected: Because it's fragile to future edits]
+
+Q: Who runs Ashframe?
+  OLD (SNALE-AI-P5-7B): Ashframe is run by the Cubyz team.
+  NEW (SNALE-AI-P6-4B): Ashframe is run by @ashframe on GitHub.
+  [expected: iNiKKo]
+
+Q: What does the 'enabled' field control in the Cubyz Server List's config.json?
+  OLD (SNALE-AI-P5-7B): The 'enabled' field controls whether the Cubyz Server List is active or not.
+  NEW (SNALE-AI-P6-4B): The 'enabled' field controls whether the server list is enabled or disabled. If set to false, it disables the server list feature entirely.
+  [expected: true broadcasts the server's information to the Cubyz Server List (servers.ashframe.net); false disables server list integration entirely]
+
+Q: Where is a Cubyz world save located by default on Linux, for backup purposes?
+  OLD (SNALE-AI-P5-7B): A Cubyz world save is typically located at `~/.local/share/cubyz/` by default on Linux.
+  NEW (SNALE-AI-P6-4B): A Cubyz world save is located at ~/.cubyz/worlds/backup/world.zon by default on Linux for backup purposes.
+  [expected: /home/USERNAME/.cubyz/saves/WORLD_NAME]
+
+Q: Where is a Cubyz world save located by default on Windows, for backup purposes?
+  OLD (SNALE-AI-P5-7B): A Cubyz world save is typically located at `C:\Users\<YourUsername>\AppData\Roaming\Cubyz\saves\<WorldName>`.
+  NEW (SNALE-AI-P6-4B): A Cubyz world save is located at `%APPDATA%\Cubyz\worlds\<worldName>.zig` by default on Windows, intended for backup purposes.
+  [expected: C:\Users\USERNAME\Saved Games\Cubyz\saves\WORLD_NAME]
+
+Q: What is the full engine command syntax for managing permissions in Cubyz?
+  OLD (SNALE-AI-P5-7B): The full engine command syntax for managing permissions in Cubyz includes commands like `/permission add`, `/permission remove`, and `/permission list`. These commands allow administrators to manage user permissions effectively within the game server.
+  NEW (SNALE-AI-P6-4B): The full engine command syntax for managing permissions in Cubyz includes commands like `/perm add`, `/perm remove`, and `/perm list`. These commands allow users to manage user permissions within the game environment.
+  [expected: /perm <add/remove> <whitelist/blacklist> @<playerIndex> <permissionPath>]
+
+Q: What should you do if Cubyz runs poorly or doesn't start, per the installation guide?
+  OLD (SNALE-AI-P5-7B): If Cubyz runs poorly or doesn't start, refer to the troubleshooting section in the installation guide for specific steps to resolve issues.
+  NEW (SNALE-AI-P6-4B): If Cubyz runs poorly or doesn't start, you should check your graphics drivers and ensure they are up to date. Additionally, verify that your system meets the minimum requirements for running Cubyz.
+  [expected: Reach out on the Cubyz Discord]
+
+Q: What does CONTRIBUTING.md say about writing long comments instead of readable code?
+  OLD (SNALE-AI-P5-7B): CONTRIBUTING.md states that writing long comments is discouraged in favor of making the code itself readable.
+  NEW (SNALE-AI-P6-4B): CONTRIBUTING.md advises against writing long comments that explain what the code is doing; it encourages writing readable code instead.
+  [expected: Prefer readable code with descriptive names instead of long comments, since comments naturally degrade over time as the surrounding code changes; any comment written should explain the why, not the what or how]
+
+Q: What data-structure guidance does CONTRIBUTING.md give when a collection's size is known upfront?
+  OLD (SNALE-AI-P5-7B): CONTRIBUTING.md recommends using fixed-size collections like `[N]T` or `FixedSizeList(N, T)` when the size of a collection is known at compile time.
+  NEW (SNALE-AI-P6-4B): When a collection's size is known upfront, the document suggests using `std.ArrayList`.
+  [expected: Use the simplest data structure for the job -- e.g. use a slice instead of a List if you know the size upfront]
+
+Q: What's the recommended sweet-spot file size (in lines) for a Cubyz source file, per CONTRIBUTING.md?
+  OLD (SNALE-AI-P5-7B): The recommended sweet-spot is 500 lines.
+  NEW (SNALE-AI-P6-4B): The recommended sweet-spot file size is 100 lines.
+  [expected: Very roughly 1000 lines]
+
+
+======================================================================
+GENERAL QUESTIONS
+======================================================================
+
+Q: What is the capital of France?
+  OLD (SNALE-AI-P5-7B): Paris
+  NEW (SNALE-AI-P6-4B): The capital of France is Paris.
+
+Q: What's 17 * 24?
+  OLD (SNALE-AI-P5-7B): 408.
+  NEW (SNALE-AI-P6-4B): 408
+
+Q: What's the boiling point of water in Celsius at sea level?
+  OLD (SNALE-AI-P5-7B): 100°C.
+  NEW (SNALE-AI-P6-4B): 100 degrees Celsius.
+
+Q: If a train travels 60 miles in 90 minutes, what's its average speed in mph?
+  OLD (SNALE-AI-P5-7B): 40 mph
+  NEW (SNALE-AI-P6-4B): The average speed is calculated by dividing the total distance traveled by the time taken. In this case, the train travels 60 miles in 90 minutes (1.5 hours). Therefore, the average speed is 60 miles / 1.5 hours = 40 mph.
+
+Q: Write a Python one-liner that reverses a string.
+  OLD (SNALE-AI-P5-7B): s[::-1]
+  NEW (SNALE-AI-P6-4B): ''.join(reversed(string))
+
+Q: Which planet in our solar system is closest to the sun?
+  OLD (SNALE-AI-P5-7B): Mercury.
+  NEW (SNALE-AI-P6-4B): Mercury is the closest planet to the Sun in our solar system.
+
+Q: What's the difference between a list and a tuple in Python?
+  OLD (SNALE-AI-P5-7B): A list is mutable (can be changed), while a tuple is immutable (cannot be changed).
+  NEW (SNALE-AI-P6-4B): A list is an ordered collection that allows duplicate elements and can be modified after creation. A tuple, on the other hand, is also an ordered collection but it does not allow modification once created; it supports duplicate elements as well.
+
+Q: If all cats are mammals and all mammals are animals, are all cats animals?
+  OLD (SNALE-AI-P5-7B): Yes, if all cats are mammals and all mammals are animals, then by transitive property, all cats are indeed animals.
+  NEW (SNALE-AI-P6-4B): Yes, if all cats are mammals and all mammals are animals, then all cats are animals. This follows from the transitive property of logical relationships: if A is a subset of B and B is a subset of C, then A is a subset of C. In this case, cats being a subset of mammals and mammals being a subset of animals means that cats are also a subset of animals.
+
+
+[~] Done.

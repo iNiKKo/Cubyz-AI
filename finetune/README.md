@@ -6,6 +6,17 @@ every request, then QLoRA fine-tunes a base model on it. Companion to the RAG pi
 project root, which stays the source of truth for precise, fast-changing facts (exact symbol
 names, current API shape) that would go stale if baked into frozen weights.
 
+**Status note:** this doc's Pipeline Stages section (below) describes the original distributed
+generation campaign (`server_finetune.py` + `client_finetune_*.py`), since archived --
+`pipeline_crunching/server_textual.py` + `CUBYZ_FOLDING.py` are the current unified client/server
+for both RAG and finetune crunching (see `pipeline_crunching/PIPELINE.md`). More importantly, as
+of Prototype 7 fine-tune data is **reviews-only** (behavior/judgment pairs) -- stages 1/2's
+`docs`/`codebase` pair generation (the `wiki.jsonl`/`codebase_architectural_subset.jsonl` sources
+below) is no longer run at all, since every PT6→PT7 benchmark round confirmed RAG alone carries
+essentially all real fact-recall accuracy and those ~2,400 pairs were discarded downstream anyway
+by `assemble_sft_dataset.py`'s `SOURCE_TYPES = {"reviews"}` filter. Kept below as an accurate
+record of how the dataset actually got assembled through Prototype 6.
+
 ## Pipeline stages
 
 1. **`scripts/filter_codebase_subset.py`** -- filters `users/*/codebase.jsonl` (1,476 RAG

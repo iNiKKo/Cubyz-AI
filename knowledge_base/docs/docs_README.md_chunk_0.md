@@ -2,27 +2,22 @@
 
 **Type:** documentation
 **Keywords:** voxel sandbox, level of detail, 3d chunks, procedural crafting, zig, windows, linux, macos, discord server, youtube, devlogs, history, java, zenith391, zausera
-**Symbols:** Cubyz, Zig, run_linux.sh, run_windows.bat
-**Concepts:** Voxel sandbox game, Level of Detail, 3D Chunks, Procedural Crafting
+**Symbols:** Cubyz, Zig
+**Concepts:** Voxel sandbox game, Level of Detail, 3D Chunks, Procedural Crafting, History
 
 ## Summary
-Cubyz is a voxel sandbox game written in Zig, supporting Windows and Linux. It features Level of Detail, 3D Chunks, and Procedural Crafting.
+Cubyz is a voxel sandbox game written in Zig, supporting Windows and Linux, with three headline features (Level of Detail, 3D Chunks, Procedural Crafting) and a history dating back to 2018.
 
 ## Explanation
-Cubyz allows players to explore an infinite world with far view distances and no height or depth limits. The procedural crafting system offers endless possibilities for tool crafting. Cubyz is written in Zig, a language known for its readability and small size. It supports Windows and Linux, but not macOS due to OpenGL 4.3 compatibility issues.
+Cubyz is a 3D voxel sandbox game inspired by Minecraft, with three unique features per the README: Level of Detail (enables far view distances), 3D Chunks (no height or depth limit), and Procedural Crafting (infinite possibilities for tool crafting). It is written in Zig, a small language focused on readability. Windows and Linux are supported; macOS is not, since it lacks OpenGL 4.3. Originally created on August 22, 2018 by zenith391 and ZaUserA (then called "Cubz"), both eventually lost interest, and the project is now maintained by IntegratedQuantum. Until the Zig rewrite began in August 2022, Cubyz was written in Java -- that code still exists in the separate Cubyz-Java repository, playable via the Java Launcher.
 
 ## Related Questions
-- What are the unique features of Cubyz?
-- How does Cubyz handle procedural crafting?
+- What are the three unique features of Cubyz, per the README?
 - Which languages is Cubyz written in?
-- What operating systems does Cubyz support?
-- Where can I find the source code for Cubyz?
-- What is the purpose of the Discord server?
-- What are some devlogs available on YouTube?
-- When was Cubyz originally created?
-- Who were the original creators of Cubyz?
+- What operating systems does Cubyz support, and why not macOS?
+- When was Cubyz originally created, and by whom?
+- Who currently maintains Cubyz?
 - Is there a Java version of Cubyz available?
-- How can I compile Cubyz from source code?
-- What is the recommended way to update my local version of Cubyz?
+- When did the Zig rewrite of Cubyz begin?
 
 *Source: unknown | chunk_id: docs_README.md_chunk_0*

@@ -14,9 +14,9 @@ Add-ons are community-made extensions that modify or introduce new content to Cu
 - **Windows:** `C:\Users\USERNAME\Saved Games\Cubyz\saves\WORLD_NAME`
 - **Linux:** `/home/USERNAME/.cubyz/saves/WORLD_NAME`
 
-After navigating to the correct directory, extract the downloaded add-on archive and place it directly into the `assets` folder inside your specific world folder.
+After navigating to the correct directory, extract the downloaded add-on archive and place it directly into the `assets` folder inside your specific world folder. **On a dedicated (headless) server specifically, add-ons installed this way automatically sync and download for connecting players** -- players don't need to separately install the add-on themselves.
 
-The Mercur Discord bot facilitates communication between Discord and Cubyz servers and can submit server information to the [Cubyz Server List](https://servers.ashframe.net/). To install Mercur, follow these steps:
+**The Mercur Discord bot provides bi-directional chat communication between your Discord server and your Cubyz server**, and can also transmit server status data to the [Cubyz Server List](https://servers.ashframe.net/). To install Mercur, follow these steps:
 
 1. Install Node.js and npm on your system using the following commands for different Linux distributions:
    - **Debian / Ubuntu:**
@@ -32,7 +32,7 @@ The Mercur Discord bot facilitates communication between Discord and Cubyz serve
    ```bash
    npx cubyz-discord-relay@latest
    ```
-3. If no `config.json` file is found, it will be automatically generated.
+3. If no `config.json` file is found, **the bot will automatically generate one and then exit** -- you must run it again after configuring that file.
 4. Configure the `config.json` file with necessary details such as server name, IP address, port, description, icon URL, and Discord invite link:
    ```json
    {
@@ -71,5 +71,9 @@ The Cubyz Server List can be configured using the following fields in your `conf
 - How do I configure Mercur's `config.json` file with all necessary details?
 - Where can I find my server save directory on Linux?
 - How do I update the Mercur Discord bot and handle configuration changes?
+- What does Cubyz's Mercur Discord bot do?
+- What happens if Mercur's config.json file isn't found the first time you run the bot?
+- What happens when you install add-ons on a Cubyz dedicated server?
+- Do players need to manually install add-ons that are on a Cubyz dedicated server?
 
 *Source: unknown | chunk_id: docs_docs_development_multiplayer.md_chunk_1*
