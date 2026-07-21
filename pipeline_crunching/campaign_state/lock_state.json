@@ -1,5 +1,14 @@
 {
-  "locked": {},
+  "locked": {
+    "docs_docs_development_history.md_chunk_3": {
+      "user_id": "NickSRVR",
+      "timestamp": 1784635263.1065624
+    },
+    "docs_docs_development_history.md_chunk_4": {
+      "user_id": "Caleb",
+      "timestamp": 1784635265.889463
+    }
+  },
   "completed": [
     "codebase_src_server_storage.zig_chunk_0",
     "codebase_src_server_storage.zig_chunk_1",
@@ -3263,6 +3272,23 @@
     "addon_creator_FIELD_REFERENCE.md_chunk_3",
     "addon_creator_FIELD_REFERENCE.md_chunk_4",
     "addon_creator_FIELD_REFERENCE.md_chunk_5",
-    "addon_creator_FIELD_REFERENCE.md_chunk_6"
+    "addon_creator_FIELD_REFERENCE.md_chunk_6",
+    "addon_creator_FIELD_REFERENCE.md_chunk_7",
+    "docs_docs_gameplay_game_mechanics.md_chunk_4",
+    "docs_docs_gameplay_game_mechanics.md_chunk_5",
+    "docs_README.md_chunk_1",
+    "docs_docs_gameplay_game_mechanics.md_chunk_6",
+    "docs_README.md_chunk_2",
+    "docs_README.md_chunk_3",
+    "docs_docs_gameplay_controls.md_chunk_1",
+    "docs_docs_gameplay_controls.md_chunk_3",
+    "docs_README.md_chunk_4",
+    "docs_docs_gameplay_controls.md_chunk_4",
+    "docs_docs_development_permission_layer.md_chunk_2",
+    "docs_docs_gameplay_controls.md_chunk_5",
+    "docs_docs_development_permission_layer.md_chunk_4",
+    "docs_docs_development_history.md_chunk_1",
+    "docs_docs_development_history.md_chunk_2",
+    "docs_docs_index.md_chunk_2"
   ]
 }

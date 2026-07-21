@@ -8,8 +8,8 @@
     "lines_crunched": 2603
   },
   "caleb": {
-    "chunks_completed": 1372,
-    "lines_crunched": 89971
+    "chunks_completed": 1377,
+    "lines_crunched": 90060
   },
   "babab": {
     "chunks_completed": 105,
@@ -28,7 +28,7 @@
     "lines_crunched": 166768
   },
   "nicksrvr": {
-    "chunks_completed": 12,
-    "lines_crunched": 265
+    "chunks_completed": 24,
+    "lines_crunched": 420
   }
 }

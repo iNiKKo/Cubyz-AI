@@ -316,10 +316,21 @@ def _format_benchmark_note(hw: dict):
     gpu_time, cpu_time = hw.get("benchmark_gpu_time"), hw.get("benchmark_cpu_time")
     if gpu_time is None:
         gpu_error = hw.get("benchmark_gpu_error")
-        # Truncated here (plain text, before any color wrapping) rather than left to run past a
-        # narrow terminal -- the raw exception message is already capped at 200 chars client-side,
-        # which can still be wider than a normal terminal once the panel's indent/label are added.
-        reason = f" -- {_truncate(gpu_error, 90)}" if gpu_error else " (no error detail -- pre-1.1.28 client)"
+        # Same friendly wording as the client's own console (see CUBYZ_FOLDING.py's benchmark
+        # print) for the two "GPU just isn't usable here" shapes -- this dashboard renders the
+        # raw diagnostic string independently, so fixing the client's own print didn't touch what
+        # an admin sees here. Anything else (a real timeout, an actual exception) still shows the
+        # raw detail -- those ARE useful for debugging a genuinely unexpected failure.
+        if gpu_error and ("no_gpu_offload" in gpu_error or "unsupported arch" in gpu_error):
+            reason = " -- GPU not supported by Ollama on this machine"
+        elif gpu_error:
+            # Truncated here (plain text, before any color wrapping) rather than left to run past
+            # a narrow terminal -- the raw exception message is already capped at 200 chars
+            # client-side, which can still be wider than a normal terminal once the panel's
+            # indent/label are added.
+            reason = f" -- {_truncate(gpu_error, 90)}"
+        else:
+            reason = " (no error detail -- pre-1.1.28 client)"
         cpu_text = f" (CPU: {cpu_time:.1f}s)" if isinstance(cpu_time, (int, float)) else ""
         return f"{Colors.YELLOW}⚠ GPU benchmark FAILED{Colors.RESET}{reason}{cpu_text}"
     # GPU succeeded but CPU still ended up primary -- this used to ALWAYS say "CPU was faster",

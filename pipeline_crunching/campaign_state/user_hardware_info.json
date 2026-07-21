@@ -22,7 +22,7 @@
     "hardware_tier": "medium",
     "benchmark_gpu_time": null,
     "benchmark_cpu_time": null,
-    "benchmark_gpu_error": "no_gpu_offload: request finished in 31.5s but Ollama reports 0 bytes resident on GPU -- it silently ran on CPU instead",
+    "benchmark_gpu_error": "no_gpu_offload: request finished in 80.1s but Ollama reports 0 bytes resident on GPU -- it silently ran on CPU instead",
     "benchmark_cpu_error": "timeout: timed out"
   },
   "nickc": {
