@@ -56,9 +56,14 @@ FRONTEND_PATH = Path(__file__).parent / "chat_frontend.html"
 # Multiple visitors can hit /api/chat at the same time, but each generation call holds a big
 # chunk of GPU memory for the duration (model weights + a 16384-token context per request). With
 # no cap, enough simultaneous chats can OOM the GPU and take the whole server down for everyone.
-# This is a concurrency *policy* choice, not a measured hardware limit -- 3 is a generous starting
-# point for a single consumer GPU running one 4B model; adjust based on real VRAM headroom.
-MAX_CONCURRENT_GENERATIONS = 3
+# This is a concurrency *policy* choice, not a measured hardware limit -- raised from 3 to 4
+# (2026-07-21) for a faster GPU with real headroom (measured: ASH-P7-4B + qwen3-embedding:4b
+# together resident at ~9.5GB); adjust based on real VRAM headroom on whatever machine this
+# actually runs on. This cap alone doesn't make Ollama itself serve requests in parallel --
+# Ollama defaults to OLLAMA_NUM_PARALLEL=1 (one generation at a time, everything else queues
+# inside Ollama regardless of this semaphore). Set OLLAMA_NUM_PARALLEL >= this value on whatever
+# machine runs Ollama for this cap to actually do anything.
+MAX_CONCURRENT_GENERATIONS = 4
 _generation_semaphore = asyncio.Semaphore(MAX_CONCURRENT_GENERATIONS)
 _active_generations = 0
 _active_lock = asyncio.Lock()

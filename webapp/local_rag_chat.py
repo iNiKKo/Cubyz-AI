@@ -46,8 +46,16 @@ EMBED_MODEL = "qwen3-embedding:4b"
 ANSWER_MODEL = "ASH-P7-4B"
 KNOWLEDGE_DIR = os.path.join(REPO_ROOT, "knowledge_base")
 CACHE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "rag_index_cache.json")
-GLOBAL_TOP_K = 8      # best chunks overall, regardless of collection
-MIN_PER_COLLECTION = 2  # floor to guarantee small collections (docs, addon) get a fair look
+GLOBAL_TOP_K = 8      # best chunks overall, regardless of collection -- do not change this without
+# re-running the full benchmark suite first: this exact selection is what this project's
+# 99%-accuracy benchmark runs validated (see MIN_SIMILARITY_FOR_TOPUP's comment below).
+MIN_PER_COLLECTION = 1  # floor to guarantee small collections (docs, addon) get a fair look --
+# lowered from 2 (2026-07-21): a broad question touching all 4 collections could top up 2 per
+# under-represented collection on top of the global 8, reaching 13-14 chunks/~7700+ prompt tokens
+# for a single turn -- real, measured latency cost with no corresponding accuracy need, since 1
+# slot still guarantees a small collection isn't shut out entirely. Lower regression risk than
+# touching GLOBAL_TOP_K since this only affects the topup path, not core retrieval -- still,
+# re-run the benchmark suite (webapp/rag_batch_test*.py) before trusting this blindly.
 # Below this cosine similarity, a chunk is empirically noise, not signal -- measured directly
 # against this index: genuinely off-topic queries ("Hello!", "How are you?") top out around
 # 0.30-0.35 with no real winner (a long flat tail, nothing actually relevant exists), while every
