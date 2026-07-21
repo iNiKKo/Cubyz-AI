@@ -1246,7 +1246,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.3.1"
-LATEST_CLIENT_VERSION = "1.4.0"
+LATEST_CLIENT_VERSION = "1.4.1"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:
@@ -3519,11 +3519,12 @@ def submit_diagnostics(payload: dict):
         # visibility into it at all.
         kind = "Dual-lane" if payload["event"] == "dual_lane_toggle" else "Parallel workers"
         result = payload.get("result")
+        reason_suffix = f" -- {payload['reason']}" if payload.get("reason") else ""
         symbol, color, verb = {
             "enabled":     ("✓", Colors.GREEN,  "ENABLED"),
             "disabled":    ("○", Colors.GRAY,   "disabled"),
-            "unavailable": ("~", Colors.GRAY,   "not available on that machine"),
-            "failed":      ("X", Colors.YELLOW, f"failed -- {payload.get('reason', 'no reason given')}"),
+            "unavailable": ("~", Colors.GRAY,   f"not available on that machine{reason_suffix}"),
+            "failed":      ("X", Colors.YELLOW, f"failed{reason_suffix or ' -- no reason given'}"),
         }.get(result, ("?", Colors.GRAY, result or "unknown result"))
         log_event("admin", payload["user_id"], symbol, color, f"{kind} {verb}")
 

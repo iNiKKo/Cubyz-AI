@@ -122,7 +122,7 @@ SERVER_URL       = "http://ashframe.net:7000"
 OLLAMA_URL       = "http://localhost:11434/api/generate"
 CONFIG_FILE      = os.path.expanduser("~/.cubyz_node_config.json")
 DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
-VERSION          = "1.4.0"
+VERSION          = "1.4.1"
 
 print_lock = threading.Lock()
 
@@ -146,6 +146,7 @@ _input_queue: queue.Queue = queue.Queue()
 _volunteer_id: str = ""
 _dual_controller_ref     = None
 _parallel_controller_ref = None
+_dual_unavailable_reason: str = ""
 _has_gpu: bool = False
 
 
@@ -3060,7 +3061,8 @@ class CubyzClientApp(App):
             # dc.stop() themselves are local and fast, so only the network part needs its own
             # thread, not the whole handler.
             if dc is None:
-                _log_queue.append(f"\033[90m[~] Dual-lane not available on this machine.\033[0m")
+                reason_text = f" ({_dual_unavailable_reason})" if _dual_unavailable_reason else ""
+                _log_queue.append(f"\033[90m[~] Dual-lane not available on this machine{reason_text}.\033[0m")
                 result = "unavailable"
             elif dc.active:
                 dc.stop()
@@ -3070,9 +3072,10 @@ class CubyzClientApp(App):
                 dc.start()
                 _log_queue.append(f"\033[92m[OK] Dual-lane ENABLED.\033[0m")
                 result = "enabled"
-            threading.Thread(target=submit_diagnostic_to_server,
-                              args=({"event": "dual_lane_toggle", "user_id": _volunteer_id, "result": result},),
-                              daemon=True).start()
+            dual_event = {"event": "dual_lane_toggle", "user_id": _volunteer_id, "result": result}
+            if result == "unavailable" and _dual_unavailable_reason:
+                dual_event["reason"] = _dual_unavailable_reason
+            threading.Thread(target=submit_diagnostic_to_server, args=(dual_event,), daemon=True).start()
 
         elif bid == "btn_parallel":
             pc = _parallel_controller_ref
@@ -3180,12 +3183,12 @@ atexit.register(_notify_server_disconnect)
 # =============================================================================
 
 def main():
-    global _volunteer_id, _dual_controller_ref, _parallel_controller_ref, _has_gpu
+    global _volunteer_id, _dual_controller_ref, _parallel_controller_ref, _dual_unavailable_reason, _has_gpu
 
     app = CubyzClientApp()
 
     def _startup():
-        global _volunteer_id, _dual_controller_ref, _parallel_controller_ref, _has_gpu
+        global _volunteer_id, _dual_controller_ref, _parallel_controller_ref, _dual_unavailable_reason, _has_gpu
 
         print(f"\033[1m=== CAFS -- Cubyz AI Folding System (TUI v{VERSION}) ===\033[0m")
 
@@ -3362,13 +3365,24 @@ def main():
 
         primary_lane_tag = "GPU" if primary_is_gpu else "CPU"
 
-        dual_capable = (
-            gpu_type != "cpu"
-            and gpu_time is not None
-            and cpu_time is not None
-            and system_ram_gb >= DUAL_LANE_MIN_RAM_GB
-            and total_vram_gb >= DUAL_LANE_MIN_VRAM_GB
-        )
+        # Individual reasons, not just the bool -- "Dual-lane not available" alone gave no way to
+        # tell WHY without reading this code (confirmed live: a volunteer's GPU benchmark had
+        # failed, quietly making gpu_time None and dual_capable False, and there was nothing on
+        # screen or in the diagnostics to distinguish that from a genuine hardware limit like too
+        # little RAM). Collected as a list since more than one condition can fail at once.
+        dual_unavailable_reasons = []
+        if gpu_type == "cpu":
+            dual_unavailable_reasons.append("no GPU detected")
+        if gpu_time is None:
+            dual_unavailable_reasons.append("GPU benchmark did not succeed" + (f" ({gpu_error})" if gpu_error else ""))
+        if cpu_time is None:
+            dual_unavailable_reasons.append("CPU benchmark did not succeed" + (f" ({cpu_error})" if cpu_error else ""))
+        if system_ram_gb < DUAL_LANE_MIN_RAM_GB:
+            dual_unavailable_reasons.append(f"needs {DUAL_LANE_MIN_RAM_GB:.1f} GB system RAM, have {system_ram_gb:.1f} GB")
+        if total_vram_gb < DUAL_LANE_MIN_VRAM_GB:
+            dual_unavailable_reasons.append(f"needs {DUAL_LANE_MIN_VRAM_GB:.1f} GB VRAM, have {total_vram_gb:.1f} GB")
+        dual_capable = not dual_unavailable_reasons
+        _dual_unavailable_reason = "; ".join(dual_unavailable_reasons)
 
         session_event = {
             "event": "session_start", "user_id": user_id, "platform": PLATFORM,
