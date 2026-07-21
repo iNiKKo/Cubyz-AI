@@ -122,7 +122,7 @@ SERVER_URL       = "http://ashframe.net:7000"
 OLLAMA_URL       = "http://localhost:11434/api/generate"
 CONFIG_FILE      = os.path.expanduser("~/.cubyz_node_config.json")
 DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
-VERSION          = "1.3.8"
+VERSION          = "1.4.0"
 
 print_lock = threading.Lock()
 
@@ -595,8 +595,17 @@ CPU_TIER_RAM_FLOOR_GB  = {"easy": 6.0, "medium": 8.0}
 DUAL_LANE_MIN_RAM_GB   = 12.0
 DUAL_LANE_MIN_VRAM_GB  = 4.0
 TIER_RANK              = {"easy": 0, "medium": 1, "hard": 2}
-BENCHMARK_VERSION      = 6
-BENCHMARK_TIMEOUT      = 90
+BENCHMARK_VERSION      = 8
+BENCHMARK_TIMEOUT      = 45
+# Caps how much the benchmark call is allowed to generate -- the prompt/system/JSON-schema
+# constraint stay exactly the same "real work" shape as an actual crunching call (see
+# benchmark_lane's own comment on why a trivial prompt was rejected before), but nothing was
+# capping how much OUTPUT it could produce, so the benchmark took as long as a full real review
+# generation would -- twice, once per lane. Bounding it to a couple hundred tokens keeps this a
+# genuine test of "does GPU offload actually work and how many tokens/sec do we get" without
+# waiting for the model to finish writing a full-length response neither this test nor the
+# subsequent GPU-vs-CPU comparison actually needs.
+BENCHMARK_NUM_PREDICT  = 200
 # hard tier uses 2 workers (not 3) -- a 14b/32b model already saturates the GPU, so
 # adding a third concurrent slot just causes thrashing rather than throughput gains.
 PARALLEL_WORKERS_BY_TIER                      = {"easy": 3, "medium": 2, "hard": 2}
@@ -766,7 +775,7 @@ def benchmark_lane(model: str, force_cpu: bool):
         "stream": False,
         "think": False,
         "format": RAG_JSON_SCHEMA,
-        "options": {"temperature": 0.15, **({"num_gpu": 0} if force_cpu else {})},
+        "options": {"temperature": 0.15, "num_predict": BENCHMARK_NUM_PREDICT, **({"num_gpu": 0} if force_cpu else {})},
     }
     start = time.time()
     for attempt in range(2):
@@ -969,12 +978,29 @@ def warm_up_model(model_name: str):
             make_request(OLLAMA_URL, {
                 "model": model_name, "prompt": "hi", "stream": False,
                 "options": {"num_predict": 1},
-            }, timeout=300)
+            }, timeout=150)
             return
         except Exception as e:
             if attempt == 0 and _is_corrupt_model_error(_http_error_body(e)) and _repull_model(model_name):
                 continue
             return
+
+
+def unload_model(model_name: str):
+    """Explicitly evicts model_name from Ollama's memory (keep_alive=0 on a trivial request is
+    Ollama's documented way to do this) -- called right after each lane's benchmark finishes with
+    it. Without this, warming up AND benchmarking both the GPU and CPU models back-to-back leaves
+    both resident simultaneously the whole time, even though the benchmark only ever uses ONE of
+    them at once (confirmed live -- a volunteer noticed exactly this: "it loads two models and
+    keeps them both up... even though it only uses one"). On a memory-tight machine, holding two
+    models in memory when only one is ever active is pure waste, and on a genuinely constrained
+    one it's a real path to the OOM/500 errors seen earlier this campaign. Best-effort: a failed
+    unload isn't worth interrupting the benchmark over, Ollama's own 5-minute idle keep_alive
+    would evict it anyway."""
+    try:
+        make_request(OLLAMA_URL, {"model": model_name, "keep_alive": 0}, timeout=30)
+    except Exception:
+        pass
 
 
 def ensure_ollama_running_and_model_pulled(model_name: str):
@@ -3230,12 +3256,7 @@ def main():
                 cpu_error = cached.get("cpu_error")
                 print(f"\033[92m[OK] Using cached benchmark result.\033[0m")
             else:
-                print(f"\033[96m[~] Warming up models (first load can be slow, doesn't count against the benchmark)...\033[0m")
-                warm_up_model(chosen_model)
-                if cpu_model != chosen_model:
-                    warm_up_model(cpu_model)
-
-                print(f"\033[96m[~] Running hardware benchmark (one-time, up to 4 minutes)...\033[0m")
+                print(f"\033[96m[~] Running hardware benchmark (one-time, usually under a minute)...\033[0m")
                 # Sequential, not two threads racing each other -- these used to run concurrently,
                 # which assumed Ollama could actually serve both requests in parallel. It usually
                 # can't: OLLAMA_NUM_PARALLEL defaults to 1 (serializing generation requests
@@ -3252,13 +3273,26 @@ def main():
                 # this one-time startup step, but each lane now gets an honest, uncontended shot at
                 # its own timeout budget instead of a result that depends on which one Ollama
                 # happened to schedule first.
+                #
+                # Warm-up + benchmark + unload, one full model at a time -- not "warm up both,
+                # then benchmark both" (the old shape). That older version left both models
+                # resident in memory for the ENTIRE benchmark even though only one is ever
+                # actually being used at once, confirmed live by a volunteer noticing exactly
+                # that: "it loads two models and keeps them both up... even though it only uses
+                # one." Unloading the model this lane no longer needs before moving to the next
+                # lane keeps peak memory to whichever ONE model is actually active, matching
+                # real crunching (which also only ever runs one model per lane at a time).
                 _bench = {}
                 arch_bad, arch_reason = check_gpu_architecture_support(gpu_type)
                 if arch_bad:
                     print(f"\033[93m[!] GPU arch unsupported: {arch_reason} -- skipping GPU bench.\033[0m")
                     _bench["gpu"] = (None, arch_reason)
                 else:
+                    warm_up_model(chosen_model)
                     _bench["gpu"] = benchmark_lane(chosen_model, force_cpu=False)
+                    if chosen_model != cpu_model:
+                        unload_model(chosen_model)
+                warm_up_model(cpu_model)
                 _bench["cpu"] = benchmark_lane(cpu_model, force_cpu=True)
                 gpu_time, gpu_error = _bench.get("gpu", (None, None))
                 cpu_time, cpu_error = _bench.get("cpu", (None, None))

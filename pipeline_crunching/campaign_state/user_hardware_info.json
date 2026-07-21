@@ -5,11 +5,11 @@
     "total_vram_gb": 12.0,
     "system_ram_gb": 15.95,
     "dual_lane": false,
-    "primary_is_gpu": true,
-    "hardware_tier": "hard",
-    "benchmark_gpu_time": 80.10804343223572,
+    "primary_is_gpu": false,
+    "hardware_tier": "medium",
+    "benchmark_gpu_time": null,
     "benchmark_cpu_time": null,
-    "benchmark_gpu_error": null,
+    "benchmark_gpu_error": "timeout: timed out",
     "benchmark_cpu_error": "timeout: timed out"
   },
   "nicksrvr": {
