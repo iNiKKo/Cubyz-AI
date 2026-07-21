@@ -1,4 +1,4 @@
-# Cubyz AI
+# ASH AI
 
 A local AI assistant that knows the [Cubyz](https://github.com/PixelGuys/Cubyz) codebase and
 community — engine internals, keybindings, addon-creator tooling, PR review history — without
