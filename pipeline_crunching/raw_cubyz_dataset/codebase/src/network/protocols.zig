@@ -200,7 +200,7 @@ pub const handShake = struct { // MARK: handShake
 						if (conn.user.?.state != .awaitingReloadVerified) return error.KeysNotVerified;
 					}
 					{
-						const path = std.fmt.allocPrint(main.stackAllocator.allocator, "saves/{s}/assets/", .{main.server.world.?.path}) catch unreachable;
+						const path = main.stackAllocator.print("saves/{s}/assets/", .{main.server.world.?.path});
 						defer main.stackAllocator.free(path);
 						var dir = try main.files.cubyzDir().openIterableDir(path);
 						defer dir.close();
@@ -270,16 +270,19 @@ pub const handShake = struct { // MARK: handShake
 			else => unreachable,
 		}
 
-		conn.mutex.lock();
-		while (true) {
-			conn.handShakeWaiting.timedWait(&conn.mutex, .fromMilliseconds(16)) catch {
-				main.heap.GarbageCollection.syncPoint();
-				continue;
-			};
-			break;
+		{
+			conn.mutex.lock();
+			defer conn.mutex.unlock();
+			while (true) {
+				try main.io.checkCancel();
+				conn.handShakeWaiting.timedWait(&conn.mutex, .fromMilliseconds(16)) catch {
+					main.heap.GarbageCollection.syncPoint();
+					continue;
+				};
+				break;
+			}
+			if (conn.connectionState.load(.monotonic) == .disconnected) return error.DisconnectedByServer;
 		}
-		if (conn.connectionState.load(.monotonic) == .disconnected) return error.DisconnectedByServer;
-		conn.mutex.unlock();
 
 		return handshakeZon;
 	}
@@ -345,14 +348,6 @@ pub const chunkTransmission = struct { // MARK: chunkTransmission
 			.clean = main.meta.castFunctionSelfToAnyopaque(clean),
 			.taskType = .meshgenAndLighting,
 		};
-
-		fn schedule(mesh: *chunk.Chunk) void {
-			const task = main.globalAllocator.create(MeshGenerationTask);
-			task.* = MeshGenerationTask{
-				.mesh = mesh,
-			};
-			main.threadPool.addTask(task, &vtable);
-		}
 
 		pub fn getPriority(self: *MeshGenerationTask) f32 {
 			return self.pos.getPriority(game.Player.getPosBlocking()); // TODO: This is called in loop, find a way to do this without calling the mutex every time.
@@ -445,8 +440,6 @@ pub const playerPosition = struct { // MARK: playerPosition
 
 pub const entityPosition = struct { // MARK: entityPosition
 	pub const id: u8 = 6;
-	const type_entity: u8 = 0;
-	const type_item: u8 = 1;
 	const Type = enum(u8) {
 		noVelocityEntity = 0,
 		f16VelocityEntity = 1,

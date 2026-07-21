@@ -273,8 +273,21 @@
     box-shadow: 0 12px 32px rgba(0,0,0,0.25);
   }
   #whatsNewModal h2 { margin: 0 0 12px; font-size: 17px; }
-  #whatsNewModal ul { margin: 0 0 18px; padding-left: 20px; font-size: 13.5px; line-height: 1.6; color: var(--text); }
+  #whatsNewModal ul { margin: 0 0 12px; padding-left: 20px; font-size: 13.5px; line-height: 1.6; color: var(--text); }
   #whatsNewModal li { margin-bottom: 4px; }
+  #whatsNewHistoryToggle {
+    background: none; border: none; color: var(--text-dim); font-size: 12px; cursor: pointer;
+    padding: 0; margin-bottom: 14px; text-decoration: underline; text-decoration-style: dotted;
+  }
+  #whatsNewHistoryToggle:hover { color: var(--accent); }
+  #whatsNewHistory { display: none; margin-bottom: 14px; }
+  #whatsNewHistory.show { display: block; }
+  #whatsNewHistory .history-entry { margin-bottom: 14px; }
+  #whatsNewHistory .history-date {
+    font-size: 11px; color: var(--text-dim); font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.03em; margin-bottom: 4px;
+  }
+  #whatsNewHistory ul { margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.5; color: var(--text-dim); }
   #whatsNewOkBtn {
     background: var(--accent); color: #fff; border: none; border-radius: 8px;
     padding: 8px 20px; font-size: 13.5px; cursor: pointer; display: block; margin-left: auto;
@@ -296,6 +309,8 @@
   #infoBody { font-size: 13.5px; line-height: 1.5; color: var(--text); margin-bottom: 18px; }
   #infoBody p { margin: 0 0 12px; }
   #infoBody .info-section-title { font-weight: 600; margin-bottom: 6px; }
+  #infoBody a { color: var(--accent); text-decoration: underline; text-decoration-style: dotted; }
+  #infoBody a:hover { text-decoration-style: solid; }
   #infoBody .info-row {
     display: flex; justify-content: space-between; gap: 10px; padding: 5px 0;
     border-bottom: 1px solid var(--border); color: var(--text-dim);
@@ -360,6 +375,8 @@
   <div id="whatsNewModal">
     <h2>What's New!</h2>
     <ul id="whatsNewList"></ul>
+    <button id="whatsNewHistoryToggle" type="button">Show older updates</button>
+    <div id="whatsNewHistory"></div>
     <button id="whatsNewOkBtn">Okay</button>
   </div>
 </div>
@@ -393,27 +410,51 @@ document.getElementById('themeBtn').addEventListener('click', () => {
   applyTheme(next);
 });
 
-// Bump WHATS_NEW_VERSION and add a bullet whenever there's something worth telling returning
-// visitors about. Anyone who has never seen this version (new visitors included) gets the modal;
-// so does anyone who saw it but hasn't been back in a while, in case they missed it. Stays quiet
-// forever once you're caught up.
-const WHATS_NEW_VERSION = '2026-07-21-3';
-// Bold (**text**) the headline items so the big changes stand out from small polish items --
-// order matters here, biggest/most useful first.
-const WHATS_NEW_ITEMS = [
-  '**New AI model** — upgraded to a more accurate model',
-  '**Memory** — it now remembers earlier questions in the same chat, so **follow-ups** make sense',
-  'Improved accuracy on short follow-up questions that refer back to something you just asked',
-  'Added an info button showing exactly what the AI and its search index are trained on',
-  'Renamed to Snale AI',
-  'Added a Stop button to cancel a message you’re waiting on',
-  'Added a live indicator showing how many people are getting an answer right now',
-  'Shows a notice when the chat is compacting older history instead of just seeming stuck',
-  'Added a dark/light theme toggle (remembers your choice)',
-  'Wider layout, plus Leaderboard and GitHub buttons in the header',
-  'Fixed a bug where short replies could render with a broken line break',
+// Add a new entry (newest first) whenever there's something worth telling returning visitors
+// about, and update WHATS_NEW_VERSION to match its version string. Anyone who has never seen the
+// latest version (new visitors included) gets the modal showing just that entry's items; so does
+// anyone who saw it but hasn't been back in a while, in case they missed it. Older entries never
+// disappear -- they're still there under "Show older updates" -- this just keeps the DEFAULT view
+// to "what's new since you were last here" instead of an ever-growing list of everything ever
+// shipped.
+const WHATS_NEW_HISTORY = [
+  {
+    version: '2026-07-21-4',
+    date: 'July 21',
+    items: [
+      'Updated the codebase knowledge to the latest Cubyz commit',
+      'Added the newest PR reviews and issue discussions from GitHub',
+      'Re-checked existing answers against all of that for accuracy',
+    ],
+  },
+  {
+    version: '2026-07-21-3',
+    date: 'July 21',
+    // Bold (**text**) the headline items so the big changes stand out from small polish items --
+    // order matters here, biggest/most useful first.
+    items: [
+      '**New AI model** — upgraded to a more accurate model',
+      '**Memory** — it now remembers earlier questions in the same chat, so **follow-ups** make sense',
+      'Improved accuracy on short follow-up questions that refer back to something you just asked',
+      'Added an info button showing exactly what the AI and its search index are trained on',
+      'Renamed to Snale AI',
+      'Added a Stop button to cancel a message you’re waiting on',
+      'Added a live indicator showing how many people are getting an answer right now',
+      'Shows a notice when the chat is compacting older history instead of just seeming stuck',
+      'Added a dark/light theme toggle (remembers your choice)',
+      'Wider layout, plus Leaderboard and GitHub buttons in the header',
+      'Fixed a bug where short replies could render with a broken line break',
+    ],
+  },
 ];
+const WHATS_NEW_VERSION = WHATS_NEW_HISTORY[0].version;
 const WHATS_NEW_INACTIVE_DAYS = 21;
+
+function renderWhatsNewItems(items) {
+  return items
+    .map(item => `<li>${escapeHtml(item).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')}</li>`)
+    .join('');
+}
 
 function maybeShowWhatsNew() {
   const seenVersion = localStorage.getItem('whatsNewVersion');
@@ -423,12 +464,32 @@ function maybeShowWhatsNew() {
 
   if (seenVersion === WHATS_NEW_VERSION && daysSinceLastVisit < WHATS_NEW_INACTIVE_DAYS) return;
 
-  const list = document.getElementById('whatsNewList');
-  list.innerHTML = WHATS_NEW_ITEMS
-    .map(item => `<li>${escapeHtml(item).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')}</li>`)
-    .join('');
+  document.getElementById('whatsNewList').innerHTML = renderWhatsNewItems(WHATS_NEW_HISTORY[0].items);
+
+  const older = WHATS_NEW_HISTORY.slice(1);
+  const historyToggle = document.getElementById('whatsNewHistoryToggle');
+  const historyBody = document.getElementById('whatsNewHistory');
+  if (older.length) {
+    historyToggle.style.display = '';
+    historyBody.innerHTML = older.map(entry => `
+      <div class="history-entry">
+        <div class="history-date">${escapeHtml(entry.date)}</div>
+        <ul>${renderWhatsNewItems(entry.items)}</ul>
+      </div>
+    `).join('');
+  } else {
+    historyToggle.style.display = 'none';
+  }
+  historyBody.classList.remove('show');
+  historyToggle.textContent = 'Show older updates';
+
   document.getElementById('whatsNewOverlay').classList.add('show');
 }
+document.getElementById('whatsNewHistoryToggle').addEventListener('click', () => {
+  const historyBody = document.getElementById('whatsNewHistory');
+  const nowShown = historyBody.classList.toggle('show');
+  document.getElementById('whatsNewHistoryToggle').textContent = nowShown ? 'Hide older updates' : 'Show older updates';
+});
 document.getElementById('whatsNewOkBtn').addEventListener('click', () => {
   localStorage.setItem('whatsNewVersion', WHATS_NEW_VERSION);
   document.getElementById('whatsNewOverlay').classList.remove('show');
@@ -739,6 +800,7 @@ function renderInfoBody(s) {
     + (stats.finetune_examples != null
         ? `Trained on <b>${stats.finetune_examples.toLocaleString()}</b> examples drawn from Cubyz's real PR &amp; issue review history -- this shapes how it reasons and explains things, not the facts it knows.`
         : 'Fine-tune example count unavailable.')
+    + ' <a href="https://huggingface.co/iNiKKo/SNALE-AI-P7-4B" target="_blank" rel="noopener">Available on Hugging Face</a>.'
     + '</p>';
 
   html += '<p><span class="info-section-title">Live search index (RAG)</span><br>'

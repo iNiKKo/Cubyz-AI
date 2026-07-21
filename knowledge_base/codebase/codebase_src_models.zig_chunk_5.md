@@ -11,7 +11,7 @@ Handles model data processing including initialization, deinitialization, face r
 ## Explanation
 This chunk defines the `Model` struct with methods for managing its internal quad information. It includes functions for initializing (`init`) and deinitializing (`deinit`) models, retrieving raw faces (`getRawFaces`), merging multiple models into one (`mergeModels`), transforming a model using a provided function (`transformModel`), and appending quads to lists (`appendQuadsToList`, `appendInternalQuadsToList`, `appendNeighborFacingQuadsToList`). The chunk also contains utility functions for processing vertices, normals, UVs, and texture slots. It manages memory allocation and deallocation using the global allocator.
 
-The `init` function initializes the `Model` struct by setting up its internal quad information based on the provided vertices, normals, uvs, and faces. Specifically, it appends `QuadInfo` structs to the `quadInfos` list with details such as normal vectors, corner positions, UV coordinates, and texture slots.
+The `init` function initializes the `Model` struct by setting up its internal quad information based on the provided vertices, normals, uvs, and faces. Specifically, it appends `QuadInfo` structs to the `quadInfos` list with details such as normal vectors, corner positions, UV coordinates, and texture slots. For example, it retrieves UVs from the `uvs.items` array using indices specified in `face.uvs`, retrieves vertices from the `vertices.items` array using indices specified in `face.vertex`, and sets up the `QuadInfo` struct with these details.
 
 The `deinit` function frees all allocated memory for the model's quads and collision data by iterating over arrays of quad indices and freeing each one using the global allocator.
 

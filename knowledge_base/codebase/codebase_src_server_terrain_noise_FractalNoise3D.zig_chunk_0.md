@@ -6,22 +6,30 @@
 **Concepts:** chunk meshing, world generation
 
 ## Summary
-This chunk implements the generation of fractal noise for 3D terrain.
-
-## Explanation
 This chunk implements the generation of fractal noise for 3D terrain. The `FractalNoise3D` struct contains methods to generate aligned and initialized fractal terrain. The `generateAligned` function initializes an array and generates random values at specific intervals, while `generateInitializedFractalTerrain` refines the noise by averaging neighboring points and adding randomness.
 
-The `generateAligned` function performs several assertion checks:
+## Explanation
+This chunk implements the generation of fractal noise for 3D terrain. The `FractalNoise3D` struct contains methods to generate aligned and initialized fractal terrain. The `generateAligned` function performs several assertion checks:
+
 - Alignment: `wx & scale - 1 == 0`, `wy & scale - 1 == 0`, `wz & scale - 1 == 0`
-- Dimensions need to be of the form n*scale + 1 with n ∈ ℕ \∗ {0}: `width - 1 & scale/voxelSize - 1 == 0`, `height - 1 & scale/voxelSize - 1 == 0`, `depth - 1 & scale/voxelSize - 1 == 0`
+- Dimensions need to be of the form n*scale + 1 with n ∈ ℕ \ {0}: `width - 1 & scale/voxelSize - 1 == 0`, `height - 1 & scale/voxelSize - 1 == 0`, `depth - 1 & scale/voxelSize - 1 == 0`
 - Dimensions must be greater than 1: `width > 1`, `height > 1`, `depth > 1`
+
 The function initializes an array and generates random values at specific intervals, refining the noise by averaging neighboring points and adding randomness. The parameters required for generating fractal noise include:
+
 - `allocator`: Memory allocator
 - `wx`, `wy`, `wz`: World coordinates
 - `voxelSize`: Size of each voxel
 - `width`, `depth`, `height`: Dimensions of the terrain
 - `worldSeed`: Seed value for random number generation
 - `scale`: Scale factor for noise generation
+
+The `generateInitializedFractalTerrain` function refines the noise by averaging neighboring points and adding randomness. It performs this process in several steps:
+
+1. Initialize a variable `res` to half of the current scale.
+2. Loop through the array with a step size of `2*res` for each dimension (x, y, z).
+3. For each point, calculate the average value of its neighboring points and add randomness by generating a random float between -0.5 and 0.5 and multiplying it by the current scale.
+4. Repeat this process until the resolution is sufficiently high.
 
 ## Code Example
 ```zig

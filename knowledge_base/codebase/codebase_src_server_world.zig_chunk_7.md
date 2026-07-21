@@ -11,6 +11,8 @@ Handles player loading and saving in a server world, including inventory managem
 ## Explanation
 This chunk manages the lifecycle of players within a server world. It includes functions to load player data from disk, update player state based on loaded data, and save player data back to disk. The `loadPlayer` function reads player data from a ZON file, checks for key mismatches, updates player permissions, gamemode, inventory, and spawn position. If the public key in the player data does not match the user's new key string, it removes the old entry from the player database and adds the new one. It also overrides the player's name with the user's name. The `savePlayer` function writes player data to a ZON file, including entity state, permissions, gamemode, and inventory. Inventory management is handled by decoding base64-encoded data into binary format and encoding it back when saving. Error handling includes logging errors encountered during reading or writing ZON files.
 
+The direction changes and steps remaining are calculated as follows: the `stepsRemaining` variable is decremented each time a step is taken, and when it reaches zero, the direction (`dir`) is changed based on a predefined sequence (`.dirNegX => .dirNegY`, `.dirPosX => .dirPosY`, `.dirNegY => .dirPosX`, `.dirPosY => .dirNegX`). Every second turn, the number of steps needed doubles. The `spawn` variable is used to determine the initial spawn location and height based on the terrain map.
+
 ## Code Example
 ```zig
 fn savePlayerInventory(allocator: NeverFailingAllocator, inv: main.items.Inventory) []const u8 {

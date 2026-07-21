@@ -9,7 +9,57 @@
 This chunk imports various GUI window modules for the Cubyz engine.
 
 ## Explanation
-The chunk consists solely of public constant declarations, each importing a different module related to GUI windows in the Cubyz engine. These modules handle various aspects of user interface components such as controls, inventory management, chat, and authentication processes. Each imported module is exposed through a public constant with its respective name.
+This chunk imports various GUI window modules for the Cubyz engine. Each module is exposed through a public constant with its respective name. Here is a detailed list of each imported module and its functionality:
+
+- **advanced_controls**: Handles advanced control settings.
+- **change_name**: Allows users to change their in-game names.
+- **chat**: Manages chat functionality within the game.
+- **chest**: Handles chest inventory management.
+- **clipboard_deleted**: Manages clipboard operations related to deleted items.
+- **connecting**: Manages the connection process to servers.
+- **controls**: General control settings and mappings.
+- **creative_inventory**: Manages the creative mode inventory.
+- **crosshair**: Controls the appearance and behavior of the crosshair.
+- **debug_network**: Provides network debugging tools.
+- **debug_network_advanced**: Offers advanced network debugging features.
+- **debug_vulkan_info**: Displays Vulkan information for debugging purposes.
+- **debug**: General debugging tools.
+- **delete_world_confirmation**: Manages world deletion confirmation prompts.
+- **download_controller_mappings**: Downloads controller mappings.
+- **energybar**: Manages the energy bar display.
+- **error_prompt**: Handles error prompt displays.
+- **gpu_performance_measuring**: Measures GPU performance.
+- **graphics**: General graphics settings and management.
+- **healthbar**: Manages the health bar display.
+- **hotbar**: Manages the hotbar inventory.
+- **inventory**: General inventory management.
+- **inventory_crafting**: Handles crafting within the inventory.
+- **invite**: Manages player invitations to servers.
+- **main**: Main GUI window handling.
+- **players**: Manages player-related functionalities.
+- **multiplayer**: Multiplayer game settings and management.
+- **multiplayer_join**: Manages joining multiplayer servers.
+- **notification**: Handles in-game notifications.
+- **pause**: Manages the pause menu.
+- **pause_gear**: Manages the gear options in the pause menu.
+- **performance_graph**: Displays performance graphs.
+- **save_creation**: Manages save creation processes.
+- **save_selection**: Manages save selection processes.
+- **settings**: General settings management.
+- **sign_editor**: Manages sign editing functionality.
+- **social**: Social features and interactions within the game.
+- **audio**: Audio settings and management.
+- **workbench**: Manages workbench crafting operations.
+
+**Authentication Modules:**
+
+- **authentication/create_account_account_code**: Handles account creation with an account code.
+- **authentication/create_account_general_info**: Manages general information during account creation.
+- **authentication/create_account_storage_method**: Manages storage method selection during account creation.
+- **authentication/encrypt_with_password**: Encrypts data using a password.
+- **authentication/login**: Handles user login processes.
+- **authentication/stay_logged_in**: Manages staying logged in functionality.
+- **authentication/unlock**: Unlocks accounts or features.
 
 ## Related Questions
 - Which module handles advanced controls in the GUI?

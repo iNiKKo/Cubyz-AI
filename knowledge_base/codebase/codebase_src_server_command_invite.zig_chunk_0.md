@@ -9,7 +9,7 @@
 Handles the '/invite' command for inviting a player by IP address.
 
 ## Explanation
-This chunk defines the logic for processing the '/invite' server command. It uses an argument parser to extract the IP address from the command input. If parsing fails, it sends an error message to the source user. If successful, it attempts to initialize a new user connection using the provided IP and handles any errors that occur during this process. The chunk also manages reference counting for user objects to ensure proper memory management.
+This chunk defines the logic for processing the '/invite' server command. The `Args` union specifies the expected input format as `/invite <ip>`. If parsing fails, it sends an error message to the source user. If successful, it attempts to initialize a new user connection using the provided IP and handles any errors that occur during this process. The chunk also manages reference counting for user objects to ensure proper memory management.
 
 ## Code Example
 ```zig

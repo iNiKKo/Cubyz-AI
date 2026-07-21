@@ -18,22 +18,11 @@ The `executeBaseOperation` function handles different types of base operations s
 - **create**: Creates new items in a slot.
 - **moveToBag**: Transfers items from the inventory to a bag.
 - **takeFromBag**: Transfers items from a bag to the inventory.
-- **useDurability**: Decreases the durability of an item and removes it if its durability becomes zero.
-- **addHealth**: Adds or subtracts health values to players, handling player death when health drops below zero.
+- **useDurability**: Decreases the durability of an item and removes it if its durability becomes zero. If the durability is zero, the item is removed from the inventory.
+- **addHealth**: Adds or subtracts health values to players. If the player's health drops below zero, they are killed, their health is reset to maximum, and a message is sent indicating that they have been killed.
 - **addEnergy**: Adds or subtracts energy values to players.
 
 Crafting ingredients are removed from a workbench by iterating through the items in the inventory and deleting them using the `executeBaseOperation` function with the delete operation. The `executeDurabilityUseOperation` function decreases the durability of an item and removes it if its durability becomes zero. Player health and energy are managed by adding or subtracting values to the player's current health or energy, respectively.
-
-The exact logic for each base operation is as follows:
-- **move**: Moves items from one slot to another.
-- **swap**: Swaps stacks between two slots.
-- **delete**: Deletes a specified amount of an item from a slot.
-- **create**: Creates new items in a slot.
-- **moveToBag**: Transfers items from the inventory to a bag.
-- **takeFromBag**: Transfers items from a bag to the inventory.
-- **useDurability**: Decreases the durability of an item and removes it if its durability becomes zero.
-- **addHealth**: Adds or subtracts health values to players, handling player death when health drops below zero.
-- **addEnergy**: Adds or subtracts energy values to players.
 
 ## Code Example
 ```zig

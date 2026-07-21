@@ -8,8 +8,8 @@
     "lines_crunched": 2603
   },
   "caleb": {
-    "chunks_completed": 1409,
-    "lines_crunched": 90332
+    "chunks_completed": 1426,
+    "lines_crunched": 90436
   },
   "babab": {
     "chunks_completed": 105,
@@ -24,11 +24,19 @@
     "lines_crunched": 54
   },
   "nickpc": {
-    "chunks_completed": 3758,
-    "lines_crunched": 166768
+    "chunks_completed": 3777,
+    "lines_crunched": 167035
   },
   "nicksrvr": {
-    "chunks_completed": 51,
-    "lines_crunched": 1149
+    "chunks_completed": 56,
+    "lines_crunched": 1436
+  },
+  "nickpcp": {
+    "chunks_completed": 25,
+    "lines_crunched": 268
+  },
+  "nickpcq": {
+    "chunks_completed": 24,
+    "lines_crunched": 205
   }
 }

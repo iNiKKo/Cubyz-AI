@@ -9,7 +9,7 @@
 Clears the world edit selection positions.
 
 ## Explanation
-This function handles the '/deselect' command in the server's WorldEdit system. It clears the two selection positions stored in `source.worldEditData.selectionPosition1` and `source.worldEditData.selectionPosition2`, then sends a 'clear' update to the network protocol for WorldEdit, and finally sends a confirmation message to the user.
+This function handles the '/deselect' command in the server's WorldEdit system. It clears the two selection positions stored in `source.worldEditData.selectionPosition1` and `source.worldEditData.selectionPosition2`, which are set to `null`. Then, it sends a 'clear' update to the network protocol for WorldEdit using `main.network.protocols.genericUpdate.sendWorldEditPos(source.conn, .clear, null)`. Finally, it sends a confirmation message to the user with the text 'Cleared selection.'
 
 ## Code Example
 ```zig

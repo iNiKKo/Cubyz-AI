@@ -17,3 +17,10 @@ rich
 # comments, and the project_tui_migration_plan memory, for why this exists as a separate file
 # from server_rich.py rather than replacing it in place.
 textual
+
+# requests: extract_reviews.py/extract_issues.py's GitHub API client (session reuse, rate-limit
+# handling). Everything else in this project uses stdlib urllib instead, but these two scripts
+# were restored from archive/prototype_2_review_extraction/ with their original, already-proven
+# HTTP layer intact rather than rewritten -- not worth the risk of introducing a bug into working
+# rate-limit/retry logic for the sake of dependency purity.
+requests

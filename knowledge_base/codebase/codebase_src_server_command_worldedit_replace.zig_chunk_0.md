@@ -6,10 +6,10 @@
 **Concepts:** world edit, block replacement, blueprint manipulation, undo/redo history
 
 ## Summary
-World edit command to replace blocks in the selected area.
+World edit command to replace blocks in the selected area using specified old and new patterns. The command captures the current selection, applies a replacement operation based on the provided mask and pattern, and handles undo/redo history.
 
 ## Explanation
-This function executes a world edit command that replaces blocks based on specified old and new patterns. It captures the current selection, parses the old mask and new pattern strings, and then applies the replacement operation to the captured blueprint. The modified blueprint is then pasted back into the world at the original selection position.
+This function executes a world edit command that replaces blocks within a selected area based on specified old and new patterns. It uses an `Args` union to parse the command arguments, which include an old mask expression and a new pattern expression. The function captures the current selection using `command.getCurrentSelection`, parses the provided mask and pattern expressions, and then applies the replacement operation to the captured blueprint. If successful, it pushes the original blueprint into the undo history and clears the redo history. The modified blueprint is then pasted back into the world at the original selection position with the `.preserveVoid = true` option to maintain void spaces. Error handling is implemented for parsing errors and capture failures, reporting specific error messages to the user.
 
 ## Code Example
 ```zig

@@ -9,7 +9,7 @@
 Defines a structure for unconfirmed network packets.
 
 ## Explanation
-This chunk defines a `UnconfirmedPacket` struct with three fields: `data`, which is a slice of constant bytes representing the packet content; `lastKeepAliveSentBefore`, an unsigned 32-bit integer indicating the last time a keep-alive was sent before this packet; and `id`, another unsigned 32-bit integer serving as a unique identifier for the packet.
+This chunk defines several networking-related structures and constants. The `Connection` struct includes constants such as `maxMtu` (maximum UDP packet size of 65507), `minMtu` (minimum UDP packet size of 532, calculated as IPv4 MTU minus IP header minus UDP header), `headerOverhead` (total header overhead of 82 bytes, including IP Header, UDP Header, and Ethernet header/footer), and `receiveBufferSize` (buffer size for receiving packets set to 8 MB). It also contains atomic variables to track statistics like `packetsSent`, `packetsResent`, and various overheads (`internalMessageOverhead`, `internalHeaderOverhead`, `externalHeaderOverhead`), all initialized to zero. The `SequenceIndex` type is defined as a signed 32-bit integer, and the `LossStatus` enum includes three variants: `noLoss`, `singleLoss`, and `doubleLoss`. The `RangeBuffer` struct manages ranges of sequence indices with methods to add ranges, check for existing ranges, and extract the first range. The `ReceiveBuffer` struct handles receiving buffers, including managing ranges, decrypted buffers, and protocol buffers.
 
 ## Related Questions
 - What are the fields of the UnconfirmedPacket struct?

@@ -9,7 +9,11 @@
 Defines the Button component for GUI elements in Cubyz, handling initialization, rendering, and interaction logic.
 
 ## Explanation
-The Button component is part of the GUI system in Cubyz. It manages button textures, states (normal, hovered, pressed, disabled), and interactions. The `globalInit` function initializes shared resources like shaders and textures for different button states. The `initText` and `initIcon` functions create buttons with text or icon labels. The component handles mouse events to update its state and trigger actions when clicked.
+The Button component is part of the GUI system in Cubyz, handling initialization, rendering, and interaction logic. The button has a border size of 3 units and uses textures for different states (normal, hovered, pressed, disabled). The `globalInit` function initializes shared resources like shaders and textures for these states. The `initText` and `initIcon` functions create buttons with text or icon labels. The component handles mouse events to update its state and trigger actions when clicked.
+
+The `buttonUniforms` struct contains uniform locations for rendering, including screen, start, size, color, and scale. Memory management for Button instances is handled by the global allocator, which creates and destroys button objects as needed.
+
+Textures are initialized using the `init` method of the `Textures` struct, which loads textures from specified file paths and stores their sizes. The `deinit` method releases these resources when they are no longer needed.
 
 ## Code Example
 ```zig

@@ -9,7 +9,12 @@
 Sets all blocks within a selection to a specified block pattern.
 
 ## Explanation
+**Explanation**
 The `execute` function handles the '/set' command in the WorldEdit feature. It first checks if the required <pattern> argument is provided. If not, it sends an error message and returns. The current selection is retrieved using `command.getCurrentSelection`. A Pattern object is initialized from the provided arguments. After capturing the selection into a Blueprint, the function pushes the change to the undo history and clears the redo history. It then clones the captured blueprint, replaces blocks based on the mask and pattern, and pastes them back into the world at the original selection position.
+
+The `Args` union defines the structure of the arguments for the '/set' command. It contains a single variant, `@"/set"`, which holds a `command.PatternExpression` object representing the block pattern to be set.
+
+If an error occurs while parsing the pattern argument, an error message is sent to the user and the function returns without further execution. Similarly, if capturing the selection fails, an error message is sent indicating the failure along with the position and message of the error.
 
 ## Code Example
 ```zig

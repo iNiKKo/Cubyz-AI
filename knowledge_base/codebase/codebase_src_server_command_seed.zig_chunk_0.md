@@ -9,7 +9,7 @@
 Handles the '/seed' server command to retrieve and display the world seed.
 
 ## Explanation
-This chunk defines a server command handler for the '/seed' command. It uses an argument parser to validate the command input, retrieves the world seed from the server's configuration, and sends it back to the user. If there is an error in parsing the arguments, it sends an error message to the user.
+This chunk defines a server command handler for the '/seed' command. The `description` constant provides a brief description of the command, and the `usage` constant specifies the exact syntax for using the command. The `Args` union defines the possible arguments for the command, in this case, just the `/seed` argument. The `execute` function retrieves the world seed from the server's configuration and sends it back to the user with a specific color code (`#ffff00`). There is no error handling or argument parsing involved in this chunk.
 
 ## Code Example
 ```zig

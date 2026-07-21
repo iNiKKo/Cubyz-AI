@@ -9,7 +9,7 @@
 Handles the '/clear' command to clear player inventory or chat. The command takes an argument specifying either 'inventory' or 'chat'.
 
 ## Explanation
-This chunk defines a server-side command handler for the '/clear' command, which has a description of 'Clears your inventory/chat' and usage syntax of '/clear <target>'. It uses an argument parser to determine whether to clear the player's inventory or chat based on the provided target. The `execute` function parses the arguments using the ArgParser, handles errors by sending error messages, and then performs the appropriate action using functions from other modules. Specifically, it clears the player's inventory if the target is 'inventory' and clears the chat if the target is 'chat'.
+This chunk defines a server-side command handler for the '/clear' command, which has a description of 'Clears your inventory/chat' and usage syntax of '/clear <target>'. The `Args` union enum specifies that the target can be either 'inventory' or 'chat'. The `execute` function directly processes the arguments to determine whether to clear the player's inventory or chat based on the provided target. Specifically, it clears the player's inventory if the target is 'inventory' and clears the chat if the target is 'chat'. The function uses functions from other modules to perform these actions: `main.items.Inventory.server.clearPlayerInventory` for clearing the inventory and `main.network.protocols.genericUpdate.sendClear` for clearing the chat.
 
 ## Code Example
 ```zig

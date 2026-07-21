@@ -11,6 +11,25 @@ Handles packet reception and processing for network connections.
 ## Explanation
 The chunk defines functions to receive and process packets in a network connection. `tryReceive` processes incoming data, handling different channels like lossy, secure, slow, confirmation, init, keepalive, and disconnect. It updates the connection state and handles acknowledgments. `processNextPackets` manages sending periodic keepalive or initial packets based on the connection state and checks for packet losses.
 
+### Handling Different Packet Channels
+- **Lossy Channel**: Handles lossy data transmission with specific sequence indices for start positions.
+- **Secure Channel**: Manages secure data transmission using similar sequence indices.
+- **Slow Channel**: Processes slow data transmissions with designated sequence indices.
+- **Confirmation Channel**: Used to acknowledge received packets and track their timestamps.
+- **Init Channel**: Initializes the connection, setting up channels and remote identifiers.
+- **Keepalive Channel**: Sends periodic keepalive messages to maintain connection status.
+- **Disconnect Channel**: Handles disconnection requests from the other side of the connection.
+
+### Acknowledgment Handling
+Acknowledgments are handled by checking if the received packet is an acknowledgment. If it is, and the connection state is `awaitingClientAcknowledgement`, the state transitions to `connected`. For non-handshake packets, acknowledgments are sent back to the client using a BinaryWriter that writes the channel ID and connection identifier.
+
+### Conditions for Sending Keepalive or Initial Packets
+- **Initial Packets**: Sent once every 100 milliseconds when the connection is in states like `awaitingServerResponse` or `awaitingClientAcknowledgement`.
+- **Keepalive Packets**: Periodically sent to maintain connection status, based on the time elapsed since the last packet was sent and the relative idle time compared to the estimated round-trip time (RTT).
+
+### Packet Loss Detection and Management
+Packet loss is detected by checking if the time elapsed since the last packet was sent exceeds a certain threshold. If so, the relative idle time is updated, and the next confirmation timestamp is adjusted accordingly.
+
 ## Code Example
 ```zig
 fn tryReceive(self: *Connection, data: []const u8) !void {
@@ -126,11 +145,8 @@ fn tryReceive(self: *Connection, data: []const u8) !void {
 ```
 
 ## Related Questions
-- What is the purpose of the `tryReceive` function?
-- How does the chunk handle different packet channels?
-- What state transitions occur in the connection based on received packets?
-- How are acknowledgments handled in this chunk?
-- What conditions trigger sending keepalive or initial packets?
-- How is packet loss detected and managed?
+- What are the specific sequence indices used for each channel in handling packets?
+- How does the chunk handle acknowledgments based on the connection state?
+- Under what conditions are initial or keepalive packets sent to maintain the connection?
 
 *Source: unknown | chunk_id: codebase_src_network.zig_chunk_14*

@@ -18,6 +18,8 @@ The button callbacks are defined as follows:
 - `deleteWorld`: Deletes a world by its index in the world list through a confirmation window.
 - `openFolder`: Opens a folder by its index in the world list using file paths.
 
+The `WorldInfo` struct defines world information with fields for lastUsedTime (i64), name ([]const u8), and fileName ([]const u8). The parameters used in starting a server thread when opening a world include the world name, port number, and mode.
+
 ## Code Example
 ```zig
 pub fn init() void {

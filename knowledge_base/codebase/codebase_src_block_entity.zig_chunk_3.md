@@ -18,6 +18,42 @@ Specifically, it defines constants for texture dimensions:
 
 The initialization function (`init`) sets up the graphics pipeline with specific shader files and configuration options. The deinitialization function (`deinit`) cleans up resources such as textures, pipelines, and storage servers/clients. Memory allocation for entity text involves duplicating strings using `main.globalAllocator.dupe(u8, event.update.remaining)` and freeing memory when entities are removed or updated.
 
+The initialization function (`init`) is defined as follows:
+```zig
+pub fn init() void {
+    StorageServer.init();
+    StorageClient.init();
+    if (!main.settings.launchConfig.headlessServer) {
+        pipeline = graphics.Pipeline.init(
+            "assets/cubyz/shaders/block_entity/sign.vert",
+            "assets/cubyz/shaders/block_entity/sign.frag",
+            "",
+            &uniforms,
+            graphics.VertexArray.EmptyVertex,
+            &.{},
+            .{},
+            .{.depthTest = true, .depthCompare = .equal, .depthWrite = false},
+            .{.attachments = &.{.alphaBlending}},
+        );
+    }
+}
+```
+
+The deinitialization function (`deinit`) is defined as follows:
+```zig
+pub fn deinit() void {
+    while (textureDeinitList.popOrNull()) |texture| {
+        texture.deinit();
+    }
+    textureDeinitList.deinit(main.globalAllocator);
+    if (!main.settings.launchConfig.headlessServer) {
+        pipeline.deinit();
+    }
+    StorageServer.deinit();
+    StorageClient.deinit();
+}
+```
+
 ## Code Example
 ```zig
 pub fn deinit() void {

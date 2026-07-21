@@ -9,11 +9,11 @@
 This chunk manages group creation, retrieval, and deletion, as well as permission handling within those groups.
 
 ## Explanation
-This chunk manages group creation, retrieval, and deletion, ensuring thread safety with context assertions. It includes functions to create a new group (`createGroup`), retrieve an existing group (`getGroup`), and delete a group (`deleteGroup`). The `createGroup` function checks for the existence of a group and returns an error if it already exists. The `getGroup` function retrieves a group by name or returns an error if the group does not exist. The `deleteGroup` function deletes a group and its associated file, returning false if the group does not exist.
+This chunk manages group creation, retrieval, and deletion, as well as permission handling within those groups. It includes functions to create a new group (`createGroup`), retrieve an existing group (`getGroup`), and delete a group (`deleteGroup`). The `createGroup` function checks for the existence of a group and returns an error if it already exists. The `getGroup` function retrieves a group by name or returns an error if the group does not exist. The `deleteGroup` function deletes a group and its associated file, returning false if the group does not exist.
 
-The chunk also includes methods for adding and removing permissions from groups (`addPermission`, `removePermission`) and checking if a path has a specific permission status (`hasPermission`). The tests cover various scenarios including white and blacklisting, deep permissions, root permissions, and group-specific operations. For example, the `whitePermission` test checks that a path with a white permission is accessible, while the `blacklist` test checks that a path with a blacklist permission is not accessible.
+The chunk also includes methods for adding and removing permissions from groups (`addPermission`, `removePermission`) and checking if a path has a specific permission status (`hasPermission`). However, the actual implementation of these functions is not provided in this code snippet. The tests cover various scenarios including white and blacklisting, deep permissions, root permissions, and group-specific operations. For example, the `whitePermission` test checks that a path with a white permission is accessible, while the `blacklist` test checks that a path with a blacklist permission is not accessible.
 
-The structure of a test case for white permissions involves initializing a `Permissions` object, adding a white permission to a specific path, and then checking if the path has the expected permission status.
+The structure of a test case for white permissions involves initializing a `Permissions` object, adding a white permission to a specific path, and then checking if the path has the expected permission status. The actual implementation of these tests is also not provided in this code snippet.
 
 ## Code Example
 ```zig
@@ -34,6 +34,5 @@ pub fn createGroup(name: []const u8) error{AlreadyExists}!void {
 - What happens if you try to delete a non-existent group?
 - How are permissions added to a group?
 - How do you check if a path has a specific permission?
-- What is the structure of a test case for white permissions?
 
 *Source: unknown | chunk_id: codebase_src_server_permission.zig_chunk_2*

@@ -9,7 +9,7 @@
 Handles the '/server' command for stopping or restarting the server.
 
 ## Explanation
-This chunk defines a command handler for the '/server' command, which can stop or restart the server. It uses an argument parser to interpret the command arguments and checks if a headful restart is supported based on the server's configuration. If the command is valid, it stops the server with the specified action.
+This chunk defines a command handler for the '/server' command, which can stop or restart the server. The `description` field specifies that the command is used to 'Stop the server.' The `usage` field provides the syntax \/server <stop/restart>. The `Args` union enum defines the possible actions as `main.server.StopType`, with specific options like `.restart` and `.stop`. The `execute` function takes arguments of type `Args` and a pointer to a `User`. It checks if a headful restart is supported based on the server's configuration (`main.settings.launchConfig.headlessServer`). If the command is valid, it stops the server with the specified action. If an error occurs during argument parsing, it sends an error message to the user.
 
 ## Code Example
 ```zig

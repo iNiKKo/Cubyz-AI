@@ -11,6 +11,12 @@ Handles loading blueprint files for world editing.
 ## Explanation
 The chunk defines a function `blueprintLoad` that loads a blueprint file from a specified path and assigns it to the user's clipboard. It opens the blueprints directory, reads the file content, and handles errors by sending warnings and logs. The `FilePath` struct manages file paths, including parsing and ensuring the correct file extension. The chunk also includes utility functions for error handling and memory management.
 
+The `blueprintLoad` function takes a `filePath` of type `FilePath` and a pointer to a `User`. It opens the blueprints directory using `openBlueprintsDir`, reads the file content into `storedBlueprint`, and handles any errors by sending warnings and logs. If there is an existing clipboard, it deinitializes the old clipboard before loading the new one. The function then sends an info log indicating that the blueprint file has been loaded.
+
+The `FilePath` struct contains a single field: `path`. It includes a static method `parse` that takes an arena allocator, a user-provided argument, and returns a `FilePath` instance with the correct file extension ensured by the `ensureBlueprintExtension` function. This function checks if the file name ends with `.blp`; if not, it appends `.blp` to the file name.
+
+The chunk also includes error handling for reading and loading blueprint files, as well as memory management using `main.stackAllocator` and `main.globalAllocator`. The `defer` statements ensure that resources are properly freed after use.
+
 ## Code Example
 ```zig
 fn blueprintLoad(filePath: FilePath, source: *User) void {

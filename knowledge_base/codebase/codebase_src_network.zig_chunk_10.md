@@ -11,6 +11,15 @@ Handles secure channel initialization and TLS handshake using Mbed TLS.
 ## Explanation
 This chunk manages the setup and teardown of a secure communication channel using Mbed TLS. It initializes SSL contexts and configurations, sets up server certificates if necessary, and performs the TLS handshake. The code also includes functions for sending and receiving data through the TLS layer, handling errors, and managing debug output.
 
+**SecureChannel Struct:**
+The `SecureChannel` struct is responsible for managing secure communication channels using Mbed TLS. It contains methods such as `receiveThroughTls`, `sendThroughTls`, `receive`, `send`, `receiveConfirmationAndGetTimestamp`, `checkForLosses`, `sendNextPacketAndGetSize`, and `getStatistics`. The struct also has fields like `manager`, `user`, `remoteAddress`, `bruteforcingPort`, `bruteForcedPortRange`, `lossyChannel`, `secureChannel`, `slowChannel`, `restartChannelCounter`, `restartCounter`, `hasRttEstimate`, `rttEstimate`, `rttUncertainty`, `lastRttSampleTime`, `nextPacketTimestamp`, `nextConfirmationTimestamp`, `queuedConfirmations`, `mtuEstimate`, `bandwidthEstimateInBytesPerRtt`, `slowStart`, `relativeSendTime`, `relativeIdleTime`, `connectionState`, `handShakeState`, `handShakeWaiting`, `lastConnectionTime`, `connectionIdentifier`, `remoteConnectionIdentifier`, and `mutex`.
+
+**ChannelId Enum:**
+The `ChannelId` enum defines different types of channels, including `lossy`, `secure`, `slow`, `confirmation`, `init`, `keepalive`, and `disconnect`.
+
+**ConfirmationData Struct:**
+The `ConfirmationData` struct contains information about received confirmations, including the channel ID, start sequence index, and receive timestamp.
+
 **SSL Context Initialization:**
 The `SecureChannel` struct initializes its SSL context using Mbed TLS functions such as `mbedtls_ssl_init`, `mbedtls_ssl_config_init`, and `mbedtls_ssl_setup`. It sets the authentication mode to none (`MBEDTLS_SSL_VERIFY_NONE`) and configures debugging output.
 

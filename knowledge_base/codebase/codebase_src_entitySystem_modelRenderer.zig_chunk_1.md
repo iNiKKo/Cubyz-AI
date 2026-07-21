@@ -9,7 +9,13 @@
 Handles rendering of entities in the client, including HUD and model rendering.
 
 ## Explanation
-The `client` struct manages entity rendering on the client side. It initializes a graphics pipeline and a node buffer for storing transformation matrices. The `init` function sets up the shader pipeline and allocates memory for the node buffer. The `deinit` function cleans up resources. The `renderHud` function renders entity names and icons on the HUD, calculating positions based on player position and camera view. The `render` function processes model components, updates transformation matrices, and uploads them to the GPU. It then binds textures and light data before drawing entities using OpenGL commands.
+Handles rendering of entities in the client, including HUD and model rendering.
+
+The `client` struct manages entity rendering on the client side. It initializes a graphics pipeline and a node buffer for storing transformation matrices. The `init` function sets up the shader pipeline using vertex and fragment shaders located at 'assets/cubyz/shaders/entity_vertex.vert' and 'assets/cubyz/shaders/entity_fragment.frag', respectively, and allocates memory for the node buffer with an initial size of 1 MB and a capacity of 15. The `deinit` function cleans up resources by deinitializing the pipeline and the node buffer.
+
+The `renderHud` function renders entity names and icons on the HUD, calculating positions based on player position and camera view. It uses screen units to scale font sizes and projects entity positions onto the screen using the camera's view matrix and the projection matrix from the frame uniforms. The transparency of the text is calculated based on the distance from the player, and the text is rendered centered at the calculated screen coordinates.
+
+The `render` function processes model components, updates transformation matrices, and uploads them to the GPU. It then binds textures and light data before drawing entities using OpenGL commands. Specifically, it sets the ambient light uniform with the provided `ambientLight` vector, sets the contrast uniform to 0.12, and uploads the node buffer data. For each entity, it calculates the model matrix based on the entity's position and rotation, updates the transformation matrices for each node, and binds the entity's texture. It then retrieves light values from the mesh storage and packs them into a single integer value before setting the light uniform. Finally, it sets the model view matrix uniform and draws the entity using `glDrawElements` with the triangle primitive mode.
 
 ## Code Example
 ```zig

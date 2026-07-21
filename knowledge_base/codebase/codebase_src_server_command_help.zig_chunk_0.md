@@ -11,6 +11,10 @@ Handles the /help server command to display information about available commands
 ## Explanation
 This chunk defines the logic for processing the '/help' command in a server context. It uses an argument parser to handle different forms of the command, such as listing all commands or providing usage details for a specific command. The `execute` function parses the input arguments and constructs a response message accordingly. If there's an error during parsing, it sends an error message back to the user. The `Cmd` struct is responsible for parsing individual command names and handling errors if the command is not recognized.
 
+The `Args` union(enum) defines the possible forms of the '/help' command, including `/help`, `/help <command>`, and `/help <bobik>`. Each form has a corresponding struct that holds the parsed arguments. The `Cmd` struct contains a `Command` object and provides a `parse` method to retrieve a command by name.
+
+The 'description' constant provides a brief description of the '/help' command, while the 'usage' constant specifies its syntax. The 'execute' function uses these constants to construct help messages for users.
+
 ## Code Example
 ```zig
 pub fn execute(args: []const u8, source: *User) void {

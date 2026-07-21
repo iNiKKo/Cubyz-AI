@@ -30,6 +30,17 @@ This chunk defines the `Connection` struct with methods for sending and receivin
 
 - **tryReceive Method**: Processes incoming packets by reading channel IDs and handling initialization packets. It updates connection states and connects channels based on received sequence indices.
 
+### Handling Different Channels:
+- **lossy Channel**: Handles lossy data transmission with a specific start index and processes the packet if accepted.
+- **secure Channel**: Handles secure data transmission with a specific start index and processes the packet if accepted.
+- **slow Channel**: Handles slow data transmission with a specific start index and processes the packet if accepted.
+
+### Initialization Packet Handling:
+The `tryReceive` method handles initialization packets by reading the channel ID, remote connection identifier, and other relevant information. It updates the connection state based on the current state (e.g., awaiting client connection, server response) and connects the appropriate channels with the given start indices. If the packet is an acknowledgment, it checks the connection state and updates it accordingly.
+
+### Thread Safety:
+Thread safety is ensured by using mutexes to lock critical sections of the code where shared resources are accessed or modified.
+
 ## Code Example
 ```zig
 pub fn isConnected(self: *Connection) bool {

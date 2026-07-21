@@ -9,7 +9,7 @@
 Handles the '/pos1' command to select player position as position 1 for world editing.
 
 ## Explanation
-This chunk defines a command handler for the '/pos1' command, which selects the player's current position as the first selection point for world editing. It uses an argument parser to validate the command and then retrieves the player's position, floors it to integer coordinates, and stores it in the user's world edit data. The updated position is also sent over the network to clients.
+This chunk defines a command handler for the '/pos1' command, which selects the player's current position as the first selection point for world editing. The `Args` union enum specifies that the `/pos1` command does not take any arguments. When the command is executed, it retrieves the player's position using `source.player().pos`, floors it to integer coordinates using `@floor`, and stores it in the user's world edit data (`selectionPosition1`). It then sends the updated position over the network to clients using `main.network.protocols.genericUpdate.sendWorldEditPos`. If the argument parsing fails, an error message is sent to the user.
 
 ## Code Example
 ```zig

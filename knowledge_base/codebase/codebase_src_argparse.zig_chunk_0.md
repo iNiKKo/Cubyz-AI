@@ -11,6 +11,10 @@ Defines the structure for command-line argument parsing options and resolve mode
 ## Explanation
 This chunk defines a public `Options` struct with a field `commandName` of type `[]const u8`, which is used to store the name of the command being parsed. It also declares an enum `ResolveMode` with two variants: `parse` and `autocomplete`. These definitions are part of the argument parsing logic within the Cubyz engine.
 
+The chunk begins by importing necessary modules: `std`, `main`, `NeverFailingAllocator`, `ListManaged`, and `utils`. The `Options` struct is defined with a single field, `commandName`, which holds the command name as a slice of constant bytes. The `ResolveMode` enum includes two variants: `parse` and `autocomplete`, used to specify different modes of argument resolution.
+
+The import statements are crucial for accessing functionalities provided by these modules, ensuring that the code has access to necessary types and utilities.
+
 ## Related Questions
 - What is the purpose of the `Options` struct?
 - How many variants are in the `ResolveMode` enum?

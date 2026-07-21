@@ -11,6 +11,10 @@ Manages a notification window in the GUI system.
 ## Explanation
 This chunk defines a notification window that can display formatted text and an 'OK' button. It uses a vertical list layout to organize components, including a label for the text and a button for acknowledgment. The `raiseNotification` function sets the text and opens the window, while `ack` closes it. Memory management is handled by freeing allocated strings when the notification is closed or updated.
 
+The vertical list layout is initialized with padding of 16 on each side and a height of 300. The label component displays the notification text, and the button component has an 'OK' label. When the 'OK' button is clicked, the `ack` function closes the window. The `raiseNotification` function takes a formatted string and arguments to set the notification text.
+
+The `deinit` function frees the allocated memory for the notification text when it is no longer needed.
+
 ## Code Example
 ```zig
 pub fn deinit() void {

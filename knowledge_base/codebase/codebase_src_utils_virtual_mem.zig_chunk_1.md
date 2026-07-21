@@ -9,7 +9,21 @@
 Defines a `VirtualList` type that manages a list of elements in a reserved virtual memory region, allowing for efficient growth without invalidating pointers.
 
 ## Explanation
-The `VirtualList` type is designed to manage a dynamic array where the underlying memory is reserved but not necessarily committed. This allows the list to grow efficiently without invalidating existing pointers. The type includes methods for initialization (`init`), deinitialization (`deinit`), and various operations to add, remove, or replace elements while ensuring that the capacity of the committed memory is sufficient. Methods like `ensureCapacity`, `addOne`, `append`, and `insert` handle memory reservation and element manipulation. The implementation uses Zig's standard library functions for memory alignment, copying, and setting values.
+The `VirtualList` type is designed to manage a dynamic array where the underlying memory is reserved but not necessarily committed. This allows the list to grow efficiently without invalidating existing pointers. The type includes methods for initialization (`init`), deinitialization (`deinit`), and various operations to add, remove, or replace elements while ensuring that the capacity of the committed memory is sufficient.
+
+The `maxSizeBytes` method calculates the maximum size in bytes required for the list based on the maximum size and the size of each element. The `init` method initializes the list by reserving memory and setting initial values. The `deinit` method releases the reserved memory. The `items` method returns a slice of the current elements.
+
+The `clearRetainingCapacity` method clears the list but retains its capacity. The `ensureCapacity` method ensures that the committed capacity is sufficient for a new capacity, and `ensureFreeCapacity` ensures there is enough free space to add elements. The `resizeAssumeCapacity` and `resize` methods resize the list, with `resizeAssumeCapacity` assuming sufficient capacity.
+
+The `addOneAssumeCapacity` and `addOne` methods add a single element, with `addOneAssumeCapacity` assuming sufficient capacity. Similarly, `addManyAssumeCapacity` and `addMany` add multiple elements, with `addManyAssumeCapacity` assuming sufficient capacity. The `appendAssumeCapacity` and `append` methods append an element to the list, with `appendAssumeCapacity` assuming sufficient capacity.
+
+The `appendNTimesAssumeCapacity` and `appendNTimes` methods append a specified number of times, with `appendNTimesAssumeCapacity` assuming sufficient capacity. The `appendSliceAssumeCapacity` and `appendSlice` methods append a slice of elements, with `appendSliceAssumeCapacity` assuming sufficient capacity.
+
+The `insertAssumeCapacity` and `insert` methods insert an element at a specific index, with `insertAssumeCapacity` assuming sufficient capacity. Similarly, `insertSliceAssumeCapacity` and `insertSlice` insert a slice of elements at a specific index, with `insertSliceAssumeCapacity` assuming sufficient capacity.
+
+The `swapRemove` method removes an element by swapping it with the last element, while `orderedRemove` removes an element by shifting subsequent elements. The `popOrNull` method pops an element if the list is not empty, returning null otherwise. The `pop` method pops an element and panics if the list is empty.
+
+The `replaceRange` method replaces a range of elements with new items, handling cases where the new items are shorter or longer than the existing range.
 
 ## Code Example
 ```zig

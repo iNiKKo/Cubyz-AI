@@ -9,7 +9,9 @@
 Handles the '/undo' command for world editing, restoring the previous state of the world.
 
 ## Explanation
-The function `execute` handles the '/undo' command in the server's world editing system. It parses the input arguments, checks if there is an undo history entry to restore, captures the redo history from the undone action, pastes it back into the world at the original position, and updates the redo history with the new state. If no undo history exists, it sends a message indicating that nothing can be undone.
+The function `execute` handles the '/undo' command in the server's world editing system. It checks if there is an undo history entry to restore by calling `pop()` on `source.worldEditData.undoHistory`. If an action exists, it deinitializes the action with `action.deinit()`, captures the redo history using `Blueprint.capture(main.globalAllocator, action.selection())`, and pastes the blueprint back into the world at the original position with `action.blueprint.paste(action.position, .{.preserveVoid = true})`. If the capture is successful, it pushes a new entry to the redo history with `.init(blueprint, action.position, action.message)`. If no undo history exists, it sends a message indicating that nothing can be undone.
+
+The `Args` union defines the command structure, where `@"/undo": struct {}` represents the '/undo' command without any additional arguments. The `usage` field specifies the exact command syntax as `/undo`.
 
 ## Code Example
 ```zig

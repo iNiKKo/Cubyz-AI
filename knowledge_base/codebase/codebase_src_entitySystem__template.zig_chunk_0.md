@@ -9,7 +9,7 @@
 Entity system template
 
 ## Explanation
-This chunk defines the entity system template for both client and server components. It includes initialization, deinitialization, clearing, rendering functions, and render HUD functions. The client component has public functions `init`, `deinit`, `clear`, `render`, and `renderHud`. The server component has public functions `init`, `deinit`, and `update`. The `render` function in the client component takes parameters `projMatrix: Mat4f`, `ambientLight: Vec3f`, `playerPos: Vec3d`, and `deltaTime: f64`. The `renderHud` function in the client component takes parameters `projMatrix: Mat4f` and `ambientLight: Vec3f`. The server's `update` function does not take any parameters.
+This chunk defines the entity system template for both client and server components. It includes initialization (`init`), deinitialization (`deinit`), clearing (`clear`), rendering (`render`), and render HUD (`renderHud`) functions. The client component has public functions `init`, `deinit`, `clear`, `render`, and `renderHud`. The server component has public functions `init`, `deinit`, and `update`. The `render` function in the client component takes parameters `ambientLight: Vec3f`, `playerPos: Vec3d`, and `deltaTime: f64`. The `renderHud` function in the client component takes parameters `ambientLight: Vec3f` and `playerPos: Vec3d`. The server's `update` function does not take any parameters. The clear function is used to reset or clean up resources in both components. The entity system template handles rendering and HUD rendering by defining these functions, which are essential for the visual representation of entities in the game.
 
 ## Related Questions
 - What are the public functions in the client and server components?

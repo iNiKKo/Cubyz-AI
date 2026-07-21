@@ -34,6 +34,11 @@ The `QueueFamilyIndidices` struct holds indices for the graphics and presentatio
 5. Create a logical device.
 6. Initialize the swap chain.
 
+**Detailed Implementation:*
+The `init` function initializes Vulkan by loading necessary functions using GLAD (except on macOS). It then creates a Vulkan instance with required extensions and validation layers, checks for validation layer support, selects a suitable physical device based on supported features and extensions, creates a logical device, and initializes the swap chain.
+
+The `deinit` function cleans up by deinitializing the swap chain, destroying the device, surface, and instance.
+
 ## Code Example
 ```zig
 pub fn deinit() void {

@@ -19,6 +19,8 @@ Callbacks for handling input events include key callbacks, character callbacks, 
 
 Specifically, the Vulkan initialization process includes checking if Vulkan is supported (`c.glfwVulkanSupported() == c.GLFW_TRUE`) and creating a Vulkan window with specific hints (`c.GLFW_CLIENT_API`, `c.GLFW_VISIBLE`). On macOS, it sets the Vulkan loader directly using `glfwInitVulkanLoader`. The OpenGL context is initialized with specific version requirements (OpenGL 4.6) and debug settings (`c.GLFW_OPENGL_DEBUG_CONTEXT`, `c.GLFW_CONTEXT_VERSION_MAJOR`, `c.GLFW_CONTEXT_VERSION_MINOR`). If Vulkan testing mode is not enabled, the Vulkan window is destroyed after initialization.
 
+The chunk also includes functions for resetting input listeners (`resetNextInputListenters`), updating the cursor state based on window grab status (`updateCursor`), getting mouse position and window size (`getMousePosition`, `getWindowSize`), reloading settings like vsync (`reloadSettings`), and managing clipboard operations (`getClipboardString`, `setClipboardString`).
+
 ## Code Example
 ```zig
 pub fn resetNextInputListenters() void {

@@ -9,7 +9,7 @@
 The ContinuousSlider component manages a slider GUI element with a button and label, handling user interactions to update values and trigger callbacks.
 
 ## Explanation
-This chunk defines the ContinuousSlider struct, which represents a GUI slider component. It includes methods for initialization (`init`), deinitialization (`deinit`), updating the button position based on value (`setButtonPosFromValue`), updating the label text (`updateLabel`), and handling mouse interactions (`mainButtonPressed`, `mainButtonReleased`). The slider uses a texture for its background, and its value is constrained between a minimum and maximum. The component also manages memory allocation and deallocation using a global allocator.
+This chunk defines the ContinuousSlider struct, which represents a GUI slider component. The slider includes methods for initialization (`init`), deinitialization (`deinit`), updating the button position based on value (`setButtonPosFromValue`), updating the label text (`updateLabel`), and handling mouse interactions (`mainButtonPressed`, `mainButtonReleased`). The slider uses a texture for its background, which is initialized from 'assets/cubyz/ui/slider.png'. Its value is constrained between a minimum and maximum specified during initialization. The component also manages memory allocation and deallocation using a global allocator. The formatter function is used to convert the current value into a string displayed in the label.
 
 ## Code Example
 ```zig
