@@ -21,9 +21,9 @@
     "primary_is_gpu": false,
     "hardware_tier": "medium",
     "benchmark_gpu_time": null,
-    "benchmark_cpu_time": null,
-    "benchmark_gpu_error": "no_gpu_offload: request finished in 80.1s but Ollama reports 0 bytes resident on GPU -- it silently ran on CPU instead",
-    "benchmark_cpu_error": "timeout: timed out"
+    "benchmark_cpu_time": 74.17923212051392,
+    "benchmark_gpu_error": "no_gpu_offload: request finished in 39.9s but Ollama reports 0 bytes resident on GPU -- it silently ran on CPU instead",
+    "benchmark_cpu_error": null
   },
   "nickc": {
     "platform": "linux",

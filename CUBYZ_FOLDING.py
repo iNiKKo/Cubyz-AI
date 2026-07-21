@@ -122,7 +122,7 @@ SERVER_URL       = "http://ashframe.net:7000"
 OLLAMA_URL       = "http://localhost:11434/api/generate"
 CONFIG_FILE      = os.path.expanduser("~/.cubyz_node_config.json")
 DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
-VERSION          = "1.3.5"
+VERSION          = "1.3.6"
 
 print_lock = threading.Lock()
 
@@ -887,8 +887,17 @@ def _is_ollama_running() -> bool:
 
 
 def _start_ollama_native():
+    # OLLAMA_NUM_PARALLEL defaults to 1 (Ollama serializes generation requests) unless set --
+    # the Docker deployment path (install_ollama_container) already sets this explicitly, but
+    # nothing did for a native install, since this is the only place that actually launches an
+    # Ollama process this script controls. Only helps when WE start it -- if Ollama's already
+    # running (the common case on Windows, where the official installer sets it up to auto-start
+    # in the background before this script ever runs), an env var here can't reach into an
+    # already-running process; that case is instead flagged to the user directly at the point
+    # they try to enable parallel workers (see _get_gpu_worker_slots's caller).
+    env = {**os.environ, "OLLAMA_NUM_PARALLEL": str(PARALLEL_WORKERS_MAX)}
     try:
-        subprocess.Popen(["ollama", "serve"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.Popen(["ollama", "serve"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=env)
     except Exception:
         pass
 
@@ -2606,6 +2615,18 @@ class ParallelWorkerPoolController:
         ok, reason = self.check_headroom()
         if not ok:
             return False, reason
+        # There's no API to ask Ollama what its own OLLAMA_NUM_PARALLEL is set to, so this can't
+        # be a hard gate -- but it's worth saying every time, since the failure mode if it's still
+        # at Ollama's default (1) is silent and easy to misread as "parallel isn't helping" rather
+        # than "Ollama itself is still only running one request at a time." _start_ollama_native()
+        # sets this automatically when THIS script is the one launching Ollama, but can't reach an
+        # Ollama that was already running before this script started (the common case, e.g.
+        # Windows' official installer auto-starts it in the background) -- that case needs the
+        # volunteer to set it system-wide and restart Ollama themselves.
+        print(f"{Colors.CYAN}[i] For parallel workers to actually run in parallel, Ollama itself needs "
+              f"OLLAMA_NUM_PARALLEL >= {self.worker_count} (its default is 1, one request at a time). "
+              f"If Ollama was already running before this script started, set that environment "
+              f"variable system-wide and restart Ollama.{Colors.RESET}")
         self._threads, self._stop_events, self._lane_tags = [], [], []
         suffixes = "pqrstuvwxyz"
         for i in range(self.worker_count):
