@@ -9,7 +9,7 @@
 Clears the world edit selection positions.
 
 ## Explanation
-This function handles the '/deselect' command in the server's WorldEdit system. It clears the two selection positions stored in `source.worldEditData.selectionPosition1` and `source.worldEditData.selectionPosition2`, which are set to `null`. Then, it sends a 'clear' update to the network protocol for WorldEdit using `main.network.protocols.genericUpdate.sendWorldEditPos(source.conn, .clear, null)`. Finally, it sends a confirmation message to the user with the text 'Cleared selection.'
+This function handles the '/deselect' command in the server's WorldEdit system. It clears the two selection positions stored in `source.worldEditData.selectionPosition1` and `source.worldEditData.selectionPosition2`, which are set to `null`. Then, it sends a 'clear' update to the network protocol for WorldEdit using `main.network.protocols.genericUpdate.sendWorldEditPos(source.conn, .clear, null)`. Finally, it sends a confirmation message to the user with the text 'Cleared selection.' The command syntax is '/deselect', and the data structures used to store the WorldEdit selection positions are `selectionPosition1` and `selectionPosition2` within the `worldEditData` of the `User` struct. The Args union contains one variant, `@"/deselect": struct {}`, which represents the command syntax.
 
 ## Code Example
 ```zig

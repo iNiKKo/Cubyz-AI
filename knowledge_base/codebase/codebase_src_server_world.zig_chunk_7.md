@@ -13,6 +13,8 @@ This chunk manages the lifecycle of players within a server world. It includes f
 
 The direction changes and steps remaining are calculated as follows: the `stepsRemaining` variable is decremented each time a step is taken, and when it reaches zero, the direction (`dir`) is changed based on a predefined sequence (`.dirNegX => .dirNegY`, `.dirPosX => .dirPosY`, `.dirNegY => .dirPosX`, `.dirPosY => .dirNegX`). Every second turn, the number of steps needed doubles. The `spawn` variable is used to determine the initial spawn location and height based on the terrain map.
 
+Inventory management involves loading player inventories with a size of 36 for the main inventory and 1 for the hand inventory. The `loadPlayerInventory` function decodes base64-encoded data into binary format, while the `savePlayerInventory` function encodes binary data back into base64 format.
+
 ## Code Example
 ```zig
 fn savePlayerInventory(allocator: NeverFailingAllocator, inv: main.items.Inventory) []const u8 {

@@ -13,7 +13,9 @@ This chunk defines a public `Options` struct with a field `commandName` of type 
 
 The chunk begins by importing necessary modules: `std`, `main`, `NeverFailingAllocator`, `ListManaged`, and `utils`. The `Options` struct is defined with a single field, `commandName`, which holds the command name as a slice of constant bytes. The `ResolveMode` enum includes two variants: `parse` and `autocomplete`, used to specify different modes of argument resolution.
 
-The import statements are crucial for accessing functionalities provided by these modules, ensuring that the code has access to necessary types and utilities.
+The import statements are crucial for accessing functionalities provided by these modules. Specifically, `std` provides standard library functions, `main` contains the main application logic, `NeverFailingAllocator` is a custom allocator that never fails, `ListManaged` is a managed list type, and `utils` provides utility functions used throughout the codebase.
+
+The `ListManaged` type represents a managed list that can be dynamically resized and is used to manage collections of items efficiently. The `NeverFailingAllocator` is imported from the `main.heap` module to ensure reliable memory allocation.
 
 ## Related Questions
 - What is the purpose of the `Options` struct?

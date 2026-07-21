@@ -9,7 +9,7 @@
 Handles command to manage player permissions with detailed argument parsing and error handling.
 
 ## Explanation
-The chunk defines a '/perm' command that allows users to manage player permissions. The command supports several sub-commands with specific syntax:
+The chunk defines a '/perm' command that allows users to manage player permissions with detailed argument parsing and error handling. The command supports several sub-commands with specific syntax:
 
 1. `/perm <permissionPath>`: Checks if the current player has the specified permission path.
 2. `/perm @<playerIndex> <permissionPath>`: Checks if a specified player (by index) has the given permission path.
@@ -20,6 +20,8 @@ The command uses an `Args` union to parse arguments and perform corresponding op
 
 - `@"/perm <action> <list> <playerIndex> <permissionPath>": struct { action: enum { add, remove }, list: enum { whitelist, blacklist }, playerIndex: ?command.PlayerIndex, permissionPath: Path }
 - `@"/perm <playerIndex> <permissionPath>": struct { playerIndex: ?command.PlayerIndex, permissionPath: Path }
+
+The 'execute' function handles different actions and lists. For the first variant, it checks if the target player exists, determines the list type (whitelist or blacklist), and adds or removes the permission path accordingly. If a permission path is not present during removal, an error message is displayed. For the second variant, it checks if the specified player has the given permission path and sends a corresponding message.
 
 Error handling is implemented during argument parsing and permission management:
 - If a player index is provided, it checks if the target player exists.

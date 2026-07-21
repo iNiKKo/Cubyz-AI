@@ -11,7 +11,31 @@ Handles audio data loading and caching using miniaudio and stb_vorbis libraries.
 ## Explanation
 This chunk manages audio data, specifically music files in OGG format. It uses the miniaudio library for error handling and the stb_vorbis library for decoding OGG files. The `AudioData` struct encapsulates methods to open, initialize, and deinitialize audio data from a given ID. It also includes methods for hashing and equality checks. The chunk maintains a cache of loaded audio data (`musicCache`) and a list of active loading tasks (`activeTasks`). The `findMusic` function searches the cache or schedules a new task if the music is not already loaded.
 
-The `StbVorbisErrorEnum` enum defines various error codes for STB Vorbis operations. The `getStbVorbisError` function converts an integer result to its corresponding error enum, logging an unknown error code if necessary. The `handleError` function logs and returns an error if a miniaudio operation fails.
+The `StbVorbisErrorEnum` enum defines various error codes for STB Vorbis operations, including:
+- unknown_error = -1
+- no_error = 0
+- need_more_data = 1
+- invalid_api_mixing = 2
+- outofmem = 3
+- feature_not_supported = 4
+- too_many_channels = 5
+- file_open_failure = 6
+- seek_without_length = 7
+- unexpected_eof = 10
+- seek_invalid = 11
+- invalid_setup = 20
+- invalid_stream = 21
+- missing_capture_pattern = 30
+- invalid_stream_structure_version = 31
+- continued_packet_flag_invalid = 32
+- incorrect_stream_serial_number = 33
+- invalid_first_page = 34
+- bad_packet_type = 35
+- cant_find_last_page = 36
+- seek_failed = 37
+- ogg_skeleton_not_supported = 38
+
+The `getStbVorbisError` function converts an integer result to its corresponding error enum, logging an unknown error code if necessary. The `handleError` function logs and returns an error if a miniaudio operation fails.
 
 The `AudioData.open_vorbis_file_by_id` method attempts to open an OGG file by searching two paths: one in the assets directory and another in the serverAssets directory. It handles errors using the `StbVorbisErrorEnum` and logs appropriate messages if the file cannot be found or opened.
 

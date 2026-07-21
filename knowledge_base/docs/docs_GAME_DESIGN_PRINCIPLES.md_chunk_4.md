@@ -5,7 +5,7 @@
 **Concepts:** Balancing
 
 ## Summary
-Cubyz's balancing principles: the "2OP4ME" rule and trade-offs.
+Cubyz's balancing principles: the "2OP4ME" rule and trade-offs. **From GAME_DESIGN_PRINCIPLES.md, a contributor-facing design-vision document -- the "enemies" mentioned in the trade-offs example is a design goal, not confirmation that enemy combat is currently implemented.**
 
 ## Explanation
 When balancing the game, keep in mind how players might interact with the world, the wildlife, and each other.

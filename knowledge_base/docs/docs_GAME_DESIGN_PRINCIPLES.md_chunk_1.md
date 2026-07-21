@@ -5,20 +5,16 @@
 **Concepts:** Break the Cycle (part 1)
 
 ## Summary
-The first six "Break the Cycle" design rules: no dimensions, no teleportation, no automation, mobs don't respawn naturally, no passive animals, no unbreakable tools.
+The first six "Break the Cycle" design rules: no dimensions, no teleportation, no automation, mobs don't respawn naturally, no passive animals, no unbreakable tools. **From GAME_DESIGN_PRINCIPLES.md, a contributor-facing design-vision document -- these are design rules/goals, not confirmation that mobs/monsters/animals are currently implemented in the shipped game.**
 
 ## Explanation
-No Dimensions: instead of creating separate dimensions, Cubyz fits these places physically into its massive world for the player to come across.
+Cubyz is a voxel sandbox game with an infinite world, focusing on great adventures, immersive exploration, and numerous challenges. The game encourages interaction with various systems such as exploring, building, crafting, and more to promote progression.
 
-No Teleportation: teleportation makes the game less immersive, as it diminishes the exploring aspect and doesn't let the player get a good sense of the scale of the world.
-
-No Automation: having quick, infinite resources at the palm of players' hands discourages exploration, as the player will never need to forage or search for blocks they desire.
-
-Mobs Don't Respawn Naturally: clearing a dangerous area of its monsters will make it safe to build and explore. This rule is also here to prevent mob farming.
-
-No Passive Animals: animals do not want to die, so they will either run from an attacking player or attempt to defend themselves. The player will have to strategize to be able to hunt.
-
-No Unbreakable Tools: if a player gets too attached to their amazing tool, they won't want to make other types of tools, and low-tier materials will see less use, as they will never be used in tool-making.
+**Progression Examples:**
+- **Explore to Build:** Players need to explore to gather resources for building.
+- **Survive to Explore:** Caves and structures may have enemies and traps that players must face to explore safely.
+- **Strategize to Survive:** Prepare for trips with tools, weapons, and gear to make survival easier.
+- **Build to Strategize:** Players need to build defenses for events, invasions, and bosses. They also need to upgrade their workstations to allow for better gear.
 
 ## Related Questions
 - Why doesn't Cubyz use separate dimensions for different areas?

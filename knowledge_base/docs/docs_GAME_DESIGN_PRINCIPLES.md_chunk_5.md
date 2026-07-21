@@ -5,7 +5,7 @@
 **Concepts:** Little Details
 
 ## Summary
-Cubyz's "Little Details" design principles: big vs. small trees, vegetation fitting biome climate, and caves getting creepier with depth.
+Cubyz's "Little Details" design principles: big vs. small trees, vegetation fitting biome climate, and caves getting creepier with depth. **From GAME_DESIGN_PRINCIPLES.md, a contributor-facing design-vision document -- the "monsters" mentioned below are a design goal, not confirmation that monster/enemy encounters are currently implemented.**
 
 ## Explanation
 Big Trees vs Small Trees: big trees are designed to be built upon or left as decoration, whereas small trees are designed to be chopped down.

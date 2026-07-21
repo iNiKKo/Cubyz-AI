@@ -9,7 +9,7 @@
 Handles the execution of the '/redo' command for world editing, allowing users to reapply their last undone change.
 
 ## Explanation
-Handles the execution of the '/redo' command for world editing, allowing users to reapply their last undone change. The chunk defines a command handler for the '/redo' world editing command. It uses an argument parser to validate input and checks if there is any action available in the redo history. If an action exists, it captures the current state as an undo blueprint, reapplies the last change, and updates the undo history accordingly. If no action is available, it informs the user that there is nothing to redo. The Args struct is empty, indicating that the '/redo' command does not require any arguments.
+Handles the execution of the '/redo' command for world editing, allowing users to reapply their last undone change. The chunk defines a command handler for the '/redo' world editing command. It uses an argument parser to validate input and checks if there is any action available in the redo history. If an action exists, it captures the current state as an undo blueprint, reapplies the last change, and updates the undo history accordingly. If no action is available, it informs the user that there is nothing to redo. The Args struct is empty, indicating that the '/redo' command does not require any arguments. The usage of the '/redo' command is `/redo`, and it does not take any additional parameters.
 
 ## Code Example
 ```zig

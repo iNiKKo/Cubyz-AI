@@ -9,7 +9,7 @@
 Handles the /gamemode command for setting or getting a player's gamemode.
 
 ## Explanation
-The chunk defines the logic for the /gamemode server command, which allows users to set or retrieve the gamemode of a specified player. The command can be used with different syntaxes: `/gamemode <survival/creative>`, `/gamemode @playerIndex <survival/creative>`, `/gamemode`, and `/gamemode @playerIndex`. It uses an argument parser to interpret the command arguments and determine whether to set or get the gamemode. If setting, it updates the player's gamemode; if getting, it sends the current gamemode back to the user. The `Args` union enum defines the possible argument structures for the command. The `execute` function handles the execution of the command based on the parsed arguments. If there is an error during argument parsing, an error message is sent back to the user.
+The chunk defines the logic for the /gamemode server command, which allows users to set or retrieve the gamemode of a specified player. The command can be used with different syntaxes: `/gamemode <survival/creative>`, `/gamemode @playerIndex <survival/creative>`, `/gamemode`, and `/gamemode @playerIndex`. The `Args` union enum defines the possible argument structures for the command, where `@"/gamemode <playerIndex> <mode>"` contains a player index and a mode. The `execute` function handles the execution of the command based on the parsed arguments. If setting, it updates the player's gamemode; if getting, it sends the current gamemode back to the user. If there is an error during argument parsing, an error message is sent back to the user.
 
 ## Code Example
 ```zig

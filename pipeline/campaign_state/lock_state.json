@@ -1,10 +1,5 @@
 {
-  "locked": {
-    "codebase_src_graphics.zig_chunk_21": {
-      "user_id": "nickpc",
-      "timestamp": 1784649073.529341
-    }
-  },
+  "locked": {},
   "completed": [
     "codebase_src_server_storage.zig_chunk_0",
     "codebase_src_server_storage.zig_chunk_1",
@@ -3435,7 +3430,8 @@
     "codebase_assets_cubyz_blocks_textures_lumiflora_top.zig.zon_chunk_0",
     "codebase_assets_cubyz_blocks_textures_fog_cyan.zig.zon_chunk_0",
     "codebase_assets_cubyz_blocks_textures_hibiscus.zig.zon_chunk_0",
-    "codebase_assets_cubyz_blocks_textures_vetch.zig.zon_chunk_0"
+    "codebase_assets_cubyz_blocks_textures_vetch.zig.zon_chunk_0",
+    "docs_cubyz_hub_models_overview.md_chunk_0"
   ],
   "gave_up_counts": {}
 }

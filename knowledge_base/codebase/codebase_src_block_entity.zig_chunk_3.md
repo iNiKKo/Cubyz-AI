@@ -54,6 +54,21 @@ pub fn deinit() void {
 }
 ```
 
+The code example provided in raw_content is as follows:
+```zig
+pub fn deinit() void {
+	while (textureDeinitList.popOrNull()) |texture| {
+		texture.deinit();
+	}
+	textureDeinitList.deinit(main.globalAllocator);
+	if (!main.settings.launchConfig.headlessServer) {
+		pipeline.deinit();
+	}
+	StorageServer.deinit();
+	StorageClient.deinit();
+}
+```
+
 ## Code Example
 ```zig
 pub fn deinit() void {

@@ -1,5 +1,5 @@
 # Game Design Principles
-This document is intended for contributors and may contain spoilers.
+This document is intended for contributors and may contain spoilers. It describes design goals and intended direction, not necessarily features that are already implemented in the current shipped game -- if asked whether something described here (e.g. enemies, combat, invasions, bosses) currently exists in Cubyz, say it's a stated design goal rather than confirming it's implemented, unless another source confirms it's shipped.
 
 ## What is Cubyz?
 Cubyz is a voxel sandbox game with infinite world and focus on great adventures, immersive exploration with numerous challenges along the way. We cherish freedom and we are determined to give it to the players in abundance, so they can chose their own path through the world.
@@ -13,6 +13,8 @@ Examples:
 - Build to Strategize: The player has to build defenses for events, invasions, and bosses. They also need to upgrade their workstations to allow for better gear.
 
 ## Break the Cycle
+(These are design rules/goals from this contributor-facing design document, not confirmation that mobs/monsters/animals are already implemented in the shipped game.)
+
 ### No Dimensions
 Instead of creating seperate dimensions, we can fit these places physically into Cubyz' massive world for the player to come across.
 
@@ -84,7 +86,7 @@ These moments are extremely important as they largely influence the player's moo
 To add immersion to the game, creatures should perform behaviors outside of player input, such as hunting, playing, migrating, eating, or sleeping.
 
 ## Balancing
-When balancing the game, keep in mind how players might interact with the world, the wildlife, and each other.
+When balancing the game, keep in mind how players might interact with the world, the wildlife, and each other. (Design goal, not confirmation that enemy combat is already implemented in the shipped game.)
 
 ### 2OP4ME
 Players need to be vulnerable at all times to avoid power imbalances. Armor, tools, accessories, and buffs should aid the player, not let them win outright.
@@ -98,6 +100,7 @@ If the player is given something to aid them, then it should have an appropriate
 - Enemies have strengths and weaknesses towards particular damage types.
 
 ## Little Details
+(Design goals from this contributor-facing design document -- the "monsters" mentioned below are not necessarily confirmation of currently-implemented monster/enemy encounters.)
 
 ### Big Trees vs Small Trees
 Big trees are designed to be built upon or left as decoration, whereas small trees are designed to be chopped down.

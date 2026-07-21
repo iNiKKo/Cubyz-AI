@@ -9,11 +9,15 @@
 Handles the /help server command to display information about available commands.
 
 ## Explanation
-This chunk defines the logic for processing the '/help' command in a server context. It uses an argument parser to handle different forms of the command, such as listing all commands or providing usage details for a specific command. The `execute` function parses the input arguments and constructs a response message accordingly. If there's an error during parsing, it sends an error message back to the user. The `Cmd` struct is responsible for parsing individual command names and handling errors if the command is not recognized.
+This chunk defines the logic for processing the '/help' server command. It uses an argument parser to handle different forms of the command, such as listing all commands or providing usage details for a specific command. The `execute` function parses the input arguments and constructs a response message accordingly. If there's an error during parsing, it sends an error message back to the user. The `Cmd` struct is responsible for parsing individual command names and handling errors if the command is not recognized.
 
-The `Args` union(enum) defines the possible forms of the '/help' command, including `/help`, `/help <command>`, and `/help <bobik>`. Each form has a corresponding struct that holds the parsed arguments. The `Cmd` struct contains a `Command` object and provides a `parse` method to retrieve a command by name.
+The 'description' constant provides a brief description of the '/help' command: "Shows info about all the commands." The 'usage' constant specifies its syntax: "/help\n/help <command>". The `execute` function uses these constants to construct help messages for users.
 
-The 'description' constant provides a brief description of the '/help' command, while the 'usage' constant specifies its syntax. The 'execute' function uses these constants to construct help messages for users.
+The `Args` union(enum) defines the possible forms of the '/help' command, including `/help`, `/help <command>`, and `/help <bobik>`. Each form has a corresponding struct that holds the parsed arguments. For example, the `@"/help <command>"` variant contains a `command` field of type `Cmd`. The `Cmd` struct contains a `Command` object and provides a `parse` method to retrieve a command by name.
+
+The argument parser in this chunk is responsible for parsing the input arguments and returning a result based on the form of the '/help' command. If an unrecognized command is provided, it sends an error message back to the user. The `NeverFailingAllocator` is used to allocate memory without failing, ensuring that the program can handle errors gracefully.
+
+Messages are constructed using `ListManaged(u8)` and sent back to the user using the `sendMessage` method of the `User` struct. Command descriptions and usages are retrieved from the `command.commands` map and displayed in the response message.
 
 ## Code Example
 ```zig

@@ -9,7 +9,9 @@
 This chunk implements the generation of fractal noise for 3D terrain. The `FractalNoise3D` struct contains methods to generate aligned and initialized fractal terrain. The `generateAligned` function initializes an array and generates random values at specific intervals, while `generateInitializedFractalTerrain` refines the noise by averaging neighboring points and adding randomness.
 
 ## Explanation
-This chunk implements the generation of fractal noise for 3D terrain. The `FractalNoise3D` struct contains methods to generate aligned and initialized fractal terrain. The `generateAligned` function performs several assertion checks:
+This chunk implements the generation of fractal noise for 3D terrain using the `FractalNoise3D` struct. The `generateAligned` function initializes an array and generates random values at specific intervals, while `generateInitializedFractalTerrain` refines the noise by averaging neighboring points and adding randomness.
+
+The `generateAligned` function performs several assertion checks:
 
 - Alignment: `wx & scale - 1 == 0`, `wy & scale - 1 == 0`, `wz & scale - 1 == 0`
 - Dimensions need to be of the form n*scale + 1 with n ∈ ℕ \ {0}: `width - 1 & scale/voxelSize - 1 == 0`, `height - 1 & scale/voxelSize - 1 == 0`, `depth - 1 & scale/voxelSize - 1 == 0`
@@ -30,6 +32,18 @@ The `generateInitializedFractalTerrain` function refines the noise by averaging 
 2. Loop through the array with a step size of `2*res` for each dimension (x, y, z).
 3. For each point, calculate the average value of its neighboring points and add randomness by generating a random float between -0.5 and 0.5 and multiplying it by the current scale.
 4. Repeat this process until the resolution is sufficiently high.
+
+The function handles different cases based on which coordinates are aligned with the grid:
+
+- **No coordinate on the grid**: Calculate the average of six neighboring points.
+- **x coordinate on the grid**: Calculate the average of four neighboring points along y and z axes.
+- **y coordinate on the grid**: Calculate the average of four neighboring points along x and z axes.
+- **z coordinate on the grid**: Calculate the average of four neighboring points along x and y axes.
+- **x and y coordinates on the grid**: Calculate the average of two neighboring points along the z axis.
+- **x and z coordinates on the grid**: Calculate the average of two neighboring points along the y axis.
+- **y and z coordinates on the grid**: Calculate the average of two neighboring points along the x axis.
+
+This detailed process ensures that the noise generation is smooth and varied, creating realistic terrain.
 
 ## Code Example
 ```zig
