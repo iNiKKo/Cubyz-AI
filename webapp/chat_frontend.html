@@ -267,6 +267,32 @@
   }
   #whatsNewOkBtn:hover { filter: brightness(1.1); }
 
+  #infoOverlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+    align-items: center; justify-content: center; padding: 20px; z-index: 100;
+  }
+  #infoOverlay.show { display: flex; }
+  #infoModal {
+    background: var(--panel); color: var(--text); border: 1px solid var(--border);
+    border-radius: 14px; padding: 22px 24px; max-width: 440px; width: 100%;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+  }
+  #infoModal h2 { margin: 0 0 12px; font-size: 17px; }
+  #infoBody { font-size: 13.5px; line-height: 1.5; color: var(--text); margin-bottom: 18px; }
+  #infoBody p { margin: 0 0 12px; }
+  #infoBody .info-section-title { font-weight: 600; margin-bottom: 6px; }
+  #infoBody .info-row {
+    display: flex; justify-content: space-between; gap: 10px; padding: 5px 0;
+    border-bottom: 1px solid var(--border); color: var(--text-dim);
+  }
+  #infoBody .info-row:last-child { border-bottom: none; }
+  #infoBody .info-row b { color: var(--text); font-weight: 500; }
+  #infoOkBtn {
+    background: var(--accent); color: #fff; border: none; border-radius: 8px;
+    padding: 8px 20px; font-size: 13.5px; cursor: pointer; display: block; margin-left: auto;
+  }
+  #infoOkBtn:hover { filter: brightness(1.1); }
+
   @media (max-width: 640px) {
     header { padding: 12px 14px; }
     #messages { padding: 16px 12px; }
@@ -297,6 +323,9 @@
         <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
         <span class="btnLabel">GitHub</span>
       </a>
+      <button class="headerBtn" id="infoBtn" title="What is this trained on?">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6.5"/><path d="M8 7.2v4.3" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.7" fill="currentColor" stroke="none"/></svg>
+      </button>
       <button class="headerBtn" id="themeBtn" title="Toggle dark/light theme">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="themeIcon"></svg>
       </button>
@@ -317,6 +346,14 @@
     <h2>What's New!</h2>
     <ul id="whatsNewList"></ul>
     <button id="whatsNewOkBtn">Okay</button>
+  </div>
+</div>
+
+<div id="infoOverlay">
+  <div id="infoModal">
+    <h2>What is this trained on?</h2>
+    <div id="infoBody">Loading&hellip;</div>
+    <button id="infoOkBtn">Close</button>
   </div>
 </div>
 
@@ -345,15 +382,18 @@ document.getElementById('themeBtn').addEventListener('click', () => {
 // visitors about. Anyone who has never seen this version (new visitors included) gets the modal;
 // so does anyone who saw it but hasn't been back in a while, in case they missed it. Stays quiet
 // forever once you're caught up.
-const WHATS_NEW_VERSION = '2026-07-21-2';
+const WHATS_NEW_VERSION = '2026-07-21-3';
 // Bold (**text**) the headline items so the big changes stand out from small polish items --
 // order matters here, biggest/most useful first.
 const WHATS_NEW_ITEMS = [
   '**New AI model** — upgraded to a more accurate model',
   '**Memory** — it now remembers earlier questions in the same chat, so **follow-ups** make sense',
+  'Improved accuracy on short follow-up questions that refer back to something you just asked',
+  'Added an info button showing exactly what the AI and its search index are trained on',
   'Renamed to Snale AI',
   'Added a Stop button to cancel a message you’re waiting on',
   'Added a live indicator showing how many people are getting an answer right now',
+  'Shows a notice when the chat is compacting older history instead of just seeming stuck',
   'Added a dark/light theme toggle (remembers your choice)',
   'Wider layout, plus Leaderboard and GitHub buttons in the header',
   'Fixed a bug where short replies could render with a broken line break',
@@ -642,6 +682,15 @@ async function loadHistory() {
   }
 }
 
+let lastStatus = null;
+
+const COLLECTION_LABELS = {
+  docs: 'Docs',
+  codebase: 'Codebase',
+  addon_creator: 'Addon Creator',
+  reviews: 'PR & Issue Reviews',
+};
+
 async function loadStatus() {
   const dot = document.getElementById('statusDot');
   const badge = document.getElementById('modelBadge');
@@ -649,6 +698,7 @@ async function loadStatus() {
   try {
     const res = await fetch('/api/status');
     const s = await res.json();
+    lastStatus = s;
     dot.className = 'status-dot ok';
     dot.title = 'Connected';
     badge.innerHTML = '<span class="dot"></span>' + escapeHtml(s.model);
@@ -665,6 +715,43 @@ async function loadStatus() {
     capBadge.textContent = '';
   }
 }
+
+function renderInfoBody(s) {
+  const stats = s && s.training_stats;
+  if (!stats) return '<p>Stats aren\'t available right now -- try again once the server finishes starting up.</p>';
+
+  let html = '<p><span class="info-section-title">Fine-tuned model</span><br>'
+    + (stats.finetune_examples != null
+        ? `Trained on <b>${stats.finetune_examples.toLocaleString()}</b> examples drawn from Cubyz's real PR &amp; issue review history -- this shapes how it reasons and explains things, not the facts it knows.`
+        : 'Fine-tune example count unavailable.')
+    + '</p>';
+
+  html += '<p><span class="info-section-title">Live search index (RAG)</span><br>'
+    + 'Every question searches this index fresh -- this is where actual facts come from, not the fine-tune.</p>';
+
+  const order = ['codebase', 'reviews', 'docs', 'addon_creator'];
+  const collections = stats.collections || {};
+  html += '<div>' + order.filter(k => collections[k]).map(k => {
+    const c = collections[k];
+    return `<div class="info-row"><span>${escapeHtml(COLLECTION_LABELS[k] || k)}</span>`
+      + `<b>${c.chunks.toLocaleString()} chunks &middot; ${c.sources.toLocaleString()} source files</b></div>`;
+  }).join('') + '</div>';
+
+  return html;
+}
+
+document.getElementById('infoBtn').addEventListener('click', async () => {
+  const body = document.getElementById('infoBody');
+  document.getElementById('infoOverlay').classList.add('show');
+  if (!lastStatus) {
+    body.innerHTML = 'Loading&hellip;';
+    await loadStatus();
+  }
+  body.innerHTML = renderInfoBody(lastStatus);
+});
+document.getElementById('infoOkBtn').addEventListener('click', () => {
+  document.getElementById('infoOverlay').classList.remove('show');
+});
 
 function autoResize() {
   textInput.style.height = 'auto';

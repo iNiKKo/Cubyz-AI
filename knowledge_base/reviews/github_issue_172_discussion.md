@@ -26,8 +26,8 @@ The discussion revolves around various material modifiers for tools in Cubyz, in
 - **blunt**: Damage decreases the longer you use it.
 
 ## Rare Modifiers
-- **single-use**: Unique effects that could prevent overpowered tools.
-- **one-hit**: Causes significant damage but consumes durability quickly.
+- **single-use**: Only one material with this modifier can be used per tool -- prevents overpowered tools by stopping the same (or multiple different) strong single-use materials from being stacked together.
+- **one-hit**: Deals much higher damage than normal, but the tool's durability breaks after that single use.
 - **unbreakable**: Prevents the tool from breaking, potentially leading to resource imbalance.
 - **self-repairing**: Repairs itself over time, which might be less engaging in Cubyz's balanced material system.
 

@@ -122,7 +122,7 @@ SERVER_URL       = "http://ashframe.net:7000"
 OLLAMA_URL       = "http://localhost:11434/api/generate"
 CONFIG_FILE      = os.path.expanduser("~/.cubyz_node_config.json")
 DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
-VERSION          = "1.3.1"
+VERSION          = "1.3.2"
 
 print_lock = threading.Lock()
 
@@ -547,7 +547,7 @@ CPU_TIER_RAM_FLOOR_GB  = {"easy": 6.0, "medium": 8.0}
 DUAL_LANE_MIN_RAM_GB   = 12.0
 DUAL_LANE_MIN_VRAM_GB  = 4.0
 TIER_RANK              = {"easy": 0, "medium": 1, "hard": 2}
-BENCHMARK_VERSION      = 3
+BENCHMARK_VERSION      = 4
 BENCHMARK_TIMEOUT      = 90
 # hard tier uses 2 workers (not 3) -- a 14b/32b model already saturates the GPU, so
 # adding a third concurrent slot just causes thrashing rather than throughput gains.
@@ -828,6 +828,28 @@ def _is_ollama_running() -> bool:
 def _start_ollama_native():
     try:
         subprocess.Popen(["ollama", "serve"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception:
+        pass
+
+
+def warm_up_model(model_name: str):
+    """Forces Ollama to actually load model_name into memory, with a generous, untimed-feeling
+    budget and errors swallowed -- called once before the real timed benchmark so a slow FIRST
+    load (reading a multi-GB file off disk, GPU driver/kernel JIT on first use, antivirus
+    scanning the model file on Windows -- all real, all observed) doesn't eat into
+    BENCHMARK_TIMEOUT and get misreported as "GPU benchmark timed out"/GPU failure. Confirmed
+    live: a volunteer on an RTX 4060 Ti (12GB, plenty for these models, CUDA fully supported)
+    got a benchmark timeout on Windows -- a machine that capable timing out on ~90s of actual
+    generation makes far less sense than the FIRST-load overhead alone blowing that budget before
+    generation even started, which this eliminates by paying that cost here instead, off the
+    benchmark clock. If warm-up itself fails, the real benchmark right after will hit the same
+    problem and report a real, actionable error -- so there's no downside to always trying.
+    """
+    try:
+        make_request(OLLAMA_URL, {
+            "model": model_name, "prompt": "hi", "stream": False,
+            "options": {"num_predict": 1},
+        }, timeout=300)
     except Exception:
         pass
 
@@ -3049,6 +3071,11 @@ def main():
                 cpu_error = cached.get("cpu_error")
                 print(f"\033[92m[OK] Using cached benchmark result.\033[0m")
             else:
+                print(f"\033[96m[~] Warming up models (first load can be slow, doesn't count against the benchmark)...\033[0m")
+                warm_up_model(chosen_model)
+                if cpu_model != chosen_model:
+                    warm_up_model(cpu_model)
+
                 print(f"\033[96m[~] Running hardware benchmark (one-time, up to 2 minutes)...\033[0m")
                 _bench = {}
                 arch_bad, arch_reason = check_gpu_architecture_support(gpu_type)
@@ -3074,7 +3101,19 @@ def main():
 
                 if gpu_time is None:
                     primary_is_gpu = False
-                    print(f"\033[93m[!] GPU benchmark failed ({gpu_error}) -- using CPU.\033[0m")
+                    # no_gpu_offload and "unsupported arch" both mean the same thing to a
+                    # volunteer: this GPU can't actually be used by Ollama here, for reasons
+                    # that are a driver/backend-support problem, not something they did wrong or
+                    # can fix from this console. The raw diagnostic string (still logged via
+                    # save_benchmark_result()/diagnostics for us to actually debug with) reads
+                    # like an error in OUR software otherwise -- confirmed live, a Polaris (AMD
+                    # gfx803, unsupported by ROCm) card's rocminfo wasn't found so the arch
+                    # blocklist check below never caught it, and the real benchmark ran and
+                    # failed with the raw "no_gpu_offload: ..." string front and center.
+                    if gpu_error and ("no_gpu_offload" in gpu_error or "unsupported arch" in gpu_error):
+                        print(f"\033[93m[!] GPU not supported by Ollama on this machine -- using CPU instead.\033[0m")
+                    else:
+                        print(f"\033[93m[!] GPU benchmark failed ({gpu_error}) -- using CPU.\033[0m")
                 elif cpu_time is None:
                     primary_is_gpu = True
                     print(f"\033[92m[OK] GPU ({gpu_time:.1f}s) primary.\033[0m")

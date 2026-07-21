@@ -32,6 +32,7 @@ if it was set up for the old port 7000.
 """
 import asyncio
 import json
+import os
 import sqlite3
 import threading
 import time
@@ -83,6 +84,7 @@ _compacting_lock = threading.Lock()
 # blindly.
 HISTORY_CHAR_BUDGET = 12000
 _index = None  # embedding index, loaded once at startup and reused across all requests
+_training_stats = None  # real chunk/example counts for the "what's this trained on" info panel
 
 
 def db():
@@ -123,11 +125,36 @@ def db():
     return conn
 
 
+def _compute_training_stats():
+    """Real counts for the "what's this trained on" info panel -- read fresh from the actual
+    index/dataset on disk rather than hardcoded, so this can't silently go stale as the knowledge
+    base or fine-tune dataset grows. Collection names are literally the knowledge_base/
+    subdirectory names (see local_rag_chat.scan_files); each .md file there is already one chunk,
+    so "unique source files" strips the _chunk_N suffix that codebase/docs/addon_creator use
+    (reviews chunks are 1 file = 1 discussion, no suffix to strip)."""
+    import re as _re
+    collections = {}
+    for e in _index:
+        c = collections.setdefault(e["collection"], {"chunks": 0, "sources": set()})
+        c["chunks"] += 1
+        c["sources"].add(_re.sub(r"_chunk_\d+\.md$", "", e["filename"]))
+    collections = {k: {"chunks": v["chunks"], "sources": len(v["sources"])} for k, v in collections.items()}
+
+    finetune_examples = None
+    sft_path = os.path.join(local_rag_chat.REPO_ROOT, "finetune", "output", "cubyz_sft_dataset.jsonl")
+    if os.path.exists(sft_path):
+        with open(sft_path, encoding="utf-8") as f:
+            finetune_examples = sum(1 for line in f if line.strip())
+
+    return {"collections": collections, "finetune_examples": finetune_examples}
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global _index
+    global _index, _training_stats
     print("[~] Loading RAG index (reusing local_rag_chat.py's cached embeddings)...")
     _index = local_rag_chat.load_index()
+    _training_stats = _compute_training_stats()
     print(f"[OK] Index ready ({len(_index)} chunks). Serving on http://{HOST}:{PORT}")
     yield
 
@@ -173,6 +200,7 @@ async def status():
         "chunks": len(_index) if _index is not None else 0,
         "active_generations": _active_generations,
         "max_concurrent_generations": MAX_CONCURRENT_GENERATIONS,
+        "training_stats": _training_stats,
     })
 
 

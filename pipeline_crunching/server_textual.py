@@ -1235,7 +1235,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.3.1"
-LATEST_CLIENT_VERSION = "1.3.1"
+LATEST_CLIENT_VERSION = "1.3.2"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:
@@ -1511,16 +1511,25 @@ def rag_initialize_empty_state():
     # left untouched here: a hard reset clears the campaign so chunks can be redone (e.g. after a
     # crunching-prompt fix), but a volunteer's lifetime contribution total should never drop back
     # to 0 just because the campaign queue was rebuilt.
-    for f in (RAG_LOCK_FILE, RAG_HASH_DB_FILE):
-        if os.path.exists(f):
-            os.remove(f)
+    #
+    # RAG_HASH_DB_FILE is deliberately left untouched too, for a different reason: it's the last
+    # finished crunch's per-chunk content fingerprint, the only thing rag_initialize_chunks() has
+    # to compare "current knowledge_base/ source" against to tell already-crunched-and-unchanged
+    # apart from actually-new-or-edited. Wiping it on every hard reset used to throw that baseline
+    # away right when it's most valuable (a reset means real work is about to happen again) --
+    # rag_execute_hard_reset() already archives a timestamped copy first, but that backup was
+    # never wired back in as the next run's comparison point, so the wipe was pure information
+    # loss, not a safety net. completed/locked below still reset to force a full re-verify (that's
+    # the actual point of a hard reset, e.g. after a crunching-prompt fix) -- only the diff
+    # baseline survives, not the "already done" status.
+    if os.path.exists(RAG_LOCK_FILE):
+        os.remove(RAG_LOCK_FILE)
     if os.path.exists(USERS_DIR):
         shutil.rmtree(USERS_DIR)
     os.makedirs(USERS_DIR, exist_ok=True)
 
     save_lock_state(RAG_LOCK_FILE, {"locked": {}, "completed": []})
-    write_json_file(RAG_HASH_DB_FILE, {}, "hash db")
-    print("\n[✓] RAG campaign structures initialized back to 0 (contribution stats preserved).")
+    print("\n[✓] RAG campaign structures initialized back to 0 (contribution stats + content-hash baseline preserved).")
 
 def rag_execute_hard_reset():
     print("\n[!] Initializing RAG System Hard Reset & Backup Sequence...")
@@ -1546,20 +1555,6 @@ def rag_execute_hard_reset():
         print("[~] No historical RAG operational data found to archive.")
 
     rag_initialize_empty_state()
-
-def calculate_file_hash(file_path: str) -> str:
-    sha256 = hashlib.sha256()
-    try:
-        with open(file_path, "rb") as f:
-            while block := f.read(8192):
-                sha256.update(block)
-        return sha256.hexdigest()
-    except Exception:
-        return ""
-
-def _is_chunk_set_unchanged(file_chunks: list, file: str, f_hash: str, old_hashes: dict, completed_chunks: set) -> bool:
-    all_completed = len(file_chunks) > 0 and all(c["chunk_id"] in completed_chunks for c in file_chunks)
-    return file in old_hashes and old_hashes[file] == f_hash and all_completed
 
 def _classify_role_context(file_lower: str, tier_path: str) -> str:
     if file_lower.startswith("docs"):
@@ -1675,6 +1670,12 @@ def rag_initialize_chunks(verbose: bool = True):
 
     lock_state = load_lock_state(RAG_LOCK_FILE)
     completed_chunks = set(lock_state.get("completed", []))
+    # Keyed by chunk_id (not filename) -- matches finetune_initialize_chunks()'s proven approach
+    # below. Hashing per-file used to mean a single edited line anywhere in a large file (e.g.
+    # one PR discussion appended to a 1000-line reviews.json, or one fixed typo in a doc) forced
+    # every other already-crunched chunk from that same file back into the queue too, wasting
+    # real crunching time (and volunteer effort) re-doing work whose output wouldn't change.
+    # Per-chunk hashing only re-queues the chunk(s) whose actual content changed.
     old_hashes = read_json_file(RAG_HASH_DB_FILE, {})
 
     current_hashes = {}
@@ -1692,8 +1693,6 @@ def rag_initialize_chunks(verbose: bool = True):
                 continue
 
             total_scanned_files += 1
-            f_hash = calculate_file_hash(file_path)
-            current_hashes[file] = f_hash
 
             try:
                 if file.lower().endswith('.json') or file.lower().startswith('reviews'):
@@ -1714,13 +1713,6 @@ def rag_initialize_chunks(verbose: bool = True):
                             "requires_strong_model": len(review_raw_content) < THIN_CONTENT_CHAR_THRESHOLD
                         })
 
-                    rag_total_chunks += len(file_chunks)
-                    if _is_chunk_set_unchanged(file_chunks, file, f_hash, old_hashes, completed_chunks):
-                        skipped_unchanged_count += 1
-                        continue
-
-                    rag_chunk_queue.extend(file_chunks)
-
                 else:
                     with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
                         lines = f.readlines()
@@ -1740,12 +1732,14 @@ def rag_initialize_chunks(verbose: bool = True):
                             "requires_strong_model": len(chunk_raw_content) < THIN_CONTENT_CHAR_THRESHOLD
                         })
 
-                    rag_total_chunks += len(file_chunks)
-                    if _is_chunk_set_unchanged(file_chunks, file, f_hash, old_hashes, completed_chunks):
+                rag_total_chunks += len(file_chunks)
+                for c in file_chunks:
+                    content_hash = calculate_content_hash(c["raw_content"])
+                    current_hashes[c["chunk_id"]] = content_hash
+                    if c["chunk_id"] in completed_chunks and old_hashes.get(c["chunk_id"]) == content_hash:
                         skipped_unchanged_count += 1
                         continue
-
-                    rag_chunk_queue.extend(file_chunks)
+                    rag_chunk_queue.append(c)
 
             except Exception as e:
                 print(f"[!] Error parsing file entry {file}: {e}")
@@ -1758,7 +1752,7 @@ def rag_initialize_chunks(verbose: bool = True):
         print("               RAG PIPELINE METRICS                   ")
         print("─"*55)
         print(f" 📂 Total Workspace Files Found:  {total_scanned_files}")
-        print(f" ⏭️ Bypassed (Fully Completed):   {skipped_unchanged_count}")
+        print(f" ⏭️ Bypassed (Unchanged Chunks):  {skipped_unchanged_count}")
         print(f" 🔥 Active Task Targets Queued:   {len(rag_chunk_queue)}")
         print(f" 🎯 True Campaign Total:          {rag_total_chunks}")
         print("─"*55 + "\n")
@@ -1771,17 +1765,18 @@ def rag_initialize_chunks(verbose: bool = True):
 def finetune_initialize_empty_state():
     # FINETUNE_STATS_FILE (per-user chunks_completed/pairs_generated -- the leaderboard) is
     # deliberately left untouched here, same reasoning as rag_initialize_empty_state(): the
-    # campaign queue resets, but lifetime contribution totals never should.
-    for f in (FINETUNE_LOCK_FILE, FINETUNE_HASH_DB_FILE):
-        if os.path.exists(f):
-            os.remove(f)
+    # campaign queue resets, but lifetime contribution totals never should. FINETUNE_HASH_DB_FILE
+    # (the last finished crunch's per-chunk fingerprint, used to diff against current
+    # knowledge_base/reviews content) is left untouched for the same reason explained in
+    # rag_initialize_empty_state() -- only completed/locked reset, forcing a full re-verify.
+    if os.path.exists(FINETUNE_LOCK_FILE):
+        os.remove(FINETUNE_LOCK_FILE)
     if os.path.exists(FINETUNE_OUTPUT_DIR):
         shutil.rmtree(FINETUNE_OUTPUT_DIR)
     os.makedirs(FINETUNE_OUTPUT_DIR, exist_ok=True)
 
     save_lock_state(FINETUNE_LOCK_FILE, {"locked": {}, "completed": []})
-    write_json_file(FINETUNE_HASH_DB_FILE, {}, "hash db")
-    print("\n[OK] Fine-tune campaign structures initialized back to 0 (contribution stats preserved).")
+    print("\n[OK] Fine-tune campaign structures initialized back to 0 (contribution stats + content-hash baseline preserved).")
 
 def finetune_execute_hard_reset():
     print("\n[!] Initializing Fine-Tune System Hard Reset & Backup Sequence...")

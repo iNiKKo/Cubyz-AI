@@ -224,7 +224,21 @@ def retrieve(query, index, global_top_k=GLOBAL_TOP_K, min_per_collection=MIN_PER
 
 
 def ask(question, index, verbose=True, return_meta=False, conversation_history=None):
-    hits = retrieve(question, index)
+    # Retrieval only ever sees `question` itself -- conversation_history is used below for
+    # generation, but was never part of the embedding query, so a context-dependent follow-up
+    # ("how is it different from one-hit modifier") could embed and search with none of the
+    # actual subject ("single-use") anywhere in the query text. Confirmed live: that vague
+    # follow-up got a wrong/hedgy answer; asking the equivalent standalone question ("difference
+    # between single-use and one-hit modifiers") retrieved correctly. Folding the single
+    # immediately-prior user turn into the retrieval query (not the full history -- that would
+    # dilute the embedding with old, now-irrelevant subject matter) fixes exactly that gap without
+    # changing retrieve()'s own logic or touching what the model is actually shown.
+    retrieval_query = question
+    if conversation_history:
+        prior_questions = [m["content"] for m in conversation_history if m.get("role") == "user"]
+        if prior_questions:
+            retrieval_query = f"{prior_questions[-1]} {question}"
+    hits = retrieve(retrieval_query, index)
 
     # Present the single best-matching chunk LAST, right next to the user's question, not first.
     # LLMs attend more reliably to the start and end of a long context than the middle ("lost in

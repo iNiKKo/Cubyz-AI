@@ -3,14 +3,14 @@
     "platform": "win32",
     "gpu_type": "nvidia",
     "total_vram_gb": 12.0,
-    "system_ram_gb": 15.95,
+    "system_ram_gb": 8.0,
     "dual_lane": false,
-    "primary_is_gpu": true,
-    "hardware_tier": "hard",
-    "benchmark_gpu_time": 49.72841215133667,
+    "primary_is_gpu": false,
+    "hardware_tier": "medium",
+    "benchmark_gpu_time": null,
     "benchmark_cpu_time": null,
-    "benchmark_gpu_error": null,
-    "benchmark_cpu_error": "timeout: timed out"
+    "benchmark_gpu_error": "timeout: timed out",
+    "benchmark_cpu_error": "timeout: HTTP Error 500: Internal Server Error"
   },
   "nicksrvr": {
     "platform": "linux",
