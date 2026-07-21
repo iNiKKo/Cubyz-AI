@@ -9,7 +9,25 @@
 The chunk details enabling/disabling server list integration via a boolean config flag and lists required JSON fields (serverName, serverIp, serverPort, description, iconUrl, discordServer, customClientDownloadUrl) with notes that the latter two are currently unused but reserved.
 
 ## Explanation
-Cubyz Server List is an external directory maintained by iNiKKo where Mercur can automatically submit your server information. Integration is controlled by the 'enabled' boolean in config.json: true broadcasts server data to servers.ashframe.net, false disables it entirely. The required configuration fields are serverName (string), serverIp (hostname or IP address), serverPort (numeric game port), description (short string), iconUrl (direct URL to an image hosted on a service like ImgBB), discordServer (Discord invite link), and customClientDownloadUrl (custom client download link). The documentation explicitly states that discordServer and customClientDownloadUrl are not currently displayed on the website but are reserved for future use, implying they may be ignored by the current backend while still being accepted in config.
+To allow external players to connect to your Cubyz server, you need to configure port forwarding on your home router. This involves several steps:
+
+1. **Find Your Router's IP Address (Default Gateway):**
+   - On Windows, open Command Prompt or PowerShell and run `ipconfig` to find the Default Gateway.
+   - On Linux, use terminal commands like `ip route | grep default` or `ip a` to locate the Gateway IP.
+
+2. **Find Your Router's Login Details:**
+   - The default username and password are usually printed on a sticker on your router.
+   - If you forget your custom password, reset the router by pressing and holding the reset button for 10–30 seconds until the lights flash.
+
+3. **Locate the Port Forwarding Section:**
+   - This section can be found under menus like Advanced, Security, or LAN, with labels such as Port Forwarding, Port Mapping, NAT Forwarding, Virtual Server, or Port Triggering.
+
+4. **Configure the Port Forward Rule:**
+   - **Internal/Local IP Address:** Find this using the same terminal commands from Step 1 (labeled as IPv4 Address).
+   - **Port:** Enter the port used by your server (default is `47649` or as shown in-game under the 'Invite Players' menu).
+   - **Protocol:** Select UDP.
+
+Save your changes, and your server will be ready for external connections!
 
 ## Related Questions
 - How do I disable Cubyz Server List integration in my config?

@@ -56,6 +56,15 @@ def organize_dataset():
         os.makedirs(os.path.join(OUTPUT_DIR, tier), exist_ok=True)
 
     counters = {"easy": 0, "medium": 0, "hard": 0, "skipped": 0}
+    # Every (tier, unique_filename) this run actually produces -- used below to remove anything
+    # already sitting in OUTPUT_DIR that this run did NOT produce. Without this, a file renamed
+    # or deleted upstream (now automated via sync_codebase.py rather than hand-copied, so this
+    # will actually happen routinely) left its old organized copy behind forever: the crunching
+    # campaign would keep tracking and re-verifying content for a file that no longer exists.
+    # Tracked as (tier, filename) pairs, not just filename, since a file crossing a line-count
+    # threshold between runs legitimately moves tiers -- the OLD tier's copy is exactly as stale
+    # as one from a deleted file and needs the same cleanup.
+    produced = set()
 
     print(f"[~] Scanning '{SOURCE_DIR}' for valid tracking files...")
 
@@ -77,16 +86,33 @@ def organize_dataset():
                 destination_path = os.path.join(OUTPUT_DIR, tier_target, unique_filename)
                 shutil.copy2(file_path, destination_path)
                 counters[tier_target] += 1
+                produced.add((tier_target, unique_filename))
 
             except Exception as e:
                 print(f"[!] Warning: Error reading file {file}: {e}")
                 counters["skipped"] += 1
+
+    # Scoped to "codebase_"-prefixed files ONLY -- confirmed live that organized_cubyz_dataset/
+    # is NOT entirely derived from raw_cubyz_dataset/: several docs_* files and
+    # hard/issues_issues.json exist in the organized output with no corresponding raw source
+    # anywhere (hand-added directly at some point, bypassing this script). A blanket "remove
+    # anything this run didn't produce" pass deleted those on first test -- codebase/ is the one
+    # folder that's fully automated (sync_codebase.py wipes and regenerates it from a git clone
+    # every run, nothing hand-edited lives there), so it's the only prefix safe to auto-clean.
+    removed = 0
+    for tier in TIERS:
+        tier_dir = os.path.join(OUTPUT_DIR, tier)
+        for existing in os.listdir(tier_dir):
+            if existing.startswith("codebase_") and (tier, existing) not in produced:
+                os.remove(os.path.join(tier_dir, existing))
+                removed += 1
 
     print("\n[✓] Dataset Sorting Complete!")
     print(f"    🟢 EASY Files (<= {EASY_MAX_LINES} lines):   {counters['easy']}")
     print(f"    🟡 MEDIUM Files ({EASY_MAX_LINES + 1}-{MEDIUM_MAX_LINES} lines): {counters['medium']}")
     print(f"    🔴 HARD Files (> {MEDIUM_MAX_LINES} lines):     {counters['hard']}")
     print(f"    ⚪ SKIPPED Files (other types):  {counters['skipped']}")
+    print(f"    🗑️  Removed (no longer in source): {removed}")
     print(f"\nYour sorted dataset folders are located under: '{OUTPUT_DIR}/'")
 
 

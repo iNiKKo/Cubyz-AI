@@ -15,6 +15,9 @@ The `replaceWithCobble` function, which was previously defined in the `TickFunct
 
 The review suggests replacing the current enum-based tick function design with a VTable approach for better modularity and runtime extensibility. The reviewer states that enums are not runtime extensible, which limits modularity (no mods), while function pointers have runtime dispatch issues. The reviewer recommends using a VTable for all functions related to TickEvents with a separate loadData function for each event type, similar to how other systems in Cubyz handle events.
 
+**CRITICAL ARCHITECTURAL REVIEW:**
+I don't like this design. It's mixing the downsides of enums (they are not runtime extensible → no mods) with the downside of function pointers (→runtime dispatch). I'd suggest to just use a VTable for all functions related to TickEvents with a separate loadData function for each event type. This is how most other things are implemented, e.g. check out tool modifiers.
+
 ## Related Questions
 - What are the potential performance implications of using a VTable instead of enums for tick functions?
 - How does the current enum-based design limit modularity in Cubyz?

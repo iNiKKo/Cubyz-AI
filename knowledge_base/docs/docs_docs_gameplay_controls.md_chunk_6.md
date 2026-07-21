@@ -8,11 +8,7 @@
 Cubyz's overlay toggle keys: debug, performance, GPU, network, and advanced network overlays.
 
 ## Explanation
-The key that toggles the debug overlay is F3.
-The key that toggles the performance overlay is F4.
-The key that toggles the GPU overlay is F5.
-The key that toggles the network overlay is F6.
-The key that toggles the advanced network overlay is F7.
+The key that toggles the debug overlay is F3. The key that toggles the performance overlay is F4. The key that toggles the GPU overlay is F5. The key that toggles the network overlay is F6. The key that toggles the advanced network overlay is F7. Additionally, the key to hide the menu is F1 and the key to hide the display item is F2.
 
 ## Related Questions
 - What key toggles the debug overlay in Cubyz?

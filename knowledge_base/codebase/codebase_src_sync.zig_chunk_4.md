@@ -17,6 +17,16 @@ The `serializePayload` method writes the command's payload to a binary format us
 
 The `serialize` method for `SyncOperation` writes different types of data depending on the operation type: inventory and durability for `useDurability`, a float for `health` and `energy`, and a vector for `kill`. The `do` method asserts that the base operations list is empty before executing the payload.
 
+**Specific Details:**
+- **useDurability**: Reads an `InventoryAndSlot` and a durability value (u32).
+- **health**: Reads a float (f32) representing the target's health.
+- **energy**: Reads a float (f32) representing the target's energy.
+- **kill**: Reads a vector (`Vec3d`) representing the spawn point where the entity will be respawned.
+
+**Serialization and Deserialization:**
+- The `serializePayload` method writes the command's payload to a binary format using a `BinaryWriter`.
+- The `do` method executes the command based on its payload type, and the `undo` method reverses the effects of previously executed base operations by iterating in reverse order.
+
 ## Code Example
 ```zig
 fn serializePayload(self: *Command, allocator: NeverFailingAllocator) []const u8 {

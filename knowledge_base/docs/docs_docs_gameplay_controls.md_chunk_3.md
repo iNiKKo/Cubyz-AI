@@ -8,11 +8,7 @@
 Cubyz's text-editing controls, used in chat/text-input fields.
 
 ## Explanation
-Text cursor movement: Left/Right/Down/Up arrow keys.
-Go to start of text: Home. Go to end of text: End.
-Delete character to the left: Backspace. Delete character to the right: Delete.
-Select all text: A. Copy: C. Paste: V. Cut: X.
-Insert a new line: Enter.
+Cubyz's primary game controls include various actions such as taking a background image with print screen, toggling full screen with F11, accessing the inventory with E, opening the creative inventory with C, entering chat with T, using commands with /, and interacting with GUI elements using the left and right mouse buttons.
 
 ## Related Questions
 - What control is used for text deletion in Cubyz?

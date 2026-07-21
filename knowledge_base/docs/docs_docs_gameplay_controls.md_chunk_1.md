@@ -8,10 +8,7 @@
 Cubyz's block-interaction controls: placing, breaking, picking, and dropping.
 
 ## Explanation
-The button that places a block is the right mouse button.
-The button that breaks a block is the left mouse button.
-To pick a block (select it into your hotbar), use the middle mouse button.
-The key that drops an item is Q.
+Cubyz's movement controls include forward (W), left (A), backward (S), right (D), sprint (Left control), jump (Space), crouch (Left shift), fly (F), ghost (G), hyperspeed (H), and falling (Left shift while flying).
 
 ## Related Questions
 - What button places a block in Cubyz?

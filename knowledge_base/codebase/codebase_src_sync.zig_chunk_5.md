@@ -21,8 +21,8 @@ This chunk defines the `Command` struct and its methods responsible for executin
 - **useDurability**: Reduces the durability of an item and deinitializes it if its durability reaches zero.
 - **addHealth**: Sets the player's health to a specified value.
 - **addEnergy**: Sets the player's energy to a specified value.
-- **moveToBag**: Moves items from one inventory slot to a bag, handling partial stack transfers.
-- **takeFromBag**: Takes items from a bag to another inventory slot, handling partial stack transfers.
+- **moveToBag**: Moves items from one inventory slot to a bag, handling partial stack transfers by reducing the source stack's amount and increasing the destination stack's amount until the desired amount is moved. If the source stack's amount is less than the remaining amount, it pops the entire stack from the destination and adjusts the remaining amount accordingly.
+- **takeFromBag**: Takes items from a bag to another inventory slot, handling partial stack transfers by reducing the source stack's amount and increasing the destination stack's amount until the desired amount is taken. If the source stack's amount is less than the remaining amount, it pops the entire stack from the destination and adjusts the remaining amount accordingly.
 
 **Finalization and Synchronization:**
 The `finalize` method ensures that all operations are properly cleaned up, deinitializing items if their durability is exhausted. The `executeAddOperation`, `executeRemoveOperation`, and `executeDurabilityUseOperation` functions handle server-side synchronization by appending corresponding operations to the `syncOperations` list.
@@ -34,28 +34,6 @@ The code includes several assertions to ensure data integrity, such as checking 
 - **moveToBag**: Moves items from one inventory slot to a bag, handling partial stack transfers by reducing the source stack's amount and increasing the destination stack's amount until the desired amount is moved. If the source stack's amount is less than the remaining amount, it pops the entire stack from the destination and adjusts the remaining amount accordingly.
 - **takeFromBag**: Takes items from a bag to another inventory slot, handling partial stack transfers by reducing the source stack's amount and increasing the destination stack's amount until the desired amount is taken. If the source stack's amount is less than the remaining amount, it pops the entire stack from the destination and adjusts the remaining amount accordingly.
 - **useDurability**: Reduces the durability of an item and deinitializes it if its durability reaches zero. It also appends a `useDurability` operation to the `syncOperations` list on the server side.
-
-**Code Example:**
-```zig
-fn confirmationData(self: *Command, allocator: NeverFailingAllocator) []const u8 {
-	switch (self.payload) {
-		inline else => |payload| {
-			if (@hasDecl(@TypeOf(payload), "confirmationData")) {
-				return payload.confirmationData(allocator);
-			}
-		},
-	}
-	return &.{};
-}
-```
-
-**Related Questions:**
-- What is the purpose of the `finalize` method in the Command struct?
-- How does the `executeAddOperation` function handle item creation on the server side?
-- What assertion checks are performed in the `executeRemoveOperation` function?
-- How does the `executeDurabilityUseOperation` function update item durability?
-- What operations are included in the `executeBaseOperation` method?
-- How is synchronization handled between server and client sides in this chunk?
 
 ## Code Example
 ```zig

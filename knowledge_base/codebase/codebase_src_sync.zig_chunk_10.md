@@ -21,9 +21,29 @@ This chunk defines several structs representing different inventory operations: 
 
 - **MoveToPlayerBag**: Moves a specified amount of an item from a source inventory to the player's bag. It uses different methods for client and server sides to access the player's bag. Memory is managed using `main.globalAllocator`.
 
-- **TakeFromPlayerBag**: (Not fully defined in the provided content) would handle taking items from the player's bag.
+- **TakeFromPlayerBag**: Handles taking items from the player's bag. It uses different methods for client and server sides to access the player's bag. Memory is managed using `main.globalAllocator`.
 
 Memory allocation and deallocation are managed using allocators like `main.globalAllocator` and `main.stackAllocator`. Error handling is implemented using Zig's error types, with specific errors like `serverFailure` and `InventoryNotFound` being returned where applicable. The serialization methods write data to a BinaryWriter, while the deserialization methods read data from a BinaryReader.
+
+**Serialization Methods**
+
+- **FillAnyFromCreative**: Serializes the destinations and item information using the `toBytes` method of `Inventory.Inventories` and writes the amount using `writer.writeInt(u16, self.amount)`.
+
+- **DepositOrDrop**: Serializes the destinations and source inventory ID using the `toBytes` method of `Inventory.Inventories` and `writer.writeEnum(InventoryId, self.source.id)` respectively.
+
+- **DepositToAny**: Serializes the destinations, source inventory slot, and amount using the `toBytes` method of `Inventory.Inventories`, `self.source.write(writer)`, and `writer.writeInt(u16, self.amount)` respectively.
+
+- **MoveToPlayerBag**: Serializes the source inventory slot and amount using `self.source.write(writer)` and `writer.writeInt(u16, self.amount)` respectively.
+
+**Deserialization Methods**
+
+- **FillAnyFromCreative**: Deserializes the destinations from bytes, reads the amount using `reader.readInt(u16)`, and optionally parses a ZonElement to initialize an Item if there are remaining bytes.
+
+- **DepositOrDrop**: Deserializes the destinations from bytes, reads the source inventory ID using `reader.readEnum(InventoryId)`, and retrieves the source inventory based on the ID. It also sets the drop location based on the user's position.
+
+- **DepositToAny**: Deserializes the destinations from bytes, reads the source inventory slot and amount using `InventoryAndSlot.read(reader, side, user)` and `reader.readInt(u16)` respectively.
+
+- **MoveToPlayerBag**: Deserializes the source inventory slot and amount using `InventoryAndSlot.read(reader, side, user)` and `reader.readInt(u16)` respectively.
 
 ## Code Example
 ```zig

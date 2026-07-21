@@ -8,15 +8,13 @@
 Cubyz's utility controls: screenshot, fullscreen, menus, inventory, chat, and commands.
 
 ## Explanation
-The key that takes a background image/screenshot is Print Screen.
-The key that toggles full screen mode is F11.
-The key that backs out of/closes a menu or dialog is Escape (this is separate from the "HideMenu"
-binding, which is F1 -- see the Menu controls chunk).
-The key that opens the regular (non-creative) inventory is E.
-The key that opens the creative inventory is C.
-The key that opens chat is T.
-The key or character that enters/opens the command line is / (forward slash).
-Both left and right mouse buttons interact with GUI buttons: left mouse is the main GUI button, right mouse is the secondary GUI button.
+The key that takes a background image/screenshot is Print Screen. The key that toggles full screen mode is F11. The key that backs out of/closes a menu or dialog is Escape (this is separate from the 'HideMenu' binding, which is F1 -- see the Menu controls chunk). The key that opens the regular (non-creative) inventory is E. The key that opens the creative inventory is C. The key that opens chat is T. The key or character that enters/opens the command line is / (forward slash). Both left and right mouse buttons interact with GUI buttons: left mouse is the main GUI button, right mouse is the secondary GUI button.
+
+**Block Controls:**
+- **Place**: Right mouse
+- **Break**: Left mouse
+- **Pick block**: Middle mouse
+- **Drop**: Q
 
 ## Related Questions
 - What key takes a background image/screenshot in Cubyz?

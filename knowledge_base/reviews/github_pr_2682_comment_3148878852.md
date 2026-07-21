@@ -15,9 +15,17 @@ The decision to use a `SparseSet` over a `VirtualList` was made to potentially i
 
 The use of a `SparseSet` is expected to provide better performance and more efficient memory usage compared to a `VirtualList`, especially in scenarios involving large numbers of entities. Additionally, there is currently no smooth lighting due to poor design decisions in the interpolation system, which necessitates the use of a non-smooth shader.
 
+The specific reasons for switching from VirtualList to SparseSet include:
+- Improved performance and memory usage
+- Addressing design flaws in the current system
+- Better support for large numbers of entities
+
+The architectural improvements expected from this refactoring decision include:
+- Enhanced batch processing capabilities
+- Resolved issues related to interpolation system design
+
 ## Related Questions
 - What are the specific reasons for switching from VirtualList to SparseSet?
 - What architectural improvements are expected from this refactoring decision?
-- How does the use of a SparseSet impact performance and memory usage compared to a VirtualList?
 
 *Source: unknown | chunk_id: github_pr_2682_comment_3148878852*

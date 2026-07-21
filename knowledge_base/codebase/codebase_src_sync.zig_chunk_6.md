@@ -24,6 +24,17 @@ The `executeBaseOperation` function handles different types of base operations s
 
 Crafting ingredients are removed from a workbench by iterating through the items in the inventory and deleting them using the `executeBaseOperation` function with the delete operation. The `executeDurabilityUseOperation` function decreases the durability of an item and removes it if its durability becomes zero. Player health and energy are managed by adding or subtracting values to the player's current health or energy, respectively.
 
+The exact logic for each base operation is as follows:
+- **move**: Moves items from one slot to another.
+- **swap**: Swaps stacks between two slots.
+- **delete**: Deletes a specified amount of an item from a slot.
+- **create**: Creates new items in a slot.
+- **moveToBag**: Transfers items from the inventory to a bag.
+- **takeFromBag**: Transfers items from a bag to the inventory.
+- **useDurability**: Decreases the durability of an item and removes it if its durability becomes zero.
+- **addHealth**: Adds or subtracts health values to players, handling player death when health drops below zero.
+- **addEnergy**: Adds or subtracts energy values to players.
+
 ## Code Example
 ```zig
 pub fn execute(self: Context, _op: BaseOperation) void {

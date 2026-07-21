@@ -10,6 +10,7 @@ The document's closing checklist: the specific questions to run through, in orde
 
 ## Explanation
 When asked to review pasted code or write new Cubyz code, run through these questions in order, the way Cubyz's reviewers implicitly do:
+
 1. Does every allocation have a clear, matching, correctly-scoped deallocation? Is the allocator choice appropriate to the data's actual lifetime?
 2. Is anything here touched from more than one thread without synchronization?
 3. Could this have used a tagged union instead of an enum-plus-optional-fields? Is a fallible case using `unreachable`/panic where it should return an error, or vice versa?
@@ -18,6 +19,12 @@ When asked to review pasted code or write new Cubyz code, run through these ques
 6. Are inclusive/exclusive bounds and untrusted input sizes handled carefully?
 7. Is this PR-sized change actually one concern, or does it bundle something unrelated?
 8. If this touches a saved/serialized format, does it handle existing data?
+
+Additionally, ensure that:
+- New public API surfaces have doc comments explaining their purpose and ownership semantics (who frees what, what a null return means).
+- When porting an algorithm from elsewhere (e.g., a ray-triangle intersection routine), link back to the source for transparency and licensing.
+- Log message severity and wording must match reality; avoid calling expected, already-handled control-flow paths as "Internal error" during future debugging.
+- Redundant comments that just restate the following line are removed, not kept for clarity.
 
 This is the actual texture of how this project's maintainer reviews code -- not a generic checklist, but a specific, consistent, opinionated engineering culture that has now been applied across hundreds of real PRs.
 

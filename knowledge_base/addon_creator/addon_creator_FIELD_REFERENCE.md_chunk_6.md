@@ -10,9 +10,38 @@ Cubyz Addon Creator Studio: what "Export Full Addon" does (step 2 of the save/ex
 ## Explanation
 Clicking "Export Full Addon" calls **`exportFullAddon()`**, which walks every object in `window.projectData` and writes it out as a `.zig.zon` file (via template-string concatenation) inside a zip, organized into the standard Cubyz addon folder layout (`blocks/`, `items/`, `biomes/`, `entityModels/`, `particles/`, `recipes/`).
 
+The specific fields and their corresponding properties that are exported include:
+- **UI Label:** Entity ID
+  - **Field ID:** `entityId`
+  - **Internal property:** `id`
+  - **Exported field:** filename
+- **Height:**
+  - **Field ID:** `entityHeight`
+  - **Internal property:** `height`
+  - **Exported field:** `.height = {v.toFixed(1)}`
+- **Coordinate System:**
+  - **Field ID:** `entityCoordSystem`
+  - **Internal property:** `coordinateSystem`
+  - **Exported field:** `.coordinateSystem = {v}`
+  - **Default value:** `.right_handed_z_up`
+- **Model:**
+  - **Field ID:** `entityModelSearch`
+  - **Internal property:** `model`
+  - **Exported field:** `.model = "{addon}:{model}"`
+- **Texture:**
+  - **Field ID:** `entityTextureSearch`
+  - **Internal property:** `defaultTexture`
+  - **Exported field:** `.defaultTexture = "{addon}:{tex}"`
+- **Tags:**
+  - **Field ID:** `entityTagsContainer`
+  - **Internal property:** `tags[]`
+  - **Exported field:** `.tags = .{...}`
+  - **Block omitted entirely if no tags**
+
 ## Related Questions
 - What does clicking "Export Full Addon" do in the Cubyz Addon Creator?
 - What function handles exporting a full addon in the Cubyz Addon Creator, and what does it iterate over?
 - What folder layout does an exported Cubyz addon zip use?
+- What are the specific fields and their corresponding properties that are exported when clicking "Export Full Addon"?
 
 *Source: unknown | chunk_id: addon_creator_FIELD_REFERENCE.md_chunk_6*

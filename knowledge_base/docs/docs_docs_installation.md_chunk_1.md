@@ -9,7 +9,7 @@
 Instructions for updating Cubyz and troubleshooting crashes.
 
 ## Explanation
-To update Cubyz, navigate to the `Cubyz` folder in your terminal and execute the command `git pull`. If Cubyz crashes or fails to run, users can seek assistance through the Cubyz Discord Server (https://discord.com/invite/stBh54hF7U) or by creating an issue on the Cubyz GitHub issue board (https://github.com/pixelguys/cubyz/issues).
+To play Cubyz, you can either download a ready-to-run release or compile the latest development version yourself. To update Cubyz, navigate to the `Cubyz` folder in your terminal and execute the command `git pull`. If Cubyz crashes or fails to run, users can seek assistance through the Cubyz Discord Server (https://discord.com/invite/stBh54hF7U) or by creating an issue on the Cubyz GitHub issue board (https://github.com/pixelguys/cubyz/issues).
 
 ## Code Example
 ```zig

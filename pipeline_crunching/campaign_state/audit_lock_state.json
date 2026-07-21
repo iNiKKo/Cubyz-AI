@@ -1,18 +1,5 @@
 {
-  "locked": {
-    "addon_creator_FIELD_REFERENCE.md_chunk_3": {
-      "user_id": "Calebc",
-      "timestamp": 1784643779.063707
-    },
-    "addon_creator_FIELD_REFERENCE.md_chunk_6": {
-      "user_id": "NickPCc",
-      "timestamp": 1784643782.8132615
-    },
-    "addon_creator_FIELD_REFERENCE.md_chunk_5": {
-      "user_id": "NickSRVR",
-      "timestamp": 1784643805.6060843
-    }
-  },
+  "locked": {},
   "completed": [
     "codebase_assets_cubyz_sbb_tree_oak_old_growth_branch_extender.zig.zon_chunk_0",
     "codebase_assets_cubyz_blocks_clay.zig.zon_chunk_0",
@@ -3267,8 +3254,37 @@
     "docs_GAME_DESIGN_PRINCIPLES.md_chunk_5",
     "addon_creator_FIELD_REFERENCE.md_chunk_4",
     "addon_creator_FIELD_REFERENCE.md_chunk_1",
-    "addon_creator_FIELD_REFERENCE.md_chunk_2"
+    "addon_creator_FIELD_REFERENCE.md_chunk_2",
+    "addon_creator_FIELD_REFERENCE.md_chunk_6",
+    "addon_creator_FIELD_REFERENCE.md_chunk_7",
+    "addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_2",
+    "docs_docs_gameplay_controls.md_chunk_1",
+    "docs_docs_gameplay_controls.md_chunk_2",
+    "docs_docs_gameplay_controls.md_chunk_4",
+    "docs_GAME_DESIGN_PRINCIPLES.md_chunk_1",
+    "docs_docs_gameplay_controls.md_chunk_5",
+    "docs_docs_gameplay_controls.md_chunk_6",
+    "docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_2",
+    "docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_3",
+    "docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_4",
+    "docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_5",
+    "addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_4",
+    "docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_6",
+    "docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_9",
+    "docs_docs_development_multiplayer.md_chunk_5",
+    "addon_creator_FIELD_REFERENCE.md_chunk_5",
+    "addon_creator_FIELD_REFERENCE.md_chunk_3",
+    "docs_README.md_chunk_1",
+    "addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_3",
+    "docs_docs_gameplay_controls.md_chunk_3",
+    "addon_creator_ENGINE_VALIDATION_REFERENCE.md_chunk_5",
+    "docs_CONTRIBUTING.md_chunk_2",
+    "docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_7",
+    "docs_CUBYZ_DEVELOPER_JUDGMENT.md_chunk_8",
+    "docs_docs_development_multiplayer.md_chunk_4",
+    "docs_docs_development_multiplayer.md_chunk_3",
+    "docs_docs_development_multiplayer.md_chunk_2"
   ],
   "actions_baseline_completed": 543,
-  "actions_count": 15953
+  "actions_count": 16287
 }

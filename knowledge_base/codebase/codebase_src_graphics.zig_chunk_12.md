@@ -17,7 +17,7 @@ The `init` function initializes the following components: circles, images, lines
 
 The `deinit` function deinitializes the same components in reverse order: render passes, circles, images, lines, rectangles, rectangle borders, text rendering, block textures, and pipelines.
 
-The `RenderPass.init` function sets up a color attachment with specific properties such as format, samples, loadOp, storeOp, stencilLoadOp, stencilStoreOp, initialLayout, and finalLayout. It also defines a subpass with a pipeline bind point, color attachment count, and color attachments. A dependency is set up to ensure proper synchronization between the external subpass and the first subpass.
+The `RenderPass.init` function sets up a color attachment with specific properties such as format (`vulkan.SwapChain.imageFormat`), samples (`c.VK_SAMPLE_COUNT_1_BIT`), loadOp (`c.VK_ATTACHMENT_LOAD_OP_CLEAR`), storeOp (`c.VK_ATTACHMENT_STORE_OP_STORE`), stencilLoadOp (`c.VK_ATTACHMENT_LOAD_OP_DONT_CARE`), stencilStoreOp (`c.VK_ATTACHMENT_STORE_OP_DONT_CARE`), initialLayout (`c.VK_IMAGE_LAYOUT_UNDEFINED`), and finalLayout (`c.VK_IMAGE_LAYOUT_PRESENT_SRC_KHR`). It also defines a subpass with a pipeline bind point (`c.VK_PIPELINE_BIND_POINT_GRAPHICS`), color attachment count (`1`), and color attachments. A dependency is set up to ensure proper synchronization between the external subpass and the first subpass.
 
 The Vulkan device is used to create a render pass through the `vkCreateRenderPass` function. The render pass is initialized only if Vulkan testing mode is enabled in the settings.
 

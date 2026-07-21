@@ -17,7 +17,7 @@ The `releaseButtonsOnGrabChange` function releases buttons when the grab state c
 
 Callbacks for handling input events include key callbacks, character callbacks, framebuffer size callbacks, cursor position callbacks, mouse button callbacks, and scroll callbacks.
 
-Specifically, the Vulkan initialization process includes checking if Vulkan is supported and creating a Vulkan window with specific hints. On macOS, it sets the Vulkan loader directly using `glfwInitVulkanLoader`. The OpenGL context is initialized with specific version requirements (OpenGL 4.6) and debug settings.
+Specifically, the Vulkan initialization process includes checking if Vulkan is supported (`c.glfwVulkanSupported() == c.GLFW_TRUE`) and creating a Vulkan window with specific hints (`c.GLFW_CLIENT_API`, `c.GLFW_VISIBLE`). On macOS, it sets the Vulkan loader directly using `glfwInitVulkanLoader`. The OpenGL context is initialized with specific version requirements (OpenGL 4.6) and debug settings (`c.GLFW_OPENGL_DEBUG_CONTEXT`, `c.GLFW_CONTEXT_VERSION_MAJOR`, `c.GLFW_CONTEXT_VERSION_MINOR`). If Vulkan testing mode is not enabled, the Vulkan window is destroyed after initialization.
 
 ## Code Example
 ```zig

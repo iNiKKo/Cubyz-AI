@@ -10,6 +10,10 @@ The document outlines guidelines for contributing to the Cubyz project, includin
 ## Explanation
 This section provides detailed instructions on how contributors should handle their work in the Cubyz project. It emphasizes the importance of reviewing changes thoroughly to catch errors or unintended modifications before submitting a pull request (PR). The document stresses that PRs will not be reviewed if they fail the Continuous Integration (CI) tests, and encourages contributors to apply requested changes thoughtfully to maintain high standards. It also advises seeking help from others on the project's Discord server for difficult issues or design decisions. Additionally, the text highlights the importance of self-care in maintaining a healthy work-life balance, emphasizing that Cubyz is not a job but a long-term project where quality and personal well-being are prioritized over strict deadlines.
 
+Furthermore, the document explicitly advises against using AI/LLMs to make pull requests, stating that modern (narrow) AI is not trained to be good at programming and will likely produce code of lower quality that does not follow the project's conventions. The text also notes that narrow AI is unable to learn from its mistakes, unlike humans who generally do not repeat the same errors.
+
+The document concludes by encouraging contributors to invest their own time in learning how to code properly, emphasizing that this effort is worthwhile and will lead to better contributions to the Cubyz project.
+
 ## Related Questions
 - What is the consequence of a failing CI test for a pull request?
 - How should contributors handle multiple change requests during a review process?

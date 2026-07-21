@@ -15,6 +15,10 @@ The VertexArray.init function generates a VAO and VBO, binds them, and uploads v
 
 The SSBO.init function generates a buffer ID for shader storage buffers. The SSBO.initStatic function initializes a static buffer with provided data using glBufferStorage. The SSBO.initStaticSize function initializes a static buffer of a specified size without data using glBufferStorage. The SSBO.deinit function deletes the buffer using glDeleteBuffers. The SSBO.bind function binds the buffer to a specific binding point using glBindBufferBase. The SSBO.bufferData function updates the entire buffer with new data using glBufferData. The SSBO.bufferSubData function updates a portion of the buffer with new data using glBufferSubData. The SSBO.createDynamicBuffer function creates a dynamic buffer of a specified size using glBufferData.
 
+The VertexArray struct also includes an EmptyVertex nested struct, which contains an attributeDescriptions array that is empty. This array is used to define vertex input attributes for OpenGL.
+
+In the init function of the VertexArray struct, there are switches for determining the glType and size based on the format of the attribute descriptions. For example, if the format is c.VK_FORMAT_R32_SFLOAT, the glType is set to c.GL_FLOAT and the size is 1.
+
 ## Code Example
 ```zig
 pub fn deinit(self: VertexArray) void {

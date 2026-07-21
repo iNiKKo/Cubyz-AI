@@ -9,7 +9,7 @@
 Official and unofficial modding options for Cubyz.
 
 ## Explanation
-The official compile-time modding API is not finished, with progress tracked in #1528. Unofficial mods include Web Assembly (wasm) modding, Compile time modding by KewaiiGamer, and Cubyz Lua integration by LinaPlusPlus.
+The official compile-time modding API has not been finished. You can watch its progress in [#1528](https://github.com/PixelGuys/Cubyz/issues/1528) and see the initial discussions in [#1507](https://github.com/PixelGuys/Cubyz/issues/1507). Unofficial mods include Web Assembly (wasm) modding, Compile time modding by KewaiiGamer, and Cubyz Lua integration by LinaPlusPlus.
 
 ## Related Questions
 - What is the status of the official compile-time modding API?

@@ -1,4 +1,4 @@
 {
-  "mode": "idle",
-  "clean_shutdown": false
+  "mode": "audit",
+  "clean_shutdown": true
 }
