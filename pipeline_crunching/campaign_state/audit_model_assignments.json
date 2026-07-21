@@ -1,32 +1,7 @@
 {
-  "nickpcp": {
-    "model": "qwen2.5-coder:14b",
-    "tier": "hard",
-    "last_seen": 1784651738.5785847
-  },
-  "nickpc": {
-    "model": "qwen2.5-coder:14b",
-    "tier": "hard",
-    "last_seen": 1784651763.3039572
-  },
-  "nickpcq": {
-    "model": "qwen2.5-coder:14b",
-    "tier": "hard",
-    "last_seen": 1784651762.9318447
-  },
   "caleb": {
     "model": "qwen2.5-coder:14b",
     "tier": "hard",
-    "last_seen": 1784651756.7043178
-  },
-  "nickpcc": {
-    "model": "qwen2.5-coder:7b",
-    "tier": "medium",
-    "last_seen": 1784651738.6791477
-  },
-  "nicksrvr": {
-    "model": "qwen2.5-coder:7b",
-    "tier": "medium",
-    "last_seen": 1784651768.1505997
+    "last_seen": 1784663602.4960911
   }
 }

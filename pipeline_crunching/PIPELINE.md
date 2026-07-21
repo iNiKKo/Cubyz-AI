@@ -21,7 +21,7 @@ Pick a tier based on how hard the content is to analyze correctly (`easy` = shor
 `hard` = dense code or long files) -- this controls which volunteers' hardware get handed the
 chunk, not anything about correctness.
 
-**Naming determines how it's classified** (see `_classify_role_context()` in `server_textual.py`):
+**Naming determines how it's classified** (see `_classify_role_context()` in `server.py`):
 
 | Filename starts with... | Treated as |
 |---|---|
@@ -34,18 +34,19 @@ So a new wiki-style doc about, say, a new game mechanic should be named
 `docs_<something>.md` and placed in `easy/` (or `medium/` if it's long/dense). See
 `docs_ashframe_overview.md` and `docs_automation_not_supported.md` in `easy/` for real examples.
 
-**GitHub PR reviews are a special case** -- they don't go in as raw prose. Run
-`archive/prototype_2_review_extraction/extract_reviews.py` (needs a `GITHUB_TOKEN` env var) to
-pull PR review comments straight from GitHub into a pre-chunked JSON array
-(`cubyz_reviews_dataset.json`), which gets placed as `reviews_reviews.json` in a tier folder
-(currently `hard/`). The crunching scanner detects this by filename (`reviews*` or `*.json`) and
-skips the normal line-splitting step entirely, since each entry is already one self-contained
-review comment + diff.
+**GitHub PR reviews and issue discussions are a special case** -- they don't go in as raw prose.
+Use the **"Sync Reviews & Issues"** button in the `server.py` admin console's Data Sync
+panel (needs a `GITHUB_TOKEN` env var) to pull PR review comments and issue discussions straight
+from GitHub into pre-chunked JSON arrays (`raw_cubyz_dataset/reviews/{reviews,issues}.json`),
+which land as `reviews_reviews.json` / `reviews_issues.json` in a tier folder (currently `hard/`).
+The crunching scanner detects this by filename (`reviews*` or `*.json`) and skips the normal
+line-splitting step entirely, since each entry is already one self-contained review comment +
+diff, or issue + discussion thread.
 
 ## 2. Does the data need to be organized/chunked before running RAG folding?
 
 **Only the placement above (tier + filename prefix) -- not the chunking itself.** Drop the whole
-raw file in; `rag_initialize_chunks()` (runs automatically every time `server_textual.py` starts)
+raw file in; `rag_initialize_chunks()` (runs automatically every time `server.py` starts)
 splits it via `_structural_chunks()` and queues the result. You never manually pre-split a doc.
 
 `_structural_chunks()` targets ~150 lines per chunk (300 max, 30-line overlap on any oversized
@@ -79,13 +80,13 @@ becomes worth building -- not there today).
 
 ## 3. Run RAG folding
 
-1. Start (or restart) `pipeline_crunching/server_textual.py`. It scans `organized_cubyz_dataset/`
+1. Start (or restart) `pipeline_crunching/server.py`. It scans `organized_cubyz_dataset/`
    and queues any new/changed chunks automatically. On a real terminal this opens the textual
    admin console directly (no more numbered startup menu) -- pick **RAG** from the sidebar's
    Campaign Mode selector. The header panel shows live progress (`completed/total (pct%)`) so you
    can see how much is left. (Piped/non-interactive output, e.g. systemd, still falls back to the
    old `server_startup_gate()` numbered menu since there's no console to pick a mode with there.)
-2. Run `CUBYZ_FOLDING.py` (any volunteer machine, or your own) -- it auto-detects RAG mode from
+2. Run `client.py` (any volunteer machine, or your own) -- it auto-detects RAG mode from
    the server and starts crunching. Output lands in `users/<user_id>/{wiki,codebase,addon_studio,github_reviews}.jsonl`.
 3. Repeat/leave running until the admin console's header progress bar shows the RAG queue fully
    complete (or check `GET /leaderboard`).
@@ -97,7 +98,7 @@ This is now enforced, not just a convention to remember:
 - Selecting **FINETUNE** from the admin console's sidebar Campaign Mode selector while RAG isn't
   finished refuses the switch and shows the real `X/Y` count as a red hint under the selector,
   reverting the radio button back to the current mode (`on_radio_set_changed` in
-  `server_textual.py`, which just calls the same `set_mode()` the HTTP endpoint uses underneath).
+  `server.py`, which just calls the same `set_mode()` the HTTP endpoint uses underneath).
 - The live `POST /admin/mode?mode=finetune` endpoint returns `409 Conflict` under the same
   condition unless you pass `force=true`.
 
@@ -115,7 +116,7 @@ discard at assembly time was pure wasted volunteer crunching effort. The `docs`/
 candidate-loading code is still in `finetune_initialize_chunks()`, just commented out, in case a
 future prototype deliberately decides fact Q&A is worth bringing back.
 
-Once RAG is done, select **FINETUNE** in the sidebar and run `CUBYZ_FOLDING.py` again -- same
+Once RAG is done, select **FINETUNE** in the sidebar and run `client.py` again -- same
 client, it follows whatever mode the server is in. Output lands in
 `pairs/<user_id>/<source_type>_pairs.jsonl`.
 
@@ -126,9 +127,7 @@ This is the piece that was missing until now: crunching a chunk only writes to
 retrieves from.** After a RAG crunching session (or any time you want to publish what's been
 crunched so far, even mid-campaign):
 
-```bash
-python3 pipeline_crunching/build_knowledge_base.py
-```
+Click **"Publish Knowledge Base"** in the `server.py` admin console's Data Sync panel.
 
 This reads every `users/*/{wiki,codebase,addon_studio,github_reviews}.jsonl`, and writes/updates
 one `.md` file per chunk into `knowledge_base/{docs,codebase,addon_creator,reviews}/` -- the exact
@@ -166,12 +165,12 @@ what's live.
 
 ```
 1. Add raw source file -> organized_cubyz_dataset/{tier}/docs_*.md (or codebase_*/addon_creator_*)
-2. Restart pipeline_crunching/server_textual.py -> auto-scans, auto-chunks, queues new work
-3. Admin console sidebar: select RAG -> run CUBYZ_FOLDING.py until RAG queue is complete
-4. python3 pipeline_crunching/build_knowledge_base.py -> publishes to knowledge_base/
+2. Restart pipeline_crunching/server.py -> auto-scans, auto-chunks, queues new work
+3. Admin console sidebar: select RAG -> run client.py until RAG queue is complete
+4. Admin console: "Publish Knowledge Base" button -> publishes to knowledge_base/
 5. Restart webapp/chat_server.py (or --rebuild) -> live site now answers from the new content
 6. Admin console sidebar: select FINETUNE (blocked/warned if step 3 isn't actually done)
-   -> run CUBYZ_FOLDING.py until finetune queue is complete
+   -> run client.py until finetune queue is complete
 7. finetune/README.md stages 4-8 -> audit, assemble, mix, train, merge, deploy
 ```
 

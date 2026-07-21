@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Snale AI</title>
+<title>Ash</title>
 <style>
   :root {
     color-scheme: light dark;
@@ -86,8 +86,6 @@
   }
   .model-badge .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
   .model-badge:empty { display: none; }
-  .model-badge.full { color: #d14343; border-color: #d14343; }
-  .model-badge.full .dot { background: #d14343; }
   .headerBtn, #newChatBtn {
     background: none; border: 1px solid var(--border); color: var(--text-dim);
     padding: 6px 12px; border-radius: 8px; font-size: 13px; cursor: pointer;
@@ -338,9 +336,9 @@
   <header>
     <div class="headerLeft">
       <h1>
-        <span class="status-dot" id="statusDot" title="Checking..."></span>Snale AI
+        <span class="status-dot" id="statusDot" title="Checking..."></span>Ash
         <span class="model-badge" id="modelBadge" title="Currently serving model"></span>
-        <span class="model-badge" id="capacityBadge" title="How many people are generating an answer right now"></span>
+        <span class="model-badge" id="capacityBadge" title="How many people currently have this website open"></span>
       </h1>
       <div class="sub" id="statusSub">Grounded on the real Cubyz docs, codebase, and PR history</div>
     </div>
@@ -418,6 +416,13 @@ document.getElementById('themeBtn').addEventListener('click', () => {
 // to "what's new since you were last here" instead of an ever-growing list of everything ever
 // shipped.
 const WHATS_NEW_HISTORY = [
+  {
+    version: '2026-07-21-5',
+    date: 'July 21',
+    items: [
+      '**Renamed to Ash** — "Snale" is also a real in-game Cubyz creature, which caused confusion',
+    ],
+  },
   {
     version: '2026-07-21-4',
     date: 'July 21',
@@ -778,12 +783,10 @@ async function loadStatus() {
     dot.className = 'status-dot ok';
     dot.title = 'Connected';
     badge.innerHTML = '<span class="dot"></span>' + escapeHtml(s.model);
-    const active = s.active_generations, max = s.max_concurrent_generations;
-    capBadge.className = 'model-badge' + (active >= max ? ' full' : '');
-    capBadge.innerHTML = '<span class="dot"></span>' + active + ' / ' + max + ' answering now';
-    capBadge.title = active >= max
-      ? 'Server is at capacity -- your message will queue until a slot frees up'
-      : 'How many people are generating an answer right now';
+    const viewers = s.active_viewers != null ? s.active_viewers : 1;
+    capBadge.className = 'model-badge';
+    capBadge.innerHTML = '<span class="dot"></span>' + viewers + (viewers === 1 ? ' person online' : ' people online');
+    capBadge.title = 'How many people currently have this website open';
   } catch (e) {
     dot.className = 'status-dot down';
     dot.title = 'Cannot reach server';
@@ -800,7 +803,7 @@ function renderInfoBody(s) {
     + (stats.finetune_examples != null
         ? `Trained on <b>${stats.finetune_examples.toLocaleString()}</b> examples drawn from Cubyz's real PR &amp; issue review history -- this shapes how it reasons and explains things, not the facts it knows.`
         : 'Fine-tune example count unavailable.')
-    + ' <a href="https://huggingface.co/iNiKKo/SNALE-AI-P7-4B" target="_blank" rel="noopener">Available on Hugging Face</a>.'
+    + ' <a href="https://huggingface.co/iNiKKo/ASH-P7-4B" target="_blank" rel="noopener">Available on Hugging Face</a>.'
     + '</p>';
 
   html += '<p><span class="info-section-title">Live search index (RAG)</span><br>'

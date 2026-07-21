@@ -1,26 +1,26 @@
 # pip install -r pipeline_crunching/requirements.txt
 #
 # fastapi/uvicorn/pydantic: the coordinator server itself (server.py, server_rich.py,
-# server_textual.py all need these -- they're the same server, just with different terminal
+# server.py all need these -- they're the same server, just with different terminal
 # dashboards).
 fastapi
 uvicorn
 pydantic
 
-# rich: used by server_rich.py's and server_textual.py's admin dashboards (rich.text.Text, still
-# used by server_textual.py to hand pre-styled ANSI content into its RichLog widgets). Not needed
+# rich: used by server_rich.py's and server.py's admin dashboards (rich.text.Text, still
+# used by server.py to hand pre-styled ANSI content into its RichLog widgets). Not needed
 # to run the original server.py.
 rich
 
-# textual: server_textual.py's interactive admin console (real mode-select radio buttons,
-# keyboard-driven panels) -- see pipeline_crunching/server_textual.py's own module docstring/
+# textual: server.py's interactive admin console (real mode-select radio buttons,
+# keyboard-driven panels) -- see pipeline_crunching/server.py's own module docstring/
 # comments, and the project_tui_migration_plan memory, for why this exists as a separate file
 # from server_rich.py rather than replacing it in place.
 textual
 
-# requests: extract_reviews.py/extract_issues.py's GitHub API client (session reuse, rate-limit
-# handling). Everything else in this project uses stdlib urllib instead, but these two scripts
-# were restored from archive/prototype_2_review_extraction/ with their original, already-proven
-# HTTP layer intact rather than rewritten -- not worth the risk of introducing a bug into working
-# rate-limit/retry logic for the sake of dependency purity.
+# requests: server.py's Data Sync panel's GitHub API client (PR review + issue-discussion
+# fetching -- session reuse, rate-limit handling). Everything else in this project uses stdlib
+# urllib instead, but this code was restored from archive/prototype_2_review_extraction/ with its
+# original, already-proven HTTP layer intact rather than rewritten -- not worth the risk of
+# introducing a bug into working rate-limit/retry logic for the sake of dependency purity.
 requests

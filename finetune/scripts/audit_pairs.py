@@ -70,7 +70,7 @@ def _extract_kb_section(text: str, heading: str) -> str:
 
 
 def _parse_kb_md_record(collection: str, chunk_id: str) -> dict:
-    """Mirrors pipeline_crunching/server_textual.py's _parse_kb_md_record() -- kept as a separate
+    """Mirrors pipeline_crunching/server.py's _parse_kb_md_record() -- kept as a separate
     copy here rather than imported, matching this project's existing pattern of standalone scripts
     (see that function's own docstring for why knowledge_base/*.md, not users/*.jsonl, is the
     source of truth: users/*.jsonl is the frozen one-time crunch dump that audit mode's fixes never

@@ -6,7 +6,7 @@ without going through the live distributed campaign server at all.
 Why standalone instead of switching the live server to finetune mode: CURRENT_MODE is global --
 switching it would redirect every currently-connected volunteer off of whatever campaign they're
 actually running (audit, most of the time) just to process what's usually a small backlog. This
-script reuses the exact same generation/validation logic as CUBYZ_FOLDING.py's crunch_lane()
+script reuses the exact same generation/validation logic as client.py's crunch_lane()
 (imported directly, not reimplemented) against a local Ollama instance, and writes results into
 their own pairs file under finetune/pairs/<RUNNER_ID>/ -- entirely local, no /get_work, no
 /submit_work, no shared campaign state touched.
@@ -30,18 +30,18 @@ def main():
     parser.add_argument("--model", default=DEFAULT_MODEL)
     args = parser.parse_args()
 
-    # Import server_textual FIRST, before CUBYZ_FOLDING -- the latter monkey-patches
-    # builtins.print at import time (routes it into its own TUI log queue instead of real
-    # stdout), so anything we still want printed normally has to happen before that, or go
-    # through the _orig_print reference it conveniently keeps.
-    import server_textual as srv
+    # Import server FIRST, before client -- the latter monkey-patches builtins.print at import
+    # time (routes it into its own TUI log queue instead of real stdout), so anything we still
+    # want printed normally has to happen before that, or go through the _orig_print reference
+    # it conveniently keeps.
+    import server as srv
     srv.finetune_initialize_chunks(verbose=False)
     queue = list(srv.finetune_chunk_queue)
     print(f"[~] {len(queue)} chunk(s) need regeneration (changed since last finetune pass).")
     if not queue:
         return
 
-    import CUBYZ_FOLDING as client
+    import client
     real_print = client._orig_print
 
     out_dir = os.path.join("finetune", "pairs", RUNNER_ID)

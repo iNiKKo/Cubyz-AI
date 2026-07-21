@@ -1,4 +1,4 @@
 {
   "mode": "audit",
-  "clean_shutdown": true
+  "clean_shutdown": false
 }

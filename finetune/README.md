@@ -8,7 +8,7 @@ names, current API shape) that would go stale if baked into frozen weights.
 
 **Status note:** this doc's Pipeline Stages section (below) describes the original distributed
 generation campaign (`server_finetune.py` + `client_finetune_*.py`), since archived --
-`pipeline_crunching/server_textual.py` + `CUBYZ_FOLDING.py` are the current unified client/server
+`pipeline_crunching/server.py` + `client.py` are the current unified client/server
 for both RAG and finetune crunching (see `pipeline_crunching/PIPELINE.md`). More importantly, as
 of Prototype 7 fine-tune data is **reviews-only** (behavior/judgment pairs) -- stages 1/2's
 `docs`/`codebase` pair generation (the `wiki.jsonl`/`codebase_architectural_subset.jsonl` sources

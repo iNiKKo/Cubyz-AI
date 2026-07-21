@@ -63,6 +63,15 @@ _generation_semaphore = asyncio.Semaphore(MAX_CONCURRENT_GENERATIONS)
 _active_generations = 0
 _active_lock = asyncio.Lock()
 
+# Who currently has the site open, derived from /api/status itself instead of a dedicated
+# heartbeat endpoint -- the frontend already polls /api/status every 5s (see chat_frontend.html's
+# loadStatus()), so every poll IS a heartbeat. session_id -> last-seen timestamp; a session counts
+# as "online" if it's been seen within _VIEWER_TIMEOUT (3x the poll interval, generous enough to
+# absorb a slow/dropped poll without flickering the count). Plain dict, no lock needed: this route
+# is `async def`, so it runs on the single-threaded event loop, never concurrently with itself.
+_active_viewers = {}
+_VIEWER_TIMEOUT = 15
+
 # Which sessions are mid-compaction right now, so the frontend can show "Compacting..." instead
 # of the normal typing indicator and hold off letting that visitor send another message while
 # their history is actively being rewritten. Set/cleared from the worker thread doing the
@@ -193,13 +202,21 @@ async def history(request: Request):
 
 
 @app.get("/api/status")
-async def status():
+async def status(request: Request):
+    session_id = request.cookies.get(SESSION_COOKIE)
+    now = time.time()
+    if session_id:
+        _active_viewers[session_id] = now
+    cutoff = now - _VIEWER_TIMEOUT
+    for sid in [s for s, ts in _active_viewers.items() if ts < cutoff]:
+        del _active_viewers[sid]
     return JSONResponse({
         "model": local_rag_chat.ANSWER_MODEL,
         "embed_model": local_rag_chat.EMBED_MODEL,
         "chunks": len(_index) if _index is not None else 0,
         "active_generations": _active_generations,
         "max_concurrent_generations": MAX_CONCURRENT_GENERATIONS,
+        "active_viewers": len(_active_viewers),
         "training_stats": _training_stats,
     })
 

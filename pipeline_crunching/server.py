@@ -7,6 +7,8 @@ import shutil
 import hashlib
 import asyncio
 import threading
+import subprocess
+import collections
 from collections import deque
 from datetime import datetime
 from fastapi import FastAPI, HTTPException
@@ -16,6 +18,9 @@ from typing import List, Optional, Literal
 # textual trying to reinterpret the raw escape codes -- see _ConnectionsPanel/_EventsPanel.
 # `pip install rich textual` if missing.
 from rich.text import Text
+# Used only by the Data Sync panel's GitHub-fetching functions (see "DATA SYNC" section below) --
+# `pip install requests` if missing.
+import requests
 # The admin console's interactive terminal UI -- see the comment above CubyzAdminApp for why this
 # replaced the rich.live.Live-only version (real keyboard-driven mode selection needs an actual
 # application framework, not just a rendering library).
@@ -126,7 +131,7 @@ def _user_color(user_id: str) -> str:
             _user_color_assignment[key] = len(_user_color_assignment) % len(_CLIENT_COLOR_PALETTE)
     return _CLIENT_COLOR_PALETTE[_user_color_assignment[key]]
 
-_MODE_BADGES = {  # (color, label) -- RAG/finetune colors match CUBYZ_FOLDING.py's client-side convention
+_MODE_BADGES = {  # (color, label) -- RAG/finetune colors match client.py's client-side convention
     "rag": (Colors.CYAN, "RAG"),
     "finetune": (Colors.MAGENTA, "FINETUNE"),
     "audit": (Colors.BLUE, "AUDIT"),
@@ -262,7 +267,7 @@ def _get_user_mode_work(user_key: str, mode: str, stats_dict: dict) -> float:
         return float(entry.get("chunks_completed", 0) or entry.get("chunks_audited", 0))
 
 def _gpu_tier_from_vram(total_vram_gb: float) -> str:
-    """Mirrors CUBYZ_FOLDING.py's gpu_tier_from_vram() exactly -- same thresholds -- so the
+    """Mirrors client.py's gpu_tier_from_vram() exactly -- same thresholds -- so the
     dashboard's explanation of a capability-based CPU-over-GPU choice (see
     _format_benchmark_note) reflects the client's actual real decision logic, not a guess."""
     return "easy" if total_vram_gb <= 4.5 else ("medium" if total_vram_gb <= 8.5 else "hard")
@@ -316,7 +321,7 @@ def _format_benchmark_note(hw: dict):
     gpu_time, cpu_time = hw.get("benchmark_gpu_time"), hw.get("benchmark_cpu_time")
     if gpu_time is None:
         gpu_error = hw.get("benchmark_gpu_error")
-        # Same friendly wording as the client's own console (see CUBYZ_FOLDING.py's benchmark
+        # Same friendly wording as the client's own console (see client.py's benchmark
         # print) for the two "GPU just isn't usable here" shapes -- this dashboard renders the
         # raw diagnostic string independently, so fixing the client's own print didn't touch what
         # an admin sees here. Anything else (a real timeout, an actual exception) still shows the
@@ -934,6 +939,11 @@ _RESET_LABELS = {
     "reset_both": "Reset BOTH campaigns",
 }
 
+# _SYNC_ACTIONS is defined further down (see "DATA SYNC" section, after PIPELINE_ROOT/REPO_ROOT/
+# KNOWLEDGE_DIR etc. exist) -- CubyzAdminApp only looks it up at runtime (inside compose() and
+# on_button_pressed()), never at class-definition time, so its physical position in the file
+# doesn't matter as long as it's a module global by the time the app actually starts.
+
 class CubyzAdminApp(App):
     """The interactive admin console -- left: mode selection (a real selectable RadioSet, not
     just a display, per Nick's s-tui reference) + control options, spanning the FULL height top to
@@ -953,6 +963,8 @@ class CubyzAdminApp(App):
     RadioSet { margin-bottom: 1; }
     #advanced { margin-top: 1; }
     #advanced Button { margin-bottom: 1; width: 100%; }
+    #datasync { margin-top: 1; }
+    #datasync Button { margin-bottom: 1; width: 100%; }
     """
     BINDINGS = [("q", "quit", "Quit"), ("r", "refresh_now", "Refresh now")]
 
@@ -968,6 +980,10 @@ class CubyzAdminApp(App):
         # waiting on a confirm click; _armed_timer auto-disarms it if that confirm doesn't come.
         self._armed_reset = None
         self._armed_timer = None
+        # id of the _SYNC_ACTIONS entry currently running (None when idle) -- guards against
+        # starting a second sync while one is already mid-run (they all touch the same
+        # organized_cubyz_dataset/ tiering step, so overlapping runs would race each other).
+        self._sync_running = None
 
     def compose(self) -> ComposeResult:
         with Vertical(id="sidebar"):
@@ -976,6 +992,9 @@ class CubyzAdminApp(App):
                 for m in _MODE_ORDER:
                     yield RadioButton(m.upper(), value=(m == CURRENT_MODE), id=f"mode_{m}")
             yield Static("\n[b]Control Options[/b]\n[dim]q[/dim] Quit\n[dim]r[/dim] Refresh now")
+            with Collapsible(title="Data Sync", collapsed=True, id="datasync"):
+                for btn_id, (label, _func) in _SYNC_ACTIONS.items():
+                    yield Button(label, id=btn_id, variant="primary")
             with Collapsible(title="Advanced Settings", collapsed=True, id="advanced"):
                 yield Button(_RESET_LABELS["reset_rag"], id="reset_rag", variant="warning")
                 yield Button(_RESET_LABELS["reset_finetune"], id="reset_finetune", variant="warning")
@@ -1028,6 +1047,9 @@ class CubyzAdminApp(App):
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         btn_id = event.button.id
+        if btn_id in _SYNC_ACTIONS:
+            self._start_sync(btn_id)
+            return
         if btn_id not in _RESET_LABELS:
             return
         if self._armed_reset == btn_id:
@@ -1077,6 +1099,57 @@ class CubyzAdminApp(App):
         self.query_one(_ConnectionsPanel).refresh_content()
         self.query_one(_EventsPanel).refresh_content()
 
+    def _start_sync(self, btn_id: str) -> None:
+        if self._sync_running is not None:
+            self.query_one("#hint", Static).update(
+                "[yellow]A sync is already running -- wait for it to finish.[/yellow]")
+            return
+        label, func = _SYNC_ACTIONS[btn_id]
+        self._sync_running = btn_id
+        button = self.query_one(f"#{btn_id}", Button)
+        button.disabled = True
+        button.label = f"{label} (running...)"
+        log_event("admin", "", "•", Colors.CYAN, f"{label}: started")
+        self.query_one("#hint", Static).update(f"[cyan]{label} started -- watch Recent Events.[/cyan]")
+        self.query_one(_EventsPanel).refresh_content()
+        threading.Thread(target=self._sync_worker, args=(btn_id, label, func), daemon=True).start()
+
+    def _sync_worker(self, btn_id: str, label: str, func) -> None:
+        # These scripts (sync_codebase.py, sync_reviews.py, build_knowledge_base.py) print their
+        # own progress with plain print() -- fine for a bare CLI run, but textual owns the
+        # terminal here, so unredirected prints from a background thread would corrupt the
+        # screen. Captured the same way _seed_startup_events()'s caller already handles this at
+        # startup: redirect_stdout into a buffer, replay it into the Events panel afterward.
+        import io, contextlib
+        buf = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buf):
+                func()
+            self.call_from_thread(self._sync_done, btn_id, label, True, None, buf.getvalue())
+        except Exception as e:
+            self.call_from_thread(self._sync_done, btn_id, label, False, e, buf.getvalue())
+
+    def _sync_done(self, btn_id: str, label: str, ok: bool, err, output: str) -> None:
+        for line in output.splitlines():
+            line = line.strip()
+            if line:
+                _recent_events.append((time.time(), "admin", "", "•", Colors.GRAY, line))
+        self._sync_running = None
+        try:
+            button = self.query_one(f"#{btn_id}", Button)
+            button.disabled = False
+            button.label = label
+        except Exception:
+            pass
+        if ok:
+            log_event("admin", "", "✓", Colors.GREEN, f"{label}: complete")
+            self.query_one("#hint", Static).update(f"[green]{label} complete.[/green]")
+        else:
+            log_event("admin", "", "✗", Colors.RED, f"{label}: failed -- {err}")
+            self.query_one("#hint", Static).update(f"[red]{label} failed: {err}[/red]")
+        self.query_one(_ConnectionsPanel).refresh_content()
+        self.query_one(_EventsPanel).refresh_content()
+
 # NOTE ON THREADING (learned the hard way -- confirmed live, not theorized): the ORIGINAL plan
 # here was "run textual's App in a background thread with its own event loop, same shape as the
 # rich Live loop it replaced." That's broken: textual's Linux/Mac driver calls signal.signal()
@@ -1103,7 +1176,7 @@ app = FastAPI(title="Cubyz Distributed Dataset Coordinator")
 
 # FastAPI/Starlette runs synchronous "def" route handlers (every route in this file) in a thread
 # pool, so two requests genuinely can execute concurrently -- e.g. two lanes on the same dual-lane
-# client (see CUBYZ_FOLDING.py's crunch_lane()), or just two different volunteers, both hitting
+# client (see client.py's crunch_lane()), or just two different volunteers, both hitting
 # /get_work or /submit_work at close to the same instant. Every one of those handlers does a
 # read-JSON -> mutate -> write-JSON cycle on lock_state.json; without serializing that whole
 # cycle, two concurrent requests can interleave their writes and either silently lose one
@@ -1119,7 +1192,7 @@ campaign_state_lock = threading.Lock()
 # finetune/server_finetune.py) that happened to both bind port 7000 -- meaning only one could
 # ever run at a time anyway. Merged into one process that runs BOTH campaigns' state side by
 # side and switches which one is being served via CURRENT_MODE, matching what
-# CUBYZ_FOLDING.py (the unified client) expects: a "mode" field on /get_work telling it whether
+# client.py (the unified client) expects: a "mode" field on /get_work telling it whether
 # to do RAG extraction, fine-tune pair generation, or nothing (idle).
 #
 # RAG and fine-tune chunk_ids are NOT interchangeable even though they can be equal as strings
@@ -1159,6 +1232,870 @@ AUDIT_PENDING_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "audit_pendin
 AUDIT_APPLIED_LOG = os.path.join(PIPELINE_ROOT, "campaign_state", "audit_applied_log.jsonl")
 AUDIT_NEEDS_HUMAN_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "audit_needs_human_review.jsonl")
 AUDIT_MODEL_ASSIGNMENTS_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "audit_model_assignments.json")
+
+# ============================================================
+# DATA SYNC -- pulling fresh source material into the crunching pipeline and publishing crunched
+# volunteer output into the live knowledge base. Wired into the admin console as buttons (see
+# _SYNC_ACTIONS / CubyzAdminApp._start_sync, further down) instead of needing separate manual
+# `python3 pipeline_crunching/<script>.py` runs. Used to be five standalone files
+# (dataset_sorter.py, sync_codebase.py, sync_reviews.py, build_knowledge_base.py,
+# analyze_audit.py) -- folded in here on explicit request to get the folder down to just the
+# client and this server, since none of the five ever needed to run on their own outside this
+# app anymore once they were buttons.
+# ============================================================
+
+# --- Dataset tiering (formerly dataset_sorter.py) -- sorts raw_cubyz_dataset/ into
+# organized_cubyz_dataset/{easy,medium,hard}/ by file size/type, the shape rag_initialize_chunks()
+# expects. Shared by the codebase and reviews syncs below (both raw-source syncs end with a call
+# to organize_dataset()). ---
+
+DATASET_SOURCE_DIR = os.path.join(PIPELINE_ROOT, "raw_cubyz_dataset")
+DATASET_OUTPUT_DIR = os.path.join(PIPELINE_ROOT, "organized_cubyz_dataset")
+
+DATASET_TIERS = ("easy", "medium", "hard")
+DATASET_ACCEPTABLE_EXTENSIONS = ('.txt', '.md', '.zig', '.zon', '.json', '.html', '.js', '.sh')
+DATASET_EASY_MAX_LINES = 150
+DATASET_MEDIUM_MAX_LINES = 450
+
+
+def _count_lines(file_path: str) -> int:
+    with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+        return sum(1 for _ in f)
+
+
+def _determine_tier(file: str, top_folder: str, file_path: str) -> str:
+    if file.lower().endswith('.json') or top_folder == 'github':
+        return "hard"
+
+    line_count = _count_lines(file_path)
+    if line_count <= DATASET_EASY_MAX_LINES:
+        return "easy"
+    elif line_count <= DATASET_MEDIUM_MAX_LINES:
+        return "medium"
+    else:
+        return "hard"
+
+
+def _build_unique_dataset_filename(rel_path: str, file: str) -> str:
+    if rel_path == ".":
+        return file
+    return f"{rel_path.replace(os.sep, '_')}_{file}"
+
+
+def organize_dataset():
+    print("=== Cubyz Dataset Automation Sorter ===")
+
+    if not os.path.exists(DATASET_SOURCE_DIR):
+        print(f"[X] Source directory '{DATASET_SOURCE_DIR}' not found!")
+        print(f"Please create '{DATASET_SOURCE_DIR}' and place your folders/files inside it.")
+        sys.exit(1)
+
+    for tier in DATASET_TIERS:
+        os.makedirs(os.path.join(DATASET_OUTPUT_DIR, tier), exist_ok=True)
+
+    counters = {"easy": 0, "medium": 0, "hard": 0, "skipped": 0}
+    # Every (tier, unique_filename) this run actually produces -- used below to remove anything
+    # already sitting in DATASET_OUTPUT_DIR that this run did NOT produce. Without this, a file
+    # renamed or deleted upstream (automated via sync_codebase() below rather than hand-copied, so
+    # this happens routinely) left its old organized copy behind forever: the crunching campaign
+    # would keep tracking and re-verifying content for a file that no longer exists. Tracked as
+    # (tier, filename) pairs, not just filename, since a file crossing a line-count threshold
+    # between runs legitimately moves tiers -- the OLD tier's copy is exactly as stale as one from
+    # a deleted file and needs the same cleanup.
+    produced = set()
+
+    print(f"[~] Scanning '{DATASET_SOURCE_DIR}' for valid tracking files...")
+
+    for root, _, files in os.walk(DATASET_SOURCE_DIR):
+        for file in files:
+            if not file.lower().endswith(DATASET_ACCEPTABLE_EXTENSIONS):
+                counters["skipped"] += 1
+                continue
+
+            file_path = os.path.join(root, file)
+
+            try:
+                rel_path = os.path.relpath(root, DATASET_SOURCE_DIR)
+                top_folder = rel_path.split(os.sep)[0].lower() if rel_path != "." else ""
+
+                tier_target = _determine_tier(file, top_folder, file_path)
+                unique_filename = _build_unique_dataset_filename(rel_path, file)
+
+                destination_path = os.path.join(DATASET_OUTPUT_DIR, tier_target, unique_filename)
+                shutil.copy2(file_path, destination_path)
+                counters[tier_target] += 1
+                produced.add((tier_target, unique_filename))
+
+            except Exception as e:
+                print(f"[!] Warning: Error reading file {file}: {e}")
+                counters["skipped"] += 1
+
+    # Scoped to "codebase_"-prefixed files ONLY -- confirmed live that organized_cubyz_dataset/
+    # is NOT entirely derived from raw_cubyz_dataset/: several docs_* files and
+    # hard/issues_issues.json exist in the organized output with no corresponding raw source
+    # anywhere (hand-added directly at some point, bypassing this function). A blanket "remove
+    # anything this run didn't produce" pass deleted those on first test -- codebase/ is the one
+    # folder that's fully automated (sync_codebase() below wipes and regenerates it from a git
+    # clone every run, nothing hand-edited lives there), so it's the only prefix safe to auto-clean.
+    removed = 0
+    for tier in DATASET_TIERS:
+        tier_dir = os.path.join(DATASET_OUTPUT_DIR, tier)
+        for existing in os.listdir(tier_dir):
+            if existing.startswith("codebase_") and (tier, existing) not in produced:
+                os.remove(os.path.join(tier_dir, existing))
+                removed += 1
+
+    print("\n[✓] Dataset Sorting Complete!")
+    print(f"    EASY Files (<= {DATASET_EASY_MAX_LINES} lines):   {counters['easy']}")
+    print(f"    MEDIUM Files ({DATASET_EASY_MAX_LINES + 1}-{DATASET_MEDIUM_MAX_LINES} lines): {counters['medium']}")
+    print(f"    HARD Files (> {DATASET_MEDIUM_MAX_LINES} lines):     {counters['hard']}")
+    print(f"    SKIPPED Files (other types):  {counters['skipped']}")
+    print(f"    Removed (no longer in source): {removed}")
+    print(f"\nYour sorted dataset folders are located under: '{DATASET_OUTPUT_DIR}/'")
+
+
+# --- Codebase sync (formerly sync_codebase.py) -- clones/updates the real PixelGuys/Cubyz repo
+# and mirrors its src/, mods/, assets/ folders into raw_cubyz_dataset/codebase/, then re-tiers.
+# Only touches codebase/ -- docs/, addon_creator/, and reviews/ under raw_cubyz_dataset/ have
+# other, non-git-clone sources and are left exactly as they are. ---
+
+UPSTREAM_REPO_URL = "https://github.com/PixelGuys/Cubyz.git"
+UPSTREAM_CLONE_DIR = os.path.join(PIPELINE_ROOT, "_cubyz_upstream_clone")
+CODEBASE_RAW_DIR = os.path.join(DATASET_SOURCE_DIR, "codebase")
+# The exact subfolders raw_cubyz_dataset/codebase/ has always mirrored -- confirmed against the
+# real repo layout (src/, mods/, assets/ at the repo root).
+CODEBASE_SYNCED_SUBDIRS = ("src", "mods", "assets")
+
+
+def _run_git(cmd, **kwargs):
+    print(f"[~] {' '.join(cmd)}")
+    subprocess.run(cmd, check=True, **kwargs)
+
+
+def _sync_upstream_clone():
+    """Clones PixelGuys/Cubyz on first run, or fast-forwards an existing clone on every run
+    after. --depth 1 + a fetch/reset (not a full-history pull) since nothing here ever needs
+    Cubyz's own commit history -- only the current state of a few folders."""
+    if not os.path.exists(os.path.join(UPSTREAM_CLONE_DIR, ".git")):
+        print(f"[~] No local clone yet -- cloning {UPSTREAM_REPO_URL} (shallow)...")
+        if os.path.exists(UPSTREAM_CLONE_DIR):
+            shutil.rmtree(UPSTREAM_CLONE_DIR)  # leftover partial/non-git directory, if any
+        _run_git(["git", "clone", "--depth", "1", UPSTREAM_REPO_URL, UPSTREAM_CLONE_DIR])
+        return
+
+    print(f"[~] Updating existing clone at {UPSTREAM_CLONE_DIR}...")
+    _run_git(["git", "fetch", "--depth", "1", "origin", "main"], cwd=UPSTREAM_CLONE_DIR)
+    _run_git(["git", "reset", "--hard", "origin/main"], cwd=UPSTREAM_CLONE_DIR)
+
+
+def _mirror_codebase_folders():
+    """Fully replaces raw_cubyz_dataset/codebase/{src,mods,assets} with what's in the fresh
+    clone -- a full wipe+recopy, not an incremental diff, which is safe here specifically because
+    nothing ever hand-edits files inside raw_cubyz_dataset/codebase/ (unlike docs/, which mixes
+    in wiki/hand-authored content and must never be touched by this function)."""
+    for subdir in CODEBASE_SYNCED_SUBDIRS:
+        src = os.path.join(UPSTREAM_CLONE_DIR, subdir)
+        dst = os.path.join(CODEBASE_RAW_DIR, subdir)
+        if not os.path.isdir(src):
+            print(f"[!] Warning: upstream repo has no '{subdir}/' -- skipping (layout may have changed).")
+            continue
+        if os.path.exists(dst):
+            shutil.rmtree(dst)
+        shutil.copytree(src, dst)
+        print(f"[OK] Synced {subdir}/ -> {dst}")
+
+
+def sync_codebase():
+    os.makedirs(CODEBASE_RAW_DIR, exist_ok=True)
+    try:
+        _sync_upstream_clone()
+    except subprocess.CalledProcessError as e:
+        sys.exit(f"[X] Git command failed ({e}). Is git installed and is github.com reachable?")
+    _mirror_codebase_folders()
+    print()
+    organize_dataset()
+
+
+# --- GitHub PR reviews + issue discussions (formerly sync_reviews.py, extract_reviews.py,
+# extract_issues.py). Both extraction paths are incremental by design: closed PRs/issues are
+# permanently tracked in campaign_state/processed_prs.txt and processed_issues.txt and never
+# re-scanned once done (a closed thread is final); open ones are re-scanned every run since their
+# threads can still grow, with chunk_id dedup making that safe and cheap. ---
+
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
+REPO_OWNER = "PixelGuys"
+REPO_NAME = "Cubyz"
+GITHUB_PER_PAGE = 100  # GitHub maximum allowed per page
+
+GITHUB_HEADERS = {
+    "Accept": "application/vnd.github.v3+json",
+    "User-Agent": "Cubyz-Dataset-Extractor",
+}
+if GITHUB_TOKEN:
+    GITHUB_HEADERS["Authorization"] = f"Bearer {GITHUB_TOKEN}"
+
+GITHUB_SESSION = requests.Session()
+GITHUB_SESSION.headers.update(GITHUB_HEADERS)
+
+
+def _github_request(url):
+    """Sends a GitHub API request with automatic rate-limit handling. Shared by both the PR
+    review and issue-discussion fetchers below -- identical handling either way."""
+    while True:
+        try:
+            response = GITHUB_SESSION.get(url, timeout=30)
+
+            if response.status_code == 403:
+                remaining = response.headers.get("X-RateLimit-Remaining")
+                reset = response.headers.get("X-RateLimit-Reset")
+                if remaining == "0" and reset:
+                    wait_time = int(reset) - int(time.time()) + 5
+                    print(f"[!] Rate limit reached. Sleeping {wait_time}s...")
+                    time.sleep(max(wait_time, 5))
+                    continue
+
+            response.raise_for_status()
+            return response.json()
+
+        except requests.exceptions.Timeout:
+            print("[!] Timeout. Retrying...")
+            time.sleep(5)
+
+        except requests.exceptions.RequestException as e:
+            print(f"[X] GitHub request failed: {e}")
+            time.sleep(10)
+
+
+# PR reviews: Tier-1 architecture/code-quality reviews only, pointed at the live
+# raw_cubyz_dataset/reviews/reviews.json so re-running this extends what's already there.
+REVIEWS_OUTPUT_FILE = os.path.join(DATASET_SOURCE_DIR, "reviews", "reviews.json")
+REVIEWS_STATE_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "processed_prs.txt")
+MAX_PULL_REQUESTS = 2000
+
+
+def _load_processed_prs():
+    if not os.path.exists(REVIEWS_STATE_FILE):
+        return set()
+    with open(REVIEWS_STATE_FILE, "r", encoding="utf-8") as file:
+        return {int(line.strip()) for line in file if line.strip().isdigit()}
+
+
+def _save_processed_prs(pr_numbers):
+    if not pr_numbers:
+        return
+    os.makedirs(os.path.dirname(REVIEWS_STATE_FILE), exist_ok=True)
+    with open(REVIEWS_STATE_FILE, "a", encoding="utf-8") as file:
+        for pr in pr_numbers:
+            file.write(f"{pr}\n")
+
+
+def _load_reviews_dataset():
+    if not os.path.exists(REVIEWS_OUTPUT_FILE):
+        return []
+    try:
+        with open(REVIEWS_OUTPUT_FILE, "r", encoding="utf-8") as file:
+            return json.load(file)
+    except json.JSONDecodeError:
+        print("[!] Reviews dataset corrupted. Starting empty.")
+        return []
+
+
+def _is_tier_1_review(comment_body):
+    """Keeps only high-level architecture/code quality reviews."""
+    if not comment_body:
+        return False
+
+    body = comment_body.lower()
+
+    # "color"/"fog" deliberately removed from the blacklist -- as bare words they reject
+    # legitimate architectural discussion that happens to mention a rendering/fog system. Kept
+    # only as specific dismissive phrases, which is what this list is actually trying to catch.
+    blacklist = [
+        "sorry", "idk", "i didn't know", "i didnt know", "close this", "can we close",
+        "can i close", "does this mean", "is this ready", "typo", "spelling", "grammar",
+        "just a color", "wrong color", "look better"
+    ]
+    if any(word in body for word in blacklist):
+        return False
+
+    words = body.split()
+    if len(words) < 12:  # architectural reviews normally need explanation
+        return False
+
+    structural_keywords = [
+        "allocator", "alloc", "memory", "leak", "deinit", "free", "struct", "pointer",
+        "hashmap", "array", "lifetime", "parser", "copy", "performance", "optimization",
+        "optimize", "redundant", "refactor", "architecture", "design", "ownership"
+    ]
+    has_structure = any(key in body for key in structural_keywords)
+    has_suggestion = "```suggestion" in body and len(words) > 20
+
+    return has_structure or has_suggestion
+
+
+def _get_pull_requests(state, limit):
+    """Retrieves PRs in the given state ("closed" or "open") from newest to oldest."""
+    page = 1
+    fetched = 0
+    while fetched < limit:
+        url = (
+            f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/pulls"
+            f"?state={state}&sort=updated&direction=desc&per_page={GITHUB_PER_PAGE}&page={page}"
+        )
+        pull_requests = _github_request(url)
+        if not pull_requests:
+            break
+        for pr in pull_requests:
+            yield pr
+            fetched += 1
+            if fetched >= limit:
+                break
+        page += 1
+
+
+def _get_closed_pull_requests():
+    return _get_pull_requests("closed", MAX_PULL_REQUESTS)
+
+
+def _get_open_pull_requests():
+    # No cap to speak of -- Cubyz's open-PR count is small (low hundreds at most), and every one
+    # of them gets re-scanned every run anyway (see REVIEWS_STATE_FILE comment above).
+    return _get_pull_requests("open", MAX_PULL_REQUESTS)
+
+
+def _extract_pr_comments(pr_number):
+    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/pulls/{pr_number}/comments"
+    return _github_request(url) or []
+
+
+def _create_review_chunk(pr_number, comment):
+    path = comment.get("path", "")
+    directory, filename = os.path.split(path)
+    return {
+        "file_name": filename,
+        "relative_path": path,
+        "directory_context": directory,
+        "chunk_id": f"github_pr_{pr_number}_comment_{comment['id']}",
+        "chunk_index": comment["id"],
+        "raw_content": (
+            f"// FILE TARGET: {path}\n"
+            f"// CODE DIFF CONTEXT:\n"
+            f"{comment.get('diff_hunk', '')}\n\n"
+            f"// CRITICAL ARCHITECTURAL REVIEW:\n"
+            f"{comment.get('body', '')}"
+        )
+    }
+
+
+def _process_pull_request(pr):
+    pr_number = pr["number"]
+    print(f"[~] Scanning PR #{pr_number}: {pr['title']}")
+    chunks = []
+    for comment in _extract_pr_comments(pr_number):
+        path = comment.get("path", "")
+        if not path.lower().endswith(".zig"):  # Only Zig source files
+            continue
+        if not _is_tier_1_review(comment.get("body", "")):
+            continue
+        chunks.append(_create_review_chunk(pr_number, comment))
+    return chunks
+
+
+def _scan_prs(prs, existing_chunk_ids, processed_prs, track_processed):
+    """Returns (new_chunks, scanned_count, skipped_count, newly_completed_pr_numbers).
+    track_processed=False re-scans every PR every run (used for open PRs)."""
+    new_chunks, completed_prs, scanned, skipped = [], [], 0, 0
+    for pr in prs:
+        pr_number = pr["number"]
+        if track_processed and pr_number in processed_prs:
+            skipped += 1
+            continue
+        scanned += 1
+        added = 0
+        for chunk in _process_pull_request(pr):
+            chunk_id = chunk["chunk_id"]
+            if chunk_id in existing_chunk_ids:
+                continue
+            existing_chunk_ids.add(chunk_id)
+            new_chunks.append(chunk)
+            added += 1
+        if track_processed:
+            completed_prs.append(pr_number)
+        print(f"[✓] PR #{pr_number} added {added} chunks")
+    return new_chunks, scanned, skipped, completed_prs
+
+
+def sync_pr_reviews():
+    print(f"[~] Starting Tier-1 architecture dataset extraction for {REPO_OWNER}/{REPO_NAME} "
+          f"(closed PRs, permanently tracked, + open PRs, re-scanned every run)")
+
+    processed_prs = _load_processed_prs()
+    dataset = _load_reviews_dataset()
+    existing_chunk_ids = {item.get("chunk_id") for item in dataset if "chunk_id" in item}
+
+    closed_chunks, closed_scanned, closed_skipped, closed_completed = _scan_prs(
+        _get_closed_pull_requests(), existing_chunk_ids, processed_prs, track_processed=True
+    )
+    open_chunks, open_scanned, open_skipped, _ = _scan_prs(
+        _get_open_pull_requests(), existing_chunk_ids, processed_prs, track_processed=False
+    )
+
+    new_chunks = closed_chunks + open_chunks
+    scanned = closed_scanned + open_scanned
+    skipped = closed_skipped + open_skipped
+
+    if not scanned:
+        print("[✓] No new PRs to process.")
+        return
+
+    _save_processed_prs(closed_completed)
+    dataset.extend(new_chunks)
+    os.makedirs(os.path.dirname(REVIEWS_OUTPUT_FILE), exist_ok=True)
+    with open(REVIEWS_OUTPUT_FILE, "w", encoding="utf-8") as file:
+        json.dump(dataset, file, indent=4, ensure_ascii=False)
+
+    print("\n========== PR REVIEWS COMPLETE ==========")
+    print(f"PRs scanned: {scanned} ({closed_scanned} closed, {open_scanned} open)")
+    print(f"PRs skipped: {skipped} ({closed_skipped} closed, already processed)")
+    print(f"New architecture chunks: {len(new_chunks)}")
+    print(f"Total dataset size: {len(dataset)}")
+
+
+# Issue discussions: same purpose as PR reviews (behavioral/judgment training material) but a
+# different slice -- "here's a reported problem, diagnose it" (symptom -> hypothesis -> root
+# cause -> resolution) rather than "is this code change good and why". One chunk per qualifying
+# ISSUE (title + body + filtered discussion thread), not one per comment.
+ISSUES_OUTPUT_FILE = os.path.join(DATASET_SOURCE_DIR, "reviews", "issues.json")
+ISSUES_STATE_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "processed_issues.txt")
+MAX_ISSUES = 3000
+# Below this many substantive (post-filter) comments, an issue's discussion isn't a real
+# diagnosis thread -- just a report that got closed with no real back-and-forth.
+MIN_SUBSTANTIVE_COMMENTS = 1
+# GitHub's author_association field on issues/comments -- these mean the commenter has real
+# authority on the project, so their diagnosis carries the judgment/voice this dataset wants.
+MAINTAINER_ASSOCIATIONS = {"OWNER", "MEMBER", "COLLABORATOR"}
+LOW_VALUE_PHRASES = [
+    "+1", "same here", "same issue", "any updates", "any update?", "closing as stale",
+    "closing this", "duplicate of", "me too", "bump", "still happening", "still an issue",
+    "can confirm", "thanks!", "thank you!",
+]
+
+
+def _load_processed_issues():
+    if not os.path.exists(ISSUES_STATE_FILE):
+        return set()
+    with open(ISSUES_STATE_FILE, "r", encoding="utf-8") as file:
+        return {int(line.strip()) for line in file if line.strip().isdigit()}
+
+
+def _save_processed_issues(issue_numbers):
+    if not issue_numbers:
+        return
+    os.makedirs(os.path.dirname(ISSUES_STATE_FILE), exist_ok=True)
+    with open(ISSUES_STATE_FILE, "a", encoding="utf-8") as file:
+        for num in issue_numbers:
+            file.write(f"{num}\n")
+
+
+def _load_issues_dataset():
+    if not os.path.exists(ISSUES_OUTPUT_FILE):
+        return []
+    try:
+        with open(ISSUES_OUTPUT_FILE, "r", encoding="utf-8") as file:
+            return json.load(file)
+    except json.JSONDecodeError:
+        print("[!] Issues dataset corrupted. Starting empty.")
+        return []
+
+
+def _is_substantive_comment(comment):
+    body = (comment.get("body") or "").strip()
+    if not body:
+        return False
+    body_lower = body.lower()
+    if any(phrase in body_lower for phrase in LOW_VALUE_PHRASES):
+        return False
+    words = body.split()
+    is_maintainer = comment.get("author_association") in MAINTAINER_ASSOCIATIONS
+    # Maintainer comments get a lower bar -- a short "it's X, fixed in Y" from a maintainer is
+    # exactly the judgment/diagnosis signal this is collecting.
+    min_words = 6 if is_maintainer else 15
+    return len(words) >= min_words
+
+
+def _get_issues(state, limit):
+    """Retrieves issues (not PRs) in the given state, newest-updated first."""
+    page = 1
+    fetched = 0
+    while fetched < limit:
+        url = (
+            f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/issues"
+            f"?state={state}&sort=updated&direction=desc&per_page={GITHUB_PER_PAGE}&page={page}"
+        )
+        items = _github_request(url)
+        if not items:
+            break
+        for item in items:
+            # The /issues endpoint returns PRs too -- skip those, the PR-reviews side above
+            # already covers them.
+            if "pull_request" in item:
+                continue
+            yield item
+            fetched += 1
+            if fetched >= limit:
+                break
+        page += 1
+
+
+def _get_closed_issues():
+    return _get_issues("closed", MAX_ISSUES)
+
+
+def _get_open_issues():
+    return _get_issues("open", MAX_ISSUES)
+
+
+def _get_issue_comments(issue_number):
+    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/issues/{issue_number}/comments"
+    return _github_request(url) or []
+
+
+def _create_issue_chunk(issue, substantive_comments):
+    number = issue["number"]
+    title = issue.get("title", "")
+    body = (issue.get("body") or "").strip()
+    discussion_parts = []
+    for c in substantive_comments:
+        role = "MAINTAINER" if c.get("author_association") in MAINTAINER_ASSOCIATIONS else "USER"
+        discussion_parts.append(f"[{role} COMMENT]\n{c.get('body', '').strip()}")
+    raw_content = (
+        f"// ISSUE TITLE: {title}\n"
+        f"// ISSUE REPORT:\n{body}\n\n"
+        f"// DISCUSSION:\n" + "\n\n".join(discussion_parts)
+    )
+    return {
+        "file_name": f"issue_{number}.md",
+        "relative_path": f"issues/issue_{number}.md",
+        "directory_context": "GITHUB_REVIEWS",
+        "chunk_id": f"github_issue_{number}_discussion",
+        "chunk_index": number,
+        "raw_content": raw_content,
+    }
+
+
+def _process_issue(issue):
+    number = issue["number"]
+    print(f"[~] Scanning Issue #{number}: {issue.get('title', '')}")
+    comments = _get_issue_comments(number)
+    substantive = [c for c in comments if _is_substantive_comment(c)]
+    if len(substantive) < MIN_SUBSTANTIVE_COMMENTS:
+        return None
+    return _create_issue_chunk(issue, substantive)
+
+
+def _scan_issues(issues, existing_chunk_ids, processed_issues, track_processed):
+    new_chunks, completed, scanned, skipped = [], [], 0, 0
+    for issue in issues:
+        number = issue["number"]
+        if track_processed and number in processed_issues:
+            skipped += 1
+            continue
+        scanned += 1
+        chunk = _process_issue(issue)
+        if chunk is not None and chunk["chunk_id"] not in existing_chunk_ids:
+            existing_chunk_ids.add(chunk["chunk_id"])
+            new_chunks.append(chunk)
+            print(f"[✓] Issue #{number} added (real discussion found)")
+        else:
+            print(f"[~] Issue #{number} skipped (no substantive discussion)")
+        if track_processed:
+            completed.append(number)
+    return new_chunks, scanned, skipped, completed
+
+
+def sync_issue_discussions():
+    print(f"[~] Starting issue-discussion extraction for {REPO_OWNER}/{REPO_NAME} "
+          f"(closed issues, permanently tracked, + open issues, re-scanned every run)")
+
+    processed_issues = _load_processed_issues()
+    dataset = _load_issues_dataset()
+    existing_chunk_ids = {item.get("chunk_id") for item in dataset if "chunk_id" in item}
+
+    closed_chunks, closed_scanned, closed_skipped, closed_completed = _scan_issues(
+        _get_closed_issues(), existing_chunk_ids, processed_issues, track_processed=True
+    )
+    open_chunks, open_scanned, open_skipped, _ = _scan_issues(
+        _get_open_issues(), existing_chunk_ids, processed_issues, track_processed=False
+    )
+
+    new_chunks = closed_chunks + open_chunks
+    scanned = closed_scanned + open_scanned
+    skipped = closed_skipped + open_skipped
+
+    if not scanned:
+        print("[✓] No new issues to process.")
+        return
+
+    _save_processed_issues(closed_completed)
+    dataset.extend(new_chunks)
+    os.makedirs(os.path.dirname(ISSUES_OUTPUT_FILE), exist_ok=True)
+    with open(ISSUES_OUTPUT_FILE, "w", encoding="utf-8") as file:
+        json.dump(dataset, file, indent=4, ensure_ascii=False)
+
+    print("\n========== ISSUE DISCUSSIONS COMPLETE ==========")
+    print(f"Issues scanned: {scanned} ({closed_scanned} closed, {open_scanned} open)")
+    print(f"Issues skipped: {skipped} ({closed_skipped} closed, already processed)")
+    print(f"New issue-discussion chunks: {len(new_chunks)}")
+    print(f"Total dataset size: {len(dataset)}")
+
+
+def sync_reviews_and_issues():
+    if not GITHUB_TOKEN:
+        print("[!] No GITHUB_TOKEN set -- unauthenticated GitHub requests are capped at "
+              "60/hour, which a repo this size will burn through fast. Recommended:\n"
+              "      export GITHUB_TOKEN=ghp_...\n"
+              "    before running this again. Continuing anyway...\n")
+
+    print("=" * 60)
+    print("STEP 1/3: PR review comments")
+    print("=" * 60)
+    sync_pr_reviews()
+
+    print("\n" + "=" * 60)
+    print("STEP 2/3: Issue discussions")
+    print("=" * 60)
+    sync_issue_discussions()
+
+    print("\n" + "=" * 60)
+    print("STEP 3/3: Re-tiering into organized_cubyz_dataset/")
+    print("=" * 60)
+    organize_dataset()
+
+
+# --- Knowledge base publish (formerly build_knowledge_base.py) -- publishes crunched volunteer
+# output (users/*/{wiki,codebase,addon_studio,github_reviews}.jsonl) into knowledge_base/, the
+# one-file-per-chunk format webapp/local_rag_chat.py actually embeds and retrieves. Safe to
+# re-run any time (idempotent -- unchanged chunks are left alone, only new/changed ones are
+# written). Never deletes: users/ empties out on every campaign hard reset, but the knowledge
+# base accumulates permanently across every campaign run. ---
+
+KB_DATASET_TYPES = {
+    "wiki.jsonl": "docs",
+    "codebase.jsonl": "codebase",
+    "addon_studio.jsonl": "addon_creator",
+    "github_reviews.jsonl": "reviews",
+}
+
+
+def _format_chunk_as_kb_md(chunk: dict) -> str:
+    # Mirrors the existing knowledge_base/*.md format exactly (title as H1, then Type/Keywords/
+    # Symbols/Concepts, Summary/Explanation/Related Questions sections, Source footer) -- title
+    # already contains "[tier/file] - Chunk N" (or "PR #N review diff" for reviews), built
+    # client-side in client.py at submission time, so no extra lookups are needed here.
+    lines = [f"# {chunk.get('title', 'Untitled Chunk')}", ""]
+    if chunk.get("chunk_type"):
+        lines.append(f"**Type:** {chunk['chunk_type']}")
+    if chunk.get("keywords"):
+        lines.append(f"**Keywords:** {', '.join(chunk['keywords'])}")
+    if chunk.get("symbols"):
+        lines.append(f"**Symbols:** {', '.join(chunk['symbols'])}")
+    if chunk.get("concepts"):
+        lines.append(f"**Concepts:** {', '.join(chunk['concepts'])}")
+    lines.append("")
+    if chunk.get("summary"):
+        lines.append("## Summary")
+        lines.append(chunk["summary"])
+        lines.append("")
+    if chunk.get("comprehensive_explanation"):
+        lines.append("## Explanation")
+        lines.append(chunk["comprehensive_explanation"])
+        lines.append("")
+    if chunk.get("code_example"):
+        lines.append("## Code Example")
+        lines.append(f"```zig\n{chunk['code_example']}\n```")
+        lines.append("")
+    if chunk.get("synthetic_queries"):
+        lines.append("## Related Questions")
+        lines.extend(f"- {q}" for q in chunk["synthetic_queries"])
+        lines.append("")
+    lines.append(f"*Source: unknown | chunk_id: {chunk['chunk_id']}*")
+    text = "\n".join(lines) + "\n"
+    # Some source content (e.g. a code_example pulled from a GitHub diff) carries embedded \r\n.
+    # Writing that raw would leave literal \r\n on disk, but reading it back applies universal
+    # newline translation (\r\n -> \n) -- the two would never compare equal, so the file would
+    # look "updated" and get rewritten on every single run forever. Normalize once here instead.
+    return text.replace("\r\n", "\n").replace("\r", "\n")
+
+
+def _load_audited_chunk_ids() -> set:
+    # Audit mode edits knowledge_base/*.md directly and never touches users/*/*.jsonl -- so a
+    # chunk_id in AUDIT_LOCK_FILE's "completed" list has a knowledge_base file that may already
+    # be BETTER than what's still frozen in its original users/*/*.jsonl submission. Regenerating
+    # it from that stale jsonl would silently throw away every audit fix. Once a chunk_id has been
+    # audited at least once -- fixed or found clean -- this function leaves it alone permanently.
+    if not os.path.exists(AUDIT_LOCK_FILE):
+        return set()
+    with open(AUDIT_LOCK_FILE, encoding="utf-8") as f:
+        return set(json.load(f).get("completed", []))
+
+
+def publish_knowledge_base():
+    if not os.path.exists(USERS_DIR):
+        print(f"[X] Directory '{USERS_DIR}' not found.")
+        return
+
+    audited_chunk_ids = _load_audited_chunk_ids()
+    added, updated, unchanged, skipped, protected = 0, 0, 0, 0, 0
+
+    for filename, kb_subdir in KB_DATASET_TYPES.items():
+        target_dir = os.path.join(KNOWLEDGE_DIR, kb_subdir)
+        os.makedirs(target_dir, exist_ok=True)
+
+        seen_chunk_ids = set()
+        for user_folder in sorted(os.listdir(USERS_DIR)):
+            user_path = os.path.join(USERS_DIR, user_folder)
+            if not os.path.isdir(user_path):
+                continue
+            dataset_path = os.path.join(user_path, filename)
+            if not os.path.exists(dataset_path):
+                continue
+
+            try:
+                with open(dataset_path, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if not line:
+                            continue
+                        try:
+                            chunk = json.loads(line)
+                        except Exception:
+                            continue
+
+                        chunk_id = chunk.get("chunk_id")
+                        if not chunk_id:
+                            continue
+                        # First submission of a given chunk_id across all users wins.
+                        if chunk_id in seen_chunk_ids:
+                            skipped += 1
+                            continue
+                        seen_chunk_ids.add(chunk_id)
+
+                        if chunk_id in audited_chunk_ids:
+                            protected += 1
+                            continue
+
+                        out_path = os.path.join(target_dir, f"{chunk_id}.md")
+                        new_content = _format_chunk_as_kb_md(chunk)
+
+                        if os.path.exists(out_path):
+                            with open(out_path, "r", encoding="utf-8") as existing_f:
+                                if existing_f.read() == new_content:
+                                    unchanged += 1
+                                    continue
+                            updated += 1
+                        else:
+                            added += 1
+
+                        with open(out_path, "w", encoding="utf-8") as out_f:
+                            out_f.write(new_content)
+            except Exception as e:
+                print(f"[!] Error reading {dataset_path}: {e}")
+
+    print(f"[✓] Knowledge base publish complete -- {added} new, {updated} updated, {unchanged} unchanged"
+          + (f", {skipped} duplicate chunk_ids skipped" if skipped else "")
+          + (f", {protected} audit-reviewed chunks left untouched" if protected else "") + ".")
+    if added or updated:
+        print("[~] Restart webapp/chat_server.py (or run `python3 local_rag_chat.py --rebuild` from")
+        print("    webapp/) to pick up the new/changed content in the live embedding index.")
+
+
+# --- Audit report (formerly analyze_audit.py) -- summarizes audit_needs_human_review.jsonl /
+# audit_applied_log.jsonl into a readable diagnostic report: what's actually failing, how often,
+# and in which collection. Read-only, safe to run anytime against a live campaign_state dir. ---
+
+def _read_jsonl(path):
+    if not os.path.exists(path):
+        return []
+    with open(path, encoding="utf-8") as f:
+        return [json.loads(line) for line in f if line.strip()]
+
+
+def _same_proposer_repeat_rate(escalations):
+    """Of 'disagreed repeatedly' escalations, how many show a single proposer reassigned the
+    identical chunk 2+ times in a row -- burning the review-round budget on a no-op instead of a
+    genuinely fresh attempt. Was a real, unfixed bug (~35% of that bucket) until the propose-side
+    dispatch filter started tracking rejected_proposers -- kept here as a regression check."""
+    disagreed = [e for e in escalations if "disagreed" in e.get("reason", "")]
+    if not disagreed:
+        return 0, 0
+    repeats = 0
+    for e in disagreed:
+        proposers = [h["user_id"] for h in e.get("history", []) if h.get("stage") == "proposed"]
+        if len(proposers) >= 2 and len(set(proposers)) == 1:
+            repeats += 1
+    return repeats, len(disagreed)
+
+
+def print_audit_report():
+    applied = _read_jsonl(AUDIT_APPLIED_LOG)
+    escalations = _read_jsonl(AUDIT_NEEDS_HUMAN_FILE)
+
+    print(f"Applied fixes logged:  {len(applied)}")
+    print(f"Escalations logged:    {len(escalations)}")
+    if applied or escalations:
+        total = len(applied) + len(escalations)
+        print(f"Escalation rate:       {len(escalations) / total * 100:.1f}%")
+    print()
+
+    print("=== Escalation reasons ===")
+    reasons = collections.Counter(e.get("reason", "?") for e in escalations)
+    for r, c in reasons.most_common():
+        print(f"  {c:5d}  {r}")
+    print()
+
+    print("=== Escalations by collection ===")
+    by_coll = collections.Counter(e.get("collection", "?") for e in escalations)
+    for c, n in by_coll.most_common():
+        print(f"  {n:5d}  {c}")
+    print()
+
+    print("=== Applied-fix attempt distribution (1 = clean first-try approval) ===")
+    att = collections.Counter(a.get("attempts", 1) for a in applied)
+    for k in sorted(att):
+        print(f"  attempts={k}: {att[k]}")
+    print()
+
+    repeats, disagreed_total = _same_proposer_repeat_rate(escalations)
+    if disagreed_total:
+        pct = repeats / disagreed_total * 100
+        flag = "  <-- investigate, should be near 0" if pct > 5 else ""
+        print(f"=== Same-proposer-reassigned-after-reject rate ===")
+        print(f"  {repeats}/{disagreed_total} ({pct:.0f}%) of 'disagreed repeatedly' escalations{flag}")
+        print()
+
+    print("=== Proposers most often rejected (signal for a weak/over-eager model) ===")
+    rejected_by = collections.Counter()
+    for e in escalations:
+        for h in e.get("history", []):
+            if h.get("stage") == "reviewed" and h.get("verdict") == "reject":
+                proposed_before = [x for x in e["history"] if x.get("stage") == "proposed"]
+                if proposed_before:
+                    rejected_by[proposed_before[-1]["user_id"]] += 1
+    for user, n in rejected_by.most_common(10):
+        print(f"  {n:5d}  {user}")
+
+
+# Data Sync panel actions (Collapsible in CubyzAdminApp's sidebar, collapsed by default -- these
+# are network/IO-bound and can take a while, so they're a deliberate action, not something that
+# runs on every startup). All but the report are non-destructive (only ever add/update
+# raw_cubyz_dataset/, organized_cubyz_dataset/, knowledge_base/), so unlike the reset buttons
+# these run on a single click, no arm/confirm step.
+_SYNC_ACTIONS = {
+    "sync_codebase": ("Sync Codebase", sync_codebase),
+    "sync_reviews": ("Sync Reviews & Issues", sync_reviews_and_issues),
+    "publish_kb": ("Publish Knowledge Base", publish_knowledge_base),
+    "audit_report": ("Audit Report", print_audit_report),
+}
 
 # Model roster for audit mode, split by hardware tier so a weak machine only ever gets assigned a
 # model it can actually run and a strong machine gets real capability out of its hardware.
@@ -1247,7 +2184,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # ============================================================
 MIN_CLIENT_VERSION = "1.3.1"
 LATEST_CLIENT_VERSION = "1.4.3"
-CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
+CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/pipeline_crunching/client.py"
 
 def _parse_version(v: str) -> tuple:
     try:
@@ -1266,7 +2203,7 @@ def _version_rejection_message(client_version: str) -> str:
 CURRENT_MODE = "idle"
 SERVER_STATE_FILE = os.path.join(PIPELINE_ROOT, "campaign_state", "server_mode_state.json")
 # Central collection point for client-side diagnostics (task_gave_up / task_cancelled events only
-# -- see CUBYZ_FOLDING.py's log_diagnostic()/submit_diagnostic_to_server()). Every volunteer's
+# -- see client.py's log_diagnostic()/submit_diagnostic_to_server()). Every volunteer's
 # local ~/.cubyz_node_diagnostics.jsonl stays on their own machine; this is the aggregated view
 # across all of them, since the operator otherwise has no way to see any machine's data but their
 # own.
@@ -1344,7 +2281,7 @@ class FinetunePairsSubmission(BaseModel):
 class UnifiedSubmission(BaseModel):
     # "mode" defaults to "rag" so an old, not-yet-updated RAG-only client (which never sends this
     # field) still submits correctly as long as the server happens to be in RAG mode -- the same
-    # spirit as CUBYZ_FOLDING.py defaulting an absent /get_work "mode" to "rag".
+    # spirit as client.py defaulting an absent /get_work "mode" to "rag".
     mode: Literal["rag", "finetune", "audit"] = "rag"
     client_version: str = ""  # absent (old client) is treated the same as "0.0.0" -- see _parse_version
     chunk_id: str
@@ -1457,7 +2394,7 @@ def _estimate_eta_seconds(completion_log: list, remaining_chunks: int):
 def _capacity_based_eta(remaining_units: float, avg_actions_per_unit: float = 1.0):
     """Preferred ETA path: sum 1/speed across every currently-online client that has reported a
     real measured speed (seconds/task, from that client's own recent dispatch->submit timings --
-    see CUBYZ_FOLDING.py's task_durations), for a combined actions/sec capacity. Unlike the
+    see client.py's task_durations), for a combined actions/sec capacity. Unlike the
     window-based _estimate_eta_seconds, this reacts the instant a node joins or leaves (its speed
     is known immediately, not inferred from waiting for enough of its completions to land in a
     rolling window) and doesn't swing on how bursty recent completion timing happened to be.
@@ -2802,7 +3739,7 @@ def _get_finetune_work(user_id: str, hardware_tier: str) -> dict:
     # Fine-tune generation needs stronger instruction-following than RAG extraction (natural
     # prose + judging debugging-vs-review shape for reviews) -- "easy" tier clients are capped at
     # qwen2.5-coder:3b, which isn't reliable enough for this task, so they never get fine-tune
-    # work even while the campaign has plenty left to do. See CUBYZ_FOLDING.py's protocol notes.
+    # work even while the campaign has plenty left to do. See client.py's protocol notes.
     if hardware_tier == "easy":
         available_tasks = []
     else:
@@ -3452,7 +4389,7 @@ def submit_diagnostics(payload: dict):
     # Deliberately a raw dict, not a Pydantic model -- this is observability data, not campaign
     # state, so it shouldn't need a schema migration every time a new diagnostic field is added
     # client-side. task_gave_up/task_cancelled/session_start events land here (see
-    # CUBYZ_FOLDING.py's submit_diagnostic_to_server()) -- the much chattier per-attempt
+    # client.py's submit_diagnostic_to_server()) -- the much chattier per-attempt
     # task_retry events stay purely local, so this endpoint doesn't get hit on every single retry.
     payload["received_at"] = time.time()
     append_jsonl(CLIENT_DIAGNOSTICS_FILE, payload, "client diagnostic")

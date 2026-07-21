@@ -9,7 +9,7 @@ distributed, volunteer-powered crunching pipeline.
 
 ## What's in this repo
 
-### Client — `CUBYZ_FOLDING.py`
+### Client — `pipeline_crunching/client.py`
 
 ![Client screenshot placeholder](docs/images/client.png)
 <!-- TODO: replace with a real screenshot -->
@@ -22,7 +22,7 @@ Run this to donate spare compute to whichever campaign is active.
 - Auto-updates to the latest version
 - Sends offline status on safe exit, instead of leaving a stale connection for the server to time out
 
-### Server — `pipeline_crunching/server_textual.py`
+### Server — `pipeline_crunching/server.py`
 
 ![Server screenshot placeholder](docs/images/server.png)
 <!-- TODO: replace with a real screenshot -->
@@ -33,6 +33,10 @@ The coordinator.
 - Switches between RAG / Finetune / Audit campaigns live, no restart needed
 - Interactive console for monitoring connections and controlling the active campaign
 - Tracks per-volunteer stats and leaderboard
+- **Data Sync** panel (collapsed by default in the console sidebar): one-click buttons to pull the
+  latest Cubyz codebase, PR reviews/issue discussions, publish crunched volunteer output into the
+  live knowledge base, and pull an audit diagnostic report — all built in, no separate scripts to
+  run by hand
 
 ---
 
@@ -77,7 +81,7 @@ The coordinator.
   RAG retrieval-efficiency work and wiring client/server to pick up new fine-tune rounds
   automatically are still next.
 - **Crunching pipeline (root-cause fix):** the under-chunking bug class found repeatedly above was
-  traced to `pipeline_crunching/server_textual.py`'s `_structural_chunks()` — it merged short
+  traced to `pipeline_crunching/server.py`'s `_structural_chunks()` — it merged short
   markdown sections together purely by running line count, with no awareness that two different
   `##` topics shouldn't share a chunk. Fixed by making `#`/`##` headers a hard chunk boundary;
   verified against the 6 previously-broken raw docs, all now auto-split close to their hand-tuned
@@ -89,11 +93,13 @@ The coordinator.
   re-queued, which may not perfectly preserve this session's fine-grained retrieval tuning (exact
   bolded phrases, exact Related-Questions wording) — re-benchmark after any full re-crunch rather
   than assuming it's a strict improvement.
-- **Audit:** complete (3,247/3,247), re-runs automatically as chunks change. Run
-  `python3 pipeline_crunching/analyze_audit.py` anytime for a live breakdown of what's failing and
-  why.
-- **Infra:** one client (`CUBYZ_FOLDING.py`), one server (`server_textual.py`). Old/duplicate
-  versions archived, not deleted.
+- **Audit:** complete (3,247/3,247), re-runs automatically as chunks change. Click "Audit Report"
+  in the admin console's Data Sync panel anytime for a live breakdown of what's failing and why.
+- **Infra:** one client (`client.py`), one server (`server.py`) — that's the whole
+  `pipeline_crunching/` folder now; the five scripts that used to sit alongside it
+  (`sync_codebase.py`, `sync_reviews.py`, `build_knowledge_base.py`, `dataset_sorter.py`,
+  `analyze_audit.py`) are folded directly into `server.py` as Data Sync panel buttons.
+  Old/duplicate versions archived, not deleted.
 
 **Open items:** benchmark `Qwen3-4B-Instruct-2507` once training finishes; if it doesn't close
 enough of the gap back to the 7B, `ByteDance-Seed/Seed-Coder-8B-Instruct` (dense, MIT-licensed,
@@ -216,7 +222,7 @@ outputs) closed almost the entire gap.
 <summary><strong>Prototype 5 — Consolidation, Regression Hunt & TUI Migration</strong> (95.8% on an expanded 144-question benchmark)</summary>
 
 - **Client/server:** major consolidation — three per-OS client scripts and two servers merged
-  into one client (`CUBYZ_FOLDING.py`) and one server, with live campaign-mode switching. Added a
+  into one client (`client.py`) and one server, with live campaign-mode switching. Added a
   version gate, auto-update, dual GPU+CPU lanes, parallel workers, real hardware detection (no
   fabricated fallback numbers), a `check_headroom()` pre-flight check, an audit-mode campaign
   type, and a full TUI rewrite on `textual`.

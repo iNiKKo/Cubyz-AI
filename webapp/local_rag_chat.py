@@ -35,14 +35,15 @@ EMBED_MODEL = "qwen3-embedding:4b"
 # factual backstop. Run merge_adapter.py + convert to GGUF + `ollama create` before pointing this
 # at a new name.
 #
-# Naming convention (2026-07-20 onward): SNALE-AI-<prototype>-<params>, e.g. SNALE-AI-P6-0.6B.
-# Every past and future trained model should follow this pattern -- update this constant (and
-# `ollama create`/`ollama cp` the model under the matching name) each time the active model
-# changes, rather than reusing a generic name that hides which prototype/size actually produced
-# a given answer. The Qwen2.5-Coder-7B-Instruct round-2 adapter stays SNALE-AI-P5-7B (trained as
-# part of Prototype 5); the model-swap pivot to Qwen3.x on 2026-07-20 -- and everything since --
-# is Prototype 6, so its models are SNALE-AI-P6-<params>.
-ANSWER_MODEL = "SNALE-AI-P7-4B"
+# Naming convention 2026-07-20 through Prototype 7: SNALE-AI-<prototype>-<params>, e.g.
+# SNALE-AI-P6-0.6B -- P1/P5/P6 keep that prefix as an accurate historical record (see README.md's
+# prototype history) and are not being renamed retroactively. 2026-07-21 onward: ASH-<prototype>
+# -<params> -- "Snale" (also a real in-game Cubyz creature) drew negative feedback as the public
+# assistant name, so the brand became "Ash" and new models follow suit. Every future trained
+# model should follow this pattern -- update this constant (and `ollama create`/`ollama cp` the
+# model under the matching name, and the Hugging Face repo) each time the active model changes,
+# rather than reusing a generic name that hides which prototype/size actually produced an answer.
+ANSWER_MODEL = "ASH-P7-4B"
 KNOWLEDGE_DIR = os.path.join(REPO_ROOT, "knowledge_base")
 CACHE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "rag_index_cache.json")
 GLOBAL_TOP_K = 8      # best chunks overall, regardless of collection

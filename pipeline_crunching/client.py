@@ -1,21 +1,21 @@
-"""CUBYZ_FOLDING_TUI.py -- Textual-based client rewrite.
+"""client.py -- the Cubyz distributed dataset crunching client (Textual TUI).
 
-Mirrors all the crunching/submission/benchmark logic from CUBYZ_FOLDING.py exactly,
-but replaces its raw-terminal UI (print_terminal_status / DualStatusBoard / pause-menu
-input() calls) with a Textual App that has:
+Talks to server.py's /get_work, /submit_work, /diagnostics endpoints; benchmarks the local
+machine's GPU/CPU, crunches whatever chunk it's handed (RAG extraction, finetune pair
+generation, or audit propose/review), and submits the result back. UI is a Textual App:
 
   Left sidebar  – control buttons (same actions as the old pause-menu, always visible)
   Top bar       – campaign mode badge + volunteer name + global progress + ETA
   Lanes panel   – one box per active lane (GPU / CPU / P1 / P2 ...)
   Terminal log  – scrolling install/startup output + a text-input for prompts
 
-All crunching runs in background threads exactly as before; the TUI is a separate
-asyncio event-loop in the main thread (run_sync mode).  Thread->TUI communication
-uses a thread-safe deque for log lines and a simple shared dict for lane states;
-the TUI polls both every 0.5 s with set_interval.
+All crunching runs in background threads; the TUI is a separate asyncio event-loop in the
+main thread (run_sync mode). Thread->TUI communication uses a thread-safe deque for log
+lines and a simple shared dict for lane states; the TUI polls both every 0.5 s with
+set_interval.
 
 Run:
-    python3 CUBYZ_FOLDING_TUI.py
+    python3 pipeline_crunching/client.py
 
 Requires textual and rich:
     pip install textual rich
@@ -589,8 +589,8 @@ def check_intel_gpu() -> tuple:
 
 # -- GPU tier / model selection ------------------------------------------------
 # SPARE VRAM required on top of the model's own resident footprint before enabling parallel
-# workers. These match CUBYZ_FOLDING.py exactly -- the floor is NOT the tier's minimum VRAM
-# (that's gpu_tier_from_vram's job), it's how much must be free ABOVE the already-loaded model.
+# workers. The floor is NOT the tier's minimum VRAM (that's gpu_tier_from_vram's job), it's how
+# much must be free ABOVE the already-loaded model.
 GPU_TIER_VRAM_FLOOR_GB = {"easy": 0.0, "medium": 4.5, "hard": 8.5}
 CPU_TIER_RAM_FLOOR_GB  = {"easy": 6.0, "medium": 8.0}
 DUAL_LANE_MIN_RAM_GB   = 12.0
@@ -1445,8 +1445,9 @@ def format_chunk_descriptor(task: dict) -> str:
     # alone with no natural position within the file it touches, so the source dataset reuses
     # chunk_index to carry the comment's own (huge, unique) numeric ID instead. Displayed as
     # "Chunk 3295308100" that looks like a bug rather than what it actually is. Issue-discussion
-    # chunks (from extract_issues.py) reuse the same GITHUB_REVIEWS category with chunk_index set
-    # to the actual issue number, so they get their own equally-readable case.
+    # chunks (from server.py's issue-discussion sync) reuse the same GITHUB_REVIEWS
+    # category with chunk_index set to the actual issue number, so they get their own
+    # equally-readable case.
     match = re.match(r'github_pr_(\d+)_comment_\d+', task.get("chunk_id", ""))
     if match:
         return f"PR #{match.group(1)} review diff"
