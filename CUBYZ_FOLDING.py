@@ -122,7 +122,7 @@ SERVER_URL       = "http://ashframe.net:7000"
 OLLAMA_URL       = "http://localhost:11434/api/generate"
 CONFIG_FILE      = os.path.expanduser("~/.cubyz_node_config.json")
 DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
-VERSION          = "1.3.4"
+VERSION          = "1.3.5"
 
 print_lock = threading.Lock()
 
@@ -595,7 +595,7 @@ CPU_TIER_RAM_FLOOR_GB  = {"easy": 6.0, "medium": 8.0}
 DUAL_LANE_MIN_RAM_GB   = 12.0
 DUAL_LANE_MIN_VRAM_GB  = 4.0
 TIER_RANK              = {"easy": 0, "medium": 1, "hard": 2}
-BENCHMARK_VERSION      = 4
+BENCHMARK_VERSION      = 5
 BENCHMARK_TIMEOUT      = 90
 # hard tier uses 2 workers (not 3) -- a 14b/32b model already saturates the GPU, so
 # adding a third concurrent slot just causes thrashing rather than throughput gains.
@@ -3137,25 +3137,31 @@ def main():
                 if cpu_model != chosen_model:
                     warm_up_model(cpu_model)
 
-                print(f"\033[96m[~] Running hardware benchmark (one-time, up to 2 minutes)...\033[0m")
+                print(f"\033[96m[~] Running hardware benchmark (one-time, up to 4 minutes)...\033[0m")
+                # Sequential, not two threads racing each other -- these used to run concurrently,
+                # which assumed Ollama could actually serve both requests in parallel. It usually
+                # can't: OLLAMA_NUM_PARALLEL defaults to 1 (serializing generation requests
+                # server-side) unless a volunteer has explicitly set it otherwise, which almost no
+                # native Windows/Mac install does. Under that default, "concurrent" client threads
+                # don't get concurrent GPU/CPU work -- whichever request Ollama picks up second
+                # just sits queued behind the first for its ENTIRE duration, then still only gets
+                # its own BENCHMARK_TIMEOUT budget to run in once it starts. A slow-but-legitimate
+                # first request (e.g. the CPU lane on a big model) can easily eat enough of that
+                # queueing time to make an otherwise-healthy GPU look like it timed out -- confirmed
+                # live: a volunteer's RTX 4060 Ti (12GB, easily capable) kept reporting "GPU
+                # benchmark failed (timeout: timed out)" even after warm-up eliminated cold-load
+                # time as a cause. Running them one at a time doubles the worst-case wall time for
+                # this one-time startup step, but each lane now gets an honest, uncontended shot at
+                # its own timeout budget instead of a result that depends on which one Ollama
+                # happened to schedule first.
                 _bench = {}
                 arch_bad, arch_reason = check_gpu_architecture_support(gpu_type)
                 if arch_bad:
                     print(f"\033[93m[!] GPU arch unsupported: {arch_reason} -- skipping GPU bench.\033[0m")
                     _bench["gpu"] = (None, arch_reason)
-                    gpu_t = None
                 else:
-                    gpu_t = threading.Thread(
-                        target=lambda: _bench.update(gpu=benchmark_lane(chosen_model, force_cpu=False)),
-                        daemon=True)
-                    gpu_t.start()
-                cpu_t = threading.Thread(
-                    target=lambda: _bench.update(cpu=benchmark_lane(cpu_model, force_cpu=True)),
-                    daemon=True)
-                cpu_t.start()
-                if gpu_t:
-                    gpu_t.join()
-                cpu_t.join()
+                    _bench["gpu"] = benchmark_lane(chosen_model, force_cpu=False)
+                _bench["cpu"] = benchmark_lane(cpu_model, force_cpu=True)
                 gpu_time, gpu_error = _bench.get("gpu", (None, None))
                 cpu_time, cpu_error = _bench.get("cpu", (None, None))
                 gpu_tier_cmp = gpu_tier_from_vram(total_vram_gb)
