@@ -5,11 +5,11 @@
     "total_vram_gb": 12.0,
     "system_ram_gb": 15.95,
     "dual_lane": false,
-    "primary_is_gpu": false,
-    "hardware_tier": "medium",
-    "benchmark_gpu_time": null,
+    "primary_is_gpu": true,
+    "hardware_tier": "hard",
+    "benchmark_gpu_time": 80.10804343223572,
     "benchmark_cpu_time": null,
-    "benchmark_gpu_error": "HTTPError: HTTP Error 500: Internal Server Error -- {\"error\":\"llama-server process has terminated: exit status 1: error loading model: read error: Data error (cyclic redundancy check).\"}",
+    "benchmark_gpu_error": null,
     "benchmark_cpu_error": "timeout: timed out"
   },
   "nicksrvr": {
@@ -21,8 +21,8 @@
     "primary_is_gpu": false,
     "hardware_tier": "medium",
     "benchmark_gpu_time": null,
-    "benchmark_cpu_time": 74.17923212051392,
-    "benchmark_gpu_error": "no_gpu_offload: request finished in 39.9s but Ollama reports 0 bytes resident on GPU -- it silently ran on CPU instead",
+    "benchmark_cpu_time": 75.55519914627075,
+    "benchmark_gpu_error": "no_gpu_offload: request finished in 36.9s but Ollama reports 0 bytes resident on GPU -- it silently ran on CPU instead",
     "benchmark_cpu_error": null
   },
   "nickc": {

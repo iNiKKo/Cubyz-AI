@@ -1246,7 +1246,7 @@ THIN_CHUNK_MIN_TIER = 3  # requires a qwen2.5-coder:14b-or-better client
 # telling the operator to update, rather than accepting and mishandling it.
 # ============================================================
 MIN_CLIENT_VERSION = "1.3.1"
-LATEST_CLIENT_VERSION = "1.3.7"
+LATEST_CLIENT_VERSION = "1.3.8"
 CLIENT_DOWNLOAD_URL = "https://raw.githubusercontent.com/iNiKKo/Cubyz-AI/main/CUBYZ_FOLDING.py"
 
 def _parse_version(v: str) -> tuple:
@@ -3510,6 +3510,22 @@ def submit_diagnostics(payload: dict):
                         gave_up_counts.pop(chunk_id, None)
                         log_event("rag", "", "⚠", Colors.RED, f"{Colors.BOLD}{chunk_id}{Colors.RESET} permanently given up after {RAG_GIVE_UP_THRESHOLD} independent failures -- marked done with no output")
                     save_lock_state(RAG_LOCK_FILE, state)
+
+    if payload.get("event") in ("dual_lane_toggle", "parallel_toggle") and payload.get("user_id"):
+        # Surfaced into the live Recent Events panel + that volunteer's own Status line, not just
+        # appended to the diagnostics jsonl someone has to go grep -- this exact event ("volunteer
+        # presses Toggle Dual-Lane/Parallel, nothing visible happens on their end") used to mean
+        # asking them to describe their screen and guessing from there, since the server had zero
+        # visibility into it at all.
+        kind = "Dual-lane" if payload["event"] == "dual_lane_toggle" else "Parallel workers"
+        result = payload.get("result")
+        symbol, color, verb = {
+            "enabled":     ("✓", Colors.GREEN,  "ENABLED"),
+            "disabled":    ("○", Colors.GRAY,   "disabled"),
+            "unavailable": ("~", Colors.GRAY,   "not available on that machine"),
+            "failed":      ("X", Colors.YELLOW, f"failed -- {payload.get('reason', 'no reason given')}"),
+        }.get(result, ("?", Colors.GRAY, result or "unknown result"))
+        log_event("admin", payload["user_id"], symbol, color, f"{kind} {verb}")
 
     return {"status": "logged"}
 

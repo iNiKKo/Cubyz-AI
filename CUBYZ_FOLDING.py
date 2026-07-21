@@ -122,7 +122,7 @@ SERVER_URL       = "http://ashframe.net:7000"
 OLLAMA_URL       = "http://localhost:11434/api/generate"
 CONFIG_FILE      = os.path.expanduser("~/.cubyz_node_config.json")
 DIAGNOSTICS_FILE = os.path.expanduser("~/.cubyz_node_diagnostics.jsonl")
-VERSION          = "1.3.7"
+VERSION          = "1.3.8"
 
 print_lock = threading.Lock()
 
@@ -3024,28 +3024,52 @@ class CubyzClientApp(App):
 
         elif bid == "btn_dual":
             dc = _dual_controller_ref
+            # Reported to the server the same way session_start/task_gave_up already are --
+            # this exact class of "volunteer presses a toggle, nothing seems to happen" report
+            # used to mean asking them to describe their screen and guessing from there (see the
+            # dual_capable investigation this was added for). With this, the admin dashboard's
+            # per-user Status line shows the real outcome directly, no round-trip needed.
+            # Backgrounded (like btn_leaderboard/btn_rename above) -- submit_diagnostic_to_server
+            # is a real blocking network call, and this handler runs on the UI thread; dc.start()/
+            # dc.stop() themselves are local and fast, so only the network part needs its own
+            # thread, not the whole handler.
             if dc is None:
                 _log_queue.append(f"\033[90m[~] Dual-lane not available on this machine.\033[0m")
+                result = "unavailable"
             elif dc.active:
                 dc.stop()
                 _log_queue.append(f"\033[90m[OK] Dual-lane DISABLED.\033[0m")
+                result = "disabled"
             else:
                 dc.start()
                 _log_queue.append(f"\033[92m[OK] Dual-lane ENABLED.\033[0m")
+                result = "enabled"
+            threading.Thread(target=submit_diagnostic_to_server,
+                              args=({"event": "dual_lane_toggle", "user_id": _volunteer_id, "result": result},),
+                              daemon=True).start()
 
         elif bid == "btn_parallel":
             pc = _parallel_controller_ref
+            reason = None
             if pc is None:
                 _log_queue.append(f"\033[90m[~] Parallel workers not available.\033[0m")
+                result = "unavailable"
             elif pc.active:
                 pc.stop()
                 _log_queue.append(f"\033[90m[OK] Parallel workers DISABLED.\033[0m")
+                result = "disabled"
             else:
                 started, reason = pc.start()
                 if started:
                     _log_queue.append(f"\033[92m[OK] Parallel workers ENABLED.\033[0m")
+                    result = "enabled"
                 else:
                     _log_queue.append(f"\033[91m[X] Cannot enable: {reason}\033[0m")
+                    result = "failed"
+            event = {"event": "parallel_toggle", "user_id": _volunteer_id, "result": result}
+            if reason:
+                event["reason"] = reason
+            threading.Thread(target=submit_diagnostic_to_server, args=(event,), daemon=True).start()
 
         elif bid == "btn_benchmark":
             def _do():
