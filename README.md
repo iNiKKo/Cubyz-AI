@@ -29,7 +29,11 @@ The coordinator.
 - **RAG:** complete, 3,318 chunks, live on the webapp.
 - **Fine-tune:** `ASH-P7-4B` (`Qwen3-4B-Instruct-2507`) — 22.9% standalone, **99.0-99.3% served
   with RAG** across two independent 144-question sets. Fine-tune data is `reviews`-only
-  (judgment/voice, not facts) since Prototype 7 — RAG carries all fact recall.
+  (judgment/voice, not facts) since Prototype 7 — RAG carries all fact recall. Prototype 8 tried
+  CoT-style behavior data across 4 rounds to improve judgment/hallucination-refusal; all 3 CoT
+  rounds regressed both hallucination-refusal AND deployed RAG accuracy (down to 87.5%, partly
+  truncated generations rather than pure knowledge loss) versus this baseline, so **P7 remains the
+  active/default model** rather than shipping P8.
 - **Audit:** complete (3,247/3,247), re-runs automatically as chunks change.
 - **Infra:** one client, one server — `pipeline/` holds the two of them plus `finetune/` (training
   pipeline) and `users/` (raw crunched output). Old/dup versions and superseded scripts archived,

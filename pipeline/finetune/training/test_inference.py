@@ -16,6 +16,10 @@ actually talking to the model. This script asks a mix of:
 Read every response yourself. There's no automated pass/fail here -- judging "is this actually
 good and not degraded" is exactly the kind of thing that needs a human, not a script.
 """
+import datetime
+import os
+import sys
+
 import torch
 from peft import PeftModel
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
@@ -23,6 +27,23 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from train_qlora import MODEL_ID, OUTPUT_DIR
 
 ADAPTER_DIR = f"{OUTPUT_DIR}/final_adapter"
+RESULTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "standalone_test_results")
+
+
+class Tee:
+    """Mirrors everything written to stdout into a log file, so the transcript survives past the
+    terminal scrollback without needing a manual `| tee` redirect."""
+
+    def __init__(self, *streams):
+        self.streams = streams
+
+    def write(self, data):
+        for stream in self.streams:
+            stream.write(data)
+
+    def flush(self):
+        for stream in self.streams:
+            stream.flush()
 
 SYSTEM_PROMPT = (
     "You are the Cubyz Assistant, a technical expert on Cubyz, an open-source voxel sandbox "
@@ -345,6 +366,12 @@ def ask(model, tokenizer, question: str) -> str:
 
 
 def main():
+    os.makedirs(RESULTS_DIR, exist_ok=True)
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_path = os.path.join(RESULTS_DIR, f"standalone_{timestamp}.txt")
+    log_file = open(log_path, "w")
+    sys.stdout = Tee(sys.__stdout__, log_file)
+
     print(f"[~] Loading 4-bit base model: {MODEL_ID}")
     tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
     if tokenizer.pad_token is None:
@@ -385,6 +412,10 @@ def main():
     print("\n\n[~] Done. Read every answer above -- specifically check the general questions")
     print("    for anything degraded, repetitive, incoherent, or off-topic. That's the")
     print("    'lobotomy' failure mode this whole pipeline was built to avoid.")
+    print(f"[~] Transcript saved to {log_path}")
+
+    sys.stdout = sys.__stdout__
+    log_file.close()
 
 
 if __name__ == "__main__":

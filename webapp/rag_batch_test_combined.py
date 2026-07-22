@@ -9,13 +9,32 @@ Usage:
     python3 rag_batch_test_combined.py           # all 288 questions
     python3 rag_batch_test_combined.py 10        # first 10 only, for a quick smoke check
 """
+import datetime
+import os
 import sys
 
-from local_rag_chat import ask, load_index
+from local_rag_chat import ANSWER_MODEL, ask, load_index
 from rag_batch_test import CUBYZ_QUESTIONS
 from rag_batch_test_v2 import CUBYZ_QUESTIONS_V2
 
 CUBYZ_QUESTIONS_COMBINED = CUBYZ_QUESTIONS + CUBYZ_QUESTIONS_V2
+RESULTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "rag_test_results")
+
+
+class Tee:
+    """Mirrors everything written to stdout into a log file, so the transcript survives past the
+    terminal scroll-back without needing a manual `| tee` redirect."""
+
+    def __init__(self, *streams):
+        self.streams = streams
+
+    def write(self, data):
+        for stream in self.streams:
+            stream.write(data)
+
+    def flush(self):
+        for stream in self.streams:
+            stream.flush()
 
 
 def main():
@@ -24,6 +43,12 @@ def main():
         if a.isdigit():
             limit = int(a)
     questions = CUBYZ_QUESTIONS_COMBINED[:limit] if limit else CUBYZ_QUESTIONS_COMBINED
+
+    os.makedirs(RESULTS_DIR, exist_ok=True)
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_path = os.path.join(RESULTS_DIR, f"rag_{ANSWER_MODEL}_{timestamp}.txt")
+    log_file = open(log_path, "w")
+    sys.stdout = Tee(sys.__stdout__, log_file)
 
     index = load_index()
 
@@ -35,6 +60,10 @@ def main():
 
     print(f"\n\n[~] Done -- {len(questions)} questions "
           f"({len(CUBYZ_QUESTIONS)} from set 1 + {len(CUBYZ_QUESTIONS_V2)} from set 2, combined).")
+    print(f"[~] Transcript saved to {log_path}")
+
+    sys.stdout = sys.__stdout__
+    log_file.close()
 
 
 if __name__ == "__main__":
